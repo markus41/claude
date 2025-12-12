@@ -1,0 +1,32 @@
+{
+  "hooks": [
+    {
+      "name": "style-consistency-checker",
+      "event": "PreToolUse",
+      "toolPattern": "(Write|Edit)",
+      "filePattern": "\\.(css|scss|tsx|jsx)$",
+      "script": "scripts/check-style-consistency.sh"
+    },
+    {
+      "name": "accessibility-validator",
+      "event": "PreToolUse",
+      "toolPattern": "(Write|Edit)",
+      "filePattern": "\\.(tsx|jsx)$",
+      "script": "scripts/validate-accessibility.sh"
+    },
+    {
+      "name": "theme-sync",
+      "event": "PostToolUse",
+      "toolPattern": "(Write|Edit)",
+      "filePattern": "(theme|tokens).*\\.(ts|json|css)$",
+      "script": "scripts/sync-themes.sh"
+    },
+    {
+      "name": "design-token-updater",
+      "event": "PostToolUse",
+      "toolPattern": "Edit",
+      "filePattern": "design-tokens\\.(json|ts)$",
+      "script": "scripts/update-tokens.sh"
+    }
+  ]
+}

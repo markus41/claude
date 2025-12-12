@@ -1,0 +1,17 @@
+# Local configuration files (user-specific settings)
+.claude/*.local.md
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
