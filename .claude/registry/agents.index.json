@@ -847,20 +847,20 @@
 
   "stats": {
     "byType": {
-      "developer": 46,
-      "analyst": 16,
-      "coordinator": 14,
-      "validator": 6
+      "developer": 54,
+      "analyst": 17,
+      "coordinator": 19,
+      "validator": 7
     },
     "byModel": {
-      "sonnet": 72,
-      "haiku": 10,
+      "sonnet": 84,
+      "haiku": 13,
       "opus": 0
     },
     "byPriority": {
-      "high": 30,
-      "medium": 39,
-      "low": 13
+      "high": 26,
+      "medium": 53,
+      "low": 18
     },
     "byCategory": {
       "core": 6,
@@ -885,8 +885,8 @@
       "migration": 2,
       "quality-gates": 2
     },
-    "totalAgents": 82,
-    "note": "Platform-specific agents (Lobbi, Stripe, Keycloak, MongoDB, multi-tenant, etc.) removed for portability. 22 new agents added from VoltAgent, 0xfurai, and DeepWiki repositories.",
+    "totalAgents": 97,
+    "note": "22 new agents added from VoltAgent, 0xfurai, and DeepWiki repositories. Categories: system-ops, mobile, messaging, migration, quality-gates.",
     "lastUpdated": "2025-12-12"
   }
 }
