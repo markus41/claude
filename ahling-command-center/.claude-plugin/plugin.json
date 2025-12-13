@@ -1,22 +1,3 @@
 {
-  "name": "ahling-command-center",
-  "version": "1.0.0",
-  "description": "Comprehensive deployment and orchestration plugin for the Ahling Command Center - 70+ self-hosted services with deep Ollama, Home Assistant, and Microsoft Agent Framework integration",
-  "author": {
-    "name": "Markus Ahling",
-    "email": "markus@ahling.io"
-  },
-  "license": "MIT",
-  "homepage": "https://github.com/Lobbi-Docs/claude",
-  "repository": "https://github.com/Lobbi-Docs/claude.git",
-  "keywords": [
-    "self-hosted",
-    "infrastructure",
-    "ollama",
-    "home-assistant",
-    "microsoft-agents",
-    "docker",
-    "vault",
-    "ai-orchestration"
-  ]
+  "name": "ahling-command-center"
 }
