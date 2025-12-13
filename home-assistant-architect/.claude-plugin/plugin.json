@@ -1,8 +1,8 @@
 {
   "$schema": "../../.claude/schemas/plugin.schema.json",
   "name": "home-assistant-architect",
-  "version": "1.0.0",
-  "description": "Comprehensive Home Assistant automation, local LLM integration, and Ubuntu server management plugin for Claude Code",
+  "version": "2.0.0",
+  "description": "Complete Home Assistant platform with frontend design, energy management, cameras, sensors, local LLM integration, and Ubuntu server deployment",
   "author": "Brookside BI",
   "license": "MIT",
   "homepage": "https://github.com/Lobbi-Docs/claude",
@@ -19,7 +19,14 @@
     "mcp-server",
     "ubuntu",
     "iot",
-    "voice-assistant"
+    "voice-assistant",
+    "energy",
+    "solar",
+    "cameras",
+    "frigate",
+    "sensors",
+    "lovelace",
+    "dashboard"
   ],
   "engines": {
     "claude-code": ">=1.0.0"
@@ -28,7 +35,10 @@
     "IoT",
     "Automation",
     "AI/ML",
-    "DevOps"
+    "DevOps",
+    "Energy",
+    "Security",
+    "Frontend"
   ],
   "agents": [
     {
@@ -70,6 +80,41 @@
       "name": "ha-security-auditor",
       "description": "Audit Home Assistant security, access controls, and network exposure",
       "path": "agents/ha-security-auditor.md"
+    },
+    {
+      "name": "ha-frontend-builder",
+      "description": "Build Lovelace dashboards, cards, and responsive layouts",
+      "path": "agents/ha-frontend-builder.md"
+    },
+    {
+      "name": "ha-data-writer",
+      "description": "Write and manage entity states, input helpers, and database operations",
+      "path": "agents/ha-data-writer.md"
+    },
+    {
+      "name": "ha-customization-expert",
+      "description": "Customize themes, entities, HACS integrations, and blueprints",
+      "path": "agents/ha-customization-expert.md"
+    },
+    {
+      "name": "ha-energy-management",
+      "description": "Complete energy system with solar, battery, EV charging, and cost optimization",
+      "path": "agents/ha-energy-management.md"
+    },
+    {
+      "name": "ha-camera-nvr",
+      "description": "Camera integration, Frigate NVR, motion detection, and video analytics",
+      "path": "agents/ha-camera-nvr.md"
+    },
+    {
+      "name": "ha-sensor-manager",
+      "description": "Sensor deployment, presence detection, calibration, and analytics",
+      "path": "agents/ha-sensor-manager.md"
+    },
+    {
+      "name": "ha-dashboard-designer",
+      "description": "Advanced custom dashboards with animations, themes, and device-optimized layouts",
+      "path": "agents/ha-dashboard-designer.md"
     }
   ],
   "commands": [
@@ -89,29 +134,34 @@
       "path": "commands/ha-deploy.md"
     },
     {
-      "name": "ha-diagnose",
-      "description": "Diagnose Home Assistant issues",
-      "path": "commands/ha-diagnose.md"
-    },
-    {
       "name": "ollama-setup",
       "description": "Setup and configure Ollama for local LLM",
       "path": "commands/ollama-setup.md"
     },
     {
-      "name": "ha-voice",
-      "description": "Configure voice assistant pipeline",
-      "path": "commands/ha-voice.md"
-    },
-    {
-      "name": "ha-backup",
-      "description": "Backup and restore Home Assistant",
-      "path": "commands/ha-backup.md"
-    },
-    {
       "name": "ha-mcp",
       "description": "Configure MCP server for Claude integration",
       "path": "commands/ha-mcp.md"
+    },
+    {
+      "name": "ha-dashboard",
+      "description": "Create and customize Lovelace dashboards",
+      "path": "commands/ha-dashboard.md"
+    },
+    {
+      "name": "ha-energy",
+      "description": "Configure energy monitoring, solar, battery, and EV charging",
+      "path": "commands/ha-energy.md"
+    },
+    {
+      "name": "ha-camera",
+      "description": "Setup cameras, NVR, and motion detection",
+      "path": "commands/ha-camera.md"
+    },
+    {
+      "name": "ha-sensor",
+      "description": "Configure sensors, presence detection, and analytics",
+      "path": "commands/ha-sensor.md"
     }
   ],
   "hooks": {
@@ -120,7 +170,9 @@
       "ha-state-change",
       "ha-automation-trigger",
       "ha-error-detected",
-      "ollama-model-ready"
+      "ollama-model-ready",
+      "camera-motion-detected",
+      "energy-threshold-exceeded"
     ]
   },
   "skills": [
@@ -143,6 +195,26 @@
       "name": "ubuntu-deployment",
       "description": "Ubuntu server deployment for Home Assistant",
       "path": "skills/ubuntu-deployment/SKILL.md"
+    },
+    {
+      "name": "lovelace-design",
+      "description": "Lovelace dashboard design patterns and custom cards",
+      "path": "skills/lovelace-design/SKILL.md"
+    },
+    {
+      "name": "energy-management",
+      "description": "Energy monitoring, solar, and cost optimization patterns",
+      "path": "skills/energy-management/SKILL.md"
+    },
+    {
+      "name": "camera-nvr",
+      "description": "Camera integration and Frigate NVR patterns",
+      "path": "skills/camera-nvr/SKILL.md"
+    },
+    {
+      "name": "sensor-management",
+      "description": "Sensor configuration and analytics patterns",
+      "path": "skills/sensor-management/SKILL.md"
     }
   ],
   "templates": [
@@ -155,11 +227,6 @@
       "name": "automation",
       "description": "Automation template with best practices",
       "path": "templates/automation.yaml"
-    },
-    {
-      "name": "ollama-config",
-      "description": "Ollama configuration for HA integration",
-      "path": "templates/ollama-config.yaml"
     }
   ],
   "mcp": {
@@ -174,10 +241,16 @@
       "ha_set_state",
       "ha_call_service",
       "ha_list_entities",
+      "ha_search_entities",
       "ha_get_history",
       "ha_create_automation",
       "ha_trigger_automation",
       "ha_get_logs",
+      "ha_get_dashboard",
+      "ha_update_dashboard",
+      "ha_get_energy",
+      "ha_camera_snapshot",
+      "frigate_get_events",
       "ollama_generate",
       "ollama_list_models"
     ]
@@ -192,6 +265,11 @@
       {
         "name": "ollama",
         "version": ">=0.3.0",
+        "required": false
+      },
+      {
+        "name": "frigate",
+        "version": ">=0.13.0",
         "required": false
       }
     ],
@@ -217,10 +295,16 @@
         "default": "http://localhost:11434"
       },
       {
-        "name": "HA_VOICE_MODEL",
-        "description": "Ollama model for voice assistant (default: llama3.2)",
+        "name": "FRIGATE_URL",
+        "description": "Frigate NVR URL (default: http://frigate:5000)",
         "required": false,
-        "default": "llama3.2"
+        "default": "http://frigate:5000"
+      },
+      {
+        "name": "HA_VOICE_MODEL",
+        "description": "Ollama model for voice assistant (default: llama3.2:3b)",
+        "required": false,
+        "default": "llama3.2:3b"
       }
     ]
   }
