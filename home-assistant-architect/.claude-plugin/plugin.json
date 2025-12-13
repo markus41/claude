@@ -1,0 +1,227 @@
+{
+  "$schema": "../../.claude/schemas/plugin.schema.json",
+  "name": "home-assistant-architect",
+  "version": "1.0.0",
+  "description": "Comprehensive Home Assistant automation, local LLM integration, and Ubuntu server management plugin for Claude Code",
+  "author": "Brookside BI",
+  "license": "MIT",
+  "homepage": "https://github.com/Lobbi-Docs/claude",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Lobbi-Docs/claude.git"
+  },
+  "keywords": [
+    "home-assistant",
+    "smart-home",
+    "automation",
+    "ollama",
+    "local-llm",
+    "mcp-server",
+    "ubuntu",
+    "iot",
+    "voice-assistant"
+  ],
+  "engines": {
+    "claude-code": ">=1.0.0"
+  },
+  "categories": [
+    "IoT",
+    "Automation",
+    "AI/ML",
+    "DevOps"
+  ],
+  "agents": [
+    {
+      "name": "ha-device-controller",
+      "description": "Control and manage Home Assistant devices, entities, and services",
+      "path": "agents/ha-device-controller.md"
+    },
+    {
+      "name": "ha-automation-architect",
+      "description": "Design, create, and optimize Home Assistant automations and scripts",
+      "path": "agents/ha-automation-architect.md"
+    },
+    {
+      "name": "ha-diagnostics",
+      "description": "Troubleshoot and diagnose Home Assistant issues, logs, and performance",
+      "path": "agents/ha-diagnostics.md"
+    },
+    {
+      "name": "local-llm-manager",
+      "description": "Manage local LLM deployment with Ollama, LocalAI, and model optimization",
+      "path": "agents/local-llm-manager.md"
+    },
+    {
+      "name": "ubuntu-ha-deployer",
+      "description": "Deploy and manage Home Assistant on Ubuntu servers with Docker",
+      "path": "agents/ubuntu-ha-deployer.md"
+    },
+    {
+      "name": "ha-voice-assistant",
+      "description": "Configure voice assistants with local speech processing and LLM integration",
+      "path": "agents/ha-voice-assistant.md"
+    },
+    {
+      "name": "ha-energy-optimizer",
+      "description": "Analyze and optimize home energy usage patterns and automations",
+      "path": "agents/ha-energy-optimizer.md"
+    },
+    {
+      "name": "ha-security-auditor",
+      "description": "Audit Home Assistant security, access controls, and network exposure",
+      "path": "agents/ha-security-auditor.md"
+    }
+  ],
+  "commands": [
+    {
+      "name": "ha-control",
+      "description": "Control Home Assistant entities and services",
+      "path": "commands/ha-control.md"
+    },
+    {
+      "name": "ha-automation",
+      "description": "Create and manage automations",
+      "path": "commands/ha-automation.md"
+    },
+    {
+      "name": "ha-deploy",
+      "description": "Deploy Home Assistant on Ubuntu server",
+      "path": "commands/ha-deploy.md"
+    },
+    {
+      "name": "ha-diagnose",
+      "description": "Diagnose Home Assistant issues",
+      "path": "commands/ha-diagnose.md"
+    },
+    {
+      "name": "ollama-setup",
+      "description": "Setup and configure Ollama for local LLM",
+      "path": "commands/ollama-setup.md"
+    },
+    {
+      "name": "ha-voice",
+      "description": "Configure voice assistant pipeline",
+      "path": "commands/ha-voice.md"
+    },
+    {
+      "name": "ha-backup",
+      "description": "Backup and restore Home Assistant",
+      "path": "commands/ha-backup.md"
+    },
+    {
+      "name": "ha-mcp",
+      "description": "Configure MCP server for Claude integration",
+      "path": "commands/ha-mcp.md"
+    }
+  ],
+  "hooks": {
+    "path": "hooks/hooks.json",
+    "events": [
+      "ha-state-change",
+      "ha-automation-trigger",
+      "ha-error-detected",
+      "ollama-model-ready"
+    ]
+  },
+  "skills": [
+    {
+      "name": "ha-core",
+      "description": "Core Home Assistant API patterns and integration",
+      "path": "skills/ha-core/SKILL.md"
+    },
+    {
+      "name": "ha-automation",
+      "description": "Automation YAML patterns and best practices",
+      "path": "skills/ha-automation/SKILL.md"
+    },
+    {
+      "name": "local-llm",
+      "description": "Local LLM deployment patterns with Ollama",
+      "path": "skills/local-llm/SKILL.md"
+    },
+    {
+      "name": "ubuntu-deployment",
+      "description": "Ubuntu server deployment for Home Assistant",
+      "path": "skills/ubuntu-deployment/SKILL.md"
+    }
+  ],
+  "templates": [
+    {
+      "name": "docker-compose",
+      "description": "Docker Compose template for HA stack",
+      "path": "templates/docker-compose.yaml"
+    },
+    {
+      "name": "automation",
+      "description": "Automation template with best practices",
+      "path": "templates/automation.yaml"
+    },
+    {
+      "name": "ollama-config",
+      "description": "Ollama configuration for HA integration",
+      "path": "templates/ollama-config.yaml"
+    }
+  ],
+  "mcp": {
+    "server": {
+      "name": "ha-mcp-server",
+      "description": "MCP server for Home Assistant integration",
+      "path": "mcp-server/",
+      "transport": "stdio"
+    },
+    "tools": [
+      "ha_get_state",
+      "ha_set_state",
+      "ha_call_service",
+      "ha_list_entities",
+      "ha_get_history",
+      "ha_create_automation",
+      "ha_trigger_automation",
+      "ha_get_logs",
+      "ollama_generate",
+      "ollama_list_models"
+    ]
+  },
+  "dependencies": {
+    "external": [
+      {
+        "name": "home-assistant",
+        "version": ">=2025.1.0",
+        "required": true
+      },
+      {
+        "name": "ollama",
+        "version": ">=0.3.0",
+        "required": false
+      }
+    ],
+    "plugins": []
+  },
+  "configuration": {
+    "env": [
+      {
+        "name": "HA_URL",
+        "description": "Home Assistant URL (e.g., http://homeassistant.local:8123)",
+        "required": true
+      },
+      {
+        "name": "HA_TOKEN",
+        "description": "Home Assistant Long-Lived Access Token",
+        "required": true,
+        "sensitive": true
+      },
+      {
+        "name": "OLLAMA_URL",
+        "description": "Ollama API URL (default: http://localhost:11434)",
+        "required": false,
+        "default": "http://localhost:11434"
+      },
+      {
+        "name": "HA_VOICE_MODEL",
+        "description": "Ollama model for voice assistant (default: llama3.2)",
+        "required": false,
+        "default": "llama3.2"
+      }
+    ]
+  }
+}

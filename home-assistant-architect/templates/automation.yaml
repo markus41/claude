@@ -1,0 +1,340 @@
+# Home Assistant Automation Template
+#
+# This file provides well-structured automation templates following best practices.
+# Copy and modify these templates for your own automations.
+
+# ============================================
+# TEMPLATE 1: Motion-Activated Lights
+# ============================================
+# Turns on lights when motion is detected, with time-based conditions
+- alias: "Motion Lights - Template"
+  id: motion_lights_template
+  description: "Turn on lights when motion detected, considering time and ambient light"
+  mode: restart  # Restart if triggered again while running
+
+  # Define variables for easy customization
+  variables:
+    motion_sensor: binary_sensor.hallway_motion
+    light_entity: light.hallway
+    brightness_day: 50
+    brightness_night: 100
+    timeout_minutes: 5
+
+  trigger:
+    - platform: state
+      entity_id: "{{ motion_sensor }}"
+      to: "on"
+      id: motion_on
+
+  condition:
+    # Only when someone is home
+    - condition: state
+      entity_id: group.family
+      state: "home"
+    # Skip if already on (optional)
+    - condition: state
+      entity_id: "{{ light_entity }}"
+      state: "off"
+
+  action:
+    # Determine brightness based on time
+    - service: light.turn_on
+      target:
+        entity_id: "{{ light_entity }}"
+      data:
+        brightness_pct: >
+          {% if now().hour >= 22 or now().hour < 6 %}
+            {{ brightness_night }}
+          {% else %}
+            {{ brightness_day }}
+          {% endif %}
+        transition: 1
+
+    # Wait for motion to clear
+    - wait_for_trigger:
+        - platform: state
+          entity_id: "{{ motion_sensor }}"
+          to: "off"
+          for:
+            minutes: "{{ timeout_minutes }}"
+      timeout:
+        minutes: 30
+      continue_on_timeout: true
+
+    # Turn off lights
+    - service: light.turn_off
+      target:
+        entity_id: "{{ light_entity }}"
+      data:
+        transition: 3
+
+
+# ============================================
+# TEMPLATE 2: Climate Schedule
+# ============================================
+# Adjusts thermostat based on time and presence
+- alias: "Climate Schedule - Template"
+  id: climate_schedule_template
+  description: "Manage thermostat based on schedule and occupancy"
+  mode: single
+
+  variables:
+    thermostat: climate.main
+    temp_home: 72
+    temp_away: 65
+    temp_sleep: 68
+
+  trigger:
+    # Schedule triggers
+    - platform: time
+      at: "06:00:00"
+      id: morning
+    - platform: time
+      at: "22:00:00"
+      id: night
+    # Presence triggers
+    - platform: state
+      entity_id: group.family
+      to: "not_home"
+      for:
+        minutes: 15
+      id: left_home
+    - platform: state
+      entity_id: group.family
+      to: "home"
+      id: arrived_home
+
+  action:
+    - choose:
+        # Morning - wake up temperature
+        - conditions:
+            - condition: trigger
+              id: morning
+            - condition: state
+              entity_id: group.family
+              state: "home"
+          sequence:
+            - service: climate.set_temperature
+              target:
+                entity_id: "{{ thermostat }}"
+              data:
+                temperature: "{{ temp_home }}"
+
+        # Night - sleep temperature
+        - conditions:
+            - condition: trigger
+              id: night
+          sequence:
+            - service: climate.set_temperature
+              target:
+                entity_id: "{{ thermostat }}"
+              data:
+                temperature: "{{ temp_sleep }}"
+
+        # Left home - eco mode
+        - conditions:
+            - condition: trigger
+              id: left_home
+          sequence:
+            - service: climate.set_preset_mode
+              target:
+                entity_id: "{{ thermostat }}"
+              data:
+                preset_mode: away
+
+        # Arrived home - comfort mode
+        - conditions:
+            - condition: trigger
+              id: arrived_home
+          sequence:
+            - service: climate.set_preset_mode
+              target:
+                entity_id: "{{ thermostat }}"
+              data:
+                preset_mode: home
+            - service: climate.set_temperature
+              target:
+                entity_id: "{{ thermostat }}"
+              data:
+                temperature: "{{ temp_home }}"
+
+
+# ============================================
+# TEMPLATE 3: Notification with Actions
+# ============================================
+# Send notification with actionable responses
+- alias: "Security Alert - Template"
+  id: security_alert_template
+  description: "Alert when security event occurs with actionable response"
+  mode: single
+
+  variables:
+    notify_service: notify.mobile_app_phone
+
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.front_door
+      to: "on"
+      for:
+        minutes: 10
+      id: door_open
+
+  condition:
+    - condition: state
+      entity_id: input_boolean.security_alerts
+      state: "on"
+
+  action:
+    # Send notification with actions
+    - service: "{{ notify_service }}"
+      data:
+        title: "Security Alert"
+        message: >
+          Front door has been open for 10 minutes.
+          Current status: {{ states('binary_sensor.front_door') }}
+        data:
+          actions:
+            - action: "CLOSE_DOOR"
+              title: "Lock Door"
+            - action: "DISMISS_ALERT"
+              title: "Dismiss"
+            - action: "CALL_HOME"
+              title: "Call Home"
+          tag: "security_alert"
+          importance: high
+
+    # Wait for response
+    - wait_for_trigger:
+        - platform: event
+          event_type: mobile_app_notification_action
+          event_data:
+            action: "CLOSE_DOOR"
+        - platform: event
+          event_type: mobile_app_notification_action
+          event_data:
+            action: "DISMISS_ALERT"
+      timeout:
+        minutes: 5
+      continue_on_timeout: true
+
+    # Handle response
+    - if:
+        - condition: template
+          value_template: "{{ wait.trigger.event.data.action == 'CLOSE_DOOR' }}"
+      then:
+        - service: lock.lock
+          target:
+            entity_id: lock.front_door
+        - service: "{{ notify_service }}"
+          data:
+            message: "Front door has been locked"
+            data:
+              tag: "security_alert"
+
+
+# ============================================
+# TEMPLATE 4: Sunrise/Sunset Automation
+# ============================================
+# Actions based on sun position
+- alias: "Outdoor Lights - Template"
+  id: outdoor_lights_template
+  description: "Manage outdoor lights based on sunset/sunrise"
+  mode: single
+
+  variables:
+    lights:
+      - light.porch
+      - light.driveway
+      - light.backyard
+
+  trigger:
+    - platform: sun
+      event: sunset
+      offset: "-00:30:00"
+      id: sunset
+    - platform: sun
+      event: sunrise
+      offset: "00:30:00"
+      id: sunrise
+
+  action:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id: sunset
+          sequence:
+            - service: light.turn_on
+              target:
+                entity_id: "{{ lights }}"
+              data:
+                brightness_pct: 75
+                transition: 300  # 5 minute transition
+
+        - conditions:
+            - condition: trigger
+              id: sunrise
+          sequence:
+            - service: light.turn_off
+              target:
+                entity_id: "{{ lights }}"
+              data:
+                transition: 300
+
+
+# ============================================
+# TEMPLATE 5: Parallel Actions
+# ============================================
+# Execute multiple actions simultaneously
+- alias: "Welcome Home - Template"
+  id: welcome_home_template
+  description: "Multiple actions when arriving home"
+  mode: single
+
+  trigger:
+    - platform: state
+      entity_id: person.owner
+      to: "home"
+
+  condition:
+    - condition: state
+      entity_id: person.owner
+      state: "not_home"
+      for:
+        minutes: 30
+
+  action:
+    # Execute all in parallel for faster response
+    - parallel:
+        # Turn on lights
+        - service: light.turn_on
+          target:
+            entity_id:
+              - light.entryway
+              - light.living_room
+          data:
+            brightness_pct: 80
+
+        # Adjust climate
+        - service: climate.set_temperature
+          target:
+            entity_id: climate.thermostat
+          data:
+            temperature: 72
+
+        # Play welcome message
+        - service: tts.speak
+          target:
+            entity_id: tts.google_en
+          data:
+            media_player_entity_id: media_player.living_room
+            message: "Welcome home!"
+
+        # Unlock door (if secure)
+        - if:
+            - condition: state
+              entity_id: binary_sensor.garage_door
+              state: "on"
+          then:
+            - service: lock.unlock
+              target:
+                entity_id: lock.front_door

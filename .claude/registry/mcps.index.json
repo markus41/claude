@@ -267,5 +267,189 @@
       "project": 3,
       "extension": 0
     }
+  },
+
+  "models": {
+    "anthropic": {
+      "opus": {
+        "description": "Claude Opus 4.5 - Most capable model for complex reasoning and architecture",
+        "modelId": "claude-opus-4-5-20251101",
+        "provider": "anthropic",
+        "strengths": ["architecture", "planning", "analysis", "code-review", "creative"],
+        "pricing": {
+          "inputPer1M": 15.00,
+          "outputPer1M": 75.00,
+          "currency": "USD"
+        },
+        "performance": {
+          "latencyMs": 3000,
+          "contextWindow": 200000,
+          "maxOutputTokens": 16384,
+          "qualityScore": 95
+        },
+        "features": {
+          "extendedThinking": true,
+          "vision": true,
+          "toolUse": true,
+          "streaming": true
+        },
+        "useCases": ["critical tasks", "system design", "complex analysis", "strategic planning"],
+        "priority": "high"
+      },
+      "sonnet": {
+        "description": "Claude Sonnet 4.5 - Balanced model for development and analysis",
+        "modelId": "claude-sonnet-4-5-20250929",
+        "provider": "anthropic",
+        "strengths": ["code-generation", "analysis", "coordination", "debugging", "refactoring"],
+        "pricing": {
+          "inputPer1M": 3.00,
+          "outputPer1M": 15.00,
+          "currency": "USD"
+        },
+        "performance": {
+          "latencyMs": 2000,
+          "contextWindow": 200000,
+          "maxOutputTokens": 16384,
+          "qualityScore": 90
+        },
+        "features": {
+          "extendedThinking": true,
+          "vision": true,
+          "toolUse": true,
+          "streaming": true
+        },
+        "useCases": ["coding", "general tasks", "coordination", "analysis"],
+        "priority": "high"
+      },
+      "haiku": {
+        "description": "Claude Haiku 4 - Fast and cost-effective for simple tasks",
+        "modelId": "claude-haiku-4-20250130",
+        "provider": "anthropic",
+        "strengths": ["simple-task", "documentation", "factual", "testing"],
+        "pricing": {
+          "inputPer1M": 0.80,
+          "outputPer1M": 4.00,
+          "currency": "USD"
+        },
+        "performance": {
+          "latencyMs": 800,
+          "contextWindow": 200000,
+          "maxOutputTokens": 8192,
+          "qualityScore": 80
+        },
+        "features": {
+          "extendedThinking": false,
+          "vision": true,
+          "toolUse": true,
+          "streaming": true
+        },
+        "useCases": ["documentation", "simple tasks", "fast responses", "high volume"],
+        "priority": "medium"
+      }
+    },
+    "openai": {
+      "gpt-4-turbo": {
+        "description": "GPT-4 Turbo - OpenAI's most capable model",
+        "modelId": "gpt-4-turbo-2024-04-09",
+        "provider": "openai",
+        "strengths": ["architecture", "code-generation", "creative", "analysis"],
+        "pricing": {
+          "inputPer1M": 10.00,
+          "outputPer1M": 30.00,
+          "currency": "USD"
+        },
+        "performance": {
+          "latencyMs": 2500,
+          "contextWindow": 128000,
+          "maxOutputTokens": 4096,
+          "qualityScore": 92
+        },
+        "features": {
+          "extendedThinking": false,
+          "vision": true,
+          "toolUse": true,
+          "streaming": true
+        },
+        "useCases": ["complex reasoning", "creative tasks", "code generation"],
+        "priority": "medium"
+      },
+      "gpt-3.5-turbo": {
+        "description": "GPT-3.5 Turbo - Fast and economical",
+        "modelId": "gpt-3.5-turbo",
+        "provider": "openai",
+        "strengths": ["simple-task", "documentation", "factual"],
+        "pricing": {
+          "inputPer1M": 0.50,
+          "outputPer1M": 1.50,
+          "currency": "USD"
+        },
+        "performance": {
+          "latencyMs": 1000,
+          "contextWindow": 16385,
+          "maxOutputTokens": 4096,
+          "qualityScore": 75
+        },
+        "features": {
+          "extendedThinking": false,
+          "vision": false,
+          "toolUse": true,
+          "streaming": true
+        },
+        "useCases": ["simple queries", "quick tasks", "cost optimization"],
+        "priority": "low"
+      }
+    },
+    "google": {
+      "gemini-pro": {
+        "description": "Gemini 1.5 Pro - Large context window for extensive analysis",
+        "modelId": "gemini-1.5-pro",
+        "provider": "google",
+        "strengths": ["analysis", "code-generation", "creative"],
+        "pricing": {
+          "inputPer1M": 1.25,
+          "outputPer1M": 5.00,
+          "currency": "USD"
+        },
+        "performance": {
+          "latencyMs": 2000,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 8192,
+          "qualityScore": 88
+        },
+        "features": {
+          "extendedThinking": false,
+          "vision": true,
+          "toolUse": true,
+          "streaming": true
+        },
+        "useCases": ["large context", "document analysis", "code review"],
+        "priority": "medium"
+      },
+      "gemini-flash": {
+        "description": "Gemini 1.5 Flash - Extremely fast and cost-effective",
+        "modelId": "gemini-1.5-flash",
+        "provider": "google",
+        "strengths": ["simple-task", "documentation", "factual"],
+        "pricing": {
+          "inputPer1M": 0.075,
+          "outputPer1M": 0.30,
+          "currency": "USD"
+        },
+        "performance": {
+          "latencyMs": 600,
+          "contextWindow": 1000000,
+          "maxOutputTokens": 8192,
+          "qualityScore": 78
+        },
+        "features": {
+          "extendedThinking": false,
+          "vision": true,
+          "toolUse": true,
+          "streaming": true
+        },
+        "useCases": ["high volume", "real-time", "cost-sensitive"],
+        "priority": "low"
+      }
+    }
   }
 }
