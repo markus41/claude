@@ -1,0 +1,29 @@
+{
+  "name": "@claude/orchestration-performance-benchmarks",
+  "version": "1.0.0",
+  "description": "Comprehensive performance benchmarking suite for Claude Orchestration enhancement systems",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "bench": "vitest run --config vitest.config.ts",
+    "bench:watch": "vitest --config vitest.config.ts",
+    "bench:collaboration": "vitest run collaboration-perf.test.ts",
+    "bench:resilience": "vitest run resilience-perf.test.ts",
+    "bench:intelligence": "vitest run intelligence-perf.test.ts",
+    "bench:knowledge": "vitest run knowledge-perf.test.ts",
+    "bench:nlp": "vitest run nlp-perf.test.ts",
+    "bench:observability": "vitest run observability-perf.test.ts",
+    "bench:report": "node generate-report.mjs",
+    "bench:baseline": "npm run bench && cp performance-results.json baseline-results.json",
+    "bench:compare": "node compare-baselines.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@vitest/ui": "^1.0.4",
+    "typescript": "^5.3.3",
+    "vitest": "^1.0.4"
+  },
+  "dependencies": {
+    "better-sqlite3": "^9.2.2"
+  }
+}
