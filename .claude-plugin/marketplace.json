@@ -27,8 +27,7 @@
         "name": "Brookside BI"
       },
       "source": "./home-assistant-architect",
-      "category": "smart-home",
-      "keywords": ["home-assistant", "ollama", "frigate", "cameras", "energy", "solar", "lovelace", "sensors"]
+      "category": "smart-home"
     },
     {
       "name": "lobbi-platform-manager",
@@ -38,8 +37,7 @@
         "name": "Markus Ahling"
       },
       "source": "./lobbi-platform-manager",
-      "category": "platform",
-      "keywords": ["keycloak", "multi-tenant", "mern", "microservices", "docker", "testing"]
+      "category": "platform"
     },
     {
       "name": "iac-golden-architect",
@@ -49,78 +47,7 @@
         "name": "Golden Armada"
       },
       "source": "./iac-golden-architect",
-      "category": "infrastructure",
-      "keywords": ["terraform", "harness", "vault", "iac", "multi-cloud", "soc2", "compliance"]
-    },
-    {
-      "name": "claude-frontend-toolkit",
-      "description": "Comprehensive frontend development toolkit for React, Vue, Next.js with component generation and testing",
-      "version": "1.0.0",
-      "author": {
-        "name": "Community"
-      },
-      "source": "https://github.com/Lobbi-Docs/claude",
-      "category": "frontend",
-      "keywords": ["frontend", "react", "vue", "nextjs", "components", "ui"]
-    },
-    {
-      "name": "team-collaboration-suite",
-      "description": "Team collaboration tools with Jira, Confluence, GitHub integration for agile workflows",
-      "version": "1.0.0",
-      "author": {
-        "name": "Community"
-      },
-      "source": "https://github.com/Lobbi-Docs/claude",
-      "category": "collaboration",
-      "keywords": ["jira", "confluence", "github", "agile", "scrum", "collaboration"]
-    },
-    {
-      "name": "cloud-infrastructure-manager",
-      "description": "Manage AWS, GCP, Azure infrastructure with Terraform, Kubernetes, and Helm",
-      "version": "1.0.0",
-      "author": {
-        "name": "Community"
-      },
-      "source": "https://github.com/Lobbi-Docs/claude",
-      "category": "cloud",
-      "keywords": ["aws", "gcp", "azure", "terraform", "kubernetes", "helm", "cloud"]
-    }
-  ],
-  "categories": [
-    {
-      "id": "orchestration",
-      "name": "Orchestration",
-      "description": "Multi-agent orchestration and workflow management"
-    },
-    {
-      "id": "smart-home",
-      "name": "Smart Home",
-      "description": "Home automation, IoT, and smart device management"
-    },
-    {
-      "id": "platform",
-      "name": "Platform",
-      "description": "Platform-specific development tools and integrations"
-    },
-    {
-      "id": "infrastructure",
-      "name": "Infrastructure",
-      "description": "Infrastructure as Code and DevOps automation"
-    },
-    {
-      "id": "frontend",
-      "name": "Frontend",
-      "description": "UI/UX development and component libraries"
-    },
-    {
-      "id": "collaboration",
-      "name": "Collaboration",
-      "description": "Team collaboration and project management"
-    },
-    {
-      "id": "cloud",
-      "name": "Cloud",
-      "description": "Cloud platform management and deployment"
+      "category": "infrastructure"
     }
   ]
 }
