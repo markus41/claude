@@ -113,19 +113,20 @@
 
     "home-assistant-architect": {
       "name": "home-assistant-architect",
-      "version": "1.0.0",
-      "description": "Comprehensive Claude Code plugin for Home Assistant automation, local LLM integration, and Ubuntu server management. Provides 8 specialized agents, MCP server with 11 tools, and full Docker Compose deployment.",
+      "version": "2.0.0",
+      "description": "Complete Home Assistant platform with frontend design, energy management, cameras, sensors, local LLM integration, and Ubuntu server deployment. Provides 15 specialized agents, MCP server with 16 tools, and comprehensive smart home automation.",
       "author": "Brookside BI",
       "license": "MIT",
       "repository": "https://github.com/Lobbi-Docs/claude",
-      "keywords": ["home-assistant", "ollama", "smart-home", "automation", "mcp", "docker", "ubuntu", "voice-assistant", "local-llm"],
-      "categories": ["smart-home", "automation", "iot", "devops"],
+      "keywords": ["home-assistant", "ollama", "smart-home", "automation", "mcp", "docker", "ubuntu", "voice-assistant", "local-llm", "frigate", "cameras", "energy", "solar", "lovelace", "dashboard", "sensors"],
+      "categories": ["smart-home", "automation", "iot", "devops", "energy", "security", "frontend"],
       "dependencies": {},
       "provides": {
-        "commands": 5,
-        "agents": 8,
-        "skills": 4,
-        "hooks": 6
+        "commands": 9,
+        "agents": 15,
+        "skills": 8,
+        "hooks": 6,
+        "mcp_tools": 16
       }
     }
   },
