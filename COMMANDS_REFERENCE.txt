@@ -1,0 +1,59 @@
+FRONTEND DESIGN SYSTEM PLUGIN - COMMANDS REFERENCE
+===================================================
+
+Total Commands: 8
+Total Lines: 4,137
+Location: C:\Users\MarkusAhling\pro\alpha-0.1\claude\frontend-design-system\commands\
+
+COMMAND INVENTORY
+=================
+
+1. /style - Design Style Application (411 lines)
+   Apply 263+ design styles and generate implementation code
+   Usage: /style <style_name> [output_format]
+   Formats: CSS, Tailwind, styled-components
+   Status: COMPLETE
+
+2. /theme - Keycloak Theme Generation (591 lines)
+   Generate multi-tenant themes with full customization
+   Usage: /theme <action> [tenant]
+   Actions: create, customize, deploy, validate
+   Status: COMPLETE
+
+3. /tokens - Design Token Management (688 lines)
+   Generate and export design tokens
+   Usage: /tokens <category> [style]
+   Formats: CSS Variables, JSON, JS, TS, Tailwind, Theme
+   Status: COMPLETE
+
+4. /component - UI Component Generation (789 lines)
+   Generate production-ready components with design tokens
+   Usage: /component <type> [style]
+   Types: 20+ component types (button, card, form, etc.)
+   Status: COMPLETE
+
+5. /palette - Color Palette Generation (606 lines)
+   Generate complete color scales with accessibility
+   Usage: /palette <style_name> [mode]
+   Modes: light, dark, both
+   Status: COMPLETE
+
+6. /audit - Design System Audit (655 lines)
+   Audit consistency and accessibility compliance
+   Usage: /audit <scope> [style]
+   Scopes: files, components, all
+   Status: COMPLETE
+
+7. /convert - CSS Format Conversion (288 lines)
+   Convert between CSS, Tailwind, styled-components, etc.
+   Usage: /convert <source_format> <target_format> <file> [output]
+   Formats: css, tailwind, styled, scss, less, postcss
+   Status: COMPLETE (Core implementation)
+
+8. /keycloak - Keycloak Theme Management (109 lines)
+   Generate and deploy Keycloak themes
+   Usage: /keycloak <tenant> <action> [options]
+   Actions: generate, deploy, validate, import
+   Status: COMPLETE (Core implementation)
+
+ALL COMMANDS CREATED SUCCESSFULLY!
