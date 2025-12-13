@@ -12,10 +12,18 @@
       "dependencies": {}
     },
     "home-assistant-architect": {
-      "version": "1.0.0",
+      "version": "2.0.0",
       "path": "../home-assistant-architect",
       "source": "local",
       "installedAt": "2025-12-12T23:45:00Z",
+      "updatedAt": "2025-12-13T00:00:00Z",
+      "dependencies": {}
+    },
+    "iac-golden-architect": {
+      "version": "1.0.0",
+      "path": "../iac-golden-architect",
+      "source": "local",
+      "installedAt": "2025-12-13T00:00:00Z",
       "dependencies": {}
     }
   },
@@ -128,12 +136,66 @@
         "hooks": 6,
         "mcp_tools": 16
       }
+    },
+
+    "frontend-design-system": {
+      "name": "frontend-design-system",
+      "version": "1.0.0",
+      "description": "263+ design styles with multi-tenant Keycloak theming for AI-powered frontend development",
+      "author": "Markus Ahling",
+      "license": "MIT",
+      "repository": "https://github.com/Lobbi-Docs/claude",
+      "keywords": ["frontend", "design-system", "keycloak", "theming", "css", "tailwind", "ui-ux", "multi-tenant"],
+      "categories": ["frontend", "design", "authentication", "ui-ux"],
+      "dependencies": {},
+      "provides": {
+        "commands": 8,
+        "agents": 6,
+        "skills": 6,
+        "hooks": 4
+      }
+    },
+
+    "chakra-react-toolkit": {
+      "name": "chakra-react-toolkit",
+      "version": "1.0.0",
+      "description": "Comprehensive frontend development toolkit for React/Next.js projects using Chakra UI",
+      "author": "Markus Ahling",
+      "license": "MIT",
+      "repository": "https://github.com/markus41/chakra-react-toolkit",
+      "keywords": ["chakra-ui", "react", "nextjs", "typescript", "accessibility", "theming", "component-generation"],
+      "categories": ["frontend", "development", "testing"],
+      "dependencies": {},
+      "provides": {
+        "commands": 5,
+        "agents": 3,
+        "skills": 4,
+        "hooks": 2
+      }
+    },
+
+    "team-accelerator": {
+      "name": "team-accelerator",
+      "version": "1.0.0",
+      "description": "Enterprise development toolkit for teams - DevOps, code quality, integrations, workflow automation",
+      "author": "Markus Ahling",
+      "license": "MIT",
+      "repository": "https://github.com/Lobbi-Docs/claude",
+      "keywords": ["enterprise", "devops", "ci-cd", "code-quality", "testing", "documentation", "performance"],
+      "categories": ["devops", "enterprise", "workflow"],
+      "dependencies": {},
+      "provides": {
+        "commands": 10,
+        "agents": 6,
+        "skills": 5,
+        "hooks": 3
+      }
     }
   },
 
   "stats": {
-    "totalInstalled": 2,
-    "totalAvailable": 6,
-    "lastUpdated": "2025-12-12T23:45:00Z"
+    "totalInstalled": 3,
+    "totalAvailable": 9,
+    "lastUpdated": "2025-12-13T00:00:00Z"
   }
 }

@@ -48,6 +48,36 @@
       },
       "source": "./iac-golden-architect",
       "category": "infrastructure"
+    },
+    {
+      "name": "frontend-design-system",
+      "description": "263+ design styles with multi-tenant Keycloak theming for AI-powered frontend development. 6 agents, 8 commands, 6 skills.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Markus Ahling"
+      },
+      "source": "./frontend-design-system",
+      "category": "frontend"
+    },
+    {
+      "name": "chakra-react-toolkit",
+      "description": "Comprehensive frontend development toolkit for React/Next.js projects using Chakra UI with accessibility auditing and theming tools",
+      "version": "1.0.0",
+      "author": {
+        "name": "Markus Ahling"
+      },
+      "source": "./chakra-react-toolkit",
+      "category": "frontend"
+    },
+    {
+      "name": "team-accelerator",
+      "description": "Enterprise development toolkit for teams - DevOps, code quality, integrations, workflow automation, and performance optimization",
+      "version": "1.0.0",
+      "author": {
+        "name": "Markus Ahling"
+      },
+      "source": "./team-accelerator",
+      "category": "devops"
     }
   ]
 }
