@@ -1,0 +1,410 @@
+---
+name: work
+description: Start working on a Jira issue with full orchestration following the mandatory 6-phase protocol
+arguments:
+  - name: issue_key
+    description: The Jira issue key (e.g., ABC-123)
+    required: true
+---
+
+# Jira Issue Orchestration
+
+You are initiating work on a **Jira issue** with full orchestration. This command fetches the issue, creates a comprehensive execution plan, and coordinates sub-agents through all 6 phases.
+
+## Issue Details
+
+**Issue Key:** ${issue_key}
+
+## Step 1: Validate and Fetch Issue
+
+First, validate the issue key format and fetch the issue from Jira.
+
+### Actions:
+```
+1. Validate issue key matches pattern: [A-Z]+-[0-9]+ (e.g., ABC-123, PROJ-456)
+2. If invalid format, respond with error and exit
+3. Use mcp__atlassian__jira_get_issue with issue_key parameter
+4. Extract all relevant fields:
+   - summary: Issue title
+   - description: Full description
+   - issuetype: Bug, Story, Task, Epic, etc.
+   - status: Current status
+   - priority: Issue priority
+   - assignee: Assigned user
+   - reporter: Reporter
+   - labels: All labels
+   - components: Components
+   - fixVersions: Target versions
+   - customfield_*: Story points, acceptance criteria, etc.
+   - subtasks: All subtasks
+   - parent: Parent issue if exists
+5. If issue not found, respond with error and exit
+```
+
+## Step 2: Update Jira Status to "In Progress"
+
+Before starting work, transition the issue to "In Progress".
+
+### Actions:
+```
+1. Use mcp__atlassian__jira_transition_issue
+2. Set status to "In Progress"
+3. Add initial comment: "Starting orchestrated development with Claude Code"
+```
+
+## Step 3: Create Orchestration Plan
+
+Based on the issue type, create an appropriate orchestration strategy.
+
+### Issue Type Strategies:
+
+#### For Bugs:
+```
+EXPLORE (2 agents):
+  - bug-detective: Reproduce the bug, analyze logs, identify root cause
+  - impact-analyst: Assess scope of impact, check for similar issues
+
+PLAN (1 agent):
+  - fix-strategist: Design fix approach, minimal changes
+
+CODE (2 agents):
+  - bug-fixer: Implement fix
+  - regression-tester: Add regression test
+
+TEST (2 agents):
+  - test-runner: Verify bug is fixed
+  - edge-case-validator: Test edge cases
+
+FIX (1 agent):
+  - debugger: Address any test failures
+
+DOCUMENT (1 agent):
+  - documentation-expert: Update changelog, add root cause to Obsidian vault
+```
+
+#### For Stories/Features:
+```
+EXPLORE (3 agents):
+  - requirements-analyst: Parse acceptance criteria, clarify requirements
+  - code-explorer: Understand existing codebase
+  - research-agent: Gather library/framework docs via Context7
+
+PLAN (2 agents):
+  - architect: Design solution architecture
+  - task-decomposer: Break into implementation tasks
+
+CODE (3-4 agents):
+  - frontend-dev: UI implementation (if applicable)
+  - backend-dev: API/service implementation (if applicable)
+  - unit-tester: Write tests alongside code
+  - integrator: Ensure components work together
+
+TEST (3 agents):
+  - test-runner: Execute full test suite
+  - coverage-analyst: Measure coverage
+  - acceptance-validator: Verify acceptance criteria met
+
+FIX (2 agents):
+  - debugger: Diagnose failures
+  - fixer: Implement fixes
+
+DOCUMENT (2 agents):
+  - documentation-expert: Update docs, README, ADRs
+  - vault-syncer: Sync to Obsidian vault
+```
+
+#### For Tasks:
+```
+EXPLORE (2 agents):
+  - task-analyst: Understand requirements
+  - code-explorer: Analyze relevant code
+
+PLAN (1 agent):
+  - planner: Create execution plan
+
+CODE (2 agents):
+  - implementer: Execute the task
+  - validator: Verify implementation
+
+TEST (2 agents):
+  - test-runner: Run tests
+  - quality-checker: Verify quality standards
+
+FIX (1 agent):
+  - fixer: Address issues
+
+DOCUMENT (1 agent):
+  - documentation-expert: Update documentation
+```
+
+## Step 4: Execute 6-Phase Protocol
+
+Run the mandatory orchestration protocol with the agents defined above.
+
+### Mandatory Protocol:
+```
+EXPLORE (2+ agents) → PLAN (1-2) → CODE (2-4) → TEST (2-3) → FIX (1-2) → DOCUMENT (1-2)
+```
+
+### Phase Execution Guidelines:
+
+#### Phase 1: EXPLORE
+```
+Spawn appropriate agents based on issue type
+Extract all requirements from Jira issue:
+  - Description
+  - Acceptance criteria
+  - Story points
+  - Labels and components
+  - Related issues and subtasks
+Understand codebase context
+Identify dependencies and risks
+Document findings
+```
+
+#### Phase 2: PLAN
+```
+Create detailed execution plan
+Break down into tasks with dependencies
+Create task DAG for parallel execution
+Assign agents to tasks
+Define checkpoints and success criteria
+Post plan summary as Jira comment
+```
+
+#### Phase 3: CODE
+```
+Execute implementation tasks in parallel where possible
+Write tests alongside code
+Commit frequently with clear messages
+Reference issue key in commits: "ABC-123: Description"
+Handle edge cases and error states
+Validate against acceptance criteria continuously
+```
+
+#### Phase 4: TEST
+```
+Run full test suite
+Measure code coverage (target 80%+ for new code)
+Run security scans if applicable
+Validate acceptance criteria from Jira
+Document test results
+Post test status as Jira comment
+```
+
+#### Phase 5: FIX
+```
+Address all test failures
+Fix security vulnerabilities
+Address coverage gaps
+Optimize performance if needed
+Re-run tests after each fix
+Verify no regressions
+```
+
+#### Phase 6: DOCUMENT
+```
+Update README and docs
+Create ADRs for architectural decisions
+Sync documentation to Obsidian vault:
+  Path: C:\Users\MarkusAhling\obsidian\Repositories\{org}\{repo}\Issues\${issue_key}.md
+Document:
+  - Issue summary
+  - Solution approach
+  - Implementation details
+  - Testing results
+  - Lessons learned
+Prepare final commit message
+```
+
+## Step 5: Create Pull Request
+
+Once all phases are complete and tests pass, create a PR.
+
+### Actions:
+```
+1. Ensure all changes are committed
+2. Create feature branch if not already on one: feature/${issue_key}-{description}
+3. Push to remote with -u flag
+4. Use gh pr create with:
+   - Title: "${issue_key}: ${summary}"
+   - Body format:
+     ## Summary
+     - Brief description of changes
+     - References Jira issue: ${issue_key}
+
+     ## Acceptance Criteria Met
+     - [ ] Criterion 1
+     - [ ] Criterion 2
+
+     ## Testing
+     - [ ] All tests passing
+     - [ ] Coverage meets threshold
+     - [ ] Manual testing completed
+
+     ## Related Issues
+     - Jira: ${issue_key}
+
+     🤖 Generated with [Claude Code](https://claude.com/claude-code)
+5. Capture PR URL from output
+```
+
+## Step 6: Update Jira Issue
+
+Link the PR and update the issue status.
+
+### Actions:
+```
+1. Use mcp__atlassian__jira_add_comment to post:
+   "Pull request created: {PR_URL}
+
+   Implementation complete:
+   - All acceptance criteria met
+   - Tests passing
+   - Documentation updated
+
+   Ready for review."
+
+2. Use mcp__atlassian__jira_transition_issue to move to "In Review" or "Done"
+   (Adjust based on your workflow)
+
+3. If story points were estimated, confirm actual effort aligned with estimate
+```
+
+## Error Handling
+
+Handle errors gracefully at each step:
+
+### Invalid Issue Key Format:
+```
+If issue_key does not match pattern [A-Z]+-[0-9]+:
+  Respond: "Invalid issue key format. Expected format: ABC-123 (project key + issue number)"
+  Exit without making Jira API calls
+```
+
+### Issue Not Found:
+```
+If mcp__atlassian__jira_get_issue returns 404:
+  Respond: "Issue ${issue_key} not found. Please verify the issue key and try again."
+  Exit
+```
+
+### Transition Failures:
+```
+If status transition fails:
+  Log warning
+  Continue with orchestration
+  Note in final comment that manual status update may be needed
+```
+
+### Test Failures:
+```
+If tests fail in TEST phase:
+  Do NOT skip to DOCUMENT
+  Execute FIX phase thoroughly
+  Re-run TEST phase
+  Only proceed when all tests pass
+```
+
+### PR Creation Failures:
+```
+If gh pr create fails:
+  Log the error
+  Add Jira comment with commit details
+  Instruct user to create PR manually
+  Provide the commit message and branch name
+```
+
+## Context Management
+
+Track context usage throughout orchestration:
+
+### Checkpointing:
+```
+Create checkpoints after each phase completion
+Save checkpoint data to temp files
+Post phase summaries as Jira comments for continuity
+```
+
+### Context Optimization:
+```
+If context exceeds 75%:
+  Trigger context compression
+  Archive phase outputs to Obsidian vault
+  Keep only current phase context active
+```
+
+## Agent Limits
+
+| Constraint | Value |
+|------------|-------|
+| **Minimum** | 3 agents |
+| **Maximum** | 13 agents |
+| **Typical Bug** | 5-7 agents |
+| **Typical Story** | 7-10 agents |
+| **Typical Task** | 4-6 agents |
+
+## Model Assignment
+
+Assign appropriate models based on task complexity:
+
+| Model | Use For |
+|-------|---------|
+| **opus-4.5** | Complex architecture decisions, strategic planning (PLAN phase) |
+| **sonnet-4.5** | Development, analysis, most CODE phase work |
+| **haiku** | Documentation, simple tasks, status updates |
+
+## Success Criteria
+
+Orchestration is complete when:
+- [ ] All 6 phases executed successfully
+- [ ] All tests passing
+- [ ] All acceptance criteria met
+- [ ] Documentation updated in both repo and Obsidian vault
+- [ ] PR created and linked to Jira
+- [ ] Jira status updated appropriately
+- [ ] No blockers remain
+
+## Example Usage
+
+```bash
+# Work on a bug
+/jira:work ABC-123
+
+# Work on a story
+/jira:work PROJ-456
+
+# Work on a task
+/jira:work DEV-789
+```
+
+## Integration with Other Commands
+
+This command can be used in conjunction with:
+- `/jira:sync` - Sync all issues before starting work
+- `/jira:status` - Check orchestration status
+- `/orchestration-resume` - Resume if interrupted
+
+## Jira Comment Timeline
+
+Post comments at key milestones:
+
+1. **Start**: "Starting orchestrated development with Claude Code"
+2. **After EXPLORE**: "Exploration complete: {key findings}"
+3. **After PLAN**: "Execution plan created: {summary}"
+4. **After CODE**: "Implementation complete, running tests"
+5. **After TEST**: "Tests: {pass/fail count}, Coverage: {percentage}%"
+6. **After FIX** (if needed): "All issues resolved, tests passing"
+7. **After DOCUMENT**: "Documentation updated"
+8. **PR Created**: "Pull request created: {URL}"
+
+This provides full visibility to the team on progress.
+
+## Notes
+
+- Always reference the issue key in commit messages
+- Use Context7 MCP for library documentation (mandatory)
+- Never skip the TEST phase
+- Document all architectural decisions in Obsidian vault
+- Keep Jira issue updated with progress
+- Follow project-specific git branch naming conventions

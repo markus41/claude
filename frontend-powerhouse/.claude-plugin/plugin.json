@@ -1,0 +1,24 @@
+{
+  "name": "frontend-powerhouse",
+  "version": "1.0.0",
+  "description": "Maximum-capacity frontend development plugin with 13 specialized subagents, ultrathink integration, and comprehensive React/Next.js/Chakra UI tooling",
+  "author": {
+    "name": "Brookside BI",
+    "email": "support@brooksidebi.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "react",
+    "nextjs",
+    "chakra-ui",
+    "frontend",
+    "accessibility",
+    "performance",
+    "design-system",
+    "ultrathink",
+    "testing"
+  ],
+  "engines": {
+    "claude-code": ">=1.0.0"
+  }
+}

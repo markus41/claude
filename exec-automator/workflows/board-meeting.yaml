@@ -1,0 +1,756 @@
+---
+# Board Meeting Lifecycle Automation Workflow
+# Complete automation from 14 days pre-meeting through post-meeting follow-up
+
+name: board-meeting
+version: 1.0.0
+description: Complete board meeting lifecycle automation - agenda preparation, meeting facilitation, minutes distribution, and action item tracking
+category: governance
+estimated_duration: 21_days
+automation_score: 92
+
+metadata:
+  author: exec-automator
+  created: 2025-12-17
+  updated: 2025-12-17
+  tags: [board, meeting, governance, minutes, agenda, robert-rules]
+  brand_voice: brookside_bi_professional
+  compliance: robert_rules_of_order
+
+# Workflow Phases
+phases:
+  - name: pre-meeting
+    description: Agenda preparation, document gathering, notifications
+    duration_days: 14
+    critical_path: true
+
+  - name: during-meeting
+    description: Facilitation, roll call, minute-taking, voting
+    duration_hours: 2
+    critical_path: true
+
+  - name: post-meeting
+    description: Minutes distribution, action items, archival
+    duration_days: 7
+    critical_path: true
+
+# State Schema
+state_schema:
+  type: BoardMeetingState
+  fields:
+    # Meeting Metadata
+    meeting_id: string
+    meeting_type: enum[regular, special, annual, emergency]
+    meeting_date: datetime
+    meeting_time: time
+    meeting_location: string
+    virtual_link: string
+
+    # Agenda Management
+    agenda_items: array[AgendaItem]
+    agenda_status: enum[draft, pending_review, approved, distributed]
+    agenda_distributed_at: datetime
+
+    # Documents
+    board_packet_items: array[Document]
+    previous_minutes: Document
+    financial_reports: array[Document]
+    committee_reports: array[Document]
+
+    # Attendance
+    board_members: array[BoardMember]
+    attendance: array[AttendanceRecord]
+    quorum_status: boolean
+    quorum_count: integer
+
+    # Meeting Content
+    motions: array[Motion]
+    discussions: array[DiscussionPoint]
+    votes: array[VoteRecord]
+    executive_sessions: array[ExecutiveSession]
+
+    # Action Items
+    action_items: array[ActionItem]
+
+    # Minutes
+    minutes_status: enum[pending, draft, under_review, approved, distributed]
+    minutes_document: Document
+
+    # Workflow State
+    current_phase: enum[pre_meeting, during_meeting, post_meeting, completed]
+    errors: array[Error]
+    human_approvals: array[Approval]
+
+# LangGraph Nodes
+nodes:
+  # PRE-MEETING PHASE
+
+  - id: initialize_meeting
+    name: Initialize Meeting
+    description: Create meeting record and load organizational context
+    node_type: function
+    agent: meeting-facilitator
+    inputs: [meeting_date, meeting_type]
+    outputs: [meeting_id, board_members, quorum_requirement]
+    error_handling: retry_3_times
+
+  - id: collect_agenda_items
+    name: Collect Agenda Items
+    description: Email officers and committee chairs for agenda item submissions
+    node_type: agent
+    agent: meeting-facilitator
+    tool_calls:
+      - mcp__exec-automator__send_notification
+      - mcp__exec-automator__collect_responses
+    timing: T-14_days
+    human_in_loop: false
+
+  - id: draft_agenda
+    name: Draft Meeting Agenda
+    description: Generate agenda from template with collected items
+    node_type: agent
+    agent: meeting-facilitator
+    tool_calls:
+      - mcp__exec-automator__generate_document
+    inputs: [agenda_items, previous_meeting_minutes]
+    outputs: [draft_agenda]
+    template: board_meeting_agenda_template
+
+  - id: chair_review_agenda
+    name: Chair Reviews Agenda
+    description: Submit agenda to board chair for approval
+    node_type: human_in_loop
+    agent: meeting-facilitator
+    approver_role: board_chair
+    timeout_hours: 48
+    reminder_hours: 24
+    fallback: proceed_with_draft
+
+  - id: gather_board_packet
+    name: Assemble Board Packet
+    description: Collect all reports, financials, and supporting documents
+    node_type: agent
+    agent: meeting-facilitator
+    tool_calls:
+      - mcp__exec-automator__collect_documents
+      - mcp__exec-automator__generate_document
+    inputs: [financial_reports, committee_reports, previous_minutes]
+    outputs: [board_packet]
+
+  - id: distribute_agenda
+    name: Distribute Agenda and Board Packet
+    description: Send calendar invitations with agenda and materials to all board members
+    node_type: agent
+    agent: meeting-facilitator
+    tool_calls:
+      - mcp__exec-automator__send_notification
+      - mcp__exec-automator__schedule_meeting
+    timing: T-7_days
+    template: agenda_distribution_email
+    attachments: [agenda, board_packet, previous_minutes]
+
+  - id: track_rsvps
+    name: Track RSVP Responses
+    description: Monitor board member attendance confirmations for quorum planning
+    node_type: agent
+    agent: meeting-facilitator
+    tool_calls:
+      - mcp__exec-automator__track_responses
+      - mcp__exec-automator__check_quorum
+    continuous: true
+    start: T-7_days
+    end: T-0_hours
+
+  - id: send_reminders
+    name: Send Meeting Reminders
+    description: Automated reminder emails at 48h and 2h before meeting
+    node_type: function
+    agent: meeting-facilitator
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    schedule:
+      - time: T-48_hours
+        template: meeting_reminder_48h
+      - time: T-2_hours
+        template: meeting_reminder_2h
+
+  - id: pre_meeting_quorum_check
+    name: Pre-Meeting Quorum Check
+    description: Verify expected quorum before meeting starts
+    node_type: decision
+    agent: meeting-facilitator
+    tool_calls:
+      - mcp__exec-automator__check_quorum
+    timing: T-4_hours
+    decision_logic: |
+      if expected_attendees >= quorum_requirement:
+        return "proceed_to_meeting"
+      else:
+        return "quorum_alert"
+
+  # DURING-MEETING PHASE
+
+  - id: meeting_setup
+    name: Meeting Setup and Technology Check
+    description: Prepare meeting space, test virtual conference, print materials
+    node_type: function
+    timing: T-30_minutes
+    checklist:
+      - test_virtual_conference_link
+      - prepare_attendance_sheet
+      - prepare_minute_template
+      - verify_recording_settings
+
+  - id: call_to_order
+    name: Call Meeting to Order
+    description: Record meeting start time and presiding officer
+    node_type: function
+    agent: meeting-facilitator
+    inputs: [presiding_officer, start_time]
+    outputs: [meeting_started_at]
+
+  - id: roll_call
+    name: Conduct Roll Call
+    description: Record attendance and verify quorum
+    node_type: agent
+    agent: meeting-facilitator
+    tool_calls:
+      - mcp__exec-automator__record_attendance
+      - mcp__exec-automator__check_quorum
+    outputs: [attendance_record, quorum_status]
+
+  - id: verify_quorum
+    name: Verify Quorum Present
+    description: Confirm quorum met before proceeding with business
+    node_type: decision
+    agent: meeting-facilitator
+    decision_logic: |
+      if quorum_status == True:
+        return "proceed_with_business"
+      else:
+        return "quorum_not_met"
+
+  - id: quorum_not_met_handler
+    name: Handle Quorum Not Met
+    description: Recess or adjourn meeting if quorum not present
+    node_type: human_in_loop
+    agent: meeting-facilitator
+    approver_role: board_chair
+    options:
+      - recess_15_minutes
+      - recess_30_minutes
+      - adjourn_meeting
+
+  - id: approve_previous_minutes
+    name: Approve Previous Meeting Minutes
+    description: Motion to approve previous meeting minutes
+    node_type: agent
+    agent: meeting-facilitator
+    tool_calls:
+      - mcp__exec-automator__record_motion
+      - mcp__exec-automator__record_vote
+    inputs: [previous_minutes]
+    outputs: [motion_record, vote_record]
+
+  - id: officer_reports
+    name: Receive Officer Reports
+    description: Document officer reports (President, VP, Treasurer, Secretary)
+    node_type: agent
+    agent: meeting-facilitator
+    inputs: [officer_report_documents]
+    outputs: [report_summaries]
+    note_taking: summary_mode
+
+  - id: committee_reports
+    name: Receive Committee Reports
+    description: Document standing and special committee reports
+    node_type: agent
+    agent: meeting-facilitator
+    inputs: [committee_report_documents]
+    outputs: [report_summaries, recommended_motions]
+    note_taking: summary_mode
+
+  - id: old_business
+    name: Address Old Business
+    description: Discuss items carried over from previous meetings
+    node_type: agent
+    agent: meeting-facilitator
+    inputs: [unfinished_business_items]
+    outputs: [discussions, motions, votes]
+
+  - id: new_business
+    name: Address New Business
+    description: Discuss and vote on new agenda items
+    node_type: agent
+    agent: meeting-facilitator
+    inputs: [new_business_items]
+    outputs: [discussions, motions, votes, action_items]
+
+  - id: record_motion
+    name: Record Motion
+    description: Document motion with exact wording, mover, seconder
+    node_type: function
+    agent: meeting-facilitator
+    tool_calls:
+      - mcp__exec-automator__record_motion
+    inputs: [motion_text, moved_by, seconded_by]
+    outputs: [motion_record]
+    format: |
+      MOTION {motion_id}: {motion_text}
+      Made by: {moved_by}
+      Seconded by: {seconded_by}
+      Discussion: {discussion_summary}
+      Vote: {vote_result}
+      Result: {passed_or_failed}
+
+  - id: conduct_vote
+    name: Conduct Vote
+    description: Record vote by voice, roll call, or ballot
+    node_type: function
+    agent: meeting-facilitator
+    tool_calls:
+      - mcp__exec-automator__record_vote
+    inputs: [motion_id, vote_method]
+    outputs: [vote_record]
+    vote_methods: [voice, roll_call, written_ballot, unanimous_consent]
+
+  - id: executive_session_check
+    name: Check for Executive Session
+    description: Determine if executive session is scheduled
+    node_type: decision
+    decision_logic: |
+      if executive_session_scheduled:
+        return "enter_executive_session"
+      else:
+        return "skip_to_announcements"
+
+  - id: enter_executive_session
+    name: Enter Executive Session
+    description: Note entry into executive session (record no content)
+    node_type: function
+    agent: meeting-facilitator
+    inputs: [executive_session_purpose, enter_time]
+    outputs: [executive_session_record]
+    note: "Minutes only note session occurred, no content details"
+
+  - id: exit_executive_session
+    name: Exit Executive Session
+    description: Note return to open session
+    node_type: function
+    agent: meeting-facilitator
+    inputs: [exit_time]
+    outputs: [session_duration]
+
+  - id: announcements
+    name: Record Announcements
+    description: Document announcements made during meeting
+    node_type: function
+    agent: meeting-facilitator
+    inputs: [announcement_text]
+    outputs: [announcements_list]
+
+  - id: schedule_next_meeting
+    name: Schedule Next Meeting
+    description: Set date/time for next regular meeting
+    node_type: function
+    agent: meeting-facilitator
+    inputs: [proposed_next_meeting_date]
+    outputs: [next_meeting_scheduled]
+
+  - id: adjournment
+    name: Adjourn Meeting
+    description: Motion to adjourn and record end time
+    node_type: function
+    agent: meeting-facilitator
+    tool_calls:
+      - mcp__exec-automator__record_motion
+    inputs: [end_time]
+    outputs: [meeting_adjourned_at, meeting_duration]
+
+  # POST-MEETING PHASE
+
+  - id: draft_minutes
+    name: Draft Meeting Minutes
+    description: Generate formal minutes from meeting records within 48 hours
+    node_type: agent
+    agent: meeting-facilitator
+    tool_calls:
+      - mcp__exec-automator__generate_document
+    timing: T+48_hours
+    inputs: [attendance, motions, votes, reports, discussions, action_items]
+    outputs: [draft_minutes]
+    template: board_meeting_minutes_template
+    format: robert_rules_standard
+
+  - id: chair_review_minutes
+    name: Chair Reviews Draft Minutes
+    description: Submit draft minutes to board chair for review
+    node_type: human_in_loop
+    agent: meeting-facilitator
+    approver_role: board_chair
+    timeout_hours: 72
+    reminder_hours: 48
+
+  - id: distribute_minutes
+    name: Distribute Minutes to Board
+    description: Email minutes to all board members
+    node_type: agent
+    agent: meeting-facilitator
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    template: minutes_distribution_email
+    attachments: [draft_minutes, exhibits]
+    timing: T+5_days
+
+  - id: create_action_items
+    name: Create Action Item Records
+    description: Generate action item tracking records from meeting
+    node_type: agent
+    agent: meeting-facilitator
+    tool_calls:
+      - mcp__exec-automator__track_action_item
+    inputs: [action_items_from_meeting]
+    outputs: [action_item_records]
+
+  - id: assign_action_items
+    name: Send Action Item Assignments
+    description: Email action item assignments to responsible parties
+    node_type: agent
+    agent: meeting-facilitator
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    template: action_item_assignment_email
+    for_each: action_item_records
+
+  - id: archive_meeting_materials
+    name: Archive Meeting Materials
+    description: Store all meeting documents in secure repository
+    node_type: function
+    agent: meeting-facilitator
+    inputs: [agenda, board_packet, minutes, exhibits, recording]
+    outputs: [archive_location]
+    storage: secure_board_portal
+
+  - id: send_next_meeting_savedate
+    name: Send Next Meeting Save-the-Date
+    description: Notify board of next scheduled meeting
+    node_type: agent
+    agent: meeting-facilitator
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    template: save_the_date_email
+    timing: T+7_days
+
+  - id: update_meeting_sequence
+    name: Update Meeting Sequence
+    description: Increment meeting counter and update board calendar
+    node_type: function
+    agent: meeting-facilitator
+    outputs: [next_meeting_id, calendar_updated]
+
+  - id: generate_meeting_report
+    name: Generate Meeting Summary Report
+    description: Create executive summary for stakeholders
+    node_type: agent
+    agent: meeting-facilitator
+    tool_calls:
+      - mcp__exec-automator__generate_document
+    outputs: [meeting_summary_report]
+    template: meeting_summary_template
+
+# Workflow Edges (State Transitions)
+edges:
+  # PRE-MEETING FLOW
+  - source: START
+    target: initialize_meeting
+
+  - source: initialize_meeting
+    target: collect_agenda_items
+
+  - source: collect_agenda_items
+    target: draft_agenda
+    condition: agenda_items_received
+
+  - source: draft_agenda
+    target: chair_review_agenda
+
+  - source: chair_review_agenda
+    target: gather_board_packet
+    condition: agenda_approved
+
+  - source: chair_review_agenda
+    target: draft_agenda
+    condition: revision_requested
+
+  - source: gather_board_packet
+    target: distribute_agenda
+
+  - source: distribute_agenda
+    target: track_rsvps
+
+  - source: distribute_agenda
+    target: send_reminders
+
+  - source: send_reminders
+    target: pre_meeting_quorum_check
+
+  - source: pre_meeting_quorum_check
+    target: meeting_setup
+    condition: quorum_expected
+
+  - source: pre_meeting_quorum_check
+    target: quorum_alert_handler
+    condition: quorum_at_risk
+
+  # DURING-MEETING FLOW
+  - source: meeting_setup
+    target: call_to_order
+
+  - source: call_to_order
+    target: roll_call
+
+  - source: roll_call
+    target: verify_quorum
+
+  - source: verify_quorum
+    target: approve_previous_minutes
+    condition: quorum_met
+
+  - source: verify_quorum
+    target: quorum_not_met_handler
+    condition: quorum_not_met
+
+  - source: quorum_not_met_handler
+    target: roll_call
+    condition: recess_granted
+
+  - source: quorum_not_met_handler
+    target: adjournment
+    condition: adjourn_decided
+
+  - source: approve_previous_minutes
+    target: officer_reports
+
+  - source: officer_reports
+    target: committee_reports
+
+  - source: committee_reports
+    target: old_business
+
+  - source: old_business
+    target: new_business
+
+  - source: new_business
+    target: executive_session_check
+
+  - source: executive_session_check
+    target: enter_executive_session
+    condition: executive_session_scheduled
+
+  - source: executive_session_check
+    target: announcements
+    condition: no_executive_session
+
+  - source: enter_executive_session
+    target: exit_executive_session
+
+  - source: exit_executive_session
+    target: announcements
+
+  - source: announcements
+    target: schedule_next_meeting
+
+  - source: schedule_next_meeting
+    target: adjournment
+
+  # POST-MEETING FLOW
+  - source: adjournment
+    target: draft_minutes
+
+  - source: draft_minutes
+    target: chair_review_minutes
+
+  - source: chair_review_minutes
+    target: distribute_minutes
+    condition: minutes_approved
+
+  - source: chair_review_minutes
+    target: draft_minutes
+    condition: revision_requested
+
+  - source: distribute_minutes
+    target: create_action_items
+
+  - source: create_action_items
+    target: assign_action_items
+
+  - source: assign_action_items
+    target: archive_meeting_materials
+
+  - source: archive_meeting_materials
+    target: send_next_meeting_savedate
+
+  - source: send_next_meeting_savedate
+    target: update_meeting_sequence
+
+  - source: update_meeting_sequence
+    target: generate_meeting_report
+
+  - source: generate_meeting_report
+    target: END
+
+# Human Approval Gates
+human_approvals:
+  - checkpoint: chair_review_agenda
+    approver: board_chair
+    decision_type: approve_or_revise
+    timeout: 48_hours
+    escalation: proceed_with_draft
+
+  - checkpoint: chair_review_minutes
+    approver: board_chair
+    decision_type: approve_or_revise
+    timeout: 72_hours
+    reminder: 48_hours
+
+  - checkpoint: quorum_not_met_handler
+    approver: board_chair
+    decision_type: recess_or_adjourn
+    timeout: immediate
+
+# Integration Points
+integrations:
+  calendar:
+    - action: create_meeting_event
+      timing: T-7_days
+      recurrence: monthly
+
+  email:
+    - action: send_agenda_packet
+      timing: T-7_days
+      template: agenda_distribution_email
+
+    - action: send_reminders
+      timing: [T-48_hours, T-2_hours]
+
+    - action: send_minutes
+      timing: T+5_days
+
+  document_management:
+    - action: store_board_packet
+      location: secure_portal
+
+    - action: archive_minutes
+      location: official_records
+      retention: permanent
+
+  action_tracking:
+    - action: create_action_items
+      system: project_management
+      notifications: enabled
+
+# Estimated Timeline
+timeline:
+  total_duration: 21_days
+  milestones:
+    - name: Agenda Items Due
+      day: T-10
+    - name: Agenda Distributed
+      day: T-7
+    - name: RSVP Deadline
+      day: T-2
+    - name: Meeting Day
+      day: T-0
+    - name: Draft Minutes Complete
+      day: T+2
+    - name: Minutes Distributed
+      day: T+5
+    - name: Action Items Assigned
+      day: T+5
+    - name: Next Meeting Scheduled
+      day: T+7
+
+# Success Metrics
+success_criteria:
+  - metric: agenda_distribution_on_time
+    target: 100%
+    measurement: days_before_meeting >= 7
+
+  - metric: quorum_achievement_rate
+    target: 95%
+    measurement: meetings_with_quorum / total_meetings
+
+  - metric: minutes_published_timely
+    target: 100%
+    measurement: days_after_meeting <= 5
+
+  - metric: action_item_completion_rate
+    target: 85%
+    measurement: completed_items / total_items
+
+  - metric: meeting_duration_adherence
+    target: 90%
+    measurement: actual_duration <= scheduled_duration * 1.1
+
+# Error Handling
+error_recovery:
+  - error: quorum_not_met
+    recovery: notify_chair_and_offer_recess_or_adjourn
+    fallback: schedule_continuation_meeting
+
+  - error: technology_failure
+    recovery: switch_to_phone_dial_in
+    fallback: recess_15_minutes
+
+  - error: presiding_officer_absent
+    recovery: vice_president_presides
+    fallback: most_senior_member_presides
+
+  - error: agenda_distribution_delayed
+    recovery: expedited_distribution_with_apology
+    fallback: distribute_at_meeting
+
+  - error: action_item_ownership_unclear
+    recovery: chair_clarifies_at_meeting
+    fallback: document_in_minutes_and_confirm_via_email
+
+# Compliance Requirements
+compliance:
+  framework: robert_rules_of_order_11th_edition
+  bylaws: organization_specific
+  notice_requirements:
+    regular_meeting: 7_days
+    special_meeting: 10_days
+    annual_meeting: 30_days
+  quorum: majority_of_board
+  voting: majority_of_present
+  minutes_retention: permanent
+  confidentiality: executive_sessions
+
+# Cost Estimation
+cost_analysis:
+  time_saved_per_meeting: 12_hours
+  meetings_per_year: 12
+  annual_time_saved: 144_hours
+  hourly_rate: 75
+  annual_savings: 10800
+  implementation_cost: 3000
+  payback_period_months: 3.3
+  three_year_roi: 29400
+
+# Brand Voice Guidelines
+brand_voice:
+  style: brookside_bi_professional
+  tone: formal_yet_approachable
+  language_preferences:
+    - use_inclusive_language
+    - avoid_jargon_unless_defined
+    - prefer_active_voice
+  communication_principles:
+    - clarity_over_cleverness
+    - respect_for_governance
+    - transparency_in_process
+    - accuracy_in_documentation
+
+---
+# End of Board Meeting Workflow Template

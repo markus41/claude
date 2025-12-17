@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "atlassian": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://mcp.atlassian.com/v1/sse"],
+      "description": "Atlassian Remote MCP Server with OAuth 2.1 SSO authentication",
+      "authentication": {
+        "type": "oauth2.1",
+        "flow": "browser",
+        "provider": "atlassian",
+        "scopes": [
+          "read:jira-work",
+          "write:jira-work",
+          "read:confluence-content.all",
+          "write:confluence-content"
+        ],
+        "notes": "On first connection, a browser window opens for Atlassian SSO login. Tokens are automatically managed and refreshed."
+      }
+    }
+  }
+}

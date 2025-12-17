@@ -1,0 +1,203 @@
+---
+# Committee Management Workflow
+# Standing and ad-hoc committee operations - formation, meetings, reporting, sunset
+
+name: committee-management
+version: 1.0.0
+description: Complete committee lifecycle management - charter development, member appointment, meeting coordination, deliverable tracking, and reporting to board
+category: governance
+estimated_duration: 365_days
+automation_score: 86
+
+metadata:
+  author: exec-automator
+  created: 2025-12-17
+  tags: [committees, governance, meetings, deliverables, reporting]
+  brand_voice: brookside_bi_professional
+
+phases:
+  - name: formation
+    description: Charter development, member recruitment, orientation
+    duration_days: 30
+
+  - name: operations
+    description: Regular meetings, project execution, deliverable tracking
+    duration_days: 300
+
+  - name: reporting
+    description: Progress reports to board, recommendations, deliverables
+    recurrence: quarterly
+    duration_days: 15
+
+  - name: renewal-or-sunset
+    description: Annual review, member rotation, charter renewal or dissolution
+    duration_days: 30
+
+state_schema:
+  type: CommitteeManagementState
+  fields:
+    committee_id: string
+    committee_name: string
+    committee_type: enum[standing, ad_hoc, special, task_force]
+    charter_approved: boolean
+    charter_document: Document
+
+    chair: Person
+    vice_chair: Person
+    members: array[Person]
+    term_expirations: array[TermRecord]
+
+    meetings_scheduled: array[Meeting]
+    meetings_held: integer
+    attendance_rate: decimal
+
+    deliverables: array[Deliverable]
+    deliverables_completed: integer
+    board_recommendations: array[Recommendation]
+
+    current_phase: enum[formation, active, reporting, renewal, sunset]
+
+nodes:
+  # FORMATION PHASE
+  - id: initiate_committee_formation
+    name: Initiate Committee Formation
+    human_in_loop: true
+    approver: board_chair
+
+  - id: draft_committee_charter
+    name: Draft Committee Charter
+    template: committee_charter_template
+
+  - id: board_approval_charter
+    name: Board Approves Charter
+    human_in_loop: true
+    approver: board_of_directors
+
+  - id: recruit_committee_members
+    name: Recruit Committee Members
+    timeline: 15_days
+
+  - id: appoint_chair_vice_chair
+    name: Appoint Chair and Vice-Chair
+    human_in_loop: true
+    approver: board_chair
+
+  - id: conduct_orientation
+    name: Conduct Committee Orientation
+
+  # OPERATIONS PHASE
+  - id: schedule_committee_meetings
+    name: Schedule Committee Meetings
+    recurrence: monthly_or_quarterly
+
+  - id: prepare_meeting_agendas
+    name: Prepare Meeting Agendas
+    timing: 7_days_before_meeting
+
+  - id: conduct_committee_meeting
+    name: Conduct Committee Meeting
+    agent: meeting-facilitator
+
+  - id: track_action_items
+    name: Track Committee Action Items
+    continuous: true
+
+  - id: monitor_deliverable_progress
+    name: Monitor Deliverable Progress
+    continuous: true
+
+  # REPORTING PHASE
+  - id: compile_quarterly_report
+    name: Compile Quarterly Committee Report
+    timing: end_of_quarter
+
+  - id: present_to_board
+    name: Present Report to Board
+    human_in_loop: true
+    timing: board_meeting
+
+  # RENEWAL/SUNSET PHASE
+  - id: conduct_annual_review
+    name: Conduct Annual Committee Review
+    timing: annually
+
+  - id: evaluate_charter_relevance
+    name: Evaluate Charter Relevance
+
+  - id: rotate_members
+    name: Rotate Committee Members
+    timing: annually
+
+  - id: sunset_committee
+    name: Sunset Committee (if applicable)
+    condition: charter_expired_or_work_complete
+
+edges:
+  - source: START
+    target: initiate_committee_formation
+  - source: initiate_committee_formation
+    target: draft_committee_charter
+  - source: draft_committee_charter
+    target: board_approval_charter
+  - source: board_approval_charter
+    target: recruit_committee_members
+  - source: recruit_committee_members
+    target: appoint_chair_vice_chair
+  - source: appoint_chair_vice_chair
+    target: conduct_orientation
+  - source: conduct_orientation
+    target: schedule_committee_meetings
+  - source: schedule_committee_meetings
+    target: prepare_meeting_agendas
+  - source: prepare_meeting_agendas
+    target: conduct_committee_meeting
+  - source: conduct_committee_meeting
+    target: track_action_items
+  - source: track_action_items
+    target: monitor_deliverable_progress
+  - source: monitor_deliverable_progress
+    target: compile_quarterly_report
+  - source: compile_quarterly_report
+    target: present_to_board
+  - source: present_to_board
+    target: conduct_annual_review
+    condition: end_of_year
+  - source: present_to_board
+    target: prepare_meeting_agendas
+    condition: continue_operations
+  - source: conduct_annual_review
+    target: evaluate_charter_relevance
+  - source: evaluate_charter_relevance
+    target: rotate_members
+    condition: continue_committee
+  - source: evaluate_charter_relevance
+    target: sunset_committee
+    condition: discontinue_committee
+  - source: rotate_members
+    target: schedule_committee_meetings
+  - source: sunset_committee
+    target: END
+
+integrations:
+  meeting_coordination: calendar_and_email
+  document_storage: sharepoint_or_google_drive
+  task_tracking: project_management_system
+
+success_criteria:
+  - metric: meeting_attendance_rate
+    target: 80_percent
+  - metric: deliverable_completion_rate
+    target: 90_percent
+  - metric: board_recommendation_acceptance
+    target: 75_percent
+
+cost_analysis:
+  time_saved_per_committee_per_year: 48_hours
+  number_of_committees: 8
+  annual_time_saved: 384_hours
+  hourly_rate: 75
+  annual_savings: 28800
+  implementation_cost: 6000
+  payback_period_months: 2.5
+
+---

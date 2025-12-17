@@ -1,0 +1,777 @@
+---
+# Newsletter Production Workflow
+# Complete publication cycle from content collection through distribution and analytics
+
+name: newsletter-production
+version: 1.0.0
+description: Comprehensive newsletter production automation - content collection, editing, design, approval, distribution, and engagement analytics
+category: communications
+estimated_duration: 30_days
+automation_score: 84
+
+metadata:
+  author: exec-automator
+  created: 2025-12-17
+  updated: 2025-12-17
+  tags: [newsletter, communications, content, email-marketing, publishing]
+  brand_voice: brookside_bi_warm_professional
+  compliance: email_marketing_compliance_can_spam
+
+# Workflow Phases
+phases:
+  - name: planning
+    description: Editorial calendar, topic selection, contributor assignments
+    duration_days: 7
+    critical_path: true
+
+  - name: content-collection
+    description: Gather articles, news, member spotlights
+    duration_days: 10
+    critical_path: true
+
+  - name: editing
+    description: Edit content, fact-check, copyedit
+    duration_days: 5
+    critical_path: true
+
+  - name: design-layout
+    description: Template design, layout, image placement
+    duration_days: 3
+    critical_path: true
+
+  - name: review-approval
+    description: Internal review and final approval
+    duration_days: 2
+    critical_path: true
+
+  - name: distribution
+    description: Email deployment, social media promotion
+    duration_days: 1
+    critical_path: true
+
+  - name: analytics
+    description: Track engagement, analyze performance
+    duration_days: 7
+    critical_path: false
+
+# State Schema
+state_schema:
+  type: NewsletterProductionState
+  fields:
+    # Newsletter Information
+    newsletter_id: string
+    issue_number: integer
+    publication_month: string
+    publication_year: integer
+    theme_or_focus: string
+    target_publication_date: date
+    actual_publication_date: date
+
+    # Content Planning
+    editorial_calendar: object
+    content_assignments: array[Assignment]
+    topics_covered: array[Topic]
+    special_features: array[Feature]
+
+    # Content Items
+    articles: array[Article]
+    news_briefs: array[NewsBrief]
+    member_spotlights: array[MemberSpotlight]
+    upcoming_events: array[Event]
+    sponsor_ads: array[Advertisement]
+    calls_to_action: array[CTA]
+
+    # Production Status
+    content_submissions_received: integer
+    content_submissions_total: integer
+    articles_edited: integer
+    articles_approved: integer
+    design_completed: boolean
+    final_review_completed: boolean
+
+    # Design
+    template_version: string
+    images_sourced: array[Image]
+    layout_finalized: boolean
+    proofread_completed: boolean
+
+    # Distribution
+    email_list_segmented: boolean
+    email_subject_line: string
+    preview_text: string
+    send_time_optimized: boolean
+    emails_sent: integer
+    emails_delivered: integer
+    emails_bounced: integer
+
+    # Engagement Metrics
+    unique_opens: integer
+    open_rate: decimal
+    unique_clicks: integer
+    click_rate: decimal
+    click_to_open_rate: decimal
+    unsubscribes: integer
+    spam_complaints: integer
+    top_clicked_links: array[Link]
+
+    # Workflow State
+    current_phase: enum[planning, content_collection, editing, design, review, distribution, analytics, completed]
+    errors: array[Error]
+    human_approvals: array[Approval]
+
+# LangGraph Nodes
+nodes:
+  # PLANNING PHASE
+
+  - id: initialize_newsletter_cycle
+    name: Initialize Newsletter Production Cycle
+    description: Create newsletter record and establish timeline
+    node_type: function
+    agent: communications-director
+    inputs: [issue_number, target_publication_date]
+    outputs: [newsletter_id, production_timeline, contributor_list]
+    timing: 30_days_before_publication
+    error_handling: retry_3_times
+
+  - id: select_newsletter_theme
+    name: Select Newsletter Theme or Focus
+    description: Determine theme or editorial focus for issue
+    node_type: human_in_loop
+    agent: communications-director
+    approver_role: communications_director_or_executive_director
+    timeout_hours: 72
+    theme_selection_criteria:
+      - alignment_with_organizational_priorities
+      - timeliness_and_relevance
+      - member_interests
+      - seasonal_considerations
+
+  - id: develop_content_plan
+    name: Develop Content Plan
+    description: Plan specific articles, features, and segments
+    node_type: agent
+    agent: communications-director
+    tool_calls:
+      - mcp__exec-automator__generate_document
+    inputs: [newsletter_theme, standard_sections]
+    outputs: [content_plan, article_assignments]
+    template: newsletter_content_plan
+    standard_sections:
+      - from_the_executive_director
+      - industry_news_roundup
+      - member_spotlight
+      - upcoming_events
+      - legislative_update
+      - professional_development_opportunities
+      - sponsor_highlights
+
+  - id: assign_content_to_contributors
+    name: Assign Content to Contributors
+    description: Assign articles to staff, committee members, or volunteers
+    node_type: agent
+    agent: communications-director
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    template: newsletter_content_assignment
+    include:
+      - article_topic
+      - word_count_target
+      - submission_deadline
+      - writing_guidelines
+      - contact_for_questions
+
+  # CONTENT COLLECTION PHASE
+
+  - id: track_content_submissions
+    name: Track Content Submissions
+    description: Monitor receipt of articles and content
+    node_type: agent
+    agent: communications-director
+    continuous: true
+    duration_days: 10
+    tool_calls:
+      - mcp__exec-automator__track_responses
+    reminder_schedule:
+      - 5_days_before_deadline
+      - 2_days_before_deadline
+      - on_deadline_day
+
+  - id: source_member_spotlight_candidates
+    name: Source Member Spotlight Candidates
+    description: Identify and recruit members for feature stories
+    node_type: agent
+    agent: communications-director
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    template: member_spotlight_invitation
+    selection_criteria:
+      - notable_achievements
+      - interesting_member_journey
+      - willingness_to_share_story
+      - diversity_of_perspectives
+
+  - id: conduct_member_spotlight_interview
+    name: Conduct Member Spotlight Interview
+    description: Interview featured member
+    node_type: human_in_loop
+    agent: communications-director
+    interview_questions:
+      - tell_us_about_your_background
+      - what_do_you_do_professionally
+      - how_has_membership_benefited_you
+      - what_advice_would_you_give_others
+      - what_are_you_working_on_now
+    outputs: [interview_notes, photos_of_member]
+
+  - id: write_member_spotlight_article
+    name: Write Member Spotlight Article
+    description: Draft feature article from interview
+    node_type: agent
+    agent: communications-director
+    tool_calls:
+      - mcp__exec-automator__generate_document
+    inputs: [interview_notes]
+    outputs: [spotlight_article_draft]
+    template: member_spotlight_article
+
+  - id: compile_news_briefs
+    name: Compile Industry News Briefs
+    description: Aggregate relevant industry news for roundup
+    node_type: agent
+    agent: communications-director
+    tool_calls:
+      - mcp__exec-automator__web_research
+    sources:
+      - industry_trade_publications
+      - member_submitted_news
+      - organizational_news
+    outputs: [news_briefs_list]
+
+  - id: collect_event_listings
+    name: Collect Upcoming Event Listings
+    description: Gather upcoming events from calendar
+    node_type: agent
+    agent: communications-director
+    tool_calls:
+      - mcp__exec-automator__fetch_calendar_events
+    time_range: next_3_months
+    outputs: [event_listings]
+
+  # EDITING PHASE
+
+  - id: review_submitted_content
+    name: Review All Submitted Content
+    description: Initial review for completeness and appropriateness
+    node_type: agent
+    agent: communications-director
+    inputs: [all_submitted_articles]
+    outputs: [content_ready_for_editing, content_needing_revision]
+    quality_checks:
+      - meets_word_count
+      - on_topic
+      - appropriate_tone
+      - factually_accurate
+
+  - id: request_content_revisions
+    name: Request Content Revisions
+    description: Send feedback to authors needing revisions
+    node_type: agent
+    agent: communications-director
+    condition: revisions_needed
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    template: content_revision_request
+
+  - id: copyedit_all_content
+    name: Copyedit All Content
+    description: Edit for grammar, style, clarity, and brand voice
+    node_type: agent
+    agent: communications-director
+    tool_calls:
+      - mcp__exec-automator__copyedit_content
+    inputs: [all_articles]
+    outputs: [edited_articles]
+    editing_guidelines:
+      - brookside_bi_style_guide
+      - ap_style
+      - active_voice_preferred
+      - inclusive_language
+
+  - id: fact_check_content
+    name: Fact-Check Content
+    description: Verify accuracy of claims, statistics, and quotes
+    node_type: agent
+    agent: communications-director
+    inputs: [edited_articles]
+    outputs: [fact_check_completed, corrections_needed]
+
+  - id: write_executive_directors_message
+    name: Write Executive Director's Message
+    description: Draft or finalize ED's column
+    node_type: human_in_loop
+    agent: communications-director
+    approver_role: executive_director
+    message_topics:
+      - organizational_updates
+      - strategic_priorities
+      - member_appreciation
+      - call_to_action
+    outputs: [ed_message]
+
+  # DESIGN & LAYOUT PHASE
+
+  - id: select_newsletter_images
+    name: Select Newsletter Images
+    description: Choose photos and graphics for content
+    node_type: agent
+    agent: communications-director
+    tool_calls:
+      - mcp__exec-automator__search_stock_photos
+    image_sources:
+      - stock_photo_library
+      - member_submitted_photos
+      - event_photography
+      - custom_graphics
+    outputs: [selected_images, image_credits]
+
+  - id: design_newsletter_layout
+    name: Design Newsletter Layout
+    description: Arrange content in email template
+    node_type: agent
+    agent: communications-director
+    tool_calls:
+      - mcp__exec-automator__apply_email_template
+    inputs: [edited_articles, images, template]
+    outputs: [newsletter_layout_draft]
+    template: brookside_bi_newsletter_template
+    design_principles:
+      - mobile_responsive
+      - clear_hierarchy
+      - branded_colors_and_fonts
+      - strong_CTAs
+      - accessibility_compliant
+
+  - id: optimize_for_deliverability
+    name: Optimize for Email Deliverability
+    description: Check spam score, image-to-text ratio
+    node_type: agent
+    agent: communications-director
+    optimization_checks:
+      - spam_score_test
+      - image_to_text_ratio
+      - broken_links_check
+      - alt_text_for_images
+      - preheader_text
+    outputs: [deliverability_score, optimization_recommendations]
+
+  - id: proofread_final_layout
+    name: Proofread Final Layout
+    description: Final proofread in email format
+    node_type: human_in_loop
+    agent: communications-director
+    approver_role: communications_director_or_editor
+    proofreading_checklist:
+      - typos_and_grammar
+      - broken_links
+      - image_display
+      - mobile_rendering
+      - call_to_action_clarity
+
+  # REVIEW & APPROVAL PHASE
+
+  - id: send_test_email
+    name: Send Test Email
+    description: Send preview to internal review team
+    node_type: agent
+    agent: communications-director
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    recipients: [executive_director, communications_director, key_staff]
+    template: newsletter_test_email
+
+  - id: collect_internal_feedback
+    name: Collect Internal Feedback
+    description: Gather feedback from test email recipients
+    node_type: agent
+    agent: communications-director
+    tool_calls:
+      - mcp__exec-automator__collect_responses
+    timeout_hours: 24
+    feedback_areas:
+      - content_accuracy
+      - tone_and_messaging
+      - design_and_layout
+      - technical_issues
+
+  - id: incorporate_final_edits
+    name: Incorporate Final Edits
+    description: Make final changes based on feedback
+    node_type: agent
+    agent: communications-director
+    condition: edits_requested
+    outputs: [final_newsletter_version]
+
+  - id: executive_director_final_approval
+    name: Executive Director Final Approval
+    description: ED approves newsletter for distribution
+    node_type: human_in_loop
+    agent: communications-director
+    approver_role: executive_director
+    timeout_hours: 12
+    reminder_hours: 6
+
+  # DISTRIBUTION PHASE
+
+  - id: prepare_email_list
+    name: Prepare and Segment Email List
+    description: Clean list, remove unsubscribes, segment if needed
+    node_type: agent
+    agent: communications-director
+    tool_calls:
+      - mcp__exec-automator__prepare_email_list
+    list_hygiene:
+      - remove_unsubscribes
+      - remove_bounces
+      - remove_spam_complaints
+      - verify_email_addresses
+    segmentation_options:
+      - all_members
+      - member_type_segments
+      - geographic_segments
+      - engagement_level_segments
+    outputs: [final_email_list, list_count]
+
+  - id: optimize_send_time
+    name: Optimize Send Time
+    description: Determine best send time based on engagement data
+    node_type: agent
+    agent: communications-director
+    inputs: [historical_open_rates_by_day_and_time]
+    outputs: [recommended_send_time]
+    considerations:
+      - day_of_week
+      - time_of_day
+      - time_zone_distribution
+      - member_behavior_patterns
+
+  - id: schedule_newsletter_send
+    name: Schedule Newsletter Send
+    description: Schedule email deployment in ESP
+    node_type: agent
+    agent: communications-director
+    tool_calls:
+      - mcp__exec-automator__schedule_email_send
+    inputs: [final_newsletter, email_list, send_time]
+    outputs: [send_scheduled, confirmation_number]
+
+  - id: send_newsletter
+    name: Send Newsletter
+    description: Deploy newsletter via email service provider
+    node_type: function
+    timing: scheduled_send_time
+    outputs: [newsletter_sent, send_time_actual, emails_sent_count]
+
+  - id: post_to_website
+    name: Post Newsletter to Website
+    description: Archive newsletter on website
+    node_type: agent
+    agent: communications-director
+    tool_calls:
+      - mcp__exec-automator__publish_to_website
+    timing: same_time_as_email_send
+    outputs: [newsletter_url]
+
+  - id: promote_on_social_media
+    name: Promote Newsletter on Social Media
+    description: Share newsletter highlights on social platforms
+    node_type: agent
+    agent: communications-director
+    tool_calls:
+      - mcp__exec-automator__post_to_social_media
+    platforms: [linkedin, twitter, facebook]
+    post_content:
+      - newsletter_teaser
+      - top_story_highlight
+      - link_to_web_version
+      - encourage_subscriptions
+
+  # ANALYTICS PHASE
+
+  - id: monitor_initial_engagement
+    name: Monitor Initial 24-Hour Engagement
+    description: Track opens and clicks in first 24 hours
+    node_type: agent
+    agent: communications-director
+    continuous: true
+    duration_hours: 24
+    tool_calls:
+      - mcp__exec-automator__track_email_engagement
+    outputs: [opens_24h, clicks_24h, early_engagement_trends]
+
+  - id: generate_engagement_report
+    name: Generate Full Engagement Report
+    description: Comprehensive analytics report
+    node_type: agent
+    agent: communications-director
+    tool_calls:
+      - mcp__exec-automator__generate_document
+    timing: 7_days_after_send
+    template: newsletter_engagement_report
+    report_sections:
+      - executive_summary
+      - delivery_metrics
+      - open_rate_analysis
+      - click_rate_analysis
+      - top_content_by_clicks
+      - device_and_client_breakdown
+      - geographic_distribution
+      - unsubscribe_and_spam_analysis
+      - comparison_to_previous_issues
+      - recommendations_for_next_issue
+
+  - id: analyze_content_performance
+    name: Analyze Content Performance
+    description: Identify top-performing content and topics
+    node_type: agent
+    agent: communications-director
+    inputs: [click_data_by_article]
+    outputs: [top_content, low_engagement_content, insights]
+
+  - id: update_subscriber_preferences
+    name: Update Subscriber Preferences
+    description: Process unsubscribes and preference changes
+    node_type: function
+    outputs: [unsubscribes_processed, preferences_updated]
+
+  - id: document_lessons_learned
+    name: Document Lessons Learned
+    description: Capture insights for next newsletter cycle
+    node_type: agent
+    agent: communications-director
+    tool_calls:
+      - mcp__exec-automator__generate_document
+    template: newsletter_lessons_learned
+    topics:
+      - what_content_resonated
+      - what_design_elements_worked
+      - production_process_improvements
+      - timing_and_frequency_insights
+
+# Workflow Edges
+edges:
+  # PLANNING FLOW
+  - source: START
+    target: initialize_newsletter_cycle
+
+  - source: initialize_newsletter_cycle
+    target: select_newsletter_theme
+
+  - source: select_newsletter_theme
+    target: develop_content_plan
+
+  - source: develop_content_plan
+    target: assign_content_to_contributors
+
+  # CONTENT COLLECTION FLOW
+  - source: assign_content_to_contributors
+    target: track_content_submissions
+
+  - source: track_content_submissions
+    target: source_member_spotlight_candidates
+
+  - source: source_member_spotlight_candidates
+    target: conduct_member_spotlight_interview
+
+  - source: conduct_member_spotlight_interview
+    target: write_member_spotlight_article
+
+  - source: write_member_spotlight_article
+    target: compile_news_briefs
+
+  - source: compile_news_briefs
+    target: collect_event_listings
+
+  # EDITING FLOW
+  - source: collect_event_listings
+    target: review_submitted_content
+
+  - source: review_submitted_content
+    target: request_content_revisions
+    condition: revisions_needed
+
+  - source: review_submitted_content
+    target: copyedit_all_content
+    condition: all_content_acceptable
+
+  - source: request_content_revisions
+    target: copyedit_all_content
+
+  - source: copyedit_all_content
+    target: fact_check_content
+
+  - source: fact_check_content
+    target: write_executive_directors_message
+
+  # DESIGN & LAYOUT FLOW
+  - source: write_executive_directors_message
+    target: select_newsletter_images
+
+  - source: select_newsletter_images
+    target: design_newsletter_layout
+
+  - source: design_newsletter_layout
+    target: optimize_for_deliverability
+
+  - source: optimize_for_deliverability
+    target: proofread_final_layout
+
+  # REVIEW & APPROVAL FLOW
+  - source: proofread_final_layout
+    target: send_test_email
+
+  - source: send_test_email
+    target: collect_internal_feedback
+
+  - source: collect_internal_feedback
+    target: incorporate_final_edits
+    condition: edits_requested
+
+  - source: collect_internal_feedback
+    target: executive_director_final_approval
+    condition: no_edits_needed
+
+  - source: incorporate_final_edits
+    target: executive_director_final_approval
+
+  - source: executive_director_final_approval
+    target: prepare_email_list
+    condition: approved
+
+  - source: executive_director_final_approval
+    target: incorporate_final_edits
+    condition: changes_requested
+
+  # DISTRIBUTION FLOW
+  - source: prepare_email_list
+    target: optimize_send_time
+
+  - source: optimize_send_time
+    target: schedule_newsletter_send
+
+  - source: schedule_newsletter_send
+    target: send_newsletter
+
+  - source: send_newsletter
+    target: post_to_website
+
+  - source: post_to_website
+    target: promote_on_social_media
+
+  # ANALYTICS FLOW
+  - source: promote_on_social_media
+    target: monitor_initial_engagement
+
+  - source: monitor_initial_engagement
+    target: generate_engagement_report
+
+  - source: generate_engagement_report
+    target: analyze_content_performance
+
+  - source: analyze_content_performance
+    target: update_subscriber_preferences
+
+  - source: update_subscriber_preferences
+    target: document_lessons_learned
+
+  - source: document_lessons_learned
+    target: END
+
+# Human Touch Points
+human_approvals:
+  - checkpoint: select_newsletter_theme
+    approver: communications_director
+    decision_type: theme_selection
+    timeout: 72_hours
+
+  - checkpoint: conduct_member_spotlight_interview
+    approver: communications_director
+    decision_type: conduct_interview
+    timeout: immediate
+
+  - checkpoint: write_executive_directors_message
+    approver: executive_director
+    decision_type: write_or_approve_column
+    timeout: 72_hours
+
+  - checkpoint: proofread_final_layout
+    approver: communications_director_or_editor
+    decision_type: final_proofread
+    timeout: 24_hours
+
+  - checkpoint: executive_director_final_approval
+    approver: executive_director
+    decision_type: approve_for_send
+    timeout: 12_hours
+
+# Integration Points
+integrations:
+  email_service_provider:
+    - provider: mailchimp_or_constant_contact
+    - action: manage_subscriber_list
+      timing: continuous
+    - action: design_and_send
+      timing: distribution_phase
+    - action: track_engagement
+      timing: post_send
+
+  content_management_system:
+    - action: publish_newsletter_archive
+      timing: distribution_phase
+
+  social_media:
+    - action: schedule_promotional_posts
+      timing: distribution_phase
+
+  analytics:
+    - action: generate_engagement_reports
+      timing: 7_days_after_send
+
+# Success Metrics
+success_criteria:
+  - metric: on_time_publication
+    target: 100%
+    measurement: published_on_target_date
+
+  - metric: open_rate
+    target: 35%
+    measurement: unique_opens / emails_delivered
+
+  - metric: click_rate
+    target: 8%
+    measurement: unique_clicks / emails_delivered
+
+  - metric: click_to_open_rate
+    target: 22%
+    measurement: unique_clicks / unique_opens
+
+  - metric: unsubscribe_rate
+    target: <0.5%
+    measurement: unsubscribes / emails_delivered
+
+  - metric: content_submission_timeliness
+    target: 90%
+    measurement: on_time_submissions / total_submissions
+
+# Cost Analysis
+cost_analysis:
+  time_saved_per_issue: 25_hours
+  issues_per_year: 12
+  annual_time_saved: 300_hours
+  hourly_rate: 60
+  annual_savings: 18000
+  implementation_cost: 8000
+  payback_period_months: 5.3
+  three_year_roi: 46000
+
+---
+# End of Newsletter Production Workflow Template

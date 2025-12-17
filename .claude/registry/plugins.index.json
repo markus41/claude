@@ -37,6 +37,24 @@
       "source": "local",
       "installedAt": "2025-12-13T00:00:00Z",
       "dependencies": {}
+    },
+    "jira-orchestrator": {
+      "callsign": "Arbiter",
+      "faction": "Forerunner",
+      "version": "1.1.0",
+      "path": "../jira-orchestrator",
+      "source": "local",
+      "installedAt": "2025-12-17T11:30:00Z",
+      "dependencies": {}
+    },
+    "exec-automator": {
+      "callsign": "Genesis",
+      "faction": "Forerunner",
+      "version": "1.0.0",
+      "path": "../exec-automator",
+      "source": "local",
+      "installedAt": "2025-12-17T13:00:00Z",
+      "dependencies": {}
     }
   },
 
@@ -240,18 +258,60 @@
         "skills": 4,
         "hooks": 3
       }
+    },
+
+    "jira-orchestrator": {
+      "callsign": "Arbiter",
+      "faction": "Forerunner",
+      "name": "jira-orchestrator",
+      "version": "1.1.0",
+      "description": "Arbiter - Supreme judge of Jira issue completion. Intelligent orchestration of 6-phase development workflows (EXPLORE → PLAN → CODE → TEST → FIX → DOCUMENT) with OAuth 2.1/SSO authentication. Auto-coordinates 10 specialized sub-agents for triage, code review, PR creation, and Confluence documentation. No API tokens required.",
+      "author": "Brookside BI",
+      "license": "MIT",
+      "repository": "https://github.com/markus41/jira-orchestrator",
+      "keywords": ["jira", "confluence", "orchestration", "automation", "development", "workflow", "agile", "oauth", "sso", "code-review", "triage", "pr-automation", "atlassian"],
+      "categories": ["collaboration", "project-management", "devops", "orchestration", "automation"],
+      "dependencies": {},
+      "provides": {
+        "commands": 10,
+        "agents": 10,
+        "skills": 6,
+        "hooks": 5
+      }
+    },
+
+    "exec-automator": {
+      "callsign": "Genesis",
+      "faction": "Forerunner",
+      "name": "exec-automator",
+      "version": "1.0.0",
+      "description": "Genesis - The origin of intelligent executive automation. AI-powered platform that analyzes organizational documents (RFPs, job descriptions, bylaws), scores automation potential using a 6-factor algorithm, generates LangGraph workflows, and deploys specialized AI agents to assist or replace executive director functions. Built for trade associations, professional organizations, and nonprofits.",
+      "author": "Brookside BI",
+      "license": "Proprietary",
+      "repository": "https://github.com/brooksidebi/exec-automator",
+      "keywords": ["executive-director", "association-management", "workflow-automation", "langgraph", "langchain", "deep-agents", "ai-automation", "nonprofit", "trade-association", "process-automation", "board-meetings", "membership", "events", "finance"],
+      "categories": ["automation", "orchestration", "ai-agents", "nonprofit", "associations"],
+      "dependencies": {},
+      "provides": {
+        "commands": 13,
+        "agents": 11,
+        "skills": 8,
+        "hooks": 4,
+        "workflows": 19,
+        "mcp_tools": 15
+      }
     }
   },
 
   "stats": {
-    "totalInstalled": 3,
-    "totalAvailable": 10,
+    "totalInstalled": 5,
+    "totalAvailable": 12,
     "byFaction": {
-      "Forerunner": 4,
+      "Forerunner": 6,
       "Promethean": 4,
       "Spartan": 3
     },
-    "lastUpdated": "2025-12-13T12:00:00Z",
-    "note": "All 10 plugins now have unique Halo-themed callsigns with strategic faction alignment."
+    "lastUpdated": "2025-12-17T13:00:00Z",
+    "note": "12 plugins with unique Halo-themed callsigns. Genesis (exec-automator) - AI-powered executive director automation with LangGraph/LangChain workflows."
   }
 }

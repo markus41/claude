@@ -1,0 +1,811 @@
+---
+# Member Onboarding Workflow - New Member Welcome Sequence
+# Complete automation from join through first-year engagement
+
+name: member-onboarding
+version: 1.0.0
+description: Comprehensive new member welcome and onboarding sequence - orientation, benefits activation, engagement touchpoints, and first-year journey
+category: membership
+estimated_duration: 365_days
+automation_score: 90
+
+metadata:
+  author: exec-automator
+  created: 2025-12-17
+  updated: 2025-12-17
+  tags: [membership, onboarding, welcome, engagement, retention, first-year]
+  brand_voice: brookside_bi_warm_professional
+  compliance: member_privacy_standards
+
+# Workflow Phases
+phases:
+  - name: immediate-welcome
+    description: Day-of and first-week welcome sequence
+    duration_days: 7
+    critical_path: true
+    touchpoints: 4
+
+  - name: orientation
+    description: First 30 days - benefits education and account activation
+    duration_days: 23
+    critical_path: true
+    touchpoints: 5
+
+  - name: early-engagement
+    description: 30-90 days - encourage first event, committee, or benefit use
+    duration_days: 60
+    critical_path: false
+    touchpoints: 6
+
+  - name: deepening-connection
+    description: 90-180 days - deepen involvement and relationship
+    duration_days: 90
+    critical_path: false
+    touchpoints: 4
+
+  - name: first-year-completion
+    description: 180-365 days - sustain engagement and prepare for renewal
+    duration_days: 185
+    critical_path: false
+    touchpoints: 3
+
+# State Schema
+state_schema:
+  type: MemberOnboardingState
+  fields:
+    # Member Information
+    member_id: string
+    member_name: string
+    member_email: string
+    member_phone: string
+    member_company: string
+    member_title: string
+    membership_level: enum[individual, corporate, student, affiliate, honorary]
+    join_date: date
+    days_since_join: integer
+    join_source: enum[referral, event, website, direct_mail, social_media, other]
+    referring_member_id: string
+
+    # Account Setup
+    account_created: boolean
+    password_set: boolean
+    profile_completed: boolean
+    profile_photo_uploaded: boolean
+    directory_listing_opted_in: boolean
+    email_preferences_set: boolean
+
+    # Benefits Activation
+    member_portal_accessed: boolean
+    member_card_downloaded: boolean
+    benefits_guide_accessed: boolean
+    discount_program_activated: boolean
+    certification_pathway_viewed: boolean
+    newsletter_subscription_confirmed: boolean
+
+    # Engagement Tracking
+    welcome_email_opened: boolean
+    orientation_webinar_registered: boolean
+    orientation_webinar_attended: boolean
+    first_event_attended: boolean
+    first_event_date: date
+    committee_interest_expressed: boolean
+    committee_joined: boolean
+    mentor_match_requested: boolean
+    mentor_assigned: boolean
+
+    # Content Consumption
+    emails_opened: integer
+    emails_clicked: integer
+    resource_downloads: integer
+    forum_posts: integer
+    webinars_attended: integer
+    certification_courses_started: integer
+
+    # Relationship Building
+    welcome_call_completed: boolean
+    welcome_call_date: date
+    30_day_checkin_completed: boolean
+    90_day_checkin_completed: boolean
+    personal_connection_made: boolean
+    peer_connections_count: integer
+
+    # Onboarding Progress
+    onboarding_score: decimal
+    engagement_level: enum[inactive, low, moderate, high, champion]
+    at_risk_status: boolean
+    intervention_required: boolean
+
+    # Workflow State
+    current_phase: enum[immediate_welcome, orientation, early_engagement, deepening_connection, first_year, completed]
+    milestone_achievements: array[Milestone]
+    errors: array[Error]
+    human_touches: array[HumanTouch]
+
+# LangGraph Nodes
+nodes:
+  # IMMEDIATE WELCOME PHASE (Day 0-7)
+
+  - id: initialize_onboarding
+    name: Initialize Onboarding Workflow
+    description: Create onboarding record and trigger welcome sequence
+    node_type: function
+    agent: member-engagement
+    inputs: [member_id, join_date, membership_level, join_source]
+    outputs: [onboarding_id, onboarding_timeline, personalization_data]
+    timing: join_date
+    error_handling: retry_5_times
+
+  - id: send_immediate_welcome_email
+    name: Send Immediate Welcome Email
+    description: Welcome email within 5 minutes of joining
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: join_date_plus_5_minutes
+    template: member_welcome_immediate
+    personalization:
+      - member_name
+      - membership_level
+      - join_source_thank_you
+      - account_setup_instructions
+    tone: warm_enthusiastic
+    priority: urgent
+
+  - id: provision_member_account
+    name: Provision Member Account
+    description: Create portal account, assign member number, generate credentials
+    node_type: function
+    agent: member-engagement
+    timing: join_date_plus_15_minutes
+    outputs: [member_number, portal_username, temporary_password, member_card_pdf]
+
+  - id: send_account_setup_email
+    name: Send Account Setup Email
+    description: Email with login credentials and setup instructions
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: join_date_plus_30_minutes
+    template: member_account_setup
+    include:
+      - portal_login_link
+      - username
+      - temporary_password
+      - password_reset_instructions
+      - mobile_app_download
+    tone: helpful_instructional
+
+  - id: notify_referring_member
+    name: Notify Referring Member (if applicable)
+    description: Thank referrer and notify of successful join
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: join_date_plus_1_hour
+    condition: join_source == referral
+    template: referral_thank_you
+    personalization:
+      - referrer_name
+      - new_member_name
+      - referral_reward_info
+
+  - id: send_day_2_welcome_resources
+    name: Send Day 2 Welcome Resources
+    description: Benefits guide, member directory, upcoming events
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: join_date_plus_1_day
+    template: welcome_resources_day_2
+    attachments:
+      - member_benefits_guide
+      - upcoming_events_calendar
+      - committee_opportunities_overview
+    tone: informative_inviting
+
+  - id: schedule_welcome_call
+    name: Schedule Welcome Call
+    description: Membership coordinator schedules personal welcome call
+    node_type: human_in_loop
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__schedule_call
+    timing: join_date_plus_2_days
+    assignee: membership_coordinator
+    call_objectives:
+      - introduce_organization
+      - answer_questions
+      - identify_interests
+      - recommend_first_steps
+    script: new_member_welcome_call_script
+
+  - id: send_day_5_checkin
+    name: Send Day 5 Check-In Email
+    description: Check if member needs help with account setup
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: join_date_plus_5_days
+    template: day_5_checkin_support
+    decision_logic: |
+      if not account_accessed:
+        send template: account_setup_assistance_offer
+      else:
+        send template: great_start_encouragement
+    tone: supportive_encouraging
+
+  # ORIENTATION PHASE (Day 8-30)
+
+  - id: invite_to_orientation_webinar
+    name: Invite to New Member Orientation Webinar
+    description: Monthly orientation webinar invitation
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+      - mcp__exec-automator__schedule_meeting
+    timing: join_date_plus_7_days
+    template: orientation_webinar_invitation
+    webinar_topics:
+      - organization_history_mission
+      - membership_benefits_deep_dive
+      - how_to_get_involved
+      - certification_programs
+      - networking_opportunities
+      - qa_session
+
+  - id: send_benefit_spotlight_series
+    name: Send Benefit Spotlight Series
+    description: Weekly emails highlighting specific member benefits
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: join_date_plus_10_days
+    series_schedule:
+      - day: 10
+        topic: professional_development_courses
+      - day: 17
+        topic: member_discounts_partnerships
+      - day: 24
+        topic: advocacy_and_legislative_updates
+    tone: educational_enthusiastic
+
+  - id: activate_member_directory_listing
+    name: Activate Member Directory Listing
+    description: Prompt member to complete profile for directory
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: join_date_plus_14_days
+    template: directory_profile_completion
+    include:
+      - profile_completion_link
+      - benefits_of_being_listed
+      - networking_opportunities
+      - privacy_controls
+
+  - id: recommend_first_event
+    name: Recommend First Event
+    description: Personalized event recommendation based on interests
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: join_date_plus_21_days
+    template: first_event_recommendation
+    personalization:
+      - member_industry
+      - geographic_location
+      - career_stage
+      - stated_interests
+    tone: personalized_inviting
+
+  - id: conduct_30_day_checkin
+    name: Conduct 30-Day Check-In
+    description: Personal email or call to assess satisfaction and engagement
+    node_type: human_in_loop
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+      - mcp__exec-automator__schedule_call
+    timing: join_date_plus_30_days
+    assignee: membership_coordinator
+    checkin_questions:
+      - how_has_first_month_been
+      - benefits_utilized
+      - questions_or_concerns
+      - areas_of_interest
+      - involvement_opportunities
+
+  # EARLY ENGAGEMENT PHASE (Day 31-90)
+
+  - id: invite_to_committee_or_volunteer
+    name: Invite to Committee or Volunteer Opportunity
+    description: Personalized invitation to get involved based on interests
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: join_date_plus_35_days
+    template: committee_volunteer_invitation
+    matching_criteria:
+      - stated_interests_from_welcome_call
+      - professional_expertise
+      - geographic_availability
+    tone: inviting_appreciative
+
+  - id: offer_mentor_matching
+    name: Offer Mentor Matching Program
+    description: Connect new member with experienced mentor
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: join_date_plus_42_days
+    template: mentor_program_invitation
+    program_benefits:
+      - guidance_from_experienced_member
+      - networking_expansion
+      - insider_knowledge
+      - career_development
+
+  - id: send_educational_resource_spotlight
+    name: Send Educational Resource Spotlight
+    description: Highlight certification, webinar, or resource library
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: join_date_plus_49_days
+    template: educational_resource_spotlight
+    content_rotation:
+      - certification_pathways
+      - on_demand_webinar_library
+      - research_publications
+      - best_practices_guides
+
+  - id: celebrate_first_event_attendance
+    name: Celebrate First Event Attendance
+    description: Congratulations email after attending first event
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    trigger: first_event_attended == true
+    template: first_event_congratulations
+    include:
+      - thank_you_for_attending
+      - event_recap_link
+      - upcoming_events_recommendation
+      - networking_follow_up_tips
+    tone: congratulatory_encouraging
+
+  - id: assess_engagement_level
+    name: Assess Engagement Level at Day 60
+    description: Calculate engagement score and identify at-risk members
+    node_type: agent
+    agent: member-engagement
+    timing: join_date_plus_60_days
+    inputs: [portal_logins, events_attended, emails_opened, resources_downloaded]
+    outputs: [engagement_score, engagement_level, at_risk_status]
+    scoring_algorithm: |
+      score = (
+        portal_logins * 10 +
+        events_attended * 25 +
+        emails_opened * 2 +
+        resources_downloaded * 5 +
+        committee_joined * 50
+      )
+      if score < 20: return "inactive", at_risk=True
+      elif score < 50: return "low", at_risk=True
+      elif score < 100: return "moderate", at_risk=False
+      elif score < 200: return "high", at_risk=False
+      else: return "champion", at_risk=False
+
+  - id: at_risk_intervention
+    name: At-Risk Member Intervention
+    description: Personal outreach to low-engagement members
+    node_type: human_in_loop
+    agent: member-engagement
+    condition: at_risk_status == true
+    tool_calls:
+      - mcp__exec-automator__schedule_call
+    timing: join_date_plus_65_days
+    assignee: membership_director
+    intervention_script: at_risk_member_outreach
+    objectives:
+      - understand_barriers_to_engagement
+      - address_concerns_or_confusion
+      - personalized_engagement_plan
+      - high_touch_follow_up
+
+  - id: send_90_day_milestone_email
+    name: Send 90-Day Milestone Email
+    description: Celebrate 90 days of membership
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: join_date_plus_90_days
+    template: 90_day_milestone_celebration
+    personalization:
+      - achievements_summary
+      - benefits_utilized_recap
+      - upcoming_opportunities
+      - thank_you_for_membership
+    tone: celebratory_grateful
+
+  # DEEPENING CONNECTION PHASE (Day 91-180)
+
+  - id: invite_to_leadership_opportunity
+    name: Invite to Leadership Opportunity
+    description: For high-engagement members, offer leadership roles
+    node_type: agent
+    agent: member-engagement
+    condition: engagement_level in [high, champion]
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: join_date_plus_100_days
+    template: leadership_opportunity_invitation
+    opportunities:
+      - committee_chair_roles
+      - task_force_participation
+      - speaker_opportunities
+      - board_nominating_committee
+
+  - id: send_advanced_benefit_education
+    name: Send Advanced Benefit Education
+    description: Deep-dive on underutilized advanced benefits
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: join_date_plus_120_days
+    template: advanced_benefits_education
+    topics:
+      - advocacy_tools
+      - market_research_access
+      - consulting_services
+      - member_to_member_marketplace
+
+  - id: encourage_certification_enrollment
+    name: Encourage Certification Enrollment
+    description: Promote professional certification programs
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: join_date_plus_135_days
+    template: certification_encouragement
+    include:
+      - certification_pathways
+      - member_discount_pricing
+      - career_advancement_benefits
+      - exam_preparation_resources
+      - success_stories
+
+  - id: conduct_180_day_survey
+    name: Conduct 180-Day Satisfaction Survey
+    description: Survey member satisfaction and gather feedback
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+      - mcp__exec-automator__collect_survey_response
+    timing: join_date_plus_180_days
+    template: 180_day_satisfaction_survey
+    survey_questions:
+      - overall_satisfaction_rating
+      - benefits_most_valuable
+      - areas_for_improvement
+      - likelihood_to_renew
+      - likelihood_to_recommend
+      - additional_comments
+
+  # FIRST YEAR COMPLETION PHASE (Day 181-365)
+
+  - id: send_renewal_preview
+    name: Send Renewal Preview at 9 Months
+    description: Early heads-up about upcoming renewal
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: join_date_plus_270_days
+    template: renewal_preview_9_months
+    include:
+      - thank_you_for_first_9_months
+      - year_in_review_highlights
+      - renewal_date_reminder
+      - auto_renew_invitation
+      - continued_benefits_preview
+
+  - id: celebrate_one_year_anniversary
+    name: Celebrate One-Year Membership Anniversary
+    description: Special anniversary email with personalized recap
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+      - mcp__exec-automator__generate_document
+    timing: join_date_plus_360_days
+    template: one_year_anniversary_celebration
+    personalization:
+      - member_name
+      - join_date
+      - year_in_review_infographic
+      - events_attended_count
+      - resources_downloaded_count
+      - connections_made_count
+      - benefits_savings_total
+      - thank_you_message
+      - renewal_reminder
+    tone: celebratory_grateful_personal
+
+  - id: transition_to_renewal_workflow
+    name: Transition to Renewal Workflow
+    description: Hand off to renewal campaign workflow
+    node_type: function
+    timing: join_date_plus_365_days
+    outputs: [onboarding_completed, renewal_workflow_triggered]
+
+# Workflow Edges (State Transitions)
+edges:
+  # IMMEDIATE WELCOME FLOW
+  - source: START
+    target: initialize_onboarding
+
+  - source: initialize_onboarding
+    target: send_immediate_welcome_email
+
+  - source: send_immediate_welcome_email
+    target: provision_member_account
+
+  - source: provision_member_account
+    target: send_account_setup_email
+
+  - source: send_account_setup_email
+    target: notify_referring_member
+    condition: join_source == referral
+
+  - source: send_account_setup_email
+    target: send_day_2_welcome_resources
+    condition: join_source != referral
+
+  - source: notify_referring_member
+    target: send_day_2_welcome_resources
+
+  - source: send_day_2_welcome_resources
+    target: schedule_welcome_call
+
+  - source: schedule_welcome_call
+    target: send_day_5_checkin
+
+  # ORIENTATION FLOW
+  - source: send_day_5_checkin
+    target: invite_to_orientation_webinar
+
+  - source: invite_to_orientation_webinar
+    target: send_benefit_spotlight_series
+
+  - source: send_benefit_spotlight_series
+    target: activate_member_directory_listing
+
+  - source: activate_member_directory_listing
+    target: recommend_first_event
+
+  - source: recommend_first_event
+    target: conduct_30_day_checkin
+
+  # EARLY ENGAGEMENT FLOW
+  - source: conduct_30_day_checkin
+    target: invite_to_committee_or_volunteer
+
+  - source: invite_to_committee_or_volunteer
+    target: offer_mentor_matching
+
+  - source: offer_mentor_matching
+    target: send_educational_resource_spotlight
+
+  - source: send_educational_resource_spotlight
+    target: assess_engagement_level
+
+  - source: assess_engagement_level
+    target: at_risk_intervention
+    condition: at_risk_status == true
+
+  - source: assess_engagement_level
+    target: send_90_day_milestone_email
+    condition: at_risk_status == false
+
+  - source: at_risk_intervention
+    target: send_90_day_milestone_email
+
+  # DEEPENING CONNECTION FLOW
+  - source: send_90_day_milestone_email
+    target: invite_to_leadership_opportunity
+    condition: engagement_level in [high, champion]
+
+  - source: send_90_day_milestone_email
+    target: send_advanced_benefit_education
+    condition: engagement_level not in [high, champion]
+
+  - source: invite_to_leadership_opportunity
+    target: send_advanced_benefit_education
+
+  - source: send_advanced_benefit_education
+    target: encourage_certification_enrollment
+
+  - source: encourage_certification_enrollment
+    target: conduct_180_day_survey
+
+  # FIRST YEAR COMPLETION FLOW
+  - source: conduct_180_day_survey
+    target: send_renewal_preview
+
+  - source: send_renewal_preview
+    target: celebrate_one_year_anniversary
+
+  - source: celebrate_one_year_anniversary
+    target: transition_to_renewal_workflow
+
+  - source: transition_to_renewal_workflow
+    target: END
+
+  # EVENT ATTENDANCE TRIGGER (parallel path)
+  - source: celebrate_first_event_attendance
+    target: assess_engagement_level
+    trigger: first_event_attended == true
+
+# Human Touch Points
+human_approvals:
+  - checkpoint: schedule_welcome_call
+    approver: membership_coordinator
+    decision_type: schedule_and_conduct_call
+    timeout: 72_hours
+    script: new_member_welcome_call_script
+
+  - checkpoint: conduct_30_day_checkin
+    approver: membership_coordinator
+    decision_type: email_or_call_checkin
+    timeout: 48_hours
+
+  - checkpoint: at_risk_intervention
+    approver: membership_director
+    decision_type: personal_outreach_call
+    timeout: 48_hours
+    escalation: high_priority
+
+# Integration Points
+integrations:
+  crm:
+    - action: create_member_record
+      timing: join_date
+    - action: update_engagement_score
+      timing: continuous
+    - action: log_touchpoints
+      timing: continuous
+
+  member_portal:
+    - action: provision_account
+      timing: join_date_plus_15_minutes
+    - action: track_logins
+      timing: continuous
+    - action: track_resource_downloads
+      timing: continuous
+
+  email_platform:
+    - provider: mailchimp
+    - action: add_to_onboarding_sequence
+      timing: join_date
+    - action: track_engagement
+      metrics: [opens, clicks, conversions]
+
+  calendar:
+    - action: schedule_welcome_calls
+      assignee: membership_coordinator
+    - action: send_meeting_invitations
+      for: orientation_webinars
+
+  survey_platform:
+    - provider: typeform
+    - action: 30_day_checkin_survey
+      timing: join_date_plus_30
+    - action: 180_day_satisfaction_survey
+      timing: join_date_plus_180
+
+# Timeline
+timeline:
+  total_duration: 365_days
+  key_milestones:
+    - name: Welcome Email Sent
+      day: 0
+    - name: Account Provisioned
+      day: 0
+    - name: Welcome Call Completed
+      day: 3-5
+    - name: Orientation Webinar Invited
+      day: 7
+    - name: First Benefit Spotlight
+      day: 10
+    - name: 30-Day Check-In
+      day: 30
+    - name: Committee Invitation
+      day: 35
+    - name: 60-Day Engagement Assessment
+      day: 60
+    - name: 90-Day Milestone
+      day: 90
+    - name: 180-Day Survey
+      day: 180
+    - name: Renewal Preview
+      day: 270
+    - name: One-Year Anniversary
+      day: 360
+
+# Success Metrics
+success_criteria:
+  - metric: onboarding_completion_rate
+    target: 90%
+    measurement: members_completing_orientation / total_new_members
+
+  - metric: first_event_attendance_rate
+    target: 60%
+    measurement: members_attending_first_event_within_90_days / total_new_members
+
+  - metric: portal_activation_rate
+    target: 85%
+    measurement: members_logging_in_within_30_days / total_new_members
+
+  - metric: engagement_score_average
+    target: 100
+    measurement: average_engagement_score_at_day_180
+
+  - metric: at_risk_intervention_success
+    target: 70%
+    measurement: at_risk_members_reengaged / at_risk_members_identified
+
+  - metric: first_year_retention_rate
+    target: 92%
+    measurement: members_renewing_after_first_year / total_new_members
+
+  - metric: member_satisfaction_first_year
+    target: 4.2_out_of_5
+    measurement: average_180_day_survey_rating
+
+# Cost Analysis
+cost_analysis:
+  time_saved_per_member: 3_hours
+  new_members_annually: 200
+  annual_time_saved: 600_hours
+  hourly_rate: 50
+  annual_savings: 30000
+  implementation_cost: 12000
+  payback_period_months: 4.8
+  three_year_roi: 78000
+  retention_improvement_value: 20000_annually
+
+# Brand Voice Guidelines
+brand_voice:
+  style: brookside_bi_warm_professional
+  tone: welcoming_supportive_encouraging
+  language_preferences:
+    - use_first_name_familiarity
+    - emphasize_community_belonging
+    - celebrate_small_wins
+    - make_complex_simple
+  communication_principles:
+    - warmth_over_formality
+    - clarity_over_comprehensiveness
+    - encouragement_over_pressure
+    - personalization_over_templates
+
+---
+# End of Member Onboarding Workflow Template

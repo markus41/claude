@@ -1,0 +1,105 @@
+---
+# Legislative Advocacy Workflow
+# Bill tracking, member alerts, grassroots campaigns, legislator outreach
+
+name: legislative-advocacy
+version: 1.0.0
+description: Legislative tracking and advocacy automation - bill monitoring, position development, member action alerts, legislator engagement, coalition coordination
+category: advocacy
+estimated_duration: continuous
+automation_score: 79
+
+metadata:
+  author: exec-automator
+  created: 2025-12-17
+  tags: [advocacy, legislation, grassroots, policy, government_relations]
+
+phases:
+  - name: monitoring
+    description: Track relevant legislation, regulatory changes
+    continuous: true
+  - name: analysis
+    description: Analyze impact, develop organizational position
+    duration_days: 7
+  - name: mobilization
+    description: Member action alerts, grassroots campaigns
+    duration_days: 14
+  - name: direct-advocacy
+    description: Legislator meetings, testimony, coalition coordination
+    duration_days: 30
+
+state_schema:
+  type: LegislativeAdvocacyState
+  fields:
+    bill_id: string
+    bill_title: string
+    bill_status: enum[introduced, committee, floor, passed, signed, vetoed]
+    organizational_position: enum[support, oppose, neutral, monitoring]
+    priority_level: enum[critical, high, medium, low]
+    action_alerts_sent: integer
+    member_responses: integer
+    legislator_meetings_held: integer
+
+nodes:
+  - id: monitor_legislation
+    continuous: true
+  - id: flag_relevant_bills
+    timing: upon_introduction
+  - id: analyze_bill_impact
+    timing: within_48_hours
+  - id: develop_position
+    timing: within_7_days
+    human_in_loop: true
+    approver: board_or_advocacy_committee
+  - id: send_member_action_alert
+    timing: upon_position_approval
+  - id: track_member_responses
+    continuous: true
+  - id: schedule_legislator_meetings
+    timing: as_needed
+  - id: provide_testimony
+    timing: committee_hearing
+    human_in_loop: true
+  - id: coordinate_coalition
+    timing: for_priority_bills
+  - id: report_advocacy_outcomes
+    recurrence: monthly
+
+edges:
+  - source: START
+    target: monitor_legislation
+  - source: monitor_legislation
+    target: flag_relevant_bills
+  - source: flag_relevant_bills
+    target: analyze_bill_impact
+  - source: analyze_bill_impact
+    target: develop_position
+  - source: develop_position
+    target: send_member_action_alert
+  - source: send_member_action_alert
+    target: track_member_responses
+  - source: track_member_responses
+    target: schedule_legislator_meetings
+  - source: schedule_legislator_meetings
+    target: provide_testimony
+  - source: provide_testimony
+    target: coordinate_coalition
+  - source: coordinate_coalition
+    target: report_advocacy_outcomes
+  - source: report_advocacy_outcomes
+    target: monitor_legislation
+
+success_criteria:
+  - metric: bill_tracking_completeness
+    target: 100_percent_of_relevant_bills
+  - metric: member_action_alert_response_rate
+    target: 15_percent
+  - metric: advocacy_win_rate
+    target: 65_percent
+
+cost_analysis:
+  time_saved_per_week: 10_hours
+  annual_time_saved: 520_hours
+  annual_savings: 39000
+
+---

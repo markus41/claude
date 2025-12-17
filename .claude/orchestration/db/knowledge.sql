@@ -437,8 +437,8 @@ SELECT
   n.id AS node_id,
   n.label,
   COALESCE(out.out_degree, 0) AS out_degree,
-  COALESCE(in.in_degree, 0) AS in_degree,
-  COALESCE(out.out_degree, 0) + COALESCE(in.in_degree, 0) AS total_degree
+  COALESCE(indeg.in_degree, 0) AS in_degree,
+  COALESCE(out.out_degree, 0) + COALESCE(indeg.in_degree, 0) AS total_degree
 FROM knowledge_nodes n
 LEFT JOIN (
   SELECT source_id, COUNT(*) AS out_degree
@@ -451,7 +451,7 @@ LEFT JOIN (
   FROM knowledge_edges
   WHERE is_deleted = 0
   GROUP BY target_id
-) in ON n.id = in.target_id
+) indeg ON n.id = indeg.target_id
 WHERE n.is_deleted = 0;
 
 -- Graph statistics view

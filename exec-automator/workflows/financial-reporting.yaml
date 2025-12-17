@@ -1,0 +1,211 @@
+---
+# Financial Reporting Cycle Workflow
+# Monthly, quarterly, and annual financial reporting automation
+
+name: financial-reporting
+version: 1.0.0
+description: Automated financial reporting cycle - monthly close, quarterly reviews, annual audits, budget vs actual analysis, and board reporting
+category: finance
+estimated_duration: 365_days
+automation_score: 82
+
+metadata:
+  author: exec-automator
+  created: 2025-12-17
+  tags: [finance, reporting, accounting, audit, budget, compliance]
+  brand_voice: brookside_bi_professional
+
+phases:
+  - name: monthly-close
+    description: Close books, reconcile accounts, generate statements
+    recurrence: monthly
+    duration_days: 10
+
+  - name: quarterly-review
+    description: Quarterly financial analysis and board reporting
+    recurrence: quarterly
+    duration_days: 15
+
+  - name: annual-audit
+    description: Year-end close, audit preparation, 990 filing
+    recurrence: annually
+    duration_days: 90
+
+state_schema:
+  type: FinancialReportingState
+  fields:
+    reporting_period: date
+    period_type: enum[monthly, quarterly, annual]
+    close_status: enum[open, in_progress, closed, audited]
+
+    revenue_actual: decimal
+    expenses_actual: decimal
+    net_income: decimal
+    budget_variance: decimal
+
+    bank_reconciled: boolean
+    accounts_receivable_aged: boolean
+    accounts_payable_current: boolean
+    payroll_processed: boolean
+
+    reports_generated: array[Report]
+    board_package_complete: boolean
+    audit_documents_prepared: boolean
+
+    current_phase: enum[data_collection, reconciliation, reporting, review, approval]
+
+nodes:
+  # MONTHLY CLOSE
+  - id: initialize_monthly_close
+    name: Initialize Monthly Close
+    timing: first_business_day_of_month
+
+  - id: reconcile_bank_accounts
+    name: Reconcile All Bank Accounts
+    timeline: day_1_to_day_3
+
+  - id: process_accounts_receivable
+    name: Process Accounts Receivable
+    timeline: day_1_to_day_5
+
+  - id: process_accounts_payable
+    name: Process Accounts Payable
+    timeline: day_1_to_day_5
+
+  - id: reconcile_credit_cards
+    name: Reconcile Credit Card Statements
+    timeline: day_3_to_day_5
+
+  - id: verify_payroll_transactions
+    name: Verify Payroll Transactions
+    timeline: day_5
+
+  - id: generate_trial_balance
+    name: Generate Trial Balance
+    timing: day_6
+
+  - id: review_variance_analysis
+    name: Review Budget vs Actual Variance
+    timing: day_7
+
+  - id: generate_financial_statements
+    name: Generate Financial Statements
+    timing: day_8
+    outputs: [balance_sheet, income_statement, cash_flow_statement]
+
+  - id: treasurer_review_monthly
+    name: Treasurer Reviews Monthly Financials
+    timing: day_9
+    human_in_loop: true
+    approver: treasurer
+
+  - id: close_month
+    name: Close Monthly Books
+    timing: day_10
+
+  # QUARTERLY REVIEW
+  - id: compile_quarterly_analysis
+    name: Compile Quarterly Financial Analysis
+    timing: quarter_end_plus_10_days
+
+  - id: prepare_board_financial_package
+    name: Prepare Board Financial Package
+    timing: quarter_end_plus_12_days
+
+  - id: submit_to_finance_committee
+    name: Submit to Finance Committee
+    timing: quarter_end_plus_14_days
+    human_in_loop: true
+
+  # ANNUAL AUDIT
+  - id: initialize_year_end_close
+    name: Initialize Year-End Close
+    timing: fiscal_year_end
+
+  - id: prepare_audit_documentation
+    name: Prepare Audit Documentation
+    timeline: fiscal_year_end_to_plus_30_days
+
+  - id: coordinate_with_auditor
+    name: Coordinate with External Auditor
+    timeline: plus_30_to_plus_60_days
+
+  - id: prepare_form_990
+    name: Prepare IRS Form 990
+    timeline: plus_60_to_plus_90_days
+
+  - id: board_approval_annual_financials
+    name: Board Approves Annual Financials
+    timing: plus_90_days
+    human_in_loop: true
+    approver: board_of_directors
+
+edges:
+  - source: START
+    target: initialize_monthly_close
+  - source: initialize_monthly_close
+    target: reconcile_bank_accounts
+  - source: reconcile_bank_accounts
+    target: process_accounts_receivable
+  - source: process_accounts_receivable
+    target: generate_trial_balance
+  - source: generate_trial_balance
+    target: review_variance_analysis
+  - source: review_variance_analysis
+    target: generate_financial_statements
+  - source: generate_financial_statements
+    target: treasurer_review_monthly
+  - source: treasurer_review_monthly
+    target: close_month
+  - source: close_month
+    target: compile_quarterly_analysis
+    condition: end_of_quarter
+  - source: close_month
+    target: END
+    condition: not_end_of_quarter
+  - source: compile_quarterly_analysis
+    target: prepare_board_financial_package
+  - source: prepare_board_financial_package
+    target: submit_to_finance_committee
+  - source: submit_to_finance_committee
+    target: initialize_year_end_close
+    condition: end_of_fiscal_year
+  - source: submit_to_finance_committee
+    target: END
+    condition: not_end_of_fiscal_year
+  - source: initialize_year_end_close
+    target: prepare_audit_documentation
+  - source: prepare_audit_documentation
+    target: coordinate_with_auditor
+  - source: coordinate_with_auditor
+    target: prepare_form_990
+  - source: prepare_form_990
+    target: board_approval_annual_financials
+  - source: board_approval_annual_financials
+    target: END
+
+integrations:
+  accounting_software: [quickbooks, xero, sage]
+  bank_feeds: automatic_reconciliation
+  payroll_system: [gusto, adp, paychex]
+  audit_platform: sharefile_or_similar
+
+success_criteria:
+  - metric: monthly_close_timeliness
+    target: within_10_business_days
+  - metric: variance_accuracy
+    target: within_5_percent
+  - metric: audit_clean_opinion
+    target: 100_percent
+  - metric: 990_filing_on_time
+    target: 100_percent
+
+cost_analysis:
+  time_saved_per_month: 16_hours
+  annual_time_saved: 192_hours
+  hourly_rate: 85
+  annual_savings: 16320
+  implementation_cost: 8000
+  payback_period_months: 5.9
+
+---

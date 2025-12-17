@@ -1,0 +1,744 @@
+---
+# Member Renewal Multi-Touch Campaign Workflow
+# Automated sequence from 90-day reminder through win-back campaign
+
+name: member-renewal
+version: 1.0.0
+description: Multi-touch member renewal campaign with personalized outreach, payment processing, and win-back sequences
+category: membership
+estimated_duration: 150_days
+automation_score: 88
+
+metadata:
+  author: exec-automator
+  created: 2025-12-17
+  updated: 2025-12-17
+  tags: [membership, renewal, retention, engagement, revenue]
+  brand_voice: brookside_bi_warm_professional
+
+# Workflow Phases
+phases:
+  - name: early-reminder
+    description: 90-day advance notice to give members time to budget
+    duration_days: 30
+    touchpoints: 1
+
+  - name: standard-reminder
+    description: 60-day and 30-day reminders with benefits reinforcement
+    duration_days: 30
+    touchpoints: 2
+
+  - name: urgent-reminder
+    description: Final reminders as expiration approaches
+    duration_days: 30
+    touchpoints: 3
+
+  - name: expiration-notice
+    description: Day-of and immediate post-expiration communication
+    duration_days: 7
+    touchpoints: 2
+
+  - name: grace-period
+    description: 30-day grace with access maintained, escalating urgency
+    duration_days: 30
+    touchpoints: 4
+
+  - name: win-back
+    description: Post-grace campaign to re-engage lapsed members
+    duration_days: 60
+    touchpoints: 3
+
+# State Schema
+state_schema:
+  type: MemberRenewalState
+  fields:
+    # Member Information
+    member_id: string
+    member_name: string
+    member_email: string
+    member_phone: string
+    membership_level: enum[individual, corporate, student, lifetime, honorary]
+    member_since: date
+    years_of_membership: integer
+
+    # Membership Status
+    current_expiration_date: date
+    days_until_expiration: integer
+    membership_status: enum[active, expiring_soon, expired, grace_period, lapsed]
+    auto_renew_enabled: boolean
+
+    # Renewal Details
+    renewal_rate: decimal
+    renewal_discount: decimal
+    total_renewal_amount: decimal
+    payment_received: boolean
+    payment_date: datetime
+    payment_method: string
+
+    # Engagement Tracking
+    emails_sent: array[EmailRecord]
+    emails_opened: array[datetime]
+    emails_clicked: array[datetime]
+    phone_calls_attempted: array[CallRecord]
+    phone_contact_made: boolean
+
+    # Benefits Utilization
+    events_attended_this_year: integer
+    newsletter_engagement_score: decimal
+    committee_participation: boolean
+    certification_status: string
+    member_directory_listed: boolean
+
+    # Campaign Performance
+    touchpoint_count: integer
+    response_received: boolean
+    renewal_completed: boolean
+    win_back_attempts: integer
+
+    # Workflow State
+    current_phase: enum[early_reminder, standard_reminder, urgent_reminder, expiration, grace_period, win_back, completed, churned]
+    errors: array[Error]
+    human_interventions: array[Intervention]
+
+# LangGraph Nodes
+
+nodes:
+  # EARLY REMINDER PHASE (T-90 days)
+
+  - id: initialize_renewal_campaign
+    name: Initialize Renewal Campaign
+    description: Load member data and calculate renewal timeline
+    node_type: function
+    agent: member-engagement
+    inputs: [member_id, current_expiration_date]
+    outputs: [member_profile, renewal_timeline, personalization_data]
+    timing: T-90_days
+
+  - id: calculate_renewal_rate
+    name: Calculate Renewal Rate
+    description: Determine renewal rate including any early-bird discounts or loyalty benefits
+    node_type: function
+    inputs: [membership_level, years_of_membership]
+    outputs: [base_rate, applicable_discounts, total_amount]
+
+  - id: send_90_day_reminder
+    name: Send 90-Day Advance Notice
+    description: Warm, early reminder to help members budget for renewal
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: T-90_days
+    template: renewal_90_day_early_notice
+    personalization:
+      - member_name
+      - years_of_membership
+      - membership_benefits_summary
+      - early_bird_discount_available
+    tone: warm_informative
+
+  - id: track_90_day_engagement
+    name: Track 90-Day Email Engagement
+    description: Monitor open and click rates for early reminder
+    node_type: function
+    continuous: true
+    start: T-90_days
+    end: T-60_days
+    outputs: [email_opened, links_clicked, engagement_score]
+
+  # STANDARD REMINDER PHASE (T-60 and T-30 days)
+
+  - id: send_60_day_reminder
+    name: Send 60-Day Reminder
+    description: Benefits-focused reminder with testimonials
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: T-60_days
+    template: renewal_60_day_benefits_focus
+    personalization:
+      - member_specific_benefits_used
+      - upcoming_events
+      - member_testimonials
+      - easy_renewal_link
+    tone: enthusiastic_helpful
+
+  - id: check_auto_renew_status
+    name: Check Auto-Renew Status
+    description: Determine if member has auto-renewal enabled
+    node_type: decision
+    timing: T-55_days
+    decision_logic: |
+      if auto_renew_enabled:
+        return "send_auto_renew_confirmation"
+      else:
+        return "continue_manual_renewal_campaign"
+
+  - id: send_auto_renew_confirmation
+    name: Send Auto-Renew Confirmation
+    description: Notify members with auto-renew that renewal is coming
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    template: auto_renewal_confirmation
+    timing: T-30_days
+
+  - id: send_30_day_reminder
+    name: Send 30-Day Reminder
+    description: Value-focused reminder with renewal call-to-action
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: T-30_days
+    template: renewal_30_day_value_reminder
+    personalization:
+      - year_in_review_summary
+      - exclusive_member_benefits
+      - community_impact_stats
+      - one_click_renewal_button
+    tone: appreciative_persuasive
+
+  - id: segment_engagement_level
+    name: Segment by Engagement Level
+    description: Categorize members as high/medium/low engagement for tailored approach
+    node_type: decision
+    timing: T-28_days
+    decision_logic: |
+      engagement_score = calculate_engagement(
+        events_attended,
+        newsletter_opens,
+        committee_participation,
+        certification_status
+      )
+      if engagement_score > 75:
+        return "high_engagement_path"
+      elif engagement_score > 40:
+        return "medium_engagement_path"
+      else:
+        return "low_engagement_path"
+
+  # URGENT REMINDER PHASE (T-14, T-7, T-3 days)
+
+  - id: send_14_day_urgent_reminder
+    name: Send 14-Day Urgent Reminder
+    description: Increased urgency with expiration warning
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: T-14_days
+    template: renewal_14_day_urgent
+    personalization:
+      - expiration_countdown
+      - benefits_about_to_lose
+      - easy_payment_options
+    tone: urgent_helpful
+
+  - id: send_7_day_final_reminder
+    name: Send 7-Day Final Reminder
+    description: Last chance reminder with assistance offer
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: T-7_days
+    template: renewal_7_day_final_call
+    personalization:
+      - personal_thank_you
+      - specific_benefits_enjoyed
+      - phone_assistance_offer
+    tone: sincere_urgent
+
+  - id: low_engagement_phone_outreach
+    name: Phone Outreach to Low-Engagement Members
+    description: Personal phone call to at-risk members
+    node_type: human_in_loop
+    agent: member-engagement
+    timing: T-7_days
+    condition: low_engagement_and_not_renewed
+    tool_calls:
+      - mcp__exec-automator__schedule_call
+      - mcp__exec-automator__track_call_outcome
+    script: renewal_retention_phone_script
+    assignee: membership_coordinator
+
+  - id: send_3_day_last_chance
+    name: Send 3-Day Last Chance Notice
+    description: Absolute final reminder before expiration
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: T-3_days
+    template: renewal_3_day_last_chance
+    subject_line: "URGENT: Your membership expires in 3 days"
+    tone: very_urgent
+
+  # EXPIRATION NOTICE PHASE
+
+  - id: check_renewal_status
+    name: Check Renewal Payment Status
+    description: Verify if renewal payment received before expiration
+    node_type: decision
+    timing: T-0_days
+    decision_logic: |
+      if payment_received:
+        return "renewal_confirmed"
+      else:
+        return "send_expiration_notice"
+
+  - id: send_expiration_day_notice
+    name: Send Expiration Day Notice
+    description: Same-day expiration alert with immediate renewal option
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: T+0_days
+    template: membership_expires_today
+    tone: urgent_supportive
+
+  - id: send_immediate_post_expiration
+    name: Send Immediate Post-Expiration Notice
+    description: Day-after expiration with grace period explanation
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: T+1_day
+    template: post_expiration_grace_period
+    personalization:
+      - grace_period_length
+      - benefits_status_during_grace
+      - easy_reinstatement_process
+    tone: understanding_helpful
+
+  # GRACE PERIOD PHASE (T+1 to T+30 days)
+
+  - id: update_member_status_grace
+    name: Update Member Status to Grace Period
+    description: Change membership status and access level
+    node_type: function
+    timing: T+1_day
+    outputs: [membership_status_updated, access_level_maintained]
+
+  - id: send_7_day_grace_reminder
+    name: Send 7-Day Grace Period Reminder
+    description: Mid-grace reminder with benefits preservation message
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: T+7_days
+    template: grace_period_7_day_reminder
+    tone: friendly_reminder
+
+  - id: send_14_day_grace_reminder
+    name: Send 14-Day Grace Period Reminder
+    description: Grace period midpoint with increased urgency
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: T+14_days
+    template: grace_period_14_day_urgent
+    tone: concerned_urgent
+
+  - id: send_21_day_grace_reminder
+    name: Send 21-Day Grace Period Reminder
+    description: Final week of grace period warning
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: T+21_days
+    template: grace_period_21_day_final_week
+    tone: urgent_sincere
+
+  - id: send_grace_period_final_notice
+    name: Send Grace Period Final Notice
+    description: Last notice before account closure
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: T+28_days
+    template: grace_period_final_48_hours
+    subject_line: "FINAL NOTICE: Your membership will be cancelled in 48 hours"
+    tone: very_urgent
+
+  - id: check_grace_period_renewal
+    name: Check Grace Period Renewal
+    description: Verify if member renewed during grace period
+    node_type: decision
+    timing: T+30_days
+    decision_logic: |
+      if payment_received:
+        return "renewal_confirmed"
+      else:
+        return "proceed_to_lapsed_status"
+
+  # WIN-BACK CAMPAIGN PHASE (T+30 to T+90 days)
+
+  - id: update_member_status_lapsed
+    name: Update Member Status to Lapsed
+    description: Change status to lapsed and suspend benefits
+    node_type: function
+    timing: T+30_days
+    outputs: [membership_status_lapsed, benefits_suspended, access_revoked]
+
+  - id: send_lapsed_member_survey
+    name: Send Lapsed Member Survey
+    description: Understand why member did not renew
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+      - mcp__exec-automator__collect_survey_response
+    timing: T+35_days
+    template: lapsed_member_feedback_survey
+    tone: curious_respectful
+
+  - id: analyze_lapse_reason
+    name: Analyze Reason for Lapse
+    description: Categorize lapse reason for targeted win-back
+    node_type: agent
+    agent: member-engagement
+    inputs: [survey_response, engagement_history]
+    outputs: [lapse_category, win_back_strategy]
+    categories:
+      - financial_constraints
+      - insufficient_value_perceived
+      - life_changes
+      - competitor_organization
+      - dissatisfaction_with_org
+      - forgot_to_renew
+
+  - id: send_win_back_offer_1
+    name: Send First Win-Back Offer
+    description: Personalized re-engagement offer based on lapse reason
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: T+45_days
+    template: win_back_personalized_offer
+    personalization:
+      - reason_specific_messaging
+      - special_rejoin_discount
+      - new_benefits_since_lapse
+      - member_testimonials
+    tone: welcoming_persuasive
+
+  - id: send_win_back_offer_2
+    name: Send Second Win-Back Offer
+    description: Enhanced offer with additional incentives
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: T+60_days
+    template: win_back_enhanced_offer
+    personalization:
+      - increased_discount
+      - bonus_benefits
+      - community_impact_message
+    tone: enthusiastic_inviting
+
+  - id: send_final_win_back
+    name: Send Final Win-Back Attempt
+    description: Last chance to rejoin with best offer
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: T+90_days
+    template: win_back_final_offer
+    personalization:
+      - maximum_discount
+      - personal_note_from_executive
+      - we_miss_you_message
+    tone: sincere_heartfelt
+
+  - id: categorize_final_status
+    name: Categorize Final Member Status
+    description: Determine if member is recoverable or permanently churned
+    node_type: decision
+    timing: T+120_days
+    decision_logic: |
+      if payment_received:
+        return "renewal_confirmed"
+      elif engagement_with_win_back_emails > 0:
+        return "future_prospect"
+      else:
+        return "permanently_churned"
+
+  # RENEWAL CONFIRMATION PATH
+
+  - id: process_renewal_payment
+    name: Process Renewal Payment
+    description: Record payment and update membership status
+    node_type: function
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__process_payment
+    inputs: [payment_info, renewal_amount]
+    outputs: [payment_confirmed, new_expiration_date, receipt]
+
+  - id: send_renewal_confirmation
+    name: Send Renewal Confirmation
+    description: Thank member and provide receipt and new expiration date
+    node_type: agent
+    agent: member-engagement
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    template: renewal_thank_you_confirmation
+    attachments: [receipt, updated_membership_card]
+    tone: grateful_enthusiastic
+
+  - id: update_member_record
+    name: Update Member Record
+    description: Update CRM with new expiration date and payment info
+    node_type: function
+    inputs: [member_id, new_expiration_date, payment_record]
+    outputs: [member_record_updated]
+
+  - id: schedule_next_renewal_campaign
+    name: Schedule Next Year's Renewal Campaign
+    description: Set trigger for next year's renewal sequence
+    node_type: function
+    outputs: [next_campaign_scheduled, trigger_date]
+
+# Workflow Edges
+
+edges:
+  # INITIALIZATION
+  - source: START
+    target: initialize_renewal_campaign
+
+  - source: initialize_renewal_campaign
+    target: calculate_renewal_rate
+
+  # EARLY REMINDER
+  - source: calculate_renewal_rate
+    target: send_90_day_reminder
+
+  - source: send_90_day_reminder
+    target: track_90_day_engagement
+
+  # STANDARD REMINDER
+  - source: track_90_day_engagement
+    target: send_60_day_reminder
+
+  - source: send_60_day_reminder
+    target: check_auto_renew_status
+
+  - source: check_auto_renew_status
+    target: send_auto_renew_confirmation
+    condition: auto_renew_enabled
+
+  - source: check_auto_renew_status
+    target: send_30_day_reminder
+    condition: manual_renewal_required
+
+  - source: send_auto_renew_confirmation
+    target: process_renewal_payment
+
+  - source: send_30_day_reminder
+    target: segment_engagement_level
+
+  # URGENT REMINDER
+  - source: segment_engagement_level
+    target: send_14_day_urgent_reminder
+
+  - source: send_14_day_urgent_reminder
+    target: send_7_day_final_reminder
+
+  - source: send_7_day_final_reminder
+    target: low_engagement_phone_outreach
+    condition: low_engagement_and_not_renewed
+
+  - source: send_7_day_final_reminder
+    target: send_3_day_last_chance
+    condition: high_or_medium_engagement
+
+  - source: low_engagement_phone_outreach
+    target: send_3_day_last_chance
+
+  # EXPIRATION
+  - source: send_3_day_last_chance
+    target: check_renewal_status
+
+  - source: check_renewal_status
+    target: process_renewal_payment
+    condition: payment_received
+
+  - source: check_renewal_status
+    target: send_expiration_day_notice
+    condition: no_payment
+
+  - source: send_expiration_day_notice
+    target: send_immediate_post_expiration
+
+  # GRACE PERIOD
+  - source: send_immediate_post_expiration
+    target: update_member_status_grace
+
+  - source: update_member_status_grace
+    target: send_7_day_grace_reminder
+
+  - source: send_7_day_grace_reminder
+    target: send_14_day_grace_reminder
+
+  - source: send_14_day_grace_reminder
+    target: send_21_day_grace_reminder
+
+  - source: send_21_day_grace_reminder
+    target: send_grace_period_final_notice
+
+  - source: send_grace_period_final_notice
+    target: check_grace_period_renewal
+
+  - source: check_grace_period_renewal
+    target: process_renewal_payment
+    condition: payment_received
+
+  - source: check_grace_period_renewal
+    target: update_member_status_lapsed
+    condition: no_payment
+
+  # WIN-BACK CAMPAIGN
+  - source: update_member_status_lapsed
+    target: send_lapsed_member_survey
+
+  - source: send_lapsed_member_survey
+    target: analyze_lapse_reason
+
+  - source: analyze_lapse_reason
+    target: send_win_back_offer_1
+
+  - source: send_win_back_offer_1
+    target: send_win_back_offer_2
+
+  - source: send_win_back_offer_2
+    target: send_final_win_back
+
+  - source: send_final_win_back
+    target: categorize_final_status
+
+  - source: categorize_final_status
+    target: process_renewal_payment
+    condition: payment_received
+
+  - source: categorize_final_status
+    target: END
+    condition: churned
+
+  # RENEWAL CONFIRMATION PATH
+  - source: process_renewal_payment
+    target: send_renewal_confirmation
+
+  - source: send_renewal_confirmation
+    target: update_member_record
+
+  - source: update_member_record
+    target: schedule_next_renewal_campaign
+
+  - source: schedule_next_renewal_campaign
+    target: END
+
+# Integration Points
+integrations:
+  crm:
+    - action: load_member_data
+      timing: initialization
+    - action: update_member_status
+      timing: status_changes
+    - action: record_payment
+      timing: payment_received
+
+  payment_processor:
+    - action: process_credit_card
+      gateway: stripe
+    - action: send_receipt
+      automatic: true
+
+  email_platform:
+    - action: send_campaign_emails
+      provider: mailchimp
+    - action: track_engagement
+      metrics: [opens, clicks, unsubscribes]
+
+  phone_system:
+    - action: schedule_outbound_calls
+      for: low_engagement_members
+    - action: log_call_outcomes
+      required: true
+
+  analytics:
+    - action: track_conversion_funnel
+      stages: [90d, 60d, 30d, expiration, grace, lapsed]
+    - action: measure_campaign_roi
+      continuous: true
+
+# Timeline
+timeline:
+  total_duration: 150_days
+  key_dates:
+    - T-90: Early reminder sent
+    - T-60: Benefits reminder sent
+    - T-30: Value reminder sent (or auto-renew confirmation)
+    - T-14: Urgent reminder sent
+    - T-7: Final reminder sent (phone outreach for at-risk)
+    - T-3: Last chance notice sent
+    - T-0: Expiration day notice
+    - T+1: Grace period begins
+    - T+30: Grace period ends, lapsed status
+    - T+45: First win-back offer
+    - T+60: Second win-back offer
+    - T+90: Final win-back offer
+    - T+120: End of campaign
+
+# Success Metrics
+success_criteria:
+  - metric: overall_renewal_rate
+    target: 85%
+    measurement: renewals / eligible_members
+
+  - metric: early_renewal_rate
+    target: 40%
+    measurement: renewals_before_T-30 / eligible_members
+
+  - metric: grace_period_recovery_rate
+    target: 50%
+    measurement: renewals_during_grace / expired_members
+
+  - metric: win_back_success_rate
+    target: 15%
+    measurement: lapsed_renewals / lapsed_members
+
+  - metric: email_engagement_rate
+    target: 35%
+    measurement: emails_opened / emails_sent
+
+  - metric: auto_renew_enrollment
+    target: 60%
+    measurement: auto_renew_members / total_members
+
+# Cost Analysis
+cost_analysis:
+  time_saved_per_member: 2_hours
+  members_processed_annually: 500
+  annual_time_saved: 1000_hours
+  hourly_rate: 50
+  annual_savings: 50000
+  implementation_cost: 15000
+  payback_period_months: 3.6
+  three_year_roi: 135000
+  additional_revenue_from_improved_retention: 25000_annually
+
+---
+# End of Member Renewal Workflow Template

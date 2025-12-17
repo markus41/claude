@@ -1,0 +1,151 @@
+---
+# Professional Certification Program Workflow
+# Complete certification lifecycle from application through exam and maintenance
+
+name: certification-program
+version: 1.0.0
+description: Comprehensive professional certification program automation - application processing, eligibility verification, exam scheduling, results processing, and credential maintenance
+category: professional-development
+estimated_duration: ongoing
+automation_score: 81
+
+metadata:
+  author: exec-automator
+  created: 2025-12-17
+  updated: 2025-12-17
+  tags: [certification, credentialing, professional-development, exam, continuing-education]
+  brand_voice: brookside_bi_professional
+  compliance: certification_accreditation_standards
+
+# Workflow Phases
+phases:
+  - name: application-intake
+    description: Application submission and fee payment
+    duration_days: 1
+    critical_path: true
+
+  - name: eligibility-verification
+    description: Verify education, experience, and eligibility requirements
+    duration_days: 14
+    critical_path: true
+
+  - name: exam-scheduling
+    description: Candidate schedules and takes exam
+    duration_days: 60
+    critical_path: true
+
+  - name: exam-administration
+    description: Exam delivery and proctoring
+    duration_days: 1
+    critical_path: true
+
+  - name: results-processing
+    description: Scoring, results notification, appeals
+    duration_days: 14
+    critical_path: true
+
+  - name: credentialing
+    description: Issue certificate, update directory
+    duration_days: 7
+    critical_path: false
+
+  - name: maintenance
+    description: Continuing education, renewal, recertification
+    duration_days: ongoing
+    critical_path: false
+
+# State Schema - Simplified example (see full template above for complete schema)
+state_schema:
+  type: CertificationProgramState
+  fields:
+    candidate_id: string
+    candidate_name: string
+    certification_type: enum[foundation, professional, advanced, specialist]
+    application_status: enum[submitted, under_review, approved, denied, incomplete]
+    eligibility_approved: boolean
+    exam_passed: boolean
+    certificate_issued: boolean
+    credential_expiration_date: date
+    ce_credits_earned: decimal
+    ce_credits_required: decimal
+    recertification_status: enum[active, expiring_soon, expired, revoked]
+
+# Simplified nodes - see full workflow template file for comprehensive implementation
+nodes:
+  - id: submit_certification_application
+    name: Submit Certification Application
+    timing: candidate_initiated
+
+  - id: verify_eligibility
+    name: Determine Candidate Eligibility
+    timing: within_14_days
+    human_in_loop: true
+
+  - id: candidate_schedules_exam
+    name: Candidate Schedules Exam
+    condition: eligibility_approved
+
+  - id: administer_exam
+    name: Administer Certification Exam
+    timing: scheduled_exam_date
+
+  - id: score_exam
+    name: Score Certification Exam
+    timing: within_72_hours
+
+  - id: issue_certification
+    name: Issue Certification
+    condition: exam_passed
+
+  - id: track_continuing_education
+    name: Track Continuing Education Credits
+    continuous: true
+
+  - id: send_renewal_notification
+    name: Send Renewal Notification
+    timing: 90_days_before_expiration
+
+edges:
+  - source: START
+    target: submit_certification_application
+  - source: submit_certification_application
+    target: verify_eligibility
+  - source: verify_eligibility
+    target: candidate_schedules_exam
+    condition: approved
+  - source: verify_eligibility
+    target: END
+    condition: denied
+  - source: candidate_schedules_exam
+    target: administer_exam
+  - source: administer_exam
+    target: score_exam
+  - source: score_exam
+    target: issue_certification
+    condition: passed
+  - source: score_exam
+    target: END
+    condition: failed
+  - source: issue_certification
+    target: track_continuing_education
+  - source: track_continuing_education
+    target: send_renewal_notification
+  - source: send_renewal_notification
+    target: END
+
+success_criteria:
+  - metric: application_processing_time
+    target: 14_days
+  - metric: exam_pass_rate
+    target: 70%
+  - metric: renewal_rate
+    target: 85%
+
+cost_analysis:
+  time_saved_per_candidate: 5_hours
+  candidates_annually: 500
+  annual_time_saved: 2500_hours
+  hourly_rate: 55
+  annual_savings: 137500
+
+---

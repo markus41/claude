@@ -1,0 +1,889 @@
+---
+# Sponsorship Sales Pipeline Workflow
+# Complete sponsorship lifecycle from prospecting through fulfillment
+
+name: sponsor-acquisition
+version: 1.0.0
+description: Comprehensive sponsorship sales pipeline - prospecting, proposal development, negotiation, contract, activation, and fulfillment reporting
+category: revenue
+estimated_duration: 180_days
+automation_score: 82
+
+metadata:
+  author: exec-automator
+  created: 2025-12-17
+  updated: 2025-12-17
+  tags: [sponsorship, revenue, sales, partnerships, corporate-relations, fulfillment]
+  brand_voice: brookside_bi_professional
+  compliance: sales_and_contract_standards
+
+# Workflow Phases
+phases:
+  - name: prospecting
+    description: Identify and qualify potential sponsors
+    duration_days: 30
+    critical_path: true
+
+  - name: cultivation
+    description: Relationship building and needs assessment
+    duration_days: 30
+    critical_path: true
+
+  - name: proposal
+    description: Custom proposal development and presentation
+    duration_days: 21
+    critical_path: true
+
+  - name: negotiation
+    description: Contract negotiation and finalization
+    duration_days: 14
+    critical_path: true
+
+  - name: activation
+    description: Sponsor onboarding and benefit activation
+    duration_days: 30
+    critical_path: false
+
+  - name: fulfillment
+    description: Deliver benefits and track engagement
+    duration_days: 365
+    critical_path: false
+
+  - name: stewardship
+    description: Recognition, reporting, and renewal cultivation
+    duration_days: ongoing
+    critical_path: false
+
+# State Schema
+state_schema:
+  type: SponsorAcquisitionState
+  fields:
+    # Prospect Information
+    prospect_id: string
+    company_name: string
+    industry: string
+    company_size: enum[small, medium, large, enterprise]
+    decision_maker_name: string
+    decision_maker_title: string
+    decision_maker_email: string
+    decision_maker_phone: string
+    influencers: array[Contact]
+
+    # Qualification
+    qualified: boolean
+    qualification_score: integer
+    budget_range: string
+    sponsorship_objectives: array[string]
+    past_sponsorship_history: string
+    competitor_sponsorships: array[string]
+
+    # Relationship Tracking
+    touchpoints: array[Touchpoint]
+    meetings_held: integer
+    last_contact_date: date
+    relationship_strength: enum[cold, warm, hot]
+    champion_identified: boolean
+
+    # Proposal Details
+    proposal_sent: boolean
+    proposal_date: date
+    sponsorship_tier: enum[title, platinum, gold, silver, bronze, in_kind]
+    sponsorship_amount: decimal
+    custom_benefits_package: array[Benefit]
+    proposal_presentation_scheduled: boolean
+
+    # Negotiation
+    negotiation_stage: enum[initial_proposal, counter_offer, final_terms, contract_review]
+    objections_raised: array[Objection]
+    compromises_made: array[Compromise]
+    legal_review_required: boolean
+
+    # Contract
+    contract_sent: boolean
+    contract_signed: boolean
+    contract_date: date
+    payment_terms: string
+    payment_received: boolean
+    payment_date: date
+
+    # Activation
+    sponsor_onboarded: boolean
+    logo_assets_received: boolean
+    booth_details_confirmed: boolean
+    speaking_opportunity_confirmed: boolean
+    email_blast_content_received: boolean
+
+    # Fulfillment Tracking
+    benefits_delivered: array[BenefitDelivery]
+    logo_displayed_count: integer
+    email_mentions_count: integer
+    booth_traffic_count: integer
+    speaking_attendance_count: integer
+    website_impressions: integer
+    social_media_mentions: integer
+
+    # Satisfaction and Renewal
+    sponsor_satisfaction_score: decimal
+    mid_year_checkin_completed: boolean
+    renewal_likelihood: enum[low, medium, high, committed]
+    renewal_tier: string
+    renewal_amount: decimal
+
+    # Workflow State
+    current_phase: enum[prospecting, cultivation, proposal, negotiation, activation, fulfillment, stewardship, renewed, lost]
+    pipeline_stage: enum[lead, qualified, proposal, negotiation, contract, active, renewed, churned]
+    errors: array[Error]
+    human_actions: array[HumanAction]
+
+# LangGraph Nodes
+nodes:
+  # PROSPECTING PHASE
+
+  - id: initialize_prospect_record
+    name: Initialize Prospect Record
+    description: Create prospect in CRM and assign to development team
+    node_type: function
+    agent: development-director
+    inputs: [company_name, contact_info, lead_source]
+    outputs: [prospect_id, assigned_to, initial_outreach_date]
+    timing: lead_received
+    error_handling: retry_3_times
+
+  - id: research_prospect
+    name: Research Prospect Company
+    description: Gather intelligence on company, decision makers, and fit
+    node_type: agent
+    agent: development-director
+    tool_calls:
+      - mcp__exec-automator__web_research
+    outputs: [company_profile, decision_makers, sponsorship_fit_score]
+    research_areas:
+      - company_size_and_revenue
+      - industry_and_products
+      - marketing_objectives
+      - community_involvement
+      - past_sponsorships
+      - competitors_sponsored
+
+  - id: qualify_prospect
+    name: Qualify Prospect
+    description: Score prospect based on fit, budget, and likelihood
+    node_type: agent
+    agent: development-director
+    inputs: [company_profile, budget_indicators, strategic_fit]
+    outputs: [qualification_score, qualified_status, recommended_tier]
+    scoring_criteria:
+      - budget_capacity: 30_points
+      - strategic_alignment: 25_points
+      - decision_maker_access: 20_points
+      - timeline_urgency: 15_points
+      - past_sponsorship_success: 10_points
+    qualification_threshold: 60_points
+
+  - id: disqualify_prospect
+    name: Disqualify Prospect
+    description: Move unqualified prospects to nurture list
+    node_type: function
+    condition: qualification_score < 60
+    outputs: [prospect_status_updated, added_to_nurture_list]
+
+  # CULTIVATION PHASE
+
+  - id: send_initial_outreach
+    name: Send Initial Outreach Email
+    description: Personalized introduction and value proposition
+    node_type: agent
+    agent: development-director
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    condition: qualified == true
+    template: sponsorship_initial_outreach
+    personalization:
+      - company_name
+      - industry_specific_value
+      - decision_maker_name
+      - meeting_request
+    tone: professional_consultative
+
+  - id: schedule_discovery_call
+    name: Schedule Discovery Call
+    description: Book exploratory call to understand sponsor objectives
+    node_type: human_in_loop
+    agent: development-director
+    tool_calls:
+      - mcp__exec-automator__schedule_meeting
+    timing: 3_days_after_outreach
+    call_objectives:
+      - understand_marketing_goals
+      - identify_target_audiences
+      - discuss_budget_range
+      - assess_timeline
+      - build_rapport
+
+  - id: conduct_needs_assessment
+    name: Conduct Needs Assessment
+    description: Deep-dive call to understand sponsor needs and objectives
+    node_type: human_in_loop
+    agent: development-director
+    discovery_questions:
+      - what_are_your_marketing_objectives_this_year
+      - who_is_your_target_audience
+      - what_sponsorships_have_worked_well_for_you
+      - what_is_your_decision_making_process
+      - what_is_your_timeline_and_budget_range
+      - who_else_should_be_involved_in_this_conversation
+    outputs: [needs_assessment_summary, custom_package_requirements]
+
+  - id: send_follow_up_resources
+    name: Send Follow-Up Resources
+    description: Send attendee demographics, past sponsor testimonials, case studies
+    node_type: agent
+    agent: development-director
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: 1_day_after_discovery_call
+    template: sponsorship_follow_up_resources
+    attachments:
+      - attendee_demographics_report
+      - past_sponsor_testimonials
+      - event_highlights_video
+      - sponsor_satisfaction_data
+
+  # PROPOSAL PHASE
+
+  - id: develop_custom_proposal
+    name: Develop Custom Sponsorship Proposal
+    description: Create tailored proposal based on prospect needs
+    node_type: agent
+    agent: development-director
+    tool_calls:
+      - mcp__exec-automator__generate_document
+    inputs: [needs_assessment, recommended_tier, custom_benefits]
+    outputs: [proposal_document, investment_amount, benefits_summary]
+    template: sponsorship_proposal_template
+    proposal_sections:
+      - executive_summary
+      - organization_overview
+      - event_opportunity
+      - target_audience_demographics
+      - sponsorship_investment_tiers
+      - recommended_package_for_prospect
+      - custom_benefits_activation_plan
+      - deliverables_timeline
+      - roi_metrics
+      - testimonials_and_case_studies
+      - next_steps
+
+  - id: internal_proposal_review
+    name: Internal Proposal Review
+    description: Executive director reviews proposal before sending
+    node_type: human_in_loop
+    agent: development-director
+    approver_role: executive_director
+    timeout_hours: 48
+    reminder_hours: 24
+
+  - id: send_proposal
+    name: Send Sponsorship Proposal
+    description: Email proposal with personalized cover letter
+    node_type: agent
+    agent: development-director
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    template: sponsorship_proposal_cover_letter
+    attachments: [proposal_document]
+    include:
+      - personalized_thank_you
+      - proposal_highlights
+      - meeting_request_to_review
+      - contact_for_questions
+
+  - id: schedule_proposal_presentation
+    name: Schedule Proposal Presentation
+    description: Book meeting to walk through proposal
+    node_type: human_in_loop
+    agent: development-director
+    tool_calls:
+      - mcp__exec-automator__schedule_meeting
+    timing: 3_days_after_proposal_sent
+    presentation_agenda:
+      - proposal_overview
+      - benefits_walkthrough
+      - roi_discussion
+      - customization_options
+      - answer_questions
+      - discuss_next_steps
+
+  - id: conduct_proposal_presentation
+    name: Conduct Proposal Presentation
+    description: Present proposal and address questions
+    node_type: human_in_loop
+    agent: development-director
+    participants: [decision_maker, influencers, executive_director]
+    outputs: [feedback_received, objections_identified, interest_level]
+
+  - id: send_proposal_follow_up
+    name: Send Proposal Follow-Up
+    description: Thank you email and address any questions
+    node_type: agent
+    agent: development-director
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: 1_day_after_presentation
+    template: proposal_presentation_follow_up
+    include:
+      - thank_you_for_time
+      - recap_of_discussion
+      - answers_to_questions_raised
+      - revised_proposal_if_needed
+      - decision_timeline
+
+  # NEGOTIATION PHASE
+
+  - id: handle_objections
+    name: Handle Objections and Concerns
+    description: Address pricing, benefits, or timing objections
+    node_type: agent
+    agent: development-director
+    inputs: [objections_raised]
+    outputs: [objection_responses, proposal_modifications]
+    common_objections:
+      - budget_too_high: offer_lower_tier_or_payment_plan
+      - benefits_not_aligned: customize_benefits_package
+      - timeline_not_right: offer_multi_year_or_future_event
+      - need_board_approval: provide_board_presentation_materials
+      - comparing_other_opportunities: provide_competitive_differentiation
+
+  - id: revise_proposal
+    name: Revise Proposal Based on Feedback
+    description: Modify proposal to address concerns
+    node_type: agent
+    agent: development-director
+    tool_calls:
+      - mcp__exec-automator__generate_document
+    condition: modifications_requested
+    outputs: [revised_proposal]
+
+  - id: negotiate_final_terms
+    name: Negotiate Final Terms
+    description: Finalize investment amount, benefits, and contract terms
+    node_type: human_in_loop
+    agent: development-director
+    negotiation_parameters:
+      - minimum_acceptable_investment
+      - non_negotiable_benefits
+      - flexible_benefits
+      - payment_terms_options
+    outputs: [final_terms_agreed, contract_ready]
+
+  - id: generate_sponsorship_contract
+    name: Generate Sponsorship Contract
+    description: Create contract from agreed terms
+    node_type: agent
+    agent: development-director
+    tool_calls:
+      - mcp__exec-automator__generate_document
+    inputs: [final_terms, benefits_package, payment_terms]
+    outputs: [contract_document]
+    template: sponsorship_contract_template
+    contract_sections:
+      - parties
+      - sponsorship_level_and_investment
+      - benefits_and_deliverables
+      - payment_terms_and_schedule
+      - logo_and_trademark_usage
+      - cancellation_policy
+      - liability_and_insurance
+      - signatures
+
+  - id: legal_review_contract
+    name: Legal Review of Contract
+    description: Internal legal review if required
+    node_type: human_in_loop
+    agent: development-director
+    approver_role: legal_counsel
+    condition: investment_amount > 10000
+    timeout_hours: 72
+
+  - id: send_contract_for_signature
+    name: Send Contract for Signature
+    description: Email contract with e-signature request
+    node_type: agent
+    agent: development-director
+    tool_calls:
+      - mcp__exec-automator__send_notification
+      - mcp__exec-automator__send_e_signature_request
+    template: contract_signature_request
+    include:
+      - contract_document
+      - e_signature_link
+      - payment_instructions
+      - next_steps_after_signing
+
+  - id: track_contract_signature
+    name: Track Contract Signature Status
+    description: Monitor contract signing and send reminders
+    node_type: agent
+    agent: development-director
+    continuous: true
+    duration_days: 14
+    reminder_schedule:
+      - 3_days_after_sent
+      - 7_days_after_sent
+      - 10_days_after_sent
+
+  - id: process_contract_execution
+    name: Process Executed Contract
+    description: File contract, issue invoice, update CRM
+    node_type: function
+    condition: contract_signed == true
+    outputs: [contract_filed, invoice_sent, crm_updated, sponsor_status_active]
+
+  # ACTIVATION PHASE
+
+  - id: send_sponsor_welcome_packet
+    name: Send Sponsor Welcome Packet
+    description: Onboarding email with next steps and deadlines
+    node_type: agent
+    agent: development-director
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: 1_day_after_contract_signed
+    template: sponsor_welcome_packet
+    include:
+      - thank_you_and_welcome
+      - benefits_activation_timeline
+      - asset_submission_deadlines
+      - booth_details_form
+      - speaking_opportunity_details
+      - sponsor_contact_info
+
+  - id: collect_sponsor_assets
+    name: Collect Sponsor Logo and Assets
+    description: Request and track receipt of logos, booth info, speaker bios
+    node_type: agent
+    agent: development-director
+    tool_calls:
+      - mcp__exec-automator__send_notification
+      - mcp__exec-automator__collect_responses
+    assets_needed:
+      - high_res_logo_files
+      - company_description
+      - booth_staff_names
+      - speaker_bio_and_headshot
+      - email_blast_content
+      - social_media_handles
+    deadline: 30_days_before_event
+
+  - id: activate_sponsor_benefits
+    name: Activate Sponsor Benefits
+    description: Add logos to website, schedule email blasts, confirm booth
+    node_type: agent
+    agent: development-director
+    tool_calls:
+      - mcp__exec-automator__update_website
+      - mcp__exec-automator__schedule_email_campaign
+    activation_checklist:
+      - logo_on_website
+      - logo_on_event_materials
+      - social_media_announcements
+      - email_blast_scheduled
+      - booth_location_assigned
+      - speaking_slot_confirmed
+
+  - id: assign_sponsor_liaison
+    name: Assign Sponsor Liaison
+    description: Assign staff member as point of contact for sponsor
+    node_type: function
+    outputs: [liaison_assigned, sponsor_notified]
+
+  # FULFILLMENT PHASE
+
+  - id: track_benefit_delivery
+    name: Track Benefit Delivery
+    description: Monitor and log all benefits delivered
+    node_type: agent
+    agent: development-director
+    continuous: true
+    duration_days: 365
+    benefits_tracking:
+      - logo_displays_count
+      - email_mentions_count
+      - social_media_posts_count
+      - website_page_views
+      - booth_traffic_estimates
+      - speaking_session_attendance
+      - networking_introductions_made
+
+  - id: provide_real_time_event_support
+    name: Provide Real-Time Event Support
+    description: On-site liaison support during event
+    node_type: human_in_loop
+    agent: development-director
+    timing: event_day
+    support_services:
+      - booth_setup_assistance
+      - technology_troubleshooting
+      - networking_introductions
+      - speaker_prep_and_support
+      - photo_opportunities
+
+  - id: collect_sponsor_feedback_during_event
+    name: Collect Sponsor Feedback During Event
+    description: Quick check-in to ensure satisfaction
+    node_type: human_in_loop
+    agent: development-director
+    timing: event_day
+    checkin_questions:
+      - how_is_everything_going
+      - any_issues_we_can_help_with
+      - meeting_your_objectives
+      - what_could_be_improved
+
+  - id: send_post_event_thank_you
+    name: Send Post-Event Thank You
+    description: Thank sponsor and preview fulfillment report
+    node_type: agent
+    agent: development-director
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: 2_days_after_event
+    template: sponsor_post_event_thank_you
+    include:
+      - personal_thank_you
+      - event_highlights
+      - preliminary_results
+      - fulfillment_report_timeline
+
+  # STEWARDSHIP PHASE
+
+  - id: generate_sponsor_fulfillment_report
+    name: Generate Sponsor Fulfillment Report
+    description: Detailed report of all benefits delivered and metrics
+    node_type: agent
+    agent: development-director
+    tool_calls:
+      - mcp__exec-automator__generate_document
+    timing: 14_days_after_event
+    template: sponsor_fulfillment_report_template
+    report_sections:
+      - executive_summary
+      - event_overview_and_attendance
+      - benefits_delivered_checklist
+      - brand_exposure_metrics
+      - booth_traffic_data
+      - speaking_session_attendance
+      - social_media_analytics
+      - website_analytics
+      - photo_gallery
+      - attendee_testimonials
+      - roi_summary
+      - thank_you_and_renewal_preview
+
+  - id: send_fulfillment_report
+    name: Send Fulfillment Report to Sponsor
+    description: Email fulfillment report with thank you
+    node_type: agent
+    agent: development-director
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    template: fulfillment_report_delivery
+    attachments: [fulfillment_report]
+
+  - id: schedule_sponsor_debrief_call
+    name: Schedule Sponsor Debrief Call
+    description: Book call to review results and discuss renewal
+    node_type: human_in_loop
+    agent: development-director
+    tool_calls:
+      - mcp__exec-automator__schedule_meeting
+    timing: 30_days_after_event
+    call_objectives:
+      - review_fulfillment_report
+      - gather_sponsor_feedback
+      - assess_satisfaction
+      - discuss_next_year_opportunities
+      - gauge_renewal_interest
+
+  - id: conduct_mid_year_sponsor_checkin
+    name: Conduct Mid-Year Sponsor Check-In
+    description: Touch base call to maintain relationship
+    node_type: human_in_loop
+    agent: development-director
+    timing: 6_months_after_event
+    checkin_topics:
+      - how_is_your_year_going
+      - any_ways_we_can_support_you
+      - upcoming_opportunities
+      - early_renewal_discussion
+
+  - id: send_renewal_invitation
+    name: Send Renewal Invitation
+    description: Early invitation to renew sponsorship for next year
+    node_type: agent
+    agent: development-director
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: 9_months_after_event
+    template: sponsorship_renewal_invitation
+    personalization:
+      - thank_you_for_partnership
+      - this_year_highlights
+      - next_year_opportunities
+      - early_bird_renewal_incentive
+      - meeting_request
+
+  - id: track_renewal_decision
+    name: Track Renewal Decision
+    description: Monitor renewal interest and follow up
+    node_type: agent
+    agent: development-director
+    continuous: true
+    duration_days: 60
+    outputs: [renewal_status, renewal_tier, renewal_amount]
+
+# Workflow Edges
+edges:
+  # PROSPECTING FLOW
+  - source: START
+    target: initialize_prospect_record
+
+  - source: initialize_prospect_record
+    target: research_prospect
+
+  - source: research_prospect
+    target: qualify_prospect
+
+  - source: qualify_prospect
+    target: disqualify_prospect
+    condition: qualification_score < 60
+
+  - source: qualify_prospect
+    target: send_initial_outreach
+    condition: qualification_score >= 60
+
+  # CULTIVATION FLOW
+  - source: send_initial_outreach
+    target: schedule_discovery_call
+
+  - source: schedule_discovery_call
+    target: conduct_needs_assessment
+
+  - source: conduct_needs_assessment
+    target: send_follow_up_resources
+
+  # PROPOSAL FLOW
+  - source: send_follow_up_resources
+    target: develop_custom_proposal
+
+  - source: develop_custom_proposal
+    target: internal_proposal_review
+
+  - source: internal_proposal_review
+    target: send_proposal
+    condition: approved
+
+  - source: internal_proposal_review
+    target: develop_custom_proposal
+    condition: revision_requested
+
+  - source: send_proposal
+    target: schedule_proposal_presentation
+
+  - source: schedule_proposal_presentation
+    target: conduct_proposal_presentation
+
+  - source: conduct_proposal_presentation
+    target: send_proposal_follow_up
+
+  # NEGOTIATION FLOW
+  - source: send_proposal_follow_up
+    target: handle_objections
+    condition: objections_raised
+
+  - source: send_proposal_follow_up
+    target: negotiate_final_terms
+    condition: no_objections
+
+  - source: handle_objections
+    target: revise_proposal
+    condition: modifications_requested
+
+  - source: handle_objections
+    target: negotiate_final_terms
+    condition: objections_resolved
+
+  - source: revise_proposal
+    target: conduct_proposal_presentation
+
+  - source: negotiate_final_terms
+    target: generate_sponsorship_contract
+
+  - source: generate_sponsorship_contract
+    target: legal_review_contract
+    condition: investment > 10000
+
+  - source: generate_sponsorship_contract
+    target: send_contract_for_signature
+    condition: investment <= 10000
+
+  - source: legal_review_contract
+    target: send_contract_for_signature
+
+  - source: send_contract_for_signature
+    target: track_contract_signature
+
+  - source: track_contract_signature
+    target: process_contract_execution
+    condition: contract_signed
+
+  # ACTIVATION FLOW
+  - source: process_contract_execution
+    target: send_sponsor_welcome_packet
+
+  - source: send_sponsor_welcome_packet
+    target: collect_sponsor_assets
+
+  - source: collect_sponsor_assets
+    target: activate_sponsor_benefits
+
+  - source: activate_sponsor_benefits
+    target: assign_sponsor_liaison
+
+  # FULFILLMENT FLOW
+  - source: assign_sponsor_liaison
+    target: track_benefit_delivery
+
+  - source: track_benefit_delivery
+    target: provide_real_time_event_support
+    trigger: event_day
+
+  - source: provide_real_time_event_support
+    target: collect_sponsor_feedback_during_event
+
+  - source: collect_sponsor_feedback_during_event
+    target: send_post_event_thank_you
+
+  # STEWARDSHIP FLOW
+  - source: send_post_event_thank_you
+    target: generate_sponsor_fulfillment_report
+
+  - source: generate_sponsor_fulfillment_report
+    target: send_fulfillment_report
+
+  - source: send_fulfillment_report
+    target: schedule_sponsor_debrief_call
+
+  - source: schedule_sponsor_debrief_call
+    target: conduct_mid_year_sponsor_checkin
+
+  - source: conduct_mid_year_sponsor_checkin
+    target: send_renewal_invitation
+
+  - source: send_renewal_invitation
+    target: track_renewal_decision
+
+  - source: track_renewal_decision
+    target: END
+
+# Human Touch Points
+human_approvals:
+  - checkpoint: schedule_discovery_call
+    approver: development_director
+    decision_type: schedule_and_conduct
+    timeout: immediate
+
+  - checkpoint: conduct_needs_assessment
+    approver: development_director
+    decision_type: discovery_call_execution
+    timeout: immediate
+
+  - checkpoint: internal_proposal_review
+    approver: executive_director
+    decision_type: approve_or_revise
+    timeout: 48_hours
+
+  - checkpoint: conduct_proposal_presentation
+    approver: development_director
+    decision_type: presentation_execution
+    timeout: immediate
+
+  - checkpoint: negotiate_final_terms
+    approver: development_director
+    decision_type: negotiation_execution
+    timeout: immediate
+
+  - checkpoint: legal_review_contract
+    approver: legal_counsel
+    decision_type: legal_approval
+    timeout: 72_hours
+
+# Integration Points
+integrations:
+  crm:
+    - action: create_prospect_record
+      timing: lead_received
+    - action: track_pipeline_stage
+      timing: continuous
+    - action: log_all_touchpoints
+      timing: continuous
+
+  e_signature:
+    - provider: docusign
+    - action: send_contract_for_signature
+      timing: contract_ready
+    - action: track_signature_status
+      timing: continuous
+
+  accounting:
+    - action: create_invoice
+      timing: contract_signed
+    - action: track_payment
+      timing: continuous
+
+  project_management:
+    - action: create_activation_checklist
+      timing: contract_signed
+    - action: track_deliverables
+      timing: continuous
+
+# Success Metrics
+success_criteria:
+  - metric: prospect_to_proposal_conversion
+    target: 40%
+    measurement: proposals_sent / qualified_prospects
+
+  - metric: proposal_to_contract_conversion
+    target: 60%
+    measurement: contracts_signed / proposals_sent
+
+  - metric: sponsor_satisfaction_score
+    target: 4.5_out_of_5
+    measurement: average_satisfaction_rating
+
+  - metric: renewal_rate
+    target: 85%
+    measurement: sponsors_renewed / total_sponsors
+
+  - metric: average_deal_size
+    target: 15000
+    measurement: total_sponsorship_revenue / number_of_sponsors
+
+  - metric: sales_cycle_length
+    target: 90_days
+    measurement: average_days_from_lead_to_contract
+
+# Cost Analysis
+cost_analysis:
+  time_saved_per_sponsor: 15_hours
+  sponsors_acquired_annually: 30
+  annual_time_saved: 450_hours
+  hourly_rate: 75
+  annual_savings: 33750
+  implementation_cost: 10000
+  payback_period_months: 3.6
+  three_year_roi: 91250
+  increased_revenue_from_better_stewardship: 50000_annually
+
+---
+# End of Sponsor Acquisition Workflow Template

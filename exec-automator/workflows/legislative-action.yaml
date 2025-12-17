@@ -1,0 +1,799 @@
+---
+# Legislative Action Campaign Workflow
+# Complete advocacy campaign from issue monitoring through grassroots mobilization
+
+name: legislative-action
+version: 1.0.0
+description: Comprehensive legislative action and advocacy campaign - issue monitoring, position development, coalition building, grassroots mobilization, and legislative engagement
+category: advocacy
+estimated_duration: 120_days
+automation_score: 75
+
+metadata:
+  author: exec-automator
+  created: 2025-12-17
+  updated: 2025-12-17
+  tags: [advocacy, legislation, grassroots, lobbying, policy, government-affairs]
+  brand_voice: brookside_bi_professional
+  compliance: lobbying_disclosure_requirements
+
+# Workflow Phases
+phases:
+  - name: issue-monitoring
+    description: Track legislation, identify threats and opportunities
+    duration_days: ongoing
+    critical_path: true
+
+  - name: position-development
+    description: Research, analyze, and establish organizational position
+    duration_days: 14
+    critical_path: true
+
+  - name: coalition-building
+    description: Identify and recruit allied organizations
+    duration_days: 14
+    critical_path: false
+
+  - name: grassroots-mobilization
+    description: Activate members for calls, emails, meetings
+    duration_days: 30
+    critical_path: true
+
+  - name: direct-advocacy
+    description: Professional lobbying and legislative meetings
+    duration_days: 60
+    critical_path: true
+
+  - name: campaign-closure
+    description: Outcome tracking, member communication, lessons learned
+    duration_days: 14
+    critical_path: false
+
+# State Schema
+state_schema:
+  type: LegislativeActionState
+  fields:
+    # Legislative Issue
+    issue_id: string
+    bill_number: string
+    bill_title: string
+    bill_sponsor: string
+    bill_status: enum[introduced, committee, floor, passed_chamber, conference, enacted, defeated]
+    legislative_session: string
+    jurisdiction: enum[federal, state, local]
+
+    # Position
+    organizational_position: enum[support, oppose, amend, monitor]
+    position_rationale: string
+    member_impact_analysis: string
+    industry_impact_analysis: string
+    position_approved_by: string
+    position_approval_date: date
+
+    # Coalition
+    coalition_partners: array[Organization]
+    lead_organization: string
+    coalition_strategy: string
+    sign_on_letters_sent: integer
+
+    # Grassroots Campaign
+    action_alert_sent: boolean
+    action_alert_date: date
+    members_mobilized: integer
+    calls_made_to_legislators: integer
+    emails_sent_to_legislators: integer
+    tweets_sent: integer
+    in_district_meetings_held: integer
+
+    # Direct Lobbying
+    lobbyist_assigned: string
+    legislative_meetings_held: array[Meeting]
+    testimony_submitted: boolean
+    amendments_proposed: array[Amendment]
+    votes_secured: integer
+    opposition_votes: integer
+
+    # Campaign Metrics
+    media_mentions: integer
+    social_media_impressions: integer
+    petition_signatures: integer
+    campaign_costs: decimal
+
+    # Outcome
+    bill_outcome: enum[passed, defeated, amended, withdrawn, tabled, pending]
+    victory_or_defeat: enum[victory, defeat, partial_victory, ongoing]
+    member_communication_sent: boolean
+    lessons_learned_documented: boolean
+
+    # Workflow State
+    current_phase: enum[monitoring, position_dev, coalition, grassroots, lobbying, closure, completed]
+    urgency_level: enum[routine, elevated, urgent, critical]
+    errors: array[Error]
+    human_decisions: array[Decision]
+
+# LangGraph Nodes
+nodes:
+  # ISSUE MONITORING PHASE
+
+  - id: monitor_legislative_activity
+    name: Monitor Legislative Activity
+    description: Continuous tracking of bills and regulatory activity
+    node_type: agent
+    agent: government-affairs
+    tool_calls:
+      - mcp__exec-automator__track_legislation
+      - mcp__exec-automator__send_notification
+    continuous: true
+    monitoring_sources:
+      - state_legislature_website
+      - congress_gov
+      - regulatory_agencies
+      - news_alerts
+      - coalition_partners
+    alert_criteria:
+      - bills_introduced_affecting_industry
+      - bills_scheduled_for_hearings
+      - regulatory_comment_periods_opening
+      - vote_dates_set
+
+  - id: identify_priority_legislation
+    name: Identify Priority Legislation
+    description: Flag bills requiring organizational response
+    node_type: agent
+    agent: government-affairs
+    inputs: [new_bills_introduced, member_interests]
+    outputs: [priority_bill_list, threat_or_opportunity_assessment]
+    prioritization_criteria:
+      - member_impact_severity
+      - likelihood_of_passage
+      - time_sensitivity
+      - organizational_capacity
+
+  - id: create_issue_brief
+    name: Create Initial Issue Brief
+    description: Draft summary of bill and preliminary impact analysis
+    node_type: agent
+    agent: government-affairs
+    tool_calls:
+      - mcp__exec-automator__generate_document
+    inputs: [bill_text, bill_summary]
+    outputs: [issue_brief_document]
+    template: legislative_issue_brief
+    brief_sections:
+      - bill_number_and_title
+      - sponsor_and_cosponsors
+      - bill_summary
+      - current_status
+      - key_provisions
+      - potential_member_impact
+      - preliminary_position_options
+      - timeline_and_urgency
+
+  - id: alert_leadership
+    name: Alert Leadership of Priority Issue
+    description: Notify board chair and executive director
+    node_type: agent
+    agent: government-affairs
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    template: legislative_alert_to_leadership
+    recipients: [board_chair, executive_director, government_affairs_committee_chair]
+    include: [issue_brief, recommended_next_steps]
+
+  # POSITION DEVELOPMENT PHASE
+
+  - id: conduct_member_impact_analysis
+    name: Conduct Member Impact Analysis
+    description: Survey or poll members on bill impact
+    node_type: agent
+    agent: government-affairs
+    tool_calls:
+      - mcp__exec-automator__send_notification
+      - mcp__exec-automator__collect_survey_response
+    template: member_impact_survey
+    survey_questions:
+      - how_would_this_bill_affect_your_business
+      - do_you_support_or_oppose_this_bill
+      - what_specific_provisions_concern_you
+      - would_you_be_willing_to_contact_your_legislator
+
+  - id: research_bill_implications
+    name: Research Bill Implications
+    description: Deep-dive policy research and legal analysis
+    node_type: agent
+    agent: government-affairs
+    tool_calls:
+      - mcp__exec-automator__web_research
+    research_areas:
+      - legislative_intent
+      - fiscal_impact
+      - implementation_challenges
+      - industry_precedents
+      - legal_considerations
+    outputs: [research_findings, position_recommendation]
+
+  - id: draft_position_statement
+    name: Draft Position Statement
+    description: Create formal position statement with rationale
+    node_type: agent
+    agent: government-affairs
+    tool_calls:
+      - mcp__exec-automator__generate_document
+    inputs: [member_survey_results, research_findings]
+    outputs: [position_statement_draft]
+    template: legislative_position_statement
+    statement_elements:
+      - official_position
+      - key_talking_points
+      - member_impact_summary
+      - requested_amendments_if_applicable
+      - organizational_background
+
+  - id: government_affairs_committee_review
+    name: Government Affairs Committee Reviews Position
+    description: Committee meeting to review and approve position
+    node_type: human_in_loop
+    agent: government-affairs
+    approver_role: government_affairs_committee
+    timeout_hours: 168
+    meeting_agenda:
+      - issue_brief_presentation
+      - member_impact_results
+      - position_recommendation
+      - discussion_and_debate
+      - vote_on_position
+
+  - id: board_ratification_if_major
+    name: Board Ratification (if major issue)
+    description: Full board approval for high-priority positions
+    node_type: human_in_loop
+    agent: government-affairs
+    approver_role: board_of_directors
+    condition: urgency_level in [urgent, critical]
+    timeout_hours: 72
+
+  # COALITION BUILDING PHASE
+
+  - id: identify_coalition_partners
+    name: Identify Potential Coalition Partners
+    description: Research allied organizations with aligned interests
+    node_type: agent
+    agent: government-affairs
+    inputs: [issue_area, organizational_position]
+    outputs: [potential_partners_list, outreach_priority_ranking]
+    partner_criteria:
+      - aligned_policy_position
+      - political_influence
+      - member_overlap_or_complementarity
+      - resource_capacity
+      - past_collaboration_success
+
+  - id: reach_out_to_coalition_partners
+    name: Reach Out to Coalition Partners
+    description: Contact potential partners to gauge interest
+    node_type: agent
+    agent: government-affairs
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    template: coalition_partnership_outreach
+    include:
+      - issue_overview
+      - our_position
+      - coalition_strategy_proposal
+      - meeting_request
+
+  - id: convene_coalition_strategy_meeting
+    name: Convene Coalition Strategy Meeting
+    description: Virtual or in-person meeting to align strategy
+    node_type: human_in_loop
+    agent: government-affairs
+    tool_calls:
+      - mcp__exec-automator__schedule_meeting
+    meeting_objectives:
+      - align_on_shared_position
+      - divide_advocacy_responsibilities
+      - coordinate_messaging
+      - plan_joint_actions
+    outputs: [coalition_strategy_document, partner_commitments]
+
+  - id: draft_sign_on_letter
+    name: Draft Coalition Sign-On Letter
+    description: Create joint letter to legislators
+    node_type: agent
+    agent: government-affairs
+    tool_calls:
+      - mcp__exec-automator__generate_document
+    template: coalition_sign_on_letter
+    letter_elements:
+      - joint_position_statement
+      - collective_impact_data
+      - specific_ask_to_legislators
+      - signatory_organizations
+
+  - id: collect_sign_on_commitments
+    name: Collect Sign-On Commitments
+    description: Gather coalition partner signatures
+    node_type: agent
+    agent: government-affairs
+    tool_calls:
+      - mcp__exec-automator__collect_responses
+    outputs: [final_signatory_list]
+
+  # GRASSROOTS MOBILIZATION PHASE
+
+  - id: develop_grassroots_strategy
+    name: Develop Grassroots Mobilization Strategy
+    description: Plan member activation tactics and timeline
+    node_type: agent
+    agent: government-affairs
+    inputs: [member_count, legislator_target_list, timeline_urgency]
+    outputs: [grassroots_campaign_plan]
+    tactics:
+      - email_action_alerts
+      - phone_call_campaigns
+      - in_district_meetings
+      - social_media_campaigns
+      - letter_writing_campaigns
+      - testimony_at_hearings
+
+  - id: create_action_alert
+    name: Create Member Action Alert
+    description: Draft compelling action alert email
+    node_type: agent
+    agent: government-affairs
+    tool_calls:
+      - mcp__exec-automator__generate_document
+    template: legislative_action_alert
+    action_alert_elements:
+      - urgent_call_to_action
+      - issue_overview_plain_language
+      - why_members_should_care
+      - specific_actions_to_take
+      - talking_points
+      - easy_action_tools_links
+    tone: urgent_but_not_alarmist
+
+  - id: send_action_alert
+    name: Send Action Alert to Members
+    description: Email blast to entire membership
+    node_type: agent
+    agent: government-affairs
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    recipients: all_members
+    include:
+      - action_alert_email
+      - one_click_advocacy_tool_link
+      - sample_phone_script
+      - legislator_contact_info
+
+  - id: track_member_actions
+    name: Track Member Actions
+    description: Monitor calls, emails, tweets, and meetings
+    node_type: agent
+    agent: government-affairs
+    continuous: true
+    duration_days: 30
+    tool_calls:
+      - mcp__exec-automator__track_responses
+    metrics_tracked:
+      - advocacy_tool_clicks
+      - legislator_emails_sent
+      - phone_calls_reported
+      - social_media_posts
+      - in_district_meeting_requests
+
+  - id: send_progress_updates_to_members
+    name: Send Progress Updates to Members
+    description: Keep members informed of campaign progress
+    node_type: agent
+    agent: government-affairs
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    schedule:
+      - timing: 7_days_after_action_alert
+        template: campaign_progress_update_week_1
+      - timing: 14_days_after_action_alert
+        template: campaign_progress_update_week_2
+      - timing: 21_days_after_action_alert
+        template: final_push_urgent_alert
+    include:
+      - actions_taken_so_far
+      - impact_being_made
+      - what_still_needs_to_happen
+      - renewed_call_to_action
+
+  - id: coordinate_in_district_meetings
+    name: Coordinate In-District Meetings
+    description: Help members schedule meetings with legislators at home
+    node_type: human_in_loop
+    agent: government-affairs
+    tool_calls:
+      - mcp__exec-automator__schedule_meeting
+    support_provided:
+      - meeting_request_templates
+      - talking_points_and_leave_behinds
+      - meeting_preparation_coaching
+      - post_meeting_debrief
+
+  - id: amplify_on_social_media
+    name: Amplify Campaign on Social Media
+    description: Coordinated social media posts and hashtag campaign
+    node_type: agent
+    agent: government-affairs
+    continuous: true
+    duration_days: 30
+    platforms: [twitter, linkedin, facebook]
+    tactics:
+      - daily_advocacy_posts
+      - member_story_spotlights
+      - legislator_mentions_and_tags
+      - hashtag_campaign
+      - retweet_and_share_member_posts
+
+  # DIRECT ADVOCACY PHASE
+
+  - id: assign_professional_lobbyist
+    name: Assign Professional Lobbyist
+    description: Engage staff or contract lobbyist for direct advocacy
+    node_type: function
+    outputs: [lobbyist_assigned, lobbying_strategy]
+
+  - id: schedule_legislative_meetings
+    name: Schedule Legislative Meetings
+    description: Book meetings with key legislators and staff
+    node_type: human_in_loop
+    agent: government-affairs
+    tool_calls:
+      - mcp__exec-automator__schedule_meeting
+    priority_meetings:
+      - bill_sponsor
+      - committee_chair
+      - committee_members
+      - key_swing_votes
+      - home_state_delegation
+
+  - id: conduct_legislative_meetings
+    name: Conduct Legislative Meetings
+    description: Professional lobbying meetings to present position
+    node_type: human_in_loop
+    agent: government-affairs
+    meeting_objectives:
+      - present_organizational_position
+      - share_member_impact_stories
+      - deliver_grassroots_activation_data
+      - request_support_or_opposition
+      - propose_amendments_if_applicable
+    outputs: [meeting_notes, legislator_positions_tracked]
+
+  - id: submit_testimony
+    name: Submit Written or Oral Testimony
+    description: Provide testimony to committee hearing
+    node_type: agent
+    agent: government-affairs
+    tool_calls:
+      - mcp__exec-automator__generate_document
+    condition: hearing_scheduled
+    template: legislative_testimony
+    testimony_elements:
+      - organizational_background
+      - position_statement
+      - impact_analysis
+      - member_stories
+      - specific_recommendations
+      - conclusion_and_ask
+
+  - id: propose_amendments
+    name: Propose Bill Amendments
+    description: Draft and advocate for specific amendments
+    node_type: agent
+    agent: government-affairs
+    condition: organizational_position == amend
+    tool_calls:
+      - mcp__exec-automator__generate_document
+    outputs: [amendment_text, amendment_rationale]
+
+  - id: track_vote_counts
+    name: Track Vote Counts
+    description: Monitor legislator positions and likely votes
+    node_type: agent
+    agent: government-affairs
+    continuous: true
+    duration_days: 60
+    tracking:
+      - confirmed_yes_votes
+      - confirmed_no_votes
+      - undecided_votes
+      - votes_needed_to_win_or_block
+
+  - id: final_push_before_vote
+    name: Final Push Before Vote
+    description: Intensified lobbying and member mobilization before vote
+    node_type: agent
+    agent: government-affairs
+    timing: 3_days_before_vote
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    tactics:
+      - urgent_action_alert_to_members
+      - last_minute_legislative_calls
+      - media_outreach
+      - coalition_joint_statement
+
+  # CAMPAIGN CLOSURE PHASE
+
+  - id: track_final_outcome
+    name: Track Final Vote Outcome
+    description: Record final vote results and bill status
+    node_type: function
+    timing: vote_day
+    outputs: [bill_outcome, vote_breakdown, victory_or_defeat]
+
+  - id: send_outcome_notification_to_members
+    name: Send Outcome Notification to Members
+    description: Thank members and report results
+    node_type: agent
+    agent: government-affairs
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: 1_day_after_vote
+    template: campaign_outcome_notification
+    include:
+      - vote_results
+      - thank_you_to_members
+      - what_this_means
+      - next_steps_if_applicable
+    tone: grateful_and_transparent
+
+  - id: thank_coalition_partners
+    name: Thank Coalition Partners
+    description: Debrief and thank allied organizations
+    node_type: agent
+    agent: government-affairs
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    template: coalition_thank_you
+    include:
+      - appreciation_for_partnership
+      - campaign_results
+      - future_collaboration_interest
+
+  - id: document_lessons_learned
+    name: Document Campaign Lessons Learned
+    description: Capture what worked, what didn't, and recommendations
+    node_type: agent
+    agent: government-affairs
+    tool_calls:
+      - mcp__exec-automator__generate_document
+    template: campaign_debrief_report
+    report_sections:
+      - campaign_overview
+      - tactics_employed
+      - what_worked_well
+      - what_could_be_improved
+      - member_engagement_analysis
+      - coalition_effectiveness
+      - lobbying_impact
+      - recommendations_for_future
+
+  - id: update_advocacy_playbook
+    name: Update Advocacy Playbook
+    description: Incorporate learnings into organizational playbook
+    node_type: function
+    outputs: [playbook_updated]
+
+# Workflow Edges
+edges:
+  # MONITORING FLOW
+  - source: START
+    target: monitor_legislative_activity
+
+  - source: monitor_legislative_activity
+    target: identify_priority_legislation
+    trigger: new_bill_detected
+
+  - source: identify_priority_legislation
+    target: create_issue_brief
+    condition: priority_bill_flagged
+
+  - source: create_issue_brief
+    target: alert_leadership
+
+  # POSITION DEVELOPMENT FLOW
+  - source: alert_leadership
+    target: conduct_member_impact_analysis
+
+  - source: conduct_member_impact_analysis
+    target: research_bill_implications
+
+  - source: research_bill_implications
+    target: draft_position_statement
+
+  - source: draft_position_statement
+    target: government_affairs_committee_review
+
+  - source: government_affairs_committee_review
+    target: board_ratification_if_major
+    condition: urgency_level in [urgent, critical]
+
+  - source: government_affairs_committee_review
+    target: identify_coalition_partners
+    condition: urgency_level in [routine, elevated]
+
+  - source: board_ratification_if_major
+    target: identify_coalition_partners
+
+  # COALITION BUILDING FLOW
+  - source: identify_coalition_partners
+    target: reach_out_to_coalition_partners
+
+  - source: reach_out_to_coalition_partners
+    target: convene_coalition_strategy_meeting
+
+  - source: convene_coalition_strategy_meeting
+    target: draft_sign_on_letter
+
+  - source: draft_sign_on_letter
+    target: collect_sign_on_commitments
+
+  - source: collect_sign_on_commitments
+    target: develop_grassroots_strategy
+
+  # GRASSROOTS MOBILIZATION FLOW
+  - source: develop_grassroots_strategy
+    target: create_action_alert
+
+  - source: create_action_alert
+    target: send_action_alert
+
+  - source: send_action_alert
+    target: track_member_actions
+
+  - source: track_member_actions
+    target: send_progress_updates_to_members
+
+  - source: send_progress_updates_to_members
+    target: coordinate_in_district_meetings
+
+  - source: coordinate_in_district_meetings
+    target: amplify_on_social_media
+
+  # DIRECT ADVOCACY FLOW
+  - source: amplify_on_social_media
+    target: assign_professional_lobbyist
+
+  - source: assign_professional_lobbyist
+    target: schedule_legislative_meetings
+
+  - source: schedule_legislative_meetings
+    target: conduct_legislative_meetings
+
+  - source: conduct_legislative_meetings
+    target: submit_testimony
+    condition: hearing_scheduled
+
+  - source: conduct_legislative_meetings
+    target: track_vote_counts
+    condition: no_hearing
+
+  - source: submit_testimony
+    target: propose_amendments
+    condition: position == amend
+
+  - source: submit_testimony
+    target: track_vote_counts
+    condition: position != amend
+
+  - source: propose_amendments
+    target: track_vote_counts
+
+  - source: track_vote_counts
+    target: final_push_before_vote
+
+  - source: final_push_before_vote
+    target: track_final_outcome
+
+  # CAMPAIGN CLOSURE FLOW
+  - source: track_final_outcome
+    target: send_outcome_notification_to_members
+
+  - source: send_outcome_notification_to_members
+    target: thank_coalition_partners
+
+  - source: thank_coalition_partners
+    target: document_lessons_learned
+
+  - source: document_lessons_learned
+    target: update_advocacy_playbook
+
+  - source: update_advocacy_playbook
+    target: END
+
+# Human Decision Points
+human_approvals:
+  - checkpoint: government_affairs_committee_review
+    approver: government_affairs_committee
+    decision_type: position_vote
+    timeout: 168_hours
+
+  - checkpoint: board_ratification_if_major
+    approver: board_of_directors
+    decision_type: position_ratification
+    timeout: 72_hours
+
+  - checkpoint: convene_coalition_strategy_meeting
+    approver: government_affairs_director
+    decision_type: facilitate_coalition_meeting
+    timeout: immediate
+
+  - checkpoint: conduct_legislative_meetings
+    approver: lobbyist
+    decision_type: execute_lobbying_meetings
+    timeout: immediate
+
+  - checkpoint: coordinate_in_district_meetings
+    approver: government_affairs_staff
+    decision_type: support_member_meetings
+    timeout: ongoing
+
+# Integration Points
+integrations:
+  legislation_tracking:
+    - provider: quorum_or_fiscalnote
+    - action: monitor_bills
+      continuous: true
+    - action: alert_on_activity
+      triggers: [introduced, hearing_scheduled, vote_scheduled]
+
+  advocacy_platform:
+    - provider: phone2action_or_quorum
+    - action: send_action_alerts
+    - action: track_member_actions
+    - action: generate_impact_reports
+
+  crm:
+    - action: segment_members_by_district
+    - action: track_advocacy_participation
+    - action: log_legislator_interactions
+
+  social_media:
+    - action: schedule_advocacy_posts
+    - action: track_hashtag_campaigns
+    - action: monitor_legislator_mentions
+
+# Success Metrics
+success_criteria:
+  - metric: bill_outcome_success
+    target: depends_on_position
+    measurement: bill_passed_if_support_or_defeated_if_oppose
+
+  - metric: member_activation_rate
+    target: 25%
+    measurement: members_taking_action / total_members
+
+  - metric: legislative_meetings_held
+    target: 15
+    measurement: count_of_legislator_meetings
+
+  - metric: coalition_partners_recruited
+    target: 10
+    measurement: count_of_coalition_organizations
+
+  - metric: media_coverage
+    target: 5_articles
+    measurement: count_of_media_mentions
+
+# Cost Analysis
+cost_analysis:
+  time_saved_per_campaign: 80_hours
+  campaigns_per_year: 4
+  annual_time_saved: 320_hours
+  hourly_rate: 85
+  annual_savings: 27200
+  implementation_cost: 15000
+  payback_period_months: 6.6
+  three_year_roi: 66600
+  increased_advocacy_effectiveness_value: priceless
+
+---
+# End of Legislative Action Workflow Template

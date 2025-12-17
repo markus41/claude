@@ -1,0 +1,95 @@
+---
+# Sponsor Fulfillment Workflow
+# Automated sponsor benefit delivery and relationship management
+
+name: sponsor-fulfillment
+version: 1.0.0
+description: Sponsor relationship management from commitment through benefit delivery - logo placement, recognition, reports, renewal
+category: sponsorship
+estimated_duration: 365_days
+automation_score: 84
+
+metadata:
+  author: exec-automator
+  created: 2025-12-17
+  tags: [sponsorship, fundraising, benefits, recognition, renewal]
+
+phases:
+  - name: onboarding
+    description: Welcome package, logo collection, benefit confirmation
+    duration_days: 14
+  - name: benefit-delivery
+    description: Ongoing benefit fulfillment throughout sponsorship year
+    duration_days: 335
+  - name: reporting
+    description: Quarterly ROI reports to sponsors
+    recurrence: quarterly
+  - name: renewal
+    description: Renewal campaign for existing sponsors
+    duration_days: 60
+
+state_schema:
+  type: SponsorFulfillmentState
+  fields:
+    sponsor_id: string
+    sponsorship_level: enum[platinum, gold, silver, bronze, in_kind]
+    sponsorship_amount: decimal
+    sponsorship_start: date
+    sponsorship_end: date
+    benefits_promised: array[Benefit]
+    benefits_delivered: array[Benefit]
+    fulfillment_rate: decimal
+
+nodes:
+  - id: welcome_new_sponsor
+    timing: commitment_date
+  - id: collect_sponsor_assets
+    timing: plus_3_days
+  - id: deliver_welcome_package
+    timing: plus_7_days
+  - id: place_website_logo
+    timing: plus_7_days
+  - id: include_in_newsletter
+    recurrence: monthly
+  - id: provide_event_recognition
+    timing: per_event
+  - id: generate_quarterly_roi_report
+    recurrence: quarterly
+  - id: send_renewal_campaign
+    timing: 60_days_before_expiration
+
+edges:
+  - source: START
+    target: welcome_new_sponsor
+  - source: welcome_new_sponsor
+    target: collect_sponsor_assets
+  - source: collect_sponsor_assets
+    target: deliver_welcome_package
+  - source: deliver_welcome_package
+    target: place_website_logo
+  - source: place_website_logo
+    target: include_in_newsletter
+  - source: include_in_newsletter
+    target: provide_event_recognition
+  - source: provide_event_recognition
+    target: generate_quarterly_roi_report
+  - source: generate_quarterly_roi_report
+    target: send_renewal_campaign
+  - source: send_renewal_campaign
+    target: END
+
+success_criteria:
+  - metric: benefit_fulfillment_rate
+    target: 100_percent
+  - metric: sponsor_satisfaction
+    target: 4.5_out_of_5
+  - metric: renewal_rate
+    target: 80_percent
+
+cost_analysis:
+  time_saved_per_sponsor: 20_hours
+  sponsors_per_year: 25
+  annual_time_saved: 500_hours
+  annual_savings: 37500
+
+---

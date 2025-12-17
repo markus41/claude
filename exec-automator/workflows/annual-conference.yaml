@@ -1,0 +1,1175 @@
+---
+# Annual Conference Lifecycle Automation Workflow
+# Complete conference planning from concept through post-event analysis
+
+name: annual-conference
+version: 1.0.0
+description: Comprehensive annual conference automation - venue selection, registration, speaker coordination, logistics, execution, and ROI analysis
+category: events
+estimated_duration: 365_days
+automation_score: 87
+
+metadata:
+  author: exec-automator
+  created: 2025-12-17
+  updated: 2025-12-17
+  tags: [conference, annual-event, speakers, registration, venue, logistics, roi]
+  brand_voice: brookside_bi_professional
+  compliance: event_industry_standards
+
+# Workflow Phases
+phases:
+  - name: strategic-planning
+    description: Conference vision, budget approval, date selection, venue search
+    duration_days: 90
+    critical_path: true
+    timeline: T-365_to_T-275
+
+  - name: program-development
+    description: Speaker recruitment, session planning, sponsorship sales
+    duration_days: 95
+    critical_path: true
+    timeline: T-275_to_T-180
+
+  - name: marketing-launch
+    description: Website launch, early-bird registration, promotional campaigns
+    duration_days: 120
+    critical_path: true
+    timeline: T-180_to_T-60
+
+  - name: logistics-finalization
+    description: AV coordination, catering, materials, staff training
+    duration_days: 60
+    critical_path: true
+    timeline: T-60_to_T-0
+
+  - name: conference-execution
+    description: On-site management, registration desk, session facilitation
+    duration_days: 3
+    critical_path: true
+    timeline: T-0
+
+  - name: post-conference
+    description: Thank-yous, content distribution, surveys, ROI reporting
+    duration_days: 30
+    critical_path: false
+    timeline: T+0_to_T+30
+
+# State Schema
+state_schema:
+  type: AnnualConferenceState
+  fields:
+    # Conference Metadata
+    conference_id: string
+    conference_name: string
+    conference_year: integer
+    conference_dates: array[date]
+    conference_theme: string
+    expected_attendance: integer
+    actual_attendance: integer
+
+    # Venue Information
+    venue_name: string
+    venue_address: string
+    venue_contract_signed: boolean
+    venue_capacity: integer
+    hotel_room_block: integer
+    hotel_room_block_filled: integer
+
+    # Budget and Revenue
+    total_budget: decimal
+    budget_by_category: object
+    total_revenue: decimal
+    revenue_by_source: object
+    net_profit_loss: decimal
+    roi_percentage: decimal
+
+    # Program Details
+    keynote_speakers: array[Speaker]
+    breakout_sessions: array[Session]
+    workshops: array[Workshop]
+    networking_events: array[Event]
+    exhibit_hall_hours: array[TimeSlot]
+
+    # Sponsors and Exhibitors
+    sponsor_tiers: array[SponsorTier]
+    confirmed_sponsors: array[Sponsor]
+    sponsorship_revenue: decimal
+    exhibitor_booths_sold: integer
+    exhibitor_booths_total: integer
+
+    # Registration
+    registration_opened: boolean
+    registration_status: enum[not_open, early_bird, regular, late, closed]
+    registrations_total: integer
+    registrations_by_type: object
+    early_bird_deadline: date
+    regular_deadline: date
+    cancellations: integer
+
+    # Marketing
+    website_live: boolean
+    email_campaigns_sent: integer
+    social_media_impressions: integer
+    press_releases_issued: integer
+    promotional_partners: array[Partner]
+
+    # Logistics
+    av_vendor_confirmed: boolean
+    catering_menu_finalized: boolean
+    swag_bags_ordered: boolean
+    signage_printed: boolean
+    mobile_app_published: boolean
+    wifi_network_configured: boolean
+
+    # Attendee Experience
+    session_evaluations: array[Evaluation]
+    overall_satisfaction_score: decimal
+    net_promoter_score: decimal
+    complaints_logged: array[Complaint]
+
+    # Content and Follow-up
+    session_recordings: array[Recording]
+    presentation_slides: array[Slide]
+    photos_taken: integer
+    thank_you_emails_sent: boolean
+    cpe_credits_issued: integer
+
+    # Workflow State
+    current_phase: enum[strategic, program, marketing, logistics, execution, post_conference, completed]
+    milestones_achieved: array[Milestone]
+    errors: array[Error]
+    human_approvals: array[Approval]
+
+# LangGraph Nodes
+nodes:
+  # STRATEGIC PLANNING PHASE (T-365 to T-275)
+
+  - id: initialize_conference
+    name: Initialize Conference Planning
+    description: Create conference record and establish planning committee
+    node_type: function
+    agent: event-planner
+    inputs: [conference_year, preliminary_theme]
+    outputs: [conference_id, planning_committee, project_timeline]
+    timing: T-365_days
+    error_handling: retry_3_times
+
+  - id: define_conference_vision
+    name: Define Conference Vision and Goals
+    description: Board/committee workshop to establish theme, goals, and success metrics
+    node_type: human_in_loop
+    agent: event-planner
+    approver_role: conference_committee
+    timing: T-350_days
+    timeout_hours: 168
+    reminder_hours: 96
+    deliverables:
+      - conference_theme
+      - attendance_goal
+      - revenue_goal
+      - program_focus_areas
+
+  - id: establish_conference_budget
+    name: Establish Conference Budget
+    description: Develop detailed budget with revenue projections and expense categories
+    node_type: agent
+    agent: event-planner
+    tool_calls:
+      - mcp__exec-automator__generate_document
+    inputs: [attendance_goal, previous_year_actuals]
+    outputs: [draft_budget, revenue_projections]
+    template: conference_budget_template
+    timing: T-340_days
+
+  - id: board_budget_approval
+    name: Board Reviews and Approves Budget
+    description: Submit budget to board for approval
+    node_type: human_in_loop
+    agent: event-planner
+    approver_role: board_treasurer
+    timeout_hours: 168
+    reminder_hours: 120
+    fallback: proceed_with_conservative_budget
+
+  - id: select_conference_dates
+    name: Select Conference Dates
+    description: Analyze calendar conflicts, member availability, venue availability
+    node_type: agent
+    agent: event-planner
+    tool_calls:
+      - mcp__exec-automator__check_calendar_conflicts
+    inputs: [target_month, blackout_dates, competing_events]
+    outputs: [recommended_dates, alternate_dates]
+    timing: T-330_days
+
+  - id: venue_search_and_rfp
+    name: Venue Search and RFP Process
+    description: Research venues, send RFPs, evaluate proposals
+    node_type: agent
+    agent: event-planner
+    tool_calls:
+      - mcp__exec-automator__send_notification
+      - mcp__exec-automator__collect_responses
+    timing: T-320_days
+    duration_days: 30
+    evaluation_criteria:
+      - capacity_adequate
+      - location_accessible
+      - pricing_within_budget
+      - dates_available
+      - amenities_suitable
+      - references_positive
+
+  - id: venue_site_visits
+    name: Conduct Venue Site Visits
+    description: Schedule and conduct site visits to top 3 venues
+    node_type: human_in_loop
+    agent: event-planner
+    timing: T-300_days
+    participants: [event_chair, executive_director, event_planner]
+    checklist:
+      - meeting_space_review
+      - hotel_room_inspection
+      - food_tasting
+      - av_capabilities_check
+      - accessibility_verification
+
+  - id: select_venue
+    name: Select and Contract Venue
+    description: Committee vote on venue selection and negotiate contract
+    node_type: human_in_loop
+    agent: event-planner
+    approver_role: conference_committee
+    timing: T-285_days
+    outputs: [venue_selected, contract_terms]
+
+  - id: negotiate_hotel_block
+    name: Negotiate Hotel Room Block
+    description: Secure room block with cut-off date and concessions
+    node_type: agent
+    agent: event-planner
+    inputs: [expected_attendance, conference_dates]
+    outputs: [room_block_contract, room_rate, cut_off_date]
+    timing: T-280_days
+
+  # PROGRAM DEVELOPMENT PHASE (T-275 to T-180)
+
+  - id: recruit_keynote_speakers
+    name: Recruit Keynote Speakers
+    description: Identify, contact, and confirm keynote speakers
+    node_type: agent
+    agent: event-planner
+    tool_calls:
+      - mcp__exec-automator__send_notification
+      - mcp__exec-automator__track_responses
+    timing: T-275_days
+    duration_days: 60
+    speaker_criteria:
+      - industry_expertise
+      - audience_appeal
+      - availability_on_dates
+      - budget_fit
+
+  - id: issue_call_for_presentations
+    name: Issue Call for Presentations
+    description: Publish CFP for breakout sessions and workshops
+    node_type: agent
+    agent: event-planner
+    tool_calls:
+      - mcp__exec-automator__send_notification
+      - mcp__exec-automator__generate_document
+    timing: T-260_days
+    template: call_for_presentations
+    distribution:
+      - current_members
+      - industry_experts
+      - past_speakers
+      - partner_organizations
+
+  - id: review_presentation_proposals
+    name: Review Presentation Proposals
+    description: Committee reviews and scores submitted proposals
+    node_type: human_in_loop
+    agent: event-planner
+    approver_role: program_committee
+    timing: T-220_days
+    duration_days: 14
+    scoring_criteria:
+      - relevance_to_theme
+      - speaker_expertise
+      - session_description_quality
+      - audience_value
+
+  - id: notify_speakers_accepted
+    name: Notify Accepted Speakers
+    description: Send acceptance emails with next steps
+    node_type: agent
+    agent: event-planner
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: T-200_days
+    template: speaker_acceptance_email
+    include:
+      - session_details
+      - av_needs_form
+      - speaker_agreement
+      - travel_reimbursement_policy
+
+  - id: build_conference_agenda
+    name: Build Conference Agenda
+    description: Schedule all sessions, avoiding conflicts, balancing tracks
+    node_type: agent
+    agent: event-planner
+    inputs: [accepted_sessions, venue_room_layout, time_blocks]
+    outputs: [preliminary_agenda, track_assignments]
+    timing: T-195_days
+    constraints:
+      - no_competing_similar_topics
+      - balanced_track_appeal
+      - speaker_travel_considerations
+
+  - id: launch_sponsorship_sales
+    name: Launch Sponsorship Sales
+    description: Create sponsorship prospectus and begin outreach
+    node_type: agent
+    agent: event-planner
+    tool_calls:
+      - mcp__exec-automator__generate_document
+      - mcp__exec-automator__send_notification
+    timing: T-275_days
+    template: sponsorship_prospectus
+    sponsor_tiers:
+      - platinum: 25000
+      - gold: 15000
+      - silver: 10000
+      - bronze: 5000
+      - supporter: 2500
+
+  - id: track_sponsorship_commitments
+    name: Track Sponsorship Commitments
+    description: Monitor sponsorship sales and follow up with prospects
+    node_type: agent
+    agent: event-planner
+    continuous: true
+    start: T-275_days
+    end: T-60_days
+    tool_calls:
+      - mcp__exec-automator__track_responses
+      - mcp__exec-automator__send_notification
+    reminder_cadence:
+      - initial_outreach
+      - follow_up_14_days
+      - follow_up_30_days
+      - final_call_60_days
+
+  # MARKETING LAUNCH PHASE (T-180 to T-60)
+
+  - id: develop_conference_website
+    name: Develop Conference Website
+    description: Build event website with registration, agenda, speakers
+    node_type: agent
+    agent: event-planner
+    timing: T-180_days
+    duration_days: 30
+    required_pages:
+      - home_page
+      - registration
+      - agenda_schedule
+      - speakers_bios
+      - venue_travel
+      - sponsors_exhibitors
+      - faqs
+
+  - id: launch_conference_website
+    name: Launch Conference Website
+    description: Publish website and announce registration opening
+    node_type: function
+    timing: T-150_days
+    outputs: [website_url, launch_announcement]
+
+  - id: open_early_bird_registration
+    name: Open Early-Bird Registration
+    description: Launch registration with early-bird pricing
+    node_type: agent
+    agent: event-planner
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: T-150_days
+    template: early_bird_registration_announcement
+    pricing_structure:
+      early_bird_member: 495
+      early_bird_nonmember: 695
+      early_bird_student: 295
+
+  - id: send_save_the_date
+    name: Send Save-the-Date Emails
+    description: Email all members and prospects with conference announcement
+    node_type: agent
+    agent: event-planner
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: T-150_days
+    template: conference_save_the_date
+    recipients:
+      - current_members
+      - lapsed_members
+      - prospect_list
+      - past_attendees
+
+  - id: execute_email_marketing_campaign
+    name: Execute Email Marketing Campaign
+    description: Multi-touch email campaign promoting registration
+    node_type: agent
+    agent: event-planner
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    continuous: true
+    start: T-150_days
+    end: T-7_days
+    campaign_schedule:
+      - timing: T-150
+        template: early_bird_launch
+      - timing: T-120
+        template: speaker_spotlight_keynote
+      - timing: T-100
+        template: early_bird_ending_soon
+      - timing: T-90
+        template: early_bird_final_48_hours
+      - timing: T-88
+        template: regular_registration_now_open
+      - timing: T-60
+        template: agenda_highlights
+      - timing: T-30
+        template: last_chance_to_register
+      - timing: T-14
+        template: final_week_reminder
+
+  - id: social_media_promotion
+    name: Social Media Promotion Campaign
+    description: Coordinated social media posts across platforms
+    node_type: agent
+    agent: event-planner
+    continuous: true
+    start: T-150_days
+    end: T-0_days
+    platforms: [linkedin, twitter, facebook, instagram]
+    content_calendar:
+      - weekly_speaker_spotlights
+      - countdown_posts
+      - behind_the_scenes
+      - attendee_testimonials
+      - sponsor_spotlights
+
+  - id: monitor_registration_pace
+    name: Monitor Registration Pace
+    description: Track registration against goals and forecast attendance
+    node_type: agent
+    agent: event-planner
+    continuous: true
+    start: T-150_days
+    end: T-7_days
+    alerts:
+      - condition: below_50_percent_of_goal_at_T-60
+        action: alert_committee_consider_promotion
+      - condition: below_75_percent_of_goal_at_T-30
+        action: alert_committee_urgent_promotion
+      - condition: venue_capacity_approaching
+        action: notify_waitlist_activation
+
+  - id: manage_early_bird_deadline
+    name: Manage Early-Bird Deadline
+    description: Close early-bird pricing and shift to regular rates
+    node_type: function
+    timing: T-90_days
+    outputs: [early_bird_closed, regular_pricing_active]
+
+  # LOGISTICS FINALIZATION PHASE (T-60 to T-0)
+
+  - id: finalize_conference_agenda
+    name: Finalize Conference Agenda
+    description: Lock agenda, publish final schedule, notify speakers
+    node_type: agent
+    agent: event-planner
+    tool_calls:
+      - mcp__exec-automator__generate_document
+      - mcp__exec-automator__send_notification
+    timing: T-60_days
+    outputs: [final_agenda_document, speaker_final_confirmation]
+    template: final_conference_program
+
+  - id: contract_av_vendor
+    name: Contract AV Vendor
+    description: Finalize AV requirements and contract with vendor
+    node_type: human_in_loop
+    agent: event-planner
+    timing: T-60_days
+    requirements:
+      - session_recording
+      - live_streaming_keynotes
+      - slide_display
+      - microphones_wireless
+      - sound_reinforcement
+      - lighting
+
+  - id: finalize_catering_menu
+    name: Finalize Catering Menu
+    description: Confirm meal counts, menus, dietary accommodations
+    node_type: agent
+    agent: event-planner
+    timing: T-45_days
+    inputs: [registration_count, dietary_restrictions]
+    outputs: [catering_order, final_guarantee_date]
+
+  - id: order_conference_materials
+    name: Order Conference Materials
+    description: Order badges, signage, swag, printed programs
+    node_type: agent
+    agent: event-planner
+    timing: T-45_days
+    materials_list:
+      - name_badges: registration_count + 50
+      - lanyards: registration_count + 50
+      - swag_bags: registration_count
+      - printed_programs: registration_count + 100
+      - directional_signage: 25
+      - sponsor_banners: sponsor_count
+
+  - id: develop_mobile_app
+    name: Develop and Publish Mobile App
+    description: Conference app with agenda, maps, networking
+    node_type: agent
+    agent: event-planner
+    timing: T-30_days
+    features:
+      - interactive_agenda
+      - speaker_bios
+      - venue_maps
+      - attendee_networking
+      - live_polling
+      - session_evaluations
+
+  - id: conduct_staff_training
+    name: Conduct Staff and Volunteer Training
+    description: Train registration desk, room monitors, support staff
+    node_type: human_in_loop
+    agent: event-planner
+    timing: T-14_days
+    training_topics:
+      - registration_process
+      - technology_troubleshooting
+      - customer_service_standards
+      - emergency_procedures
+      - accessibility_assistance
+
+  - id: send_pre_conference_info
+    name: Send Pre-Conference Information to Attendees
+    description: Final email with logistics, mobile app, schedule
+    node_type: agent
+    agent: event-planner
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: T-7_days
+    template: attendee_pre_conference_guide
+    include:
+      - venue_directions_parking
+      - mobile_app_download_link
+      - final_agenda
+      - what_to_bring
+      - networking_opportunities
+
+  - id: venue_walkthrough
+    name: Final Venue Walkthrough
+    description: On-site walkthrough to verify all setups
+    node_type: human_in_loop
+    agent: event-planner
+    timing: T-2_days
+    checklist:
+      - room_setups_verified
+      - signage_placement
+      - av_equipment_tested
+      - registration_desk_ready
+      - wifi_network_tested
+      - accessibility_routes_confirmed
+
+  # CONFERENCE EXECUTION PHASE (T-0)
+
+  - id: setup_conference_day
+    name: Conference Day Setup
+    description: Early morning setup and final preparations
+    node_type: function
+    timing: T-0_6am
+    checklist:
+      - registration_desk_staffed
+      - signage_displayed
+      - av_systems_tested
+      - catering_confirmed
+      - staff_briefing_completed
+
+  - id: open_registration_desk
+    name: Open Registration Desk
+    description: Begin attendee check-in process
+    node_type: function
+    timing: T-0_7am
+    outputs: [registration_desk_opened, check_in_system_active]
+
+  - id: facilitate_opening_session
+    name: Facilitate Opening Session
+    description: Welcome attendees and introduce keynote speaker
+    node_type: human_in_loop
+    timing: T-0_9am
+    participants: [conference_chair, executive_director]
+
+  - id: manage_breakout_sessions
+    name: Manage Breakout Sessions
+    description: Coordinate session timing, room transitions, AV support
+    node_type: agent
+    agent: event-planner
+    continuous: true
+    duration_hours: 8
+    responsibilities:
+      - session_time_management
+      - speaker_support
+      - technology_troubleshooting
+      - attendee_questions
+
+  - id: coordinate_networking_events
+    name: Coordinate Networking Events
+    description: Manage reception, meals, exhibitor hall
+    node_type: function
+    timing: throughout_conference
+    events:
+      - opening_reception
+      - continental_breakfast
+      - networking_lunch
+      - exhibitor_hall_hours
+      - closing_reception
+
+  - id: collect_session_evaluations
+    name: Collect Session Evaluations
+    description: Real-time session feedback via mobile app
+    node_type: agent
+    agent: event-planner
+    continuous: true
+    tool_calls:
+      - mcp__exec-automator__collect_survey_response
+    timing: after_each_session
+
+  - id: manage_closing_session
+    name: Manage Closing Session
+    description: Closing remarks, awards, next year announcement
+    node_type: human_in_loop
+    timing: final_session
+    agenda:
+      - conference_recap
+      - attendance_recognition
+      - award_presentations
+      - next_year_save_the_date
+
+  # POST-CONFERENCE PHASE (T+0 to T+30)
+
+  - id: send_thank_you_attendees
+    name: Send Thank-You to Attendees
+    description: Post-conference thank-you email with survey link
+    node_type: agent
+    agent: event-planner
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: T+1_day
+    template: attendee_thank_you_survey
+    include:
+      - thank_you_message
+      - post_conference_survey_link
+      - session_recording_access
+      - save_the_date_next_year
+
+  - id: send_thank_you_speakers
+    name: Send Thank-You to Speakers
+    description: Personalized thank-you to all speakers
+    node_type: agent
+    agent: event-planner
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: T+2_days
+    template: speaker_thank_you
+    include:
+      - personal_appreciation
+      - session_evaluation_summary
+      - invitation_to_return
+
+  - id: send_thank_you_sponsors
+    name: Send Thank-You to Sponsors
+    description: Sponsor thank-you with deliverables summary
+    node_type: agent
+    agent: event-planner
+    tool_calls:
+      - mcp__exec-automator__send_notification
+      - mcp__exec-automator__generate_document
+    timing: T+3_days
+    template: sponsor_thank_you_report
+    include:
+      - attendance_statistics
+      - booth_traffic_data
+      - brand_exposure_metrics
+      - future_opportunities
+
+  - id: publish_session_recordings
+    name: Publish Session Recordings
+    description: Upload recordings to member portal
+    node_type: agent
+    agent: event-planner
+    timing: T+7_days
+    outputs: [recordings_uploaded, access_granted_to_attendees]
+
+  - id: collect_post_conference_survey
+    name: Collect Post-Conference Survey Responses
+    description: Monitor survey completion and send reminders
+    node_type: agent
+    agent: event-planner
+    tool_calls:
+      - mcp__exec-automator__collect_survey_response
+      - mcp__exec-automator__send_notification
+    timing: T+1_to_T+14_days
+    target_response_rate: 50_percent
+
+  - id: analyze_conference_financials
+    name: Analyze Conference Financials
+    description: Reconcile all revenue and expenses, calculate ROI
+    node_type: agent
+    agent: event-planner
+    timing: T+14_days
+    inputs: [registration_revenue, sponsorship_revenue, all_expenses]
+    outputs: [financial_summary, roi_calculation, variance_analysis]
+
+  - id: analyze_attendee_satisfaction
+    name: Analyze Attendee Satisfaction
+    description: Compile survey results and identify improvement areas
+    node_type: agent
+    agent: event-planner
+    timing: T+14_days
+    inputs: [survey_responses, session_evaluations]
+    outputs: [satisfaction_report, net_promoter_score, improvement_recommendations]
+
+  - id: issue_cpe_credits
+    name: Issue CPE Credits
+    description: Process and issue continuing education credits
+    node_type: agent
+    agent: event-planner
+    timing: T+14_days
+    outputs: [credits_issued, certificates_emailed]
+
+  - id: conduct_debrief_meeting
+    name: Conduct Post-Conference Debrief
+    description: Staff and committee debrief to capture lessons learned
+    node_type: human_in_loop
+    agent: event-planner
+    timing: T+21_days
+    participants: [conference_committee, staff, key_volunteers]
+    agenda:
+      - what_went_well
+      - what_needs_improvement
+      - financial_review
+      - survey_results_discussion
+      - recommendations_for_next_year
+
+  - id: generate_final_conference_report
+    name: Generate Final Conference Report
+    description: Comprehensive report for board and stakeholders
+    node_type: agent
+    agent: event-planner
+    tool_calls:
+      - mcp__exec-automator__generate_document
+    timing: T+28_days
+    template: conference_final_report
+    sections:
+      - executive_summary
+      - attendance_statistics
+      - financial_performance
+      - program_highlights
+      - sponsor_exhibitor_summary
+      - attendee_satisfaction
+      - lessons_learned
+      - recommendations_next_year
+
+  - id: archive_conference_materials
+    name: Archive Conference Materials
+    description: Store all conference records for future reference
+    node_type: function
+    timing: T+30_days
+    materials_to_archive:
+      - final_agenda
+      - session_recordings
+      - presentation_slides
+      - photos
+      - financial_records
+      - contracts
+      - survey_results
+      - final_report
+
+# Workflow Edges (State Transitions)
+edges:
+  # STRATEGIC PLANNING FLOW
+  - source: START
+    target: initialize_conference
+
+  - source: initialize_conference
+    target: define_conference_vision
+
+  - source: define_conference_vision
+    target: establish_conference_budget
+
+  - source: establish_conference_budget
+    target: board_budget_approval
+
+  - source: board_budget_approval
+    target: select_conference_dates
+    condition: budget_approved
+
+  - source: board_budget_approval
+    target: establish_conference_budget
+    condition: revision_requested
+
+  - source: select_conference_dates
+    target: venue_search_and_rfp
+
+  - source: venue_search_and_rfp
+    target: venue_site_visits
+
+  - source: venue_site_visits
+    target: select_venue
+
+  - source: select_venue
+    target: negotiate_hotel_block
+
+  # PROGRAM DEVELOPMENT FLOW
+  - source: negotiate_hotel_block
+    target: recruit_keynote_speakers
+
+  - source: recruit_keynote_speakers
+    target: issue_call_for_presentations
+
+  - source: issue_call_for_presentations
+    target: launch_sponsorship_sales
+
+  - source: launch_sponsorship_sales
+    target: track_sponsorship_commitments
+
+  - source: issue_call_for_presentations
+    target: review_presentation_proposals
+
+  - source: review_presentation_proposals
+    target: notify_speakers_accepted
+
+  - source: notify_speakers_accepted
+    target: build_conference_agenda
+
+  # MARKETING LAUNCH FLOW
+  - source: build_conference_agenda
+    target: develop_conference_website
+
+  - source: develop_conference_website
+    target: launch_conference_website
+
+  - source: launch_conference_website
+    target: open_early_bird_registration
+
+  - source: open_early_bird_registration
+    target: send_save_the_date
+
+  - source: send_save_the_date
+    target: execute_email_marketing_campaign
+
+  - source: execute_email_marketing_campaign
+    target: social_media_promotion
+
+  - source: social_media_promotion
+    target: monitor_registration_pace
+
+  - source: monitor_registration_pace
+    target: manage_early_bird_deadline
+
+  # LOGISTICS FINALIZATION FLOW
+  - source: manage_early_bird_deadline
+    target: finalize_conference_agenda
+
+  - source: finalize_conference_agenda
+    target: contract_av_vendor
+
+  - source: contract_av_vendor
+    target: finalize_catering_menu
+
+  - source: finalize_catering_menu
+    target: order_conference_materials
+
+  - source: order_conference_materials
+    target: develop_mobile_app
+
+  - source: develop_mobile_app
+    target: conduct_staff_training
+
+  - source: conduct_staff_training
+    target: send_pre_conference_info
+
+  - source: send_pre_conference_info
+    target: venue_walkthrough
+
+  # CONFERENCE EXECUTION FLOW
+  - source: venue_walkthrough
+    target: setup_conference_day
+
+  - source: setup_conference_day
+    target: open_registration_desk
+
+  - source: open_registration_desk
+    target: facilitate_opening_session
+
+  - source: facilitate_opening_session
+    target: manage_breakout_sessions
+
+  - source: manage_breakout_sessions
+    target: coordinate_networking_events
+
+  - source: coordinate_networking_events
+    target: collect_session_evaluations
+
+  - source: collect_session_evaluations
+    target: manage_closing_session
+
+  # POST-CONFERENCE FLOW
+  - source: manage_closing_session
+    target: send_thank_you_attendees
+
+  - source: send_thank_you_attendees
+    target: send_thank_you_speakers
+
+  - source: send_thank_you_speakers
+    target: send_thank_you_sponsors
+
+  - source: send_thank_you_sponsors
+    target: publish_session_recordings
+
+  - source: publish_session_recordings
+    target: collect_post_conference_survey
+
+  - source: collect_post_conference_survey
+    target: analyze_conference_financials
+
+  - source: analyze_conference_financials
+    target: analyze_attendee_satisfaction
+
+  - source: analyze_attendee_satisfaction
+    target: issue_cpe_credits
+
+  - source: issue_cpe_credits
+    target: conduct_debrief_meeting
+
+  - source: conduct_debrief_meeting
+    target: generate_final_conference_report
+
+  - source: generate_final_conference_report
+    target: archive_conference_materials
+
+  - source: archive_conference_materials
+    target: END
+
+# Human Approval Gates
+human_approvals:
+  - checkpoint: define_conference_vision
+    approver: conference_committee
+    decision_type: approve_or_revise
+    timeout: 168_hours
+    reminder: 96_hours
+
+  - checkpoint: board_budget_approval
+    approver: board_treasurer
+    decision_type: approve_or_revise
+    timeout: 168_hours
+    reminder: 120_hours
+
+  - checkpoint: venue_site_visits
+    approver: conference_committee
+    decision_type: evaluation_scoring
+    timeout: immediate
+
+  - checkpoint: select_venue
+    approver: conference_committee
+    decision_type: venue_selection_vote
+    timeout: immediate
+
+  - checkpoint: review_presentation_proposals
+    approver: program_committee
+    decision_type: session_scoring
+    timeout: 336_hours
+
+  - checkpoint: conduct_debrief_meeting
+    approver: conference_committee
+    decision_type: discussion_and_documentation
+    timeout: immediate
+
+# Integration Points
+integrations:
+  registration_platform:
+    - provider: eventbrite_or_cvent
+    - action: create_event
+      timing: T-150
+    - action: sync_registrations
+      continuous: true
+    - action: close_registration
+      timing: T-7
+
+  payment_processor:
+    - provider: stripe
+    - action: process_payments
+      continuous: true
+    - action: issue_refunds
+      as_needed: true
+
+  email_marketing:
+    - provider: mailchimp
+    - action: campaign_management
+      continuous: true
+    - action: track_engagement
+      metrics: [opens, clicks, conversions]
+
+  survey_platform:
+    - provider: surveymonkey
+    - action: session_evaluations
+      timing: during_conference
+    - action: post_conference_survey
+      timing: T+1_to_T+14
+
+  crm:
+    - action: update_attendee_records
+      timing: post_conference
+    - action: tag_prospects
+      criteria: attended_but_not_member
+
+  accounting:
+    - action: revenue_tracking
+      continuous: true
+    - action: expense_tracking
+      continuous: true
+    - action: financial_reconciliation
+      timing: T+14
+
+# Estimated Timeline
+timeline:
+  total_duration: 365_days
+  milestones:
+    - name: Conference Vision Approved
+      day: T-350
+    - name: Budget Approved
+      day: T-340
+    - name: Venue Contracted
+      day: T-285
+    - name: Keynotes Confirmed
+      day: T-240
+    - name: CFP Closes
+      day: T-230
+    - name: Sessions Selected
+      day: T-200
+    - name: Website Launches
+      day: T-150
+    - name: Early-Bird Opens
+      day: T-150
+    - name: Early-Bird Closes
+      day: T-90
+    - name: Final Agenda Published
+      day: T-60
+    - name: Pre-Conference Info Sent
+      day: T-7
+    - name: Conference Days
+      day: T-0
+    - name: Thank-Yous Sent
+      day: T+3
+    - name: Final Report Complete
+      day: T+28
+
+# Success Metrics
+success_criteria:
+  - metric: attendance_goal_achievement
+    target: 95%
+    measurement: actual_attendance / expected_attendance
+
+  - metric: attendee_satisfaction
+    target: 4.3_out_of_5
+    measurement: average_survey_rating
+
+  - metric: net_promoter_score
+    target: 50
+    measurement: promoters_minus_detractors
+
+  - metric: financial_performance
+    target: 10%_net_profit
+    measurement: (revenue - expenses) / revenue
+
+  - metric: sponsorship_goal_achievement
+    target: 90%
+    measurement: sponsorship_revenue / sponsorship_goal
+
+  - metric: session_quality
+    target: 4.0_out_of_5
+    measurement: average_session_evaluation
+
+  - metric: early_bird_conversion
+    target: 50%
+    measurement: early_bird_registrations / total_registrations
+
+  - metric: hotel_block_utilization
+    target: 80%
+    measurement: rooms_booked / room_block_total
+
+# Error Handling
+error_recovery:
+  - error: venue_contract_falls_through
+    recovery: activate_backup_venue_immediately
+    fallback: postpone_conference_dates
+
+  - error: keynote_speaker_cancels
+    recovery: activate_backup_speaker_list
+    fallback: promote_breakout_speaker_to_keynote
+
+  - error: registration_below_break_even
+    recovery: increase_marketing_spend_emergency_promotion
+    fallback: scale_down_event_expenses
+
+  - error: av_technology_failure
+    recovery: vendor_immediate_backup_equipment
+    fallback: analog_backup_procedures
+
+  - error: catering_vendor_issue
+    recovery: activate_backup_catering_vendor
+    fallback: simplified_menu_options
+
+  - error: weather_emergency
+    recovery: shift_to_virtual_hybrid_model
+    fallback: postpone_one_day_if_possible
+
+# Cost Estimation
+cost_analysis:
+  time_saved_per_conference: 200_hours
+  conferences_per_year: 1
+  annual_time_saved: 200_hours
+  hourly_rate: 85
+  annual_savings: 17000
+  implementation_cost: 8000
+  payback_period_months: 5.6
+  three_year_roi: 43000
+  increased_revenue_from_better_execution: 15000_annually
+
+# Brand Voice Guidelines
+brand_voice:
+  style: brookside_bi_professional
+  tone: enthusiastic_yet_organized
+  language_preferences:
+    - use_inclusive_welcoming_language
+    - emphasize_community_and_networking
+    - highlight_educational_value
+  communication_principles:
+    - clarity_in_logistics
+    - excitement_about_content
+    - appreciation_for_participation
+    - professionalism_in_execution
+
+---
+# End of Annual Conference Workflow Template

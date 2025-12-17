@@ -395,6 +395,6 @@ END;
 -- ============================================
 -- MIGRATION LOG
 -- ============================================
-INSERT INTO migrations (name, applied_at)
-VALUES ('evolution_system_schema_v1', CURRENT_TIMESTAMP)
-ON CONFLICT (name) DO NOTHING;
+INSERT INTO migrations (version, description, execution_time_ms, checksum, direction)
+VALUES ('evolution_v1', 'Agent evolution system schema', 0, 'evolution_system_schema_v1', 'up')
+ON CONFLICT (version) DO NOTHING;

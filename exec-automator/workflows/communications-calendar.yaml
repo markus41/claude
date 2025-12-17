@@ -1,0 +1,130 @@
+---
+# Communications Editorial Calendar Workflow
+# Content planning, creation, approval, distribution, and performance tracking
+
+name: communications-calendar
+version: 1.0.0
+description: Communications editorial calendar management - content planning, creation workflow, approval process, multi-channel distribution, engagement tracking, content repurposing
+category: communications
+estimated_duration: ongoing
+automation_score: 88
+
+metadata:
+  author: exec-automator
+  created: 2025-12-17
+  tags: [communications, marketing, content, newsletter, social_media, editorial]
+
+phases:
+  - name: planning
+    description: Monthly content calendar planning
+    recurrence: monthly
+    duration_days: 7
+  - name: creation
+    description: Content writing, design, editing
+    continuous: true
+    duration_days: 14
+  - name: approval
+    description: Review and approval workflow
+    duration_days: 3
+  - name: distribution
+    description: Multi-channel publishing
+    duration_days: 1
+  - name: analysis
+    description: Engagement tracking and reporting
+    recurrence: monthly
+    duration_days: 7
+
+state_schema:
+  type: CommunicationsCalendarState
+  fields:
+    calendar_month: date
+    content_pieces_planned: array[ContentPiece]
+    content_pieces_published: array[ContentPiece]
+    channels: array[enum[newsletter, blog, social_media, email, website]]
+    approval_status: enum[draft, under_review, approved, published]
+    engagement_metrics: object
+
+nodes:
+  - id: plan_monthly_content
+    timing: first_week_of_month
+    recurrence: monthly
+  - id: assign_content_pieces
+    timing: after_planning
+  - id: create_content_draft
+    timeline: week_2
+  - id: design_graphics
+    timeline: week_2
+  - id: submit_for_approval
+    timing: end_week_2
+  - id: review_and_approve
+    timing: week_3
+    human_in_loop: true
+    approver: communications_director_or_executive
+  - id: schedule_distribution
+    timing: upon_approval
+  - id: publish_to_channels
+    timing: scheduled_date
+  - id: cross_post_social_media
+    timing: post_publication
+  - id: track_engagement
+    continuous: true
+  - id: generate_monthly_report
+    timing: end_of_month
+    recurrence: monthly
+
+edges:
+  - source: START
+    target: plan_monthly_content
+  - source: plan_monthly_content
+    target: assign_content_pieces
+  - source: assign_content_pieces
+    target: create_content_draft
+  - source: create_content_draft
+    target: design_graphics
+  - source: design_graphics
+    target: submit_for_approval
+  - source: submit_for_approval
+    target: review_and_approve
+  - source: review_and_approve
+    target: schedule_distribution
+    condition: approved
+  - source: review_and_approve
+    target: create_content_draft
+    condition: revision_requested
+  - source: schedule_distribution
+    target: publish_to_channels
+  - source: publish_to_channels
+    target: cross_post_social_media
+  - source: cross_post_social_media
+    target: track_engagement
+  - source: track_engagement
+    target: generate_monthly_report
+  - source: generate_monthly_report
+    target: plan_monthly_content
+
+integrations:
+  email_platform: [mailchimp, constant_contact]
+  social_media: [hootsuite, buffer, sprout_social]
+  cms: [wordpress, drupal, webflow]
+  analytics: [google_analytics, social_analytics]
+  design: [canva, adobe_creative_cloud]
+
+success_criteria:
+  - metric: content_calendar_adherence
+    target: 90_percent
+  - metric: approval_turnaround_time
+    target: within_3_days
+  - metric: email_open_rate
+    target: 35_percent
+  - metric: social_media_engagement_rate
+    target: 5_percent
+
+cost_analysis:
+  time_saved_per_month: 30_hours
+  annual_time_saved: 360_hours
+  hourly_rate: 65
+  annual_savings: 23400
+  implementation_cost: 8000
+  payback_period_months: 4.1
+
+---

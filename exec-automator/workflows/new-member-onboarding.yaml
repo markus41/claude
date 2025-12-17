@@ -1,0 +1,104 @@
+---
+# New Member Onboarding Workflow
+# Welcome sequence for new members - first 90 days
+
+name: new-member-onboarding
+version: 1.0.0
+description: New member welcome and engagement sequence - welcome kit, orientation, first event, 30/60/90 day check-ins, engagement tracking
+category: membership
+estimated_duration: 90_days
+automation_score: 90
+
+metadata:
+  author: exec-automator
+  created: 2025-12-17
+  tags: [onboarding, engagement, retention, welcome, orientation]
+
+phases:
+  - name: immediate-welcome
+    description: Welcome email, membership kit, portal access
+    duration_days: 3
+  - name: orientation
+    description: Organization overview, benefits tutorial, community introduction
+    duration_days: 14
+  - name: engagement-building
+    description: Event invitations, committee introductions, networking opportunities
+    duration_days: 60
+  - name: retention-checkpoints
+    description: 30/60/90 day check-ins to ensure satisfaction
+    duration_days: 90
+
+state_schema:
+  type: NewMemberOnboardingState
+  fields:
+    member_id: string
+    join_date: date
+    membership_type: enum[individual, corporate, student]
+    welcome_kit_sent: boolean
+    orientation_completed: boolean
+    first_event_attended: boolean
+    committee_joined: boolean
+    engagement_score: decimal
+
+nodes:
+  - id: send_welcome_email
+    timing: day_0
+  - id: send_welcome_kit
+    timing: day_1
+  - id: provide_portal_access
+    timing: day_1
+  - id: schedule_orientation
+    timing: day_7
+  - id: conduct_orientation
+    timing: day_14
+    human_in_loop: true
+  - id: invite_to_first_event
+    timing: day_14
+  - id: introduce_committees
+    timing: day_21
+  - id: thirty_day_check_in
+    timing: day_30
+  - id: sixty_day_check_in
+    timing: day_60
+  - id: ninety_day_check_in
+    timing: day_90
+
+edges:
+  - source: START
+    target: send_welcome_email
+  - source: send_welcome_email
+    target: send_welcome_kit
+  - source: send_welcome_kit
+    target: provide_portal_access
+  - source: provide_portal_access
+    target: schedule_orientation
+  - source: schedule_orientation
+    target: conduct_orientation
+  - source: conduct_orientation
+    target: invite_to_first_event
+  - source: invite_to_first_event
+    target: introduce_committees
+  - source: introduce_committees
+    target: thirty_day_check_in
+  - source: thirty_day_check_in
+    target: sixty_day_check_in
+  - source: sixty_day_check_in
+    target: ninety_day_check_in
+  - source: ninety_day_check_in
+    target: END
+
+success_criteria:
+  - metric: orientation_completion_rate
+    target: 85_percent
+  - metric: first_event_attendance_rate
+    target: 60_percent
+  - metric: 90_day_retention_rate
+    target: 95_percent
+
+cost_analysis:
+  time_saved_per_new_member: 3_hours
+  new_members_per_year: 150
+  annual_time_saved: 450_hours
+  annual_savings: 33750
+
+---

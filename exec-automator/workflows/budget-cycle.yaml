@@ -1,0 +1,758 @@
+---
+# Annual Budget Cycle Workflow
+# Complete budget process from planning through approval and monitoring
+
+name: budget-cycle
+version: 1.0.0
+description: Comprehensive annual budget process - planning, department input, consolidation, board approval, monitoring, and variance reporting
+category: finance
+estimated_duration: 180_days
+automation_score: 78
+
+metadata:
+  author: exec-automator
+  created: 2025-12-17
+  updated: 2025-12-17
+  tags: [budget, finance, planning, forecasting, approval, monitoring]
+  brand_voice: brookside_bi_professional
+  compliance: gaap_nonprofit_accounting_standards
+
+# Workflow Phases
+phases:
+  - name: planning-preparation
+    description: Budget calendar, assumptions, templates
+    duration_days: 14
+    critical_path: true
+
+  - name: department-input
+    description: Departments submit budget requests
+    duration_days: 30
+    critical_path: true
+
+  - name: consolidation-analysis
+    description: Finance team consolidates and analyzes
+    duration_days: 21
+    critical_path: true
+
+  - name: executive-review
+    description: Executive director and finance committee review
+    duration_days: 14
+    critical_path: true
+
+  - name: board-approval
+    description: Board review, discussion, and approval
+    duration_days: 14
+    critical_path: true
+
+  - name: finalization-communication
+    description: Final budget published and communicated
+    duration_days: 7
+    critical_path: false
+
+  - name: ongoing-monitoring
+    description: Monthly variance reporting and reforecasting
+    duration_days: 365
+    critical_path: false
+
+# State Schema
+state_schema:
+  type: BudgetCycleState
+  fields:
+    # Budget Information
+    budget_id: string
+    fiscal_year: integer
+    budget_cycle_start_date: date
+    budget_approval_deadline: date
+    fiscal_year_start_date: date
+    fiscal_year_end_date: date
+
+    # Planning
+    budget_assumptions: object
+    revenue_growth_assumption: decimal
+    expense_inflation_assumption: decimal
+    strategic_priorities: array[Priority]
+
+    # Department Submissions
+    department_budgets: array[DepartmentBudget]
+    submissions_received: integer
+    submissions_total: integer
+    submission_deadline: date
+
+    # Consolidated Budget
+    total_revenue_budget: decimal
+    total_expense_budget: decimal
+    net_operating_surplus_deficit: decimal
+    capital_budget: decimal
+    reserve_allocation: decimal
+
+    # Revenue Detail
+    membership_dues_revenue: decimal
+    sponsorship_revenue: decimal
+    event_revenue: decimal
+    certification_revenue: decimal
+    grant_revenue: decimal
+    other_revenue: decimal
+
+    # Expense Detail
+    personnel_expenses: decimal
+    program_expenses: decimal
+    administrative_expenses: decimal
+    occupancy_expenses: decimal
+    marketing_expenses: decimal
+    technology_expenses: decimal
+
+    # Approval Process
+    finance_committee_approved: boolean
+    finance_committee_approval_date: date
+    board_approved: boolean
+    board_approval_date: date
+    budget_version: integer
+    revision_notes: array[string]
+
+    # Monitoring
+    monthly_variance_reports: array[VarianceReport]
+    current_month: integer
+    ytd_actual_revenue: decimal
+    ytd_actual_expenses: decimal
+    ytd_variance_revenue: decimal
+    ytd_variance_expenses: decimal
+    forecast_updated: boolean
+
+    # Workflow State
+    current_phase: enum[planning, department_input, consolidation, executive_review, board_approval, finalization, monitoring, completed]
+    errors: array[Error]
+    human_approvals: array[Approval]
+
+# LangGraph Nodes
+nodes:
+  # PLANNING & PREPARATION PHASE
+
+  - id: initialize_budget_cycle
+    name: Initialize Budget Cycle
+    description: Create budget record and establish timeline
+    node_type: function
+    agent: finance-director
+    inputs: [fiscal_year, cycle_start_date]
+    outputs: [budget_id, budget_calendar, key_deadlines]
+    timing: 6_months_before_fiscal_year
+    error_handling: retry_3_times
+
+  - id: establish_budget_assumptions
+    name: Establish Budget Assumptions
+    description: Define revenue growth, inflation, strategic priorities
+    node_type: human_in_loop
+    agent: finance-director
+    approver_role: executive_director_and_finance_committee_chair
+    timeout_hours: 168
+    assumptions_to_define:
+      - revenue_growth_rate
+      - membership_retention_rate
+      - expense_inflation_rate
+      - salary_increase_rate
+      - new_program_investments
+      - capital_expenditure_plans
+      - reserve_target
+
+  - id: prepare_budget_templates
+    name: Prepare Budget Templates
+    description: Create standardized templates for departments
+    node_type: agent
+    agent: finance-director
+    tool_calls:
+      - mcp__exec-automator__generate_document
+    template: department_budget_template
+    template_sections:
+      - revenue_projections_by_source
+      - personnel_costs
+      - operating_expenses
+      - program_specific_costs
+      - capital_requests
+      - narrative_justification
+
+  - id: distribute_budget_instructions
+    name: Distribute Budget Instructions
+    description: Send templates and instructions to all department heads
+    node_type: agent
+    agent: finance-director
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    template: budget_submission_instructions
+    recipients: all_department_heads
+    include:
+      - budget_calendar_and_deadlines
+      - budget_templates
+      - assumptions_document
+      - submission_requirements
+      - FAQ_document
+      - contact_for_questions
+
+  # DEPARTMENT INPUT PHASE
+
+  - id: track_department_submissions
+    name: Track Department Budget Submissions
+    description: Monitor receipt of department budget requests
+    node_type: agent
+    agent: finance-director
+    continuous: true
+    duration_days: 30
+    tool_calls:
+      - mcp__exec-automator__track_responses
+    reminder_schedule:
+      - 10_days_before_deadline
+      - 5_days_before_deadline
+      - 1_day_before_deadline
+      - on_deadline_day
+
+  - id: review_department_submissions
+    name: Review Department Submissions for Completeness
+    description: Check that all required information is provided
+    node_type: agent
+    agent: finance-director
+    inputs: [department_budget_submissions]
+    outputs: [complete_submissions, incomplete_submissions]
+    validation_checks:
+      - all_sections_completed
+      - formulas_calculating_correctly
+      - narratives_provided
+      - reasonable_assumptions
+
+  - id: request_clarifications
+    name: Request Clarifications from Departments
+    description: Follow up on incomplete or unclear submissions
+    node_type: agent
+    agent: finance-director
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    condition: incomplete_submissions_exist
+    template: budget_clarification_request
+
+  - id: conduct_department_budget_meetings
+    name: Conduct One-on-One Budget Meetings
+    description: Meet with each department head to review requests
+    node_type: human_in_loop
+    agent: finance-director
+    timing: after_submissions_received
+    for_each: department
+    meeting_objectives:
+      - clarify_budget_requests
+      - discuss_strategic_alignment
+      - identify_trade_offs
+      - explore_cost_savings
+      - prioritize_requests
+    outputs: [meeting_notes, agreed_adjustments]
+
+  # CONSOLIDATION & ANALYSIS PHASE
+
+  - id: consolidate_department_budgets
+    name: Consolidate All Department Budgets
+    description: Roll up department submissions into organizational budget
+    node_type: agent
+    agent: finance-director
+    inputs: [all_department_budgets]
+    outputs: [consolidated_revenue_budget, consolidated_expense_budget]
+    automation: spreadsheet_formulas_or_financial_software
+
+  - id: analyze_budget_variance_from_prior_year
+    name: Analyze Variance from Prior Year
+    description: Compare proposed budget to current year budget and actuals
+    node_type: agent
+    agent: finance-director
+    inputs: [proposed_budget, current_year_budget, ytd_actuals]
+    outputs: [variance_analysis_report]
+    analysis_areas:
+      - revenue_variances_by_source
+      - expense_variances_by_category
+      - headcount_changes
+      - major_new_investments
+      - discontinued_programs
+
+  - id: identify_budget_gaps
+    name: Identify Budget Gaps or Surpluses
+    description: Calculate if budget is balanced or if adjustments needed
+    node_type: agent
+    agent: finance-director
+    inputs: [total_revenue, total_expenses]
+    outputs: [net_budget_position, gap_or_surplus_amount]
+    decision_logic: |
+      if total_revenue < total_expenses:
+        return "deficit", amount = total_expenses - total_revenue
+      elif total_revenue > total_expenses:
+        return "surplus", amount = total_revenue - total_expenses
+      else:
+        return "balanced", amount = 0
+
+  - id: develop_gap_closing_strategies
+    name: Develop Gap-Closing Strategies
+    description: Propose revenue increases or expense reductions if deficit
+    node_type: agent
+    agent: finance-director
+    condition: budget_position == deficit
+    tool_calls:
+      - mcp__exec-automator__generate_document
+    outputs: [gap_closing_proposals]
+    strategies:
+      - increase_membership_dues
+      - expand_sponsorship_opportunities
+      - increase_event_registration_fees
+      - reduce_discretionary_expenses
+      - freeze_open_positions
+      - delay_capital_projects
+      - draw_from_reserves
+
+  - id: prepare_executive_budget_summary
+    name: Prepare Executive Budget Summary
+    description: Create summary document for executive review
+    node_type: agent
+    agent: finance-director
+    tool_calls:
+      - mcp__exec-automator__generate_document
+    template: executive_budget_summary
+    summary_sections:
+      - executive_summary
+      - revenue_summary_by_source
+      - expense_summary_by_category
+      - budget_assumptions
+      - variance_from_prior_year
+      - strategic_investments
+      - gap_closing_proposals_if_applicable
+      - reserve_position
+      - key_risks_and_opportunities
+
+  # EXECUTIVE REVIEW PHASE
+
+  - id: executive_director_reviews_budget
+    name: Executive Director Reviews Budget
+    description: ED reviews consolidated budget and provides feedback
+    node_type: human_in_loop
+    agent: finance-director
+    approver_role: executive_director
+    timeout_hours: 168
+    review_focus:
+      - strategic_alignment
+      - organizational_priorities
+      - risk_assessment
+      - revenue_assumptions_reasonableness
+      - expense_efficiency_opportunities
+
+  - id: incorporate_executive_feedback
+    name: Incorporate Executive Director Feedback
+    description: Revise budget based on ED comments
+    node_type: agent
+    agent: finance-director
+    condition: ed_revision_requested
+    outputs: [revised_budget_draft]
+
+  - id: finance_committee_reviews_budget
+    name: Finance Committee Reviews Budget
+    description: Committee meeting to review proposed budget
+    node_type: human_in_loop
+    agent: finance-director
+    approver_role: finance_committee
+    timeout_hours: 336
+    committee_agenda:
+      - budget_presentation_by_finance_director
+      - revenue_assumptions_discussion
+      - expense_priorities_discussion
+      - reserve_policy_compliance
+      - scenario_planning
+      - vote_to_recommend_to_board
+
+  - id: incorporate_finance_committee_feedback
+    name: Incorporate Finance Committee Feedback
+    description: Final revisions based on committee input
+    node_type: agent
+    agent: finance-director
+    condition: committee_revision_requested
+    outputs: [board_ready_budget]
+
+  # BOARD APPROVAL PHASE
+
+  - id: prepare_board_budget_materials
+    name: Prepare Board Budget Materials
+    description: Create comprehensive budget packet for board
+    node_type: agent
+    agent: finance-director
+    tool_calls:
+      - mcp__exec-automator__generate_document
+    template: board_budget_packet
+    packet_contents:
+      - finance_committee_recommendation
+      - executive_summary
+      - detailed_revenue_budget
+      - detailed_expense_budget
+      - staffing_plan
+      - capital_budget
+      - reserve_analysis
+      - multi_year_projections
+      - assumptions_documentation
+      - risk_analysis
+
+  - id: distribute_board_budget_packet
+    name: Distribute Budget Packet to Board
+    description: Send budget materials to board 7 days before meeting
+    node_type: agent
+    agent: finance-director
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: 7_days_before_board_meeting
+    template: board_budget_distribution_email
+
+  - id: present_budget_to_board
+    name: Present Budget to Board
+    description: Finance committee chair and ED present budget
+    node_type: human_in_loop
+    agent: finance-director
+    presenters: [finance_committee_chair, executive_director, finance_director]
+    presentation_structure:
+      - finance_committee_recommendation
+      - strategic_context
+      - revenue_overview
+      - expense_overview
+      - key_assumptions
+      - scenario_analysis
+      - Q_and_A
+      - motion_for_approval
+
+  - id: board_approves_budget
+    name: Board Votes to Approve Budget
+    description: Formal board vote on annual budget
+    node_type: human_in_loop
+    agent: finance-director
+    approver_role: board_of_directors
+    vote_required: majority
+    outputs: [budget_approved, board_approval_date, resolution_number]
+
+  - id: board_requests_revisions
+    name: Handle Board Revision Requests
+    description: Address board concerns and revise if needed
+    node_type: agent
+    agent: finance-director
+    condition: board_requests_changes
+    outputs: [revised_budget_for_resubmission]
+
+  # FINALIZATION & COMMUNICATION PHASE
+
+  - id: finalize_approved_budget
+    name: Finalize Approved Budget
+    description: Lock budget in financial system
+    node_type: function
+    timing: after_board_approval
+    outputs: [budget_locked_in_system, budget_version_finalized]
+
+  - id: communicate_budget_to_organization
+    name: Communicate Budget to Organization
+    description: Share approved budget with staff and members
+    node_type: agent
+    agent: finance-director
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    template: budget_approved_announcement
+    recipients: [all_staff, department_heads, committee_chairs]
+    include:
+      - board_approval_announcement
+      - budget_summary
+      - departmental_allocations
+      - strategic_priorities_funded
+      - implementation_timeline
+
+  - id: distribute_department_budgets
+    name: Distribute Final Budgets to Departments
+    description: Send each department their approved budget
+    node_type: agent
+    agent: finance-director
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    for_each: department
+    template: department_budget_final
+    include:
+      - approved_revenue_budget
+      - approved_expense_budget
+      - headcount_authorization
+      - capital_authorization
+      - budget_management_expectations
+
+  - id: load_budget_into_accounting_system
+    name: Load Budget into Accounting System
+    description: Import budget data for monthly variance reporting
+    node_type: function
+    outputs: [budget_loaded, variance_reporting_enabled]
+
+  # ONGOING MONITORING PHASE
+
+  - id: generate_monthly_variance_report
+    name: Generate Monthly Budget Variance Report
+    description: Compare actual to budget each month
+    node_type: agent
+    agent: finance-director
+    tool_calls:
+      - mcp__exec-automator__generate_document
+    frequency: monthly
+    template: monthly_variance_report
+    report_sections:
+      - executive_summary
+      - revenue_variance_analysis
+      - expense_variance_analysis
+      - ytd_performance
+      - forecast_vs_budget
+      - key_explanations
+      - action_items
+
+  - id: distribute_monthly_variance_report
+    name: Distribute Variance Report
+    description: Send to executive director and finance committee
+    node_type: agent
+    agent: finance-director
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: 15th_of_following_month
+    recipients: [executive_director, finance_committee, department_heads]
+
+  - id: flag_significant_variances
+    name: Flag Significant Budget Variances
+    description: Alert leadership to major budget deviations
+    node_type: agent
+    agent: finance-director
+    continuous: true
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    alert_thresholds:
+      - revenue_variance_greater_than_10_percent
+      - expense_variance_greater_than_10_percent
+      - cash_flow_concerns
+    template: variance_alert
+
+  - id: conduct_quarterly_reforecast
+    name: Conduct Quarterly Budget Reforecast
+    description: Update year-end projections based on actuals
+    node_type: agent
+    agent: finance-director
+    frequency: quarterly
+    inputs: [ytd_actuals, budget, remaining_months]
+    outputs: [updated_forecast, revised_year_end_projection]
+
+  - id: present_reforecast_to_finance_committee
+    name: Present Reforecast to Finance Committee
+    description: Quarterly updates to committee
+    node_type: human_in_loop
+    agent: finance-director
+    approver_role: finance_committee
+    frequency: quarterly
+    presentation_topics:
+      - ytd_performance
+      - updated_forecast
+      - variance_explanations
+      - corrective_actions_if_needed
+
+# Workflow Edges
+edges:
+  # PLANNING & PREPARATION FLOW
+  - source: START
+    target: initialize_budget_cycle
+
+  - source: initialize_budget_cycle
+    target: establish_budget_assumptions
+
+  - source: establish_budget_assumptions
+    target: prepare_budget_templates
+
+  - source: prepare_budget_templates
+    target: distribute_budget_instructions
+
+  # DEPARTMENT INPUT FLOW
+  - source: distribute_budget_instructions
+    target: track_department_submissions
+
+  - source: track_department_submissions
+    target: review_department_submissions
+
+  - source: review_department_submissions
+    target: request_clarifications
+    condition: incomplete_submissions_exist
+
+  - source: review_department_submissions
+    target: conduct_department_budget_meetings
+    condition: all_submissions_complete
+
+  - source: request_clarifications
+    target: conduct_department_budget_meetings
+
+  # CONSOLIDATION & ANALYSIS FLOW
+  - source: conduct_department_budget_meetings
+    target: consolidate_department_budgets
+
+  - source: consolidate_department_budgets
+    target: analyze_budget_variance_from_prior_year
+
+  - source: analyze_budget_variance_from_prior_year
+    target: identify_budget_gaps
+
+  - source: identify_budget_gaps
+    target: develop_gap_closing_strategies
+    condition: deficit_exists
+
+  - source: identify_budget_gaps
+    target: prepare_executive_budget_summary
+    condition: balanced_or_surplus
+
+  - source: develop_gap_closing_strategies
+    target: prepare_executive_budget_summary
+
+  # EXECUTIVE REVIEW FLOW
+  - source: prepare_executive_budget_summary
+    target: executive_director_reviews_budget
+
+  - source: executive_director_reviews_budget
+    target: incorporate_executive_feedback
+    condition: revision_requested
+
+  - source: executive_director_reviews_budget
+    target: finance_committee_reviews_budget
+    condition: approved_by_ed
+
+  - source: incorporate_executive_feedback
+    target: finance_committee_reviews_budget
+
+  - source: finance_committee_reviews_budget
+    target: incorporate_finance_committee_feedback
+    condition: revision_requested
+
+  - source: finance_committee_reviews_budget
+    target: prepare_board_budget_materials
+    condition: recommended_to_board
+
+  - source: incorporate_finance_committee_feedback
+    target: prepare_board_budget_materials
+
+  # BOARD APPROVAL FLOW
+  - source: prepare_board_budget_materials
+    target: distribute_board_budget_packet
+
+  - source: distribute_board_budget_packet
+    target: present_budget_to_board
+
+  - source: present_budget_to_board
+    target: board_approves_budget
+
+  - source: board_approves_budget
+    target: finalize_approved_budget
+    condition: budget_approved
+
+  - source: board_approves_budget
+    target: board_requests_revisions
+    condition: revisions_requested
+
+  - source: board_requests_revisions
+    target: incorporate_finance_committee_feedback
+
+  # FINALIZATION & COMMUNICATION FLOW
+  - source: finalize_approved_budget
+    target: communicate_budget_to_organization
+
+  - source: communicate_budget_to_organization
+    target: distribute_department_budgets
+
+  - source: distribute_department_budgets
+    target: load_budget_into_accounting_system
+
+  # ONGOING MONITORING FLOW
+  - source: load_budget_into_accounting_system
+    target: generate_monthly_variance_report
+
+  - source: generate_monthly_variance_report
+    target: distribute_monthly_variance_report
+
+  - source: distribute_monthly_variance_report
+    target: flag_significant_variances
+
+  - source: flag_significant_variances
+    target: conduct_quarterly_reforecast
+    trigger: quarterly
+
+  - source: conduct_quarterly_reforecast
+    target: present_reforecast_to_finance_committee
+
+  - source: present_reforecast_to_finance_committee
+    target: generate_monthly_variance_report
+    trigger: next_month
+
+  - source: present_reforecast_to_finance_committee
+    target: END
+    trigger: fiscal_year_end
+
+# Human Approval Gates
+human_approvals:
+  - checkpoint: establish_budget_assumptions
+    approver: executive_director_and_finance_committee_chair
+    decision_type: approve_assumptions
+    timeout: 168_hours
+
+  - checkpoint: executive_director_reviews_budget
+    approver: executive_director
+    decision_type: approve_or_revise
+    timeout: 168_hours
+
+  - checkpoint: finance_committee_reviews_budget
+    approver: finance_committee
+    decision_type: recommend_to_board
+    timeout: 336_hours
+
+  - checkpoint: board_approves_budget
+    approver: board_of_directors
+    decision_type: formal_vote
+    timeout: immediate
+
+# Integration Points
+integrations:
+  accounting_system:
+    - software: quickbooks_or_sage_intacct
+    - action: export_prior_year_data
+      timing: planning_phase
+    - action: import_approved_budget
+      timing: after_board_approval
+    - action: generate_variance_reports
+      timing: monthly
+
+  spreadsheet:
+    - software: excel_or_google_sheets
+    - action: distribute_templates
+      timing: department_input_phase
+    - action: consolidate_submissions
+      timing: consolidation_phase
+
+  email:
+    - action: send_instructions_and_reminders
+      timing: throughout_process
+    - action: distribute_reports
+      timing: monthly
+
+# Success Metrics
+success_criteria:
+  - metric: budget_approved_on_time
+    target: 100%
+    measurement: approval_date <= deadline
+
+  - metric: department_submission_timeliness
+    target: 90%
+    measurement: on_time_submissions / total_departments
+
+  - metric: budget_variance_ytd
+    target: within_5_percent
+    measurement: abs(actual - budget) / budget
+
+  - metric: forecast_accuracy
+    target: within_3_percent
+    measurement: abs(actual_year_end - forecasted_year_end) / budget
+
+# Cost Analysis
+cost_analysis:
+  time_saved_per_budget_cycle: 150_hours
+  budget_cycles_per_year: 1
+  annual_time_saved: 150_hours
+  hourly_rate: 85
+  annual_savings: 12750
+  implementation_cost: 8000
+  payback_period_months: 7.5
+  three_year_roi: 30250
+
+---
+# End of Budget Cycle Workflow Template

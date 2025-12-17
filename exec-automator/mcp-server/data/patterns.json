@@ -1,0 +1,444 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2024-12-17",
+  "description": "Curated library of executive director responsibility patterns with automation insights",
+  "patterns": [
+    {
+      "pattern_id": "fin_001",
+      "category": "FINANCIAL",
+      "description": "Budget development and management",
+      "variants": [
+        "Develop and manage annual operating budget",
+        "Oversee organizational budget and financial planning",
+        "Lead annual budgeting process",
+        "Create and monitor organizational budget"
+      ],
+      "typical_tasks": [
+        "Collaborate with finance committee on budget assumptions",
+        "Gather department budget requests",
+        "Consolidate into master budget",
+        "Present to board for approval",
+        "Monitor monthly variance",
+        "Recommend budget adjustments"
+      ],
+      "automation_potential": 65,
+      "automation_opportunities": [
+        "Automated budget template generation",
+        "Department request collection via forms",
+        "Variance tracking and alerts",
+        "Monthly report generation",
+        "Forecasting based on historical trends"
+      ],
+      "human_judgment_required": [
+        "Strategic budget allocation decisions",
+        "Trade-off prioritization",
+        "Board presentation and justification",
+        "Major reallocation approvals"
+      ],
+      "typical_time_allocation": "15-20 hours/month during development, 5-10 hours/month monitoring",
+      "success_metrics": [
+        "Budget completed on schedule",
+        "Board approval obtained",
+        "Monthly variance < 5%",
+        "Year-end variance < 3%"
+      ]
+    },
+    {
+      "pattern_id": "gov_001",
+      "category": "GOVERNANCE",
+      "description": "Board meeting preparation and support",
+      "variants": [
+        "Prepare board meeting materials",
+        "Support board meetings and governance",
+        "Coordinate board meeting logistics",
+        "Facilitate board meetings"
+      ],
+      "typical_tasks": [
+        "Schedule quarterly board meetings",
+        "Prepare meeting agenda with board chair",
+        "Compile board packet materials",
+        "Distribute materials 1 week prior",
+        "Facilitate meeting logistics",
+        "Take meeting minutes",
+        "Track action items and follow-up"
+      ],
+      "automation_potential": 70,
+      "automation_opportunities": [
+        "Automated meeting scheduling",
+        "Board packet compilation from contributed materials",
+        "Material distribution via portal",
+        "Meeting minutes template generation",
+        "Action item tracking system",
+        "Automated follow-up reminders"
+      ],
+      "human_judgment_required": [
+        "Agenda prioritization with chair",
+        "Sensitive governance matters",
+        "Meeting facilitation and dynamics",
+        "Strategic discussion guidance"
+      ],
+      "typical_time_allocation": "20-30 hours per board meeting (quarterly)",
+      "success_metrics": [
+        "Meetings held on schedule",
+        "Materials distributed 7+ days prior",
+        "Quorum achieved",
+        "Action items tracked to completion"
+      ]
+    },
+    {
+      "pattern_id": "mem_001",
+      "category": "MEMBERSHIP",
+      "description": "Member recruitment and retention",
+      "variants": [
+        "Lead member recruitment efforts",
+        "Develop and implement membership growth strategies",
+        "Drive membership recruitment and retention",
+        "Oversee membership development"
+      ],
+      "typical_tasks": [
+        "Analyze membership trends and demographics",
+        "Develop recruitment campaigns",
+        "Create value proposition messaging",
+        "Coordinate recruitment events",
+        "Track new member acquisition",
+        "Monitor retention rates",
+        "Implement retention strategies",
+        "Survey member satisfaction"
+      ],
+      "automation_potential": 60,
+      "automation_opportunities": [
+        "Automated membership analytics dashboard",
+        "Campaign performance tracking",
+        "New member onboarding automation",
+        "Renewal reminder sequences",
+        "Lapsed member re-engagement campaigns",
+        "Member satisfaction surveys"
+      ],
+      "human_judgment_required": [
+        "Campaign strategy development",
+        "Value proposition refinement",
+        "Personal relationship building",
+        "Complex member issues resolution"
+      ],
+      "typical_time_allocation": "10-15% of ED time",
+      "success_metrics": [
+        "Net membership growth",
+        "Retention rate > 85%",
+        "New member acquisition target",
+        "Member satisfaction score"
+      ]
+    },
+    {
+      "pattern_id": "prog_001",
+      "category": "PROGRAMS",
+      "description": "Annual conference planning and execution",
+      "variants": [
+        "Plan and execute annual conference",
+        "Oversee annual meeting and conference",
+        "Lead conference planning committee",
+        "Manage annual event"
+      ],
+      "typical_tasks": [
+        "Form conference planning committee",
+        "Develop conference theme and goals",
+        "Secure venue and negotiate contract",
+        "Develop program agenda",
+        "Recruit and confirm speakers",
+        "Manage vendor relationships",
+        "Market conference to members",
+        "Coordinate registration",
+        "Manage on-site logistics",
+        "Evaluate conference success"
+      ],
+      "automation_potential": 55,
+      "automation_opportunities": [
+        "Venue comparison and booking system",
+        "Speaker proposal management",
+        "Registration and payment processing",
+        "Attendee communication sequences",
+        "Mobile event app",
+        "Post-event survey automation",
+        "Budget tracking dashboard"
+      ],
+      "human_judgment_required": [
+        "Theme and program strategy",
+        "Speaker selection and curation",
+        "Sponsor relationship management",
+        "Crisis management during event",
+        "Attendee relationship building"
+      ],
+      "typical_time_allocation": "25-30% of ED time in 6 months pre-event",
+      "success_metrics": [
+        "Attendance target achieved",
+        "Revenue/expense budget met",
+        "Attendee satisfaction > 4.0/5.0",
+        "Sponsor retention rate"
+      ]
+    },
+    {
+      "pattern_id": "comm_001",
+      "category": "COMMUNICATIONS",
+      "description": "Member communications and newsletter",
+      "variants": [
+        "Oversee member communications",
+        "Manage member newsletter and communications",
+        "Lead communications and marketing",
+        "Direct member engagement communications"
+      ],
+      "typical_tasks": [
+        "Develop communications calendar",
+        "Write monthly member newsletter",
+        "Coordinate contributed content",
+        "Design email campaigns",
+        "Manage social media presence",
+        "Track engagement metrics",
+        "Respond to member inquiries"
+      ],
+      "automation_potential": 75,
+      "automation_opportunities": [
+        "Newsletter template automation",
+        "Content contribution workflow",
+        "Email campaign scheduling",
+        "Social media post scheduling",
+        "Engagement analytics dashboard",
+        "A/B testing automation",
+        "Member inquiry routing and responses"
+      ],
+      "human_judgment_required": [
+        "Editorial voice and tone",
+        "Content curation and prioritization",
+        "Sensitive member communications",
+        "Crisis communications"
+      ],
+      "typical_time_allocation": "10-15 hours/month",
+      "success_metrics": [
+        "Newsletter open rate > 30%",
+        "Click-through rate > 5%",
+        "Social media engagement growth",
+        "Member inquiry response time < 24 hours"
+      ]
+    },
+    {
+      "pattern_id": "oper_001",
+      "category": "OPERATIONS",
+      "description": "Vendor and contract management",
+      "variants": [
+        "Manage vendor relationships",
+        "Oversee contracts and procurement",
+        "Negotiate and manage vendor contracts",
+        "Lead vendor selection and management"
+      ],
+      "typical_tasks": [
+        "Identify vendor needs",
+        "Issue RFPs for major vendors",
+        "Evaluate vendor proposals",
+        "Negotiate contract terms",
+        "Review and sign contracts",
+        "Monitor vendor performance",
+        "Manage contract renewals",
+        "Address vendor issues"
+      ],
+      "automation_potential": 50,
+      "automation_opportunities": [
+        "Vendor database and contact management",
+        "Contract expiration tracking and alerts",
+        "Performance scorecard automation",
+        "RFP template generation",
+        "Proposal comparison matrices",
+        "Automated renewal reminders"
+      ],
+      "human_judgment_required": [
+        "Vendor selection decisions",
+        "Contract negotiation strategy",
+        "Performance issue resolution",
+        "Strategic vendor partnerships"
+      ],
+      "typical_time_allocation": "5-10% of ED time",
+      "success_metrics": [
+        "Cost savings achieved",
+        "Contract renewals on time",
+        "Vendor satisfaction score",
+        "Service level compliance"
+      ]
+    },
+    {
+      "pattern_id": "staff_001",
+      "category": "STAFF",
+      "description": "Staff performance management",
+      "variants": [
+        "Conduct annual performance reviews",
+        "Manage staff performance and development",
+        "Lead performance evaluation process",
+        "Oversee staff performance management"
+      ],
+      "typical_tasks": [
+        "Set annual performance goals with staff",
+        "Conduct quarterly check-ins",
+        "Document performance feedback",
+        "Conduct annual performance reviews",
+        "Identify development opportunities",
+        "Create professional development plans",
+        "Address performance issues",
+        "Recommend compensation adjustments"
+      ],
+      "automation_potential": 40,
+      "automation_opportunities": [
+        "Goal-setting templates and tracking",
+        "Check-in scheduling and reminders",
+        "Performance feedback collection (360 reviews)",
+        "Development plan tracking",
+        "Compensation analysis tools"
+      ],
+      "human_judgment_required": [
+        "Performance evaluation and rating",
+        "Difficult conversations",
+        "Development coaching",
+        "Compensation decisions",
+        "Promotion recommendations"
+      ],
+      "typical_time_allocation": "20 hours per employee annually",
+      "success_metrics": [
+        "Reviews completed on time",
+        "Staff satisfaction with process",
+        "Development plans executed",
+        "Performance improvement achievement"
+      ]
+    },
+    {
+      "pattern_id": "strat_001",
+      "category": "STRATEGIC",
+      "description": "Strategic planning process",
+      "variants": [
+        "Lead strategic planning process",
+        "Develop and implement strategic plan",
+        "Facilitate strategic planning",
+        "Oversee organizational strategic planning"
+      ],
+      "typical_tasks": [
+        "Form strategic planning task force",
+        "Conduct environmental scan",
+        "Gather stakeholder input",
+        "Facilitate strategic planning retreat",
+        "Draft strategic plan document",
+        "Present plan to board for approval",
+        "Develop implementation roadmap",
+        "Track progress on strategic initiatives",
+        "Report on strategic goal achievement"
+      ],
+      "automation_potential": 35,
+      "automation_opportunities": [
+        "Stakeholder survey automation",
+        "Environmental scan data aggregation",
+        "Progress tracking dashboard",
+        "Initiative milestone reminders",
+        "Strategic reporting automation"
+      ],
+      "human_judgment_required": [
+        "Vision and direction setting",
+        "Goal prioritization",
+        "Stakeholder facilitation",
+        "Strategic trade-off decisions",
+        "Board engagement and buy-in"
+      ],
+      "typical_time_allocation": "Major effort every 3-5 years, 10 hours/quarter monitoring",
+      "success_metrics": [
+        "Plan completed on schedule",
+        "Board approval obtained",
+        "Implementation roadmap created",
+        "Quarterly progress reported",
+        "Goals achieved on timeline"
+      ]
+    },
+    {
+      "pattern_id": "tech_001",
+      "category": "TECHNOLOGY",
+      "description": "Technology system selection and implementation",
+      "variants": [
+        "Oversee technology systems",
+        "Lead technology selection and implementation",
+        "Manage IT systems and digital transformation",
+        "Direct technology strategy"
+      ],
+      "typical_tasks": [
+        "Assess technology needs",
+        "Research system options",
+        "Conduct vendor demonstrations",
+        "Evaluate proposals and pricing",
+        "Select system vendor",
+        "Negotiate contract",
+        "Manage implementation project",
+        "Coordinate data migration",
+        "Provide training",
+        "Monitor system performance"
+      ],
+      "automation_potential": 45,
+      "automation_opportunities": [
+        "Requirements gathering templates",
+        "Vendor comparison matrices",
+        "Implementation project tracking",
+        "User training scheduling",
+        "System health monitoring",
+        "User feedback collection"
+      ],
+      "human_judgment_required": [
+        "Strategic technology decisions",
+        "Vendor selection",
+        "Budget allocation",
+        "Change management",
+        "Staff concerns and resistance"
+      ],
+      "typical_time_allocation": "Major projects: 20-30% of time for 6-12 months",
+      "success_metrics": [
+        "System go-live on time and budget",
+        "User adoption rate",
+        "Performance improvement achieved",
+        "ROI realization"
+      ]
+    },
+    {
+      "pattern_id": "ext_001",
+      "category": "EXTERNAL_RELATIONS",
+      "description": "Legislative advocacy and tracking",
+      "variants": [
+        "Lead advocacy and government relations",
+        "Oversee legislative advocacy",
+        "Manage government affairs",
+        "Direct policy advocacy"
+      ],
+      "typical_tasks": [
+        "Track relevant legislation",
+        "Analyze policy impacts",
+        "Develop advocacy positions",
+        "Coordinate with advocacy coalition",
+        "Schedule legislator meetings",
+        "Provide testimony at hearings",
+        "Mobilize member grassroots advocacy",
+        "Monitor regulatory developments",
+        "Report advocacy outcomes to board"
+      ],
+      "automation_potential": 55,
+      "automation_opportunities": [
+        "Legislative tracking alerts",
+        "Bill analysis summaries (AI-powered)",
+        "Coalition coordination tools",
+        "Grassroots campaign automation",
+        "Advocacy action tracking",
+        "Outcome reporting dashboards"
+      ],
+      "human_judgment_required": [
+        "Policy position development",
+        "Coalition strategy",
+        "Legislator relationship building",
+        "Testimony preparation and delivery",
+        "Political navigation"
+      ],
+      "typical_time_allocation": "10-20% of ED time, higher during legislative sessions",
+      "success_metrics": [
+        "Bills tracked comprehensively",
+        "Advocacy wins achieved",
+        "Member advocacy participation rate",
+        "Legislator engagement level"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,936 @@
+---
+# Grant Management Lifecycle Workflow
+# Complete grant process from application through compliance and reporting
+
+name: grant-management
+version: 1.0.0
+description: Comprehensive grant lifecycle automation - application, award, compliance tracking, expenditure monitoring, and final reporting
+category: finance
+estimated_duration: 365_days
+automation_score: 76
+
+metadata:
+  author: exec-automator
+  created: 2025-12-17
+  updated: 2025-12-17
+  tags: [grants, funding, compliance, reporting, finance, development]
+  brand_voice: brookside_bi_professional
+  compliance: grant_compliance_federal_state_foundation
+
+# Workflow Phases
+phases:
+  - name: opportunity-identification
+    description: Research and identify grant opportunities
+    duration_days: ongoing
+    critical_path: false
+
+  - name: application-development
+    description: Proposal development, budget creation, submission
+    duration_days: 60
+    critical_path: true
+
+  - name: award-setup
+    description: Contract negotiation, account setup, kick-off
+    duration_days: 30
+    critical_path: true
+
+  - name: implementation
+    description: Program execution, expense tracking, milestones
+    duration_days: 365
+    critical_path: true
+
+  - name: compliance-monitoring
+    description: Continuous compliance with grant terms
+    duration_days: 365
+    critical_path: true
+
+  - name: reporting
+    description: Progress reports, financial reports, final report
+    duration_days: ongoing
+    critical_path: true
+
+  - name: closeout
+    description: Final report, audit, lessons learned
+    duration_days: 60
+    critical_path: true
+
+# State Schema
+state_schema:
+  type: GrantManagementState
+  fields:
+    # Grant Opportunity
+    grant_id: string
+    funder_name: string
+    funder_type: enum[federal, state, foundation, corporate]
+    grant_program: string
+    opportunity_announcement_date: date
+    application_deadline: date
+    award_amount_max: decimal
+
+    # Application
+    application_submitted: boolean
+    application_submission_date: date
+    proposal_narrative: string
+    budget_narrative: string
+    total_request_amount: decimal
+    matching_requirement: decimal
+    match_type: enum[cash, in_kind, none]
+
+    # Award
+    award_notification_date: date
+    award_status: enum[pending, awarded, declined, deferred]
+    awarded_amount: decimal
+    award_period_start: date
+    award_period_end: date
+    grant_number: string
+    project_officer_name: string
+    project_officer_email: string
+
+    # Implementation
+    project_milestones: array[Milestone]
+    deliverables: array[Deliverable]
+    staff_assigned: array[StaffMember]
+    budget_categories: object
+    budget_spent_to_date: decimal
+    budget_remaining: decimal
+    percent_budget_spent: decimal
+
+    # Compliance
+    compliance_requirements: array[Requirement]
+    required_reports: array[Report]
+    audit_requirements: string
+    indirect_cost_rate: decimal
+    allowable_expense_categories: array[string]
+    prohibited_activities: array[string]
+    procurement_requirements: string
+
+    # Financial Tracking
+    expenses_by_category: object
+    expenses_ytd: decimal
+    reimbursements_requested: decimal
+    reimbursements_received: decimal
+    cash_balance: decimal
+
+    # Reporting Status
+    progress_reports_due: array[ReportDue]
+    progress_reports_submitted: array[ReportSubmitted]
+    financial_reports_due: array[ReportDue]
+    financial_reports_submitted: array[ReportSubmitted]
+    final_report_due_date: date
+    final_report_submitted: boolean
+
+    # Closeout
+    final_expenses_reconciled: boolean
+    final_reimbursement_received: boolean
+    final_report_approved: boolean
+    grant_closed_date: date
+    lessons_learned_documented: boolean
+
+    # Workflow State
+    current_phase: enum[opportunity, application, award_setup, implementation, compliance, reporting, closeout, completed]
+    errors: array[Error]
+    human_approvals: array[Approval]
+
+# LangGraph Nodes
+nodes:
+  # OPPORTUNITY IDENTIFICATION PHASE
+
+  - id: monitor_grant_opportunities
+    name: Monitor Grant Opportunities
+    description: Continuous monitoring of grant databases and announcements
+    node_type: agent
+    agent: grants-manager
+    continuous: true
+    tool_calls:
+      - mcp__exec-automator__track_grant_opportunities
+      - mcp__exec-automator__send_notification
+    monitoring_sources:
+      - grants_gov
+      - foundation_center
+      - state_grant_portals
+      - corporate_foundation_websites
+      - email_subscriptions
+    alert_criteria:
+      - alignment_with_mission
+      - eligible_organization
+      - feasible_match_requirement
+      - realistic_timeline
+      - adequate_award_size
+
+  - id: create_grant_opportunity_record
+    name: Create Grant Opportunity Record
+    description: Log promising grant opportunity in tracking system
+    node_type: function
+    inputs: [funder_name, grant_program, deadline, award_amount]
+    outputs: [grant_id, opportunity_record_created]
+
+  - id: assess_fit_and_capacity
+    name: Assess Strategic Fit and Organizational Capacity
+    description: Evaluate if grant aligns with strategy and capacity exists
+    node_type: agent
+    agent: grants-manager
+    inputs: [grant_requirements, organizational_priorities, current_workload]
+    outputs: [fit_score, capacity_assessment, recommendation]
+    assessment_criteria:
+      - strategic_alignment_score
+      - programmatic_capacity
+      - financial_capacity
+      - match_availability
+      - staff_expertise
+      - application_effort_required
+
+  - id: go_no_go_decision
+    name: Go/No-Go Decision
+    description: Leadership decides whether to pursue grant
+    node_type: human_in_loop
+    agent: grants-manager
+    approver_role: executive_director_and_development_committee
+    timeout_hours: 168
+    decision_factors:
+      - strategic_fit
+      - organizational_capacity
+      - match_requirement_feasibility
+      - likelihood_of_success
+      - opportunity_cost
+
+  # APPLICATION DEVELOPMENT PHASE
+
+  - id: assemble_grant_writing_team
+    name: Assemble Grant Writing Team
+    description: Identify proposal writer, budget developer, subject matter experts
+    node_type: function
+    condition: go_decision == yes
+    outputs: [team_assigned, kickoff_meeting_scheduled]
+
+  - id: develop_grant_proposal_outline
+    name: Develop Grant Proposal Outline
+    description: Create detailed outline addressing all RFP requirements
+    node_type: agent
+    agent: grants-manager
+    tool_calls:
+      - mcp__exec-automator__generate_document
+    inputs: [RFP_requirements]
+    outputs: [proposal_outline]
+    template: grant_proposal_outline
+
+  - id: draft_proposal_narrative
+    name: Draft Proposal Narrative
+    description: Write proposal narrative with program team input
+    node_type: agent
+    agent: grants-manager
+    tool_calls:
+      - mcp__exec-automator__generate_document
+    template: grant_proposal_narrative
+    narrative_sections:
+      - executive_summary
+      - organizational_background
+      - need_statement_or_problem
+      - goals_and_objectives
+      - methods_and_activities
+      - evaluation_plan
+      - sustainability_plan
+      - organizational_capacity
+
+  - id: develop_grant_budget
+    name: Develop Detailed Grant Budget
+    description: Create line-item budget and budget narrative
+    node_type: agent
+    agent: grants-manager
+    tool_calls:
+      - mcp__exec-automator__generate_document
+    inputs: [proposal_activities, funder_requirements]
+    outputs: [line_item_budget, budget_narrative]
+    template: grant_budget_template
+    budget_categories:
+      - personnel_salaries_and_benefits
+      - consultants_and_contractors
+      - travel
+      - equipment
+      - supplies
+      - other_direct_costs
+      - indirect_costs
+
+  - id: internal_proposal_review
+    name: Internal Proposal Review
+    description: Executive director and program staff review draft
+    node_type: human_in_loop
+    agent: grants-manager
+    approver_role: executive_director_and_program_director
+    timeout_hours: 120
+    review_focus:
+      - accuracy_and_quality
+      - alignment_with_organizational_strategy
+      - budget_reasonableness
+      - compliance_with_RFP
+
+  - id: incorporate_internal_feedback
+    name: Incorporate Internal Review Feedback
+    description: Revise proposal based on comments
+    node_type: agent
+    agent: grants-manager
+    condition: revisions_requested
+    outputs: [revised_proposal_draft]
+
+  - id: assemble_application_packet
+    name: Assemble Complete Application Packet
+    description: Compile all required documents and attachments
+    node_type: agent
+    agent: grants-manager
+    tool_calls:
+      - mcp__exec-automator__collect_documents
+    required_documents:
+      - proposal_narrative
+      - budget_and_budget_narrative
+      - IRS_501c3_determination_letter
+      - audited_financial_statements
+      - board_of_directors_list
+      - letters_of_support
+      - resumes_of_key_personnel
+      - organizational_chart
+      - certifications_and_assurances
+
+  - id: submit_grant_application
+    name: Submit Grant Application
+    description: Submit via grants portal or mail by deadline
+    node_type: agent
+    agent: grants-manager
+    timing: before_application_deadline
+    outputs: [application_submitted, confirmation_number]
+
+  - id: send_thank_you_to_team
+    name: Send Thank You to Grant Team
+    description: Acknowledge team's hard work on application
+    node_type: agent
+    agent: grants-manager
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: 1_day_after_submission
+    template: grant_team_thank_you
+
+  # AWARD SETUP PHASE
+
+  - id: track_award_decision
+    name: Track Award Decision
+    description: Monitor for award notification
+    node_type: agent
+    agent: grants-manager
+    continuous: true
+    duration_days: 90
+    tool_calls:
+      - mcp__exec-automator__track_responses
+
+  - id: receive_award_notification
+    name: Receive Award Notification
+    description: Log award decision (funded, declined, or deferred)
+    node_type: function
+    outputs: [award_status, awarded_amount, award_period]
+
+  - id: celebrate_and_announce_award
+    name: Celebrate and Announce Award
+    description: Internal and external announcement of award
+    node_type: agent
+    agent: grants-manager
+    condition: award_status == awarded
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    templates:
+      - internal_award_announcement
+      - board_award_announcement
+      - funder_thank_you
+      - press_release_if_appropriate
+
+  - id: review_award_terms
+    name: Review Award Terms and Conditions
+    description: Carefully review all grant agreement terms
+    node_type: human_in_loop
+    agent: grants-manager
+    approver_role: executive_director_and_grants_manager
+    review_areas:
+      - scope_of_work_requirements
+      - budget_restrictions
+      - reporting_requirements
+      - audit_requirements
+      - match_requirements
+      - special_conditions
+      - intellectual_property_rights
+
+  - id: negotiate_modifications_if_needed
+    name: Negotiate Award Modifications if Needed
+    description: Work with funder on any necessary changes
+    node_type: human_in_loop
+    agent: grants-manager
+    condition: modifications_needed
+    negotiation_topics:
+      - budget_adjustments
+      - timeline_modifications
+      - deliverable_clarifications
+
+  - id: execute_grant_agreement
+    name: Execute Grant Agreement
+    description: Sign and return grant agreement
+    node_type: human_in_loop
+    agent: grants-manager
+    approver_role: authorized_signatory
+    outputs: [agreement_executed, grant_active]
+
+  - id: setup_grant_accounting
+    name: Set Up Grant Accounting
+    description: Create grant fund in accounting system
+    node_type: function
+    outputs: [grant_fund_created, budget_loaded]
+
+  - id: conduct_grant_kickoff_meeting
+    name: Conduct Grant Kickoff Meeting
+    description: Launch meeting with implementation team
+    node_type: human_in_loop
+    agent: grants-manager
+    participants: [program_staff, finance_director, grants_manager]
+    meeting_agenda:
+      - grant_goals_and_deliverables
+      - budget_and_spending_guidelines
+      - compliance_requirements
+      - reporting_schedule
+      - roles_and_responsibilities
+      - timeline_and_milestones
+
+  # IMPLEMENTATION PHASE
+
+  - id: track_project_milestones
+    name: Track Project Milestones
+    description: Monitor progress toward grant deliverables
+    node_type: agent
+    agent: grants-manager
+    continuous: true
+    duration_days: award_period_length
+    tool_calls:
+      - mcp__exec-automator__track_action_item
+    outputs: [milestone_status_updates]
+
+  - id: track_grant_expenses
+    name: Track Grant Expenses
+    description: Monitor all expenses charged to grant
+    node_type: agent
+    agent: grants-manager
+    continuous: true
+    tool_calls:
+      - mcp__exec-automator__track_expenses
+    tracking:
+      - expense_category
+      - expense_amount
+      - budget_remaining
+      - percent_spent
+      - burn_rate
+
+  - id: approve_grant_expenditures
+    name: Approve Grant Expenditures
+    description: Ensure all expenses are allowable and allocable
+    node_type: human_in_loop
+    agent: grants-manager
+    approver_role: grants_manager_or_finance_director
+    continuous: true
+    approval_criteria:
+      - allowable_under_grant_terms
+      - allocable_to_grant_project
+      - reasonable_and_necessary
+      - consistent_with_budget
+      - properly_documented
+
+  - id: conduct_quarterly_grant_review
+    name: Conduct Quarterly Grant Review Meeting
+    description: Team meeting to assess progress and compliance
+    node_type: human_in_loop
+    agent: grants-manager
+    frequency: quarterly
+    review_topics:
+      - progress_toward_deliverables
+      - budget_utilization
+      - compliance_status
+      - upcoming_report_deadlines
+      - risks_and_mitigation
+
+  # COMPLIANCE MONITORING PHASE
+
+  - id: maintain_grant_file
+    name: Maintain Grant File
+    description: Organized file of all grant documentation
+    node_type: agent
+    agent: grants-manager
+    continuous: true
+    file_contents:
+      - grant_application
+      - award_agreement
+      - correspondence_with_funder
+      - progress_reports
+      - financial_reports
+      - receipts_and_invoices
+      - meeting_notes
+      - deliverable_documentation
+
+  - id: ensure_match_compliance
+    name: Ensure Match Requirement Compliance
+    description: Track and document required match
+    node_type: agent
+    agent: grants-manager
+    continuous: true
+    condition: match_required
+    tool_calls:
+      - mcp__exec-automator__track_match_contributions
+    outputs: [match_documented, match_percentage_met]
+
+  - id: monitor_procurement_compliance
+    name: Monitor Procurement Compliance
+    description: Ensure purchases follow grant and organizational policies
+    node_type: agent
+    agent: grants-manager
+    continuous: true
+    compliance_areas:
+      - competitive_bidding_requirements
+      - conflict_of_interest_policies
+      - documentation_requirements
+
+  - id: send_compliance_alerts
+    name: Send Compliance Alerts
+    description: Alert team to compliance risks or issues
+    node_type: agent
+    agent: grants-manager
+    continuous: true
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    alert_triggers:
+      - underspending_risk
+      - overspending_risk
+      - match_shortfall
+      - missing_documentation
+      - upcoming_deadline
+
+  # REPORTING PHASE
+
+  - id: prepare_progress_report
+    name: Prepare Progress Report
+    description: Draft narrative report on program activities
+    node_type: agent
+    agent: grants-manager
+    tool_calls:
+      - mcp__exec-automator__generate_document
+    frequency: as_required_by_grant
+    template: grant_progress_report
+    report_sections:
+      - activities_completed
+      - participants_served
+      - outcomes_achieved
+      - challenges_encountered
+      - modifications_requested_if_any
+      - upcoming_activities
+
+  - id: prepare_financial_report
+    name: Prepare Financial Report
+    description: Compile financial report from accounting system
+    node_type: agent
+    agent: grants-manager
+    tool_calls:
+      - mcp__exec-automator__generate_document
+    frequency: as_required_by_grant
+    template: grant_financial_report
+    report_contents:
+      - expenses_by_budget_category
+      - match_documentation
+      - budget_vs_actual
+      - reimbursement_request
+
+  - id: internal_report_review
+    name: Internal Report Review
+    description: Program director and finance director review reports
+    node_type: human_in_loop
+    agent: grants-manager
+    approver_role: program_director_and_finance_director
+    timeout_hours: 72
+
+  - id: submit_reports_to_funder
+    name: Submit Reports to Funder
+    description: Submit progress and financial reports by deadline
+    node_type: agent
+    agent: grants-manager
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: before_report_deadline
+    outputs: [reports_submitted, confirmation_received]
+
+  - id: request_reimbursement
+    name: Request Grant Reimbursement
+    description: Submit reimbursement request with supporting documentation
+    node_type: agent
+    agent: grants-manager
+    condition: cost_reimbursement_grant
+    timing: with_financial_report
+    outputs: [reimbursement_requested, amount_requested]
+
+  - id: track_reimbursement_receipt
+    name: Track Reimbursement Receipt
+    description: Monitor receipt of reimbursement payments
+    node_type: agent
+    agent: grants-manager
+    continuous: true
+    tool_calls:
+      - mcp__exec-automator__track_responses
+    outputs: [reimbursement_received, amount_received]
+
+  # CLOSEOUT PHASE
+
+  - id: prepare_final_report
+    name: Prepare Final Grant Report
+    description: Comprehensive final report on project outcomes
+    node_type: agent
+    agent: grants-manager
+    timing: 30_days_before_grant_end
+    tool_calls:
+      - mcp__exec-automator__generate_document
+    template: grant_final_report
+    report_sections:
+      - executive_summary
+      - project_overview
+      - goals_and_objectives_achievement
+      - activities_implemented
+      - participants_served
+      - outcomes_and_impact
+      - challenges_and_lessons_learned
+      - sustainability_and_next_steps
+      - final_financial_summary
+      - acknowledgments
+
+  - id: reconcile_final_expenses
+    name: Reconcile Final Grant Expenses
+    description: Ensure all expenses recorded and properly allocated
+    node_type: agent
+    agent: grants-manager
+    inputs: [all_grant_expenses, budget]
+    outputs: [final_expense_report, budget_variance_report]
+
+  - id: submit_final_report
+    name: Submit Final Report to Funder
+    description: Submit final report by deadline
+    node_type: agent
+    agent: grants-manager
+    tool_calls:
+      - mcp__exec-automator__send_notification
+    timing: final_report_due_date
+    outputs: [final_report_submitted]
+
+  - id: submit_final_reimbursement
+    name: Submit Final Reimbursement Request
+    description: Request final payment from funder
+    node_type: agent
+    agent: grants-manager
+    condition: cost_reimbursement_grant
+    outputs: [final_reimbursement_requested]
+
+  - id: close_grant_fund
+    name: Close Grant Fund in Accounting System
+    description: Close out grant accounting after final payment
+    node_type: function
+    condition: final_reimbursement_received
+    outputs: [grant_fund_closed]
+
+  - id: document_lessons_learned
+    name: Document Grant Lessons Learned
+    description: Capture insights for future grant applications
+    node_type: agent
+    agent: grants-manager
+    tool_calls:
+      - mcp__exec-automator__generate_document
+    template: grant_lessons_learned
+    topics:
+      - what_worked_well
+      - what_could_be_improved
+      - funder_relationship
+      - application_process_insights
+      - implementation_insights
+      - reporting_insights
+      - recommendations_for_future
+
+  - id: archive_grant_records
+    name: Archive Grant Records
+    description: Store all grant files per retention policy
+    node_type: function
+    outputs: [records_archived, retention_expiration_date]
+    retention_period: per_funder_requirements_or_7_years
+
+# Workflow Edges
+edges:
+  # OPPORTUNITY IDENTIFICATION FLOW
+  - source: START
+    target: monitor_grant_opportunities
+
+  - source: monitor_grant_opportunities
+    target: create_grant_opportunity_record
+    trigger: opportunity_identified
+
+  - source: create_grant_opportunity_record
+    target: assess_fit_and_capacity
+
+  - source: assess_fit_and_capacity
+    target: go_no_go_decision
+
+  - source: go_no_go_decision
+    target: assemble_grant_writing_team
+    condition: go_decision
+
+  - source: go_no_go_decision
+    target: END
+    condition: no_go_decision
+
+  # APPLICATION DEVELOPMENT FLOW
+  - source: assemble_grant_writing_team
+    target: develop_grant_proposal_outline
+
+  - source: develop_grant_proposal_outline
+    target: draft_proposal_narrative
+
+  - source: draft_proposal_narrative
+    target: develop_grant_budget
+
+  - source: develop_grant_budget
+    target: internal_proposal_review
+
+  - source: internal_proposal_review
+    target: incorporate_internal_feedback
+    condition: revisions_requested
+
+  - source: internal_proposal_review
+    target: assemble_application_packet
+    condition: approved
+
+  - source: incorporate_internal_feedback
+    target: assemble_application_packet
+
+  - source: assemble_application_packet
+    target: submit_grant_application
+
+  - source: submit_grant_application
+    target: send_thank_you_to_team
+
+  # AWARD SETUP FLOW
+  - source: send_thank_you_to_team
+    target: track_award_decision
+
+  - source: track_award_decision
+    target: receive_award_notification
+    trigger: decision_received
+
+  - source: receive_award_notification
+    target: celebrate_and_announce_award
+    condition: awarded
+
+  - source: receive_award_notification
+    target: END
+    condition: declined
+
+  - source: celebrate_and_announce_award
+    target: review_award_terms
+
+  - source: review_award_terms
+    target: negotiate_modifications_if_needed
+    condition: modifications_needed
+
+  - source: review_award_terms
+    target: execute_grant_agreement
+    condition: terms_acceptable
+
+  - source: negotiate_modifications_if_needed
+    target: execute_grant_agreement
+
+  - source: execute_grant_agreement
+    target: setup_grant_accounting
+
+  - source: setup_grant_accounting
+    target: conduct_grant_kickoff_meeting
+
+  # IMPLEMENTATION FLOW
+  - source: conduct_grant_kickoff_meeting
+    target: track_project_milestones
+
+  - source: track_project_milestones
+    target: track_grant_expenses
+
+  - source: track_grant_expenses
+    target: approve_grant_expenditures
+
+  - source: approve_grant_expenditures
+    target: conduct_quarterly_grant_review
+
+  - source: conduct_quarterly_grant_review
+    target: maintain_grant_file
+
+  # COMPLIANCE MONITORING FLOW
+  - source: maintain_grant_file
+    target: ensure_match_compliance
+    condition: match_required
+
+  - source: maintain_grant_file
+    target: monitor_procurement_compliance
+    condition: no_match_required
+
+  - source: ensure_match_compliance
+    target: monitor_procurement_compliance
+
+  - source: monitor_procurement_compliance
+    target: send_compliance_alerts
+
+  - source: send_compliance_alerts
+    target: prepare_progress_report
+    trigger: report_due
+
+  # REPORTING FLOW
+  - source: prepare_progress_report
+    target: prepare_financial_report
+
+  - source: prepare_financial_report
+    target: internal_report_review
+
+  - source: internal_report_review
+    target: submit_reports_to_funder
+    condition: approved
+
+  - source: internal_report_review
+    target: prepare_progress_report
+    condition: revisions_requested
+
+  - source: submit_reports_to_funder
+    target: request_reimbursement
+    condition: cost_reimbursement_grant
+
+  - source: submit_reports_to_funder
+    target: track_reimbursement_receipt
+    condition: advance_grant
+
+  - source: request_reimbursement
+    target: track_reimbursement_receipt
+
+  - source: track_reimbursement_receipt
+    target: track_project_milestones
+    trigger: next_period
+
+  - source: track_reimbursement_receipt
+    target: prepare_final_report
+    trigger: grant_end_approaching
+
+  # CLOSEOUT FLOW
+  - source: prepare_final_report
+    target: reconcile_final_expenses
+
+  - source: reconcile_final_expenses
+    target: submit_final_report
+
+  - source: submit_final_report
+    target: submit_final_reimbursement
+    condition: cost_reimbursement_grant
+
+  - source: submit_final_report
+    target: close_grant_fund
+    condition: advance_grant
+
+  - source: submit_final_reimbursement
+    target: close_grant_fund
+
+  - source: close_grant_fund
+    target: document_lessons_learned
+
+  - source: document_lessons_learned
+    target: archive_grant_records
+
+  - source: archive_grant_records
+    target: END
+
+# Human Approval Gates
+human_approvals:
+  - checkpoint: go_no_go_decision
+    approver: executive_director_and_development_committee
+    decision_type: pursue_grant_or_not
+    timeout: 168_hours
+
+  - checkpoint: internal_proposal_review
+    approver: executive_director_and_program_director
+    decision_type: approve_or_revise
+    timeout: 120_hours
+
+  - checkpoint: review_award_terms
+    approver: executive_director_and_grants_manager
+    decision_type: accept_or_negotiate
+    timeout: 120_hours
+
+  - checkpoint: execute_grant_agreement
+    approver: authorized_signatory
+    decision_type: sign_agreement
+    timeout: 72_hours
+
+  - checkpoint: approve_grant_expenditures
+    approver: grants_manager_or_finance_director
+    decision_type: expense_approval
+    timeout: continuous
+
+  - checkpoint: internal_report_review
+    approver: program_director_and_finance_director
+    decision_type: approve_or_revise
+    timeout: 72_hours
+
+# Integration Points
+integrations:
+  grants_management_system:
+    - software: foundant_or_fluxx
+    - action: track_opportunities
+      timing: continuous
+    - action: store_applications
+      timing: after_submission
+    - action: track_awards
+      timing: after_notification
+
+  accounting_system:
+    - software: quickbooks_or_sage_intacct
+    - action: setup_grant_fund
+      timing: after_award
+    - action: track_expenses
+      timing: continuous
+    - action: generate_financial_reports
+      timing: reporting_periods
+
+  document_management:
+    - action: store_grant_files
+      location: secure_repository
+    - action: version_control
+      for: proposals_and_reports
+
+# Success Metrics
+success_criteria:
+  - metric: grant_application_success_rate
+    target: 50%
+    measurement: grants_awarded / grants_applied
+
+  - metric: compliance_adherence
+    target: 100%
+    measurement: zero_audit_findings
+
+  - metric: on_time_reporting
+    target: 100%
+    measurement: reports_submitted_on_time / total_reports_due
+
+  - metric: budget_utilization
+    target: 95%
+    measurement: budget_spent / budget_awarded
+
+  - metric: timely_closeout
+    target: 100%
+    measurement: grants_closed_within_30_days_of_end
+
+# Cost Analysis
+cost_analysis:
+  time_saved_per_grant: 60_hours
+  grants_managed_annually: 10
+  annual_time_saved: 600_hours
+  hourly_rate: 65
+  annual_savings: 39000
+  implementation_cost: 15000
+  payback_period_months: 4.6
+  three_year_roi: 102000
+  reduced_compliance_risk_value: priceless
+
+---
+# End of Grant Management Workflow Template

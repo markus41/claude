@@ -1,0 +1,118 @@
+---
+# Annual Strategic Planning Cycle Workflow
+# Strategic planning process from environmental scan through implementation
+
+name: annual-planning
+version: 1.0.0
+description: Annual strategic planning cycle - environmental scan, SWOT analysis, goal setting, budget alignment, board approval, implementation tracking
+category: strategy
+estimated_duration: 120_days
+automation_score: 75
+
+metadata:
+  author: exec-automator
+  created: 2025-12-17
+  tags: [strategic_planning, goals, budget, strategy, board_retreat]
+
+phases:
+  - name: environmental-scan
+    description: Data collection, stakeholder input, trend analysis
+    duration_days: 30
+  - name: analysis
+    description: SWOT analysis, priority identification
+    duration_days: 20
+  - name: goal-setting
+    description: Strategic goals, objectives, KPIs
+    duration_days: 30
+  - name: board-retreat
+    description: Board review, discussion, refinement
+    duration_days: 2
+  - name: finalization
+    description: Final plan document, board approval
+    duration_days: 14
+  - name: implementation
+    description: Rollout, tracking, quarterly reviews
+    duration_days: 365
+
+state_schema:
+  type: AnnualPlanningState
+  fields:
+    planning_year: integer
+    environmental_scan_complete: boolean
+    swot_analysis_complete: boolean
+    strategic_goals: array[Goal]
+    board_retreat_scheduled: boolean
+    plan_approved: boolean
+    implementation_started: boolean
+
+nodes:
+  - id: initiate_planning_cycle
+    timing: fiscal_year_start_minus_120_days
+  - id: conduct_environmental_scan
+    timeline: days_1_to_30
+  - id: gather_stakeholder_input
+    timeline: days_10_to_30
+  - id: analyze_data_swot
+    timeline: days_31_to_50
+  - id: draft_strategic_goals
+    timeline: days_51_to_80
+  - id: align_budget_to_goals
+    timeline: days_70_to_90
+  - id: prepare_board_retreat_materials
+    timeline: days_85_to_95
+  - id: conduct_board_retreat
+    timing: day_100
+    human_in_loop: true
+    duration: 1_to_2_days
+  - id: finalize_strategic_plan
+    timeline: days_102_to_114
+  - id: board_approval_plan
+    timing: day_120
+    human_in_loop: true
+  - id: communicate_plan
+    timing: day_125
+  - id: track_implementation
+    continuous: true
+    recurrence: quarterly
+
+edges:
+  - source: START
+    target: initiate_planning_cycle
+  - source: initiate_planning_cycle
+    target: conduct_environmental_scan
+  - source: conduct_environmental_scan
+    target: gather_stakeholder_input
+  - source: gather_stakeholder_input
+    target: analyze_data_swot
+  - source: analyze_data_swot
+    target: draft_strategic_goals
+  - source: draft_strategic_goals
+    target: align_budget_to_goals
+  - source: align_budget_to_goals
+    target: prepare_board_retreat_materials
+  - source: prepare_board_retreat_materials
+    target: conduct_board_retreat
+  - source: conduct_board_retreat
+    target: finalize_strategic_plan
+  - source: finalize_strategic_plan
+    target: board_approval_plan
+  - source: board_approval_plan
+    target: communicate_plan
+  - source: communicate_plan
+    target: track_implementation
+  - source: track_implementation
+    target: END
+
+success_criteria:
+  - metric: stakeholder_participation_rate
+    target: 75_percent
+  - metric: board_retreat_attendance
+    target: 90_percent
+  - metric: goal_achievement_rate
+    target: 80_percent
+
+cost_analysis:
+  time_saved_annually: 100_hours
+  annual_savings: 7500
+
+---

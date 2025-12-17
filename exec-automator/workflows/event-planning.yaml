@@ -1,0 +1,231 @@
+---
+# Event Planning Workflow - Conference and Event Management from 12 Months Out
+# Comprehensive automation for annual conferences, workshops, and member events
+
+name: event-planning
+version: 1.0.0
+description: Full-cycle event planning from concept through post-event follow-up - venue selection, speaker coordination, registration, logistics, and ROI analysis
+category: events
+estimated_duration: 365_days
+automation_score: 85
+
+metadata:
+  author: exec-automator
+  created: 2025-12-17
+  tags: [events, conference, planning, logistics, registration, speakers]
+  brand_voice: brookside_bi_professional
+
+phases:
+  - name: concept-and-planning
+    description: Event concept, budget, venue selection
+    timeline: T-365_to_T-270_days
+    duration_days: 95
+
+  - name: program-development
+    description: Speaker recruitment, agenda creation, sponsorship
+    timeline: T-270_to_T-180_days
+    duration_days: 90
+
+  - name: marketing-and-registration
+    description: Promotion, early-bird pricing, registration management
+    timeline: T-180_to_T-60_days
+    duration_days: 120
+
+  - name: logistics-coordination
+    description: AV, catering, materials, final confirmations
+    timeline: T-60_to_T-0_days
+    duration_days: 60
+
+  - name: event-execution
+    description: On-site management, attendee support, real-time adjustments
+    timeline: T-0_days
+    duration_days: 1-3
+
+  - name: post-event-follow-up
+    description: Surveys, thank-yous, content distribution, ROI analysis
+    timeline: T+0_to_T+30_days
+    duration_days: 30
+
+state_schema:
+  type: EventPlanningState
+  fields:
+    event_id: string
+    event_name: string
+    event_type: enum[annual_conference, workshop, webinar, networking_event, awards_gala]
+    event_date: date
+    event_location: string
+    virtual_component: boolean
+
+    budget_total: decimal
+    budget_spent: decimal
+    revenue_target: decimal
+    revenue_actual: decimal
+
+    venue_selected: boolean
+    speaker_confirmations: array[Speaker]
+    sponsor_commitments: array[Sponsor]
+
+    registration_count: integer
+    registration_goal: integer
+    attendance_actual: integer
+
+    tasks_completed: integer
+    tasks_total: integer
+    milestones_achieved: array[Milestone]
+
+    current_phase: enum[concept, program, marketing, logistics, execution, post_event]
+
+milestones:
+  - name: Venue Contracted
+    target_date: T-300
+  - name: Speaker Lineup Finalized
+    target_date: T-180
+  - name: Registration Opens
+    target_date: T-150
+  - name: Early-Bird Deadline
+    target_date: T-90
+  - name: Final Program Published
+    target_date: T-30
+  - name: Registration Closes
+    target_date: T-7
+  - name: Event Day
+    target_date: T-0
+  - name: Post-Event Survey Complete
+    target_date: T+7
+  - name: ROI Analysis Complete
+    target_date: T+30
+
+nodes:
+  - id: initialize_event_planning
+    name: Initialize Event Planning
+    timing: T-365
+
+  - id: define_event_concept
+    name: Define Event Concept and Goals
+    timing: T-350
+    human_in_loop: true
+    approver: board_or_event_committee
+
+  - id: establish_budget
+    name: Establish Event Budget
+    timing: T-340
+
+  - id: select_venue
+    name: Select and Contract Venue
+    timeline: T-340_to_T-300
+    human_in_loop: true
+
+  - id: recruit_speakers
+    name: Recruit and Confirm Speakers
+    timeline: T-300_to_T-180
+
+  - id: develop_agenda
+    name: Develop Event Agenda
+    timeline: T-270_to_T-210
+
+  - id: solicit_sponsors
+    name: Solicit Event Sponsors
+    timeline: T-300_to_T-120
+
+  - id: create_marketing_materials
+    name: Create Marketing Materials
+    timeline: T-180_to_T-150
+
+  - id: open_registration
+    name: Open Event Registration
+    timing: T-150
+
+  - id: manage_registrations
+    name: Manage Ongoing Registrations
+    timeline: T-150_to_T-7
+    continuous: true
+
+  - id: coordinate_av_catering
+    name: Coordinate AV and Catering
+    timeline: T-60_to_T-7
+
+  - id: finalize_program
+    name: Finalize Event Program
+    timing: T-30
+
+  - id: send_attendee_info
+    name: Send Pre-Event Info to Attendees
+    timing: T-14
+
+  - id: conduct_event
+    name: Conduct Event
+    timing: T-0
+
+  - id: send_post_event_survey
+    name: Send Post-Event Survey
+    timing: T+1
+
+  - id: analyze_event_roi
+    name: Analyze Event ROI and Outcomes
+    timing: T+14
+
+edges:
+  - source: START
+    target: initialize_event_planning
+  - source: initialize_event_planning
+    target: define_event_concept
+  - source: define_event_concept
+    target: establish_budget
+  - source: establish_budget
+    target: select_venue
+  - source: select_venue
+    target: recruit_speakers
+  - source: recruit_speakers
+    target: develop_agenda
+  - source: develop_agenda
+    target: solicit_sponsors
+  - source: solicit_sponsors
+    target: create_marketing_materials
+  - source: create_marketing_materials
+    target: open_registration
+  - source: open_registration
+    target: manage_registrations
+  - source: manage_registrations
+    target: coordinate_av_catering
+  - source: coordinate_av_catering
+    target: finalize_program
+  - source: finalize_program
+    target: send_attendee_info
+  - source: send_attendee_info
+    target: conduct_event
+  - source: conduct_event
+    target: send_post_event_survey
+  - source: send_post_event_survey
+    target: analyze_event_roi
+  - source: analyze_event_roi
+    target: END
+
+integrations:
+  registration_platform: [eventbrite, cvent, regonline]
+  payment_processor: [stripe, paypal]
+  venue_management: manual_with_calendar_sync
+  av_coordination: manual_with_checklist
+  survey_tool: [surveymonkey, typeform, google_forms]
+
+success_criteria:
+  - metric: registration_goal_achievement
+    target: 100%
+  - metric: attendee_satisfaction
+    target: 4.5_out_of_5
+  - metric: budget_adherence
+    target: within_10_percent
+  - metric: sponsor_satisfaction
+    target: 90_percent_would_sponsor_again
+  - metric: net_revenue
+    target: positive_roi
+
+cost_analysis:
+  time_saved_per_event: 120_hours
+  events_per_year: 3
+  annual_time_saved: 360_hours
+  hourly_rate: 75
+  annual_savings: 27000
+  implementation_cost: 10000
+  payback_period_months: 4.4
+
+---
