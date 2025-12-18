@@ -81,7 +81,7 @@
     },
     {
       "name": "container-workflow",
-      "description": "Comprehensive Docker/Container workflow automation with CI/CD pipelines, security scanning (Trivy), release management, and 15 proactive agents for containerized application development",
+      "description": "Enforcer (Spartan) - Comprehensive Docker/Container workflow automation with CI/CD pipelines, security scanning (Trivy), release management, and 15 proactive agents for containerized application development",
       "version": "1.0.0",
       "author": {
         "name": "Markus Ahling"
@@ -91,7 +91,7 @@
     },
     {
       "name": "ahling-command-center",
-      "description": "Comprehensive self-hosted infrastructure orchestration for 70+ services with deep Ollama, Home Assistant, and Microsoft Agent Framework integration. 10 agents, 15 commands, 8 skills, 32 MCP tools targeting 24-core/61GB RAM/RX 7900 XTX hardware.",
+      "description": "Sentinel (Promethean) - Comprehensive self-hosted infrastructure orchestration for 70+ services with deep Ollama, Home Assistant, and Microsoft Agent Framework integration. 10 agents, 15 commands, 8 skills, 32 MCP tools targeting 24-core/61GB RAM/RX 7900 XTX hardware.",
       "version": "1.0.0",
       "author": {
         "name": "Markus Ahling",
@@ -102,7 +102,7 @@
     },
     {
       "name": "fastapi-backend",
-      "description": "Production-ready FastAPI backend development toolkit with MongoDB/Beanie ODM, Keycloak authentication, Docker/K8s deployment, background tasks, caching, observability, and WebSocket support. 4 agents, 10 commands, 8 skills.",
+      "description": "Oracle (Promethean) - Production-ready FastAPI backend development toolkit with MongoDB/Beanie ODM, Keycloak authentication, Docker/K8s deployment, background tasks, caching, observability, and WebSocket support. 4 agents, 10 commands, 8 skills.",
       "version": "0.1.0",
       "author": {
         "name": "Markus Ahling",
@@ -110,6 +110,61 @@
       },
       "source": "./fastapi-backend",
       "category": "backend"
+    },
+    {
+      "name": "orchestrate-complex",
+      "description": "Mendicant (Forerunner) - Advanced multi-agent orchestration system with DAG-based parallel execution, 4 orchestration patterns (Plan-then-Execute, Hierarchical Decomposition, Blackboard, Event Sourcing), mandatory 6-phase protocol enforcement",
+      "version": "1.0.0",
+      "author": {
+        "name": "Brookside BI",
+        "email": "contact@brooksidebi.com"
+      },
+      "source": "./orchestrate-complex",
+      "category": "orchestration"
+    },
+    {
+      "name": "jira-orchestrator",
+      "description": "Arbiter (Spartan) - Intelligent Jira issue orchestration - automatically selects and coordinates sub-agents to explore, plan, code, test, fix, and commit solutions for Jira issues with OAuth SSO integration",
+      "version": "1.1.0",
+      "author": {
+        "name": "Brookside BI",
+        "email": "dev@brooksidebi.com"
+      },
+      "source": "./jira-orchestrator",
+      "category": "integration"
+    },
+    {
+      "name": "exec-automator",
+      "description": "Genesis (Forerunner) - AI-Powered Executive Director Automation Platform - Analyze organizational responsibilities, score automation potential with 6-factor algorithm, generate LangGraph workflows, and deploy 11 specialized agents for trade associations and nonprofits",
+      "version": "1.0.0",
+      "author": {
+        "name": "Brookside BI",
+        "email": "dev@brooksidebi.com"
+      },
+      "source": "./exec-automator",
+      "category": "automation"
+    },
+    {
+      "name": "frontend-powerhouse",
+      "description": "Titan (Spartan) - Maximum-capacity frontend development plugin with 13 specialized subagents, ultrathink integration, and comprehensive React/Next.js/Chakra UI tooling",
+      "version": "1.0.0",
+      "author": {
+        "name": "Brookside BI",
+        "email": "support@brooksidebi.com"
+      },
+      "source": "./frontend-powerhouse",
+      "category": "frontend"
+    },
+    {
+      "name": "fullstack-iac",
+      "description": "Zenith (Forerunner) - Complete full-stack development and infrastructure automation. FastAPI, React/Vite, Ansible, Terraform, Kubernetes with production-ready templates and CI/CD pipelines.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Markus Ahling",
+        "email": "markus@brooksidebi.com"
+      },
+      "source": "./fullstack-iac",
+      "category": "fullstack"
     }
   ]
 }
