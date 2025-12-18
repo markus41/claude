@@ -1,7 +1,7 @@
 {
   "name": "exec-automator",
   "version": "1.0.0",
-  "description": "AI-Powered Executive Director Automation Platform - Analyze organizational responsibilities, score automation potential, generate LangGraph workflows, and deploy specialized agents to assist or replace executive director functions. Built with LangGraph, LangChain, and deep agents.",
+  "description": "Genesis (Forerunner) - AI-Powered Executive Director Automation Platform. Analyze organizational responsibilities, score automation potential with 6-factor algorithm, generate LangGraph workflows, and deploy 11 specialized agents for trade associations and nonprofits.",
   "author": {
     "name": "Brookside BI",
     "email": "dev@brooksidebi.com"
@@ -19,34 +19,5 @@
     "process-automation"
   ],
   "license": "Proprietary",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/brooksidebi/exec-automator"
-  },
-  "scripts": {
-    "postInstall": "./scripts/install.sh",
-    "start-mcp": "./scripts/start-mcp.sh"
-  },
-  "mcpServers": {
-    "exec-automator": {
-      "command": "python",
-      "args": ["${CLAUDE_PLUGIN_ROOT}/mcp-server/src/server.py"],
-      "env": {
-        "OPENAI_API_KEY": "${OPENAI_API_KEY}",
-        "ANTHROPIC_API_KEY": "${ANTHROPIC_API_KEY}"
-      },
-      "required": true,
-      "description": "LangGraph/LangChain workflow engine for executive director automation"
-    }
-  },
-  "engines": {
-    "python": ">=3.10"
-  },
-  "dependencies": {
-    "langgraph": ">=0.2.0",
-    "langchain": ">=0.3.0",
-    "langchain-anthropic": ">=0.2.0",
-    "langchain-openai": ">=0.2.0",
-    "mcp": ">=1.0.0"
-  }
+  "repository": "https://github.com/brooksidebi/exec-automator"
 }

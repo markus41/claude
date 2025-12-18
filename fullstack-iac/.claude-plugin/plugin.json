@@ -1,14 +1,11 @@
 {
   "name": "fullstack-iac",
   "version": "1.0.0",
-  "description": "Zenith - Complete full-stack development and infrastructure automation plugin. FastAPI, React/Vite, Ansible, Terraform, Kubernetes with production-ready templates and CI/CD pipelines.",
+  "description": "Zenith (Forerunner) - Complete full-stack development and infrastructure automation. FastAPI, React/Vite, Ansible, Terraform, Kubernetes with production-ready templates and CI/CD pipelines.",
   "author": {
     "name": "Markus Ahling",
     "email": "markus@brooksidebi.com"
   },
-  "homepage": "https://github.com/Lobbi-Docs/claude",
-  "repository": "https://github.com/Lobbi-Docs/claude",
-  "license": "MIT",
   "keywords": [
     "fastapi",
     "react",
@@ -21,21 +18,8 @@
     "infrastructure-as-code",
     "ci-cd",
     "templates",
-    "scaffolding",
-    "aws",
-    "azure",
-    "gcp",
-    "postgresql",
-    "mongodb",
-    "redis",
-    "microservices",
-    "serverless"
+    "scaffolding"
   ],
-  "categories": [
-    "full-stack",
-    "infrastructure",
-    "devops",
-    "frontend",
-    "backend"
-  ]
+  "license": "MIT",
+  "repository": "https://github.com/Lobbi-Docs/claude"
 }
