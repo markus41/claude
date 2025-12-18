@@ -1,5 +1,5 @@
 ---
-name: review
+name: jira:review
 description: Run comprehensive code review on changes for a Jira issue with security, performance, quality, and accessibility analysis
 arguments:
   - name: issue_key

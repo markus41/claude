@@ -1,5 +1,5 @@
 ---
-name: pr
+name: jira:pr
 description: Create a pull request for completed Jira issue work
 arguments:
   - name: issue_key

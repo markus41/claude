@@ -1,5 +1,5 @@
 ---
-name: sync
+name: jira:sync
 description: Synchronize local progress with Jira - pull latest issue details, post progress updates, and handle bi-directional sync with conflict resolution
 argument-hint: "[ISSUE-KEY]"
 argument-help: "Optional Jira issue key (e.g., PROJ-123). If omitted, syncs all active issues"

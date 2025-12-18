@@ -1,5 +1,5 @@
 ---
-name: work
+name: jira:work
 description: Start working on a Jira issue with full orchestration following the mandatory 6-phase protocol
 arguments:
   - name: issue_key

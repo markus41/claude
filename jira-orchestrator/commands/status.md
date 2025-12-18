@@ -1,3 +1,9 @@
+---
+name: jira:status
+description: Monitor active Jira orchestration sessions and track sub-agent progress across all phases
+argument-hint: "[ISSUE-KEY] [--format=dashboard] [--depth=detailed]"
+---
+
 # /jira:status
 
 **Quick Usage:** `/jira:status [ISSUE-KEY] --format=dashboard --depth=detailed`

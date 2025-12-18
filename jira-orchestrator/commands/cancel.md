@@ -1,5 +1,5 @@
 ---
-name: cancel
+name: jira:cancel
 description: Cancel an ongoing Jira issue orchestration
 argument-hint: "<ISSUE-KEY> [--force] [--no-checkpoint]"
 allowed-tools: ["Bash", "Read", "Write", "KillShell"]
