@@ -249,9 +249,9 @@ Once all phases are complete and tests pass, create a PR.
 5. Capture PR URL from output
 ```
 
-## Step 6: Update Jira Issue
+## Step 6: Update Jira Issue (Initial)
 
-Link the PR and update the issue status.
+Link the PR and post initial update.
 
 ### Actions:
 ```
@@ -263,12 +263,140 @@ Link the PR and update the issue status.
    - Tests passing
    - Documentation updated
 
-   Ready for review."
+   Proceeding with QA transition and sub-item documentation..."
+```
 
-2. Use mcp__atlassian__jira_transition_issue to move to "In Review" or "Done"
-   (Adjust based on your workflow)
+## Step 7: Document All Sub-Items (MANDATORY)
 
-3. If story points were estimated, confirm actual effort aligned with estimate
+After PR creation, document implementation details on ALL sub-tasks and linked issues.
+
+### Actions:
+```
+1. Invoke the `sub-item-documenter` agent with:
+   - Parent issue key: ${issue_key}
+   - PR URL: {PR_URL}
+   - Branch name: {branch_name}
+
+2. The agent will:
+   - Fetch all subtasks from the parent issue
+   - Fetch all linked issues (blocks, relates to, etc.)
+   - For EACH sub-item, post a detailed comment:
+
+   ## Implementation Complete ✅
+
+   **PR:** {PR_URL}
+   **Branch:** {branch_name}
+
+   ### Changes Made
+   - {specific changes for this sub-item}
+
+   ### Files Modified
+   - `path/to/file1.ts`
+   - `path/to/file2.ts`
+
+   ### Testing
+   - Unit tests: ✅ Passing
+   - Integration tests: ✅ Passing
+   - Coverage: {X}%
+
+   ### Related Commits
+   - {commit_hash}: {message}
+
+   ---
+   🤖 Documented by Claude Code Orchestrator
+
+3. Track documentation progress:
+   - Log each sub-item documented
+   - Handle failures gracefully (continue with others)
+   - Report final count
+```
+
+## Step 8: Transition ALL Items to QA (MANDATORY)
+
+Transition the main issue AND all sub-items to QA status.
+
+### Actions:
+```
+1. Invoke the `qa-transition` agent with:
+   - Parent issue key: ${issue_key}
+   - Include subtasks: true
+   - Include linked issues: true
+
+2. The agent will:
+   - Find available QA transitions for each issue
+   - Handle different QA status names (QA, Ready for QA, In QA, Testing, etc.)
+   - Transition the PARENT issue to QA
+   - Transition ALL subtasks to QA
+   - Transition linked issues to QA (if appropriate)
+
+3. Status Mapping:
+   - "QA" (preferred)
+   - "Ready for QA"
+   - "In QA"
+   - "Quality Assurance"
+   - "Testing"
+
+4. Handle failures:
+   - Log issues that couldn't be transitioned
+   - Continue with remaining items
+   - Report which transitions failed (may need manual update)
+
+5. Post QA transition comment on parent:
+   "🔄 QA Transition Complete
+
+   Main issue: ${issue_key} → QA ✅
+   Sub-items transitioned: {count}/{total}
+
+   All items are now ready for quality assurance review."
+```
+
+## Step 9: Final Completion Summary
+
+Post final summary and verify all completion criteria.
+
+### Actions:
+```
+1. Use mcp__atlassian__jira_add_comment on parent issue to post:
+   "## 🎉 Development Complete - Ready for QA
+
+   **Pull Request:** {PR_URL}
+   **Branch:** {branch_name}
+
+   ### Completion Summary
+   | Phase | Status |
+   |-------|--------|
+   | Explore | ✅ Complete |
+   | Plan | ✅ Complete |
+   | Code | ✅ Complete |
+   | Test | ✅ All Passing ({test_count} tests) |
+   | Fix | ✅ No Issues |
+   | Document | ✅ Complete |
+
+   ### Sub-Items Status
+   | Issue | Documented | QA Status |
+   |-------|------------|-----------|
+   | {SUBTASK-1} | ✅ | ✅ QA |
+   | {SUBTASK-2} | ✅ | ✅ QA |
+
+   ### Test Coverage
+   - Coverage: {coverage}%
+   - New tests: {new_test_count}
+
+   ### What's Next
+   This issue and all sub-items are now in **QA** status.
+   Please review the PR and run QA validation.
+
+   ---
+   🤖 Orchestrated by Claude Code | Total agents: {agent_count}
+   ⏱️ Development time: {duration}"
+
+2. Verify completion checklist:
+   - [ ] PR created and linked
+   - [ ] All sub-items documented
+   - [ ] Main issue in QA
+   - [ ] All sub-items in QA
+   - [ ] Obsidian vault updated
+   - [ ] No pending errors
 ```
 
 ## Error Handling
@@ -357,12 +485,15 @@ Assign appropriate models based on task complexity:
 ## Success Criteria
 
 Orchestration is complete when:
-- [ ] All 6 phases executed successfully
+- [ ] All 6 phases executed successfully (EXPLORE → DOCUMENT)
 - [ ] All tests passing
 - [ ] All acceptance criteria met
 - [ ] Documentation updated in both repo and Obsidian vault
 - [ ] PR created and linked to Jira
-- [ ] Jira status updated appropriately
+- [ ] **ALL sub-items documented** (implementation comments posted)
+- [ ] **Main issue transitioned to QA**
+- [ ] **ALL sub-items transitioned to QA**
+- [ ] Final completion summary posted
 - [ ] No blockers remain
 
 ## Example Usage
@@ -397,8 +528,18 @@ Post comments at key milestones:
 6. **After FIX** (if needed): "All issues resolved, tests passing"
 7. **After DOCUMENT**: "Documentation updated"
 8. **PR Created**: "Pull request created: {URL}"
+9. **Sub-Items Documented**: "Implementation documented on {count} sub-items"
+10. **QA Transition**: "Main issue and {count} sub-items transitioned to QA"
+11. **Final Summary**: "🎉 Development Complete - Ready for QA" (detailed table)
 
-This provides full visibility to the team on progress.
+**Sub-Item Comments:** Each sub-task also receives an implementation comment with:
+- PR link and branch name
+- Specific changes for that sub-item
+- Files modified
+- Test status and coverage
+- Related commits
+
+This provides full visibility to the team on progress across all items.
 
 ## Notes
 

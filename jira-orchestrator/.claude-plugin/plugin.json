@@ -1,7 +1,7 @@
 {
   "name": "jira-orchestrator",
-  "version": "1.1.0",
-  "description": "Arbiter (Spartan) - Intelligent Jira issue orchestration. Automatically selects and coordinates sub-agents to explore, plan, code, test, fix, and commit solutions for Jira issues with OAuth SSO integration.",
+  "version": "1.2.0",
+  "description": "Arbiter (Spartan) - Intelligent Jira issue orchestration. Coordinates sub-agents through 6-phase protocol, auto-creates PRs, documents all sub-items, and transitions everything to QA status.",
   "author": {
     "name": "Brookside BI",
     "email": "dev@brooksidebi.com"
