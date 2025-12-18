@@ -148,6 +148,13 @@ EXPLORE (2+ agents) → PLAN (1-2) → CODE (2-4) → TEST (2-3) → FIX (1-2) �
 
 ### Phase Execution Guidelines:
 
+**DOCUMENTATION REQUIREMENT:** At each phase completion:
+1. Create/update Confluence documentation via `confluence-documentation-creator` agent
+2. Log phase completion to PR comments via `pr-documentation-logger` agent
+3. Post update to Jira issue with Confluence links
+
+---
+
 #### Phase 1: EXPLORE
 ```
 Spawn appropriate agents based on issue type
@@ -160,6 +167,10 @@ Extract all requirements from Jira issue:
 Understand codebase context
 Identify dependencies and risks
 Document findings
+
+📚 CONFLUENCE: Search for existing documentation
+📝 JIRA: Post "Exploration complete" comment with findings
+📋 PR LOG: "Phase 1: EXPLORE completed - {summary}"
 ```
 
 #### Phase 2: PLAN
@@ -170,6 +181,16 @@ Create task DAG for parallel execution
 Assign agents to tasks
 Define checkpoints and success criteria
 Post plan summary as Jira comment
+
+📚 CONFLUENCE: Create "Technical Design Document" page
+   - Architecture overview
+   - Component design
+   - Data models
+   - API specifications
+   - Security considerations
+   - Link to Jira issue: ${issue_key}
+📝 JIRA: Post "Technical Design created: [Title](confluence_url)"
+📋 PR LOG: "Phase 2: PLAN completed - Technical Design: {url}"
 ```
 
 #### Phase 3: CODE
@@ -180,6 +201,15 @@ Commit frequently with clear messages
 Reference issue key in commits: "ABC-123: Description"
 Handle edge cases and error states
 Validate against acceptance criteria continuously
+
+📚 CONFLUENCE: Create "Implementation Notes" page
+   - Architecture decisions
+   - Key abstractions
+   - Integration points
+   - Configuration details
+   - Link to PR: {pr_url}
+📝 JIRA: Post "Implementation started - see [Implementation Notes](confluence_url)"
+📋 PR LOG: "Phase 3: CODE completed - {files_changed} files, {lines} lines"
 ```
 
 #### Phase 4: TEST
@@ -190,6 +220,16 @@ Run security scans if applicable
 Validate acceptance criteria from Jira
 Document test results
 Post test status as Jira comment
+
+📚 CONFLUENCE: Create "Test Plan & Results" page
+   - Test strategy
+   - Test cases covered
+   - Coverage report: {percentage}%
+   - Performance results
+   - Edge cases tested
+   - Link to PR checks
+📝 JIRA: Post "Tests: {pass}/{total}, Coverage: {coverage}% - see [Test Results](confluence_url)"
+📋 PR LOG: "Phase 4: TEST completed - {pass}/{total} passing, {coverage}% coverage"
 ```
 
 #### Phase 5: FIX
@@ -200,6 +240,10 @@ Address coverage gaps
 Optimize performance if needed
 Re-run tests after each fix
 Verify no regressions
+
+📚 CONFLUENCE: Update "Test Plan & Results" with fix details
+📝 JIRA: Post "Issues resolved: {count} - all tests passing"
+📋 PR LOG: "Phase 5: FIX completed - {issues_fixed} issues resolved"
 ```
 
 #### Phase 6: DOCUMENT
@@ -215,6 +259,16 @@ Document:
   - Testing results
   - Lessons learned
 Prepare final commit message
+
+📚 CONFLUENCE: Create "Runbook/Operations Guide" page
+   - Deployment procedures
+   - Monitoring setup
+   - Troubleshooting guide
+   - Rollback procedures
+   - Contact information
+📚 CONFLUENCE: Update "Release Notes" for this feature
+📝 JIRA: Post "Documentation complete - [Technical Design](url) | [Runbook](url) | [Test Results](url)"
+📋 PR LOG: "Phase 6: DOCUMENT completed - 4 Confluence pages created"
 ```
 
 ## Step 5: Create Pull Request
@@ -462,6 +516,83 @@ Break down the PR into bite-sized review tasks so reviewers can tackle small chu
 - Clear progress tracking (X of Y chunks reviewed)
 ```
 
+## Step 11: Final Documentation Summary (MANDATORY)
+
+Post comprehensive documentation summary to PR and Jira with all Confluence links.
+
+### Actions:
+```
+1. Invoke `pr-documentation-logger` agent to create final PR comment:
+
+   "## 📚 Complete Documentation Trail
+
+   ### Confluence Documentation Created
+   | Document | Purpose | Link |
+   |----------|---------|------|
+   | Technical Design | Architecture & approach | [View]({url}) |
+   | Implementation Notes | Code decisions & patterns | [View]({url}) |
+   | Test Plan & Results | Testing strategy & coverage | [View]({url}) |
+   | Runbook | Operations & troubleshooting | [View]({url}) |
+
+   ### Jira Activity Log
+   | Time | Action | Link |
+   |------|--------|------|
+   | {t1} | Started orchestration | [Comment]({url}) |
+   | {t2} | EXPLORE complete | [Comment]({url}) |
+   | {t3} | Technical Design created | [Confluence]({url}) |
+   | {t4} | PLAN complete | [Comment]({url}) |
+   | {t5} | CODE complete | [Comment]({url}) |
+   | {t6} | TEST complete, 95% coverage | [Comment]({url}) |
+   | {t7} | All issues → QA | [Comment]({url}) |
+   | {t8} | Sub-items documented | [Comment]({url}) |
+
+   ### Sub-Item Documentation
+   | Issue | Documented | Confluence | QA |
+   |-------|------------|------------|-----|
+   | {SUB-1} | ✅ | [Notes]({url}) | ✅ |
+   | {SUB-2} | ✅ | [Notes]({url}) | ✅ |
+   | {SUB-3} | ✅ | [Notes]({url}) | ✅ |
+
+   ### Metrics
+   - **Confluence Pages Created:** 4
+   - **Jira Comments Posted:** 12
+   - **Sub-Items Documented:** {count}
+   - **PR Comments:** 8
+   - **Total Documentation Time:** {duration}
+
+   ---
+   🤖 Full audit trail maintained by Jira Orchestrator"
+
+2. Post final summary to parent Jira issue:
+
+   "## 📋 Complete Documentation Package
+
+   All documentation has been created and linked:
+
+   **Confluence:**
+   - [Technical Design]({url}) - Architecture & specifications
+   - [Implementation Notes]({url}) - Code decisions
+   - [Test Plan & Results]({url}) - Testing strategy
+   - [Runbook]({url}) - Operations guide
+
+   **GitHub:**
+   - [Pull Request]({pr_url}) - Full code changes
+   - [PR Documentation Trail]({pr_comment_url}) - Complete audit log
+
+   **Sub-Items:**
+   All {count} sub-items have been documented with:
+   - Implementation details
+   - Review checklists
+   - Confluence links
+
+   ---
+   Ready for QA review. All documentation is complete."
+
+3. Update each sub-item with Confluence links:
+   - Add comment with relevant Confluence page links
+   - Reference parent documentation
+```
+
 ## Error Handling
 
 Handle errors gracefully at each step:
@@ -560,6 +691,20 @@ Orchestration is complete when:
 - [ ] **Review roadmap posted** (bite-sized review tasks)
 - [ ] No blockers remain
 
+### Confluence Documentation Checklist:
+- [ ] **Technical Design** page created (after PLAN)
+- [ ] **Implementation Notes** page created (after CODE)
+- [ ] **Test Plan & Results** page created (after TEST)
+- [ ] **Runbook/Operations Guide** page created (after DOCUMENT)
+- [ ] All pages linked to Jira issue
+- [ ] All pages linked in PR comments
+
+### PR Comment Logging Checklist:
+- [ ] Phase completion logged for each phase (6 total)
+- [ ] Confluence page links posted
+- [ ] Final documentation summary posted
+- [ ] Complete audit trail visible in PR
+
 ## Example Usage
 
 ```bash
@@ -582,20 +727,45 @@ This command can be used in conjunction with:
 
 ## Jira Comment Timeline
 
-Post comments at key milestones:
+Post comments at key milestones (with Confluence links):
 
 1. **Start**: "Starting orchestrated development with Claude Code"
 2. **After EXPLORE**: "Exploration complete: {key findings}"
-3. **After PLAN**: "Execution plan created: {summary}"
-4. **After CODE**: "Implementation complete, running tests"
-5. **After TEST**: "Tests: {pass/fail count}, Coverage: {percentage}%"
+3. **After PLAN**: "Execution plan created - 📚 [Technical Design]({confluence_url})"
+4. **After CODE**: "Implementation complete - 📚 [Implementation Notes]({confluence_url})"
+5. **After TEST**: "Tests: {pass/fail count}, Coverage: {percentage}% - 📚 [Test Results]({confluence_url})"
 6. **After FIX** (if needed): "All issues resolved, tests passing"
-7. **After DOCUMENT**: "Documentation updated"
+7. **After DOCUMENT**: "Documentation complete - 📚 [Runbook]({confluence_url})"
 8. **PR Created**: "Pull request created: {URL}"
-9. **Sub-Items Documented**: "Implementation documented on {count} sub-items"
+9. **Sub-Items Documented**: "Implementation documented on {count} sub-items (with Confluence links)"
 10. **QA Transition**: "Main issue and {count} sub-items transitioned to QA"
 11. **Final Summary**: "🎉 Development Complete - Ready for QA" (detailed table)
 12. **Review Roadmap**: "📖 Review broken into {count} bite-sized chunks" (task table)
+13. **Documentation Package**: "📋 Complete documentation: [Tech Design]() | [Notes]() | [Tests]() | [Runbook]()"
+
+---
+
+### Confluence Documentation Created (4 pages minimum):
+
+| Phase | Document | Content |
+|-------|----------|---------|
+| PLAN | Technical Design | Architecture, components, APIs, security |
+| CODE | Implementation Notes | Decisions, abstractions, integrations |
+| TEST | Test Plan & Results | Strategy, coverage, performance |
+| DOCUMENT | Runbook | Deployment, monitoring, troubleshooting |
+
+---
+
+### PR Comment Log (posted via `pr-documentation-logger`):
+
+Every significant action is logged to the PR:
+- Phase completions with timestamps
+- Confluence page creation links
+- Jira status transitions
+- Test results and coverage
+- Final documentation summary
+
+---
 
 **Sub-Item Comments:** Each sub-task receives a review-friendly comment with:
 - PR link and branch name
@@ -603,6 +773,7 @@ Post comments at key milestones:
 - Files modified with line counts
 - Test status and coverage
 - Related commits
+- **📚 Confluence Links** (relevant documentation)
 - **📋 Review Checklist** (5-7 quick items)
 - **⏱️ Estimated review time** (5-15 min)
 - **🎯 Focus areas** (prioritized file list)
@@ -614,6 +785,7 @@ Post comments at key milestones:
 - Complete reviews in short time blocks (5-15 min)
 - Track progress across multiple reviewers
 - Know exactly what to look for in each chunk
+- Access full documentation via Confluence links
 
 ## Notes
 
