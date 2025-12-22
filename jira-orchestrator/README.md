@@ -266,12 +266,13 @@ This provides access to Jira tools:
 
 ## Commands
 
-The plugin provides **14 slash commands** for Jira orchestration:
+The plugin provides **15 slash commands** for Jira orchestration:
 
 ### New in v3.0
 
 | Command | Description |
 |---------|-------------|
+| `/jira:prepare` | Prepare a task for work by creating subtasks with detailed descriptions |
 | `/jira:metrics` | Generate real-time metrics dashboard with SLA tracking and agent performance |
 | `/jira:sprint-plan` | Automated sprint planning with capacity calculation and velocity tracking |
 | `/jira:quality` | Quality intelligence report with tech debt and health scoring |
@@ -314,6 +315,52 @@ The plugin provides **14 slash commands** for Jira orchestration:
 # Work on a technical task
 /jira:work TASK-789
 ```
+
+---
+
+### `/jira:prepare`
+
+**Prepare a task for work by analyzing it, creating subtasks, and adding detailed descriptions.**
+
+```bash
+/jira:prepare PROJ-123
+```
+
+**What it does:**
+1. Analyzes the issue to understand scope and requirements
+2. Decomposes the task into logical subtasks
+3. Creates subtasks in Jira with proper hierarchy
+4. Enriches each subtask with detailed descriptions
+5. Adds acceptance criteria to each subtask
+6. Provides time/point estimates
+7. Documents dependencies between subtasks
+
+**Parameters:**
+- `issue_key` (required): The Jira issue to prepare
+- `depth`: Level of detail - `basic`, `standard` (default), or `comprehensive`
+- `include_estimates`: Include time/point estimates (default: true)
+
+**Example:**
+```bash
+# Standard preparation
+/jira:prepare PROJ-123
+
+# Comprehensive preparation with full details
+/jira:prepare PROJ-123 depth=comprehensive
+
+# Basic preparation for simple tasks
+/jira:prepare PROJ-123 depth=basic
+
+# Preparation without estimates
+/jira:prepare PROJ-123 include_estimates=false
+```
+
+**Depth Levels:**
+| Depth | Subtask Count | Detail Level |
+|-------|---------------|--------------|
+| basic | 2-4 | High-level only |
+| standard | 4-8 | Moderate detail with acceptance criteria |
+| comprehensive | 8-15 | Full technical details and testing notes |
 
 ---
 

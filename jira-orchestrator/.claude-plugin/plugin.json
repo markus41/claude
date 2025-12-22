@@ -46,7 +46,9 @@
     "capacity-planning",
     "tech-debt",
     "code-health",
-    "quality-intelligence"
+    "quality-intelligence",
+    "task-preparation",
+    "subtask-creation"
   ],
   "features": [
     "Event Sourcing System (v3.0) - Audit trails, time-travel debugging, state reconstruction",
@@ -55,6 +57,7 @@
     "Real-time Metrics Dashboard (v3.0) - SLA tracking, agent performance, cost analysis",
     "Sprint Planning Automation (v3.0) - Capacity, velocity, WSJF prioritization",
     "Quality Intelligence (v3.0) - Tech debt, health scoring, hotspot detection",
+    "Task Preparation (v3.0) - Subtask creation, enrichment, work breakdown structure",
     "Parallel Sub-Issue Work (v2.0)",
     "Expert Agent Matching (v2.0)",
     "Tag Management (v2.0)",
@@ -111,6 +114,7 @@
   ],
   "commands": [
     "jira:work",
+    "jira:prepare",
     "jira:metrics",
     "jira:sprint-plan",
     "jira:quality",
