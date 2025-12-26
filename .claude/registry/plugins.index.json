@@ -157,12 +157,27 @@
         "path": "../plugins/agent-review-council/plugin.json",
         "callsign": "Tribunal",
         "version": "1.0.0",
-        "description": "Multi-agent deliberation with debate, voting, adversarial review, and consensus",
-        "provides": { "commands": 12, "agents": 15, "skills": 6, "hooks": 4, "deliberationProtocols": 6 },
+        "description": "Revolutionary multi-agent deliberation with 20 protocols, 21 agents, and production automation",
+        "provides": { "commands": 12, "agents": 21, "skills": 6, "hooks": 4, "deliberationProtocols": 20 },
         "status": "active",
         "tier": "advanced",
         "innovative": true,
-        "protocols": ["adversarial", "socratic", "dialectic", "jury", "delphi", "devils-advocate"],
+        "protocols": [
+          "adversarial", "socratic", "dialectic", "jury", "delphi", "devils-advocate",
+          "round-robin", "autogen-team", "panel-discussion", "fishbowl", "think-tank",
+          "red-blue-team", "rapid-fire", "world-cafe", "six-thinking-hats",
+          "appreciative-inquiry", "consensus-circle", "lightning-decision-jam",
+          "dual-track-agile", "expert-panel"
+        ],
+        "features": [
+          "Red/Blue Team security audits",
+          "AutoGen hierarchical coordination",
+          "Six Thinking Hats balanced review",
+          "Appreciative Inquiry positive focus",
+          "Lightning Decision Jam rapid consensus",
+          "Production automation hooks",
+          "Slack/GitHub/Jira integration"
+        ],
         "integrates": ["jira-orchestrator", "code-quality-orchestrator", "git-workflow-orchestrator", "cognitive-code-reasoner"]
       }
     }
@@ -193,9 +208,10 @@
       "advanced": 6
     },
     "totalCommands": 194,
-    "totalAgents": 172,
+    "totalAgents": 178,
     "totalSkills": 78,
     "totalHooks": 58,
-    "innovativePlugins": 6
+    "innovativePlugins": 6,
+    "deliberationProtocols": 20
   }
 }

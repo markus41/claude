@@ -165,6 +165,30 @@
       },
       "source": "./fullstack-iac",
       "category": "fullstack"
+    },
+    {
+      "name": "agent-review-council",
+      "description": "Tribunal (Forerunner) - Revolutionary multi-agent deliberation system with 20 protocols (Round Robin, AutoGen, Red/Blue Team, Six Thinking Hats, Appreciative Inquiry, etc.). 21 agents debate, vote, and reach consensus on code quality. Production-ready automation included.",
+      "version": "1.0.0",
+      "author": {
+        "name": "The Lobbi",
+        "email": "developers@thelobbi.io"
+      },
+      "source": "./.claude/plugins/agent-review-council",
+      "category": "orchestration",
+      "tags": ["multi-agent", "deliberation", "code-review", "debate", "consensus", "adversarial", "security", "automation"],
+      "features": [
+        "20 deliberation protocols",
+        "21 specialized agents",
+        "Red/Blue Team security audits",
+        "AutoGen-style team coordination",
+        "Six Thinking Hats balanced review",
+        "Appreciative Inquiry positive focus",
+        "Production automation hooks",
+        "Slack/GitHub integration"
+      ],
+      "tier": "advanced",
+      "innovative": true
     }
   ]
 }
