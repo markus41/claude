@@ -1,17 +1,19 @@
 {
   "$schema": "./schema/registry.schema.json",
-  "version": "4.0.0",
-  "lastUpdated": "2025-11-28",
-  "description": "Central registry for Claude Code resources - agents, skills, commands, workflows, MCPs, tools",
+  "version": "5.0.0",
+  "lastUpdated": "2025-12-26",
+  "description": "Central registry for Claude Code resources - agents, skills, commands, workflows, MCPs, tools, plugins",
 
   "metadata": {
-    "totalAgents": 67,
-    "totalSkills": 34,
-    "totalCommands": 44,
+    "totalAgents": 239,
+    "totalSkills": 112,
+    "totalCommands": 238,
     "totalWorkflows": 10,
     "totalMcpServers": 8,
     "totalMcpTools": 80,
-    "totalBuiltinTools": 17
+    "totalBuiltinTools": 17,
+    "totalPlugins": 14,
+    "innovativePlugins": 6
   },
 
   "indexes": {
@@ -21,7 +23,8 @@
     "commands": "./commands.index.json",
     "workflows": "./workflows.index.json",
     "mcps": "./mcps.index.json",
-    "tools": "./tools.index.json"
+    "tools": "./tools.index.json",
+    "plugins": "./plugins.index.json"
   },
 
   "loadStrategy": {
@@ -94,7 +97,19 @@
       "supabase|rls|edge-function": "mcps/supabase",
       "vercel|deploy|preview": "mcps/vercel",
       "github|pr|issue|branch": "mcps/github",
-      "playwright|e2e|browser": "mcps/playwright"
+      "playwright|e2e|browser": "mcps/playwright",
+      "git|branch|commit|merge|rebase|pr": "plugins/git-workflow-orchestrator",
+      "release|deploy|changelog|version": "plugins/release-orchestrator",
+      "docs|documentation|readme|api-docs": "plugins/documentation-orchestrator",
+      "test|e2e|coverage|regression": "plugins/testing-orchestrator",
+      "notify|slack|teams|alert": "plugins/notification-hub",
+      "metrics|velocity|burndown|dora": "plugins/analytics-dashboard",
+      "debug|bug|root-cause|hypothesis": "plugins/cognitive-code-reasoner",
+      "autonomous|autopilot|self-manage": "plugins/autonomous-sprint-ai",
+      "graph|impact|dependency|semantic": "plugins/code-knowledge-graph",
+      "model|route|ensemble|llm": "plugins/multi-model-orchestration",
+      "predict|risk|failure|hotspot": "plugins/predictive-failure-engine",
+      "council|debate|vote|adversarial": "plugins/agent-review-council"
     },
     "byTask": {
       "deploy": ["k8s-deployer", "docker-builder", "helm-specialist", "cicd-engineer"],
