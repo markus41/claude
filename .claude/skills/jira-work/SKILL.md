@@ -356,6 +356,362 @@ function shouldSkipGate(gate: string, tier: Tier, files: string[]): boolean {
 
 ---
 
+## Failure Recovery & Context Optimization (v5.0)
+
+**Purpose:** Prevent wasted context when agents struggle to find answers or searches fail.
+
+### Search Timeout Limits
+
+```typescript
+const SEARCH_LIMITS = {
+  // Maximum attempts before giving up
+  maxSearchAttempts: 3,
+
+  // Time limits per search type
+  timeouts: {
+    glob: 5000,        // 5 seconds
+    grep: 10000,       // 10 seconds
+    explore: 30000,    // 30 seconds
+    jiraFetch: 10000,  // 10 seconds
+    confluence: 15000  // 15 seconds
+  },
+
+  // Context budget per phase (tokens)
+  contextBudget: {
+    EXPLORE: 5000,
+    PLAN: 3000,
+    CODE: 15000,
+    TEST: 5000,
+    QUALITY: 3000,
+    FIX: 8000,
+    COMMIT: 2000
+  }
+};
+```
+
+### Negative Caching (Failed Search Memoization)
+
+```typescript
+interface NegativeCache {
+  failedSearches: Map<string, {
+    query: string;
+    timestamp: number;
+    reason: string;
+    ttl: number;  // Don't retry for this duration
+  }>;
+}
+
+// Prevent repeating failed searches
+async function searchWithNegativeCache(query: string, searchFn: () => Promise<any>): Promise<any> {
+  const cacheKey = hashQuery(query);
+  const cached = negativeCache.get(cacheKey);
+
+  if (cached && !isExpired(cached)) {
+    // Return early with fallback instead of re-trying
+    return {
+      found: false,
+      reason: cached.reason,
+      suggestion: 'Try alternative search pattern'
+    };
+  }
+
+  try {
+    const result = await withTimeout(searchFn(), SEARCH_LIMITS.timeouts.grep);
+    return result;
+  } catch (error) {
+    // Cache the failure to prevent retry storms
+    negativeCache.set(cacheKey, {
+      query,
+      timestamp: Date.now(),
+      reason: error.message,
+      ttl: 5 * 60 * 1000  // Don't retry for 5 minutes
+    });
+    throw error;
+  }
+}
+```
+
+### Context Checkpointing
+
+```typescript
+interface PhaseCheckpoint {
+  phase: string;
+  issueKey: string;
+  timestamp: string;
+  artifacts: {
+    filesIdentified: string[];
+    planSummary?: string;
+    codeChanges?: string[];
+    testResults?: any;
+    qualityScore?: number;
+  };
+  contextUsed: number;  // Tokens consumed
+  canResume: boolean;
+}
+
+// Checkpoint after each phase to prevent re-work
+async function checkpointPhase(phase: string, result: any): Promise<void> {
+  const checkpoint: PhaseCheckpoint = {
+    phase,
+    issueKey: currentIssue,
+    timestamp: new Date().toISOString(),
+    artifacts: extractArtifacts(result),
+    contextUsed: estimateTokens(result),
+    canResume: true
+  };
+
+  // Save to session storage (survives agent restarts)
+  await sessionStorage.set(`checkpoint:${currentIssue}:${phase}`, checkpoint);
+}
+
+// Resume from last checkpoint if context was lost
+async function resumeFromCheckpoint(issueKey: string): Promise<PhaseCheckpoint | null> {
+  const phases = ['COMMIT', 'FIX', 'QUALITY', 'TEST', 'CODE', 'PLAN', 'EXPLORE'];
+
+  for (const phase of phases) {
+    const checkpoint = await sessionStorage.get(`checkpoint:${issueKey}:${phase}`);
+    if (checkpoint?.canResume) {
+      return checkpoint;  // Resume from most recent valid checkpoint
+    }
+  }
+  return null;
+}
+```
+
+### Escalation Patterns
+
+```
+STRUGGLE DETECTION & ESCALATION:
+═════════════════════════════════════════════════════════════════════════
+  ┌─────────────────────────────────────────────────────────────────────┐
+  │  LEVEL 1: Agent Self-Recovery (automatic)                          │
+  │  ─────────────────────────────────────────                          │
+  │  • 3 search attempts with query refinement                          │
+  │  • Broaden search pattern on failure                                │
+  │  • Try alternative file patterns                                    │
+  │  • Timeout: 30 seconds total                                        │
+  └───────────────────────────┬─────────────────────────────────────────┘
+                              │ (if still failing)
+                              ▼
+  ┌─────────────────────────────────────────────────────────────────────┐
+  │  LEVEL 2: Strategy Pivot (automatic)                               │
+  │  ─────────────────────────────────                                  │
+  │  • Switch from Grep to Glob (or vice versa)                         │
+  │  • Use Task(Explore) agent for deeper search                        │
+  │  • Check registry for known patterns                                │
+  │  • Consult project structure cache                                  │
+  └───────────────────────────┬─────────────────────────────────────────┘
+                              │ (if still failing)
+                              ▼
+  ┌─────────────────────────────────────────────────────────────────────┐
+  │  LEVEL 3: Graceful Degradation (automatic)                         │
+  │  ─────────────────────────────────────────                          │
+  │  • Proceed with partial context                                     │
+  │  • Log what's missing for manual review                             │
+  │  • Mark result as "low confidence"                                  │
+  │  • Add TODO comments for missing context                            │
+  └───────────────────────────┬─────────────────────────────────────────┘
+                              │ (if critical blocker)
+                              ▼
+  ┌─────────────────────────────────────────────────────────────────────┐
+  │  LEVEL 4: Human Escalation (requires intervention)                 │
+  │  ───────────────────────────────────────────────                    │
+  │  • Pause workflow with clear status                                 │
+  │  • Present what was tried and what failed                           │
+  │  • Request specific information needed                              │
+  │  • Checkpoint state for resume after input                          │
+  └─────────────────────────────────────────────────────────────────────┘
+═════════════════════════════════════════════════════════════════════════
+```
+
+### Retry Budget & Circuit Breaker
+
+```typescript
+interface RetryBudget {
+  maxRetries: number;
+  currentRetries: number;
+  backoffMs: number[];
+  circuitOpen: boolean;
+  lastFailure?: Date;
+}
+
+const retryBudgets: Record<string, RetryBudget> = {
+  jiraApi: { maxRetries: 3, currentRetries: 0, backoffMs: [1000, 2000, 4000], circuitOpen: false },
+  confluence: { maxRetries: 2, currentRetries: 0, backoffMs: [2000, 5000], circuitOpen: false },
+  githubApi: { maxRetries: 3, currentRetries: 0, backoffMs: [1000, 2000, 4000], circuitOpen: false },
+  codeSearch: { maxRetries: 3, currentRetries: 0, backoffMs: [500, 1000, 2000], circuitOpen: false }
+};
+
+// Circuit breaker pattern
+async function withCircuitBreaker<T>(
+  service: string,
+  operation: () => Promise<T>
+): Promise<T | null> {
+  const budget = retryBudgets[service];
+
+  // Check if circuit is open (too many recent failures)
+  if (budget.circuitOpen) {
+    const timeSinceFailure = Date.now() - (budget.lastFailure?.getTime() || 0);
+    if (timeSinceFailure < 60000) {  // 1 minute cooldown
+      return null;  // Skip this service, use fallback
+    }
+    budget.circuitOpen = false;  // Reset circuit
+  }
+
+  for (let attempt = 0; attempt < budget.maxRetries; attempt++) {
+    try {
+      const result = await operation();
+      budget.currentRetries = 0;  // Reset on success
+      return result;
+    } catch (error) {
+      budget.currentRetries++;
+      budget.lastFailure = new Date();
+
+      if (attempt < budget.maxRetries - 1) {
+        await sleep(budget.backoffMs[attempt]);
+      }
+    }
+  }
+
+  // Open circuit after exhausting retries
+  budget.circuitOpen = true;
+  return null;
+}
+```
+
+### Fallback Strategies
+
+```typescript
+const FALLBACK_STRATEGIES = {
+  // When Jira API fails
+  jiraUnavailable: {
+    action: 'useLocalContext',
+    steps: [
+      'Parse issue key from branch name',
+      'Extract context from commit messages',
+      'Use cached issue data if available',
+      'Proceed with minimal context, mark as draft'
+    ]
+  },
+
+  // When Confluence search fails
+  confluenceUnavailable: {
+    action: 'skipDocumentation',
+    steps: [
+      'Skip Confluence search in EXPLORE',
+      'Skip doc generation in COMMIT',
+      'Add TODO for manual documentation',
+      'Continue with code-only workflow'
+    ]
+  },
+
+  // When codebase search fails
+  searchFailed: {
+    action: 'broaden',
+    steps: [
+      'Try parent directory',
+      'Use simpler glob pattern (*.ts instead of **/*.service.ts)',
+      'Search by keyword instead of path',
+      'Fall back to git log for file history'
+    ]
+  },
+
+  // When quality gates timeout
+  gateTimeout: {
+    action: 'partialCheck',
+    steps: [
+      'Run only fast gates (lint, format)',
+      'Skip slow gates (coverage, complexity)',
+      'Mark PR as "needs-full-review"',
+      'Schedule async quality check'
+    ]
+  }
+};
+
+// Apply fallback when primary strategy fails
+async function withFallback<T>(
+  primary: () => Promise<T>,
+  fallbackKey: keyof typeof FALLBACK_STRATEGIES,
+  fallbackFn: () => Promise<T>
+): Promise<{ result: T; usedFallback: boolean }> {
+  try {
+    const result = await withTimeout(primary(), 30000);
+    return { result, usedFallback: false };
+  } catch (error) {
+    console.log(`Primary failed, using fallback: ${fallbackKey}`);
+    const result = await fallbackFn();
+    return { result, usedFallback: true };
+  }
+}
+```
+
+### Context Budget Enforcement
+
+```typescript
+// Track context usage per phase
+class ContextBudgetTracker {
+  private usage: Map<string, number> = new Map();
+  private readonly totalBudget = 100000;  // tokens
+
+  consume(phase: string, tokens: number): boolean {
+    const current = this.usage.get(phase) || 0;
+    const phaseBudget = SEARCH_LIMITS.contextBudget[phase];
+
+    if (current + tokens > phaseBudget) {
+      console.warn(`Phase ${phase} exceeding budget: ${current + tokens}/${phaseBudget}`);
+      return false;  // Deny consumption
+    }
+
+    this.usage.set(phase, current + tokens);
+    return true;
+  }
+
+  getRemaining(): number {
+    const used = Array.from(this.usage.values()).reduce((a, b) => a + b, 0);
+    return this.totalBudget - used;
+  }
+
+  shouldCheckpoint(): boolean {
+    return this.getRemaining() < 25000;  // 25% remaining
+  }
+
+  shouldCompress(): boolean {
+    return this.getRemaining() < 10000;  // 10% remaining
+  }
+}
+
+// Enforce budget during agent execution
+const budgetTracker = new ContextBudgetTracker();
+
+async function executeWithBudget(phase: string, operation: () => Promise<any>): Promise<any> {
+  if (budgetTracker.shouldCheckpoint()) {
+    await checkpointPhase(phase, { partial: true });
+  }
+
+  if (budgetTracker.shouldCompress()) {
+    await compressContext();  // Summarize and discard old messages
+  }
+
+  const result = await operation();
+  budgetTracker.consume(phase, estimateTokens(result));
+  return result;
+}
+```
+
+### Summary: Mitigation Quick Reference
+
+| Problem | Detection | Mitigation |
+|---------|-----------|------------|
+| Search taking too long | Timeout after 30s | Broaden pattern, try alternatives |
+| Same search failing repeatedly | Negative cache hit | Skip with fallback, don't retry |
+| Context running out | Budget tracker | Checkpoint + compress |
+| API consistently failing | Circuit breaker open | Use cached data or skip |
+| Agent stuck in loop | Retry count > 3 | Escalate to human |
+| Phase incomplete | Missing artifacts | Resume from checkpoint |
+| Low confidence result | Fallback was used | Mark for review, add TODOs |
+
+---
+
 ## Subagent Communication Protocol
 
 ### Message Format
