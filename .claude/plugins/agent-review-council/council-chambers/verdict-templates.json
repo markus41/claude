@@ -1,0 +1,410 @@
+{
+  "$schema": "../schemas/verdict-template.schema.json",
+  "version": "1.0.0",
+  "verdictTypes": {
+    "APPROVE": {
+      "decision": "APPROVE",
+      "description": "Code is ready for merge without changes",
+      "color": "green",
+      "emoji": "✅",
+      "actionRequired": false,
+      "blocksMerge": false
+    },
+    "APPROVE_WITH_CHANGES": {
+      "decision": "APPROVE_WITH_CHANGES",
+      "description": "Code is good but requires non-blocking improvements",
+      "color": "yellow",
+      "emoji": "⚠️",
+      "actionRequired": true,
+      "blocksMerge": false,
+      "followUpRequired": true
+    },
+    "REQUEST_CHANGES": {
+      "decision": "REQUEST_CHANGES",
+      "description": "Code requires changes before approval",
+      "color": "orange",
+      "emoji": "🔄",
+      "actionRequired": true,
+      "blocksMerge": true,
+      "resubmitRequired": true
+    },
+    "REJECT": {
+      "decision": "REJECT",
+      "description": "Code has fundamental issues and should not be merged",
+      "color": "red",
+      "emoji": "❌",
+      "actionRequired": true,
+      "blocksMerge": true,
+      "significantReworkRequired": true
+    }
+  },
+  "templates": {
+    "standard": {
+      "name": "Standard Verdict",
+      "protocol": "all",
+      "format": {
+        "verdict": {
+          "decision": "APPROVE | APPROVE_WITH_CHANGES | REQUEST_CHANGES | REJECT",
+          "confidence": "0.0-1.0",
+          "protocol": "protocol-name",
+          "timestamp": "ISO-8601"
+        },
+        "council": {
+          "panelSize": "quick | standard | thorough | full",
+          "agents": ["agent-list"],
+          "moderator": "agent-name",
+          "rounds": "number"
+        },
+        "findings": [
+          {
+            "category": "security | performance | architecture | maintainability | domain | testing",
+            "severity": "critical | high | medium | low | info",
+            "title": "Brief description",
+            "location": "file:line",
+            "details": "Full explanation",
+            "recommendation": "What to do",
+            "discoveredBy": "agent-name"
+          }
+        ],
+        "actionItems": [
+          {
+            "priority": "P0 | P1 | P2 | P3",
+            "description": "What needs to be done",
+            "blocking": "true | false",
+            "estimatedEffort": "time estimate"
+          }
+        ],
+        "minorityOpinions": [
+          {
+            "agent": "agent-name",
+            "position": "dissenting view",
+            "rationale": "why they disagree"
+          }
+        ],
+        "metadata": {
+          "convened": "ISO-8601",
+          "completed": "ISO-8601",
+          "duration": "minutes",
+          "votingMechanism": "mechanism-used"
+        }
+      }
+    },
+    "red-blue-team": {
+      "name": "Red/Blue Team Verdict",
+      "protocol": "red-blue-team",
+      "format": {
+        "verdict": {
+          "decision": "APPROVE | APPROVE_WITH_CHANGES | REQUEST_CHANGES | REJECT",
+          "confidence": "0.0-1.0",
+          "battleRounds": 3
+        },
+        "redTeamReport": {
+          "leader": "red-team-leader-agent",
+          "vulnerabilities": [
+            {
+              "id": "RED-001",
+              "severity": "CRITICAL | HIGH | MEDIUM | LOW",
+              "category": "injection | auth | xss | etc",
+              "title": "Vulnerability name",
+              "location": "file:line",
+              "exploitPOC": "Proof of concept",
+              "cvss": "0.0-10.0",
+              "recommendation": "How to fix"
+            }
+          ],
+          "verdict": "REJECT | REQUEST_CHANGES"
+        },
+        "blueTeamReport": {
+          "leader": "blue-team-leader-agent",
+          "mitigations": [
+            {
+              "id": "BLUE-MIT-001",
+              "addresses": "RED-001",
+              "severityBefore": "CRITICAL",
+              "severityAfter": "NONE | LOW",
+              "mitigation": "Detailed fix",
+              "validation": "How we verified",
+              "confidence": "0.0-1.0"
+            }
+          ],
+          "verdict": "APPROVE_WITH_CHANGES | APPROVE"
+        },
+        "adjudication": {
+          "adjudicator": "moderator-agent",
+          "redTeamFindings": "summary",
+          "blueTeamMitigations": "summary",
+          "residualRisk": "LOW | MEDIUM | HIGH",
+          "verdict": "Final decision",
+          "requiredActions": ["list of mandatory fixes"]
+        }
+      }
+    },
+    "autogen-team": {
+      "name": "AutoGen Team Verdict",
+      "protocol": "autogen-team",
+      "format": {
+        "verdict": {
+          "decision": "team-validated-verdict",
+          "confidence": "0.0-1.0"
+        },
+        "teamComposition": {
+          "manager": "team-manager-agent",
+          "workers": [
+            {
+              "agent": "worker-agent-name",
+              "domain": "architecture | security | performance | etc",
+              "verdict": "APPROVE | APPROVE_WITH_CHANGES | REQUEST_CHANGES | REJECT",
+              "findings": ["list of findings"]
+            }
+          ],
+          "critic": "devils-advocate-agent"
+        },
+        "synthesis": {
+          "keyFindings": [
+            {
+              "category": "category",
+              "severity": "severity",
+              "description": "description",
+              "attributedTo": "worker-agent-name"
+            }
+          ],
+          "decisionRationale": "Why this verdict",
+          "iterations": "number",
+          "convergenceAchieved": "true | false"
+        },
+        "actionItems": ["list of actions with worker attribution"]
+      }
+    },
+    "six-thinking-hats": {
+      "name": "Six Thinking Hats Verdict",
+      "protocol": "six-thinking-hats",
+      "format": {
+        "verdict": {
+          "decision": "multi-perspective-balanced-verdict",
+          "confidence": "0.0-1.0"
+        },
+        "perspectives": {
+          "white": {
+            "hat": "Facts and Information",
+            "findings": ["Objective data points"]
+          },
+          "red": {
+            "hat": "Emotions and Intuition",
+            "findings": ["Gut feelings and concerns"]
+          },
+          "black": {
+            "hat": "Caution and Risks",
+            "findings": ["What could go wrong"]
+          },
+          "yellow": {
+            "hat": "Benefits and Optimism",
+            "findings": ["What could go right"]
+          },
+          "green": {
+            "hat": "Creativity and Alternatives",
+            "findings": ["New ideas and options"]
+          },
+          "blue": {
+            "hat": "Process Control",
+            "synthesis": "Meta-analysis and final verdict"
+          }
+        },
+        "balancedAnalysis": "Integration of all perspectives",
+        "recommendation": "Final recommendation considering all hats"
+      }
+    },
+    "appreciative-inquiry": {
+      "name": "Appreciative Inquiry Verdict",
+      "protocol": "appreciative-inquiry",
+      "format": {
+        "verdict": {
+          "decision": "strength-based-improvement-plan",
+          "confidence": "0.0-1.0"
+        },
+        "phases": {
+          "discover": {
+            "strengths": ["What's working well"],
+            "successStories": ["Concrete examples of good practices"]
+          },
+          "dream": {
+            "vision": "What this code could become at its best",
+            "possibilities": ["Potential improvements"]
+          },
+          "design": {
+            "bridgeStrategy": "How to get from current to ideal",
+            "propositions": ["Concrete design changes"]
+          },
+          "destiny": {
+            "commitments": ["Specific actions to take"],
+            "accountability": ["Who does what by when"]
+          }
+        },
+        "strengthsToPreserve": ["List of strengths to maintain"],
+        "opportunitiesForGrowth": ["Improvement areas framed positively"]
+      }
+    },
+    "lightning-decision-jam": {
+      "name": "Lightning Decision Jam Verdict",
+      "protocol": "lightning-decision-jam",
+      "format": {
+        "verdict": {
+          "decision": "actionable-decision-with-commitment",
+          "confidence": "0.0-1.0",
+          "totalTime": "18 minutes"
+        },
+        "phaseResults": {
+          "identifiedProblems": [
+            {"problem": "description", "votes": "number"}
+          ],
+          "topProblems": ["Top 3 voted problems"],
+          "reframedOpportunities": [
+            {"problem": "original", "opportunity": "reframed positively"}
+          ],
+          "proposedSolutions": [
+            {"solution": "description", "votes": "number"}
+          ],
+          "selectedSolutions": ["Top 3 voted solutions"]
+        },
+        "commitments": [
+          {
+            "action": "What will be done",
+            "owner": "Who will do it",
+            "deadline": "When"
+          }
+        ]
+      }
+    }
+  },
+  "findingCategories": {
+    "security": {
+      "name": "Security",
+      "icon": "🔒",
+      "color": "red",
+      "severityDefault": "high",
+      "examples": ["SQL injection", "XSS", "Auth bypass", "Sensitive data exposure"]
+    },
+    "performance": {
+      "name": "Performance",
+      "icon": "⚡",
+      "color": "orange",
+      "severityDefault": "medium",
+      "examples": ["N+1 queries", "Memory leaks", "Algorithmic complexity", "Unnecessary network calls"]
+    },
+    "architecture": {
+      "name": "Architecture",
+      "icon": "🏗️",
+      "color": "blue",
+      "severityDefault": "medium",
+      "examples": ["Tight coupling", "Circular dependencies", "Violation of SOLID", "Poor abstraction"]
+    },
+    "maintainability": {
+      "name": "Maintainability",
+      "icon": "🔧",
+      "color": "green",
+      "severityDefault": "low",
+      "examples": ["Complex functions", "Poor naming", "Missing documentation", "Code duplication"]
+    },
+    "domain": {
+      "name": "Domain Logic",
+      "icon": "💼",
+      "color": "purple",
+      "severityDefault": "high",
+      "examples": ["Business rule violations", "Incorrect calculations", "Missing edge cases", "Data integrity issues"]
+    },
+    "testing": {
+      "name": "Testing",
+      "icon": "🧪",
+      "color": "cyan",
+      "severityDefault": "medium",
+      "examples": ["Insufficient coverage", "Missing edge case tests", "Brittle tests", "No integration tests"]
+    },
+    "integration": {
+      "name": "Integration",
+      "icon": "🔗",
+      "color": "yellow",
+      "severityDefault": "medium",
+      "examples": ["API contract violations", "Breaking changes", "Missing error handling", "Incompatible dependencies"]
+    },
+    "accessibility": {
+      "name": "Accessibility",
+      "icon": "♿",
+      "color": "teal",
+      "severityDefault": "medium",
+      "examples": ["Missing ARIA labels", "Keyboard navigation issues", "Color contrast problems", "Screen reader incompatibility"]
+    }
+  },
+  "severityLevels": {
+    "critical": {
+      "name": "Critical",
+      "emoji": "🚨",
+      "color": "red",
+      "priority": "P0",
+      "blocksMerge": true,
+      "requiresImmediate": true,
+      "examples": ["Security vulnerabilities", "Data loss bugs", "Production outages"]
+    },
+    "high": {
+      "name": "High",
+      "emoji": "⚠️",
+      "color": "orange",
+      "priority": "P1",
+      "blocksMerge": true,
+      "requiresImmediate": false,
+      "examples": ["Performance regressions", "Major bugs", "Breaking changes without migration"]
+    },
+    "medium": {
+      "name": "Medium",
+      "emoji": "📝",
+      "color": "yellow",
+      "priority": "P2",
+      "blocksMerge": false,
+      "requiresImmediate": false,
+      "examples": ["Code quality issues", "Minor bugs", "Missing tests"]
+    },
+    "low": {
+      "name": "Low",
+      "emoji": "💡",
+      "color": "blue",
+      "priority": "P3",
+      "blocksMerge": false,
+      "requiresImmediate": false,
+      "examples": ["Style improvements", "Documentation updates", "Refactoring suggestions"]
+    },
+    "info": {
+      "name": "Informational",
+      "emoji": "ℹ️",
+      "color": "gray",
+      "priority": "P4",
+      "blocksMerge": false,
+      "requiresImmediate": false,
+      "examples": ["Observations", "Best practice suggestions", "Future considerations"]
+    }
+  },
+  "confidenceLevels": {
+    "very-high": {
+      "range": [0.9, 1.0],
+      "description": "Unanimous or near-unanimous agreement, thorough analysis",
+      "emoji": "💯"
+    },
+    "high": {
+      "range": [0.75, 0.9],
+      "description": "Strong majority agreement, comprehensive review",
+      "emoji": "✅"
+    },
+    "medium": {
+      "range": [0.5, 0.75],
+      "description": "Majority agreement but significant dissent or incomplete analysis",
+      "emoji": "⚖️"
+    },
+    "low": {
+      "range": [0.25, 0.5],
+      "description": "Weak majority or split opinions, insufficient information",
+      "emoji": "⚠️"
+    },
+    "very-low": {
+      "range": [0.0, 0.25],
+      "description": "No clear consensus, major disagreements or uncertainty",
+      "emoji": "❓"
+    }
+  }
+}
