@@ -1,0 +1,369 @@
+{
+  "$schema": "../../core/schemas/plugin.schema.json",
+  "name": "agent-review-council",
+  "displayName": "Agent Review Council",
+  "callsign": "Tribunal",
+  "faction": "Forerunner",
+  "version": "1.0.0",
+  "description": "Tribunal - The Council of Judgment. Revolutionary multi-agent deliberation system where specialized AI agents debate, critique, and vote on code quality like a review panel. Implements adversarial review, devil's advocate patterns, consensus building, and minority opinion preservation. Produces higher quality reviews than any single agent.",
+  "author": {
+    "name": "The Lobbi",
+    "email": "developers@thelobbi.io"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/Lobbi-Docs/claude",
+  "categories": ["ai", "review", "multi-agent", "deliberation"],
+  "keywords": [
+    "multi-agent", "deliberation", "debate", "voting", "consensus",
+    "adversarial-review", "devils-advocate", "tribunal", "jury",
+    "critique", "cross-examination", "minority-opinion", "dialectic",
+    "socratic", "peer-review", "collective-intelligence"
+  ],
+
+  "provides": {
+    "commands": 12,
+    "agents": 15,
+    "skills": 6,
+    "hooks": 4,
+    "deliberationProtocols": 6
+  },
+
+  "integrations": {
+    "jira-orchestrator": {
+      "description": "Links council verdicts to Jira issues",
+      "capabilities": ["verdict-comments", "quality-ratings"],
+      "bidirectional": true
+    },
+    "code-quality-orchestrator": {
+      "description": "Council evaluates quality gate results",
+      "capabilities": ["quality-deliberation"],
+      "enhances": true
+    },
+    "git-workflow-orchestrator": {
+      "description": "Council reviews PRs before merge",
+      "capabilities": ["pr-verdict"],
+      "blocking": true
+    },
+    "cognitive-code-reasoner": {
+      "description": "Deep reasoning for complex deliberations",
+      "capabilities": ["deep-analysis"],
+      "forComplexCases": true
+    }
+  },
+
+  "councilComposition": {
+    "panelSizes": {
+      "quick": { "agents": 3, "deliberationRounds": 1, "useCase": "Simple reviews" },
+      "standard": { "agents": 5, "deliberationRounds": 2, "useCase": "Normal PRs" },
+      "thorough": { "agents": 7, "deliberationRounds": 3, "useCase": "Critical changes" },
+      "full": { "agents": 9, "deliberationRounds": 4, "useCase": "Architecture decisions" }
+    },
+    "roleAssignment": "dynamic-based-on-code",
+    "minorityOpinionRequired": true
+  },
+
+  "deliberationProtocols": {
+    "adversarial": {
+      "name": "Adversarial Review",
+      "description": "Agents explicitly try to find flaws",
+      "roles": ["defender", "attacker", "judge"],
+      "rounds": 3,
+      "output": "attack-defense-verdict"
+    },
+    "socratic": {
+      "name": "Socratic Dialogue",
+      "description": "Agents question each other to reveal truth",
+      "technique": "question-answer-synthesis",
+      "rounds": 4,
+      "output": "reasoned-conclusion"
+    },
+    "dialectic": {
+      "name": "Dialectic Synthesis",
+      "description": "Thesis-antithesis-synthesis pattern",
+      "phases": ["thesis", "antithesis", "synthesis"],
+      "output": "synthesized-verdict"
+    },
+    "jury": {
+      "name": "Jury Deliberation",
+      "description": "Traditional jury-style voting with discussion",
+      "unanimityRequired": false,
+      "majorityThreshold": 0.66,
+      "output": "majority-verdict-with-dissent"
+    },
+    "delphi": {
+      "name": "Delphi Method",
+      "description": "Anonymous iterative consensus building",
+      "rounds": 3,
+      "anonymous": true,
+      "output": "converged-consensus"
+    },
+    "devils-advocate": {
+      "name": "Devil's Advocate",
+      "description": "Dedicated agent argues against approval",
+      "advocateRole": "mandatory",
+      "mustAddressAllPoints": true,
+      "output": "stress-tested-verdict"
+    }
+  },
+
+  "votingMechanisms": {
+    "simple-majority": {
+      "threshold": 0.5,
+      "useCase": "Low-stakes decisions"
+    },
+    "super-majority": {
+      "threshold": 0.66,
+      "useCase": "Standard reviews"
+    },
+    "consensus": {
+      "threshold": 0.9,
+      "useCase": "Critical decisions"
+    },
+    "weighted": {
+      "description": "Weights based on agent expertise match",
+      "expertiseBonus": 1.5,
+      "useCase": "Specialized code"
+    },
+    "ranked-choice": {
+      "description": "Agents rank options",
+      "useCase": "Multiple alternatives"
+    }
+  },
+
+  "commands": {
+    "council:convene": "commands/convene.md",
+    "council:review": "commands/review.md",
+    "council:debate": "commands/debate.md",
+    "council:verdict": "commands/verdict.md",
+    "council:dissent": "commands/dissent.md",
+    "council:appeal": "commands/appeal.md",
+    "council:configure": "commands/configure.md",
+    "council:history": "commands/history.md",
+    "council:explain": "commands/explain.md",
+    "council:analyze": "commands/analyze.md",
+    "council:calibrate": "commands/calibrate.md",
+    "council:status": "commands/status.md"
+  },
+
+  "agents": {
+    "council-convener-agent": {
+      "path": "agents/council-convener-agent.md",
+      "model": "sonnet",
+      "description": "Convenes the council and assigns roles",
+      "triggers": ["convene council", "start review", "assemble panel"]
+    },
+    "code-architect-agent": {
+      "path": "agents/code-architect-agent.md",
+      "model": "opus",
+      "role": "panelist",
+      "expertise": ["architecture", "design-patterns", "scalability"],
+      "description": "Reviews architectural decisions and patterns"
+    },
+    "security-sentinel-agent": {
+      "path": "agents/security-sentinel-agent.md",
+      "model": "sonnet",
+      "role": "panelist",
+      "expertise": ["security", "vulnerabilities", "auth"],
+      "description": "Reviews security implications"
+    },
+    "performance-guardian-agent": {
+      "path": "agents/performance-guardian-agent.md",
+      "model": "sonnet",
+      "role": "panelist",
+      "expertise": ["performance", "optimization", "efficiency"],
+      "description": "Reviews performance characteristics"
+    },
+    "maintainability-advocate-agent": {
+      "path": "agents/maintainability-advocate-agent.md",
+      "model": "sonnet",
+      "role": "panelist",
+      "expertise": ["readability", "maintainability", "testing"],
+      "description": "Reviews code maintainability"
+    },
+    "domain-expert-agent": {
+      "path": "agents/domain-expert-agent.md",
+      "model": "sonnet",
+      "role": "panelist",
+      "expertise": ["business-logic", "domain", "requirements"],
+      "description": "Reviews domain correctness"
+    },
+    "devils-advocate-agent": {
+      "path": "agents/devils-advocate-agent.md",
+      "model": "opus",
+      "role": "adversarial",
+      "expertise": ["critique", "edge-cases", "assumptions"],
+      "description": "Actively argues against approval"
+    },
+    "integration-specialist-agent": {
+      "path": "agents/integration-specialist-agent.md",
+      "model": "sonnet",
+      "role": "panelist",
+      "expertise": ["api", "integration", "compatibility"],
+      "description": "Reviews integration aspects"
+    },
+    "test-advocate-agent": {
+      "path": "agents/test-advocate-agent.md",
+      "model": "sonnet",
+      "role": "panelist",
+      "expertise": ["testing", "coverage", "edge-cases"],
+      "description": "Reviews test quality and coverage"
+    },
+    "moderator-agent": {
+      "path": "agents/moderator-agent.md",
+      "model": "sonnet",
+      "role": "moderator",
+      "description": "Facilitates deliberation and ensures fairness"
+    },
+    "synthesis-agent": {
+      "path": "agents/synthesis-agent.md",
+      "model": "opus",
+      "role": "synthesizer",
+      "description": "Synthesizes opinions into coherent verdict"
+    },
+    "dissent-recorder-agent": {
+      "path": "agents/dissent-recorder-agent.md",
+      "model": "haiku",
+      "role": "recorder",
+      "description": "Records and preserves minority opinions"
+    },
+    "verdict-writer-agent": {
+      "path": "agents/verdict-writer-agent.md",
+      "model": "sonnet",
+      "role": "writer",
+      "description": "Writes clear, actionable verdict documents"
+    },
+    "appeal-handler-agent": {
+      "path": "agents/appeal-handler-agent.md",
+      "model": "opus",
+      "role": "appeals",
+      "description": "Handles appeals to council decisions"
+    },
+    "calibration-agent": {
+      "path": "agents/calibration-agent.md",
+      "model": "haiku",
+      "role": "calibration",
+      "description": "Calibrates council accuracy over time"
+    }
+  },
+
+  "skills": {
+    "deliberation": {
+      "path": "skills/deliberation.md",
+      "description": "Multi-agent deliberation techniques",
+      "triggers": ["debate", "deliberate", "discuss"]
+    },
+    "adversarial-review": {
+      "path": "skills/adversarial-review.md",
+      "description": "Adversarial review techniques",
+      "triggers": ["adversarial", "critique", "attack"]
+    },
+    "consensus-building": {
+      "path": "skills/consensus-building.md",
+      "description": "Building consensus among agents",
+      "triggers": ["consensus", "agree", "unite"]
+    },
+    "dissent-preservation": {
+      "path": "skills/dissent-preservation.md",
+      "description": "Recording and valuing minority opinions",
+      "triggers": ["dissent", "minority", "disagree"]
+    },
+    "verdict-writing": {
+      "path": "skills/verdict-writing.md",
+      "description": "Writing clear review verdicts",
+      "triggers": ["verdict", "decision", "ruling"]
+    },
+    "expertise-matching": {
+      "path": "skills/expertise-matching.md",
+      "description": "Matching agents to code domains",
+      "triggers": ["expertise", "specialist", "domain"]
+    }
+  },
+
+  "hooks": {
+    "onPRCreated": {
+      "script": "hooks/scripts/auto-convene.sh",
+      "description": "Auto-convenes council for new PRs"
+    },
+    "onVerdictReached": {
+      "script": "hooks/scripts/verdict-notification.sh",
+      "description": "Notifies stakeholders of verdict"
+    },
+    "onAppeal": {
+      "script": "hooks/scripts/handle-appeal.sh",
+      "description": "Handles appeals to decisions"
+    },
+    "postReview": {
+      "script": "hooks/scripts/calibrate-accuracy.sh",
+      "description": "Calibrates based on outcomes"
+    }
+  },
+
+  "councilChambers": {
+    "path": "council-chambers/",
+    "files": [
+      "deliberation-templates.json",
+      "voting-protocols.json",
+      "role-definitions.json",
+      "verdict-templates.json"
+    ]
+  },
+
+  "permissions": {
+    "filesystem": [
+      { "path": "**/*", "access": "read" },
+      { "path": ".claude/council/**", "access": "readwrite" }
+    ],
+    "tools": ["Bash", "Read", "Grep", "Glob", "Task", "Edit"],
+    "mcpServers": ["github"]
+  },
+
+  "configuration": {
+    "schema": {
+      "type": "object",
+      "properties": {
+        "defaultPanelSize": {
+          "type": "string",
+          "enum": ["quick", "standard", "thorough", "full"],
+          "default": "standard"
+        },
+        "deliberationProtocol": {
+          "type": "string",
+          "enum": ["adversarial", "socratic", "dialectic", "jury", "delphi", "devils-advocate"],
+          "default": "adversarial"
+        },
+        "votingMechanism": {
+          "type": "string",
+          "enum": ["simple-majority", "super-majority", "consensus", "weighted", "ranked-choice"],
+          "default": "super-majority"
+        },
+        "requireDevilsAdvocate": {
+          "type": "boolean",
+          "default": true
+        },
+        "preserveDissent": {
+          "type": "boolean",
+          "default": true
+        },
+        "autoConveneOnPR": {
+          "type": "boolean",
+          "default": true
+        },
+        "minReviewersForMerge": {
+          "type": "number",
+          "default": 3
+        }
+      }
+    }
+  },
+
+  "activation": {
+    "auto": false,
+    "priority": 875,
+    "conditions": {
+      "keywords": [
+        "council", "tribunal", "panel", "review council", "deliberate",
+        "debate code", "adversarial review", "vote on"
+      ]
+    }
+  }
+}
