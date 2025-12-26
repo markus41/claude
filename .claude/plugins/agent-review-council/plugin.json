@@ -23,10 +23,10 @@
   ],
 
   "provides": {
-    "commands": 12,
+    "commands": 14,
     "agents": 21,
     "skills": 6,
-    "hooks": 4,
+    "hooks": 5,
     "deliberationProtocols": 20
   },
 
@@ -320,6 +320,8 @@
   "commands": {
     "council:convene": "commands/convene.md",
     "council:review": "commands/review.md",
+    "council:setup": "commands/setup.md",
+    "council:welcome": "commands/welcome.md",
     "council:debate": "commands/debate.md",
     "council:verdict": "commands/verdict.md",
     "council:dissent": "commands/dissent.md",
@@ -509,6 +511,10 @@
   },
 
   "hooks": {
+    "postInstall": {
+      "script": "hooks/scripts/post-install.sh",
+      "description": "Interactive onboarding and setup wizard after installation"
+    },
     "onPRCreated": {
       "script": "hooks/scripts/auto-convene.sh",
       "description": "Auto-convenes council for new PRs"
