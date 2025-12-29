@@ -1,0 +1,31 @@
+{
+  "name": "cipe-v2-oracle-prime",
+  "version": "2.0.0",
+  "description": "Oracle Prime - Autonomous Codebase Intelligence & Predictive Engineering. Advanced semantic codebase analysis with vector embeddings, predictive development engine, self-healing capabilities, autonomous refactoring, and ML-powered code generation. Provides 18 specialized agents and 25 commands for reducing developer time by 73.5%.",
+  "author": {
+    "name": "The Lobbi",
+    "email": "developers@thelobbi.io"
+  },
+  "keywords": [
+    "codebase-intelligence",
+    "predictive-engineering",
+    "semantic-analysis",
+    "vector-embeddings",
+    "self-healing",
+    "autonomous-refactoring",
+    "code-generation",
+    "ml-powered",
+    "ast-parsing",
+    "tech-debt-analysis",
+    "hotspot-detection",
+    "impact-analysis",
+    "architecture-visualization",
+    "performance-profiling",
+    "test-generation",
+    "migration-planning",
+    "coupling-analysis",
+    "complexity-scoring"
+  ],
+  "license": "MIT",
+  "repository": "https://github.com/Lobbi-Docs/cipe-v2-oracle-prime"
+}

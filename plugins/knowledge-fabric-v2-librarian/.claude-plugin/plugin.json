@@ -1,0 +1,30 @@
+{
+  "name": "knowledge-fabric-v2-librarian",
+  "version": "2.0.0",
+  "description": "Librarian - Cognitive Organization & Expert Knowledge Synthesis. Expert cloning for senior developer knowledge capture, decision intelligence, cognitive onboarding, cross-repo pattern mining, and architectural decision records. Provides 15 specialized agents and 20 commands for 67% onboarding time reduction and 314% ROI.",
+  "author": {
+    "name": "The Lobbi",
+    "email": "developers@thelobbi.io"
+  },
+  "keywords": [
+    "knowledge-management",
+    "expert-cloning",
+    "rag",
+    "semantic-search",
+    "vector-embeddings",
+    "obsidian-sync",
+    "confluence-integration",
+    "notion-integration",
+    "documentation-curation",
+    "context-retrieval",
+    "knowledge-graph",
+    "citation-tracking",
+    "adr",
+    "decision-intelligence",
+    "cognitive-onboarding",
+    "pattern-mining",
+    "organizational-memory"
+  ],
+  "license": "MIT",
+  "repository": "https://github.com/Lobbi-Docs/knowledge-fabric-v2-librarian"
+}

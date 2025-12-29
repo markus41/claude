@@ -69,11 +69,13 @@ This agent implements five core patterns that work together to create a robust o
 ## Pattern 1: Blackboard Pattern
 
 ### Concept
+
 The Blackboard Pattern creates a shared knowledge space where multiple specialized agents contribute their expertise to solve complex problems collaboratively. Knowledge emerges through agent contributions and synthesis.
 
 ### Implementation
 
 #### State Structure
+
 ```json
 {
   "blackboard": {
@@ -128,6 +130,7 @@ The Blackboard Pattern creates a shared knowledge space where multiple specializ
 #### Workflow
 
 **Phase 1: Blackboard Initialization**
+
 ```
 1. Create blackboard with problem statement from Jira issue
 2. Identify specialized agents needed (3-7 experts)
@@ -136,6 +139,7 @@ The Blackboard Pattern creates a shared knowledge space where multiple specializ
 ```
 
 **Phase 2: Parallel Knowledge Contribution**
+
 ```
 1. Spawn Task agents for each specialist
 2. Each agent analyzes problem from their domain
@@ -145,6 +149,7 @@ The Blackboard Pattern creates a shared knowledge space where multiple specializ
 ```
 
 **Phase 3: Continuous Synthesis**
+
 ```
 1. Monitor knowledge entries every 30 seconds
 2. Identify consensus patterns (3+ agents agree)
@@ -154,6 +159,7 @@ The Blackboard Pattern creates a shared knowledge space where multiple specializ
 ```
 
 **Phase 4: Solution Emergence**
+
 ```
 1. Detect solution candidates from high-confidence entries
 2. Evaluate solutions against constraints
@@ -163,6 +169,7 @@ The Blackboard Pattern creates a shared knowledge space where multiple specializ
 ```
 
 **Phase 5: Knowledge Consolidation**
+
 ```
 1. Archive blackboard to Obsidian vault
 2. Extract reusable patterns for future problems
@@ -173,6 +180,7 @@ The Blackboard Pattern creates a shared knowledge space where multiple specializ
 #### Integration Points
 
 **With Jira Orchestrator:**
+
 ```python
 # Initialize blackboard for complex issue
 issue = jira_get_issue(issue_key)
@@ -205,6 +213,7 @@ if issue.complexity_score > 8:
 ```
 
 **Agent Contribution Template:**
+
 ```python
 def contribute_to_blackboard(blackboard_id, agent_name, domain):
     """
@@ -242,18 +251,21 @@ def contribute_to_blackboard(blackboard_id, agent_name, domain):
 #### Convergence Metrics
 
 **Knowledge Saturation:**
+
 ```python
 saturation = 1 - (new_entries_last_hour / total_entries)
 # Saturation > 0.8 indicates diminishing returns
 ```
 
 **Consensus Score:**
+
 ```python
 consensus = len(consensus_areas) / len(knowledge_entries)
 # Consensus > 0.6 indicates strong agreement
 ```
 
 **Solution Confidence:**
+
 ```python
 confidence = (avg_entry_confidence * 0.4) +
              (vote_ratio * 0.3) +
@@ -266,6 +278,7 @@ confidence = (avg_entry_confidence * 0.4) +
 ## Pattern 2: Circuit Breaker Pattern
 
 ### Concept
+
 Detect and isolate failing agents or workflow phases to prevent cascading failures. Auto-disable problematic components and gracefully degrade functionality while monitoring for recovery.
 
 ### Implementation
@@ -315,17 +328,20 @@ Detect and isolate failing agents or workflow phases to prevent cascading failur
 #### States
 
 **CLOSED (Normal Operation)**
+
 - Agent functioning normally
 - All requests pass through
 - Monitor for failures
 
 **OPEN (Circuit Tripped)**
+
 - Agent disabled after threshold failures
 - All requests fail fast (no execution)
 - Return cached results or fallback
 - Wait for timeout before testing recovery
 
 **HALF_OPEN (Testing Recovery)**
+
 - Allow limited requests through
 - Monitor success rate
 - Close if success_threshold met
@@ -334,6 +350,7 @@ Detect and isolate failing agents or workflow phases to prevent cascading failur
 #### Workflow
 
 **Phase 1: Continuous Monitoring**
+
 ```
 1. Track all agent executions
 2. Record success/failure with timestamps
@@ -343,6 +360,7 @@ Detect and isolate failing agents or workflow phases to prevent cascading failur
 ```
 
 **Phase 2: Failure Detection**
+
 ```
 1. Increment failure_count on agent error
 2. Check if failure_count >= failure_threshold
@@ -355,6 +373,7 @@ Detect and isolate failing agents or workflow phases to prevent cascading failur
 ```
 
 **Phase 3: Fallback Execution**
+
 ```
 1. When agent circuit is OPEN:
    a. Check for cached results
@@ -365,6 +384,7 @@ Detect and isolate failing agents or workflow phases to prevent cascading failur
 ```
 
 **Phase 4: Recovery Testing**
+
 ```
 1. After timeout expires, transition to HALF_OPEN
 2. Allow next N requests through (N = success_threshold)
@@ -375,6 +395,7 @@ Detect and isolate failing agents or workflow phases to prevent cascading failur
 ```
 
 **Phase 5: Health Reporting**
+
 ```
 1. Aggregate circuit breaker states
 2. Compute global health score
@@ -386,6 +407,7 @@ Detect and isolate failing agents or workflow phases to prevent cascading failur
 #### Integration Points
 
 **With Agent Execution:**
+
 ```python
 def execute_agent_with_circuit_breaker(agent_name, task_params):
     """
@@ -434,6 +456,7 @@ def execute_agent_with_circuit_breaker(agent_name, task_params):
 ```
 
 **Fallback Strategies:**
+
 ```python
 FALLBACK_STRATEGIES = {
     "requirements-analyzer": {
@@ -489,6 +512,7 @@ def execute_fallback(agent_name, task_params):
 #### Health Dashboard
 
 **Metrics to Track:**
+
 ```python
 health_metrics = {
     "agent_availability": {
@@ -521,11 +545,13 @@ health_metrics = {
 ## Pattern 3: Dynamic Replanning
 
 ### Concept
+
 Continuously evaluate plan execution and adaptively replan when blockers are encountered, strategies fail, or better paths are discovered. Uses risk assessment and alternative path detection.
 
 ### Implementation
 
 #### State Structure
+
 ```json
 {
   "plan": {
@@ -593,6 +619,7 @@ Continuously evaluate plan execution and adaptively replan when blockers are enc
 #### Workflow
 
 **Phase 1: Continuous Plan Evaluation**
+
 ```
 1. Monitor phase execution every 5 minutes
 2. Compute evaluation metrics:
@@ -605,6 +632,7 @@ Continuously evaluate plan execution and adaptively replan when blockers are enc
 ```
 
 **Phase 2: Blocker Detection & Analysis**
+
 ```
 1. Detect blockers from:
    - Agent failures (circuit breaker triggers)
