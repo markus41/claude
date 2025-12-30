@@ -1,15 +1,26 @@
 {
   "name": "jira-orchestrator",
-  "version": "4.0.0",
-  "description": "Enterprise Jira orchestration - 64 agents, 36 commands, 6-phase protocol",
+  "version": "6.0.0",
+  "description": "Enterprise Jira orchestration - 66 agents, 12 commands (consolidated from 40), hook-based automation",
   "author": {"name": "The Lobbi", "email": "developers@thelobbi.io"},
-  "keywords": ["jira", "confluence", "orchestration", "automation", "agile", "sprint", "enterprise", "compliance"],
+  "keywords": ["jira", "confluence", "orchestration", "automation", "agile", "sprint", "enterprise", "compliance", "harness", "helm", "terraform", "kubernetes", "infrastructure", "gitops", "hooks"],
   "license": "MIT",
   "registry": {
     "agents": "registry/agents.index.json",
     "commands": "registry/commands.index.json",
+    "hooks": "hooks/orchestration-hooks.json",
     "workflows": "registry/workflows.index.json"
   },
   "context_efficient": true,
-  "load_strategy": "on-demand"
+  "load_strategy": "on-demand",
+  "command_linking": {
+    "enabled": true,
+    "prefix": "jira-",
+    "target": ".claude/commands"
+  },
+  "hook_automation": {
+    "enabled": true,
+    "git_hooks": ["pre-commit", "post-commit", "pre-push", "post-merge"],
+    "orchestration_hooks": ["on-work-start", "on-phase-complete", "on-pr-create", "on-pr-merge"]
+  }
 }
