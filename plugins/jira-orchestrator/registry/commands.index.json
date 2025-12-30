@@ -1,135 +1,134 @@
 {
-  "version": "5.1.0",
-  "description": "Jira Orchestrator commands - 40 slash commands for complete Jira automation",
+  "version": "6.0.0",
+  "description": "Jira Orchestrator - 12 primary commands + hook-based automation (40→12 consolidation)",
   "prefix": "/jira:",
-  "total_commands": 40,
-  "categories": {
+  "total_commands": 12,
+  "philosophy": "Fewer commands, more automation. Most operations auto-trigger via hooks.",
+
+  "primary_commands": {
+    "work": {
+      "desc": "Start orchestrated work on issue (THE main command)",
+      "args": "ISSUE-KEY [--triage] [--prepare] [--depth]",
+      "auto_triggers": ["create-branch", "triage-if-needed", "prepare-subtasks"],
+      "phases": "EXPLORE → PLAN → CODE → TEST → FIX → DOCUMENT"
+    },
     "ship": {
-      "description": "NEW v5.0 - Ultra-simple shipping workflow",
-      "commands": {
-        "ship": {"desc": "One command: prepare → code → PR → council review", "args": "ISSUE-KEY [--council] [--depth]", "agents": "5-13", "new": true},
-        "iterate": {"desc": "Fix review feedback, update PR, re-review", "args": "ISSUE-KEY [--pr] [--auto_review]", "new": true},
-        "council": {"desc": "Agent council (blackboard) for PR review", "args": "TARGET [--preset] [--depth]", "new": true}
-      }
+      "desc": "One command: prepare → code → PR → review → merge",
+      "args": "ISSUE-KEY [--council] [--auto-merge]",
+      "includes": ["work", "pr", "review", "iterate"]
     },
-    "core": {
-      "description": "Essential daily workflow commands",
-      "commands": {
-        "work": {"desc": "Start orchestrated work on issue", "args": "ISSUE-KEY", "agents": "3-13"},
-        "status": {"desc": "Check orchestration progress", "args": "[ISSUE-KEY]"},
-        "sync": {"desc": "Sync state with Jira", "args": "[ISSUE-KEY]"},
-        "cancel": {"desc": "Cancel with checkpoint", "args": "ISSUE-KEY [--reason] [--checkpoint]"}
-      }
+    "status": {
+      "desc": "Check progress, show dashboard, metrics",
+      "args": "[ISSUE-KEY] [--format=dashboard|json]"
     },
-    "planning": {
-      "description": "Triage and preparation",
-      "commands": {
-        "triage": {"desc": "Classify and route issue", "args": "ISSUE-KEY [--auto-assign]"},
-        "prepare": {"desc": "Create subtasks with details", "args": "ISSUE-KEY [depth=standard]"}
-      }
+    "pr": {
+      "desc": "Create/manage PRs with automatic review",
+      "args": "ISSUE-KEY [--draft] [--review] [--council] [--harness]",
+      "auto_triggers": ["auto-review", "link-docs", "add-labels"]
+    },
+    "iterate": {
+      "desc": "Fix review feedback, update PR, re-review",
+      "args": "ISSUE-KEY [--auto]"
+    },
+    "cancel": {
+      "desc": "Cancel with checkpoint for resume",
+      "args": "ISSUE-KEY [--reason] [--checkpoint]"
     },
     "sprint": {
-      "description": "Sprint planning and metrics",
-      "commands": {
-        "sprint-plan": {"desc": "Sprint capacity and velocity", "args": "[--sprint-id]"},
-        "metrics": {"desc": "Real-time dashboard", "args": "[--format=dashboard]"},
-        "quality": {"desc": "Tech debt and health", "args": "[ISSUE-KEY]"}
-      }
+      "desc": "Sprint planning, metrics, quality, team capacity",
+      "args": "ACTION [options]",
+      "subcommands": ["plan", "metrics", "quality", "team"]
     },
-    "git": {
-      "description": "Git and PR operations",
-      "commands": {
-        "branch": {"desc": "Create linked branch", "args": "ISSUE-KEY"},
-        "commit": {"desc": "Smart commit with validation", "args": "[ISSUE-KEY]"},
-        "bulk-commit": {"desc": "Batch commit multiple issues"},
-        "pr": {"desc": "Create PR linked to issue", "args": "ISSUE-KEY [--draft]"},
-        "review": {"desc": "AI code review", "args": "[ISSUE-KEY]"},
-        "plan-prs": {"desc": "Plan PR strategy for epic"}
-      }
+    "enterprise": {
+      "desc": "Enterprise features (notifications, approvals, compliance)",
+      "args": "ACTION [options]",
+      "subcommands": ["notify", "approve", "portfolio", "release", "batch", "export", "sla", "compliance"]
     },
-    "documentation": {
-      "description": "Documentation automation",
-      "commands": {
-        "docs": {"desc": "Generate and sync docs", "args": "ISSUE-KEY [--obsidian] [--readme]"},
-        "confluence": {"desc": "Confluence operations", "args": "ACTION [args]"}
-      }
-    },
-    "enterprise_v4": {
-      "description": "Enterprise features (v4.0)",
-      "commands": {
-        "notify": {"desc": "Configure Slack/Teams/Email alerts", "args": "CHANNEL CONFIG"},
-        "approve": {"desc": "Multi-level approval workflows", "args": "ISSUE-KEY"},
-        "portfolio": {"desc": "Multi-project dashboard", "args": "[--project-keys]"},
-        "release": {"desc": "Release planning and notes", "args": "[--version]"},
-        "batch": {"desc": "Bulk update/transition/assign", "args": "OPERATION [JQL]"},
-        "export": {"desc": "PDF/Excel/CSV export", "args": "FORMAT [JQL]"},
-        "team": {"desc": "Capacity and workload", "args": "[--team-id]"},
-        "sla": {"desc": "SLA monitoring and alerts", "args": "[--customer-tier]"},
-        "compliance": {"desc": "SOC2/GDPR/ISO27001 reports", "args": "FRAMEWORK"}
-      }
-    },
-    "intelligence": {
-      "description": "AI analytics (v3.0)",
-      "commands": {
-        "intelligence": {"desc": "Predictive analytics", "args": "[--type=risk|velocity|priority]"},
-        "events": {"desc": "Event sourcing audit trail", "args": "[--time-travel] [--replay]"},
-        "orchestrate-advanced": {"desc": "Advanced patterns", "args": "PATTERN ISSUE-KEY"}
-      }
-    },
-    "harness": {
-      "description": "Harness CD integration",
-      "commands": {
-        "deploy": {"desc": "Track deployment status", "args": "[ISSUE-KEY]"},
-        "harness-review": {"desc": "PR review via Harness API", "args": "PR-URL"}
-      }
-    },
-    "infrastructure": {
-      "description": "NEW v5.1 - Infrastructure and modular repo management",
-      "commands": {
-        "create-repo": {"desc": "Create modular Harness repo with Helm/Terraform/K8s", "args": "SERVICE-NAME [--jira] [--type]", "agents": "1", "new": true}
-      }
-    },
-    "qa": {
-      "description": "QA workflows",
-      "commands": {
-        "qa-review": {"desc": "QA ticket review workflow"}
-      }
+    "infra": {
+      "desc": "Infrastructure and repository management",
+      "args": "ACTION [options]",
+      "subcommands": ["create-repo", "deploy", "pipeline", "status"]
     },
     "setup": {
-      "description": "Installation and config",
-      "commands": {
-        "setup": {"desc": "Interactive setup wizard"},
-        "install-hooks": {"desc": "Install git hooks"}
-      }
+      "desc": "Installation, configuration, hooks",
+      "args": "[--hooks] [--verify] [--reset]"
     },
-    "worklogs": {
-      "description": "Time tracking",
-      "commands": {
-        "process-worklogs": {"desc": "Process work logs", "args": "[--since]"}
-      }
+    "sync": {
+      "desc": "Manual sync (usually auto via hooks)",
+      "args": "[ISSUE-KEY] [--force]"
     },
-    "templates": {
-      "description": "Commit templates",
-      "commands": {
-        "commit-template": {"desc": "Generate commit template"}
-      }
+    "help": {
+      "desc": "Show commands and documentation",
+      "args": "[COMMAND]"
     }
   },
+
+  "aliases": {
+    "description": "Backward compatibility - old commands redirect to new structure",
+    "mappings": {
+      "triage": {"target": "work --triage", "deprecated": true},
+      "prepare": {"target": "work --prepare", "deprecated": true},
+      "branch": {"target": "work", "note": "Auto-created on work start", "deprecated": true},
+      "commit": {"target": "hooks", "note": "Auto via pre-commit hook", "deprecated": true},
+      "commit-template": {"target": "hooks", "note": "Auto via pre-commit hook", "deprecated": true},
+      "review": {"target": "pr --review", "deprecated": true},
+      "council": {"target": "pr --council", "deprecated": true},
+      "harness-review": {"target": "pr --harness", "deprecated": true},
+      "docs": {"target": "hooks", "note": "Auto via post-merge hook", "deprecated": true},
+      "confluence": {"target": "hooks", "note": "Auto via hooks", "deprecated": true},
+      "sprint-plan": {"target": "sprint plan", "deprecated": true},
+      "metrics": {"target": "sprint metrics", "deprecated": true},
+      "quality": {"target": "sprint quality", "deprecated": true},
+      "team": {"target": "sprint team", "deprecated": true},
+      "notify": {"target": "enterprise notify", "deprecated": true},
+      "approve": {"target": "enterprise approve", "deprecated": true},
+      "portfolio": {"target": "enterprise portfolio", "deprecated": true},
+      "release": {"target": "enterprise release", "deprecated": true},
+      "batch": {"target": "enterprise batch", "deprecated": true},
+      "export": {"target": "enterprise export", "deprecated": true},
+      "sla": {"target": "enterprise sla", "deprecated": true},
+      "compliance": {"target": "enterprise compliance", "deprecated": true},
+      "create-repo": {"target": "infra create-repo", "deprecated": true},
+      "deploy": {"target": "infra deploy", "deprecated": true},
+      "install-hooks": {"target": "setup --hooks", "deprecated": true},
+      "process-worklogs": {"target": "hooks", "note": "Auto via scheduled hook", "deprecated": true},
+      "events": {"target": "hooks", "note": "Auto-logged", "deprecated": true},
+      "bulk-commit": {"target": "enterprise batch", "deprecated": true},
+      "plan-prs": {"target": "work --prepare", "deprecated": true},
+      "qa-review": {"target": "pr --review", "deprecated": true},
+      "orchestrate-advanced": {"target": "work", "deprecated": true}
+    }
+  },
+
+  "hooks": {
+    "description": "Auto-triggered operations (no explicit commands needed)",
+    "config_file": "hooks/orchestration-hooks.json",
+    "categories": {
+      "git_hooks": ["pre-commit", "post-commit", "pre-push", "post-merge"],
+      "orchestration_hooks": ["on-work-start", "on-phase-complete", "on-pr-create", "on-pr-merge"],
+      "scheduled_hooks": ["daily", "weekly"]
+    },
+    "replaces_commands": [
+      "branch", "commit", "commit-template", "docs", "confluence",
+      "sync", "process-worklogs", "notify", "release"
+    ]
+  },
+
   "quick_reference": {
-    "recommended": ["ship", "iterate", "council"],
-    "daily": ["work", "status", "commit", "pr"],
-    "planning": ["triage", "prepare", "sprint-plan"],
-    "analytics": ["metrics", "quality", "intelligence"],
-    "enterprise": ["notify", "approve", "portfolio", "sla", "compliance"],
-    "infrastructure": ["create-repo", "deploy"]
+    "daily": ["work", "status", "pr", "iterate"],
+    "shipping": ["ship"],
+    "planning": ["sprint plan", "sprint metrics"],
+    "enterprise": ["enterprise notify", "enterprise compliance"],
+    "infrastructure": ["infra create-repo", "infra deploy"]
   },
-  "new_in_v5": {
-    "ship": "One command to rule them all - prepare, code, PR, council review",
-    "iterate": "Fix review feedback and trigger re-review automatically",
-    "council": "Multi-agent council review using blackboard pattern"
+
+  "migration": {
+    "from_version": "5.1.0",
+    "to_version": "6.0.0",
+    "commands_reduced": "40 → 12",
+    "breaking_changes": false,
+    "aliases_maintained": true
   },
-  "new_in_v5_1": {
-    "create-repo": "Create modular Harness repos with Helm, Terraform, K8s scaffolding and concise README"
-  },
+
   "load_pattern": "commands/{command-name}.md"
 }

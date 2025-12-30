@@ -1,19 +1,14 @@
 # Jira Orchestrator Plugin
 
-**Version:** 5.1.0 | **Agents:** 66 | **Commands:** 40 | **Context Budget:** Optimized
+**Version:** 6.0.0 | **Agents:** 66 | **Commands:** 12 (consolidated from 40) | **Hooks:** Auto-triggered
 
 ---
 
 ## Quick Start
 
 ```bash
-# Install
+# Install (sets up hooks automatically)
 bash scripts/install.sh
-
-# Set environment
-export JIRA_API_TOKEN="your_token"
-export JIRA_SITE_URL="https://yourcompany.atlassian.net"
-export JIRA_USER_EMAIL="your.email@company.com"
 
 # Verify
 claude /jira:setup
@@ -21,16 +16,24 @@ claude /jira:setup
 
 ---
 
-## Essential Commands
+## 12 Primary Commands (v6.0 Consolidation)
 
-| Command | Purpose | Example |
-|---------|---------|---------|
-| `/jira:work` | Full orchestrated implementation | `/jira:work PROJ-123` |
-| `/jira:status` | Check progress | `/jira:status PROJ-123` |
-| `/jira:triage` | Classify and route | `/jira:triage PROJ-123` |
-| `/jira:prepare` | Create subtasks | `/jira:prepare PROJ-123` |
-| `/jira:pr` | Create pull request | `/jira:pr PROJ-123` |
-| `/jira:review` | AI code review | `/jira:review` |
+| Command | Purpose | Includes |
+|---------|---------|----------|
+| `/jira:work` | Start orchestrated work | branch, triage, prepare (auto) |
+| `/jira:ship` | One-click shipping | work → pr → review → merge |
+| `/jira:status` | Check progress, dashboard | metrics included |
+| `/jira:pr` | Create/manage PRs | review, council, harness (flags) |
+| `/jira:iterate` | Fix feedback, re-review | auto-update PR |
+| `/jira:cancel` | Cancel with checkpoint | resume later |
+| `/jira:sprint` | Sprint operations | plan, metrics, quality, team |
+| `/jira:enterprise` | Enterprise features | notify, approve, sla, compliance |
+| `/jira:infra` | Infrastructure | create-repo, deploy, pipeline |
+| `/jira:setup` | Configuration | hooks, verify, reset |
+| `/jira:sync` | Manual sync | usually auto via hooks |
+| `/jira:help` | Documentation | command help |
+
+**Philosophy:** Fewer commands, more automation via hooks.
 
 **Full command list:** `registry/commands.index.json`
 
