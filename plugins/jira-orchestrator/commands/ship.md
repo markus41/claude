@@ -477,8 +477,35 @@ execution:
   mode: parallel_where_possible
   use_decisions: ${questions.answers}
 
+# MANDATORY: All code MUST follow coding standards
+coding_standards:
+  config: "config/coding-standards.yaml"
+  enforce:
+    terraform:
+      variables: snake_case
+      resources: "this (iterated) or main (primary)"
+      tag_keys: PascalCase
+      workspaces: "lowercase, no separators"
+    python:
+      classes: PascalCase
+      interfaces: IPascalCase
+      functions: "snake_case verbs"
+      constants: SCREAMING_SNAKE_CASE
+      api_routes: "/api/v{n}/{plural}"
+      http_methods: "GET, POST, PATCH, DELETE (no PUT)"
+      type_hints: required
+      docstrings: Google style
+    typescript:
+      functions: camelCase
+      classes: PascalCase
+      components: PascalCase
+      hooks: "use prefix"
+    database:
+      tables: "snake_case plural"
+      columns: snake_case
+
 output:
-  - Implemented feature
+  - Implemented feature (standards-compliant)
   - Unit tests
   - Integration tests
 
@@ -489,6 +516,7 @@ checkpoint:
 
     Files changed: ${file_count}
     Lines: +${added} -${removed}
+    Standards violations: ${standards_violations}
 
     Review changes before creating PR? [Y/n/show-diff]
 ```

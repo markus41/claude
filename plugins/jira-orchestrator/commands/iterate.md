@@ -156,10 +156,39 @@ execution_order:
   1. Critical security fixes first
   2. Structural changes
   3. Quality improvements
-  4. Suggestions (if time permits)
+  4. Coding standards violations
+  5. Suggestions (if time permits)
 ```
 
-### 2.3: Select Agents
+### 2.3: Coding Standards Enforcement
+
+**All fixes MUST follow `config/coding-standards.yaml`:**
+
+```yaml
+standards_check:
+  before_fix:
+    - Verify fix follows naming conventions
+    - Check language-specific rules apply
+
+  quick_reference:
+    terraform:
+      variables: snake_case
+      resources: "this (iterated) or main (primary)"
+      tag_keys: PascalCase
+    python:
+      classes: PascalCase
+      functions: "snake_case verbs"
+      api_routes: "/api/v{n}/{plural}"
+    typescript:
+      functions: camelCase
+      components: PascalCase
+      hooks: "use prefix"
+    database:
+      tables: "snake_case plural"
+      columns: snake_case
+```
+
+### 2.4: Select Agents
 
 ```yaml
 agent_selection:
