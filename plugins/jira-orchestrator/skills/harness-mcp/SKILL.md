@@ -1,6 +1,6 @@
 ---
 name: harness-mcp
-description: Harness MCP (Model Context Protocol) server integration for AI-powered CD operations, pipeline management, connector configuration, and bidirectional Jira synchronization
+description: Harness MCP (Model Context Protocol) server integration for AI-powered CD operations, pipeline management, Git repositories, pull requests, code review comments, and bidirectional Jira synchronization
 allowed-tools:
   - Bash
   - Read
@@ -20,21 +20,29 @@ triggers:
   - harness connector
   - harness pipeline
   - harness jira
+  - harness git
+  - harness pr
+  - harness pull request
+  - harness repository
+  - harness comment
   - mcp server
   - cd automation
 ---
 
 # Harness MCP Skill
 
-Comprehensive Harness MCP (Model Context Protocol) server integration for AI-powered CD operations with the Jira Orchestrator.
+Comprehensive Harness MCP (Model Context Protocol) server integration for AI-powered CD operations, Git repository management, and pull request workflows with the Jira Orchestrator.
 
 ## Overview
 
 The Harness MCP Server enables AI agents to interact with Harness tools using a unified protocol, providing endpoints for:
 - **Connectors**: Get details, list catalogue, list with filtering
-- **Pipelines**: List, get details
+- **Pipelines**: List, get details, trigger executions
 - **Executions**: Get details, list, fetch URLs
 - **Dashboards**: List all, retrieve specific data
+- **Repositories**: List, get details, track changes
+- **Pull Requests**: Create, list, get details, track status checks
+- **PR Activities**: Get comments, reviews, and activities
 
 ## Prerequisites
 
@@ -141,6 +149,235 @@ docker run -e HARNESS_API_KEY=$HARNESS_API_KEY \
 |------|-------------|
 | `harness_list_dashboards` | List all dashboards |
 | `harness_get_dashboard` | Get specific dashboard data |
+
+### Repository Operations
+
+| Tool | Description |
+|------|-------------|
+| `harness_get_repository` | Get details of a specific repository |
+| `harness_list_repositories` | List all repositories in project |
+
+### Pull Request Operations
+
+| Tool | Description |
+|------|-------------|
+| `harness_get_pull_request` | Get details of a specific pull request |
+| `harness_list_pull_requests` | List pull requests in a repository |
+| `harness_create_pull_request` | Create a new pull request |
+| `harness_get_pull_request_checks` | Get status checks for a PR |
+| `harness_get_pull_request_activities` | Get comments and activities for a PR |
+
+## Git & Pull Request Workflows
+
+### Repository Management
+
+```python
+# List all repositories
+repos = harness_list_repositories(
+    org_id="${HARNESS_ORG_ID}",
+    project_id="${HARNESS_PROJECT_ID}"
+)
+
+# Get specific repository details
+repo = harness_get_repository(
+    repo_id="my-application",
+    org_id="${HARNESS_ORG_ID}",
+    project_id="${HARNESS_PROJECT_ID}"
+)
+```
+
+### Creating Pull Requests
+
+```python
+# Create a PR linked to a Jira issue
+pr = harness_create_pull_request(
+    repo_id="my-application",
+    title="PROJ-123: Implement user authentication",
+    source_branch="feature/PROJ-123-user-auth",
+    target_branch="main",
+    description="""
+    ## Summary
+    Implements user authentication feature.
+
+    ## Jira Issue
+    [PROJ-123](https://company.atlassian.net/browse/PROJ-123)
+
+    ## Changes
+    - Added login/logout endpoints
+    - Implemented JWT token handling
+    - Added authentication middleware
+    - Unit tests included
+
+    ## Testing
+    - [x] Unit tests passing
+    - [x] Integration tests passing
+    - [ ] Manual testing required
+    """
+)
+
+print(f"PR created: {pr.url}")
+```
+
+### Monitoring PR Status
+
+```python
+# Get PR details
+pr = harness_get_pull_request(
+    repo_id="my-application",
+    pr_number=42
+)
+
+print(f"PR Status: {pr.state}")
+print(f"Mergeable: {pr.mergeable}")
+print(f"Conflicts: {pr.has_conflicts}")
+
+# Get status checks (pipeline results)
+checks = harness_get_pull_request_checks(
+    repo_id="my-application",
+    pr_number=42
+)
+
+for check in checks:
+    print(f"  {check.name}: {check.status}")
+```
+
+### Retrieving PR Comments & Activities
+
+```python
+# Get all activities (comments, reviews, status changes)
+activities = harness_get_pull_request_activities(
+    repo_id="my-application",
+    pr_number=42
+)
+
+for activity in activities:
+    if activity.type == "comment":
+        print(f"Comment by {activity.author}:")
+        print(f"  File: {activity.file_path}:{activity.line_number}")
+        print(f"  Body: {activity.body}")
+
+    elif activity.type == "review":
+        print(f"Review by {activity.author}: {activity.state}")
+        # States: APPROVED, CHANGES_REQUESTED, COMMENTED
+
+    elif activity.type == "status_change":
+        print(f"Status changed to: {activity.new_status}")
+```
+
+### Syncing PR Activities to Jira
+
+```python
+# Sync PR comments to Jira
+activities = harness_get_pull_request_activities(
+    repo_id="my-application",
+    pr_number=42
+)
+
+# Build summary for Jira comment
+review_summary = []
+for activity in activities:
+    if activity.type == "review":
+        review_summary.append(
+            f"- **{activity.author}**: {activity.state}"
+        )
+    elif activity.type == "comment":
+        review_summary.append(
+            f"- Comment on `{activity.file_path}`: {activity.body[:100]}..."
+        )
+
+# Add summary to Jira
+jira_add_comment(
+    issue_key="PROJ-123",
+    body=f"""
+    ## PR Review Update
+
+    **PR:** [#42 - Implement user auth]({pr.url})
+    **Status:** {pr.state}
+
+    ### Reviews & Comments
+    {chr(10).join(review_summary)}
+    """
+)
+```
+
+### PR-to-Jira Status Mapping
+
+Configure automatic status transitions based on PR events:
+
+```yaml
+# .jira/pr-sync.yml
+pr_sync:
+  enabled: true
+
+  # Extract Jira keys from PR metadata
+  jira_key_patterns:
+    - title: "^([A-Z]+-\\d+)"          # PROJ-123: Title
+    - branch: "feature/([A-Z]+-\\d+)"   # feature/PROJ-123
+    - branch: "bugfix/([A-Z]+-\\d+)"    # bugfix/PROJ-456
+
+  # Map PR events to Jira transitions
+  transitions:
+    pr_created:
+      transition: "In Review"
+      comment: "Pull request created: {pr_url}"
+
+    pr_approved:
+      transition: "Approved"
+      comment: "PR approved by {approver}"
+
+    pr_changes_requested:
+      transition: "In Progress"
+      comment: "Changes requested by {reviewer}"
+
+    pr_merged:
+      transition: "Done"
+      comment: "PR merged to {target_branch}"
+
+    pr_closed:
+      transition: "Cancelled"
+      comment: "PR closed without merging"
+
+  # Fields to update
+  fields:
+    pr_url: "customfield_10200"
+    pr_status: "customfield_10201"
+    reviewers: "customfield_10202"
+```
+
+### Code Review Commenting Patterns
+
+```python
+# When a reviewer adds comments, sync to Jira
+def sync_review_comments_to_jira(repo_id, pr_number, jira_key):
+    activities = harness_get_pull_request_activities(
+        repo_id=repo_id,
+        pr_number=pr_number
+    )
+
+    # Group comments by file
+    comments_by_file = {}
+    for activity in activities:
+        if activity.type == "comment":
+            file = activity.file_path
+            if file not in comments_by_file:
+                comments_by_file[file] = []
+            comments_by_file[file].append({
+                "line": activity.line_number,
+                "author": activity.author,
+                "body": activity.body,
+                "resolved": activity.resolved
+            })
+
+    # Format for Jira
+    jira_body = "## Code Review Comments\n\n"
+    for file, comments in comments_by_file.items():
+        jira_body += f"### `{file}`\n"
+        for c in comments:
+            status = "✅" if c["resolved"] else "💬"
+            jira_body += f"- {status} Line {c['line']} ({c['author']}): {c['body']}\n"
+
+    jira_add_comment(issue_key=jira_key, body=jira_body)
+```
 
 ## Jira Connector Setup in Harness
 
