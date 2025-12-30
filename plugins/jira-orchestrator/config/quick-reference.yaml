@@ -1,0 +1,78 @@
+# Jira Orchestrator Quick Reference
+# Load full details from registry/*.index.json on-demand
+
+version: "4.0.0"
+
+# Essential daily commands
+essential_commands:
+  work: "/jira:work ISSUE-KEY"
+  status: "/jira:status [ISSUE-KEY]"
+  triage: "/jira:triage ISSUE-KEY"
+  pr: "/jira:pr ISSUE-KEY"
+  review: "/jira:review"
+
+# 6-phase protocol (mandatory)
+protocol:
+  sequence: "EXPLORE → PLAN → CODE → TEST → FIX → DOCUMENT"
+  agents:
+    min: 3
+    max: 13
+
+# Workflow triggers
+workflows:
+  quick-fix: "complexity <= 10"
+  standard-feature: "complexity 11-40"
+  complex-feature: "complexity > 40"
+  epic-decomposition: "type = Epic"
+  critical-bug: "priority = Highest"
+
+# Quality gates
+gates:
+  code_review:
+    required: true
+    blocking: true
+  tests:
+    required: true
+    coverage: 80
+  documentation:
+    required: true
+
+# Agent lookup by task
+agent_lookup:
+  triage: "triage-agent"
+  enrich: "task-enricher"
+  review: "code-reviewer"
+  pr: "pr-creator"
+  docs: "documentation-writer"
+  analytics: "intelligence-analyzer"
+  sprint: "sprint-planner"
+  sla: "sla-monitor"
+  compliance: "compliance-reporter"
+
+# Enterprise commands (v4.0)
+enterprise:
+  - notify: "Slack/Teams/Email alerts"
+  - approve: "Multi-level approvals"
+  - portfolio: "Multi-project dashboard"
+  - sla: "SLA monitoring"
+  - compliance: "SOC2/GDPR/ISO27001"
+  - batch: "Bulk operations"
+  - export: "PDF/Excel/CSV"
+
+# Environment variables
+env_vars:
+  required:
+    - JIRA_API_TOKEN
+    - JIRA_SITE_URL
+    - JIRA_USER_EMAIL
+  optional:
+    - OBSIDIAN_VAULT_PATH
+    - GITHUB_TOKEN
+
+# External documentation
+external_docs:
+  full_readme: "docs/archive/README-v4-full.md"
+  installation: "INSTALLATION.md"
+  agents: "agents/*.md"
+  commands: "commands/*.md"
+  obsidian: "System/Claude-Instructions/Jira-Orchestrator-Workflows.md"
