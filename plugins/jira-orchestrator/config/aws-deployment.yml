@@ -241,7 +241,7 @@ aws:
     # Secret ARNs
     secrets:
       jira_credentials: "arn:aws:secretsmanager:${AWS_REGION}:${AWS_ACCOUNT_ID}:secret:${PROJECT_NAME}/jira-credentials"
-      github_token: "arn:aws:secretsmanager:${AWS_REGION}:${AWS_ACCOUNT_ID}:secret:${PROJECT_NAME}/github-token"
+      harness_api_key: "arn:aws:secretsmanager:${AWS_REGION}:${AWS_ACCOUNT_ID}:secret:${PROJECT_NAME}/harness-api-key"
 
     # Auto-fetch secrets before deployment
     auto_fetch: true
@@ -474,11 +474,46 @@ secrets:
     - "JIRA_SITE_URL"
 
 # =============================================================================
-# CI/CD INTEGRATION (AWS CodePipeline)
+# CI/CD INTEGRATION (Harness CD with AWS)
 # =============================================================================
 cicd:
-  platform: "aws_codepipeline"
+  platform: "harness"
 
+  # Harness CD Configuration
+  harness:
+    # Account configuration
+    account_id: "${HARNESS_ACCOUNT_ID}"
+    org_id: "${HARNESS_ORG_ID}"
+    project_id: "${HARNESS_PROJECT_ID}"
+    api_key: "${HARNESS_API_KEY}"
+
+    # Pipeline configuration
+    pipelines:
+      deploy: "${PROJECT_NAME}-aws-deploy"
+      release: "${PROJECT_NAME}-aws-release"
+      rollback: "${PROJECT_NAME}-aws-rollback"
+
+    # Services tracked in Harness
+    services:
+      - name: "${PROJECT_NAME}-frontend"
+        type: "ecs"
+      - name: "${PROJECT_NAME}-backend"
+        type: "ecs"
+
+    # Harness environments mapped to AWS
+    environments:
+      development:
+        identifier: "dev"
+        aws_environment: "development"
+      staging:
+        identifier: "staging"
+        aws_environment: "staging"
+      production:
+        identifier: "prod"
+        aws_environment: "production"
+        approval_required: true
+
+  # AWS CodePipeline Integration (Optional - for hybrid setups)
   codepipeline:
     # Pipeline configuration
     pipeline_name: "${PROJECT_NAME}-${ENVIRONMENT}"

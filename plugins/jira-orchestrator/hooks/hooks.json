@@ -33,7 +33,7 @@
       "type": "prompt",
       "matcher": {
         "type": "tool_name",
-        "pattern": "gh_pr_create|mcp__github__create_pull_request"
+        "pattern": "harness_deploy|mcp__harness__execute_pipeline|harness_create_deployment"
       },
       "timeout": 10000,
       "blocking": true,
@@ -64,7 +64,7 @@
       "type": "command",
       "matcher": {
         "type": "tool_name",
-        "pattern": "gh_pr_create|mcp__github__create_pull_request"
+        "pattern": "harness_deploy|mcp__harness__execute_pipeline|harness_create_deployment"
       },
       "timeout": 10000,
       "blocking": true,

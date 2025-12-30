@@ -324,9 +324,27 @@ secrets:
 # CI/CD INTEGRATION
 # =============================================================================
 cicd:
-  # CI/CD platform: github_actions, gitlab_ci, jenkins, circleci,
+  # CI/CD platform: harness, gitlab_ci, jenkins, circleci,
   #                 azure_devops, aws_codepipeline, gcp_cloud_build
-  platform: "github_actions"
+  platform: "harness"
+
+  # Harness-specific configuration
+  harness:
+    account_id: "${HARNESS_ACCOUNT_ID}"
+    org_id: "${HARNESS_ORG_ID}"
+    project_id: "${HARNESS_PROJECT_ID}"
+    api_key: "${HARNESS_API_KEY}"
+
+    # Pipeline references
+    pipelines:
+      deploy: "${PROJECT_NAME}-deploy"
+      release: "${PROJECT_NAME}-release"
+      rollback: "${PROJECT_NAME}-rollback"
+
+    # Service references
+    services:
+      - name: "${PROJECT_NAME}-service"
+        type: "kubernetes"
 
   # Integration settings
   integration:
@@ -334,7 +352,7 @@ cicd:
     track_jobs: true
 
     # Update Jira on pipeline events
-    on_pipeline_start: false
+    on_pipeline_start: true
     on_pipeline_success: true
     on_pipeline_failure: true
 
@@ -356,9 +374,10 @@ cicd:
       - type: "jira_transition"
         from_status: "Approved"
 
-      - type: "github_environment"
+      - type: "harness_approval"
         require_reviewers: true
         min_reviewers: 2
+        timeout_hours: 24
 
       - type: "manual"
         approvers: ["@devops-team", "@tech-lead"]

@@ -184,32 +184,33 @@ gcp:
   cloud_build:
     enabled: true
 
-    # Trigger configuration
+    # Trigger configuration (Harness-managed)
     triggers:
       - name: "${PROJECT_NAME}-dev"
         description: "Build and deploy to development"
-        github:
-          owner: "${GITHUB_ORG}"
-          name: "${GITHUB_REPO}"
-          branch: "^develop$"
+        harness:
+          pipeline: "${PROJECT_NAME}-gcp-deploy"
+          environment: "dev"
+          trigger_type: "artifact"
 
         filename: "cloudbuild-dev.yaml"
 
       - name: "${PROJECT_NAME}-staging"
         description: "Build and deploy to staging"
-        github:
-          owner: "${GITHUB_ORG}"
-          name: "${GITHUB_REPO}"
-          branch: "^main$"
+        harness:
+          pipeline: "${PROJECT_NAME}-gcp-deploy"
+          environment: "staging"
+          trigger_type: "artifact"
 
         filename: "cloudbuild-staging.yaml"
 
       - name: "${PROJECT_NAME}-prod"
         description: "Build and deploy to production"
-        github:
-          owner: "${GITHUB_ORG}"
-          name: "${GITHUB_REPO}"
-          tag: "^v[0-9]+\\.[0-9]+\\.[0-9]+$"
+        harness:
+          pipeline: "${PROJECT_NAME}-gcp-release"
+          environment: "production"
+          trigger_type: "tag"
+          tag_pattern: "^v[0-9]+\\.[0-9]+\\.[0-9]+$"
 
         filename: "cloudbuild-prod.yaml"
 
@@ -306,8 +307,8 @@ gcp:
         name: "projects/${GCP_PROJECT_ID}/secrets/jira-credentials/versions/latest"
         version: "latest"
 
-      github_token:
-        name: "projects/${GCP_PROJECT_ID}/secrets/github-token/versions/latest"
+      harness_api_key:
+        name: "projects/${GCP_PROJECT_ID}/secrets/harness-api-key/versions/latest"
         version: "latest"
 
     # Auto-fetch secrets before deployment
@@ -590,11 +591,46 @@ secrets:
     - "JIRA_SITE_URL"
 
 # =============================================================================
-# CI/CD INTEGRATION (Google Cloud Build)
+# CI/CD INTEGRATION (Harness CD with GCP)
 # =============================================================================
 cicd:
-  platform: "gcp_cloud_build"
+  platform: "harness"
 
+  # Harness CD Configuration
+  harness:
+    # Account configuration
+    account_id: "${HARNESS_ACCOUNT_ID}"
+    org_id: "${HARNESS_ORG_ID}"
+    project_id: "${HARNESS_PROJECT_ID}"
+    api_key: "${HARNESS_API_KEY}"
+
+    # Pipeline configuration
+    pipelines:
+      deploy: "${PROJECT_NAME}-gcp-deploy"
+      release: "${PROJECT_NAME}-gcp-release"
+      rollback: "${PROJECT_NAME}-gcp-rollback"
+
+    # Services tracked in Harness
+    services:
+      - name: "${PROJECT_NAME}-frontend"
+        type: "cloud_run"
+      - name: "${PROJECT_NAME}-backend"
+        type: "cloud_run"
+
+    # Harness environments mapped to GCP
+    environments:
+      development:
+        identifier: "dev"
+        gcp_environment: "development"
+      staging:
+        identifier: "staging"
+        gcp_environment: "staging"
+      production:
+        identifier: "prod"
+        gcp_environment: "production"
+        approval_required: true
+
+  # Google Cloud Build Integration (Optional - for hybrid setups)
   cloud_build:
     # Build configuration file
     config_file: "cloudbuild.yaml"

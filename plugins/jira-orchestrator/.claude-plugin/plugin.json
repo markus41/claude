@@ -22,7 +22,7 @@
     "commit-tracking",
     "traceability",
     "smart-commits",
-    "github-actions",
+    "harness-cd",
     "deployment-tracking",
     "multi-cloud",
     "branch-linking",
@@ -72,5 +72,5 @@
     "escalation-management"
   ],
   "license": "MIT",
-  "repository": "https://github.com/markus41/jira-orchestrator"
+  "repository": "https://app.harness.io/ng/account/jira-orchestrator"
 }

@@ -128,22 +128,30 @@ webhooks:
       timeout_seconds: 10
       max_retries: 5
 
-    # Example: CI/CD Pipeline Webhook
-    - id: webhook-cicd
-      name: "CI/CD Pipeline"
-      url: "${WEBHOOK_URL_CICD}"  # e.g., https://cicd.company.com/webhooks/jira
-      secret: "${WEBHOOK_SECRET_CICD}"
+    # Harness CD Pipeline Webhook
+    - id: webhook-harness
+      name: "Harness CD Pipeline"
+      url: "${HARNESS_WEBHOOK_URL}"  # e.g., https://app.harness.io/gateway/ng/api/webhook
+      secret: "${HARNESS_WEBHOOK_SECRET}"
       enabled: true
       event_filters:
-        - "pr.created"
-        - "pr.merged"
+        - "pipeline.started"
+        - "pipeline.completed"
+        - "deployment.started"
+        - "deployment.succeeded"
+        - "deployment.failed"
+        - "approval.requested"
+        - "approval.granted"
         - "issue.transitioned"
       filter_conditions:
         labels:
           - "deployment"
           - "release"
+          - "harness"
       timeout_seconds: 15
       max_retries: 3
+      custom_headers:
+        X-Harness-Account: "${HARNESS_ACCOUNT_ID}"
 
     # Example: Analytics Platform Webhook
     - id: webhook-analytics
@@ -240,36 +248,42 @@ event_types:
     batching_allowed: false
     template: workflow-completed
 
-  # Pull Request Events
-  pr_created:
+  # Harness Pipeline Events
+  pipeline_started:
+    default_channels: [slack, webhook]
+    priority: normal
+    batching_allowed: true
+    template: pipeline-started
+
+  pipeline_completed:
+    default_channels: [slack, webhook]
+    priority: normal
+    batching_allowed: false
+    template: pipeline-completed
+
+  pipeline_failed:
+    default_channels: [slack, email, webhook]
+    priority: urgent
+    batching_allowed: false
+    template: pipeline-failed
+
+  approval_requested:
     default_channels: [slack, email]
     priority: normal
     batching_allowed: false
-    template: pr-created
+    template: approval-requested
 
-  pr_review_requested:
-    default_channels: [slack, email]
-    priority: normal
-    batching_allowed: false
-    template: pr-review-requested
-
-  pr_approved:
+  approval_granted:
     default_channels: [slack]
     priority: normal
     batching_allowed: true
-    template: pr-approved
+    template: approval-granted
 
-  pr_changes_requested:
+  approval_rejected:
     default_channels: [slack, email]
     priority: normal
     batching_allowed: false
-    template: pr-changes-requested
-
-  pr_merged:
-    default_channels: [slack, email, webhook]
-    priority: normal
-    batching_allowed: false
-    template: pr-merged
+    template: approval-rejected
 
   # Deployment Events
   deployment_started:
@@ -381,11 +395,12 @@ templates:
     workflow-blocked: slack/workflow-blocked.hbs
     ready-for-review: slack/ready-for-review.hbs
     workflow-completed: slack/workflow-completed.hbs
-    pr-created: slack/pr-created.hbs
-    pr-review-requested: slack/pr-review-requested.hbs
-    pr-approved: slack/pr-approved.hbs
-    pr-changes-requested: slack/pr-changes-requested.hbs
-    pr-merged: slack/pr-merged.hbs
+    pipeline-started: slack/pipeline-started.hbs
+    pipeline-completed: slack/pipeline-completed.hbs
+    pipeline-failed: slack/pipeline-failed.hbs
+    approval-requested: slack/approval-requested.hbs
+    approval-granted: slack/approval-granted.hbs
+    approval-rejected: slack/approval-rejected.hbs
     deployment-started: slack/deployment-started.hbs
     deployment-succeeded: slack/deployment-succeeded.hbs
     deployment-failed: slack/deployment-failed.hbs
@@ -399,8 +414,9 @@ templates:
     # Email templates (HTML)
     issue-created-email: email/issue-created.html
     issue-assigned-email: email/issue-assigned.html
-    pr-review-requested-email: email/pr-review-requested.html
+    approval-requested-email: email/approval-requested.html
     deployment-succeeded-email: email/deployment-succeeded.html
+    pipeline-failed-email: email/pipeline-failed.html
 
   # Handlebars helper functions
   helpers:
@@ -425,9 +441,14 @@ subscriptions:
     - event: issue.mentioned
       channels: [slack]
 
-    - event: pr.review_requested
+    - event: approval.requested
       condition:
-        reviewer: me
+        approver: me
+      channels: [slack, email]
+
+    - event: pipeline.failed
+      condition:
+        triggered_by: me
       channels: [slack, email]
 
   default_filters:

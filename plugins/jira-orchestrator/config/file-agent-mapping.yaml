@@ -262,10 +262,15 @@ domains:
       - ".gitlab-ci.yml"
       - "Jenkinsfile"
       - "*.dockerfile"
+      - ".harness/**/*"
+      - "harness/**/*"
+      - "harness.yaml"
+      - "pipeline.yaml"
     context_hints:
       - "Container best practices"
       - "K8s resource management"
       - "Helm chart patterns"
+      - "Harness CD pipelines"
       - "CI/CD optimization"
 
   # --------------------------------------------------------------------------
@@ -872,7 +877,8 @@ directory_hints:
     - "helm"
     - "deployment"
     - "docker"
-    - ".github/workflows"
+    - ".harness"
+    - "harness"
 
   infrastructure:
     - "terraform"

@@ -198,11 +198,11 @@ azure:
       # Run from package
       run_from_package: true
 
-      # Deployment source
+      # Deployment source (Harness artifact source)
       source_control:
-        type: "GitHub"
-        repo_url: "${GITHUB_REPO_URL}"
-        branch: "${GITHUB_BRANCH}"
+        type: "Harness"
+        artifact_source: "${HARNESS_ARTIFACT_SOURCE}"
+        service_id: "${HARNESS_SERVICE_ID}"
 
   # Azure DevOps Integration
   devops:
@@ -319,8 +319,8 @@ azure:
       jira_user_email:
         name: "jira-user-email"
 
-      github_token:
-        name: "github-token"
+      harness_api_key:
+        name: "harness-api-key"
 
     # Managed Identity for access
     managed_identity:
@@ -651,11 +651,46 @@ secrets:
     - "JIRA_SITE_URL"
 
 # =============================================================================
-# CI/CD INTEGRATION (Azure DevOps)
+# CI/CD INTEGRATION (Harness CD with Azure)
 # =============================================================================
 cicd:
-  platform: "azure_devops"
+  platform: "harness"
 
+  # Harness CD Configuration
+  harness:
+    # Account configuration
+    account_id: "${HARNESS_ACCOUNT_ID}"
+    org_id: "${HARNESS_ORG_ID}"
+    project_id: "${HARNESS_PROJECT_ID}"
+    api_key: "${HARNESS_API_KEY}"
+
+    # Pipeline configuration
+    pipelines:
+      deploy: "${PROJECT_NAME}-azure-deploy"
+      release: "${PROJECT_NAME}-azure-release"
+      rollback: "${PROJECT_NAME}-azure-rollback"
+
+    # Services tracked in Harness
+    services:
+      - name: "${PROJECT_NAME}-frontend"
+        type: "aks"
+      - name: "${PROJECT_NAME}-backend"
+        type: "aks"
+
+    # Harness environments mapped to Azure
+    environments:
+      development:
+        identifier: "dev"
+        azure_environment: "development"
+      staging:
+        identifier: "staging"
+        azure_environment: "staging"
+      production:
+        identifier: "prod"
+        azure_environment: "production"
+        approval_required: true
+
+  # Azure DevOps Integration (Optional - for hybrid setups)
   azure_devops:
     # Organization and project
     organization: "${AZURE_DEVOPS_ORG}"
