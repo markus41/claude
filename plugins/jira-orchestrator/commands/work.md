@@ -508,12 +508,17 @@ See `jira-orchestrator/config/agent-teams.yaml` for full team configuration.
 
 #### Team Activation by Issue Type:
 
-| Issue Type | Primary Team | Pattern |
-|------------|--------------|---------|
-| Bug | Debug Squadron (DEBUG-1) | pipeline |
-| Story | Code Strike (STRIKE-1) | hierarchical |
-| Task | Code Strike (STRIKE-1) | hierarchical |
-| Epic | Atlassian Ops (JIRA-1) | swarm |
+| Issue Type | Primary Team | Pattern | Description |
+|------------|--------------|---------|-------------|
+| Initiative | Atlassian Ops (JIRA-1) | swarm | Strategic initiatives spanning epics |
+| Epic | Atlassian Ops (JIRA-1) | swarm | Large features → stories |
+| Story | Code Strike (STRIKE-1) | hierarchical | User-facing features |
+| Task | Code Strike (STRIKE-1) | hierarchical | Technical work items |
+| Sub-task | Code Strike (STRIKE-1) | pipeline | Granular work (inherits parent) |
+| Bug | Debug Squadron (DEBUG-1) | pipeline | Defects and fixes |
+| Spike | Documentation Guild (DOCS-1) | broadcast | Research & investigation |
+| Technical-Debt | Migration Convoy (MIGRATE-1) | pipeline | Refactoring work |
+| Security | Security Tribunal (SEC-1) | debate | Security hardening |
 
 #### Domain-Specific Teams (activated by labels/components):
 

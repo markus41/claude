@@ -73,18 +73,34 @@ phase_teams:
 # Issue Type Mappings
 # Activates specific teams based on Jira issue type
 issue_type_teams:
-  Bug:
-    primary: "debug-squadron"       # DEBUG-1: Specialized for bugs
+  Initiative:
+    primary: "atlassian-ops"        # JIRA-1: High-level portfolio planning
+    pattern: "swarm"
+    description: "Strategic initiatives spanning multiple epics"
     phases:
-      EXPLORE: ["debug-squadron"]
-      PLAN: ["debug-squadron"]
-      CODE: ["debug-squadron", "code-strike"]
+      EXPLORE: ["documentation-guild", "atlassian-ops"]
+      PLAN: ["atlassian-ops", "code-strike"]
+      CODE: ["code-strike"]
+      TEST: ["quality-council"]
+      FIX: ["debug-squadron"]
+      DOCUMENT: ["documentation-guild"]
+
+  Epic:
+    primary: "atlassian-ops"        # JIRA-1: Epic decomposition
+    pattern: "swarm"
+    description: "Large features broken into stories"
+    phases:
+      EXPLORE: ["documentation-guild", "atlassian-ops"]
+      PLAN: ["atlassian-ops", "code-strike"]
+      CODE: ["code-strike"]
       TEST: ["quality-council"]
       FIX: ["debug-squadron"]
       DOCUMENT: ["documentation-guild"]
 
   Story:
     primary: "code-strike"          # STRIKE-1: Feature development
+    pattern: "hierarchical"
+    description: "User-facing features with acceptance criteria"
     phases:
       EXPLORE: ["documentation-guild", "code-strike"]
       PLAN: ["code-strike"]
@@ -94,7 +110,9 @@ issue_type_teams:
       DOCUMENT: ["documentation-guild"]
 
   Task:
-    primary: "code-strike"
+    primary: "code-strike"          # STRIKE-1: Technical tasks
+    pattern: "hierarchical"
+    description: "Technical work items"
     phases:
       EXPLORE: ["documentation-guild"]
       PLAN: ["code-strike"]
@@ -103,19 +121,66 @@ issue_type_teams:
       FIX: ["debug-squadron"]
       DOCUMENT: ["documentation-guild"]
 
-  Epic:
-    primary: "atlassian-ops"        # JIRA-1: Epic decomposition
+  Sub-task:
+    primary: "code-strike"          # STRIKE-1: Granular work items
+    pattern: "pipeline"
+    description: "Granular tasks under stories/tasks"
+    inherit_parent_teams: true      # Use parent issue's team assignments
     phases:
-      EXPLORE: ["documentation-guild", "atlassian-ops"]
-      PLAN: ["atlassian-ops", "code-strike"]
+      EXPLORE: ["code-strike"]
+      PLAN: ["code-strike"]
       CODE: ["code-strike"]
       TEST: ["quality-council"]
       FIX: ["debug-squadron"]
       DOCUMENT: ["documentation-guild"]
 
-  Sub-task:
-    primary: "code-strike"
-    inherit_parent_teams: true      # Use parent issue's team assignments
+  Bug:
+    primary: "debug-squadron"       # DEBUG-1: Specialized for bugs
+    pattern: "pipeline"
+    description: "Defects and issues requiring fixes"
+    phases:
+      EXPLORE: ["debug-squadron"]
+      PLAN: ["debug-squadron"]
+      CODE: ["debug-squadron", "code-strike"]
+      TEST: ["quality-council"]
+      FIX: ["debug-squadron"]
+      DOCUMENT: ["documentation-guild"]
+
+  Spike:
+    primary: "documentation-guild"  # DOCS-1: Research and exploration
+    pattern: "broadcast"
+    description: "Research and technical investigation"
+    phases:
+      EXPLORE: ["documentation-guild", "code-strike"]
+      PLAN: ["code-strike"]
+      CODE: ["code-strike"]
+      TEST: ["quality-council"]
+      FIX: ["debug-squadron"]
+      DOCUMENT: ["documentation-guild"]
+
+  Technical-Debt:
+    primary: "migration-convoy"     # MIGRATE-1: Refactoring expertise
+    pattern: "pipeline"
+    description: "Refactoring and code improvement"
+    phases:
+      EXPLORE: ["documentation-guild", "migration-convoy"]
+      PLAN: ["migration-convoy", "code-strike"]
+      CODE: ["migration-convoy", "code-strike"]
+      TEST: ["quality-council"]
+      FIX: ["debug-squadron"]
+      DOCUMENT: ["documentation-guild"]
+
+  Security:
+    primary: "security-tribunal"    # SEC-1: Security-focused work
+    pattern: "debate"
+    description: "Security vulnerabilities and hardening"
+    phases:
+      EXPLORE: ["security-tribunal"]
+      PLAN: ["security-tribunal", "code-strike"]
+      CODE: ["security-tribunal", "code-strike"]
+      TEST: ["security-tribunal", "quality-council"]
+      FIX: ["security-tribunal", "debug-squadron"]
+      DOCUMENT: ["security-tribunal", "documentation-guild"]
 
 # Label-Based Team Activation
 # Activates teams based on Jira labels
