@@ -1,6 +1,8 @@
 # Jira Orchestrator Plugin
 
-**Version:** 6.0.0 | **Agents:** 66 | **Commands:** 12 (consolidated from 40) | **Hooks:** Auto-triggered
+**Version:** 7.0.0 | **Agents:** 66 | **Skills:** 9 | **Commands:** 12 | **Hooks:** Auto-triggered
+
+**NEW in v7.0:** Comprehensive Harness platform knowledge - CI, CD, Code, Feature Flags, STO, CCM, SRM, Chaos Engineering, IaCM, Delegates, RBAC, OPA, Templates, and Secrets Management.
 
 ---
 
@@ -154,6 +156,38 @@ The plugin auto-configures Atlassian MCP via `.mcp.json`:
 ```
 
 **Available tools:** `jira_get_issue`, `jira_create_issue`, `jira_update_issue`, `jira_transition_issue`, `confluence_*`
+
+---
+
+## Harness Platform Knowledge (v7.0)
+
+Comprehensive Harness platform documentation and skills for CI/CD automation.
+
+| Module | Skill/Doc | Description |
+|--------|-----------|-------------|
+| **CI** | `skills/harness-ci/` | Build pipelines, test intelligence, caching |
+| **CD** | `skills/harness-mcp/` | Deployments, GitOps, Jira sync |
+| **Code** | `skills/harness-mcp/` | Repositories, PRs, code review |
+| **Platform** | `skills/harness-platform/` | Delegates, RBAC, connectors, secrets |
+| **All Modules** | `docs/HARNESS-KNOWLEDGE-BASE.md` | FF, STO, CCM, SRM, Chaos, IaCM |
+
+### Quick Reference
+
+```bash
+# Harness CI topics
+harness-ci, build-pipeline, test-intelligence, caching
+
+# Harness CD topics
+harness-cd, deployment, gitops, canary, blue-green
+
+# Harness Code topics
+harness-code, repository, pull-request, code-review
+
+# Platform topics
+delegate, rbac, connector, secret-manager, template, opa
+```
+
+**Full documentation:** `docs/HARNESS-KNOWLEDGE-BASE.md`
 
 ---
 

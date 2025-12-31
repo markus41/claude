@@ -1,7 +1,8 @@
 {
-  "version": "5.1.0",
-  "description": "Jira Orchestrator agent registry - load individual agents on-demand",
+  "version": "7.0.0",
+  "description": "Jira Orchestrator agent registry with comprehensive Harness platform knowledge - load individual agents on-demand",
   "total_agents": 66,
+  "total_skills": 9,
   "categories": {
     "council": {
       "description": "NEW v5.0 - Agent council for collaborative review",
@@ -70,8 +71,10 @@
       "agents": ["pr-size-estimator", "epic-decomposer", "metrics-dashboard"]
     },
     "harness": {
-      "description": "Harness CD integration and repo management",
-      "agents": ["harness-jira-sync", "infrastructure-orchestrator"]
+      "description": "Harness platform integration - CI, CD, Code, Feature Flags, STO, CCM, SRM, Chaos, IaCM, and platform administration",
+      "agents": ["harness-jira-sync", "infrastructure-orchestrator"],
+      "skills": ["harness-mcp", "harness-ci", "harness-platform"],
+      "knowledge_base": "docs/HARNESS-KNOWLEDGE-BASE.md"
     }
   },
   "quick_lookup": {
@@ -98,7 +101,26 @@
     "k8s": "infrastructure-orchestrator",
     "kubernetes": "infrastructure-orchestrator",
     "repo": "infrastructure-orchestrator",
-    "harness": "harness-jira-sync"
+    "harness": "harness-jira-sync",
+    "harness-ci": "skills/harness-ci",
+    "harness-cd": "skills/harness-mcp",
+    "harness-code": "skills/harness-mcp",
+    "harness-platform": "skills/harness-platform",
+    "harness-delegate": "skills/harness-platform",
+    "harness-rbac": "skills/harness-platform",
+    "harness-opa": "skills/harness-platform",
+    "harness-sto": "docs/HARNESS-KNOWLEDGE-BASE.md",
+    "harness-ccm": "docs/HARNESS-KNOWLEDGE-BASE.md",
+    "harness-srm": "docs/HARNESS-KNOWLEDGE-BASE.md",
+    "harness-chaos": "docs/HARNESS-KNOWLEDGE-BASE.md",
+    "harness-ff": "docs/HARNESS-KNOWLEDGE-BASE.md",
+    "harness-iacm": "docs/HARNESS-KNOWLEDGE-BASE.md",
+    "build-pipeline": "skills/harness-ci",
+    "ci-pipeline": "skills/harness-ci",
+    "test-intelligence": "skills/harness-ci",
+    "delegate": "skills/harness-platform",
+    "connector": "skills/harness-platform",
+    "secret-manager": "skills/harness-platform"
   },
   "model_assignments": {
     "opus": ["code-reviewer", "advanced-orchestration-patterns", "governance-auditor", "infrastructure-orchestrator"],
@@ -111,5 +133,23 @@
   "new_in_v5_1": {
     "infrastructure-orchestrator": "Expert in creating modular Harness repos, Helm, Terraform, K8s with concise README templates"
   },
-  "load_pattern": "agents/{agent-name}.md"
+  "new_in_v7_0": {
+    "harness-knowledge-base": "Comprehensive Harness platform documentation covering CI, CD, Code, Feature Flags, STO, CCM, SRM, Chaos Engineering, IaCM, Delegates, RBAC, OPA, Templates, and Secrets Management",
+    "harness-ci-skill": "Harness CI skill for container-native builds, test intelligence, caching, and build infrastructure",
+    "harness-platform-skill": "Harness platform administration skill for delegates, RBAC, connectors, secrets, templates, and governance"
+  },
+  "harness_modules": {
+    "ci": {"skill": "harness-ci", "description": "Continuous Integration - builds, tests, caching"},
+    "cd": {"skill": "harness-mcp", "description": "Continuous Delivery - deployments, GitOps"},
+    "code": {"skill": "harness-mcp", "description": "Git repository and pull requests"},
+    "ff": {"knowledge": "HARNESS-KNOWLEDGE-BASE.md#harness-feature-flags", "description": "Feature Flags"},
+    "sto": {"knowledge": "HARNESS-KNOWLEDGE-BASE.md#harness-sto", "description": "Security Testing Orchestration"},
+    "ccm": {"knowledge": "HARNESS-KNOWLEDGE-BASE.md#harness-ccm", "description": "Cloud Cost Management"},
+    "srm": {"knowledge": "HARNESS-KNOWLEDGE-BASE.md#harness-srm", "description": "Service Reliability Management"},
+    "ce": {"knowledge": "HARNESS-KNOWLEDGE-BASE.md#harness-chaos-engineering", "description": "Chaos Engineering"},
+    "iacm": {"knowledge": "HARNESS-KNOWLEDGE-BASE.md#harness-iacm", "description": "Infrastructure as Code Management"},
+    "platform": {"skill": "harness-platform", "description": "Platform administration"}
+  },
+  "load_pattern": "agents/{agent-name}.md",
+  "skill_pattern": "skills/{skill-name}/SKILL.md"
 }
