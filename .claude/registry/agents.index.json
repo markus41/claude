@@ -97,7 +97,7 @@
         "priority": "medium"
       },
       "ai-engineer": {
-        "callsign": "ai-engineer",
+        "callsign": "Cortex",
         "faction": "Promethean",
         "path": "agents/development/ai-engineer.md",
         "type": "developer",
@@ -141,7 +141,7 @@
         "priority": "high"
       },
       "api-integration-specialist": {
-        "callsign": "api-integration-specialist",
+        "callsign": "Nexus",
         "faction": "Promethean",
         "path": "agents/development/api-integration-specialist.md",
         "type": "developer",
@@ -183,7 +183,7 @@
         "priority": "high"
       },
       "code-architect": {
-        "callsign": "code-architect",
+        "callsign": "Blueprint",
         "faction": "Promethean",
         "path": "agents/development/code-architect.md",
         "type": "developer",
@@ -224,7 +224,7 @@
         "priority": "high"
       },
       "desktop-app-dev": {
-        "callsign": "desktop-app-dev",
+        "callsign": "Terminal",
         "faction": "Promethean",
         "path": "agents/development/desktop-app-dev.md",
         "type": "developer",
@@ -265,7 +265,7 @@
         "priority": "medium"
       },
       "enterprise-integrator-architect": {
-        "callsign": "enterprise-integrator-architect",
+        "callsign": "Conduit",
         "faction": "Promethean",
         "path": "agents/development/enterprise-integrator-architect.md",
         "type": "developer",
@@ -307,7 +307,7 @@
         "priority": "high"
       },
       "mobile-app-builder": {
-        "callsign": "mobile-app-builder",
+        "callsign": "Nomad",
         "faction": "Promethean",
         "path": "agents/development/mobile-app-builder.md",
         "type": "developer",
@@ -346,7 +346,7 @@
         "priority": "medium"
       },
       "project-curator": {
-        "callsign": "project-curator",
+        "callsign": "Keeper",
         "faction": "Promethean",
         "path": "agents/development/project-curator.md",
         "type": "developer",
@@ -384,7 +384,7 @@
         "priority": "medium"
       },
       "rapid-prototyper": {
-        "callsign": "rapid-prototyper",
+        "callsign": "Forge",
         "faction": "Promethean",
         "path": "agents/development/rapid-prototyper.md",
         "type": "developer",
@@ -423,7 +423,7 @@
         "priority": "high"
       },
       "vision-specialist": {
-        "callsign": "vision-specialist",
+        "callsign": "Optic",
         "faction": "Promethean",
         "path": "agents/development/vision-specialist.md",
         "type": "developer",
