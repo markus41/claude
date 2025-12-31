@@ -1,8 +1,10 @@
 # Jira Orchestrator Plugin
 
-**Version:** 7.0.0 | **Agents:** 66 | **Skills:** 9 | **Commands:** 12 | **Hooks:** Auto-triggered
+**Version:** 7.1.0 | **Agents:** 66 | **Teams:** 16 | **Skills:** 9 | **Commands:** 12 | **Hooks:** Auto-triggered
 
-**NEW in v7.0:** Comprehensive Harness platform knowledge - CI, CD, Code, Feature Flags, STO, CCM, SRM, Chaos Engineering, IaCM, Delegates, RBAC, OPA, Templates, and Secrets Management.
+**NEW in v7.1:** AutoGen-style agent teams for orchestrated collaboration, parent-child issue orchestration, and domain affinity routing.
+
+**v7.0 Features:** Comprehensive Harness platform knowledge - CI, CD, Code, Feature Flags, STO, CCM, SRM, Chaos Engineering, IaCM, Delegates, RBAC, OPA, Templates, and Secrets Management.
 
 ---
 
