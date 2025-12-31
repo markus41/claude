@@ -1,8 +1,8 @@
 {
-  "version": "7.0.3",
-  "description": "Jira Orchestrator agent registry with modular Harness platform knowledge, comprehensive API expertise, and CD deployment skills",
-  "total_agents": 67,
-  "total_skills": 10,
+  "version": "7.0.4",
+  "description": "Jira Orchestrator agent registry with modular Harness platform knowledge, comprehensive API expertise, CD deployment skills, and SOLID/clean architecture enforcement",
+  "total_agents": 68,
+  "total_skills": 11,
   "categories": {
     "council": {
       "description": "NEW v5.0 - Agent council for collaborative review",
@@ -57,6 +57,12 @@
     "testing": {
       "description": "Testing strategy",
       "agents": ["test-strategist", "quality-enhancer"]
+    },
+    "quality": {
+      "description": "Code quality, SOLID principles, and clean architecture enforcement",
+      "agents": ["code-quality-enforcer"],
+      "skills": ["clean-architecture"],
+      "new": true
     },
     "documentation": {
       "description": "Documentation automation",
@@ -143,10 +149,19 @@
     "test-intelligence": "skills/harness-ci",
     "delegate": "skills/harness-platform",
     "connector": "skills/harness-platform",
-    "secret-manager": "skills/harness-platform"
+    "secret-manager": "skills/harness-platform",
+    "solid": "code-quality-enforcer",
+    "solid-principles": "code-quality-enforcer",
+    "clean-code": "code-quality-enforcer",
+    "clean-architecture": "skills/clean-architecture",
+    "code-quality": "code-quality-enforcer",
+    "refactoring": "code-quality-enforcer",
+    "dependency-injection": "skills/clean-architecture",
+    "ddd": "skills/clean-architecture",
+    "hexagonal": "skills/clean-architecture"
   },
   "model_assignments": {
-    "opus": ["code-reviewer", "advanced-orchestration-patterns", "governance-auditor", "infrastructure-orchestrator"],
+    "opus": ["code-reviewer", "advanced-orchestration-patterns", "governance-auditor", "infrastructure-orchestrator", "code-quality-enforcer"],
     "sonnet": ["council-coordinator", "triage-agent", "task-enricher", "requirements-analyzer", "confluence-manager", "intelligence-analyzer", "quality-intelligence", "sprint-planner", "portfolio-manager", "harness-jira-sync", "harness-api-expert"],
     "haiku": ["pr-creator", "documentation-writer", "notification-router", "tag-manager", "transition-manager", "batch-processor"]
   },
@@ -165,6 +180,10 @@
     "harness-api-expert": "Expert agent for Harness REST API operations including authentication, organizations, projects, pipelines, triggers, services, environments, connectors, secrets, executions, and module-specific APIs",
     "harness-cd-skill": "Comprehensive Harness CD skill for Kubernetes, Helm, Terraform deployments with GitOps, approval gates, rollback strategies, and multi-environment promotion",
     "enhanced-api-documentation": "Significantly expanded API.md with complete endpoint reference, authentication, pagination, rate limits, error handling, and SDK examples"
+  },
+  "new_in_v7_0_4": {
+    "code-quality-enforcer": "Expert agent for enforcing SOLID principles, clean code standards, and architectural patterns with automated analysis and refactoring suggestions",
+    "clean-architecture-skill": "Comprehensive Clean Architecture skill including dependency injection, layer separation, domain-driven design, hexagonal architecture, and code quality patterns"
   },
   "harness_modules": {
     "ci": {"skill": "harness-ci", "description": "Continuous Integration - builds, tests, caching"},
