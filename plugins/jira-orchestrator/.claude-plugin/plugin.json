@@ -1,15 +1,23 @@
 {
   "name": "jira-orchestrator",
-  "version": "6.0.0",
-  "description": "Enterprise Jira orchestration - 66 agents, 12 commands (consolidated from 40), hook-based automation",
+  "version": "7.1.0",
+  "description": "Enterprise Jira orchestration - 66 agents, 16 teams, 12 commands, hook-based automation with AutoGen-style team coordination",
   "author": {"name": "The Lobbi", "email": "developers@thelobbi.io"},
-  "keywords": ["jira", "confluence", "orchestration", "automation", "agile", "sprint", "enterprise", "compliance", "harness", "helm", "terraform", "kubernetes", "infrastructure", "gitops", "hooks"],
+  "keywords": ["jira", "confluence", "orchestration", "automation", "agile", "sprint", "enterprise", "compliance", "harness", "helm", "terraform", "kubernetes", "infrastructure", "gitops", "hooks", "autogen", "teams", "multi-agent"],
   "license": "MIT",
   "registry": {
     "agents": "registry/agents.index.json",
     "commands": "registry/commands.index.json",
     "hooks": "hooks/orchestration-hooks.json",
-    "workflows": "registry/workflows.index.json"
+    "workflows": "registry/workflows.index.json",
+    "teams": "../../.claude/registry/teams.index.json",
+    "teamConfig": "config/agent-teams.yaml"
+  },
+  "features": {
+    "autogenTeams": true,
+    "parentChildOrchestration": true,
+    "domainAffinityRouting": true,
+    "phaseTeamMapping": true
   },
   "context_efficient": true,
   "load_strategy": "on-demand",

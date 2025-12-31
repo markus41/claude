@@ -1,6 +1,6 @@
 {
-  "version": "6.0.0",
-  "description": "Hook-based automation for Jira Orchestrator - eliminates need for explicit commands",
+  "version": "7.1.0",
+  "description": "Hook-based automation for Jira Orchestrator with AutoGen-style team coordination",
 
   "git_hooks": {
     "pre-commit": {

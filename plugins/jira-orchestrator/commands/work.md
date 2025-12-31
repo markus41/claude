@@ -488,6 +488,81 @@ for agent in agent_selection.recommended_agents:
 
 **Fallback Strategy:** If no specific agents match, use phase-appropriate defaults from agent-router output.
 
+### AutoGen-Style Team Activation (NEW - RECOMMENDED)
+
+**IMPORTANT:** For complex issues, activate full agent TEAMS instead of individual agents.
+
+Teams provide coordinated multi-agent collaboration with defined leads and communication patterns.
+See `jira-orchestrator/config/agent-teams.yaml` for full team configuration.
+
+#### Team Activation by Phase:
+
+| Phase | Primary Team | Call Sign | Lead Agent |
+|-------|--------------|-----------|------------|
+| EXPLORE | Documentation Guild | DOCS-1 | Archivist |
+| PLAN | Code Strike Team | STRIKE-1 | Genesis |
+| CODE | Code Strike Team | STRIKE-1 | Genesis |
+| TEST | Quality Council | COUNCIL-Q | Paramount |
+| FIX | Debug Squadron | DEBUG-1 | Sleuth |
+| DOCUMENT | Documentation Guild | DOCS-1 | Archivist |
+
+#### Team Activation by Issue Type:
+
+| Issue Type | Primary Team | Pattern | Description |
+|------------|--------------|---------|-------------|
+| Initiative | Atlassian Ops (JIRA-1) | swarm | Strategic initiatives spanning epics |
+| Epic | Atlassian Ops (JIRA-1) | swarm | Large features → stories |
+| Story | Code Strike (STRIKE-1) | hierarchical | User-facing features |
+| Task | Code Strike (STRIKE-1) | hierarchical | Technical work items |
+| Sub-task | Code Strike (STRIKE-1) | pipeline | Granular work (inherits parent) |
+| Bug | Debug Squadron (DEBUG-1) | pipeline | Defects and fixes |
+| Spike | Documentation Guild (DOCS-1) | broadcast | Research & investigation |
+| Technical-Debt | Migration Convoy (MIGRATE-1) | pipeline | Refactoring work |
+| Security | Security Tribunal (SEC-1) | debate | Security hardening |
+
+#### Domain-Specific Teams (activated by labels/components):
+
+| Domain | Team | Call Sign | When to Activate |
+|--------|------|-----------|------------------|
+| Frontend | Frontend Forge | UI-1 | `domain:frontend`, `tech:react` |
+| Mobile | Mobile Force | MOBILE-1 | `domain:mobile`, `tech:react-native` |
+| Auth | Identity Vault | AUTH-1 | `domain:security`, `tech:keycloak` |
+| Data/ML | Data Pipeline | DATA-1 | `domain:database`, `tech:mongodb` |
+| DevOps | Ship Crew | SHIP-1 | `domain:devops`, `tech:kubernetes` |
+| Security | Security Tribunal | SEC-1 | `needs:security-review` |
+| Messaging | Messaging Hub | MSG-1 | `tech:kafka`, `tech:rabbitmq` |
+
+#### Team Activation Example:
+
+```yaml
+# For a Story with labels: [domain:frontend, tech:react, needs:review]
+
+1. Load teams config: jira-orchestrator/config/agent-teams.yaml
+2. Match labels against label_teams:
+   - domain:frontend → frontend-forge (UI-1)
+   - needs:review → pr-review-panel (REVIEW-1)
+3. Activate teams for CODE phase:
+   - Primary: code-strike (STRIKE-1) - Genesis leads
+   - Domain: frontend-forge (UI-1) - Weaver leads
+4. Execute with team coordination:
+   - Genesis (STRIKE-1 lead) coordinates with Weaver (UI-1 lead)
+   - Team members work in parallel per team pattern
+   - Checkpoint sync between teams
+```
+
+#### Team Communication Patterns:
+
+| Pattern | Description | Best For |
+|---------|-------------|----------|
+| hierarchical | Lead coordinates all | Feature development |
+| round-robin | Sequential contributions | Code review |
+| broadcast | Parallel execution | Documentation |
+| debate | Discussion with voting | Quality decisions |
+| pipeline | Sequential transformation | Bug fixing |
+| swarm | Self-organizing | Complex epics |
+
+**Configuration:** See `.claude/registry/teams.index.json` for full team definitions.
+
 ### NEW: PR Size Strategy (After PLAN phase)
 
 **IMPORTANT:** Before starting CODE phase, invoke the `pr-size-estimator` agent to:
