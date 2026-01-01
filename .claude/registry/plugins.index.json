@@ -1,7 +1,7 @@
 {
   "$schema": "./schema/plugins.schema.json",
   "version": "1.0.0",
-  "lastUpdated": "2025-12-31",
+  "lastUpdated": "2026-01-01",
   "description": "Plugin registry for Claude Code orchestration plugins",
 
   "plugins": {
@@ -10,7 +10,7 @@
         "path": "../../plugins/jira-orchestrator/.claude-plugin/plugin.json",
         "callsign": "Arbiter",
         "version": "7.1.0",
-        "provides": { "commands": 12, "agents": 66, "teams": 16, "skills": 9, "hooks": 7 },
+        "provides": { "commands": 43, "agents": 68, "teams": 16, "skills": 11, "hooks": 7 },
         "features": ["autogen-teams", "parent-child-orchestration", "domain-affinity-routing"],
         "status": "active",
         "tier": "enterprise"
@@ -232,10 +232,10 @@
       "standard": 8,
       "advanced": 6
     },
-    "totalCommands": 186,
-    "totalAgents": 197,
+    "totalCommands": 217,
+    "totalAgents": 199,
     "totalTeams": 16,
-    "totalSkills": 89,
+    "totalSkills": 91,
     "totalHooks": 63,
     "totalWorkflows": 3,
     "innovativePlugins": 7,
