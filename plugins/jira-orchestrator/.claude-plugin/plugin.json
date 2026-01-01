@@ -362,11 +362,46 @@
     }
   },
 
+  "flagSystem": {
+    "version": "1.0.0",
+    "configFile": "../config/flags.json",
+    "presetsFile": "../config/presets.json",
+    "features": {
+      "globalFlags": true,
+      "orchestrationFlags": true,
+      "jiraFlags": true,
+      "reviewFlags": true,
+      "gitFlags": true,
+      "notificationFlags": true,
+      "reportFlags": true,
+      "harnessFlags": true,
+      "experimentalFlags": true
+    },
+    "presets": {
+      "count": 17,
+      "categories": ["speed", "quality", "security", "collaboration", "automation", "release"],
+      "recommended": ["speed-run", "thorough", "enterprise", "hotfix"]
+    },
+    "defaults": {
+      "model": "auto",
+      "agents": 5,
+      "depth": "standard",
+      "checkpoint": true,
+      "parallel": true
+    },
+    "validation": {
+      "strict": true,
+      "unknownFlagsError": true,
+      "conflictResolution": "error"
+    }
+  },
+
   "documentation": {
     "readme": "../README.md",
     "installation": "../INSTALLATION.md",
     "installationSystem": "../INSTALLATION-SYSTEM.md",
     "installChecklist": "../INSTALL-CHECKLIST.md",
+    "flagsGuide": "../docs/FLAGS.md",
     "hooksGuide": "../hooks/README.md",
     "harnessIndex": "../docs/harness/INDEX.md"
   }
