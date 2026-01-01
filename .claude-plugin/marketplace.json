@@ -17,8 +17,7 @@
         "email": "markus@example.com"
       },
       "source": "./",
-      "category": "orchestration",
-      "aliases": ["golden-armada"]
+      "category": "orchestration"
     },
     {
       "name": "home-assistant-architect",
