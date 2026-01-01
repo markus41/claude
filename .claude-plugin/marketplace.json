@@ -124,11 +124,11 @@
     },
     {
       "name": "jira-orchestrator",
-      "description": "Arbiter (Spartan) - Enterprise Jira orchestration - 66 agents, 16 teams, 12 commands, hook-based automation with AutoGen-style team coordination",
+      "description": "Arbiter - Enterprise Jira orchestration with 68 agents, 16 teams, 43 commands, and hook-based automation. Features AutoGen-style team coordination, domain affinity routing, and Harness platform integration.",
       "version": "7.1.0",
       "author": {
-        "name": "Brookside BI",
-        "email": "dev@brooksidebi.com"
+        "name": "The Lobbi",
+        "email": "developers@thelobbi.io"
       },
       "source": "./plugins/jira-orchestrator",
       "category": "integration"
