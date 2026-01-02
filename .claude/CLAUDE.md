@@ -32,3 +32,22 @@ mcp__obsidian__get_file_contents("System/Claude-Instructions/{doc}.md")
 ```
 
 **Docs:** Orchestration-Protocol, MCP-Servers, Agent-Categories, Workflows, Skills-and-Commands
+
+## Command Context Optimization
+
+**Issue:** Slash commands running out of context space.
+
+**Solution:** Commands should load minimal context:
+- ✅ Command file only (~200-500 tokens)
+- ✅ Minimal CLAUDE.md (~1,000 tokens)
+- ❌ NOT full commands.index.json (use queries instead)
+- ❌ NOT CLAUDE.full.md (use Obsidian for full docs)
+- ❌ NOT all agent definitions (load on-demand via Obsidian MCP)
+
+**See:** `.claude/docs/COMMAND-CONTEXT-OPTIMIZATION.md` for full guide.
+
+**Quick Fix:** When executing commands:
+1. Load only the specific command file
+2. Query registry for metadata (don't load full index)
+3. Load external resources via Obsidian MCP when needed
+4. Enforce 2,000 token budget per command

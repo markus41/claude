@@ -63,3 +63,4 @@
   "files": ["templates/**/*"],
   "ignore": ["*.test.ts", "*.spec.ts"]
 }
+

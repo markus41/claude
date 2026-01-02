@@ -432,3 +432,4 @@ export function createDefaultRegistry(): ArchetypeRegistry {
 
   return registry;
 }
+

@@ -64,6 +64,3 @@
   "files": ["templates/**/*"],
   "ignore": ["*.test.ts", "*.spec.ts", "dist/**", "node_modules/**"]
 }
-
-
-

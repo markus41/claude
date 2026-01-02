@@ -114,11 +114,18 @@ export class TemplateEngine {
 
   /**
    * Process a template string with context
+   * Ensures output always ends with exactly one newline
    */
   processString(templateString: string, context: TemplateContext): string {
     try {
       const template = this.handlebars.compile(templateString);
-      return template(this.buildContext(context));
+      let result = template(this.buildContext(context));
+      
+      // Ensure output ends with exactly one newline
+      // Remove any trailing newlines (but preserve other trailing whitespace), then add a single newline
+      result = result.replace(/[\r\n]*$/, '') + '\n';
+      
+      return result;
     } catch (error) {
       throw new Error(`Template processing failed: ${error}`);
     }

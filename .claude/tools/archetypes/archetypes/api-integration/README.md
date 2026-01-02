@@ -75,3 +75,4 @@ const data = await client.get('/endpoint');
 3. Implement API methods in `src/client.ts`
 4. Add tests in `tests/`
 5. Build: `npm run build`
+

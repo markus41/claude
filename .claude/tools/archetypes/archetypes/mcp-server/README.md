@@ -144,6 +144,3 @@ The generated server includes VS Code configuration examples in the README. Add 
 ## Examples
 
 See `awesome-copilot-mcp` for a complete example implementation.
-
-
-
