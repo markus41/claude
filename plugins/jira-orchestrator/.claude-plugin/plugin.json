@@ -1,0 +1,23 @@
+{
+  "name": "jira-orchestrator",
+  "version": "7.2.0",
+  "description": "Comprehensive Jira orchestration plugin with 69 agents, 43 commands, 11 skills, and automated hook-based workflows. Features Harness platform integration, SOLID/clean architecture enforcement, and multi-agent collaboration patterns.",
+  "author": {
+    "name": "Markus Ahling",
+    "email": "markus@lobbi.io"
+  },
+  "keywords": [
+    "jira",
+    "orchestration",
+    "atlassian",
+    "harness",
+    "ci-cd",
+    "workflow",
+    "automation",
+    "agents",
+    "clean-architecture",
+    "solid"
+  ],
+  "license": "MIT",
+  "repository": "https://github.com/Lobbi-Docs/claude"
+}
