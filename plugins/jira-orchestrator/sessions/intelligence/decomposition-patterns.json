@@ -304,28 +304,52 @@
       "impact": "wasted-time",
       "frequency": 4,
       "examples": ["PROJ-123", "PROJ-156", "PROJ-189"],
-      "mitigation": "Use depth 2-3 for tasks with complexity < 30"
+      "mitigation": "Use depth 2-3 for tasks with complexity < 30",
+      "rule": {
+        "trigger": "complexity < 30",
+        "max_depth": 2,
+        "strategy": "user-journey",
+        "skip_elaborate_decomposition": true
+      }
     },
     {
       "description": "Creating too many sequential dependencies in parallel-capable work",
       "impact": "blocked-progress",
       "frequency": 6,
       "examples": ["PROJ-145", "PROJ-201", "PROJ-234"],
-      "mitigation": "Identify truly independent subtasks and minimize dependency chains"
+      "mitigation": "Identify truly independent subtasks and minimize dependency chains",
+      "rule": {
+        "trigger": "complexity > 40",
+        "action": "Identify 3+ independent execution paths before creating sequential deps",
+        "target_dependency_chains": 1.5,
+        "max_sequential_chain_length": 3
+      }
     },
     {
       "description": "Insufficient test coverage planning in decomposition",
       "impact": "quality-issues",
       "frequency": 8,
       "examples": ["PROJ-178", "PROJ-190", "PROJ-245"],
-      "mitigation": "Always include explicit testing subtask for complexity > 40"
+      "mitigation": "Always include explicit testing subtask for complexity > 40",
+      "rule": {
+        "trigger": "complexity > 40 OR hasExternalDeps",
+        "action": "Add explicit testing subtask",
+        "priority": "HIGH",
+        "required": true
+      }
     },
     {
       "description": "Ignoring external API dependencies in estimation",
       "impact": "schedule-delays",
       "frequency": 5,
       "examples": ["PROJ-167", "PROJ-213"],
-      "mitigation": "Add uncertainty buffer for tasks with external dependencies"
+      "mitigation": "Add uncertainty buffer for tasks with external dependencies",
+      "rule": {
+        "trigger": "hasExternalDeps = true",
+        "action": "Apply 1.3x estimation multiplier",
+        "reason": "External APIs add 20-40% overhead",
+        "buffer_factor": 1.3
+      }
     }
   ],
   "statistics": {
@@ -383,6 +407,73 @@
       "supporting_data": "All successful high-complexity decompositions included testing"
     }
   ],
+  "decomposition_rules": {
+    "mandatory_testing": {
+      "trigger": "complexity > 40 OR hasExternalDeps",
+      "action": "Add explicit testing subtask",
+      "priority": "HIGH",
+      "required": true,
+      "rationale": "8 failures identified due to insufficient test coverage planning",
+      "subtask_template": {
+        "title": "{parent_name} - Testing and QA",
+        "description": "Comprehensive testing including unit tests, integration tests, and end-to-end validation",
+        "estimatedPoints": "10-15% of total task points (minimum 2)",
+        "priority": "Must",
+        "type": "Task"
+      }
+    },
+    "external_dependency_buffer": {
+      "trigger": "hasExternalDeps = true",
+      "action": "Apply 1.3x estimation multiplier",
+      "buffer_factor": 1.3,
+      "rationale": "External APIs add 20-40% overhead - 5 failures due to underestimation",
+      "applies_to": [
+        "story points estimation",
+        "time estimates",
+        "subtask effort allocation"
+      ],
+      "indicators": [
+        "labels containing 'external', 'integration', 'api'",
+        "description mentioning external services",
+        "dependencies on third-party systems"
+      ]
+    },
+    "simple_task_depth_limit": {
+      "trigger": "complexity < 30",
+      "max_depth": 2,
+      "strategy": "user-journey",
+      "skip_elaborate_decomposition": true,
+      "rationale": "4 failures from over-decomposition of simple tasks",
+      "guidance": "Simple tasks should have minimal decomposition to avoid overhead"
+    },
+    "parallelization_first": {
+      "trigger": "complexity > 40",
+      "action": "Identify 3+ independent execution paths before creating sequential deps",
+      "target_dependency_chains": 1.5,
+      "max_sequential_chain_length": 3,
+      "rationale": "6 failures from over-creation of sequential dependencies",
+      "guidelines": [
+        "Look for naturally independent work streams",
+        "Minimize blocking relationships",
+        "Group dependent tasks into batches",
+        "Target average dependency chain length of 1.5 tasks"
+      ]
+    },
+    "quality_gates": {
+      "pre_decomposition": [
+        "Validate task complexity score (0-100)",
+        "Identify external dependencies",
+        "Check for testing requirements",
+        "Assess parallelization potential"
+      ],
+      "post_decomposition": [
+        "Verify testing subtask exists if required",
+        "Check depth limits are respected",
+        "Validate dependency chain lengths",
+        "Confirm estimation buffers applied"
+      ]
+    }
+  },
   "health": {
     "status": "healthy",
     "last_updated": "2025-12-29T00:00:00Z",

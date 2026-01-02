@@ -1,24 +1,95 @@
 {
   "$schema": "./schema/agents.schema.json",
-  "version": "4.0.0",
-  "description": "Minimal agent index - paths and models only. Use keywords.json for search.",
+  "version": "4.1.0",
+  "description": "Minimal agent index - paths, models, and routing hints. Use keywords.json for search.",
   "note": "Full metadata in agents.index.json (loaded on-demand)",
 
   "agents": {
     "core": {
-      "coder": { "path": "agents/core/coder.md", "model": "sonnet" },
-      "researcher": { "path": "agents/core/researcher.md", "model": "sonnet" },
-      "tester": { "path": "agents/core/tester.md", "model": "sonnet" },
-      "reviewer": { "path": "agents/core/reviewer.md", "model": "sonnet" },
-      "planner": { "path": "agents/core/planner.md", "model": "sonnet" },
-      "debugger": { "path": "agents/core/debugger.md", "model": "sonnet" }
+      "coder": {
+        "path": "agents/core/coder.md",
+        "model": "sonnet",
+        "domains": ["backend", "frontend", "fullstack"],
+        "routing": { "priority": "medium", "complexityRange": [0, 100] }
+      },
+      "researcher": {
+        "path": "agents/core/researcher.md",
+        "model": "sonnet",
+        "domains": ["research", "analysis", "documentation"],
+        "routing": { "priority": "low", "complexityRange": [0, 100] }
+      },
+      "tester": {
+        "path": "agents/core/tester.md",
+        "model": "sonnet",
+        "domains": ["testing", "qa", "automation"],
+        "routing": { "priority": "medium", "complexityRange": [0, 100] }
+      },
+      "reviewer": {
+        "path": "agents/core/reviewer.md",
+        "model": "sonnet",
+        "domains": ["backend", "api", "security"],
+        "routing": {
+          "priority": "high",
+          "complexityRange": [30, 80],
+          "avoid": ["frontend", "ui"],
+          "prefer": ["backend", "api", "database", "security"]
+        }
+      },
+      "planner": {
+        "path": "agents/core/planner.md",
+        "model": "sonnet",
+        "domains": ["architecture", "planning", "design"],
+        "routing": { "priority": "high", "complexityRange": [0, 100] }
+      },
+      "debugger": {
+        "path": "agents/core/debugger.md",
+        "model": "sonnet",
+        "domains": ["debugging", "troubleshooting", "performance"],
+        "routing": { "priority": "medium", "complexityRange": [0, 100] }
+      }
     },
     "devops": {
-      "cicd-engineer": { "path": "agents/devops/cicd-engineer.md", "model": "sonnet" },
-      "k8s-deployer": { "path": "agents/devops/k8s-deployer.md", "model": "sonnet" },
-      "docker-builder": { "path": "agents/devops/docker-builder.md", "model": "sonnet" },
-      "sre-engineer": { "path": "agents/devops/sre-engineer.md", "model": "sonnet" },
-      "gitops-specialist": { "path": "agents/devops/gitops-specialist.md", "model": "sonnet" }
+      "infrastructure-specialist": {
+        "path": "agents/devops/infrastructure-specialist.md",
+        "model": "opus",
+        "domains": ["infrastructure", "distributed-systems", "multi-service", "kubernetes", "redis", "terraform", "cloud"],
+        "routing": {
+          "priority": "critical",
+          "complexityRange": [60, 100],
+          "prefer": ["infrastructure", "kubernetes", "redis", "terraform", "helm", "multi-service", "distributed", "clustering", "pub-sub", "microservices"],
+          "avoid": []
+        }
+      },
+      "cicd-engineer": {
+        "path": "agents/devops/cicd-engineer.md",
+        "model": "sonnet",
+        "domains": ["devops", "ci-cd", "automation"],
+        "routing": { "priority": "medium", "complexityRange": [30, 100] }
+      },
+      "k8s-deployer": {
+        "path": "agents/devops/k8s-deployer.md",
+        "model": "sonnet",
+        "domains": ["kubernetes", "deployment", "infrastructure"],
+        "routing": { "priority": "high", "complexityRange": [40, 100] }
+      },
+      "docker-builder": {
+        "path": "agents/devops/docker-builder.md",
+        "model": "sonnet",
+        "domains": ["docker", "containers", "devops"],
+        "routing": { "priority": "medium", "complexityRange": [20, 80] }
+      },
+      "sre-engineer": {
+        "path": "agents/devops/sre-engineer.md",
+        "model": "sonnet",
+        "domains": ["sre", "reliability", "monitoring", "infrastructure"],
+        "routing": { "priority": "high", "complexityRange": [50, 100] }
+      },
+      "gitops-specialist": {
+        "path": "agents/devops/gitops-specialist.md",
+        "model": "sonnet",
+        "domains": ["gitops", "automation", "deployment"],
+        "routing": { "priority": "medium", "complexityRange": [30, 90] }
+      }
     },
     "keycloak": {
       "keycloak-realm-admin": { "path": "agents/keycloak/keycloak-realm-admin.md", "model": "sonnet" },
@@ -54,9 +125,39 @@
       "invoice-manager": { "path": "agents/stripe-payment/invoice-manager.md", "model": "sonnet" }
     },
     "frontend-theming": {
-      "theme-system-architect": { "path": "agents/frontend-theming/theme-system-architect.md", "model": "sonnet" },
-      "theme-builder": { "path": "agents/frontend-theming/theme-builder.md", "model": "sonnet" },
-      "white-label-specialist": { "path": "agents/frontend-theming/white-label-specialist.md", "model": "sonnet" }
+      "theme-system-architect": {
+        "path": "agents/frontend-theming/theme-system-architect.md",
+        "model": "sonnet",
+        "domains": ["frontend", "ui", "theming", "architecture"],
+        "routing": {
+          "priority": "high",
+          "complexityRange": [40, 100],
+          "prefer": ["frontend", "ui", "react", "css", "theming"],
+          "avoid": ["backend"]
+        }
+      },
+      "theme-builder": {
+        "path": "agents/frontend-theming/theme-builder.md",
+        "model": "sonnet",
+        "domains": ["frontend", "ui", "theming", "css"],
+        "routing": {
+          "priority": "high",
+          "complexityRange": [20, 80],
+          "prefer": ["frontend", "ui", "react", "css", "theming"],
+          "avoid": ["backend"]
+        }
+      },
+      "white-label-specialist": {
+        "path": "agents/frontend-theming/white-label-specialist.md",
+        "model": "sonnet",
+        "domains": ["frontend", "ui", "theming", "branding"],
+        "routing": {
+          "priority": "high",
+          "complexityRange": [30, 90],
+          "prefer": ["frontend", "ui", "react", "css", "theming", "branding"],
+          "avoid": ["backend"]
+        }
+      }
     },
     "selenium-testing": {
       "selenium-test-architect": { "path": "agents/selenium-testing/selenium-test-architect.md", "model": "sonnet" },
@@ -77,10 +178,10 @@
   },
 
   "counts": {
-    "total": 41,
+    "total": 42,
     "byCategory": {
       "core": 6,
-      "devops": 5,
+      "devops": 6,
       "keycloak": 5,
       "mongodb-atlas": 4,
       "kubernetes": 4,
