@@ -14,7 +14,73 @@
 
 {{API_DESCRIPTION}}
 
+## Architecture Overview
+
+### API Architecture Layers
+
+```mermaid
+graph TB
+    Client["Client Applications"]
+    Gateway["API Gateway<br/>{{API_GATEWAY}}"]
+    Auth["Authentication Layer<br/>OAuth 2.0 / JWT"]
+    RateLimit["Rate Limiting<br/>{{RATE_LIMIT_STRATEGY}}"]
+    Service["Service Layer<br/>{{SERVICE_NAME}}"]
+    Cache["Caching Layer<br/>{{CACHE_LAYER}}"]
+    Database["Database<br/>{{DATABASE_TYPE}}"]
+    Webhook["Webhook Engine<br/>Async Events"]
+
+    Client -->|REST/GraphQL| Gateway
+    Gateway --> Auth
+    Auth --> RateLimit
+    RateLimit --> Service
+    Service --> Cache
+    Service --> Database
+    Service --> Webhook
+    Cache -.->|Cache Hit| Gateway
+
+    style Gateway fill:#003366
+    style Auth fill:#006699
+    style RateLimit fill:#0099cc
+    style Service fill:#003366
+    style Cache fill:#339999
+    style Database fill:#660000
+    style Webhook fill:#330033
+```
+
 ## Authentication
+
+### Authentication Flow Sequence
+
+```mermaid
+sequenceDiagram
+    participant Client as Client Application
+    participant Gateway as {{API_GATEWAY}}
+    participant AuthSvc as Auth Service
+    participant TokenCache as Token Cache
+    participant Service as {{SERVICE_NAME}}
+
+    Client->>Gateway: 1. POST /auth/login with credentials
+    Gateway->>AuthSvc: 2. Validate credentials
+    AuthSvc->>AuthSvc: 3. Generate JWT Token
+    AuthSvc->>TokenCache: 4. Cache token metadata
+    AuthSvc-->>Gateway: 5. Return access_token + refresh_token
+    Gateway-->>Client: 6. Return credentials (expires_in: {{TOKEN_EXPIRY}})
+
+    Note over Client: Token valid for {{TOKEN_EXPIRY}}s
+
+    Client->>Gateway: 7. API Request with Bearer Token
+    Gateway->>TokenCache: 8. Verify token in cache
+    TokenCache-->>Gateway: 9. Token valid
+    Gateway->>Service: 10. Forward authenticated request
+    Service-->>Gateway: 11. Process and respond
+    Gateway-->>Client: 12. Return response with data
+
+    Client->>Gateway: 13. POST /auth/refresh (token expired)
+    Gateway->>AuthSvc: 14. Validate refresh_token
+    AuthSvc->>AuthSvc: 15. Generate new access_token
+    AuthSvc-->>Gateway: 16. Return new credentials
+    Gateway-->>Client: 17. Return new access_token
+```
 
 ### Method
 
@@ -252,6 +318,52 @@ data = response.json()
 
 ---
 
+## Request/Response Flow Sequence
+
+```mermaid
+sequenceDiagram
+    participant Client as Client
+    participant Gateway as {{API_GATEWAY}}
+    participant Validator as Request Validator
+    participant Service as {{SERVICE_NAME}}
+    participant Database as Database
+    participant Cache as Cache
+
+    Client->>Gateway: 1. HTTP {{HTTP_METHOD}} Request<br/>Headers + Body
+    activate Gateway
+
+    Gateway->>Validator: 2. Validate schema
+    Validator->>Validator: 3. Check auth headers
+    Validator->>Validator: 4. Validate request body
+    alt Validation fails
+        Validator-->>Gateway: Error: Invalid request
+        Gateway-->>Client: 400 Bad Request
+        deactivate Gateway
+    else Validation succeeds
+        Validator-->>Gateway: Validation passed
+        Gateway->>Service: 5. Forward validated request
+        activate Service
+
+        Service->>Cache: 6. Check cache for {{CACHE_KEY}}
+        alt Cache hit
+            Cache-->>Service: Return cached data
+            Service-->>Gateway: 7. Return response (cached)
+        else Cache miss
+            Service->>Database: 8. Query {{RESOURCE_TYPE}}
+            activate Database
+            Database-->>Service: 9. Return data
+            deactivate Database
+            Service->>Cache: 10. Store in cache (TTL: {{CACHE_TTL}}s)
+            Service-->>Gateway: 11. Return response (fresh)
+        end
+
+        deactivate Service
+        Gateway->>Gateway: 12. Add response headers<br/>X-RateLimit-* headers
+        Gateway-->>Client: 13. HTTP 200 OK<br/>JSON Body + Headers
+        deactivate Gateway
+    end
+```
+
 ## Error Codes
 
 | Code | HTTP Status | Description | Resolution |
@@ -261,6 +373,33 @@ data = response.json()
 | {{ERROR_CODE_3}} | {{HTTP_STATUS_3}} | {{ERROR_DESC_3}} | {{RESOLUTION_3}} |
 
 ## Rate Limiting
+
+### Rate Limit State Diagram
+
+```mermaid
+stateDiagram-v2
+    [*] --> AVAILABLE: Initialize bucket<br/>Limit: {{LIMIT}}<br/>Window: {{RATE_WINDOW}}
+
+    AVAILABLE --> AVAILABLE: Request received<br/>Decrement counter<br/>Return: {{REMAINING}}
+
+    AVAILABLE --> THROTTLED: Counter reaches 0
+
+    THROTTLED --> THROTTLED: Request rejected<br/>Return 429<br/>Retry-After: {{RETRY_AFTER_SECONDS}}s
+
+    THROTTLED --> AVAILABLE: Window resets<br/>{{RATE_WINDOW}} elapsed<br/>Bucket refilled
+
+    note right of AVAILABLE
+        X-RateLimit-Limit: {{LIMIT}}
+        X-RateLimit-Remaining: {{REMAINING}}
+        X-RateLimit-Reset: {{RESET_TIMESTAMP}}
+    end note
+
+    note right of THROTTLED
+        HTTP 429 Too Many Requests
+        Retry-After: {{RETRY_AFTER_SECONDS}}
+        error.code: RATE_LIMIT_EXCEEDED
+    end note
+```
 
 ### Limits
 
@@ -316,6 +455,43 @@ X-RateLimit-Reset: {{RESET_TIMESTAMP}}
 ```
 
 ## Webhooks
+
+### Webhook Event Flow Diagram
+
+```mermaid
+sequenceDiagram
+    participant System as {{SERVICE_NAME}}<br/>Event Source
+    participant Queue as Event Queue<br/>{{QUEUE_SERVICE}}
+    participant Processor as Event Processor<br/>Retry Logic
+    participant Webhook as Client Webhook<br/>{{WEBHOOK_ENDPOINT}}
+    participant Cache as Delivery Cache
+
+    System->>System: 1. Event triggered<br/>{{EVENT_TYPE}}
+    System->>Queue: 2. Enqueue event<br/>Priority: {{PRIORITY}}
+
+    Queue->>Processor: 3. Dequeue event
+    Processor->>Processor: 4. Sign payload<br/>HMAC-SHA256
+
+    Note over Processor: Initial Delivery Attempt
+
+    Processor->>Webhook: 5. POST webhook<br/>Headers + signed payload<br/>Timeout: {{WEBHOOK_TIMEOUT}}s
+
+    alt Delivery Success
+        Webhook-->>Processor: 6. HTTP 2xx response
+        Processor->>Cache: 7. Log success<br/>Delivery ID: {{DELIVERY_ID}}
+        Processor-->>System: Success
+    else Delivery Failure - Retry
+        Webhook-->>Processor: 8. HTTP 5xx or timeout
+        Processor->>Processor: 9. Calculate backoff<br/>Attempt {{ATTEMPT}} of {{MAX_ATTEMPTS}}
+        Note over Processor: Exponential backoff:<br/>2s, 4s, 8s, 16s, 32s...
+        Processor->>Queue: 10. Re-enqueue with delay<br/>Next retry: {{NEXT_RETRY}}
+        Queue-->>Processor: Scheduled
+    else Permanent Failure
+        Processor->>Processor: 11. Max retries exceeded
+        Processor->>Cache: 12. Log failure<br/>Last attempt: {{LAST_ATTEMPT}}
+        Processor-->>System: Failed (manual review needed)
+    end
+```
 
 ### Event Types
 

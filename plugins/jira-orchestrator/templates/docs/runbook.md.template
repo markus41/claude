@@ -51,6 +51,33 @@ kubectl scale deployment/{{DEPLOYMENT_NAME}} --replicas={{REPLICAS}} -n {{NAMESP
 
 ## Health Checks
 
+### Health Check Monitoring Diagram
+
+```mermaid
+flowchart TD
+    A[Health Check Initiated] --> B{Service Endpoint<br/>{{HEALTH_ENDPOINT}}}
+    B -->|Healthy| C[Check Dependencies]
+    B -->|Unhealthy| D[Alert {{ONCALL_TEAM}}<br/>Severity: Critical]
+
+    C --> E{Database<br/>{{DEP_1}}}
+    E -->|Healthy| F{Cache<br/>{{DEP_2}}}
+    E -->|Unhealthy| D
+
+    F -->|Healthy| G{External Svc<br/>{{DEP_3}}}
+    F -->|Unhealthy| D
+
+    G -->|Healthy| H[All Systems Green]
+    G -->|Unhealthy| D
+
+    H --> I[Update Dashboard<br/>{{MONITORING_URL}}]
+    D --> J[Create Jira Issue<br/>{{JIRA_PROJECT}}]
+
+    style H fill:#90EE90
+    style D fill:#FF6B6B
+    style I fill:#87CEEB
+    style J fill:#FFD700
+```
+
 ### Service Health
 
 ```bash
@@ -89,6 +116,50 @@ curl {{HEALTH_ENDPOINT}}
 ```
 
 ## Common Incidents
+
+### Incident Response Flow
+
+```mermaid
+flowchart TD
+    A[Incident Detected] --> B[Assess Severity]
+
+    B -->|P1 - Critical| C[Page {{ONCALL_TEAM}}<br/>Immediately]
+    B -->|P2 - High| D[Notify {{TEAM_LEAD_CONTACT}}]
+    B -->|P3 - Medium| E[Create Jira Ticket]
+    B -->|P4 - Low| F[Add to Backlog]
+
+    C --> G[Begin Diagnostics]
+    D --> G
+    E --> G
+    F --> O[Schedule for Sprint]
+
+    G --> H{Incident Type?}
+
+    H -->|High Error Rate| I["Run Error Diagnostics<br/>{{ERROR_LOG_COMMAND}}"]
+    H -->|High Latency| J["Check Slow Queries<br/>{{SLOW_QUERY_COMMAND}}"]
+    H -->|Service Down| K["Check Pod Status<br/>kubectl get pods"]
+    H -->|DB Connection| L["Check Pool Status<br/>{{POOL_METRICS_COMMAND}}"]
+
+    I --> M[Apply Resolution]
+    J --> M
+    K --> M
+    L --> M
+
+    M --> N{Issue Resolved?}
+    N -->|Yes| P[Update Status<br/>to Resolved]
+    N -->|No| Q[Escalate to L3<br/>{{ENG_MANAGER_CONTACT}}]
+
+    P --> R[Conduct Postmortem<br/>Create ADR]
+    Q --> S[Additional Debugging]
+    S --> N
+
+    style C fill:#FF4444
+    style D fill:#FF8800
+    style E fill:#FFD700
+    style F fill:#90EE90
+    style P fill:#00AA00
+    style Q fill:#FF0000
+```
 
 ### Incident: High Error Rate
 
@@ -225,6 +296,46 @@ kubectl get events -n {{NAMESPACE}} --sort-by='.lastTimestamp'
 
 ## Deployment Procedures
 
+### Deployment Pipeline Flow
+
+```mermaid
+flowchart LR
+    A[Code Push] --> B["Stage 1:<br/>Build"]
+    B -->|Success| C["Stage 2:<br/>Unit Tests"]
+    B -->|Failure| Z["Notify Developer<br/>{{SLACK_CHANNEL}}"]
+
+    C -->|Passed| D["Stage 3:<br/>Integration Tests"]
+    C -->|Failed| Z
+
+    D -->|Passed| E["Stage 4:<br/>Deploy to Staging<br/>{{STAGING_URL}}"]
+    D -->|Failed| Z
+
+    E -->|Success| F["Stage 5:<br/>Smoke Tests"]
+    E -->|Failure| Z
+
+    F -->|Passed| G["Stage 6:<br/>Approval Gate<br/>{{TEAM_LEAD_CONTACT}}"]
+    F -->|Failed| Z
+
+    G -->|Approved| H["Stage 7:<br/>Deploy to Prod<br/>{{PROD_URL}}"]
+    G -->|Rejected| I["Return to Dev<br/>Fix Issues"]
+
+    H -->|Success| J["Stage 8:<br/>Health Checks"]
+    H -->|Failure| K["Trigger Rollback"]
+
+    J -->|Healthy| L["Notify Team<br/>Deployment Complete"]
+    J -->|Unhealthy| K
+
+    K -->|Rollback Success| M["Restore Previous<br/>Version"]
+    M --> N["Investigate Root Cause<br/>Create Jira Issue"]
+    L --> O["Update Changelog<br/>{{LAST_UPDATED}}"]
+
+    style A fill:#E3F2FD
+    style L fill:#C8E6C9
+    style K fill:#FFCDD2
+    style Z fill:#FFE0B2
+    style O fill:#F3E5F5
+```
+
 ### Standard Deployment
 
 ```bash
@@ -239,6 +350,49 @@ kubectl rollout status deployment/{{DEPLOYMENT_NAME}} -n {{NAMESPACE}}
 
 # 4. Verify health
 {{HEALTH_CHECK_COMMAND}}
+```
+
+### Rollback Decision Tree
+
+```mermaid
+flowchart TD
+    A["Production Deployment<br/>Completed"] --> B{Health Checks<br/>Pass?}
+
+    B -->|Yes| C{Error Rate<br/>Elevated?}
+    C -->|No| D{Performance<br/>Degraded?}
+    D -->|No| E["Deployment Successful<br/>Monitor Metrics"]
+    E --> F["Log Deployment<br/>Update Changelog"]
+
+    B -->|No| G["ALERT:<br/>Immediate Rollback"]
+    C -->|Yes| H{Severity?}
+    D -->|Yes| H
+
+    H -->|Critical| G
+    H -->|High| I["Assess Rollback<br/>Risk vs Staying"]
+    H -->|Medium| J["Monitor for 30min<br/>Escalate if Worsens"]
+
+    I -->|Proceed| G
+    I -->|Continue| K["Increase Monitoring<br/>Prepare Hotfix"]
+    J -->|Worsens| G
+    J -->|Stabilizes| F
+
+    G --> L["Execute Rollback<br/>kubectl rollout undo"]
+    L --> M["Verify Previous<br/>Version Healthy"]
+    M -->|Healthy| N["Notify Team<br/>{{SLACK_CHANNEL}}"]
+    M -->|Issues| O["Contact L3<br/>{{ENG_MANAGER_CONTACT}}"]
+
+    N --> P["Create Jira Issue<br/>Investigate Cause"]
+    P --> Q["Document Findings<br/>Update Runbook"]
+    O --> Q
+
+    K --> F
+    Q --> R["Post-Incident Review"]
+
+    style E fill:#4CAF50
+    style G fill:#F44336
+    style N fill:#2196F3
+    style R fill:#FF9800
+    style F fill:#9C27B0
 ```
 
 ### Rollback Procedure
@@ -407,6 +561,43 @@ resources:
 **Next Review:** {{NEXT_ACCESS_REVIEW}}
 
 ## Contact & Escalation
+
+### Escalation Path Flowchart
+
+```mermaid
+flowchart TD
+    A["Issue/Alert<br/>Detected"] --> B{Severity<br/>Level?}
+
+    B -->|P1: Critical<br/>Service Down| C["L1: On-Call Engineer<br/>{{ONCALL_CONTACT}}<br/>Response: 5 min"]
+    B -->|P2: High<br/>Significant Impact| D["L2: Team Lead<br/>{{TEAM_LEAD_CONTACT}}<br/>Response: 15 min"]
+    B -->|P3: Medium<br/>Degraded Service| E["L3: Engineering Mgr<br/>{{ENG_MANAGER_CONTACT}}<br/>Response: 30 min"]
+    B -->|P4: Low<br/>Minor Issues| F["L4: VP Engineering<br/>{{VP_ENG_CONTACT}}<br/>Response: 24 hrs"]
+
+    C -->|Unresolved<br/>in 10 min| G["Escalate to L2"]
+    D -->|Unresolved<br/>in 20 min| H["Escalate to L3"]
+    E -->|Unresolved<br/>in 30 min| I["Escalate to L4"]
+
+    G --> D
+    H --> E
+    I --> J["Invoke Disaster<br/>Recovery Protocol"]
+
+    C -->|Resolved| K["Document Resolution<br/>Update Runbook"]
+    D -->|Resolved| K
+    E -->|Resolved| K
+    F -->|Resolved| K
+    J --> K
+
+    K --> L["Notify Stakeholders<br/>{{SLACK_CHANNEL}}"]
+    L --> M["Schedule<br/>Postmortem"]
+
+    style C fill:#FF4444
+    style D fill:#FF8800
+    style E fill:#FFD700
+    style F fill:#90EE90
+    style J fill:#8B0000
+    style K fill:#9C27B0
+    style M fill:#2196F3
+```
 
 ### Escalation Path
 
