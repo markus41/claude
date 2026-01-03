@@ -1000,6 +1000,10 @@ deployment_tracking_metrics:
 - `/jira-orchestrator:sync` - Sync Jira with GitHub
 - `/qa-review` - QA review workflow
 
+---
+
+**⚓ Golden Armada** | *The Fleet Stands Ready*
+
 ## Success Criteria
 
 A successful deployment tracking session means:

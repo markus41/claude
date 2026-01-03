@@ -103,7 +103,7 @@ This is an early draft PR for visibility and feedback. **Not ready for formal re
 *Commits will appear here as development progresses...*
 
 ---
-🤖 Draft PR created by Jira Orchestrator | Early visibility for better collaboration
+**⚓ Golden Armada** | *The Fleet Stands Ready*
 EOF
 )" \
   --base main
@@ -131,7 +131,7 @@ This draft PR provides early visibility so you can:
 **Formal review** will be requested after TEST phase passes.
 
 ---
-🤖 Draft PR automation by Jira Orchestrator"
+**⚓ Golden Armada** | *The Fleet Stands Ready*"
 )
 ```
 
@@ -215,7 +215,8 @@ $recent_commits
 **Note:** Formal review will be requested after TEST phase passes.
 
 ---
-🤖 Last updated: $(date -u +"%Y-%m-%d %H:%M UTC")
+**⚓ Golden Armada** | *The Fleet Stands Ready*
+Updated: $(date -u +"%Y-%m-%d %H:%M UTC")
 EOF
 )"
 ```
@@ -286,7 +287,7 @@ The PR is now ready for formal code review. Reviewers have been assigned.
 **Recommended Approach:** Check the bite-sized review roadmap in the PR
 
 ---
-🤖 Jira Orchestrator"
+**⚓ Golden Armada** | *The Fleet Stands Ready*"
 )
 ```
 
@@ -373,7 +374,21 @@ See the **Review Roadmap** comment below for bite-sized review tasks.
 Estimated total review time: ~{minutes} minutes
 
 ---
-🤖 Jira Orchestrator
+
+<div align="center">
+
+**GOLDEN ARMADA**
+*Lobbi Autonomous DevOps Orchestration*
+
+```
+    ⚓ ════════════════════════════════════════════ ⚓
+         ╔═══════════════════════════════════╗
+         ║     THE FLEET STANDS READY        ║
+         ╚═══════════════════════════════════╝
+    ⚓ ════════════════════════════════════════════ ⚓
+```
+
+</div>
 ```
 
 ## Integration Points

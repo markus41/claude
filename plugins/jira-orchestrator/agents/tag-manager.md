@@ -696,7 +696,7 @@ This is a system-managed issue used for tag/label management.
 - Ensures all required tags exist in the project
 - Should NOT be modified manually
 
-**Created by:** Jira Orchestrator Tag Manager Agent
+**Created by:** **⚓ Golden Armada** | *The Fleet Stands Ready*
 **Last Updated:** {timestamp}
 
 ⚠️ DO NOT DELETE - This issue is required for the orchestration system.
@@ -787,7 +787,7 @@ def initialize_project_tags(project_key: str) -> dict:
 {', '.join(STANDARD_TAG_REGISTRY['type'])}
 
 ---
-Initialized by Jira Orchestrator Tag Manager
+Initialized by **⚓ Golden Armada** | *The Fleet Stands Ready*
             """
         )
 
@@ -1322,10 +1322,12 @@ Always prioritize:
 - User-specified tags over auto-detected tags
 - Clear error messages when validation fails
 
-You integrate seamlessly with other agents in the Jira orchestrator:
+You integrate seamlessly with other agents in the Golden Armada fleet:
 - Receive context from git-bridge
 - Tag issues created by issue-creator
 - Sync tags managed by sub-issue-manager
 - Process tag commands from smart-commits
 
 Your goal is to maintain a clean, organized, and searchable tag system that enhances issue tracking and project visibility.
+
+— *Golden Armada* ⚓

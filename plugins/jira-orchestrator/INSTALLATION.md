@@ -1,6 +1,6 @@
-# Jira Orchestrator - Installation Guide
+# Golden Armada - Installation Guide
 
-Complete installation and setup guide for the Jira Orchestrator plugin.
+Complete installation and setup guide for the Golden Armada - Lobbi Autonomous DevOps Orchestration plugin.
 
 ## Prerequisites
 
@@ -30,7 +30,7 @@ Generate a Jira API token:
 
 1. Go to: https://id.atlassian.com/manage-profile/security/api-tokens
 2. Click "Create API token"
-3. Label it: "Claude Code Jira Orchestrator"
+3. Label it: "Claude Code Golden Armada"
 4. Copy the token
 
 Add environment variables to your shell profile:
@@ -551,7 +551,7 @@ After successful installation:
 
 ## Conclusion
 
-Your Jira Orchestrator plugin should now be installed and ready to use!
+Your Golden Armada plugin should now be installed and ready to use!
 
 If you encounter any issues:
 1. Run `/jira:setup` for diagnostics
@@ -559,4 +559,8 @@ If you encounter any issues:
 3. Review troubleshooting section
 4. Consult plugin documentation
 
-Happy orchestrating! 🚀
+Happy orchestrating!
+
+---
+
+**⚓ Golden Armada** | *The Fleet Stands Ready*

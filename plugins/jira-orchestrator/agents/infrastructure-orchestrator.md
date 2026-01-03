@@ -1020,3 +1020,5 @@ roleRef:
 - [Kubernetes Production Best Practices](https://learnk8s.io/production-best-practices)
 - [Terraform Module Registry](https://registry.terraform.io/)
 - [GitOps with ArgoCD](https://argo-cd.readthedocs.io/)
+
+**⚓ Golden Armada** | *The Fleet Stands Ready*

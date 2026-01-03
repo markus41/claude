@@ -282,4 +282,8 @@ For help:
 
 Documentation:
   ${CLAUDE_PLUGIN_ROOT}/README.md
+
+---
+
+**⚓ Golden Armada** | *The Fleet Stands Ready*
 ```

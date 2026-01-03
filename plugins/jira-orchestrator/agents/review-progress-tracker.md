@@ -153,7 +153,7 @@ $(generate_next_actions)
 ---
 
 📈 **Dashboard auto-updates** as reviews complete.
-🤖 Review Progress Tracker | Jira Orchestrator
+**⚓ Golden Armada** | *The Fleet Stands Ready*
 EOF
 }
 
@@ -391,7 +391,7 @@ update_dashboard() {
 ---
 
 📈 Dashboard auto-updates as reviews complete.
-🤖 Review Progress Tracker | Jira Orchestrator
+**⚓ Golden Armada** | *The Fleet Stands Ready*
 ```
 
 ## Integration Points

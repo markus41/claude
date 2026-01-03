@@ -200,7 +200,7 @@ else
 fi)
 
 ---
-🤖 Checkpoint PR created by Jira Orchestrator
+**⚓ Golden Armada** | *The Fleet Stands Ready*
 Part of incremental delivery strategy for [$PARENT_KEY]
 EOF
 }
@@ -234,7 +234,7 @@ This is part of an **incremental delivery strategy** to keep PRs small and revie
 - ✅ Independent review and merge
 
 ---
-🤖 Checkpoint PR Manager"
+— *Golden Armada* ⚓"
   )
 }
 ```
@@ -418,4 +418,6 @@ Chain Progress:
 ✅ 1 merged | 📝 1 draft (this) | ⏳ 1 planned
 
 Posted update to PROJ-123 on Jira.
+
+— *Golden Armada* ⚓
 ```

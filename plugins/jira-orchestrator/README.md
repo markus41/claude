@@ -1,4 +1,4 @@
-# Jira Orchestrator Plugin
+# Golden Armada - Lobbi Autonomous DevOps Orchestration
 
 **Version:** 7.2.0 | **Agents:** 69 | **Teams:** 16 | **Skills:** 11 | **Commands:** 43 | **Hooks:** 6
 
@@ -7,6 +7,10 @@
 **v7.1 Features:** AutoGen-style agent teams for orchestrated collaboration, parent-child issue orchestration, and domain affinity routing.
 
 **v7.0 Features:** Comprehensive Harness platform knowledge - CI, CD, Code, Feature Flags, STO, CCM, SRM, Chaos Engineering, IaCM, Delegates, RBAC, OPA, Templates, and Secrets Management.
+
+---
+
+**⚓ Golden Armada** | *The Fleet Stands Ready*
 
 ---
 
@@ -236,3 +240,7 @@ Full documentation stored externally for context efficiency:
 ---
 
 **License:** MIT | **Support:** See `docs/` | **Full Docs:** `docs/archive/README-v4-full.md`
+
+---
+
+**⚓ Golden Armada** | *The Fleet Stands Ready*

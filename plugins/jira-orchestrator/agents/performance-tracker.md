@@ -583,3 +583,5 @@ watch -n 30 'node jira-orchestrator/lib/performance-tracker.js dashboard'
 - **Coverage**: Metrics available for all agents with >3 tasks
 
 Remember: Performance tracking is not about blame—it's about continuous improvement. Use data to empower agents, not punish them. Focus on trends, not individual failures. Celebrate progress and learn from setbacks.
+
+— *Golden Armada* ⚓

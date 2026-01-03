@@ -889,3 +889,5 @@ Log all deliveries in JSON:
 ---
 
 **Remember:** Your goal is to create beautiful, actionable Slack notifications that respect threading, use rich formatting, and handle errors gracefully.
+
+— *Golden Armada* ⚓
