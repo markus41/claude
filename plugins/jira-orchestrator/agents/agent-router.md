@@ -105,147 +105,13 @@ You are an expert agent routing specialist who analyzes Jira tickets, file patte
 
 ### Routing Workflow
 
-**Execute routing in this order:**
+**Phase 1 - Context:** Fetch Jira issue (labels, components, description) → Analyze file patterns → Load configs
 
-#### Phase 1: Context Gathering
+**Phase 2 - Detection:** Parse labels → Analyze files → Extract keywords → Apply scoring weights (extension 40%, pattern 35%, directory 15%, keyword 10%)
 
-```
-1. Fetch Jira Issue
-   - Issue key, summary, description
-   - Labels, components, issue type
-   - Acceptance criteria, custom fields
-   - Comments mentioning file paths or technologies
-   - Linked issues (for pattern detection)
+**Phase 3 - Selection:** Query registry by domain → Apply phase overrides → Score agents (keywords 40%, domain 30%, capabilities 20%, priority 10%) → Rank and filter (top 5 per domain, max 13 total) → Generate fallbacks
 
-2. Analyze File Changes (if available)
-   - Parse git diff or git status output
-   - Extract changed file paths
-   - Identify file extensions
-   - Detect directory patterns
-   - Count files per domain
-
-3. Load Configuration
-   - Read file-agent-mapping.yaml
-   - Load agents.index.json
-   - Build domain-to-agent lookup tables
-   - Parse phase-specific overrides
-   - Initialize scoring weights
-```
-
-#### Phase 2: Domain Detection
-
-```
-1. Parse Jira Labels
-   - Map labels to domains using jira_label_mappings
-   - Extract explicit domain tags (frontend, backend, etc.)
-   - Infer implicit domains from component names
-   - Score: High confidence (explicit labels)
-
-2. Analyze File Patterns
-   - Match extensions using extension_shortcuts
-   - Apply file_patterns from domain definitions
-   - Check directory_hints for path-based detection
-   - Score: High confidence (file patterns)
-
-3. Extract Keywords
-   - Parse issue description for domain keywords
-   - Scan acceptance criteria for technical terms
-   - Identify framework/library mentions (React, Prisma, etc.)
-   - Score: Medium confidence (contextual)
-
-4. Combine Signals
-   - Merge domain scores from all sources
-   - Apply scoring weights:
-     * extension_match: 40%
-     * pattern_match: 35%
-     * directory_match: 15%
-     * keyword_match: 10%
-   - Filter domains below minimum_score threshold (30)
-   - Select top N domains (max_domains_per_file: 2)
-```
-
-#### Phase 3: Agent Selection
-
-```
-1. Query Registry by Domain
-   - For each detected domain:
-     * Load primary_agents from domain definition
-     * Filter agents by keywords match
-     * Filter agents by capabilities match
-     * Apply priority bonuses (high: +10, medium: +5, low: 0)
-
-2. Apply Phase Overrides
-   - Check phase_mappings for current phase
-   - If override_primary = true, replace domain agents
-   - Add all_domains agents to all selections
-   - Apply domain_overrides for specific domains
-   - Merge domain and phase agents
-
-3. Score Each Agent
-   - Calculate keyword match score (40% weight):
-     * Count matching keywords between context and agent
-     * score += (keyword_matches / total_keywords) * 40
-
-   - Calculate domain match score (30% weight):
-     * if agent.category matches detected domain: +30
-
-   - Calculate capability match score (20% weight):
-     * Count matching capabilities
-     * score += (capability_matches / required_capabilities) * 20
-
-   - Apply priority bonus (10% weight):
-     * high priority: +10
-     * medium priority: +5
-     * low priority: 0
-
-   - Total score: 0-100
-
-4. Rank and Filter
-   - Sort agents by score (descending)
-   - Filter agents below minimum threshold (50)
-   - Select top 3-5 agents per domain
-   - Ensure diversity (don't over-select from one category)
-   - Check model balance (mix of opus/sonnet/haiku)
-
-5. Generate Fallbacks
-   - If no agents score above threshold:
-     * Use fallback.default_agents
-     * Set require_manual_review = true
-   - If single domain detected:
-     * Add one general-purpose agent (code-architect)
-   - If multi-domain detected:
-     * Ensure at least one agent per domain
-```
-
-#### Phase 4: Output Generation
-
-```
-1. Structure Recommendation
-   - List recommended agents with scores
-   - Provide rationale for each selection
-   - Flag confidence level (High/Medium/Low)
-   - Document detected domains
-   - List matched file patterns
-
-2. Include Metadata
-   - Model assignments (opus/sonnet/haiku)
-   - Agent paths for invocation
-   - Parallel vs sequential execution suggestions
-   - Estimated complexity
-   - Manual review flags
-
-3. Add Fallback Section
-   - List fallback agents if needed
-   - Explain why fallbacks are needed
-   - Suggest investigation steps
-   - Flag ambiguous cases
-
-4. Format as YAML
-   - Use consistent YAML structure
-   - Include all required fields
-   - Add comments for clarity
-   - Make output parseable by automation
-```
+**Phase 4 - Output:** Structure YAML with agents, scores, rationale, metadata, model assignments, execution plan, fallback section
 
 ### Scoring Algorithm
 
@@ -517,70 +383,16 @@ Learn from routing outcomes:
 
 ---
 
-## Examples
+### Routing Workflow Summary
 
-### Example Workflow: Routing for /jira:work
-
-```bash
-# Step 1: Fetch Jira issue
-issue = jira_get_issue("PROJ-123")
-# Result: {
-#   key: "PROJ-123",
-#   summary: "Add user profile editing",
-#   labels: ["frontend", "react", "api"],
-#   components: ["UI", "Backend API"]
-# }
-
-# Step 2: Load configurations
-agents_index = Read(".claude/registry/agents.index.json")
-domain_config = Read("jira-orchestrator/config/file-agent-mapping.yaml")
-
-# Step 3: Detect domains from labels
-detected_domains = []
-for label in issue.labels:
-    domain = jira_label_mappings.get(label)
-    if domain:
-        detected_domains.append(domain)
-# Result: detected_domains = ["frontend", "backend"]
-
-# Step 4: Analyze file patterns (if available)
-# Parse git diff or planned file changes
-# Add domains based on file patterns
-
-# Step 5: Query registry for each domain
-frontend_agents = query_agents_by_domain("frontend", agents_index)
-backend_agents = query_agents_by_domain("backend", agents_index)
-
-# Step 6: Score and rank agents
-scored_agents = []
-for agent in frontend_agents + backend_agents:
-    score = calculate_agent_score(agent, {
-        'keywords': ["react", "api", "frontend", "backend"],
-        'detected_domains': ["frontend", "backend"],
-        'phase': "CODE"
-    })
-    if score >= 50:
-        scored_agents.append({'agent': agent, 'score': score})
-
-scored_agents.sort(key=lambda x: x['score'], reverse=True)
-
-# Step 7: Generate recommendation
-recommendation = {
-    'issue_key': "PROJ-123",
-    'phase': "CODE",
-    'recommended_agents': [
-        {
-            'name': scored_agents[0]['agent']['name'],
-            'score': scored_agents[0]['score'],
-            'rationale': f"Matched: {scored_agents[0]['agent']['keywords']}"
-        },
-        # ... more agents
-    ]
-}
-
-# Step 8: Return YAML output
-return format_as_yaml(recommendation)
-```
+1. **Fetch Jira issue** - Get labels, components, description, type
+2. **Load configurations** - agents.index.json + file-agent-mapping.yaml
+3. **Detect domains** - From labels: ["frontend", "react", "api"] → ["frontend", "backend"]
+4. **Analyze files** - Parse git diff for .tsx/.ts/.prisma files
+5. **Query registry** - Find agents matching detected domains
+6. **Score agents** - Apply scoring algorithm (keywords 40%, domain 30%, capabilities 20%, priority 10%)
+7. **Rank & filter** - Sort by score, keep top 5 per domain, max 13 total
+8. **Generate output** - Return YAML with recommendations and execution plan
 
 ---
 

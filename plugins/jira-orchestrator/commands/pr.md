@@ -1,6 +1,6 @@
 ---
 name: jira:pr
-description: Create a pull request for completed Jira issue work
+description: Create, fix, or iterate on pull requests for Jira issues
 arguments:
   - name: issue_key
     description: Jira issue key for PR
@@ -14,6 +14,15 @@ arguments:
   - name: reviewers
     description: Comma-separated list of reviewers
     required: false
+  - name: fix
+    description: Fix review comments and re-review (replaces /pr-fix)
+    default: false
+  - name: iterate
+    description: Iterate on feedback with auto-review (replaces /iterate)
+    default: false
+  - name: max_iterations
+    description: Max fix attempts before escalation (with --iterate)
+    default: 3
 tags:
   - jira
   - git
@@ -21,10 +30,19 @@ tags:
   - automation
 examples:
   - command: /jira:pr ABC-123
-  - command: /jira:pr ABC-123 develop
-  - command: /jira:pr ABC-123 main true
+  - command: /jira:pr ABC-123 --fix
+  - command: /jira:pr ABC-123 --iterate --max_iterations 5
   - command: /jira:pr ABC-123 main false user1,user2
+aliases:
+  - pr-fix (deprecated -> use --fix)
+  - iterate (deprecated -> use --iterate)
 ---
+
+> ⚠️ **Migration Notice:** This command now consolidates `/pr-fix` and `/jira:iterate`.
+> - Old: `/pr-fix <pr-url> --jira PROJ-123` → New: `/jira:pr PROJ-123 --fix`
+> - Old: `/jira:iterate PROJ-123 --max_iterations 3` → New: `/jira:pr PROJ-123 --iterate --max_iterations 3`
+>
+> The deprecated commands still work but will be removed in a future release.
 
 # Jira PR Creation Command
 
@@ -38,6 +56,37 @@ Create comprehensive pull requests for completed Jira issues with automated vali
 - Tests passing
 - No merge conflicts with base branch
 - GitHub CLI (gh) installed and authenticated
+
+## Flag Validation
+
+**Mutual Exclusivity Rules:**
+```yaml
+# --fix and --iterate cannot be used together
+validation:
+  mutually_exclusive:
+    - [fix, iterate]
+
+# Error if both specified
+if: fix == true AND iterate == true
+error: "Cannot use --fix and --iterate together. Use --fix for one-time fixes, --iterate for continuous fix-review loops."
+
+# Mode determination
+mode:
+  create: fix == false AND iterate == false  # Default: create new PR
+  fix:    fix == true                         # One-time fix cycle
+  iterate: iterate == true                    # Continuous fix-review loop
+```
+
+**Validation Example:**
+```bash
+# Valid usage
+/jira:pr ABC-123                           # Create PR
+/jira:pr ABC-123 --fix                     # Fix review comments
+/jira:pr ABC-123 --iterate --max_iterations 5  # Iterate until approved
+
+# Invalid - will error
+/jira:pr ABC-123 --fix --iterate  # ERROR: mutually exclusive flags
+```
 
 ## Core Workflow
 
@@ -189,6 +238,57 @@ COVERAGE_COMMAND="npm run coverage"
 - Manual reviewers specified via `--reviewers` merge with auto-selected
 - Selection logic documented in Jira comments
 - Enables focused code reviews by domain experts
+
+---
+
+## Fix Mode (`--fix`)
+
+When `--fix` is enabled, the command enters PR fix workflow:
+
+### Fix Workflow
+1. **Collect Issues** - Fetch PR comments, categorize by severity (critical/high/medium/low)
+2. **Plan Fixes** - Group by file, order by dependency (security→structural→quality)
+3. **Execute Fixes** - Apply fixes, run tests, verify resolution
+4. **Update PR** - Push commits, reply to comments, update description
+5. **Council Review** - Run focused council review (code-reviewer + domain specialists)
+
+### Fix Priorities
+```yaml
+critical: always fix (security, breaking changes)
+high: always fix (quality, performance)
+medium: fix if time permits
+low: optional (nitpicks)
+```
+
+---
+
+## Iterate Mode (`--iterate`)
+
+When `--iterate` is enabled, runs iterative fix-review loop:
+
+### Iterate Workflow
+1. **Gather Feedback** - Auto-detect PR, fetch comments
+2. **Categorize** - critical | warning | suggestion | question | resolved
+3. **Apply Fixes** - Per-file fixes with test validation
+4. **Push & Update** - Commit, push, update PR description
+5. **Re-Review** - Spawn focused council, verify fixes
+6. **Loop** - Repeat until approved or max_iterations reached
+
+### Escalation (after max_iterations)
+- Same comment unfixed 2x → escalate
+- Critical count not decreasing → escalate
+- Iteration > 30 min → escalate
+
+---
+
+## Query Optimization
+
+All Jira/Confluence queries use optimized patterns:
+- Field limiting: `fields: ["key", "summary", "status"]`
+- Pagination: `maxResults: 25`
+- Indexed fields first in JQL
+
+---
 
 ## Troubleshooting
 

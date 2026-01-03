@@ -377,487 +377,62 @@ EOF
 
 ### Step 2: Log Phase Completion
 
-```bash
-# Function to log phase completion
-log_phase_completion() {
-  local PHASE=$1
-  local DESCRIPTION=$2
-  local AGENTS_JSON=$3  # JSON array of agents used
-  local DOCS_JSON=$4    # JSON array of documentation created
-  local FILES_JSON=$5   # JSON array of files changed
-  local DECISIONS=$6    # Multiline string of decisions
-  local NEXT_STEPS=$7   # Multiline string of next steps
-
-  # Build the PR comment
-  local COMMENT=$(cat <<EOF
-## 📋 Orchestration Log: ${PHASE}
-
-**Timestamp:** $(date -Iseconds)
-**Issue:** ${ISSUE_KEY}
-**Phase:** ${PHASE}
-
-### Action Completed
-${DESCRIPTION}
-
-### Sub-Agents Used
-| Agent | Model | Purpose | Duration |
-|-------|-------|---------|----------|
-$(echo "$AGENTS_JSON" | jq -r '.[] | "| \(.name) | \(.model) | \(.purpose) | \(.duration) |"')
-
-### Documentation Created
-| Type | Title | Link |
-|------|-------|------|
-$(echo "$DOCS_JSON" | jq -r '.[] | "| \(.type) | \(.title) | [View](\(.url)) |"')
-
-### Files Changed
-$(echo "$FILES_JSON" | jq -r '.[] | "- \`\(.path)\` (+\(.additions)/-\(.deletions))"')
-
-### Key Decisions
-${DECISIONS}
-
-### Next Steps
-${NEXT_STEPS}
-
----
-**⚓ Golden Armada** | *The Fleet Stands Ready*
-EOF
-)
-
-  # Post the comment to Jira issue
-  local RESPONSE=$(mcp__atlassian__addCommentToJiraIssue \
-    --issue_key "${ISSUE_KEY}" \
-    --comment "${COMMENT}
-
----
-**⚓ Golden Armada** | *The Fleet Stands Ready*")
-
-  # Track the posted comment
-  echo "$RESPONSE" | jq -r '.id' >> "${TRACKING_FILE}.comments"
-
-  # Update tracking file
-  jq --arg phase "$PHASE" \
-     --arg timestamp "$(date -Iseconds)" \
-     --argjson agents "$AGENTS_JSON" \
-     '.phases += [{"phase": $phase, "timestamp": $timestamp, "agents": $agents}]' \
-     "$TRACKING_FILE" > "${TRACKING_FILE}.tmp" && \
-     mv "${TRACKING_FILE}.tmp" "$TRACKING_FILE"
-}
-```
+Calls addCommentToJiraIssue with phase summary:
+- Timestamp, issue key, phase name
+- Action description and rationale
+- Sub-agents used (name, model, purpose, duration)
+- Documentation created (type, title, link)
+- Files changed (path, +additions, -deletions)
+- Key decisions made
+- Next steps in workflow
 
 ### Step 3: Log Documentation Creation
 
-```bash
-# Function to log documentation creation
-log_documentation() {
-  local DOC_TYPE=$1
-  local TITLE=$2
-  local URL=$3
-  local SPACE=$4
-  local TEMPLATE=$5
-  local SUMMARY=$6
-  local SECTIONS=$7  # Multiline string
-  local RELATED_JSON=$8  # JSON array of related docs
+Post to PR with: document type, title, location URL, space, template used, content summary, sections, related docs
 
-  local COMMENT=$(cat <<EOF
-## 📄 Documentation Created: ${DOC_TYPE}
+Use: `gh pr comment "${PR_NUMBER}" --body "${COMMENT}"`
 
-**Timestamp:** $(date -Iseconds)
-**Issue:** ${ISSUE_KEY}
-**Document:** ${TITLE}
-
-### Document Details
-- **Type:** ${DOC_TYPE}
-- **Location:** [View](${URL})
-- **Space:** ${SPACE}
-- **Template Used:** ${TEMPLATE}
-
-### Content Summary
-${SUMMARY}
-
-### Sections Included
-${SECTIONS}
-
-### Related Documentation
-$(echo "$RELATED_JSON" | jq -r '.[] | "- [\(.title)](\(.url)) - \(.description)"')
-
----
-**⚓ Golden Armada** | *The Fleet Stands Ready*
-EOF
-)
-
-  # Note: GitHub comment tool removed - use GitHub API or gh CLI instead
-  gh pr comment "${PR_NUMBER}" --body "${COMMENT}
-
----
-**⚓ Golden Armada** | *The Fleet Stands Ready*"
-
-  # Update tracking
-  jq --arg type "$DOC_TYPE" \
-     --arg title "$TITLE" \
-     --arg url "$URL" \
-     '.documentation += [{"type": $type, "title": $title, "url": $url}]' \
-     "$TRACKING_FILE" > "${TRACKING_FILE}.tmp" && \
-     mv "${TRACKING_FILE}.tmp" "$TRACKING_FILE"
-}
-```
+Update tracking file with doc type, title, URL
 
 ### Step 4: Log Jira Status Change
 
-```bash
-# Function to log Jira status transition
-log_jira_status() {
-  local JIRA_KEY=$1
-  local OLD_STATUS=$2
-  local NEW_STATUS=$3
-  local REASON=$4
-  local EVIDENCE_JSON=$5  # JSON array of documentation evidence
-  local SUB_ITEMS_JSON=$6  # JSON array of sub-item statuses
-  local NEXT_ACTIONS=$7
+Post to PR with: issue key, status transition (old → new), reason, documentation evidence (title, purpose, link), sub-item status list, next actions
 
-  local COMMENT=$(cat <<EOF
-## 🔄 Jira Status Update: ${JIRA_KEY}
-
-**Timestamp:** $(date -Iseconds)
-**Issue:** [${JIRA_KEY}](${JIRA_BASE_URL}/browse/${JIRA_KEY})
-**Status:** ${OLD_STATUS} → ${NEW_STATUS}
-
-### Reason for Transition
-${REASON}
-
-### Documentation Evidence
-| Document | Purpose | Link |
-|----------|---------|------|
-$(echo "$EVIDENCE_JSON" | jq -r '.[] | "| \(.title) | \(.purpose) | [View](\(.url)) |"')
-
-### Sub-Items Status
-$(echo "$SUB_ITEMS_JSON" | jq -r '.[] | "- \(.key): \(.status) - \(.summary)"')
-
-### Next Actions
-${NEXT_ACTIONS}
-
----
-**⚓ Golden Armada** | *The Fleet Stands Ready*
-EOF
-)
-
-  # Note: GitHub comment tool removed - use GitHub API or gh CLI instead
-  gh pr comment "${PR_NUMBER}" --body "${COMMENT}"
-}
-```
+Use: `gh pr comment "${PR_NUMBER}" --body "${COMMENT}"`
 
 ### Step 5: Log Test Results
 
-```bash
-# Function to log test results
-log_test_results() {
-  local TEST_TYPE=$1
-  local TOTAL=$2
-  local PASSED=$3
-  local FAILED=$4
-  local SKIPPED=$5
-  local COVERAGE=$6
-  local TEST_FILES_JSON=$7  # JSON array of test file results
-  local FAILED_OUTPUT=$8
-  local DOCS_JSON=$9  # Documentation updated with results
+Post to PR with: test type, total/passed/failed/skipped counts, coverage %, test files with pass rates, failed test output (if any), updated documentation links
 
-  local COMMENT=$(cat <<EOF
-## ✅ Test Results: ${TEST_TYPE}
-
-**Timestamp:** $(date -Iseconds)
-**Issue:** ${ISSUE_KEY}
-**Test Type:** ${TEST_TYPE}
-
-### Test Summary
-- **Total Tests:** ${TOTAL}
-- **Passed:** ✅ ${PASSED}
-- **Failed:** ❌ ${FAILED}
-- **Skipped:** ⏭️ ${SKIPPED}
-- **Coverage:** ${COVERAGE}%
-
-### Test Files
-$(echo "$TEST_FILES_JSON" | jq -r '.[] | "- \`\(.file)\`: \(.passed)/\(.total) passed"')
-
-$(if [ -n "$FAILED_OUTPUT" ]; then
-  echo "### Failed Tests"
-  echo '```'
-  echo "$FAILED_OUTPUT"
-  echo '```'
-fi)
-
-### Documentation Updated
-$(echo "$DOCS_JSON" | jq -r '.[] | "- [\(.title)](\(.url)) - \(.description)"')
-
----
-**⚓ Golden Armada** | *The Fleet Stands Ready*
-EOF
-)
-
-  # Note: GitHub comment tool removed - use GitHub API or gh CLI instead
-  gh pr comment "${PR_NUMBER}" --body "${COMMENT}"
-}
-```
+Use: `gh pr comment "${PR_NUMBER}" --body "${COMMENT}"`
 
 ### Step 6: Generate Final Summary
 
-```bash
-# Function to generate complete summary
-generate_final_summary() {
-  local TRACKING_FILE=$1
+Read tracking file and post comprehensive PR summary containing:
+- Issue key, completion timestamp, total duration
+- Confluence documentation table (type, purpose, space, link)
+- Jira updates table (issue, type, action, link)
+- Phase completion log (phase, status, timestamp, duration, agents, output)
+- Files changed table (file, +additions, -deletions, purpose)
+- Documentation metrics (confluence pages, comments, PR comments, sub-items)
 
-  # Read tracking data
-  local PR_NUMBER=$(jq -r '.pr_number' "$TRACKING_FILE")
-  local ISSUE_KEY=$(jq -r '.issue_key' "$TRACKING_FILE")
-  local STARTED_AT=$(jq -r '.started_at' "$TRACKING_FILE")
-  local COMPLETED_AT=$(date -Iseconds)
-
-  # Calculate duration
-  local DURATION=$(calculate_duration "$STARTED_AT" "$COMPLETED_AT")
-
-  # Extract metrics
-  local PHASES_TABLE=$(jq -r '.phases[] | "| \(.phase) | ✅ | \(.timestamp) | \(.duration) | \(.agents | length) | \(.summary) |"' "$TRACKING_FILE")
-  local DOCS_TABLE=$(jq -r '.documentation[] | "| \(.type) | \(.title) | \(.space) | [View](\(.url)) |"' "$TRACKING_FILE")
-  local JIRA_TABLE=$(jq -r '.jira_updates[] | "| \(.key) | \(.type) | \(.action) | [View](\(.url)) |"' "$TRACKING_FILE")
-  local FILES_TABLE=$(jq -r '.files_changed[] | "| \`\(.path)\` | +\(.additions) | -\(.deletions) | \(.purpose) |"' "$TRACKING_FILE")
-
-  # Calculate totals
-  local TOTAL_DOCS=$(jq '.documentation | length' "$TRACKING_FILE")
-  local TOTAL_JIRA_COMMENTS=$(jq '.jira_updates | map(select(.type == "comment")) | length' "$TRACKING_FILE")
-  local TOTAL_PR_COMMENTS=$(jq '.pr_comments_posted | length' "$TRACKING_FILE")
-  local TOTAL_AGENTS=$(jq '[.phases[].agents[]] | length' "$TRACKING_FILE")
-
-  # Build summary comment (use the template from above)
-  local SUMMARY_COMMENT=$(cat <<EOF
-## 📚 Complete Documentation Trail: ${ISSUE_KEY}
-
-**Workflow Completed:** ${COMPLETED_AT}
-**Total Duration:** ${DURATION}
-**Issue:** [${ISSUE_KEY}](${JIRA_BASE_URL}/browse/${ISSUE_KEY})
-
----
-
-### 📄 Confluence Documentation
-
-| Document | Purpose | Space | Link |
-|----------|---------|-------|------|
-${DOCS_TABLE}
-
-**Total Pages Created:** ${TOTAL_DOCS}
-
----
-
-### 🎫 Jira Updates
-
-| Issue | Type | Action | Link |
-|-------|------|--------|------|
-${JIRA_TABLE}
-
-**Total Issues Updated:** $(jq '.jira_updates | length' "$TRACKING_FILE")
-**Total Comments Posted:** ${TOTAL_JIRA_COMMENTS}
-**Sub-Items Documented:** $(jq '.jira_updates | map(select(.type == "sub-task")) | length' "$TRACKING_FILE")
-
----
-
-### 🔄 Phase Completion Log
-
-| Phase | Status | Completed | Duration | Agents | Output |
-|-------|--------|-----------|----------|--------|--------|
-${PHASES_TABLE}
-
-**Total Sub-Agents Used:** ${TOTAL_AGENTS}
-**Total Processing Time:** ${DURATION}
-
----
-
-### 📝 Files Changed
-
-| File | Additions | Deletions | Purpose |
-|------|-----------|-----------|---------|
-${FILES_TABLE}
-
-**Total Files Changed:** $(jq '.files_changed | length' "$TRACKING_FILE")
-**Total Lines Added:** +$(jq '[.files_changed[].additions] | add' "$TRACKING_FILE")
-**Total Lines Removed:** -$(jq '[.files_changed[].deletions] | add' "$TRACKING_FILE")
-
----
-
-### 📊 Documentation Metrics
-
-| Metric | Count |
-|--------|-------|
-| Confluence Pages | ${TOTAL_DOCS} |
-| Jira Comments | ${TOTAL_JIRA_COMMENTS} |
-| PR Comments | ${TOTAL_PR_COMMENTS} |
-| Sub-Items Documented | $(jq '.jira_updates | map(select(.type == "sub-task")) | length' "$TRACKING_FILE") |
-
----
-
-**⚓ Golden Armada** | *The Fleet Stands Ready*
-EOF
-)
-
-  # Post the final summary
-  # Note: GitHub comment tool removed - use GitHub API or gh CLI instead
-  gh pr comment "${PR_NUMBER}" --body "${SUMMARY_COMMENT}
-
----
-**⚓ Golden Armada** | *The Fleet Stands Ready*"
-}
-```
+Use: `gh pr comment "${PR_NUMBER}" --body "${SUMMARY_COMMENT}"`
 
 ## Error Handling
 
-### Graceful Degradation
+**GitHub API Failures:** Retry 3x with 5-second backoff. On max retries, save comment locally to `.jira-orchestrator/failed-comments-pr-${PR_NUMBER}.md`
 
-If GitHub API fails, log locally and retry:
+**Tracking File Corruption:** Always backup before update. If jq fails, restore from backup and abort update
 
-```bash
-post_pr_comment_with_retry() {
-  local COMMENT=$1
-  local MAX_RETRIES=3
-  local RETRY_DELAY=5
-
-  for i in $(seq 1 $MAX_RETRIES); do
-    # Note: GitHub comment tool removed - use GitHub API or gh CLI instead
-    if gh pr comment "${PR_NUMBER}" --body "${COMMENT}
-
----
-**⚓ Golden Armada** | *The Fleet Stands Ready*"; then
-      return 0
-    fi
-
-    echo "Failed to post PR comment (attempt $i/$MAX_RETRIES)"
-
-    if [ $i -lt $MAX_RETRIES ]; then
-      echo "Retrying in ${RETRY_DELAY} seconds..."
-      sleep $RETRY_DELAY
-    fi
-  done
-
-  # Save comment locally if all retries fail
-  echo "All retries failed. Saving comment locally."
-  echo "$COMMENT" >> ".jira-orchestrator/failed-comments-pr-${PR_NUMBER}.md"
-  return 1
-}
-```
-
-### Tracking File Corruption
-
-Always validate and backup tracking file:
-
-```bash
-update_tracking_file() {
-  local TRACKING_FILE=$1
-  local UPDATE_SCRIPT=$2
-
-  # Backup before update
-  cp "$TRACKING_FILE" "${TRACKING_FILE}.backup"
-
-  # Apply update
-  if jq "$UPDATE_SCRIPT" "$TRACKING_FILE" > "${TRACKING_FILE}.tmp"; then
-    mv "${TRACKING_FILE}.tmp" "$TRACKING_FILE"
-    return 0
-  else
-    echo "Failed to update tracking file. Restoring backup."
-    mv "${TRACKING_FILE}.backup" "$TRACKING_FILE"
-    return 1
-  fi
-}
-```
+**Silent Failures:** If gh CLI not available, fallback to direct curl with GitHub API token
 
 ## Usage Examples
 
-### Example 1: Log EXPLORE Phase Completion
+**EXPLORE Phase:** 2 agents (codebase-explorer, api-analyzer) → Confluence analysis page created → 3 key decisions, next steps to PLAN phase
 
-```bash
-AGENTS_JSON='[
-  {"name": "codebase-explorer", "model": "sonnet", "purpose": "Analyze codebase structure", "duration": "2m"},
-  {"name": "api-analyzer", "model": "haiku", "purpose": "Document existing APIs", "duration": "1m"}
-]'
+**Confluence Page:** Type, title, URL, space, template, summary, sections list, related documentation links
 
-DOCS_JSON='[
-  {"type": "Confluence", "title": "Codebase Analysis", "url": "https://confluence.example.com/pages/123"}
-]'
-
-FILES_JSON='[]'
-
-DECISIONS="
-- Feature requires new API endpoint
-- Can reuse existing authentication middleware
-- Need to add new database table
-"
-
-NEXT_STEPS="
-- PLAN phase: Design API contract and database schema
-- Create technical design document
-"
-
-log_phase_completion \
-  "EXPLORE" \
-  "Completed codebase analysis and identified integration points for new feature." \
-  "$AGENTS_JSON" \
-  "$DOCS_JSON" \
-  "$FILES_JSON" \
-  "$DECISIONS" \
-  "$NEXT_STEPS"
-```
-
-### Example 2: Log Confluence Page Creation
-
-```bash
-RELATED_JSON='[
-  {"title": "API Guidelines", "url": "https://confluence.example.com/pages/100", "description": "Team API standards"},
-  {"title": "Database Schema", "url": "https://confluence.example.com/pages/101", "description": "Current schema"}
-]'
-
-SECTIONS="
-- Overview
-- API Contract
-- Request/Response Examples
-- Error Handling
-- Authentication
-- Rate Limiting
-"
-
-log_documentation \
-  "Confluence Page" \
-  "Feature X API Documentation" \
-  "https://confluence.example.com/pages/456" \
-  "Engineering" \
-  "api-documentation-template" \
-  "Complete API documentation for Feature X including endpoints, authentication, and examples." \
-  "$SECTIONS" \
-  "$RELATED_JSON"
-```
-
-### Example 3: Log Test Results
-
-```bash
-TEST_FILES_JSON='[
-  {"file": "tests/unit/feature.test.ts", "passed": 15, "total": 15},
-  {"file": "tests/integration/api.test.ts", "passed": 8, "total": 10}
-]'
-
-DOCS_JSON='[
-  {"title": "Test Plan", "url": "https://confluence.example.com/pages/789", "description": "Updated with results"}
-]'
-
-FAILED_OUTPUT="
-tests/integration/api.test.ts:45
-  ✕ should handle rate limiting (500ms)
-    Expected status 429, received 500
-"
-
-log_test_results \
-  "All Tests" \
-  25 \
-  23 \
-  2 \
-  0 \
-  87.5 \
-  "$TEST_FILES_JSON" \
-  "$FAILED_OUTPUT" \
-  "$DOCS_JSON"
-```
+**Test Results:** Test type, 25 total (23 passed, 2 failed, 0 skipped), 87.5% coverage, 2 test files, optional failure output
 
 ## Best Practices
 

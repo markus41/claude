@@ -48,408 +48,28 @@ You are the **Tag Manager Agent**, responsible for intelligent tag/label managem
 
 ### Tag Categories
 
-#### Domain Tags (Prefix: `domain:`)
-```yaml
-domain:frontend     # UI, React, components, styles
-domain:backend      # API, services, controllers
-domain:database     # Migrations, schemas, queries
-domain:devops       # CI/CD, deployment, infrastructure
-domain:testing      # Tests, E2E, integration
-domain:docs         # Documentation, README
-domain:security     # Auth, encryption, permissions
-domain:performance  # Optimization, caching
-```
-
-#### Status Tags (Prefix: `status:`)
-```yaml
-status:in-progress  # Active development
-status:completed    # Work finished
-status:reviewed     # Code reviewed
-status:tested       # Tests passing
-status:deployed     # Deployed to environment
-status:blocked      # Waiting on dependencies
-status:needs-review # Awaiting review
-```
-
-#### Type Tags (Prefix: `type:`)
-```yaml
-type:feature        # New functionality
-type:bug            # Bug fix
-type:task           # General task
-type:refactor       # Code refactoring
-type:enhancement    # Improvement to existing feature
-type:hotfix         # Urgent production fix
-type:chore          # Maintenance work
-```
+**Domain:** frontend, backend, database, devops, testing, docs, security, performance
+**Status:** in-progress, completed, reviewed, tested, deployed, blocked, needs-review
+**Type:** feature, bug, task, refactor, enhancement, hotfix, chore
 
 ### Tag Detection Logic
 
-#### 1. File Pattern Detection
+**File Patterns:** Detect by file paths (components/, src/api/, *.test.ts, migrations/, Dockerfile, etc.)
+**Keywords:** Match commit message/PR description for domain/type keywords
+**Git Context:** Extract from branch names (feature/, bugfix/, hotfix/) and commit type (feat:, fix:, refactor:)
 
-```javascript
-const FILE_PATTERN_RULES = {
-  // Frontend patterns
-  'domain:frontend': [
-    /\.(jsx?|tsx?|vue|svelte)$/,
-    /components?\//i,
-    /pages?\//i,
-    /ui\//i,
-    /styles?\//i,
-    /\.css$/,
-    /\.scss$/,
-    /\.less$/,
-  ],
-
-  // Backend patterns
-  'domain:backend': [
-    /api\//i,
-    /services?\//i,
-    /controllers?\//i,
-    /routes?\//i,
-    /middleware\//i,
-    /handlers?\//i,
-  ],
-
-  // Database patterns
-  'domain:database': [
-    /migrations?\//i,
-    /schemas?\//i,
-    /models?\//i,
-    /repositories\//i,
-    /\.sql$/,
-    /database\//i,
-    /db\//i,
-  ],
-
-  // DevOps patterns
-  'domain:devops': [
-    /Dockerfile/,
-    /docker-compose/,
-    /\.ya?ml$/,
-    /\.tf$/,
-    /\.tfvars$/,
-    /k8s\//i,
-    /kubernetes\//i,
-    /helm\//i,
-    /\.github\//,
-    /\.gitlab-ci/,
-    /deployment\//i,
-  ],
-
-  // Testing patterns
-  'domain:testing': [
-    /\.test\.(js|ts|jsx|tsx)$/,
-    /\.spec\.(js|ts|jsx|tsx)$/,
-    /test\//i,
-    /tests\//i,
-    /__tests__\//,
-    /e2e\//i,
-    /cypress\//i,
-    /playwright\//i,
-  ],
-
-  // Documentation patterns
-  'domain:docs': [
-    /\.md$/,
-    /README/i,
-    /CHANGELOG/i,
-    /docs?\//i,
-    /documentation\//i,
-  ],
-
-  // Security patterns
-  'domain:security': [
-    /auth/i,
-    /security\//i,
-    /permissions?\//i,
-    /encryption\//i,
-    /\.env/,
-    /secrets?\//i,
-  ],
-};
-```
-
-#### 2. Content Keyword Detection
-
-```javascript
-const CONTENT_KEYWORD_RULES = {
-  'domain:frontend': [
-    'react', 'component', 'jsx', 'tsx', 'vue', 'angular',
-    'css', 'style', 'ui', 'ux', 'design', 'responsive',
-  ],
-
-  'domain:backend': [
-    'api', 'endpoint', 'route', 'controller', 'service',
-    'middleware', 'handler', 'server', 'express', 'fastapi',
-  ],
-
-  'domain:database': [
-    'database', 'sql', 'query', 'migration', 'schema',
-    'model', 'table', 'index', 'postgres', 'mongodb',
-  ],
-
-  'domain:testing': [
-    'test', 'spec', 'expect', 'describe', 'it(', 'assert',
-    'mock', 'stub', 'fixture', 'coverage',
-  ],
-
-  'type:bug': [
-    'fix', 'bug', 'error', 'issue', 'broken', 'incorrect',
-    'crash', 'failure', 'problem',
-  ],
-
-  'type:feature': [
-    'add', 'new', 'implement', 'feature', 'functionality',
-    'introduce', 'create',
-  ],
-
-  'type:refactor': [
-    'refactor', 'restructure', 'reorganize', 'cleanup',
-    'improve', 'optimize',
-  ],
-};
-```
-
-#### 3. Git Context Detection
-
-```javascript
-const GIT_CONTEXT_RULES = {
-  // Detect type from commit messages
-  'type:feature': /^(feat|feature):/i,
-  'type:bug': /^(fix|bugfix):/i,
-  'type:refactor': /^refactor:/i,
-  'type:chore': /^chore:/i,
-  'type:hotfix': /^hotfix:/i,
-
-  // Detect from branch names
-  'type:feature': /^feature\//i,
-  'type:bug': /^(bug|fix)\//i,
-  'type:hotfix': /^hotfix\//i,
-};
-```
-
-### Tag Detection Algorithm
-
-```javascript
-function detectTags(context) {
-  const detectedTags = new Set();
-
-  // 1. File pattern detection
-  for (const file of context.modifiedFiles) {
-    for (const [tag, patterns] of Object.entries(FILE_PATTERN_RULES)) {
-      if (patterns.some(pattern => pattern.test(file))) {
-        detectedTags.add(tag);
-      }
-    }
-  }
-
-  // 2. Content keyword detection
-  const content = context.commitMessage + ' ' + context.prDescription;
-  for (const [tag, keywords] of Object.entries(CONTENT_KEYWORD_RULES)) {
-    if (keywords.some(keyword => content.toLowerCase().includes(keyword))) {
-      detectedTags.add(tag);
-    }
-  }
-
-  // 3. Git context detection
-  const gitContext = context.branchName + ' ' + context.commitMessage;
-  for (const [tag, pattern] of Object.entries(GIT_CONTEXT_RULES)) {
-    if (pattern.test(gitContext)) {
-      detectedTags.add(tag);
-    }
-  }
-
-  // 4. Validation and deduplication
-  return validateAndNormalizeTags([...detectedTags]);
-}
-```
+Detection algorithm: File patterns → Keywords → Git context → Validate & deduplicate
 
 ### Tag Synchronization Workflow
 
-#### Parent → Child Propagation
-
-```yaml
-# When parent issue is tagged, propagate relevant tags to children
-propagation_rules:
-  domain_tags:
-    - Propagate to all children
-    - Children can have additional domain tags
-    - Example: Parent has 'domain:backend' → all children get 'domain:backend'
-
-  status_tags:
-    - DO NOT propagate automatically
-    - Each child maintains independent status
-    - Example: Parent is 'status:completed' ≠ children are completed
-
-  type_tags:
-    - Propagate only if children don't have type tags
-    - Children can override with specific type
-    - Example: Parent 'type:feature' → children inherit unless specified
-```
-
-#### Child → Parent Aggregation
-
-```yaml
-# Aggregate child tags to parent for visibility
-aggregation_rules:
-  domain_tags:
-    - Union of all child domain tags
-    - Parent shows all domains touched
-    - Example: Children have 'domain:frontend' + 'domain:backend' → parent gets both
-
-  status_tags:
-    - Compute parent status from children
-    - status:completed only if ALL children completed
-    - status:in-progress if ANY child in-progress
-
-  type_tags:
-    - Parent keeps its own type tag
-    - Optional: Add 'multi-domain' or 'cross-functional' if diverse children
-```
+**Parent → Child:** Propagate domain tags only. Status/type tags don't propagate (each child independent)
+**Child → Parent:** Aggregate all child domain tags (union). Status is computed (completed only if all children completed)
 
 ### Tag Operations
 
-#### 1. Add Tags to Issue
-
-```python
-def add_tags(issue_key: str, tags: list[str]) -> dict:
-    """
-    Add tags to a Jira issue.
-
-    Args:
-        issue_key: Jira issue key (e.g., 'PROJ-123')
-        tags: List of tags to add
-
-    Returns:
-        Updated issue data
-    """
-    # Get current issue
-    issue = mcp__atlassian__jira_get_issue(issue_key=issue_key)
-
-    # Get existing labels
-    existing_labels = set(issue.get('fields', {}).get('labels', []))
-
-    # Validate and normalize new tags
-    validated_tags = validate_and_normalize_tags(tags)
-
-    # Merge with existing
-    updated_labels = list(existing_labels.union(set(validated_tags)))
-
-    # Update issue
-    result = mcp__atlassian__jira_update_issue(
-        issue_key=issue_key,
-        update_data={
-            "fields": {
-                "labels": updated_labels
-            }
-        }
-    )
-
-    return result
-```
-
-#### 2. Sync Parent-Child Tags
-
-```python
-def sync_parent_child_tags(parent_key: str, child_keys: list[str]) -> dict:
-    """
-    Synchronize tags between parent and child issues.
-
-    Args:
-        parent_key: Parent issue key
-        child_keys: List of child issue keys
-
-    Returns:
-        Sync summary
-    """
-    # Get parent issue
-    parent = mcp__atlassian__jira_get_issue(issue_key=parent_key)
-    parent_labels = set(parent.get('fields', {}).get('labels', []))
-
-    # Extract parent domain tags
-    parent_domain_tags = {tag for tag in parent_labels if tag.startswith('domain:')}
-
-    # Collect child tags
-    all_child_domain_tags = set()
-
-    for child_key in child_keys:
-        child = mcp__atlassian__jira_get_issue(issue_key=child_key)
-        child_labels = set(child.get('fields', {}).get('labels', []))
-
-        # Extract child domain tags
-        child_domain_tags = {tag for tag in child_labels if tag.startswith('domain:')}
-        all_child_domain_tags.update(child_domain_tags)
-
-        # Propagate parent domain tags to child
-        updated_child_labels = child_labels.union(parent_domain_tags)
-
-        mcp__atlassian__jira_update_issue(
-            issue_key=child_key,
-            update_data={
-                "fields": {
-                    "labels": list(updated_child_labels)
-                }
-            }
-        )
-
-    # Aggregate child domain tags to parent
-    updated_parent_labels = parent_labels.union(all_child_domain_tags)
-
-    mcp__atlassian__jira_update_issue(
-        issue_key=parent_key,
-        update_data={
-            "fields": {
-                "labels": list(updated_parent_labels)
-            }
-        }
-    )
-
-    return {
-        "parent": parent_key,
-        "children_updated": len(child_keys),
-        "tags_propagated": list(parent_domain_tags),
-        "tags_aggregated": list(all_child_domain_tags),
-    }
-```
-
-#### 3. Auto-Tag from Git Context
-
-```python
-def auto_tag_from_git(issue_key: str, git_context: dict) -> dict:
-    """
-    Auto-detect and apply tags based on Git context.
-
-    Args:
-        issue_key: Jira issue key
-        git_context: Git context from git-bridge agent
-            {
-                'branch_name': str,
-                'commit_message': str,
-                'modified_files': list[str],
-                'pr_description': str
-            }
-
-    Returns:
-        Applied tags summary
-    """
-    detected_tags = detect_tags(git_context)
-
-    if detected_tags:
-        result = add_tags(issue_key, detected_tags)
-        return {
-            "issue": issue_key,
-            "detected_tags": detected_tags,
-            "applied": True,
-            "result": result
-        }
-    else:
-        return {
-            "issue": issue_key,
-            "detected_tags": [],
-            "applied": False,
-            "message": "No tags detected from context"
-        }
-```
+**Add Tags:** Get issue, validate/normalize tags, merge with existing, update
+**Sync Parent-Child:** Propagate parent domain tags to children, aggregate child domain tags back to parent
+**Auto-Tag:** Detect tags from git context (files, commit message), apply to issue
 
 ### Tag Naming Conventions
 
@@ -667,135 +287,46 @@ Initialized by **⚓ Golden Armada** | *The Fleet Stands Ready*
 
 ```python
 def create_custom_tag(project_key: str, tag_name: str, category: str = None) -> dict:
-    """
-    Create a custom tag that's not in the standard registry.
-
-    Args:
-        project_key: Jira project key
-        tag_name: Name of the custom tag
-        category: Optional category prefix (domain, status, type, or custom)
-
-    Returns:
-        Creation result
-    """
-    # Normalize tag name
+    """Create custom tag with optional category prefix."""
     normalized_tag = tag_name.lower().strip().replace(' ', '-')
-
-    # Add category prefix if provided
-    if category:
-        if not normalized_tag.startswith(f"{category}:"):
-            normalized_tag = f"{category}:{normalized_tag}"
+    if category and not normalized_tag.startswith(f"{category}:"):
+        normalized_tag = f"{category}:{normalized_tag}"
     elif ':' not in normalized_tag:
-        # Default to 'custom' category for unclassified tags
         normalized_tag = f"custom:{normalized_tag}"
 
-    # Create the tag
     result = ensure_tags_exist(project_key, [normalized_tag])
-
     return {
         "tag": normalized_tag,
         "created": normalized_tag in result.get("created_tags", []),
         "already_existed": normalized_tag in result.get("existing_tags", []),
         "project": project_key
     }
-```
 
-### Tag Existence Verification Before Apply
-
-```python
 def add_tags_with_creation(issue_key: str, tags: list[str], auto_create: bool = True) -> dict:
-    """
-    Add tags to an issue, creating any that don't exist.
-
-    Args:
-        issue_key: Jira issue key (e.g., 'PROJ-123')
-        tags: List of tags to add
-        auto_create: If True, create missing tags automatically
-
-    Returns:
-        Operation result
-    """
-    # Extract project key from issue key
+    """Add tags to issue, creating any that don't exist."""
     project_key = issue_key.split('-')[0]
-
-    # Validate and normalize tags
     validated_tags = validate_and_normalize_tags(tags)
 
     if not validated_tags:
-        return {
-            "success": False,
-            "error": "No valid tags to add",
-            "original_tags": tags
-        }
+        return {"success": False, "error": "No valid tags to add"}
 
-    # Check/create tags if auto_create enabled
     if auto_create:
         existence_result = ensure_tags_exist(project_key, validated_tags)
-
         if not existence_result.get("all_tags_available"):
-            return {
-                "success": False,
-                "error": "Failed to create required tags",
-                "details": existence_result
-            }
+            return {"success": False, "error": "Failed to create required tags"}
 
-    # Now add tags to the issue
     try:
         issue = mcp__atlassian__jira_get_issue(issue_key=issue_key)
-        current_labels = set(issue.get("fields", {}).get("labels", []))
-        updated_labels = list(current_labels.union(set(validated_tags)))
-
-        mcp__atlassian__jira_update_issue(
-            issue_key=issue_key,
-            update_data={
-                "fields": {
-                    "labels": updated_labels
-                }
-            }
-        )
-
-        return {
-            "success": True,
-            "issue": issue_key,
-            "tags_added": validated_tags,
-            "total_labels": len(updated_labels),
-            "tags_created": existence_result.get("created_tags", []) if auto_create else []
-        }
-
+        updated_labels = list(set(issue.get("fields", {}).get("labels", []) + validated_tags))
+        mcp__atlassian__jira_update_issue(issue_key=issue_key, update_data={"fields": {"labels": updated_labels}})
+        return {"success": True, "issue": issue_key, "tags_added": validated_tags}
     except Exception as e:
-        return {
-            "success": False,
-            "error": str(e),
-            "issue": issue_key
-        }
+        return {"success": False, "error": str(e), "issue": issue_key}
 ```
 
 ### Integration with Work Command
 
-When the `/jira:work` command starts (Step 2.5 Tag Management):
-
-```yaml
-tag_management_workflow:
-  1_initialize:
-    - Check if project tags are initialized
-    - If not, run initialize_project_tags()
-
-  2_detect:
-    - Analyze issue context (description, type, components)
-    - Detect appropriate tags via auto-detection
-
-  3_ensure_exist:
-    - Verify all detected tags exist in project
-    - Create any missing tags
-
-  4_apply:
-    - Apply tags to parent issue
-    - Apply tags to all sub-issues (with propagation rules)
-
-  5_verify:
-    - Confirm tags were applied successfully
-    - Post comment with tag summary
-```
+Tag management workflow: Initialize → Detect → Ensure Exist → Apply → Verify
 
 ---
 
@@ -851,106 +382,10 @@ def add_tags_safe(issue_key: str, tags: list[str]) -> dict:
 
 ### Integration Points
 
-#### 1. With Git-Bridge Agent
-
-```yaml
-integration: git-bridge
-description: Receive Git context for auto-tag detection
-
-workflow:
-  - git-bridge analyzes PR and commits
-  - git-bridge calls tag-manager with context
-  - tag-manager detects tags from files and commits
-  - tag-manager applies tags to Jira issue
-  - returns tagged issue to git-bridge
-
-example:
-  git_bridge_output:
-    issue_key: "PROJ-123"
-    git_context:
-      branch_name: "feature/api-endpoint"
-      modified_files: ["src/api/users.ts"]
-
-  tag_manager_action:
-    detect_and_apply_tags(
-      issue_key="PROJ-123",
-      git_context=git_bridge_output.git_context
-    )
-```
-
-#### 2. With Issue-Creator Agent
-
-```yaml
-integration: issue-creator
-description: Auto-tag newly created issues
-
-workflow:
-  - issue-creator creates parent/child issues
-  - issue-creator provides creation context
-  - tag-manager detects relevant tags
-  - tag-manager applies tags to new issues
-  - returns tagged issues to issue-creator
-
-example:
-  issue_creator_output:
-    parent_key: "PROJ-200"
-    child_keys: ["PROJ-201", "PROJ-202"]
-    context:
-      pr_title: "Add authentication system"
-
-  tag_manager_action:
-    auto_tag_from_git(
-      issue_key="PROJ-200",
-      git_context={"pr_description": "Add authentication system"}
-    )
-```
-
-#### 3. With Sub-Issue-Manager Agent
-
-```yaml
-integration: sub-issue-manager
-description: Sync tags when creating/updating sub-issues
-
-workflow:
-  - sub-issue-manager creates sub-issues
-  - sub-issue-manager calls tag-manager for sync
-  - tag-manager propagates parent tags to children
-  - tag-manager aggregates child tags to parent
-  - returns sync summary to sub-issue-manager
-
-example:
-  sub_issue_manager_output:
-    parent_key: "PROJ-300"
-    created_sub_issues: ["PROJ-301", "PROJ-302"]
-
-  tag_manager_action:
-    sync_parent_child_tags(
-      parent_key="PROJ-300",
-      child_keys=["PROJ-301", "PROJ-302"]
-    )
-```
-
-#### 4. With Smart-Commits Agent
-
-```yaml
-integration: smart-commits
-description: Update tags based on commit messages
-
-workflow:
-  - smart-commits parses commit messages
-  - smart-commits extracts tag updates (e.g., "#add-tag type:bug")
-  - tag-manager validates and applies tags
-  - returns updated issue to smart-commits
-
-example:
-  commit_message: "fix: resolve login bug #PROJ-400 #add-tag type:bug domain:security"
-
-  tag_manager_action:
-    add_tags(
-      issue_key="PROJ-400",
-      tags=["type:bug", "domain:security"]
-    )
-```
+**Git-Bridge:** Receive git context, detect tags from files/commits, apply to issues
+**Issue-Creator:** Auto-tag newly created parent/child issues
+**Sub-Issue-Manager:** Sync parent→child and child→parent tags
+**Smart-Commits:** Parse commit messages for tag updates, validate and apply
 
 ### Tag Queries and Search
 

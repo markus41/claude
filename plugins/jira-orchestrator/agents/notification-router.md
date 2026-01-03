@@ -258,234 +258,41 @@ Users can configure subscriptions in `~/.jira-orchestrator/notifications.json`:
 }
 ```
 
-### Rate Limiting Algorithm
+### Rate Limiting & Batching
 
-```python
-def check_rate_limit(user_id, event_priority):
-    """
-    Check if user has exceeded rate limits.
-    Returns: (allowed: bool, reason: str)
-    """
-    # Load user preferences
-    user_prefs = load_user_preferences(user_id)
-    rate_limits = user_prefs.get('rate_limits', {})
+**Rate Limits**: Check hourly (default 30) + daily (default 200) + quiet hours + do-not-disturb
 
-    # Urgent events bypass rate limits (if configured)
-    if event_priority == 'urgent' and rate_limits.get('urgent_bypass', True):
-        return (True, "urgent_bypass")
+**Urgent Bypass**: Urgent events skip rate limits, quiet hours, and batching (if enabled)
 
-    # Check per-hour limit
-    max_per_hour = rate_limits.get('max_per_hour', 30)
-    count_last_hour = count_notifications(user_id, since='1h')
-    if count_last_hour >= max_per_hour:
-        return (False, f"hourly_limit_exceeded ({count_last_hour}/{max_per_hour})")
-
-    # Check per-day limit
-    max_per_day = rate_limits.get('max_per_day', 200)
-    count_last_day = count_notifications(user_id, since='24h')
-    if count_last_day >= max_per_day:
-        return (False, f"daily_limit_exceeded ({count_last_day}/{max_per_day})")
-
-    # Check quiet hours
-    quiet_hours = user_prefs.get('quiet_hours', {})
-    if quiet_hours.get('enabled', False):
-        user_tz = quiet_hours.get('timezone', 'UTC')
-        current_time = now_in_timezone(user_tz)
-        quiet_start = parse_time(quiet_hours.get('start', '22:00'))
-        quiet_end = parse_time(quiet_hours.get('end', '08:00'))
-
-        if is_in_time_range(current_time, quiet_start, quiet_end):
-            # Queue for delivery after quiet hours
-            return (False, "quiet_hours")
-
-    return (True, "allowed")
-
-
-def apply_batching(user_id, event):
-    """
-    Determine if event should be batched or sent immediately.
-    Returns: (batch: bool, batch_window: str)
-    """
-    user_prefs = load_user_preferences(user_id)
-
-    # Urgent events never batched
-    if event.priority == 'urgent':
-        return (False, None)
-
-    # Check if user has digest mode enabled for this channel
-    channel_config = user_prefs.get('channels', {}).get(event.channel, {})
-    if channel_config.get('digest_mode', False):
-        digest_interval = channel_config.get('digest_interval', 'hourly')
-        return (True, digest_interval)
-
-    # Check if event type allows batching
-    event_config = load_event_config(event.type)
-    if not event_config.get('batching_allowed', False):
-        return (False, None)
-
-    # Check if user is approaching rate limit
-    rate_limits = user_prefs.get('rate_limits', {})
-    max_per_hour = rate_limits.get('max_per_hour', 30)
-    count_last_hour = count_notifications(user_id, since='1h')
-
-    # Batch if user is at 75% of rate limit
-    if count_last_hour >= (max_per_hour * 0.75):
-        return (True, '15min')  # Batch into 15-minute windows
-
-    return (False, None)
-```
+**Batching Decision**:
+- Urgent=Never batch
+- Digest mode=Batch (hourly/daily)
+- 75%+ of rate limit=Batch to 15min windows
+- Non-batchable event types=Immediate
 
 ### Template Rendering
 
-Templates use Handlebars syntax with custom helpers:
+**Format**: Handlebars syntax with custom helpers (truncate, formatDate, etc.)
 
-**Example: `issue-assigned.hbs` (Slack)**
-```handlebars
-{{#if urgent}}⚠️ **URGENT**{{/if}} Issue Assigned to You
+**Channel variants**: Slack (markdown + blocks), Email (HTML), Webhook (JSON), Teams (adaptive cards)
 
-*{{issue.key}}*: {{issue.summary}}
-Priority: {{issue.priority}} | Type: {{issue.type}}
-
-{{#if issue.description}}
-> {{truncate issue.description 200}}
-{{/if}}
-
-Assigned by: {{assignedBy.displayName}}
-Due date: {{formatDate issue.dueDate}}
-
-<{{issue.url}}|View in Jira> | <{{issue.url}}/comment|Add Comment>
-
-{{#if relatedPRs}}
-Related PRs:
-{{#each relatedPRs}}
-  • <{{url}}|#{{number}} - {{title}}>
-{{/each}}
-{{/if}}
-```
-
-**Example: `pr-review-requested.hbs` (Email)**
-```html
-<!DOCTYPE html>
-<html>
-<head><title>Review Request</title></head>
-<body>
-  <h2>Code Review Requested</h2>
-
-  <p><strong>{{requester.displayName}}</strong> requested your review on:</p>
-
-  <div style="border-left: 4px solid #0052CC; padding-left: 16px; margin: 16px 0;">
-    <h3>{{pr.title}}</h3>
-    <p>{{pr.description}}</p>
-
-    <ul>
-      <li>Repository: {{pr.repository}}</li>
-      <li>Branch: {{pr.headBranch}} → {{pr.baseBranch}}</li>
-      <li>Changes: +{{pr.additions}} -{{pr.deletions}}</li>
-      <li>Files: {{pr.filesChanged}}</li>
-    </ul>
-  </div>
-
-  <p>
-    <a href="{{pr.url}}" style="background: #0052CC; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px;">
-      Review Pull Request
-    </a>
-  </p>
-
-  <p style="color: #666; font-size: 12px;">
-    Related Jira: <a href="{{issue.url}}">{{issue.key}}</a>
-  </p>
-</body>
-</html>
-```
+**Template injection**: Event data → placeholders → formatted message with links, buttons, attachments
 
 ### Retry Logic
 
-```python
-def retry_failed_notification(notification_id, attempt=1):
-    """
-    Retry failed notification delivery with exponential backoff.
-    """
-    MAX_RETRIES = 5
-    BASE_DELAY = 60  # seconds
+**Exponential Backoff**: 60s → 120s → 240s → 480s → 960s (max 5 retries)
 
-    if attempt > MAX_RETRIES:
-        # Give up and alert admin
-        alert_admin(f"Notification {notification_id} failed after {MAX_RETRIES} retries")
-        update_status(notification_id, 'failed_permanent')
-        return
+**Jitter**: ±10% to prevent thundering herd
 
-    # Calculate backoff delay: 60s, 120s, 240s, 480s, 960s
-    delay = BASE_DELAY * (2 ** (attempt - 1))
-
-    # Add jitter to prevent thundering herd
-    jitter = random.uniform(0, delay * 0.1)
-    total_delay = delay + jitter
-
-    # Schedule retry
-    schedule_delivery(
-        notification_id=notification_id,
-        delay_seconds=total_delay,
-        attempt=attempt + 1
-    )
-
-    log_retry(notification_id, attempt, total_delay)
-```
+**Failure**: After 5 retries → mark failed_permanent + alert admin
 
 ### Channel Agent Invocation
 
-**Routing to slack-notifier:**
+**Agents**: slack-notifier | teams-notifier | email-sender | webhook-publisher
 
-```yaml
-agent: slack-notifier
-payload:
-  notification_id: "notif-123456"
-  event_type: "issue.assigned"
-  priority: "normal"
-  recipient:
-    slack_user_id: "U12345678"
-    display_name: "John Doe"
-    preferences:
-      dm_for_urgent: true
-      thread_replies: true
-  message:
-    text: "{{rendered message}}"
-    blocks: [...]  # Slack Block Kit JSON
-    thread_ts: "1234567890.123456"  # Optional: reply in thread
-  metadata:
-    issue_key: "GA-123"
-    event_timestamp: "2025-12-17T14:32:45Z"
-    correlation_id: "corr-789"
-  retry_policy:
-    max_retries: 5
-    backoff: "exponential"
-```
+**Payload**: notification_id, event_type, priority, recipient, message (rendered), metadata, retry_policy
 
-**Routing to webhook-publisher:**
-
-```yaml
-agent: webhook-publisher
-payload:
-  notification_id: "notif-123457"
-  event_type: "deployment.succeeded"
-  priority: "normal"
-  webhook:
-    url: "https://api.company.com/webhooks/jira-events"
-    method: "POST"
-    headers:
-      "Content-Type": "application/json"
-      "X-Signature": "{{computed_signature}}"
-  body:
-    event: "deployment.succeeded"
-    timestamp: "2025-12-17T14:32:45Z"
-    deployment:
-      version: "v2.3.0"
-      environment: "production"
-      status: "success"
-    issue_key: "PLAT-456"
-  retry_policy:
-    max_retries: 3
-    backoff: "exponential"
-```
+**Invocation**: Set timeout by priority, configure retry, track invocation, handle gracefully
 
 ### Error Handling
 
@@ -651,107 +458,9 @@ Alert admin when:
 
 ## Examples
 
-### Example 1: Route Issue Assignment
+**Example 1 (issue.assigned)**: Check prefs (Slack+Email) → Rate limit OK → Not in quiet hours → Template render → Route Slack (immediate) + Email (batched/hourly)
 
-**Input Event:**
-```json
-{
-  "event_type": "issue.assigned",
-  "timestamp": "2025-12-17T14:32:45Z",
-  "issue": {
-    "key": "GA-123",
-    "summary": "Add user profile page",
-    "priority": "High",
-    "assignee": {
-      "id": "john.doe@company.com",
-      "displayName": "John Doe"
-    },
-    "assignedBy": {
-      "id": "jane.smith@company.com",
-      "displayName": "Jane Smith"
-    }
-  }
-}
-```
-
-**Routing Process:**
-1. Load John Doe's preferences → Slack enabled, Email enabled (digest mode)
-2. Check rate limits → 5 notifications in last hour (allowed)
-3. Check quiet hours → Not in quiet hours
-4. Select template → `issue-assigned.hbs`
-5. Route to slack-notifier (immediate)
-6. Route to email-sender (batched - next hourly digest)
-
-**Output:**
-```json
-{
-  "routing_decisions": [
-    {
-      "recipient": "john.doe@company.com",
-      "channel": "slack",
-      "delivery_mode": "immediate",
-      "notification_id": "notif-123456"
-    },
-    {
-      "recipient": "john.doe@company.com",
-      "channel": "email",
-      "delivery_mode": "batched",
-      "batch_window": "hourly"
-    }
-  ]
-}
-```
-
-### Example 2: Route Urgent Blocker
-
-**Input Event:**
-```json
-{
-  "event_type": "workflow.blocked",
-  "priority": "urgent",
-  "timestamp": "2025-12-17T15:00:00Z",
-  "issue": {
-    "key": "PLAT-456",
-    "summary": "Production database migration failing",
-    "labels": ["critical", "blocker", "production"],
-    "assignee": {
-      "id": "oncall@company.com"
-    }
-  }
-}
-```
-
-**Routing Process:**
-1. Identify as URGENT priority
-2. Load on-call team subscriptions
-3. Bypass rate limits (urgent_bypass = true)
-4. Ignore quiet hours for urgent events
-5. Route to all configured channels immediately
-6. Send to PagerDuty webhook
-
-**Output:**
-```json
-{
-  "routing_decisions": [
-    {
-      "recipient": "oncall@company.com",
-      "channel": "slack",
-      "delivery_mode": "immediate",
-      "priority_bypass": true
-    },
-    {
-      "recipient": "oncall@company.com",
-      "channel": "email",
-      "delivery_mode": "immediate",
-      "priority_bypass": true
-    },
-    {
-      "webhook": "pagerduty",
-      "delivery_mode": "immediate"
-    }
-  ]
-}
-```
+**Example 2 (workflow.blocked, URGENT)**: Priority=URGENT → Bypass rate limits + quiet hours → All channels immediate → PagerDuty webhook triggered
 
 ---
 
