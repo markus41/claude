@@ -1,0 +1,52 @@
+---
+template: confluence-linked
+version: 1.0.0
+description: Comment template for Confluence page linking
+---
+
+# 📄 Documentation Linked
+
+**Linked By:** {{AUTHOR}}
+**Linked:** {{TIMESTAMP}}
+
+## Confluence Page
+
+**Title:** [{{PAGE_TITLE}}]({{PAGE_URL}})
+**Space:** {{SPACE_NAME}}
+**Page ID:** {{PAGE_ID}}
+
+## Documentation Type
+
+{{DOCUMENTATION_TYPE}}
+
+## Content Summary
+
+{{CONTENT_SUMMARY}}
+
+## Relevant Sections
+
+{{RELEVANT_SECTIONS}}
+
+## Related Documentation
+
+{{RELATED_DOCS}}
+
+## Updates Made
+
+{{UPDATES_MADE}}
+
+## Review Status
+
+{{REVIEW_STATUS}}
+
+## Access
+
+{{ACCESS_INFO}}
+
+## Next Steps
+
+{{NEXT_STEPS}}
+
+---
+
+**⚓ Golden Armada** | *You ask - The Fleet Ships*

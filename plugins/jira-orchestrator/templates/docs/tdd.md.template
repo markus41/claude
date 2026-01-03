@@ -1,0 +1,317 @@
+# Technical Design Document: {{TITLE}}
+
+![Status](https://img.shields.io/badge/status-{{STATUS}}-{{STATUS_COLOR}})
+
+## Document Metadata
+
+| Field | Value |
+|-------|-------|
+| **Author** | {{AUTHOR}} |
+| **Date** | {{DATE}} |
+| **Jira Issue** | {{JIRA_KEY}} |
+| **Version** | {{VERSION}} |
+| **Last Updated** | {{LAST_UPDATED}} |
+| **Reviewers** | {{REVIEWERS}} |
+
+## Overview
+
+### Purpose
+
+{{PURPOSE_DESCRIPTION}}
+
+### Goals
+
+- {{GOAL_1}}
+- {{GOAL_2}}
+- {{GOAL_3}}
+
+### Non-Goals
+
+- {{NON_GOAL_1}}
+- {{NON_GOAL_2}}
+
+## Requirements
+
+### Functional Requirements
+
+| ID | Requirement | Priority | Notes |
+|----|-------------|----------|-------|
+| FR-1 | {{FUNCTIONAL_REQ_1}} | High/Medium/Low | {{NOTES_1}} |
+| FR-2 | {{FUNCTIONAL_REQ_2}} | High/Medium/Low | {{NOTES_2}} |
+| FR-3 | {{FUNCTIONAL_REQ_3}} | High/Medium/Low | {{NOTES_3}} |
+
+### Non-Functional Requirements
+
+| Category | Requirement | Target Metric |
+|----------|-------------|---------------|
+| Performance | {{PERF_REQ}} | {{PERF_METRIC}} |
+| Scalability | {{SCALE_REQ}} | {{SCALE_METRIC}} |
+| Availability | {{AVAIL_REQ}} | {{AVAIL_METRIC}} |
+| Security | {{SEC_REQ}} | {{SEC_METRIC}} |
+| Maintainability | {{MAINT_REQ}} | {{MAINT_METRIC}} |
+
+## Architecture
+
+### Context Diagram
+
+```
+[Placeholder for context diagram]
+{{CONTEXT_DIAGRAM_DESCRIPTION}}
+```
+
+### System Components
+
+#### Component: {{COMPONENT_1_NAME}}
+
+**Responsibility:** {{COMPONENT_1_RESPONSIBILITY}}
+
+**Technologies:** {{COMPONENT_1_TECH}}
+
+**Interfaces:**
+- {{INTERFACE_1}}
+- {{INTERFACE_2}}
+
+#### Component: {{COMPONENT_2_NAME}}
+
+**Responsibility:** {{COMPONENT_2_RESPONSIBILITY}}
+
+**Technologies:** {{COMPONENT_2_TECH}}
+
+**Interfaces:**
+- {{INTERFACE_1}}
+- {{INTERFACE_2}}
+
+### Data Model
+
+```yaml
+{{DATA_MODEL_SCHEMA}}
+```
+
+**Key Entities:**
+
+- **{{ENTITY_1}}**: {{ENTITY_1_DESCRIPTION}}
+- **{{ENTITY_2}}**: {{ENTITY_2_DESCRIPTION}}
+
+### API Design
+
+#### Endpoint: {{ENDPOINT_1}}
+
+**Method:** {{HTTP_METHOD}}
+
+**Path:** `{{API_PATH}}`
+
+**Request:**
+```json
+{{REQUEST_EXAMPLE}}
+```
+
+**Response:**
+```json
+{{RESPONSE_EXAMPLE}}
+```
+
+**Status Codes:**
+- `200`: {{STATUS_200_DESCRIPTION}}
+- `400`: {{STATUS_400_DESCRIPTION}}
+- `500`: {{STATUS_500_DESCRIPTION}}
+
+### Database Schema
+
+```sql
+{{DATABASE_SCHEMA}}
+```
+
+**Indexes:**
+- {{INDEX_1}}
+- {{INDEX_2}}
+
+**Partitioning Strategy:** {{PARTITIONING_STRATEGY}}
+
+### External Dependencies
+
+| Dependency | Version | Purpose | SLA |
+|------------|---------|---------|-----|
+| {{DEP_1}} | {{VERSION_1}} | {{PURPOSE_1}} | {{SLA_1}} |
+| {{DEP_2}} | {{VERSION_2}} | {{PURPOSE_2}} | {{SLA_2}} |
+
+## Implementation Plan
+
+### Phase 1: {{PHASE_1_NAME}}
+
+**Timeline:** {{PHASE_1_TIMELINE}}
+
+**Deliverables:**
+- {{DELIVERABLE_1}}
+- {{DELIVERABLE_2}}
+
+**Dependencies:** {{PHASE_1_DEPENDENCIES}}
+
+### Phase 2: {{PHASE_2_NAME}}
+
+**Timeline:** {{PHASE_2_TIMELINE}}
+
+**Deliverables:**
+- {{DELIVERABLE_1}}
+- {{DELIVERABLE_2}}
+
+**Dependencies:** {{PHASE_2_DEPENDENCIES}}
+
+### Phase 3: {{PHASE_3_NAME}}
+
+**Timeline:** {{PHASE_3_TIMELINE}}
+
+**Deliverables:**
+- {{DELIVERABLE_1}}
+- {{DELIVERABLE_2}}
+
+**Dependencies:** {{PHASE_3_DEPENDENCIES}}
+
+## Testing Strategy
+
+### Unit Testing
+
+**Coverage Target:** {{UNIT_TEST_COVERAGE}}%
+
+**Key Test Scenarios:**
+- {{TEST_SCENARIO_1}}
+- {{TEST_SCENARIO_2}}
+
+### Integration Testing
+
+**Scope:** {{INTEGRATION_TEST_SCOPE}}
+
+**Key Test Scenarios:**
+- {{TEST_SCENARIO_1}}
+- {{TEST_SCENARIO_2}}
+
+### Performance Testing
+
+**Load Profile:** {{LOAD_PROFILE}}
+
+**Success Criteria:**
+- {{PERF_CRITERIA_1}}
+- {{PERF_CRITERIA_2}}
+
+### Security Testing
+
+**Tests:**
+- {{SECURITY_TEST_1}}
+- {{SECURITY_TEST_2}}
+
+## Security Considerations
+
+### Authentication & Authorization
+
+{{AUTH_DESCRIPTION}}
+
+### Data Protection
+
+| Data Type | Protection Method | Retention |
+|-----------|------------------|-----------|
+| {{DATA_TYPE_1}} | {{PROTECTION_1}} | {{RETENTION_1}} |
+| {{DATA_TYPE_2}} | {{PROTECTION_2}} | {{RETENTION_2}} |
+
+### Compliance
+
+**Standards:** {{COMPLIANCE_STANDARDS}}
+
+**Requirements:**
+- {{COMPLIANCE_REQ_1}}
+- {{COMPLIANCE_REQ_2}}
+
+### Threat Model
+
+| Threat | Likelihood | Impact | Mitigation |
+|--------|-----------|--------|------------|
+| {{THREAT_1}} | High/Medium/Low | High/Medium/Low | {{MITIGATION_1}} |
+| {{THREAT_2}} | High/Medium/Low | High/Medium/Low | {{MITIGATION_2}} |
+
+## Deployment Plan
+
+### Prerequisites
+
+- {{PREREQ_1}}
+- {{PREREQ_2}}
+
+### Deployment Steps
+
+1. {{STEP_1}}
+2. {{STEP_2}}
+3. {{STEP_3}}
+
+### Rollback Procedure
+
+1. {{ROLLBACK_STEP_1}}
+2. {{ROLLBACK_STEP_2}}
+
+### Feature Flags
+
+| Flag | Purpose | Default State |
+|------|---------|---------------|
+| {{FLAG_1}} | {{FLAG_PURPOSE_1}} | {{FLAG_STATE_1}} |
+| {{FLAG_2}} | {{FLAG_PURPOSE_2}} | {{FLAG_STATE_2}} |
+
+## Monitoring & Alerting
+
+### Key Metrics
+
+| Metric | Type | Threshold | Alert Severity |
+|--------|------|-----------|----------------|
+| {{METRIC_1}} | {{TYPE_1}} | {{THRESHOLD_1}} | Critical/Warning/Info |
+| {{METRIC_2}} | {{TYPE_2}} | {{THRESHOLD_2}} | Critical/Warning/Info |
+
+### Dashboards
+
+- **{{DASHBOARD_1}}**: {{DASHBOARD_1_URL}}
+- **{{DASHBOARD_2}}**: {{DASHBOARD_2_URL}}
+
+### Logging
+
+**Log Level:** {{LOG_LEVEL}}
+
+**Key Events:**
+- {{LOG_EVENT_1}}
+- {{LOG_EVENT_2}}
+
+### SLOs
+
+| SLO | Target | Measurement Window |
+|-----|--------|-------------------|
+| {{SLO_1}} | {{TARGET_1}} | {{WINDOW_1}} |
+| {{SLO_2}} | {{TARGET_2}} | {{WINDOW_2}} |
+
+## Open Questions
+
+| ID | Question | Owner | Status |
+|----|----------|-------|--------|
+| Q-1 | {{QUESTION_1}} | {{OWNER_1}} | Open/Resolved |
+| Q-2 | {{QUESTION_2}} | {{OWNER_2}} | Open/Resolved |
+
+## Risks & Mitigations
+
+| Risk | Impact | Probability | Mitigation |
+|------|--------|-------------|------------|
+| {{RISK_1}} | High/Medium/Low | High/Medium/Low | {{MITIGATION_1}} |
+| {{RISK_2}} | High/Medium/Low | High/Medium/Low | {{MITIGATION_2}} |
+
+## Approval Checklist
+
+- [ ] Architecture reviewed by {{ARCH_REVIEWER}}
+- [ ] Security reviewed by {{SEC_REVIEWER}}
+- [ ] Performance requirements validated
+- [ ] Data privacy compliance verified
+- [ ] Monitoring & alerting configured
+- [ ] Runbook created
+- [ ] Team training completed
+- [ ] Stakeholder sign-off obtained
+
+## References
+
+- **Related ADRs**: {{RELATED_ADRS}}
+- **API Documentation**: {{API_DOCS_URL}}
+- **Runbook**: {{RUNBOOK_URL}}
+- **Jira Epic**: {{EPIC_URL}}
+
+---
+
+**⚓ Golden Armada** | *You ask - The Fleet Ships*

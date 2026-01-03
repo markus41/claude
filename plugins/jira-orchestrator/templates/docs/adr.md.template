@@ -1,0 +1,207 @@
+# ADR-{{NUMBER}}: {{TITLE}}
+
+## Status
+
+{{STATUS}}
+
+**Proposed:** {{PROPOSED_DATE}}
+**Accepted:** {{ACCEPTED_DATE}}
+**Superseded by:** {{SUPERSEDED_BY_ADR}}
+
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| **Deciders** | {{DECIDERS}} |
+| **Date** | {{DATE}} |
+| **Jira Issue** | {{JIRA_KEY}} |
+| **Related ADRs** | {{RELATED_ADRS}} |
+| **Tags** | {{TAGS}} |
+
+## Context
+
+### Problem Statement
+
+{{PROBLEM_STATEMENT}}
+
+### Business Context
+
+{{BUSINESS_CONTEXT}}
+
+### Technical Context
+
+{{TECHNICAL_CONTEXT}}
+
+### Constraints
+
+- {{CONSTRAINT_1}}
+- {{CONSTRAINT_2}}
+- {{CONSTRAINT_3}}
+
+### Assumptions
+
+- {{ASSUMPTION_1}}
+- {{ASSUMPTION_2}}
+- {{ASSUMPTION_3}}
+
+## Decision
+
+{{DECISION_DESCRIPTION}}
+
+### Rationale
+
+{{RATIONALE}}
+
+### Key Principles
+
+1. {{PRINCIPLE_1}}
+2. {{PRINCIPLE_2}}
+3. {{PRINCIPLE_3}}
+
+## Consequences
+
+### Positive
+
+- **{{POSITIVE_1_TITLE}}**: {{POSITIVE_1_DESCRIPTION}}
+- **{{POSITIVE_2_TITLE}}**: {{POSITIVE_2_DESCRIPTION}}
+- **{{POSITIVE_3_TITLE}}**: {{POSITIVE_3_DESCRIPTION}}
+
+### Negative
+
+- **{{NEGATIVE_1_TITLE}}**: {{NEGATIVE_1_DESCRIPTION}}
+- **{{NEGATIVE_2_TITLE}}**: {{NEGATIVE_2_DESCRIPTION}}
+- **{{NEGATIVE_3_TITLE}}**: {{NEGATIVE_3_DESCRIPTION}}
+
+### Neutral
+
+- **{{NEUTRAL_1_TITLE}}**: {{NEUTRAL_1_DESCRIPTION}}
+
+### Risks
+
+| Risk | Likelihood | Impact | Mitigation |
+|------|-----------|--------|------------|
+| {{RISK_1}} | High/Medium/Low | High/Medium/Low | {{MITIGATION_1}} |
+| {{RISK_2}} | High/Medium/Low | High/Medium/Low | {{MITIGATION_2}} |
+
+## Alternatives Considered
+
+### Option 1: {{ALTERNATIVE_1_NAME}}
+
+**Description:** {{ALTERNATIVE_1_DESCRIPTION}}
+
+**Pros:**
+- {{ALT_1_PRO_1}}
+- {{ALT_1_PRO_2}}
+
+**Cons:**
+- {{ALT_1_CON_1}}
+- {{ALT_1_CON_2}}
+
+**Why not chosen:** {{ALT_1_REJECTION_REASON}}
+
+### Option 2: {{ALTERNATIVE_2_NAME}}
+
+**Description:** {{ALTERNATIVE_2_DESCRIPTION}}
+
+**Pros:**
+- {{ALT_2_PRO_1}}
+- {{ALT_2_PRO_2}}
+
+**Cons:**
+- {{ALT_2_CON_1}}
+- {{ALT_2_CON_2}}
+
+**Why not chosen:** {{ALT_2_REJECTION_REASON}}
+
+### Option 3: {{ALTERNATIVE_3_NAME}}
+
+**Description:** {{ALTERNATIVE_3_DESCRIPTION}}
+
+**Pros:**
+- {{ALT_3_PRO_1}}
+- {{ALT_3_PRO_2}}
+
+**Cons:**
+- {{ALT_3_CON_1}}
+- {{ALT_3_CON_2}}
+
+**Why not chosen:** {{ALT_3_REJECTION_REASON}}
+
+## Comparison Matrix
+
+| Criteria | Weight | {{DECISION_NAME}} | {{ALT_1_NAME}} | {{ALT_2_NAME}} | {{ALT_3_NAME}} |
+|----------|--------|-------------------|----------------|----------------|----------------|
+| {{CRITERIA_1}} | {{WEIGHT_1}} | {{SCORE_1}} | {{SCORE_1}} | {{SCORE_1}} | {{SCORE_1}} |
+| {{CRITERIA_2}} | {{WEIGHT_2}} | {{SCORE_2}} | {{SCORE_2}} | {{SCORE_2}} | {{SCORE_2}} |
+| {{CRITERIA_3}} | {{WEIGHT_3}} | {{SCORE_3}} | {{SCORE_3}} | {{SCORE_3}} | {{SCORE_3}} |
+| **Total** | | **{{TOTAL}}** | {{TOTAL}} | {{TOTAL}} | {{TOTAL}} |
+
+## Implementation
+
+### Action Items
+
+- [ ] {{ACTION_1}} - Owner: {{OWNER_1}} - Due: {{DUE_1}}
+- [ ] {{ACTION_2}} - Owner: {{OWNER_2}} - Due: {{DUE_2}}
+- [ ] {{ACTION_3}} - Owner: {{OWNER_3}} - Due: {{DUE_3}}
+
+### Migration Strategy
+
+{{MIGRATION_STRATEGY}}
+
+### Success Criteria
+
+- {{SUCCESS_1}}
+- {{SUCCESS_2}}
+- {{SUCCESS_3}}
+
+### Timeline
+
+| Phase | Duration | Deliverables |
+|-------|----------|--------------|
+| {{PHASE_1}} | {{DURATION_1}} | {{DELIVERABLES_1}} |
+| {{PHASE_2}} | {{DURATION_2}} | {{DELIVERABLES_2}} |
+| {{PHASE_3}} | {{DURATION_3}} | {{DELIVERABLES_3}} |
+
+## Review & Maintenance
+
+### Review Schedule
+
+**Next Review:** {{NEXT_REVIEW_DATE}}
+
+**Review Frequency:** {{REVIEW_FREQUENCY}}
+
+### Metrics to Track
+
+- {{METRIC_1}}
+- {{METRIC_2}}
+- {{METRIC_3}}
+
+### Revision Criteria
+
+This ADR should be revised if:
+- {{REVISION_CRITERIA_1}}
+- {{REVISION_CRITERIA_2}}
+
+## References
+
+- **TDD**: {{TDD_URL}}
+- **Confluence**: {{CONFLUENCE_URL}}
+- **RFCs**: {{RFC_URLS}}
+- **Research**: {{RESEARCH_URLS}}
+- **Related Issues**: {{JIRA_URLS}}
+
+## Discussion Notes
+
+{{DISCUSSION_NOTES}}
+
+## Approval
+
+| Role | Name | Date | Signature |
+|------|------|------|-----------|
+| Architect | {{ARCHITECT_NAME}} | {{ARCH_DATE}} | {{ARCH_SIGNATURE}} |
+| Tech Lead | {{TECH_LEAD_NAME}} | {{LEAD_DATE}} | {{LEAD_SIGNATURE}} |
+| Product Owner | {{PO_NAME}} | {{PO_DATE}} | {{PO_SIGNATURE}} |
+
+---
+
+**⚓ Golden Armada** | *You ask - The Fleet Ships*
