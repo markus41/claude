@@ -9,8 +9,8 @@ tools:
   - Write
   - Glob
   - Bash
-  - mcp__MCP_DOCKER__jira_get_issue
-  - mcp__MCP_DOCKER__jira_add_comment
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__addCommentToJiraIssue
 keywords:
   - event-sourcing
   - event-store

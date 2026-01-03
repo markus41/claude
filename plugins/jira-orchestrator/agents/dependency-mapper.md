@@ -30,11 +30,10 @@ tools:
   - Grep
   - Task
   - Bash
-  - mcp__MCP_DOCKER__jira_search_issues
-  - mcp__MCP_DOCKER__jira_get_issue
-  - mcp__MCP_DOCKER__jira_link_issues
-  - mcp__MCP_DOCKER__jira_add_comment
-  - mcp__MCP_DOCKER__confluence_create_page
+  - mcp__atlassian__searchJiraIssuesUsingJql
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__addCommentToJiraIssue
+  - mcp__atlassian__createConfluencePage
 ---
 
 # Dependency Mapper Agent

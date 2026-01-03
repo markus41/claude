@@ -31,8 +31,7 @@ tools:
   - Grep
   - Bash
   - Task
-  - mcp__MCP_DOCKER__jira_add_comment
-  - mcp__MCP_DOCKER__github_get_pull_request
+  - mcp__atlassian__addCommentToJiraIssue
 ---
 
 # Policy Enforcer Agent

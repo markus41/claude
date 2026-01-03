@@ -27,17 +27,10 @@ tools:
   - Grep
   - Glob
   - Task
-  # Harness MCP Tools
-  - harness_list_repositories
-  - harness_get_repository
-  - harness_create_repository
-  - harness_list_pipelines
-  - harness_get_pipeline
-  - harness_trigger_pipeline
   # Jira MCP Tools
-  - mcp__MCP_DOCKER__jira_get_issue
-  - mcp__MCP_DOCKER__jira_update_issue
-  - mcp__MCP_DOCKER__jira_add_comment
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__editJiraIssue
+  - mcp__atlassian__addCommentToJiraIssue
 ---
 
 # Infrastructure Orchestrator Agent

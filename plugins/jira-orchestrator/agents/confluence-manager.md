@@ -45,16 +45,16 @@ tools:
   - Edit
   - Grep
   - Glob
-  - mcp__MCP_DOCKER__confluence_create_page
-  - mcp__MCP_DOCKER__confluence_update_page
-  - mcp__MCP_DOCKER__confluence_get_page
-  - mcp__MCP_DOCKER__confluence_search
-  - mcp__MCP_DOCKER__confluence_get_space
-  - mcp__MCP_DOCKER__confluence_list_pages
-  - mcp__MCP_DOCKER__jira_get_issue
-  - mcp__MCP_DOCKER__jira_update_issue
-  - mcp__MCP_DOCKER__jira_add_comment
-  - mcp__MCP_DOCKER__jira_search_issues
+  - mcp__atlassian__createConfluencePage
+  - mcp__atlassian__updateConfluencePage
+  - mcp__atlassian__getConfluencePage
+  - mcp__atlassian__searchConfluenceUsingCql
+  - mcp__atlassian__getConfluenceSpaces
+  - mcp__atlassian__getPagesInConfluenceSpace
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__editJiraIssue
+  - mcp__atlassian__addCommentToJiraIssue
+  - mcp__atlassian__searchJiraIssuesUsingJql
 temperature: 0.5
 ---
 
@@ -935,7 +935,7 @@ kubectl autoscale deploy/{service} -n {namespace} \
 
 ```python
 # Get Jira issue
-issue = mcp__MCP_DOCKER__jira_get_issue(issue_key="PROJ-123")
+issue = mcp__atlassian__getJiraIssue(issue_key="PROJ-123")
 
 # Parse description for Confluence links
 confluence_links = extract_confluence_urls(issue["description"])
@@ -943,7 +943,7 @@ confluence_links = extract_confluence_urls(issue["description"])
 # Fetch each linked page
 for link in confluence_links:
     page_id = extract_page_id_from_url(link)
-    page = mcp__MCP_DOCKER__confluence_get_page(page_id=page_id)
+    page = mcp__atlassian__getConfluencePage(page_id=page_id)
     # Process page content
 ```
 
@@ -951,7 +951,7 @@ for link in confluence_links:
 
 ```python
 # Create Confluence page
-page = mcp__MCP_DOCKER__confluence_create_page(
+page = mcp__atlassian__createConfluencePage(
     space_key="ENG",
     title=f"{issue_key}: {feature_name} - Technical Design",
     body=design_doc_content,
@@ -959,15 +959,15 @@ page = mcp__MCP_DOCKER__confluence_create_page(
 )
 
 # Link to Jira issue
-mcp__MCP_DOCKER__jira_add_comment(
+mcp__atlassian__addCommentToJiraIssue(
     issue_key=issue_key,
     comment=f"Technical design document created: [{page['title']}]({page['url']})"
 )
 
 # Update Jira description with link
-current_issue = mcp__MCP_DOCKER__jira_get_issue(issue_key=issue_key)
+current_issue = mcp__atlassian__getJiraIssue(issue_key=issue_key)
 updated_description = f"{current_issue['description']}\n\n**Design Doc:** [{page['title']}]({page['url']})"
-mcp__MCP_DOCKER__jira_update_issue(
+mcp__atlassian__editJiraIssue(
     issue_key=issue_key,
     description=updated_description
 )
@@ -977,13 +977,13 @@ mcp__MCP_DOCKER__jira_update_issue(
 
 ```python
 # Search Confluence for requirements
-results = mcp__MCP_DOCKER__confluence_search(
-    query=f"space=PROD AND type=page AND title~'{feature_name} requirements'"
+results = mcp__atlassian__searchConfluenceUsingCql(
+    cql=f"space=PROD AND type=page AND title~'{feature_name} requirements'"
 )
 
 # Read top result
 if results:
-    page = mcp__MCP_DOCKER__confluence_get_page(page_id=results[0]["id"])
+    page = mcp__atlassian__getConfluencePage(page_id=results[0]["id"])
     requirements = parse_requirements_from_page(page["content"])
     return requirements
 ```

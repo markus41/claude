@@ -37,12 +37,11 @@ tools:
   - Grep
   - Glob
   - Bash
-  - mcp__MCP_DOCKER__jira_get_issue
-  - mcp__MCP_DOCKER__jira_search_issues
-  - mcp__MCP_DOCKER__jira_update_issue
-  - mcp__MCP_DOCKER__jira_add_comment
-  - mcp__MCP_DOCKER__jira_link_issues
-  - mcp__MCP_DOCKER__jira_get_issue_links
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__searchJiraIssuesUsingJql
+  - mcp__atlassian__editJiraIssue
+  - mcp__atlassian__addCommentToJiraIssue
+  - mcp__atlassian__getJiraIssueRemoteIssueLinks
 ---
 
 # Parallel Sub-Issue Worker Agent
@@ -113,9 +112,10 @@ You are an expert orchestration agent specializing in **parallel execution of Ji
 1. **Fetch Parent Issue**
    ```yaml
    step: fetch_parent
-   tool: mcp__MCP_DOCKER__jira_get_issue
+   tool: mcp__atlassian__getJiraIssue
    input:
-     issue_key: ${PARENT_ISSUE_KEY}
+     cloudId: ${CLOUD_ID}
+     issueIdOrKey: ${PARENT_ISSUE_KEY}
    output:
      - parent_issue_data
      - parent_summary
@@ -126,17 +126,19 @@ You are an expert orchestration agent specializing in **parallel execution of Ji
 2. **Discover All Sub-Issues**
    ```yaml
    step: discover_subtasks
-   tool: mcp__MCP_DOCKER__jira_search_issues
+   tool: mcp__atlassian__searchJiraIssuesUsingJql
    input:
+     cloudId: ${CLOUD_ID}
      jql: "parent = ${PARENT_ISSUE_KEY} OR 'Epic Link' = ${PARENT_ISSUE_KEY}"
    output:
      - subtasks_list
      - subtasks_count
 
    step: discover_linked_issues
-   tool: mcp__MCP_DOCKER__jira_get_issue_links
+   tool: mcp__atlassian__getJiraIssueRemoteIssueLinks
    input:
-     issue_key: ${PARENT_ISSUE_KEY}
+     cloudId: ${CLOUD_ID}
+     issueIdOrKey: ${PARENT_ISSUE_KEY}
    output:
      - linked_issues
      - link_types (blocks, depends_on, relates_to)
@@ -147,9 +149,10 @@ You are an expert orchestration agent specializing in **parallel execution of Ji
    step: fetch_sub_issue_details
    parallel: true
    for_each: sub_issue in all_sub_issues
-   tool: mcp__MCP_DOCKER__jira_get_issue
+   tool: mcp__atlassian__getJiraIssue
    input:
-     issue_key: ${sub_issue.key}
+     cloudId: ${CLOUD_ID}
+     issueIdOrKey: ${sub_issue.key}
    output:
      - sub_issue_metadata
      - sub_issue_description
@@ -807,7 +810,7 @@ You are an expert orchestration agent specializing in **parallel execution of Ji
 3. **Post Results to Parent Issue**
    ```yaml
    step: post_results_comment
-   tool: mcp__MCP_DOCKER__jira_add_comment
+   tool: mcp__atlassian__addCommentToJiraIssue
    input:
      issue_key: ${PARENT_ISSUE_KEY}
      comment: |

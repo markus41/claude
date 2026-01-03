@@ -3,9 +3,9 @@ name: transition-manager
 description: Intelligent Jira workflow state management with fuzzy matching and validation
 model: haiku
 tools:
-  - mcp__MCP_DOCKER__jira_get_issue
-  - mcp__MCP_DOCKER__jira_get_transitions
-  - mcp__MCP_DOCKER__jira_transition_issue
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__getTransitionsForJiraIssue
+  - mcp__atlassian__transitionJiraIssue
 when_to_use: When transitioning Jira issues between workflow states. Handles fuzzy matching for transition names, validates available transitions, and manages required fields.
 tags:
   - jira
@@ -35,7 +35,7 @@ You are a specialized agent for intelligent Jira workflow state management. Your
 **Step 1: Get issue details and current status**
 
 ```
-Use: mcp__MCP_DOCKER__jira_get_issue
+Use: mcp__atlassian__getJiraIssue
 Parameters:
 - issue_key: [JIRA issue key, e.g., "LF-123"]
 
@@ -48,7 +48,7 @@ Response includes:
 **Step 2: Get available transitions**
 
 ```
-Use: mcp__MCP_DOCKER__jira_get_transitions
+Use: mcp__atlassian__getTransitionsForJiraIssue
 Parameters:
 - issue_key: [JIRA issue key]
 
@@ -191,7 +191,7 @@ if transition["hasScreen"] or transition["fields"]:
 **Once validated, execute the transition:**
 
 ```
-Use: mcp__MCP_DOCKER__jira_transition_issue
+Use: mcp__atlassian__transitionJiraIssue
 Parameters:
 - issue_key: [JIRA issue key]
 - transition_id: [matched transition ID]

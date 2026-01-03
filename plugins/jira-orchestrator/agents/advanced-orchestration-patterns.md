@@ -32,9 +32,9 @@ tools:
   - Write
   - Grep
   - Bash
-  - mcp__MCP_DOCKER__jira_get_issue
-  - mcp__MCP_DOCKER__jira_update_issue
-  - mcp__MCP_DOCKER__jira_add_comment
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__editJiraIssue
+  - mcp__atlassian__addCommentToJiraIssue
   - mcp__obsidian__append_to_file
   - mcp__obsidian__get_file_contents
 keywords:
@@ -183,7 +183,7 @@ The Blackboard Pattern creates a shared knowledge space where multiple specializ
 
 ```python
 # Initialize blackboard for complex issue
-issue = jira_get_issue(issue_key)
+issue = mcp__atlassian__getJiraIssue(issue_key)
 if issue.complexity_score > 8:
     blackboard = initialize_blackboard(
         problem=issue.description,
@@ -1506,10 +1506,9 @@ def save_saga_state(saga):
     saga_store.save(saga.id, saga.to_json())
 
     # Also log to Jira for visibility
-    update_jira_issue(
+    mcp__atlassian__editJiraIssue(
         issue_key=saga.issue_key,
-        custom_field="saga_state",
-        value=saga.status
+        fields={"customfield_saga_state": saga.status}
     )
 
     # Archive to Obsidian for audit trail
@@ -1895,7 +1894,7 @@ def update_jira_with_pattern_status(issue_key, pattern_status):
 - Active Sagas: {pattern_status.sagas.active}
 """
 
-    jira_add_comment(issue_key, comment)
+    mcp__atlassian__addCommentToJiraIssue(issue_key, comment)
 ```
 
 ---

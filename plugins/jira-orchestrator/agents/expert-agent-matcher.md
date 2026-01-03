@@ -8,7 +8,7 @@ tools:
   - Read
   - Grep
   - Glob
-  - mcp__MCP_DOCKER__jira_get_issue
+  - mcp__atlassian__getJiraIssue
 keywords:
   - expert
   - matching

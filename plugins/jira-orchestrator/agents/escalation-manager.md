@@ -8,11 +8,11 @@ tools:
   - Grep
   - Glob
   - Task
-  - mcp__MCP_DOCKER__jira_get_issue
-  - mcp__MCP_DOCKER__jira_search_issues
-  - mcp__MCP_DOCKER__jira_add_comment
-  - mcp__MCP_DOCKER__jira_transition_issue
-  - mcp__MCP_DOCKER__jira_update_issue
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__searchJiraIssuesUsingJql
+  - mcp__atlassian__addCommentToJiraIssue
+  - mcp__atlassian__transitionJiraIssue
+  - mcp__atlassian__editJiraIssue
   - mcp__obsidian__vault_search
   - mcp__obsidian__get_file_contents
 ---
@@ -364,7 +364,7 @@ def create_escalation(issue_key, escalation_level, reason, auto_escalated=False)
     """
 
     # Fetch issue details
-    issue = mcp__MCP_DOCKER__jira_get_issue(issue_key)
+    issue = mcp__atlassian__getJiraIssue(issue_key)
 
     # Get escalation level configuration
     escalation_config = get_escalation_level_config(escalation_level)
@@ -392,7 +392,7 @@ def create_escalation(issue_key, escalation_level, reason, auto_escalated=False)
 
     # Add escalation comment
     escalation_comment = generate_escalation_comment(escalation, issue)
-    mcp__MCP_DOCKER__jira_add_comment(issue_key, escalation_comment)
+    mcp__atlassian__addCommentToJiraIssue(issue_key, escalation_comment)
 
     # Send notifications
     send_escalation_notifications(escalation, issue, escalation_config)
@@ -706,7 +706,7 @@ Reason: {reason}
 The issue has been de-escalated and is now back to normal workflow.
 """
 
-    mcp__MCP_DOCKER__jira_add_comment(escalation["issue_key"], de_escalation_comment)
+    mcp__atlassian__addCommentToJiraIssue(escalation["issue_key"], de_escalation_comment)
 
     # Notify stakeholders
     send_de_escalation_notifications(escalation)
@@ -805,6 +805,7 @@ def generate_escalation_report(time_period):
 # Trigger escalation based on SLA status
 from agents.sla_monitor import calculate_sla_time
 
+issue = mcp__atlassian__getJiraIssue(issue_key)
 sla_status = calculate_sla_time(issue, "RESOLUTION")
 if sla_status["status"] == "breached":
     create_escalation(

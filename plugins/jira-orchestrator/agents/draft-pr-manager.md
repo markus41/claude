@@ -16,8 +16,8 @@ tools:
   - Bash
   - Read
   - Write
-  - mcp__MCP_DOCKER__jira_get_issue
-  - mcp__MCP_DOCKER__jira_add_comment
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__addCommentToJiraIssue
 tags:
   - jira
   - pr
@@ -52,7 +52,7 @@ fi
 
 # Get parent issue info
 issue_key="{PARENT_KEY}"
-issue=$(mcp__MCP_DOCKER__jira_get_issue(issue_key="$issue_key"))
+issue=$(mcp__atlassian__getJiraIssue(issueIdOrKey="$issue_key"))
 issue_summary="${issue.fields.summary}"
 
 # Create draft PR
@@ -113,9 +113,9 @@ pr_url=$(gh pr view --json url -q .url)
 pr_number=$(gh pr view --json number -q .number)
 
 # Post to Jira
-mcp__MCP_DOCKER__jira_add_comment(
-  issue_key="$issue_key",
-  comment="## 🚧 Draft PR Created
+mcp__atlassian__addCommentToJiraIssue(
+  issueIdOrKey="$issue_key",
+  commentBody="## 🚧 Draft PR Created
 
 **PR:** $pr_url [DRAFT]
 **Branch:** \`$current_branch\`
@@ -261,9 +261,9 @@ gh pr edit $pr_number \
   --add-reviewer "@team-reviewers"
 
 # Update Jira
-mcp__MCP_DOCKER__jira_add_comment(
-  issue_key="$issue_key",
-  comment="## ✅ PR Ready for Review!
+mcp__atlassian__addCommentToJiraIssue(
+  issueIdOrKey="$issue_key",
+  commentBody="## ✅ PR Ready for Review!
 
 **PR:** $pr_url (no longer draft)
 **Branch:** \`$current_branch\`

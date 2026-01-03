@@ -31,8 +31,8 @@ tools:
   - Glob
   - Bash
   - Task
-  - mcp__MCP_DOCKER__jira_search_issues
-  - mcp__MCP_DOCKER__jira_get_issue
+  - mcp__atlassian__searchJiraIssuesUsingJql
+  - mcp__atlassian__getJiraIssue
 ---
 
 # Export Generator Agent

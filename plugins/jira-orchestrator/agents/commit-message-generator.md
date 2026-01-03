@@ -3,7 +3,7 @@ name: commit-message-generator
 description: Generates high-quality conventional commit messages from Jira issue context and git diff analysis
 model: sonnet
 tools:
-  - mcp__MCP_DOCKER__jira_get_issue
+  - mcp__atlassian__getJiraIssue
   - Bash
 when_to_use: When creating commits that need to follow conventional commit format and include Jira smart commit commands. Use this agent to auto-generate structured commit messages that link to Jira issues with context-aware type detection.
 tags:
@@ -36,9 +36,9 @@ You are a specialized agent for generating high-quality commit messages that fol
 **Fetch issue details:**
 
 ```
-Use: mcp__MCP_DOCKER__jira_get_issue
+Use: mcp__atlassian__getJiraIssue
 Parameters:
-- issueKey: [JIRA issue key, e.g., "PROJ-123"]
+- issueIdOrKey: [JIRA issue key, e.g., "PROJ-123"]
 ```
 
 **Extract relevant information:**

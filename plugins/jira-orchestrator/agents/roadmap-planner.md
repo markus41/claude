@@ -32,13 +32,10 @@ tools:
   - Grep
   - Task
   - Bash
-  - mcp__MCP_DOCKER__jira_search_issues
-  - mcp__MCP_DOCKER__jira_get_issue
-  - mcp__MCP_DOCKER__jira_get_sprint
-  - mcp__MCP_DOCKER__jira_get_board
-  - mcp__MCP_DOCKER__jira_link_issues
-  - mcp__MCP_DOCKER__jira_update_issue
-  - mcp__MCP_DOCKER__confluence_create_page
+  - mcp__atlassian__searchJiraIssuesUsingJql
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__editJiraIssue
+  - mcp__atlassian__createConfluencePage
 ---
 
 # Roadmap Planner Agent

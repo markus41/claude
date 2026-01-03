@@ -32,13 +32,10 @@ tools:
   - Grep
   - Task
   - Bash
-  - mcp__MCP_DOCKER__jira_get_issue
-  - mcp__MCP_DOCKER__jira_update_issue
-  - mcp__MCP_DOCKER__jira_add_comment
-  - mcp__MCP_DOCKER__jira_transition_issue
-  - mcp__MCP_DOCKER__github_create_pull_request
-  - mcp__MCP_DOCKER__github_get_pull_request
-  - mcp__MCP_DOCKER__slack_post_message
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__editJiraIssue
+  - mcp__atlassian__addCommentToJiraIssue
+  - mcp__atlassian__transitionJiraIssue
 ---
 
 # Approval Orchestrator Agent

@@ -34,10 +34,10 @@ tools:
   - Grep
   - Glob
   # Jira MCP Tools
-  - mcp__MCP_DOCKER__jira_get_issue
-  - mcp__MCP_DOCKER__jira_update_issue
-  - mcp__MCP_DOCKER__jira_add_comment
-  - mcp__MCP_DOCKER__jira_transition_issue
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__editJiraIssue
+  - mcp__atlassian__addCommentToJiraIssue
+  - mcp__atlassian__transitionJiraIssue
   # Harness MCP Tools - Connectors & Pipelines
   - harness_get_connector
   - harness_list_connectors
@@ -184,9 +184,9 @@ activities = harness_get_pull_request_activities(
 # Extract and sync to Jira
 for activity in activities:
     if activity.type == "comment":
-        jira_add_comment(
-            issue_key="PROJ-123",
-            body=f"PR Comment by {activity.author}: {activity.body}"
+        mcp__atlassian__addCommentToJiraIssue(
+            issueKey="PROJ-123",
+            commentBody=f"PR Comment by {activity.author}: {activity.body}"
         )
 ```
 
@@ -214,8 +214,8 @@ pr = harness_create_pull_request(
 )
 
 # Update Jira with PR link
-jira_update_issue(
-    issue_key="PROJ-123",
+mcp__atlassian__editJiraIssue(
+    issueIdOrKey="PROJ-123",
     fields={
         "customfield_10200": pr.url  # PR URL field
     }
@@ -233,19 +233,19 @@ checks = harness_get_pull_request_checks(
 
 # Update Jira based on check results
 if all(check.status == "success" for check in checks):
-    jira_transition_issue(
-        issue_key="PROJ-123",
-        transition="Ready for Review"
+    mcp__atlassian__transitionJiraIssue(
+        issueIdOrKey="PROJ-123",
+        transition={"id": "31"}  # Ready for Review transition ID
     )
-    jira_add_comment(
-        issue_key="PROJ-123",
-        body="✅ All PR checks passed. Ready for code review."
+    mcp__atlassian__addCommentToJiraIssue(
+        issueKey="PROJ-123",
+        commentBody="✅ All PR checks passed. Ready for code review."
     )
 else:
     failed_checks = [c.name for c in checks if c.status == "failed"]
-    jira_add_comment(
-        issue_key="PROJ-123",
-        body=f"❌ PR checks failed: {', '.join(failed_checks)}"
+    mcp__atlassian__addCommentToJiraIssue(
+        issueKey="PROJ-123",
+        commentBody=f"❌ PR checks failed: {', '.join(failed_checks)}"
     )
 ```
 
@@ -359,9 +359,9 @@ def claude_review_pr(repo: str, pr_number: int, jira_key: str):
     ''')
 
     # 5. Update Jira
-    jira_add_comment(
-        issue_key=jira_key,
-        body=f"Code review complete: {len(issues)} issues found. Status: {decision}"
+    mcp__atlassian__addCommentToJiraIssue(
+        issueKey=jira_key,
+        commentBody=f"Code review complete: {len(issues)} issues found. Status: {decision}"
     )
 ```
 

@@ -15,8 +15,8 @@ tools:
   - Bash
   - Read
   - Write
-  - mcp__MCP_DOCKER__jira_get_issue
-  - mcp__MCP_DOCKER__jira_add_comment
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__addCommentToJiraIssue
 tags:
   - jira
   - pr
@@ -158,7 +158,7 @@ This is an **incremental PR** as part of a planned splitting strategy.
 
 ### Sub-Items in This PR
 $(for item in $sub_items; do
-  item_summary=$(mcp__MCP_DOCKER__jira_get_issue $item | jq -r '.fields.summary')
+  item_summary=$(mcp__atlassian__getJiraIssue $item | jq -r '.fields.summary')
   echo "- [$item]($JIRA_BASE_URL/browse/$item): $item_summary"
 done)
 
@@ -214,9 +214,9 @@ post_checkpoint_to_jira() {
   pr_url=$2
   sub_items=$3
 
-  mcp__MCP_DOCKER__jira_add_comment(
-    issue_key="$PARENT_KEY",
-    comment="## 📦 Checkpoint PR Created
+  mcp__atlassian__addCommentToJiraIssue(
+    issueKey="$PARENT_KEY",
+    commentBody="## 📦 Checkpoint PR Created
 
 **PR Part $pr_sequence of $total_prs:** $pr_url [DRAFT]
 
@@ -308,9 +308,9 @@ on_parent_pr_merge() {
     git push --force-with-lease origin $child_branch
 
     # Post update to Jira
-    mcp__MCP_DOCKER__jira_add_comment(
-      issue_key="$PARENT_KEY",
-      comment="🔄 **PR Chain Update**
+    mcp__atlassian__addCommentToJiraIssue(
+      issueKey="$PARENT_KEY",
+      commentBody="🔄 **PR Chain Update**
 
 PR #$merged_pr has been merged!
 

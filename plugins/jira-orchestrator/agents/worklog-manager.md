@@ -3,8 +3,8 @@ name: worklog-manager
 description: Manages Jira time tracking and worklog entries with smart time parsing, validation, and remaining estimate tracking
 model: haiku
 tools:
-  - mcp__MCP_DOCKER__jira_get_issue
-  - mcp__MCP_DOCKER__addWorklog
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__addWorklogToJiraIssue
 when_to_use: When adding time entries to Jira tickets, validating time tracking configuration, or managing worklogs with intelligent time string parsing and validation.
 tags:
   - jira
@@ -116,7 +116,7 @@ function parseTimeToSeconds(timeString) {
 
 ```
 1. Fetch issue details:
-   Use: mcp__MCP_DOCKER__jira_get_issue
+   Use: mcp__atlassian__getJiraIssue
    Parameters:
    - issueKey: [ticket key, e.g., "PROJ-123"]
 
@@ -188,7 +188,7 @@ parse_result:
 **Add the worklog entry via MCP:**
 
 ```
-Use: mcp__MCP_DOCKER__addWorklog
+Use: mcp__atlassian__addWorklogToJiraIssue
 Parameters:
 - issueKey: [ticket key]
 - timeSpentSeconds: [calculated seconds]
@@ -654,7 +654,7 @@ auto_log_flow:
     - Confirm worklog permission
 
   4_post:
-    tool: "mcp__MCP_DOCKER__addWorklog"
+    tool: "mcp__atlassian__addWorklogToJiraIssue"
     parameters:
       issueKey: "{issue_key}"
       timeSpentSeconds: "{duration_seconds}"
@@ -721,7 +721,7 @@ format_duration: "5m 23s"
 format_comment: "[Claude] /jira:work - 5m 23s"
 
 # MCP Call
-mcp__MCP_DOCKER__addWorklog:
+mcp__atlassian__addWorklogToJiraIssue:
   issueKey: "PROJ-123"
   timeSpentSeconds: 323
   comment: "[Claude] /jira:work - 5m 23s"

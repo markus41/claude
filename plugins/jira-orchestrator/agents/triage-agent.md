@@ -8,9 +8,14 @@ tools:
   - Grep
   - Glob
   - Task
-  - mcp__MCP_DOCKER__jira_get_issue
-  - mcp__MCP_DOCKER__jira_search_issues
-  - mcp__MCP_DOCKER__jira_get_project
+  # Atlassian MCP SSE Tools (Official)
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__searchJiraIssuesUsingJql
+  - mcp__atlassian__getVisibleJiraProjects
+  - mcp__atlassian__getJiraProjectIssueTypesMetadata
+  - mcp__atlassian__search
+  - mcp__atlassian__getConfluencePage
+  # Obsidian for documentation
   - mcp__obsidian__vault_search
   - mcp__obsidian__get_file_contents
 ---
@@ -669,7 +674,7 @@ TRIAGE_REPORT:
 
 ```python
 # Get full issue details
-issue = mcp__MCP_DOCKER__jira_get_issue(issue_key)
+issue = mcp__atlassian__getJiraIssue(cloudId, issueIdOrKey=issue_key)
 
 # Extract key information
 issue_type = issue['fields']['issuetype']['name']
@@ -681,7 +686,7 @@ components = issue['fields']['components']
 sprint = issue['fields']['sprint'] if 'sprint' in issue['fields'] else None
 
 # Search for related issues for context
-related = mcp__MCP_DOCKER__jira_search_issues(
+related = mcp__atlassian__searchJiraIssuesUsingJql(
     jql=f"project = {project_key} AND summary ~ '{summary_keywords}'"
 )
 ```

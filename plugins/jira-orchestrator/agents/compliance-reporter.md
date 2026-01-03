@@ -8,9 +8,9 @@ tools:
   - Grep
   - Glob
   - Task
-  - mcp__MCP_DOCKER__jira_get_issue
-  - mcp__MCP_DOCKER__jira_search_issues
-  - mcp__MCP_DOCKER__jira_add_comment
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__searchJiraIssuesUsingJql
+  - mcp__atlassian__addCommentToJiraIssue
   - mcp__obsidian__vault_search
   - mcp__obsidian__get_file_contents
   - mcp__obsidian__vault_add
@@ -520,7 +520,7 @@ def collect_compliance_evidence(framework, control_id, time_period):
         jql_query = generate_jql_from_method(control.collection_method, time_period)
 
         # Fetch issues from Jira
-        issues = mcp__MCP_DOCKER__jira_search_issues(jql=jql_query, max_results=1000)
+        issues = mcp__atlassian__searchJiraIssuesUsingJql(jql=jql_query, max_results=1000)
 
         for issue in issues:
             evidence_items.append({

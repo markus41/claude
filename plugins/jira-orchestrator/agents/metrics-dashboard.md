@@ -10,9 +10,9 @@ tools:
   - Grep
   - Glob
   - Bash
-  - mcp__MCP_DOCKER__jira_get_issue
-  - mcp__MCP_DOCKER__jira_search_issues
-  - mcp__MCP_DOCKER__jira_add_comment
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__searchJiraIssuesUsingJql
+  - mcp__atlassian__addCommentToJiraIssue
   - mcp__obsidian__vault_add
 tags:
   - metrics
@@ -1609,9 +1609,9 @@ const output = formatDashboard(dashboard, options.format);
 // Publish to requested destination
 if (options.destination === 'jira') {
   // Add as comment to Jira issue
-  mcp__MCP_DOCKER__jira_add_comment({
+  mcp__atlassian__addCommentToJiraIssue({
     issueKey: options.issue_key,
-    comment: output
+    commentBody: output
   });
 }
 

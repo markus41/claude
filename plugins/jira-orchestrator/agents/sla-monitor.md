@@ -8,10 +8,10 @@ tools:
   - Grep
   - Glob
   - Task
-  - mcp__MCP_DOCKER__jira_get_issue
-  - mcp__MCP_DOCKER__jira_search_issues
-  - mcp__MCP_DOCKER__jira_add_comment
-  - mcp__MCP_DOCKER__jira_transition_issue
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__searchJiraIssuesUsingJql
+  - mcp__atlassian__addCommentToJiraIssue
+  - mcp__atlassian__transitionJiraIssue
   - mcp__obsidian__vault_search
   - mcp__obsidian__get_file_contents
   - mcp__obsidian__vault_add
@@ -930,13 +930,13 @@ sla_prediction_comment: |
 
 ```python
 # Fetch issue and calculate SLA
-issue = mcp__MCP_DOCKER__jira_get_issue(issue_key)
+issue = mcp__atlassian__getJiraIssue(issue_key)
 sla_status = calculate_sla_time(issue, "FIRST_RESPONSE")
 
 # Add SLA comment if at risk
 if sla_status["status"] in ["warning", "breached"]:
     comment = generate_sla_comment(issue, sla_status)
-    mcp__MCP_DOCKER__jira_add_comment(issue_key, comment)
+    mcp__atlassian__addCommentToJiraIssue(issue_key, comment)
 
 # Escalate if breached
 if sla_status["status"] == "breached":

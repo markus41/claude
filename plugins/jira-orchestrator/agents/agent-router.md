@@ -8,7 +8,7 @@ tools:
   - Read
   - Grep
   - Glob
-  - mcp__MCP_DOCKER__jira_get_issue
+  - mcp__atlassian__getJiraIssue
 ---
 
 # Agent Router
@@ -714,7 +714,7 @@ Before completing routing, verify:
 - Task orchestrator - Dynamic agent selection during workflow
 
 **Calls:**
-- `mcp__MCP_DOCKER__jira_get_issue` - Fetch Jira details
+- `mcp__atlassian__getJiraIssue` - Fetch Jira details
 - `Read` - Load agents.index.json and file-agent-mapping.yaml
 - `Grep` - Search for agent keywords in registry
 - `Glob` - Find agent files in registry

@@ -462,7 +462,7 @@ harness_review_with_jira() {
 
     echo "Updating Jira $jira_key with status: $status_map"
     # This would use the Jira MCP to add a comment
-    # mcp__MCP_DOCKER__jira_add_comment "$jira_key" "PR #$pr: $status_map"
+    # mcp__atlassian__addCommentToJiraIssue "$cloud_id" "$jira_key" "PR #$pr: $status_map"
   fi
 }
 

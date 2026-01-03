@@ -3,9 +3,7 @@ name: pr-documentation-logger
 description: Log all documentation and interactions to PR comments for complete audit trail
 model: haiku
 tools:
-  - mcp__MCP_DOCKER__add_issue_comment
-  - mcp__MCP_DOCKER__pull_request_read
-  - mcp__MCP_DOCKER__get_file_contents
+  - mcp__atlassian__addCommentToJiraIssue
   - Bash
   - Read
 when_to_use: Throughout the orchestration workflow to log each phase completion, documentation creation, and Jira interaction to PR comments
@@ -425,12 +423,10 @@ ${NEXT_STEPS}
 EOF
 )
 
-  # Post the comment using GitHub MCP
-  local RESPONSE=$(mcp__MCP_DOCKER__add_issue_comment \
-    --owner "${OWNER}" \
-    --repo "${REPO}" \
-    --issue_number "${PR_NUMBER}" \
-    --body "${COMMENT}")
+  # Post the comment to Jira issue
+  local RESPONSE=$(mcp__atlassian__addCommentToJiraIssue \
+    --issue_key "${ISSUE_KEY}" \
+    --comment "${COMMENT}")
 
   # Track the posted comment
   echo "$RESPONSE" | jq -r '.id' >> "${TRACKING_FILE}.comments"
@@ -486,11 +482,8 @@ $(echo "$RELATED_JSON" | jq -r '.[] | "- [\(.title)](\(.url)) - \(.description)"
 EOF
 )
 
-  mcp__MCP_DOCKER__add_issue_comment \
-    --owner "${OWNER}" \
-    --repo "${REPO}" \
-    --issue_number "${PR_NUMBER}" \
-    --body "${COMMENT}"
+  # Note: GitHub comment tool removed - use GitHub API or gh CLI instead
+  gh pr comment "${PR_NUMBER}" --body "${COMMENT}"
 
   # Update tracking
   jq --arg type "$DOC_TYPE" \
@@ -541,11 +534,8 @@ ${NEXT_ACTIONS}
 EOF
 )
 
-  mcp__MCP_DOCKER__add_issue_comment \
-    --owner "${OWNER}" \
-    --repo "${REPO}" \
-    --issue_number "${PR_NUMBER}" \
-    --body "${COMMENT}"
+  # Note: GitHub comment tool removed - use GitHub API or gh CLI instead
+  gh pr comment "${PR_NUMBER}" --body "${COMMENT}"
 }
 ```
 
@@ -596,11 +586,8 @@ $(echo "$DOCS_JSON" | jq -r '.[] | "- [\(.title)](\(.url)) - \(.description)"')
 EOF
 )
 
-  mcp__MCP_DOCKER__add_issue_comment \
-    --owner "${OWNER}" \
-    --repo "${REPO}" \
-    --issue_number "${PR_NUMBER}" \
-    --body "${COMMENT}"
+  # Note: GitHub comment tool removed - use GitHub API or gh CLI instead
+  gh pr comment "${PR_NUMBER}" --body "${COMMENT}"
 }
 ```
 
@@ -703,11 +690,8 @@ EOF
 )
 
   # Post the final summary
-  mcp__MCP_DOCKER__add_issue_comment \
-    --owner "${OWNER}" \
-    --repo "${REPO}" \
-    --issue_number "${PR_NUMBER}" \
-    --body "${SUMMARY_COMMENT}"
+  # Note: GitHub comment tool removed - use GitHub API or gh CLI instead
+  gh pr comment "${PR_NUMBER}" --body "${SUMMARY_COMMENT}"
 }
 ```
 
@@ -724,11 +708,8 @@ post_pr_comment_with_retry() {
   local RETRY_DELAY=5
 
   for i in $(seq 1 $MAX_RETRIES); do
-    if mcp__MCP_DOCKER__add_issue_comment \
-       --owner "${OWNER}" \
-       --repo "${REPO}" \
-       --issue_number "${PR_NUMBER}" \
-       --body "${COMMENT}"; then
+    # Note: GitHub comment tool removed - use GitHub API or gh CLI instead
+    if gh pr comment "${PR_NUMBER}" --body "${COMMENT}"; then
       return 0
     fi
 

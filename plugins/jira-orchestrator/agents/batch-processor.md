@@ -35,13 +35,11 @@ tools:
   - Glob
   - Bash
   - Task
-  - mcp__MCP_DOCKER__jira_get_issue
-  - mcp__MCP_DOCKER__jira_update_issue
-  - mcp__MCP_DOCKER__jira_transition_issue
-  - mcp__MCP_DOCKER__jira_add_comment
-  - mcp__MCP_DOCKER__jira_link_issues
-  - mcp__MCP_DOCKER__jira_search_issues
-  - mcp__MCP_DOCKER__jira_assign_issue
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__editJiraIssue
+  - mcp__atlassian__transitionJiraIssue
+  - mcp__atlassian__addCommentToJiraIssue
+  - mcp__atlassian__searchJiraIssuesUsingJql
 ---
 
 # Batch Processor Agent

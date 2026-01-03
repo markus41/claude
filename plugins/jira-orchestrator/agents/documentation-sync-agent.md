@@ -32,14 +32,14 @@ tools:
   - Edit
   - Glob
   - Grep
-  - mcp__MCP_DOCKER__confluence_create_page
-  - mcp__MCP_DOCKER__confluence_update_page
-  - mcp__MCP_DOCKER__confluence_get_page
-  - mcp__MCP_DOCKER__confluence_search
-  - mcp__MCP_DOCKER__jira_get_issue
-  - mcp__MCP_DOCKER__jira_update_issue
-  - mcp__MCP_DOCKER__jira_add_comment
-  - mcp__MCP_DOCKER__jira_search_issues
+  - mcp__atlassian__createConfluencePage
+  - mcp__atlassian__updateConfluencePage
+  - mcp__atlassian__getConfluencePage
+  - mcp__atlassian__searchConfluenceUsingCql
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__editJiraIssue
+  - mcp__atlassian__addCommentToJiraIssue
+  - mcp__atlassian__searchJiraIssuesUsingJql
 temperature: 0.3
 ---
 

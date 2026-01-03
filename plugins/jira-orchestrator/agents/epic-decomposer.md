@@ -27,12 +27,11 @@ tools:
   - Read
   - Grep
   - Task
-  - mcp__MCP_DOCKER__jira_get_issue
-  - mcp__MCP_DOCKER__jira_create_issue
-  - mcp__MCP_DOCKER__jira_update_issue
-  - mcp__MCP_DOCKER__jira_add_comment
-  - mcp__MCP_DOCKER__jira_link_issues
-  - mcp__MCP_DOCKER__jira_search_issues
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__createJiraIssue
+  - mcp__atlassian__editJiraIssue
+  - mcp__atlassian__addCommentToJiraIssue
+  - mcp__atlassian__searchJiraIssuesUsingJql
 ---
 
 # Epic Decomposer Agent

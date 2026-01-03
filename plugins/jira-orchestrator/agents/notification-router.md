@@ -10,7 +10,7 @@ tools:
   - Grep
   - Glob
   - Bash
-  - mcp__MCP_DOCKER__jira_get_issue
+  - mcp__atlassian__getJiraIssue
 ---
 
 # Notification Router

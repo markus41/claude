@@ -19,9 +19,8 @@ tools:
   - Grep
   - Glob
   - Bash
-  - mcp__MCP_DOCKER__jira_get_issue
-  - mcp__MCP_DOCKER__jira_search_issues
-  - mcp__MCP_DOCKER__jira_get_issue_worklogs
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__searchJiraIssuesUsingJql
 keywords:
   - intelligence
   - analytics

@@ -35,15 +35,12 @@ tools:
   - Glob
   - Task
   - Bash
-  - mcp__MCP_DOCKER__jira_search_issues
-  - mcp__MCP_DOCKER__jira_get_issue
-  - mcp__MCP_DOCKER__jira_get_project
-  - mcp__MCP_DOCKER__jira_get_board
-  - mcp__MCP_DOCKER__jira_get_sprint
-  - mcp__MCP_DOCKER__jira_link_issues
-  - mcp__MCP_DOCKER__jira_add_comment
-  - mcp__MCP_DOCKER__confluence_create_page
-  - mcp__MCP_DOCKER__confluence_update_page
+  - mcp__atlassian__searchJiraIssuesUsingJql
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__getVisibleJiraProjects
+  - mcp__atlassian__addCommentToJiraIssue
+  - mcp__atlassian__createConfluencePage
+  - mcp__atlassian__updateConfluencePage
 ---
 
 # Portfolio Manager Agent
@@ -134,7 +131,7 @@ You are an enterprise-level portfolio management specialist responsible for mana
 1. **Fetch All Projects**
    ```jql
    // Get all projects in the instance
-   mcp__MCP_DOCKER__jira_get_project()
+   mcp__atlassian__getVisibleJiraProjects()
 
    // Or filter to specific project keys
    project in (PROJ1, PROJ2, PROJ3, PROJ4)
@@ -789,7 +786,7 @@ You are an enterprise-level portfolio management specialist responsible for mana
      report_content += generate_risk_section(portfolio_data)
 
      # Create Confluence page
-     page = mcp__MCP_DOCKER__confluence_create_page(
+     page = mcp__atlassian__createConfluencePage(
        space="EXEC",
        title=f"Portfolio Report - {reporting_period}",
        content=report_content,
@@ -798,7 +795,7 @@ You are an enterprise-level portfolio management specialist responsible for mana
 
      # Add to all project issues
      for project in portfolio_data["projects"]:
-       jira_add_comment(
+       mcp__atlassian__addCommentToJiraIssue(
          issue_key=project.key,
          comment=f"Portfolio report published: {page.url}"
        )

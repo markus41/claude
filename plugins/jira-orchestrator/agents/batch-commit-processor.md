@@ -99,15 +99,15 @@ commit 5: "PROJ-123 Final cleanup #time 30m #comment Code review changes"
    - Preserve unique details
 
 ### Phase 3: Validation
-1. Verify each issue exists using `mcp__MCP_DOCKER__jira_get_issue`
+1. Verify each issue exists using `mcp__atlassian__getJiraIssue`
 2. Check if transitions are valid for current issue state
 3. Validate time values (positive, within reasonable limits)
 4. Collect validation errors for reporting
 
 ### Phase 4: Execution
 1. For each valid issue:
-   - Add aggregated time using `mcp__MCP_DOCKER__addWorklog`
-   - Add deduplicated comments using `mcp__MCP_DOCKER__jira_add_comment`
+   - Add aggregated time using `mcp__atlassian__addWorklogToJiraIssue`
+   - Add deduplicated comments using `mcp__atlassian__addCommentToJiraIssue`
    - Apply transition if specified
 2. Handle errors per issue (don't fail entire batch)
 3. Collect success/failure results
@@ -251,10 +251,10 @@ deduplicated_comments:
 
 ### Jira Issue Verification
 ```yaml
-tool: mcp__MCP_DOCKER__jira_get_issue
+tool: mcp__atlassian__getJiraIssue
 purpose: Verify issue exists before processing
 input:
-  issueKey: "PROJ-123"
+  issueIdOrKey: "PROJ-123"
 output:
   id: "10001"
   key: "PROJ-123"
@@ -269,12 +269,11 @@ error_handling:
 
 ### Worklog Addition
 ```yaml
-tool: mcp__MCP_DOCKER__addWorklog
+tool: mcp__atlassian__addWorklogToJiraIssue
 purpose: Add aggregated time to issue
 input:
-  issueKey: "PROJ-123"
+  issueIdOrKey: "PROJ-123"
   timeSpent: "3h 30m"
-  comment: "Aggregated from commits: abc123, def456, ghi789"
 output:
   id: "20001"
   timeSpent: "3h 30m"
@@ -286,11 +285,11 @@ error_handling:
 
 ### Comment Addition
 ```yaml
-tool: mcp__MCP_DOCKER__jira_add_comment
+tool: mcp__atlassian__addCommentToJiraIssue
 purpose: Add deduplicated comments
 input:
   issueKey: "PROJ-123"
-  comment: |
+  commentBody: |
     Batch update from commits (abc123, def456, ghi789):
 
     - Initial implementation
@@ -306,11 +305,12 @@ error_handling:
 
 ### Transition Execution
 ```yaml
-tool: mcp__MCP_DOCKER__jira_transition_issue
+tool: mcp__atlassian__transitionJiraIssue
 purpose: Apply workflow transition
 input:
-  issueKey: "PROJ-123"
-  transition: "In Review"
+  issueIdOrKey: "PROJ-123"
+  transition:
+    id: "31"
 validation:
   - Check if transition is valid for current status
   - Get available transitions first

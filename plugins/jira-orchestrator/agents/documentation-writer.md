@@ -54,11 +54,11 @@ tools:
   - Grep
   - Glob
   - Bash
-  - mcp__MCP_DOCKER__confluence_create_page
-  - mcp__MCP_DOCKER__confluence_update_page
-  - mcp__MCP_DOCKER__confluence_get_page
-  - mcp__MCP_DOCKER__jira_add_comment
-  - mcp__MCP_DOCKER__jira_get_issue
+  - mcp__atlassian__createConfluencePage
+  - mcp__atlassian__updateConfluencePage
+  - mcp__atlassian__getConfluencePage
+  - mcp__atlassian__addCommentToJiraIssue
+  - mcp__atlassian__getJiraIssue
 temperature: 0.5
 ---
 
@@ -2109,19 +2109,20 @@ Use MCP Confluence tools to create or update pages:
 
 ```typescript
 // Create new Confluence page
-await mcp__MCP_DOCKER__confluence_create_page({
-  spaceKey: 'ENG',
+await mcp__atlassian__createConfluencePage({
+  cloudId: 'your-cloud-id',
+  spaceId: '12345',  // Note: spaceId (numeric) instead of spaceKey
   title: 'Member Management System',
   body: confluenceContent,
   parentId: '12345'
 });
 
 // Update existing page
-await mcp__MCP_DOCKER__confluence_update_page({
+await mcp__atlassian__updateConfluencePage({
+  cloudId: 'your-cloud-id',
   pageId: '67890',
   title: 'Member Management System',
-  body: updatedContent,
-  version: currentVersion + 1
+  body: updatedContent
 });
 ```
 
@@ -2130,9 +2131,10 @@ await mcp__MCP_DOCKER__confluence_update_page({
 Link documentation from Jira issues:
 
 ```typescript
-await mcp__MCP_DOCKER__jira_add_comment({
-  issueKey: 'PROJ-123',
-  body: `
+await mcp__atlassian__addCommentToJiraIssue({
+  cloudId: 'your-cloud-id',
+  issueIdOrKey: 'PROJ-123',
+  commentBody: `
 Documentation completed:
 - README: [GitHub](https://github.com/org/repo/blob/main/README.md)
 - API Docs: [Swagger](https://api.example.com/docs)

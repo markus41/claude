@@ -20,10 +20,10 @@ tools:
   - Read
   - Grep
   - Write
-  - mcp__MCP_DOCKER__jira_get_issue
-  - mcp__MCP_DOCKER__jira_update_issue
-  - mcp__MCP_DOCKER__jira_add_comment
-  - mcp__MCP_DOCKER__jira_get_transitions
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__editJiraIssue
+  - mcp__atlassian__addCommentToJiraIssue
+  - mcp__atlassian__getTransitionsForJiraIssue
 ---
 
 # PR Creator Agent
@@ -132,8 +132,8 @@ Before using `#transition`, verify available transition names for the issue:
 
 ```javascript
 // Get available transitions for an issue
-const transitions = await mcp__MCP_DOCKER__jira_get_transitions({
-  issueKey: "PROJ-123"
+const transitions = await mcp__atlassian__getTransitionsForJiraIssue({
+  issueIdOrKey: "PROJ-123"
 });
 
 // Returns array of transition objects with names
@@ -353,7 +353,7 @@ Use the Jira MCP tools to get issue details:
 
 ```javascript
 // Get Jira issue details
-const issue = await mcp__MCP_DOCKER__jira_get_issue({ issueKey: "JIRA-XXX" });
+const issue = await mcp__atlassian__getJiraIssue({ issueIdOrKey: "JIRA-XXX" });
 
 // Extract useful information:
 // - issue.fields.summary
@@ -481,7 +481,7 @@ current_branch=$(git branch --show-current)
 issue_key=$(echo "$current_branch" | grep -oP '(?<=/)[A-Z]+-[0-9]+(?=-)' || echo "PROJ-XXX")
 
 # Get available transitions (optional, for validation)
-# transitions=$(mcp__MCP_DOCKER__jira_get_transitions issueKey="$issue_key")
+# transitions=$(mcp__atlassian__getTransitionsForJiraIssue cloudId="$cloud_id" issueIdOrKey="$issue_key")
 
 # Create smart commit message with Jira integration
 git commit -m "$(cat <<EOF
@@ -564,7 +564,7 @@ EOF
   - "Done" - When PR is merged
   - "Ready for QA" - When ready for testing
 - Case-sensitive, must match exactly
-- Use `mcp__MCP_DOCKER__jira_get_transitions` to verify
+- Use `mcp__atlassian__getTransitionsForJiraIssue` to verify
 
 ```
 
@@ -593,14 +593,14 @@ EOF
 
 ```javascript
 // Add PR link to Jira issue
-await mcp__MCP_DOCKER__jira_add_comment({
+await mcp__atlassian__addCommentToJiraIssue({
   issueKey: "JIRA-XXX",
-  comment: `Pull Request created: ${prUrl}\n\nStatus: Ready for Review`
+  commentBody: `Pull Request created: ${prUrl}\n\nStatus: Ready for Review`
 });
 
 // Update Jira issue status (if workflow allows)
-await mcp__MCP_DOCKER__jira_update_issue({
-  issueKey: "JIRA-XXX",
+await mcp__atlassian__editJiraIssue({
+  issueIdOrKey: "JIRA-XXX",
   fields: {
     status: { name: "In Review" }
   }

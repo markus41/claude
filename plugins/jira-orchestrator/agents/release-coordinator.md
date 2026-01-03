@@ -33,15 +33,13 @@ tools:
   - Glob
   - Task
   - Bash
-  - mcp__MCP_DOCKER__jira_search_issues
-  - mcp__MCP_DOCKER__jira_get_issue
-  - mcp__MCP_DOCKER__jira_update_issue
-  - mcp__MCP_DOCKER__jira_add_comment
-  - mcp__MCP_DOCKER__jira_transition_issue
-  - mcp__MCP_DOCKER__jira_create_version
-  - mcp__MCP_DOCKER__jira_get_version
-  - mcp__MCP_DOCKER__confluence_create_page
-  - mcp__MCP_DOCKER__confluence_update_page
+  - mcp__atlassian__searchJiraIssuesUsingJql
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__editJiraIssue
+  - mcp__atlassian__addCommentToJiraIssue
+  - mcp__atlassian__transitionJiraIssue
+  - mcp__atlassian__createConfluencePage
+  - mcp__atlassian__updateConfluencePage
 ---
 
 # Release Coordinator Agent
@@ -191,15 +189,13 @@ You are a release management specialist responsible for coordinating multi-proje
      """
      Create version in Jira for tracking
      """
-     version = mcp__MCP_DOCKER__jira_create_version(
-       project=project_key,
-       name=version_name,
-       description=description,
-       releaseDate=release_date.isoformat(),
-       released=False
-     )
-
-     return version
+     # Note: Version creation via API may require project admin permissions
+     # Use Jira UI or project settings to create versions
+     return {
+       "name": version_name,
+       "releaseDate": release_date.isoformat(),
+       "description": description
+     }
    ```
 
 3. **Build Release Timeline**
@@ -447,7 +443,7 @@ This release includes {len(notes['features'])} new features,
      # Create Confluence page
      markdown_notes = format_release_notes_markdown(notes)
 
-     confluence_page = mcp__MCP_DOCKER__confluence_create_page(
+     confluence_page = mcp__atlassian__createConfluencePage(
        space="RELEASES",
        title=f"Release Notes - {notes['version']}",
        content=markdown_notes,
@@ -464,7 +460,7 @@ This issue is included in release {notes['version']}.
 
      for project_issues in [notes['features'], notes['bug_fixes'], notes['improvements']]:
        for issue in project_issues:
-         mcp__MCP_DOCKER__jira_add_comment(
+         mcp__atlassian__addCommentToJiraIssue(
            issue_key=issue['key'],
            comment=comment
          )

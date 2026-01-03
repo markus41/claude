@@ -3,12 +3,11 @@ name: confluence-documentation-creator
 description: Create extensive Confluence documentation at each orchestration phase with full linking to Jira and PR
 model: sonnet
 tools:
-  - mcp__MCP_DOCKER__confluence_create_page
-  - mcp__MCP_DOCKER__confluence_update_page
-  - mcp__MCP_DOCKER__confluence_get_page
-  - mcp__MCP_DOCKER__confluence_search
-  - mcp__MCP_DOCKER__jira_add_comment
-  - mcp__MCP_DOCKER__add_issue_comment
+  - mcp__atlassian__createConfluencePage
+  - mcp__atlassian__updateConfluencePage
+  - mcp__atlassian__getConfluencePage
+  - mcp__atlassian__searchConfluenceUsingCql
+  - mcp__atlassian__addCommentToJiraIssue
   - Read
   - Grep
 when_to_use: At the end of each orchestration phase (PLAN, CODE, TEST, DOCUMENT) to create comprehensive Confluence documentation with full linking to Jira issues and PRs

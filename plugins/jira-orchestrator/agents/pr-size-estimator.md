@@ -17,9 +17,9 @@ tools:
   - Grep
   - Glob
   - Bash
-  - mcp__MCP_DOCKER__jira_get_issue
-  - mcp__MCP_DOCKER__jira_search
-  - mcp__MCP_DOCKER__jira_add_comment
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__searchJiraIssuesUsingJql
+  - mcp__atlassian__addCommentToJiraIssue
 tags:
   - jira
   - pr
@@ -55,12 +55,13 @@ After the PLAN phase completes, analyze the technical design to estimate:
 
 ```bash
 # Get parent issue with sub-items
-mcp__MCP_DOCKER__jira_get_issue(issue_key: "{PARENT_KEY}")
+mcp__atlassian__getJiraIssue(cloudId: "{CLOUD_ID}", issueIdOrKey: "{PARENT_KEY}")
 
 # Search for sub-items
-mcp__MCP_DOCKER__jira_search(
-  jql="parent = {PARENT_KEY}",
-  fields=["key", "summary", "description", "issuetype"]
+mcp__atlassian__searchJiraIssuesUsingJql(
+  cloudId: "{CLOUD_ID}",
+  jql: "parent = {PARENT_KEY}",
+  fields: ["key", "summary", "description", "issuetype"]
 )
 
 # Read any planning documents from PLAN phase

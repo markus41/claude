@@ -3,8 +3,8 @@ name: smart-commit-validator
 description: Pre-flight validation of smart commit parameters to prevent failed commits and ensure data integrity
 model: haiku
 tools:
-  - mcp__MCP_DOCKER__jira_get_issue
-  - mcp__MCP_DOCKER__jira_get_transitions
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__getTransitionsForJiraIssue
   - Bash
 when_to_use: Before executing git commits with Jira smart commit syntax. Use this agent to validate issue keys, transitions, time tracking, and comment formatting before attempting the commit.
 tags:
@@ -100,9 +100,10 @@ LF-27 #in-review #time 2h 30m #comment Fixed authentication bug
 **Check if issue exists:**
 
 ```
-Use: mcp__MCP_DOCKER__jira_get_issue
+Use: mcp__atlassian__getJiraIssue
 Parameters:
-- issue_key: [extracted issue key]
+- cloudId: [Atlassian cloud ID]
+- issueIdOrKey: [extracted issue key]
 ```
 
 **Validation Criteria:**
@@ -125,9 +126,10 @@ error:
 **If transition is specified:**
 
 ```
-Use: mcp__MCP_DOCKER__jira_get_transitions
+Use: mcp__atlassian__getTransitionsForJiraIssue
 Parameters:
-- issue_key: [validated issue key]
+- cloudId: [Atlassian cloud ID]
+- issueIdOrKey: [validated issue key]
 ```
 
 **Extract available transitions:**

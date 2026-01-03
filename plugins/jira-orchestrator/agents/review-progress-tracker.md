@@ -15,9 +15,9 @@ whenToUse: |
 tools:
   - Bash
   - Read
-  - mcp__MCP_DOCKER__jira_get_issue
-  - mcp__MCP_DOCKER__jira_search
-  - mcp__MCP_DOCKER__jira_add_comment
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__searchJiraIssuesUsingJql
+  - mcp__atlassian__addCommentToJiraIssue
 tags:
   - jira
   - review
@@ -46,10 +46,11 @@ After `review-facilitator` creates bite-sized review tasks:
 ```bash
 # Get parent issue
 parent_key="{PARENT_KEY}"
-parent_issue=$(mcp__MCP_DOCKER__jira_get_issue(issue_key="$parent_key"))
+parent_issue=$(mcp__atlassian__getJiraIssue(cloudId="$cloud_id", issueIdOrKey="$parent_key"))
 
 # Get all review sub-items
-review_tasks=$(mcp__MCP_DOCKER__jira_search(
+review_tasks=$(mcp__atlassian__searchJiraIssuesUsingJql(
+  cloudId="$cloud_id",
   jql="parent = $parent_key AND labels = review",
   fields=["key", "summary", "status", "assignee", "timeestimate", "timespent", "created", "updated"]
 ))
@@ -302,9 +303,10 @@ generate_next_actions() {
 # Create initial dashboard
 dashboard=$(generate_dashboard)
 
-mcp__MCP_DOCKER__jira_add_comment(
-  issue_key="$parent_key",
-  comment="$dashboard"
+mcp__atlassian__addCommentToJiraIssue(
+  cloudId="$cloud_id",
+  issueIdOrKey="$parent_key",
+  commentBody="$dashboard"
 )
 
 # Store comment ID for updates
@@ -324,14 +326,11 @@ update_dashboard() {
   # Regenerate dashboard with fresh data
   dashboard=$(generate_dashboard)
 
-  # Update existing comment (or create new if not found)
-  mcp__MCP_DOCKER__jira_update_comment(
-    issue_key="$parent_key",
-    comment_id="$comment_id",
-    comment="$dashboard"
-  ) || mcp__MCP_DOCKER__jira_add_comment(
-    issue_key="$parent_key",
-    comment="$dashboard"
+  # Note: Official Atlassian MCP doesn't have update_comment, so we add a new comment
+  mcp__atlassian__addCommentToJiraIssue(
+    cloudId="$cloud_id",
+    issueIdOrKey="$parent_key",
+    commentBody="$dashboard"
   )
 }
 ```
