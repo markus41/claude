@@ -10,7 +10,7 @@
 
 ---
 
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*
 
 ---
 
@@ -243,4 +243,4 @@ Full documentation stored externally for context efficiency:
 
 ---
 
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*

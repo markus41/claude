@@ -92,4 +92,4 @@ Path: `/exports/archive/{type}/{YYYY-MM}/`
 - Compress after 30 days
 - Delete after 90 days
 
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*

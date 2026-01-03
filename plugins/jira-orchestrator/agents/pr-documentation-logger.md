@@ -89,7 +89,7 @@ You are the PR Documentation Logger, responsible for maintaining a complete audi
 - {What happens next in the workflow}
 
 ---
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*
 ```
 
 ### Documentation Creation Log
@@ -120,7 +120,7 @@ You are the PR Documentation Logger, responsible for maintaining a complete audi
 - [Related Issue]({url}) - {description}
 
 ---
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*
 ```
 
 ### Jira Status Transition Log
@@ -149,7 +149,7 @@ You are the PR Documentation Logger, responsible for maintaining a complete audi
 - {What needs to happen next}
 
 ---
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*
 ```
 
 ### Test Results Log
@@ -182,7 +182,7 @@ You are the PR Documentation Logger, responsible for maintaining a complete audi
 - [Jira Issue]({jira-url}) - Test status commented
 
 ---
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*
 ```
 
 ### Review Roadmap Creation Log
@@ -215,7 +215,7 @@ You are the PR Documentation Logger, responsible for maintaining a complete audi
 - Review complete: {date}
 
 ---
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*
 ```
 
 ## Final Summary Comment
@@ -344,7 +344,7 @@ This PR has a complete audit trail with:
 
 ---
 
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*
 ```
 
 ## Implementation Guide

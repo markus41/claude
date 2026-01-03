@@ -138,4 +138,4 @@ If duration >= 60s AND issue key detected:
 - Status Mismatch on PROJ-456: Jira="To Do" vs Local="Coding (3 commits)"
 - Options: Update to "In Progress" | Keep as "To Do" | Manual review
 
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*

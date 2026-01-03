@@ -563,4 +563,4 @@ Happy orchestrating!
 
 ---
 
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*

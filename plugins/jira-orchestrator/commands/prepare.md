@@ -82,4 +82,4 @@ Analyze issue, break into subtasks, enrich with descriptions/criteria/estimates.
 - `/jira:work ${issue_key}` - Start working on prepared task
 - `/jira:metrics target=${issue_key}` - Track progress
 
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*

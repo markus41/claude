@@ -19,18 +19,56 @@ Orchestrate work on Jira issues: detect sub-issues, parallelize, assign experts,
 
 ## Core Workflow
 
-**Validate → Tag → Detect Sub-Issues → Assign Agents → Parallelize Subs → EXPLORE → PLAN → CODE → TEST → FIX → DOCUMENT → Confluence Docs → Commit & PR → Jira Comments → Summary**
+**Validate → Tag → Detect Sub-Issues → Assign Agents → Parallelize Subs → EXPLORE → PLAN (+TDD) → CODE (+Impl Notes) → TEST (+Test Plan) → FIX → DOCUMENT (+Runbook) → Confluence Hub → Commit & PR (with Doc Links) → Jira Comments → Summary**
+
+## Confluence Documentation Integration
+
+**MANDATORY:** Each phase creates/updates Confluence documentation. PRs include documentation links.
+
+| Phase | Confluence Document | Content |
+|-------|---------------------|---------|
+| EXPLORE | TDD Draft | Initial requirements, scope, constraints |
+| PLAN | Technical Design Document | Architecture, APIs, security, deployment |
+| CODE | Implementation Notes | Code patterns, integrations, configurations |
+| TEST | Test Plan & Results | Strategy, coverage, test results, sign-off |
+| DOCUMENT | Runbook/Operations Guide | Deployment, monitoring, troubleshooting |
+
+### Documentation Workflow Per Phase
+
+```yaml
+phase_completion:
+  - Create/update Confluence page for phase
+  - Link page to Jira issue (remote link + comment)
+  - Include Confluence URL in phase completion milestone
+  - Validate page exists before proceeding to next phase
+
+pr_creation:
+  - Include "## Documentation" section with all Confluence links
+  - Add Confluence URLs to PR description
+  - Post documentation summary to Jira comment
+```
+
+### Confluence Page Hierarchy
+
+```
+{Project Space}/Features/
+└── {ISSUE-KEY} - {Feature Name}/     [Hub Page]
+    ├── Technical Design               [PLAN phase]
+    ├── Implementation Notes           [CODE phase]
+    ├── Test Plan & Results            [TEST phase]
+    └── Runbook                         [DOCUMENT phase]
+```
 
 ## 6-Phase Protocol (per Issue)
 
-| Phase | Purpose | Agents | Output |
-|-------|---------|--------|--------|
-| EXPLORE | Understand requirements, acceptance criteria | 2+ | Requirements doc |
-| PLAN | Design solution, architecture, APIs | 1-2 | Technical design |
-| CODE | Implement solution | 2-4 | Implementation + tests |
-| TEST | Validate, coverage >= 80% | 2-3 | Test results |
-| FIX | Resolve failures, gaps | 1-2 | Fixed code |
-| DOCUMENT | Record decisions, architecture, runbook | 1-2 | Confluence docs |
+| Phase | Purpose | Agents | Output | Confluence Page |
+|-------|---------|--------|--------|-----------------|
+| EXPLORE | Understand requirements, acceptance criteria | 2+ | Requirements doc | TDD Draft (created) |
+| PLAN | Design solution, architecture, APIs | 1-2 | Technical design | Technical Design Document |
+| CODE | Implement solution | 2-4 | Implementation + tests | Implementation Notes |
+| TEST | Validate, coverage >= 80% | 2-3 | Test results | Test Plan & Results |
+| FIX | Resolve failures, gaps | 1-2 | Fixed code | (Update existing pages) |
+| DOCUMENT | Record decisions, architecture, runbook | 1-2 | Confluence docs | Runbook + Hub Page |
 
 ## Key Requirements
 
@@ -93,11 +131,36 @@ Orchestrate work on Jira issues: detect sub-issues, parallelize, assign experts,
 - All 6 phases executed
 - Test coverage >= 80%
 - All acceptance criteria met
-- Confluence docs: 4+ pages
+- **Confluence docs: 4+ pages (TDD, Implementation, Test Plan, Runbook)**
+- **Hub page created linking all documentation**
+- **PR includes "## Documentation" section with Confluence links**
 - All sub-items documented
 - PR created and merged
 - All issues transitioned to QA
 - Gap analysis completed
+
+## PR Documentation Section (Required)
+
+PRs MUST include this section with Confluence links:
+
+```markdown
+## Documentation
+
+### Confluence Pages
+| Document | Link | Status |
+|----------|------|--------|
+| Technical Design | [View](confluence-url) | ✅ Complete |
+| Implementation Notes | [View](confluence-url) | ✅ Complete |
+| Test Plan & Results | [View](confluence-url) | ✅ Complete |
+| Runbook | [View](confluence-url) | ✅ Complete |
+
+### Hub Page
+[{ISSUE-KEY} - {Feature Name}](confluence-hub-url)
+
+### Related Documentation
+- [Architecture Decision Record](confluence-url) (if applicable)
+- [API Documentation](confluence-url) (if applicable)
+```
 
 ## Documentation Output
 
@@ -129,4 +192,4 @@ Orchestrate work on Jira issues: detect sub-issues, parallelize, assign experts,
 7. Items transitioned to QA
 8. Final summary with metrics
 
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*

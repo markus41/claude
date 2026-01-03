@@ -200,7 +200,7 @@ else
 fi)
 
 ---
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*
 Part of incremental delivery strategy for [$PARENT_KEY]
 EOF
 }

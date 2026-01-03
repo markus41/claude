@@ -27,4 +27,4 @@ This command has been consolidated into `/jira:pr` with the `--iterate` flag.
 
 See `/jira:pr` for full documentation.
 
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*

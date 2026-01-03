@@ -137,7 +137,7 @@ This review covers: $sub_item_key
 3. Add comments on GitHub or Jira
 4. Transition task when complete
 
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*
 EOF
 )" \
     additional_fields="{\"labels\":[\"review\",\"pr-$pr_number\"],\"timetracking\":{\"originalEstimate\":\"${time_estimate}m\"}}"
@@ -212,7 +212,7 @@ $(generate_next_actions "$review_tasks")
 ---
 
 📈 **Dashboard auto-updates** as reviews complete.
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*
 EOF
 }
 ```
@@ -434,7 +434,7 @@ Progress: 0 of 8 chunks (0%)
 Dashboard posted to PROJ-123.
 Will auto-update as reviews complete.
 
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*
 ```
 
 ## Best Practices
@@ -565,4 +565,4 @@ partial_council_review() {
 
 ---
 
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*

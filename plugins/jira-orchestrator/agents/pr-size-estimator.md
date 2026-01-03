@@ -206,7 +206,7 @@ After completing each sub-item, verify:
 - PR #3: Ready {Z} days after PR #2
 
 ---
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*
 ```
 
 ### Step 6: Save Strategy Configuration

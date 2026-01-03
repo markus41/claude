@@ -60,4 +60,4 @@ Checkpoint enables later resumption via `/jira:resume ISSUE-KEY`:
 - Jira context maintained
 - Checkpoints preserved 30 days
 
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*

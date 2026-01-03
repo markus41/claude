@@ -121,4 +121,4 @@ Auto-publish to PORTFOLIO space, parent: Portfolio Management
 
 ---
 
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*

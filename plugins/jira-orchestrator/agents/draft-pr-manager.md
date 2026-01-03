@@ -103,7 +103,7 @@ This is an early draft PR for visibility and feedback. **Not ready for formal re
 *Commits will appear here as development progresses...*
 
 ---
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*
 EOF
 )" \
   --base main
@@ -131,7 +131,7 @@ This draft PR provides early visibility so you can:
 **Formal review** will be requested after TEST phase passes.
 
 ---
-**⚓ Golden Armada** | *The Fleet Stands Ready*"
+**⚓ Golden Armada** | *You ask - The Fleet Ships*"
 )
 ```
 
@@ -215,7 +215,7 @@ $recent_commits
 **Note:** Formal review will be requested after TEST phase passes.
 
 ---
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*
 Updated: $(date -u +"%Y-%m-%d %H:%M UTC")
 EOF
 )"
@@ -287,7 +287,7 @@ The PR is now ready for formal code review. Reviewers have been assigned.
 **Recommended Approach:** Check the bite-sized review roadmap in the PR
 
 ---
-**⚓ Golden Armada** | *The Fleet Stands Ready*"
+**⚓ Golden Armada** | *You ask - The Fleet Ships*"
 )
 ```
 

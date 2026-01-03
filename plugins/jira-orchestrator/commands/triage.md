@@ -100,4 +100,4 @@ Markdown with: Classification → Complexity → Priority → Expertise → Work
 - Workflows: `jira-orchestrator/workflows/`
 - Agent Registry: `.claude/registry/agents.minimal.json`
 
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*

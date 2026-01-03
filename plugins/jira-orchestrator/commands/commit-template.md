@@ -92,4 +92,4 @@ Subject: max 72 chars, lowercase, imperative, no period
 5. Adjust auto-time as needed
 6. Match project scope conventions
 
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*

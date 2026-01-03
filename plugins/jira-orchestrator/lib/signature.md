@@ -35,7 +35,7 @@ Use for phase updates, inline comments, and quick status:
 
 ```markdown
 ---
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*
 ```
 
 ---
@@ -64,7 +64,7 @@ Use after council reviews and code analysis:
 *Lobbi Autonomous DevOps Orchestration*
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-*The Fleet Stands Ready*
+*You ask - The Fleet Ships*
 
 </div>
 ```
@@ -106,7 +106,7 @@ Use for CI/CD pipeline results:
 ---
 **⚓ Golden Armada Fleet Operations ⚓**
 Pipeline: `{PIPELINE_NAME}` | Status: {STATUS}
-*The Fleet Stands Ready*
+*You ask - The Fleet Ships*
 ```
 
 ---
@@ -118,7 +118,7 @@ Use for Jira issue comments:
 ```markdown
 ---
 **⚓ Golden Armada** — Lobbi Autonomous DevOps
-*The Fleet Stands Ready* | [{TIMESTAMP}]
+*You ask - The Fleet Ships* | [{TIMESTAMP}]
 ```
 
 ---
@@ -188,7 +188,7 @@ EOF
 
     compact)
       echo "---"
-      echo "**⚓ Golden Armada** | *The Fleet Stands Ready*"
+      echo "**⚓ Golden Armada** | *You ask - The Fleet Ships*"
       ;;
 
     minimal)
@@ -220,7 +220,7 @@ EOF
       ;;
 
     *)
-      echo "**⚓ Golden Armada** | *The Fleet Stands Ready*"
+      echo "**⚓ Golden Armada** | *You ask - The Fleet Ships*"
       ;;
   esac
 }
@@ -253,7 +253,7 @@ function generateSignature(style = 'full', agentCount = 1) {
 `,
 
     compact: `---
-**⚓ Golden Armada** | *The Fleet Stands Ready*`,
+**⚓ Golden Armada** | *You ask - The Fleet Ships*`,
 
     minimal: `— *Golden Armada* ⚓`,
 
@@ -330,6 +330,6 @@ The Golden Armada signature represents:
 - **⚓ Anchor**: Stability, reliability, grounded operations
 - **Fleet**: Multiple agents working in coordination
 - **Armada**: Powerful, organized, mission-ready
-- **"The Fleet Stands Ready"**: Always prepared to deploy
+- **"You ask - The Fleet Ships"**: Always prepared to deploy
 
 This branding reinforces the autonomous, multi-agent nature of the Lobbi DevOps orchestration system while maintaining a professional, memorable presence in all automated communications.

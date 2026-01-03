@@ -103,4 +103,4 @@ Show workflow levels, approvers, timeouts, escalation
 
 ---
 
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*

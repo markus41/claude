@@ -153,4 +153,4 @@ If duration >= 60s AND issue detected:
 | Transition unavailable | Continue with other steps |
 | API rate limit | Auto-retry with backoff |
 
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*

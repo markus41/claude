@@ -153,7 +153,7 @@ $(generate_next_actions)
 ---
 
 📈 **Dashboard auto-updates** as reviews complete.
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*
 EOF
 }
 
@@ -391,7 +391,7 @@ update_dashboard() {
 ---
 
 📈 Dashboard auto-updates as reviews complete.
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*
 ```
 
 ## Integration Points

@@ -126,4 +126,4 @@ Quick: `/qa-review --mode comments-only`
 - `/jira-orchestrator:pr` - Create PR
 - `/jira-orchestrator:docs` - Sync to Confluence
 
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*

@@ -87,4 +87,4 @@ council:
 - `/jira:review` - Single-agent review
 - **Targets:** PR URL, repo:number, or issue_key
 
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*

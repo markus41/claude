@@ -80,4 +80,4 @@ teams:
 - No burnout scores >40
 - Team health score >70/100
 
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*

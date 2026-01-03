@@ -96,4 +96,4 @@ Accurate details, valid examples, correct links, no placeholders, ISO dates, ver
 
 Duration >= 60s → Post worklog: `[Claude] /jira:docs - {duration}`
 
-**⚓ Golden Armada** | *The Fleet Stands Ready*
+**⚓ Golden Armada** | *You ask - The Fleet Ships*

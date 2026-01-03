@@ -276,7 +276,7 @@ def initialize_project_tags(project_key: str) -> dict:
 {', '.join(STANDARD_TAG_REGISTRY['type'])}
 
 ---
-Initialized by **⚓ Golden Armada** | *The Fleet Stands Ready*
+Initialized by **⚓ Golden Armada** | *You ask - The Fleet Ships*
             """
         )
 
