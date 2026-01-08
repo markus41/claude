@@ -178,6 +178,18 @@
       "source": "./.claude/plugins/agent-review-council",
       "category": "orchestration",
       "tags": ["multi-agent", "deliberation", "code-review", "debate", "consensus", "adversarial", "security", "automation"]
+    },
+    {
+      "name": "aws-eks-helm-keycloak",
+      "description": "Conduit (Standard) - AWS EKS deployments with Helm, Keycloak authentication, and Harness CI/CD. 7 commands, 4 agents, 6 skills for pipeline excellence and developer velocity.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Golden Armada",
+        "email": "architect@goldenarmada.io"
+      },
+      "source": "./plugins/aws-eks-helm-keycloak",
+      "category": "infrastructure",
+      "tags": ["aws", "eks", "kubernetes", "helm", "keycloak", "harness", "oidc", "ci-cd", "gitops"]
     }
   ]
 }
