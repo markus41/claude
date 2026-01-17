@@ -11,7 +11,7 @@
  */
 
 import { readFile, readdir, stat, mkdir, writeFile, copyFile } from 'fs/promises';
-import { join, relative, dirname, basename } from 'path';
+import { join, relative, basename } from 'path';
 import nunjucks from 'nunjucks';
 import type {
   ITemplateLoader,
@@ -183,7 +183,8 @@ export class CookiecutterLoader implements ITemplateLoader {
       variables,
       copyWithoutRender,
       files,
-      templateDir
+      templateDir,
+      outputPath
     );
 
     return files;
@@ -213,7 +214,8 @@ export class CookiecutterLoader implements ITemplateLoader {
     variables: Record<string, unknown>,
     copyWithoutRender: Set<unknown>,
     files: GeneratedFile[],
-    templateRoot: string
+    templateRoot: string,
+    outputRoot: string
   ): Promise<void> {
     // Create target directory
     await mkdir(targetPath, { recursive: true });
@@ -240,13 +242,14 @@ export class CookiecutterLoader implements ITemplateLoader {
           variables,
           copyWithoutRender,
           files,
-          templateRoot
+          templateRoot,
+          outputRoot
         );
       } else {
         // Check if file should be copied without rendering
         const shouldSkipRender = Array.from(copyWithoutRender).some(pattern => {
           if (typeof pattern === 'string') {
-            return relativeToRoot.includes(pattern) || entry.name.includes(pattern);
+            return this.matchesPattern(relativeToRoot, pattern);
           }
           return false;
         });
@@ -264,7 +267,7 @@ export class CookiecutterLoader implements ITemplateLoader {
         // Track generated file
         const stats = await stat(targetEntry);
         files.push({
-          path: relative(dirname(targetPath), targetEntry),
+          path: relative(outputRoot, targetEntry),
           action: 'created',
           size: stats.size,
           type: this.getFileType(targetEntry)
@@ -319,6 +322,52 @@ export class CookiecutterLoader implements ITemplateLoader {
     };
 
     return typeMap[ext || ''] || 'other';
+  }
+
+  /**
+   * Match a cookiecutter pattern against a relative path
+   */
+  private matchesPattern(targetPath: string, pattern: string): boolean {
+    const normalizedTarget = targetPath.replace(/\\/g, '/');
+    const normalizedPattern = pattern.replace(/\\/g, '/');
+    const regex = this.globToRegExp(normalizedPattern);
+    return regex.test(normalizedTarget);
+  }
+
+  /**
+   * Convert a glob pattern to a regex
+   */
+  private globToRegExp(pattern: string): RegExp {
+    const doubleStarSlash = '__GLOB_DOUBLE_STAR_SLASH__';
+    const doubleStar = '__GLOB_DOUBLE_STAR__';
+    const singleStar = '__GLOB_SINGLE_STAR__';
+    const question = '__GLOB_QUESTION__';
+
+    const tokenized = pattern
+      .replace(/\*\*\/+/g, doubleStarSlash)
+      .replace(/\*\*/g, doubleStar)
+      .replace(/\*/g, singleStar)
+      .replace(/\?/g, question);
+
+    const escaped = tokenized.replace(/[.+^${}()|[\]\\]/g, '\\$&');
+    const withDoubleStarSlash = escaped.replace(
+      new RegExp(doubleStarSlash, 'g'),
+      '(?:.*/)?'
+    );
+    const withDoubleStar = withDoubleStarSlash.replace(
+      new RegExp(doubleStar, 'g'),
+      '.*'
+    );
+    const withSingleStar = withDoubleStar.replace(
+      new RegExp(singleStar, 'g'),
+      '[^/]*'
+    );
+    const withQuestion = withSingleStar.replace(
+      new RegExp(question, 'g'),
+      '[^/]'
+    );
+
+    return new RegExp(`^${withQuestion}$`);
   }
 }
 

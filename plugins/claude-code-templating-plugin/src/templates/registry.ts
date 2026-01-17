@@ -42,39 +42,8 @@ export class TemplateRegistry implements ITemplateRegistry {
    */
   async list(options: TemplateListOptions = {}): Promise<TemplateRegistryEntry[]> {
     await this.ensureCache();
-
-    let entries = [...(this.cache?.entries || [])];
-
-    // Apply filters
-    if (options.format) {
-      entries = entries.filter(e => e.format === options.format);
-    }
-
-    if (options.category) {
-      entries = entries.filter(e => e.category === options.category);
-    }
-
-    if (options.tags && options.tags.length > 0) {
-      entries = entries.filter(e =>
-        e.tags && options.tags!.some(tag => e.tags!.includes(tag))
-      );
-    }
-
-    // Apply sorting
-    if (options.sortBy) {
-      entries = this.sortEntries(entries, options.sortBy, options.sortOrder || 'asc');
-    }
-
-    // Apply pagination
-    if (options.offset !== undefined) {
-      entries = entries.slice(options.offset);
-    }
-
-    if (options.limit !== undefined) {
-      entries = entries.slice(0, options.limit);
-    }
-
-    return entries;
+    const entries = [...(this.cache?.entries || [])];
+    return this.applyListOptions(entries, options);
   }
 
   /**
@@ -84,7 +53,7 @@ export class TemplateRegistry implements ITemplateRegistry {
     await this.ensureCache();
 
     const searchLower = query.toLowerCase();
-    let entries = this.cache?.entries || [];
+    let entries = [...(this.cache?.entries || [])];
 
     // Apply search filter
     entries = entries.filter(entry => {
@@ -111,7 +80,7 @@ export class TemplateRegistry implements ITemplateRegistry {
     });
 
     // Apply additional filters from list options
-    return this.list({ ...options, limit: undefined, offset: undefined });
+    return this.applyListOptions(entries, { ...options });
   }
 
   /**
@@ -132,7 +101,7 @@ export class TemplateRegistry implements ITemplateRegistry {
 
     const sorted = matchingEntries.sort((a, b) => {
       // Simple version comparison (assumes semver-like versions)
-      return b.version.localeCompare(a.version);
+      return this.compareVersions(b.version, a.version);
     });
 
     return sorted[0] || null;
@@ -412,6 +381,97 @@ export class TemplateRegistry implements ITemplateRegistry {
     });
 
     return sorted;
+  }
+
+  /**
+   * Apply list filtering, sorting, and pagination to entries
+   */
+  private applyListOptions(
+    entries: TemplateRegistryEntry[],
+    options: TemplateListOptions = {}
+  ): TemplateRegistryEntry[] {
+    let filtered = [...entries];
+
+    if (options.format) {
+      filtered = filtered.filter((entry) => entry.format === options.format);
+    }
+
+    if (options.category) {
+      filtered = filtered.filter((entry) => entry.category === options.category);
+    }
+
+    if (options.tags && options.tags.length > 0) {
+      filtered = filtered.filter((entry) =>
+        entry.tags && options.tags!.some((tag) => entry.tags!.includes(tag))
+      );
+    }
+
+    if (options.sortBy) {
+      filtered = this.sortEntries(
+        filtered,
+        options.sortBy,
+        options.sortOrder || 'asc'
+      );
+    }
+
+    if (options.offset !== undefined) {
+      filtered = filtered.slice(options.offset);
+    }
+
+    if (options.limit !== undefined) {
+      filtered = filtered.slice(0, options.limit);
+    }
+
+    return filtered;
+  }
+
+  /**
+   * Compare semver-like version strings
+   */
+  private compareVersions(a: string, b: string): number {
+    const parsedA = this.parseVersion(a);
+    const parsedB = this.parseVersion(b);
+
+    if (!parsedA || !parsedB) {
+      return a.localeCompare(b);
+    }
+
+    const maxLen = Math.max(parsedA.parts.length, parsedB.parts.length);
+    for (let i = 0; i < maxLen; i += 1) {
+      const partA = parsedA.parts[i] ?? 0;
+      const partB = parsedB.parts[i] ?? 0;
+      if (partA !== partB) {
+        return partA < partB ? -1 : 1;
+      }
+    }
+
+    if (parsedA.prerelease && !parsedB.prerelease) return -1;
+    if (!parsedA.prerelease && parsedB.prerelease) return 1;
+    if (parsedA.prerelease && parsedB.prerelease) {
+      return parsedA.prerelease.localeCompare(parsedB.prerelease);
+    }
+
+    return 0;
+  }
+
+  /**
+   * Parse a semver-like version string
+   */
+  private parseVersion(
+    version: string
+  ): { parts: number[]; prerelease?: string } | null {
+    const match = version.trim().match(/^v?(\d+(?:\.\d+)*)(?:-([0-9A-Za-z.-]+))?$/);
+    if (!match) {
+      return null;
+    }
+
+    const parts = match[1]!.split('.').map((part) => Number(part));
+    const prerelease = match[2];
+
+    return {
+      parts,
+      prerelease: prerelease || undefined,
+    };
   }
 }
 

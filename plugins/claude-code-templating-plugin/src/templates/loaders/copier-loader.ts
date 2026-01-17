@@ -168,7 +168,8 @@ export class CopierLoader implements ITemplateLoader {
       excludePatterns,
       skipIfExists,
       files,
-      templateDir
+      templateDir,
+      outputPath
     );
 
     return files;
@@ -267,7 +268,8 @@ export class CopierLoader implements ITemplateLoader {
     excludePatterns: string[],
     skipIfExists: string[],
     files: GeneratedFile[],
-    templateRoot: string
+    templateRoot: string,
+    outputRoot: string
   ): Promise<void> {
     const entries = await readdir(sourcePath, { withFileTypes: true });
 
@@ -301,7 +303,8 @@ export class CopierLoader implements ITemplateLoader {
           excludePatterns,
           skipIfExists,
           files,
-          templateRoot
+          templateRoot,
+          outputRoot
         );
       } else {
         // Check if file should be skipped if it exists
@@ -316,7 +319,7 @@ export class CopierLoader implements ITemplateLoader {
         }
 
         // Process file
-        await this.processFile(sourceEntry, targetEntry, variables, files);
+        await this.processFile(sourceEntry, targetEntry, variables, files, outputRoot);
       }
     }
   }
@@ -326,9 +329,7 @@ export class CopierLoader implements ITemplateLoader {
    */
   private shouldExclude(path: string, patterns: string[]): boolean {
     return patterns.some(pattern => {
-      // Simple glob-like matching
-      const regex = new RegExp(pattern.replace(/\*/g, '.*').replace(/\?/g, '.'));
-      return regex.test(path);
+      return this.matchesPattern(path, pattern);
     });
   }
 
@@ -337,8 +338,7 @@ export class CopierLoader implements ITemplateLoader {
    */
   private shouldSkipIfExists(path: string, patterns: string[]): boolean {
     return patterns.some(pattern => {
-      const regex = new RegExp(pattern.replace(/\*/g, '.*').replace(/\?/g, '.'));
-      return regex.test(path);
+      return this.matchesPattern(path, pattern);
     });
   }
 
@@ -349,7 +349,8 @@ export class CopierLoader implements ITemplateLoader {
     sourcePath: string,
     targetPath: string,
     variables: Record<string, unknown>,
-    files: GeneratedFile[]
+    files: GeneratedFile[],
+    outputRoot: string
   ): Promise<void> {
     const templateContent = await readFile(sourcePath, 'utf-8');
 
@@ -370,7 +371,7 @@ export class CopierLoader implements ITemplateLoader {
     // Track generated file
     const stats = await stat(targetPath);
     files.push({
-      path: relative(dirname(dirname(targetPath)), targetPath),
+      path: relative(outputRoot, targetPath),
       action: 'created',
       size: stats.size,
       type: this.getFileType(targetPath)
@@ -418,6 +419,52 @@ export class CopierLoader implements ITemplateLoader {
     };
 
     return typeMap[ext || ''] || 'other';
+  }
+
+  /**
+   * Match a copier pattern against a relative path
+   */
+  private matchesPattern(targetPath: string, pattern: string): boolean {
+    const normalizedTarget = targetPath.replace(/\\/g, '/');
+    const normalizedPattern = pattern.replace(/\\/g, '/');
+    const regex = this.globToRegExp(normalizedPattern);
+    return regex.test(normalizedTarget);
+  }
+
+  /**
+   * Convert a glob pattern to a regex
+   */
+  private globToRegExp(pattern: string): RegExp {
+    const doubleStarSlash = '__GLOB_DOUBLE_STAR_SLASH__';
+    const doubleStar = '__GLOB_DOUBLE_STAR__';
+    const singleStar = '__GLOB_SINGLE_STAR__';
+    const question = '__GLOB_QUESTION__';
+
+    const tokenized = pattern
+      .replace(/\*\*\/+/g, doubleStarSlash)
+      .replace(/\*\*/g, doubleStar)
+      .replace(/\*/g, singleStar)
+      .replace(/\?/g, question);
+
+    const escaped = tokenized.replace(/[.+^${}()|[\]\\]/g, '\\$&');
+    const withDoubleStarSlash = escaped.replace(
+      new RegExp(doubleStarSlash, 'g'),
+      '(?:.*/)?'
+    );
+    const withDoubleStar = withDoubleStarSlash.replace(
+      new RegExp(doubleStar, 'g'),
+      '.*'
+    );
+    const withSingleStar = withDoubleStar.replace(
+      new RegExp(singleStar, 'g'),
+      '[^/]*'
+    );
+    const withQuestion = withSingleStar.replace(
+      new RegExp(question, 'g'),
+      '[^/]'
+    );
+
+    return new RegExp(`^${withQuestion}$`);
   }
 }
 

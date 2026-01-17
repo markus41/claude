@@ -13,7 +13,7 @@
  */
 
 import { readFile, readdir, stat, mkdir, writeFile } from 'fs/promises';
-import { join, relative, dirname } from 'path';
+import { join, relative } from 'path';
 import * as yaml from 'js-yaml';
 import type {
   ITemplateLoader,
@@ -147,10 +147,10 @@ export class HarnessTemplateLoader implements ITemplateLoader {
     const stats = await stat(source);
     if (stats.isFile()) {
       // Single template file
-      await this.processTemplateFile(source, outputPath, variables, files);
+      await this.processTemplateFile(source, outputPath, variables, files, outputPath);
     } else {
       // Directory with multiple templates
-      await this.processTemplateDirectory(source, outputPath, variables, files);
+      await this.processTemplateDirectory(source, outputPath, variables, files, outputPath);
     }
 
     return files;
@@ -163,7 +163,8 @@ export class HarnessTemplateLoader implements ITemplateLoader {
     sourcePath: string,
     outputPath: string,
     variables: Record<string, unknown>,
-    files: GeneratedFile[]
+    files: GeneratedFile[],
+    outputRoot: string
   ): Promise<void> {
     const content = await readFile(sourcePath, 'utf-8');
     const template = yaml.load(content) as HarnessTemplate;
@@ -191,7 +192,7 @@ export class HarnessTemplateLoader implements ITemplateLoader {
     // Track generated file
     const stats = await stat(targetPath);
     files.push({
-      path: relative(dirname(outputPath), targetPath),
+      path: relative(outputRoot, targetPath),
       action: 'created',
       size: stats.size,
       type: 'template'
@@ -205,7 +206,8 @@ export class HarnessTemplateLoader implements ITemplateLoader {
     sourcePath: string,
     outputPath: string,
     variables: Record<string, unknown>,
-    files: GeneratedFile[]
+    files: GeneratedFile[],
+    outputRoot: string
   ): Promise<void> {
     const entries = await readdir(sourcePath, { withFileTypes: true });
 
@@ -215,10 +217,10 @@ export class HarnessTemplateLoader implements ITemplateLoader {
       if (entry.isDirectory()) {
         const targetDir = join(outputPath, entry.name);
         await mkdir(targetDir, { recursive: true });
-        await this.processTemplateDirectory(sourceEntry, targetDir, variables, files);
+        await this.processTemplateDirectory(sourceEntry, targetDir, variables, files, outputRoot);
       } else if (entry.name.endsWith('.yaml') || entry.name.endsWith('.yml')) {
         if (await this.isHarnessTemplate(sourceEntry)) {
-          await this.processTemplateFile(sourceEntry, outputPath, variables, files);
+          await this.processTemplateFile(sourceEntry, outputPath, variables, files, outputRoot);
         }
       }
     }
