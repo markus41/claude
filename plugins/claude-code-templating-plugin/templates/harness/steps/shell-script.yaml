@@ -1,0 +1,62 @@
+# Shell Script Step Template
+# Generic shell script execution with error handling and output variables
+
+step:
+  name: <+input>
+  identifier: <+input>
+  type: ShellScript
+  timeout: <+input>
+  spec:
+    shell: Bash
+    onDelegate: true
+    source:
+      type: Inline
+      spec:
+        script: |
+          #!/bin/bash
+          set -e  # Exit on error
+          set -u  # Exit on undefined variable
+          set -o pipefail  # Exit on pipe failure
+
+          # Script description: <+input>
+
+          echo "Starting script execution..."
+
+          # Your script content here
+          <+input>
+
+          echo "Script execution completed successfully"
+    environmentVariables:
+      - name: <+input>
+        type: String
+        value: <+input>
+    outputVariables:
+      - name: <+input>
+        type: String
+        value: <+input>
+    secretOutputVariables:
+      - name: <+input>
+        type: String
+        value: <+input>
+
+  # When condition (optional)
+  when:
+    stageStatus: Success
+    condition: <+input>
+
+  # Failure strategy
+  failureStrategies:
+    - onFailure:
+        errors:
+          - AllErrors
+        action:
+          type: Retry
+          spec:
+            retryCount: 3
+            retryIntervals:
+              - 10s
+              - 30s
+              - 1m
+            onRetryFailure:
+              action:
+                type: Abort

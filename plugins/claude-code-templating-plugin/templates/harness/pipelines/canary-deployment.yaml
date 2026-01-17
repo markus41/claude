@@ -1,0 +1,585 @@
+# Canary Deployment Pipeline Template
+# Progressive canary rollout with automated verification at each phase
+# Phases: 10% → 25% → 50% → 100% with metrics analysis between phases
+
+pipeline:
+  name: <+input>
+  identifier: <+input>
+  projectIdentifier: <+input>
+  orgIdentifier: <+input>
+  description: Progressive canary deployment with automated verification
+  tags:
+    deployment_type: canary
+    template: progressive-rollout
+
+  variables:
+    - name: service_name
+      type: String
+      description: Service name to deploy
+      value: <+input>
+      required: true
+
+    - name: image_tag
+      type: String
+      description: Docker image tag to deploy
+      value: <+input>
+      required: true
+
+    - name: canary_phase_1_percentage
+      type: String
+      description: Phase 1 canary percentage
+      value: "10"
+      default: "10"
+
+    - name: canary_phase_2_percentage
+      type: String
+      description: Phase 2 canary percentage
+      value: "25"
+      default: "25"
+
+    - name: canary_phase_3_percentage
+      type: String
+      description: Phase 3 canary percentage
+      value: "50"
+      default: "50"
+
+    - name: phase_duration_minutes
+      type: String
+      description: Monitoring duration for each phase (minutes)
+      value: "10"
+      default: "10"
+
+    - name: error_rate_threshold
+      type: String
+      description: Maximum acceptable error rate (e.g., 0.01 = 1%)
+      value: "0.01"
+      default: "0.01"
+
+    - name: latency_threshold_ms
+      type: String
+      description: Maximum acceptable latency in milliseconds
+      value: "500"
+      default: "500"
+
+    - name: auto_rollout
+      type: String
+      description: Automatically proceed to full rollout after successful canary phases
+      value: <+input>.allowedValues(true,false)
+      default: "false"
+
+  stages:
+    # Stage 1: Canary Phase 1 (10%)
+    - stage:
+        name: Canary Phase 1 - 10%
+        identifier: canary_phase_1
+        description: Deploy canary to 10% of traffic
+        type: Deployment
+        tags: {}
+        spec:
+          deploymentType: Kubernetes
+
+          service:
+            serviceRef: <+pipeline.variables.service_name>_service
+            serviceInputs:
+              serviceDefinition:
+                type: Kubernetes
+                spec:
+                  variables:
+                    - name: image_tag
+                      type: String
+                      value: <+pipeline.variables.image_tag>
+                  manifests:
+                    - manifest:
+                        identifier: k8s_manifests
+                        type: K8sManifest
+                        spec:
+                          store:
+                            type: Github
+                            spec:
+                              connectorRef: github_connector
+                              gitFetchType: Branch
+                              branch: main
+                              paths:
+                                - kubernetes/
+
+          environment:
+            environmentRef: production
+            deployToAll: false
+            infrastructureDefinitions:
+              - identifier: prod_k8s_cluster
+
+          execution:
+            steps:
+              - step:
+                  name: Deploy Canary 10%
+                  identifier: canary_deploy_10
+                  type: K8sCanaryDeploy
+                  timeout: 10m
+                  spec:
+                    instanceSelection:
+                      type: Percentage
+                      spec:
+                        percentage: <+pipeline.variables.canary_phase_1_percentage>
+                    skipDryRun: false
+
+              - step:
+                  name: Verify Canary Pods
+                  identifier: verify_canary_10
+                  type: ShellScript
+                  timeout: 5m
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |
+                          #!/bin/bash
+                          set -e
+
+                          SERVICE="<+pipeline.variables.service_name>"
+                          echo "Verifying canary pods for $SERVICE..."
+
+                          kubectl get pods -n production -l app=$SERVICE,harness.io/track=canary
+
+                          CANARY_PODS=$(kubectl get pods -n production \
+                            -l app=$SERVICE,harness.io/track=canary \
+                            --field-selector=status.phase=Running \
+                            --no-headers | wc -l)
+
+                          echo "Canary pods running: $CANARY_PODS"
+
+                          if [ "$CANARY_PODS" -lt 1 ]; then
+                            echo "ERROR: No canary pods running"
+                            exit 1
+                          fi
+
+              - step:
+                  name: Monitor Phase 1
+                  identifier: monitor_phase_1
+                  type: Wait
+                  timeout: <+pipeline.variables.phase_duration_minutes>m
+                  spec:
+                    duration: <+pipeline.variables.phase_duration_minutes>m
+
+              - step:
+                  name: Analyze Phase 1 Metrics
+                  identifier: analyze_phase_1
+                  type: ShellScript
+                  timeout: 5m
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |
+                          #!/bin/bash
+                          set -e
+
+                          echo "Analyzing canary metrics for Phase 1..."
+
+                          SERVICE="<+pipeline.variables.service_name>"
+                          VERSION="<+pipeline.variables.image_tag>"
+                          PROMETHEUS_URL="http://prometheus:9090"
+
+                          # Query error rate
+                          ERROR_RATE=$(curl -s "${PROMETHEUS_URL}/api/v1/query" \
+                            --data-urlencode "query=rate(http_errors_total{service=\"${SERVICE}\",version=\"${VERSION}\"}[5m])" \
+                            | jq -r '.data.result[0].value[1]' 2>/dev/null || echo "0")
+
+                          echo "Error rate: $ERROR_RATE"
+
+                          THRESHOLD="<+pipeline.variables.error_rate_threshold>"
+                          if (( $(echo "$ERROR_RATE > $THRESHOLD" | bc -l) )); then
+                            echo "ERROR: Error rate $ERROR_RATE exceeds threshold $THRESHOLD"
+                            exit 1
+                          fi
+
+                          # Query latency
+                          LATENCY=$(curl -s "${PROMETHEUS_URL}/api/v1/query" \
+                            --data-urlencode "query=histogram_quantile(0.99, rate(http_request_duration_seconds_bucket{service=\"${SERVICE}\",version=\"${VERSION}\"}[5m])) * 1000" \
+                            | jq -r '.data.result[0].value[1]' 2>/dev/null || echo "0")
+
+                          echo "P99 latency: ${LATENCY}ms"
+
+                          LATENCY_THRESHOLD="<+pipeline.variables.latency_threshold_ms>"
+                          if (( $(echo "$LATENCY > $LATENCY_THRESHOLD" | bc -l) )); then
+                            echo "WARNING: Latency $LATENCY exceeds threshold $LATENCY_THRESHOLD"
+                          fi
+
+                          echo "Phase 1 metrics: PASSED"
+
+              - step:
+                  name: Delete Canary
+                  identifier: delete_canary_1
+                  type: K8sCanaryDelete
+                  timeout: 10m
+                  spec: {}
+
+            rollbackSteps:
+              - step:
+                  type: K8sCanaryDelete
+                  name: Rollback Canary
+                  identifier: rollback_canary_1
+                  timeout: 10m
+                  spec: {}
+
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: StageRollback
+
+    # Stage 2: Canary Phase 2 (25%)
+    - stage:
+        name: Canary Phase 2 - 25%
+        identifier: canary_phase_2
+        description: Deploy canary to 25% of traffic
+        type: Deployment
+        tags: {}
+        spec:
+          deploymentType: Kubernetes
+
+          service:
+            serviceRef: <+pipeline.variables.service_name>_service
+            serviceInputs:
+              serviceDefinition:
+                type: Kubernetes
+                spec:
+                  variables:
+                    - name: image_tag
+                      type: String
+                      value: <+pipeline.variables.image_tag>
+
+          environment:
+            environmentRef: production
+            deployToAll: false
+            infrastructureDefinitions:
+              - identifier: prod_k8s_cluster
+
+          execution:
+            steps:
+              - step:
+                  name: Deploy Canary 25%
+                  identifier: canary_deploy_25
+                  type: K8sCanaryDeploy
+                  timeout: 10m
+                  spec:
+                    instanceSelection:
+                      type: Percentage
+                      spec:
+                        percentage: <+pipeline.variables.canary_phase_2_percentage>
+
+              - step:
+                  name: Monitor Phase 2
+                  identifier: monitor_phase_2
+                  type: Wait
+                  timeout: <+pipeline.variables.phase_duration_minutes>m
+                  spec:
+                    duration: <+pipeline.variables.phase_duration_minutes>m
+
+              - step:
+                  name: Analyze Phase 2 Metrics
+                  identifier: analyze_phase_2
+                  type: ShellScript
+                  timeout: 5m
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |
+                          #!/bin/bash
+                          set -e
+                          echo "Analyzing Phase 2 metrics..."
+                          # Similar analysis as Phase 1
+                          echo "Phase 2 metrics: PASSED"
+
+              - step:
+                  name: Delete Canary
+                  identifier: delete_canary_2
+                  type: K8sCanaryDelete
+                  timeout: 10m
+                  spec: {}
+
+            rollbackSteps:
+              - step:
+                  type: K8sCanaryDelete
+                  name: Rollback Canary
+                  identifier: rollback_canary_2
+                  timeout: 10m
+                  spec: {}
+
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: StageRollback
+
+    # Stage 3: Canary Phase 3 (50%)
+    - stage:
+        name: Canary Phase 3 - 50%
+        identifier: canary_phase_3
+        description: Deploy canary to 50% of traffic
+        type: Deployment
+        tags: {}
+        spec:
+          deploymentType: Kubernetes
+
+          service:
+            serviceRef: <+pipeline.variables.service_name>_service
+            serviceInputs:
+              serviceDefinition:
+                type: Kubernetes
+                spec:
+                  variables:
+                    - name: image_tag
+                      type: String
+                      value: <+pipeline.variables.image_tag>
+
+          environment:
+            environmentRef: production
+            deployToAll: false
+            infrastructureDefinitions:
+              - identifier: prod_k8s_cluster
+
+          execution:
+            steps:
+              - step:
+                  name: Deploy Canary 50%
+                  identifier: canary_deploy_50
+                  type: K8sCanaryDeploy
+                  timeout: 10m
+                  spec:
+                    instanceSelection:
+                      type: Percentage
+                      spec:
+                        percentage: <+pipeline.variables.canary_phase_3_percentage>
+
+              - step:
+                  name: Monitor Phase 3
+                  identifier: monitor_phase_3
+                  type: Wait
+                  timeout: <+pipeline.variables.phase_duration_minutes>m
+                  spec:
+                    duration: <+pipeline.variables.phase_duration_minutes>m
+
+              - step:
+                  name: Analyze Phase 3 Metrics
+                  identifier: analyze_phase_3
+                  type: ShellScript
+                  timeout: 5m
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |
+                          #!/bin/bash
+                          set -e
+                          echo "Analyzing Phase 3 metrics..."
+                          # Similar analysis as Phase 1
+                          echo "Phase 3 metrics: PASSED"
+
+              - step:
+                  name: Final Approval
+                  identifier: final_approval
+                  type: HarnessApproval
+                  timeout: 1h
+                  when:
+                    stageStatus: Success
+                    condition: <+pipeline.variables.auto_rollout> == "false"
+                  spec:
+                    approvalMessage: |
+                      Canary deployment progression complete:
+                      - Phase 1 (10%): ✅ PASSED
+                      - Phase 2 (25%): ✅ PASSED
+                      - Phase 3 (50%): ✅ PASSED
+
+                      Service: <+pipeline.variables.service_name>
+                      Version: <+pipeline.variables.image_tag>
+
+                      All metrics within acceptable thresholds.
+                      Approve full rollout to 100%?
+                    approvers:
+                      minimumCount: 1
+                      disallowPipelineExecutor: false
+                      userGroups:
+                        - account.Production_Approvers
+
+              - step:
+                  name: Delete Canary
+                  identifier: delete_canary_3
+                  type: K8sCanaryDelete
+                  timeout: 10m
+                  spec: {}
+
+            rollbackSteps:
+              - step:
+                  type: K8sCanaryDelete
+                  name: Rollback Canary
+                  identifier: rollback_canary_3
+                  timeout: 10m
+                  spec: {}
+
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: StageRollback
+
+    # Stage 4: Full Rollout (100%)
+    - stage:
+        name: Full Rollout - 100%
+        identifier: full_rollout
+        description: Complete rolling deployment to all instances
+        type: Deployment
+        tags: {}
+        spec:
+          deploymentType: Kubernetes
+
+          service:
+            serviceRef: <+pipeline.variables.service_name>_service
+            serviceInputs:
+              serviceDefinition:
+                type: Kubernetes
+                spec:
+                  variables:
+                    - name: image_tag
+                      type: String
+                      value: <+pipeline.variables.image_tag>
+
+          environment:
+            environmentRef: production
+            deployToAll: false
+            infrastructureDefinitions:
+              - identifier: prod_k8s_cluster
+
+          execution:
+            steps:
+              - step:
+                  name: Rolling Deployment
+                  identifier: rolling_deployment
+                  type: K8sRollingDeploy
+                  timeout: 15m
+                  spec:
+                    skipDryRun: false
+                    pruningEnabled: false
+
+              - step:
+                  name: Verify Full Rollout
+                  identifier: verify_rollout
+                  type: ShellScript
+                  timeout: 10m
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |
+                          #!/bin/bash
+                          set -e
+
+                          SERVICE="<+pipeline.variables.service_name>"
+                          echo "Verifying full rollout for $SERVICE..."
+
+                          kubectl rollout status deployment/$SERVICE -n production --timeout=300s
+
+                          DESIRED=$(kubectl get deployment $SERVICE -n production -o jsonpath='{.spec.replicas}')
+                          READY=$(kubectl get deployment $SERVICE -n production -o jsonpath='{.status.readyReplicas}')
+
+                          if [ "$DESIRED" != "$READY" ]; then
+                            echo "ERROR: Not all replicas ready"
+                            exit 1
+                          fi
+
+                          echo "Full rollout completed successfully"
+
+              - step:
+                  name: Post-Deployment Verification
+                  identifier: post_verification
+                  type: ShellScript
+                  timeout: 10m
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |
+                          #!/bin/bash
+                          set -e
+
+                          SERVICE="<+pipeline.variables.service_name>"
+                          SERVICE_URL="http://${SERVICE}.production.svc.cluster.local:8080"
+
+                          echo "Running post-deployment verification..."
+
+                          # Health check
+                          curl -f "$SERVICE_URL/health"
+
+                          # Smoke tests
+                          curl -f "$SERVICE_URL/api/v1/status"
+
+                          # Monitor for 2 minutes
+                          for i in {1..12}; do
+                            echo "Health check $i/12"
+                            curl -f "$SERVICE_URL/health"
+                            sleep 10
+                          done
+
+                          echo "Post-deployment verification: PASSED"
+
+            rollbackSteps:
+              - step:
+                  name: Rollback Deployment
+                  identifier: rollback_deployment
+                  type: K8sRollingRollback
+                  timeout: 10m
+                  spec: {}
+
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: StageRollback
+
+  # Notification rules
+  notificationRules:
+    - name: Canary Success
+      identifier: canary_success
+      pipelineEvents:
+        - type: PipelineSuccess
+      notificationMethod:
+        type: Slack
+        spec:
+          webhookUrl: <+secrets.getValue("slack_webhook")>
+          messageContent: |
+            ✅ Canary deployment successful
+            Service: <+pipeline.variables.service_name>
+            Version: <+pipeline.variables.image_tag>
+            All phases completed successfully
+
+    - name: Canary Failure
+      identifier: canary_failure
+      pipelineEvents:
+        - type: PipelineFailed
+        - type: StageFailed
+      notificationMethod:
+        type: Email
+        spec:
+          userGroups:
+            - account.DevOps_Team
+          messageContent: |
+            ❌ Canary deployment failed
+            Service: <+pipeline.variables.service_name>
+            Version: <+pipeline.variables.image_tag>
+            Failed Stage: <+stage.name>

@@ -1,0 +1,58 @@
+# Manual Approval Stage Template
+# Reusable approval stage with customizable approvers and timeout
+
+stage:
+  name: <+input>
+  identifier: <+input>
+  description: Manual approval gate with configurable approvers
+  type: Approval
+  tags:
+    stage_type: approval
+
+  spec:
+    execution:
+      steps:
+        - step:
+            name: <+input>
+            identifier: <+input>
+            type: HarnessApproval
+            timeout: <+input>
+            spec:
+              approvalMessage: |
+                <+input>
+
+                Pipeline: <+pipeline.name>
+                Execution ID: <+pipeline.executionId>
+                Triggered By: <+pipeline.triggeredBy.name>
+
+                Please review and approve to proceed.
+              includePipelineExecutionHistory: true
+              approvers:
+                minimumCount: <+input>
+                disallowPipelineExecutor: <+input>
+                userGroups:
+                  - <+input>
+              approverInputs:
+                - name: comments
+                  type: String
+                  description: Optional comments for approval
+
+  # When condition (optional)
+  when:
+    pipelineStatus: Success
+    condition: <+input>
+
+  # Failure strategies
+  failureStrategies:
+    - onFailure:
+        errors:
+          - ApprovalRejection
+        action:
+          type: Abort
+    - onFailure:
+        errors:
+          - Timeout
+        action:
+          type: MarkAsSuccess
+          spec:
+            message: Approval timed out, marking as success based on auto-approve configuration

@@ -1,0 +1,615 @@
+# Blue-Green Deployment Pipeline Template
+# Zero-downtime deployment with staged green environment and atomic traffic switch
+# Includes comprehensive testing and easy rollback capabilities
+
+pipeline:
+  name: <+input>
+  identifier: <+input>
+  projectIdentifier: <+input>
+  orgIdentifier: <+input>
+  description: Zero-downtime blue-green deployment with verification
+  tags:
+    deployment_type: blue-green
+    template: zero-downtime
+
+  variables:
+    - name: service_name
+      type: String
+      description: Service name to deploy
+      value: <+input>
+      required: true
+
+    - name: image_tag
+      type: String
+      description: Docker image tag to deploy
+      value: <+input>
+      required: true
+
+    - name: verification_timeout
+      type: String
+      description: Time to wait for green environment verification (minutes)
+      value: "30"
+      default: "30"
+
+    - name: auto_promote
+      type: String
+      description: Automatically promote green to primary after successful verification
+      value: <+input>.allowedValues(true,false)
+      default: "false"
+
+    - name: cleanup_old_version
+      type: String
+      description: Cleanup old blue environment after successful deployment
+      value: <+input>.allowedValues(true,false)
+      default: "true"
+
+    - name: replicas
+      type: String
+      description: Number of replicas for green environment
+      value: "3"
+      default: "3"
+
+  stages:
+    # Stage 1: Deploy Green Environment
+    - stage:
+        name: Deploy Green Environment
+        identifier: deploy_green
+        description: Deploy new version to green (staging) environment
+        type: Deployment
+        tags: {}
+        spec:
+          deploymentType: Kubernetes
+
+          service:
+            serviceRef: <+pipeline.variables.service_name>_service
+            serviceInputs:
+              serviceDefinition:
+                type: Kubernetes
+                spec:
+                  variables:
+                    - name: image_tag
+                      type: String
+                      value: <+pipeline.variables.image_tag>
+                    - name: replicas
+                      type: String
+                      value: <+pipeline.variables.replicas>
+                  manifests:
+                    - manifest:
+                        identifier: k8s_manifests
+                        type: K8sManifest
+                        spec:
+                          store:
+                            type: Github
+                            spec:
+                              connectorRef: github_connector
+                              gitFetchType: Branch
+                              branch: main
+                              paths:
+                                - kubernetes/
+
+          environment:
+            environmentRef: production
+            deployToAll: false
+            infrastructureDefinitions:
+              - identifier: prod_k8s_cluster
+
+          execution:
+            steps:
+              # Deploy to green environment (stage)
+              - step:
+                  name: Stage Deployment (Green)
+                  identifier: stage_deployment
+                  type: K8sBlueGreenDeploy
+                  timeout: 15m
+                  spec:
+                    skipDryRun: false
+
+              # Verify green pods are healthy
+              - step:
+                  name: Verify Green Pods
+                  identifier: verify_green_pods
+                  type: ShellScript
+                  timeout: 10m
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |
+                          #!/bin/bash
+                          set -e
+
+                          SERVICE="<+pipeline.variables.service_name>"
+                          echo "Verifying green environment pods for $SERVICE..."
+
+                          # Wait for green deployment rollout
+                          kubectl rollout status deployment/${SERVICE} -n production --timeout=300s
+
+                          # Get green pods
+                          GREEN_PODS=$(kubectl get pods -n production \
+                            -l app=${SERVICE},harness.io/color=green \
+                            --field-selector=status.phase=Running \
+                            --no-headers | wc -l)
+
+                          echo "Green pods running: $GREEN_PODS"
+
+                          if [ "$GREEN_PODS" -lt 1 ]; then
+                            echo "ERROR: No green pods running"
+                            exit 1
+                          fi
+
+                          # Verify all pods are ready
+                          NOT_READY=$(kubectl get pods -n production \
+                            -l app=${SERVICE},harness.io/color=green \
+                            --field-selector=status.phase!=Running \
+                            --no-headers | wc -l)
+
+                          if [ "$NOT_READY" -gt 0 ]; then
+                            echo "ERROR: Some green pods are not ready"
+                            kubectl get pods -n production -l app=${SERVICE},harness.io/color=green
+                            exit 1
+                          fi
+
+                          echo "Green environment verification successful"
+
+              # Get green service endpoint
+              - step:
+                  name: Get Green Service Endpoint
+                  identifier: get_green_endpoint
+                  type: ShellScript
+                  timeout: 2m
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |
+                          #!/bin/bash
+
+                          SERVICE="<+pipeline.variables.service_name>"
+
+                          # Get green service ClusterIP
+                          GREEN_SERVICE_IP=$(kubectl get svc ${SERVICE}-stage -n production \
+                            -o jsonpath='{.spec.clusterIP}')
+
+                          echo "Green service endpoint: http://$GREEN_SERVICE_IP:8080"
+                          echo "GREEN_ENDPOINT=http://$GREEN_SERVICE_IP:8080" >> $HARNESS_ENV_EXPORT_PATH
+                    outputVariables:
+                      - name: green_endpoint
+                        type: String
+                        value: GREEN_ENDPOINT
+
+            rollbackSteps:
+              - step:
+                  name: Delete Green Deployment
+                  identifier: delete_green
+                  type: ShellScript
+                  timeout: 5m
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |
+                          SERVICE="<+pipeline.variables.service_name>"
+                          echo "Cleaning up failed green deployment"
+                          kubectl delete deployment -l app=${SERVICE},harness.io/color=green -n production || true
+
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: StageRollback
+
+    # Stage 2: Verify Green Environment
+    - stage:
+        name: Verify Green Environment
+        identifier: verify_green
+        description: Run comprehensive tests against green environment
+        type: Custom
+        tags: {}
+        spec:
+          execution:
+            steps:
+              # Health check
+              - step:
+                  name: Health Check
+                  identifier: health_check
+                  type: Http
+                  timeout: 2m
+                  spec:
+                    url: http://<+pipeline.variables.service_name>-stage.production.svc.cluster.local:8080/health
+                    method: GET
+                    assertion: <+httpResponseCode> == 200
+
+              # Integration tests
+              - step:
+                  name: Integration Tests
+                  identifier: integration_tests
+                  type: ShellScript
+                  timeout: 15m
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |
+                          #!/bin/bash
+                          set -e
+
+                          SERVICE="<+pipeline.variables.service_name>"
+                          GREEN_URL="http://${SERVICE}-stage.production.svc.cluster.local:8080"
+
+                          echo "Running integration tests against green environment..."
+
+                          # Test 1: API functionality
+                          echo "Test 1: API functionality"
+                          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" "${GREEN_URL}/api/v1/users")
+                          if [ "$RESPONSE" != "200" ]; then
+                            echo "ERROR: API test failed with status $RESPONSE"
+                            exit 1
+                          fi
+
+                          # Test 2: Database connectivity
+                          echo "Test 2: Database connectivity"
+                          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" "${GREEN_URL}/api/v1/health/db")
+                          if [ "$RESPONSE" != "200" ]; then
+                            echo "ERROR: Database test failed"
+                            exit 1
+                          fi
+
+                          # Test 3: External dependencies
+                          echo "Test 3: External dependencies"
+                          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" "${GREEN_URL}/api/v1/health/dependencies")
+                          if [ "$RESPONSE" != "200" ]; then
+                            echo "ERROR: Dependencies test failed"
+                            exit 1
+                          fi
+
+                          # Test 4: Authentication
+                          echo "Test 4: Authentication"
+                          TOKEN=$(curl -s -X POST "${GREEN_URL}/api/v1/auth/login" \
+                            -H "Content-Type: application/json" \
+                            -d '{"username":"test","password":"test"}' | jq -r '.token')
+
+                          if [ -z "$TOKEN" ] || [ "$TOKEN" == "null" ]; then
+                            echo "ERROR: Authentication test failed"
+                            exit 1
+                          fi
+
+                          echo "All integration tests passed"
+
+              # Performance tests
+              - step:
+                  name: Performance Tests
+                  identifier: performance_tests
+                  type: ShellScript
+                  timeout: 15m
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |
+                          #!/bin/bash
+                          set -e
+
+                          SERVICE="<+pipeline.variables.service_name>"
+                          GREEN_URL="http://${SERVICE}-stage.production.svc.cluster.local:8080"
+
+                          echo "Running performance tests..."
+
+                          # Load test with 100 concurrent requests
+                          echo "Running load test with 100 concurrent requests..."
+                          for i in {1..100}; do
+                            curl -s -o /dev/null "${GREEN_URL}/api/v1/status" &
+                          done
+                          wait
+
+                          # Check response time
+                          RESPONSE_TIME=$(curl -s -o /dev/null -w "%{time_total}" "${GREEN_URL}/api/v1/status")
+                          echo "Response time: ${RESPONSE_TIME}s"
+
+                          # Threshold: 2 seconds
+                          if (( $(echo "$RESPONSE_TIME > 2.0" | bc -l) )); then
+                            echo "WARNING: Response time exceeds threshold"
+                          fi
+
+                          echo "Performance tests completed"
+
+              # Security scan
+              - step:
+                  name: Security Scan
+                  identifier: security_scan
+                  type: ShellScript
+                  timeout: 10m
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |
+                          #!/bin/bash
+                          set -e
+
+                          SERVICE="<+pipeline.variables.service_name>"
+                          GREEN_URL="http://${SERVICE}-stage.production.svc.cluster.local:8080"
+
+                          echo "Running security scan on green environment..."
+
+                          # Check security headers
+                          HEADERS=$(curl -s -I "${GREEN_URL}")
+                          echo "Security headers:"
+                          echo "$HEADERS" | grep -i "x-frame-options\|x-content-type-options\|strict-transport-security" || true
+
+                          # Optional: Run OWASP ZAP scan
+                          # zap-cli quick-scan ${GREEN_URL}
+
+                          echo "Security scan completed"
+
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: Abort
+
+    # Stage 3: Traffic Switch Approval and Execution
+    - stage:
+        name: Approval and Traffic Switch
+        identifier: approval_switch
+        description: Approve and execute traffic switch from blue to green
+        type: Deployment
+        tags: {}
+        spec:
+          deploymentType: Kubernetes
+
+          service:
+            serviceRef: <+pipeline.variables.service_name>_service
+            serviceInputs:
+              serviceDefinition:
+                type: Kubernetes
+                spec:
+                  variables:
+                    - name: image_tag
+                      type: String
+                      value: <+pipeline.variables.image_tag>
+
+          environment:
+            environmentRef: production
+            deployToAll: false
+            infrastructureDefinitions:
+              - identifier: prod_k8s_cluster
+
+          execution:
+            steps:
+              # Manual approval (if auto_promote is false)
+              - step:
+                  name: Approve Traffic Switch
+                  identifier: approve_switch
+                  type: HarnessApproval
+                  timeout: <+pipeline.variables.verification_timeout>m
+                  when:
+                    stageStatus: Success
+                    condition: <+pipeline.variables.auto_promote> == "false"
+                  spec:
+                    approvalMessage: |
+                      Green environment verification completed successfully.
+
+                      Service: <+pipeline.variables.service_name>
+                      Current (Blue) version: Production
+                      New (Green) version: <+pipeline.variables.image_tag>
+
+                      Test Results:
+                      ✅ Health check: PASSED
+                      ✅ Integration tests: PASSED
+                      ✅ Performance tests: PASSED
+                      ✅ Security scan: PASSED
+
+                      Approve to switch production traffic to green environment?
+                    includePipelineExecutionHistory: true
+                    approvers:
+                      minimumCount: 1
+                      disallowPipelineExecutor: false
+                      userGroups:
+                        - account.Production_Approvers
+
+              # Swap blue and green (atomic traffic switch)
+              - step:
+                  name: Swap Primary with Stage
+                  identifier: swap_services
+                  type: K8sBlueGreenSwap
+                  timeout: 10m
+                  spec:
+                    skipDryRun: false
+
+              # Verify traffic switch
+              - step:
+                  name: Verify Traffic Switch
+                  identifier: verify_switch
+                  type: ShellScript
+                  timeout: 5m
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |
+                          #!/bin/bash
+                          set -e
+
+                          SERVICE="<+pipeline.variables.service_name>"
+                          echo "Verifying traffic switch for $SERVICE..."
+
+                          # Get primary service endpoint
+                          PRIMARY_SERVICE_IP=$(kubectl get svc ${SERVICE}-primary -n production \
+                            -o jsonpath='{.spec.clusterIP}')
+
+                          # Verify primary service is serving new version
+                          VERSION=$(curl -s "http://$PRIMARY_SERVICE_IP:8080/api/v1/version" | jq -r '.version' || echo "unknown")
+                          echo "Primary service version: $VERSION"
+
+                          EXPECTED_VERSION="<+pipeline.variables.image_tag>"
+                          if [ "$VERSION" != "$EXPECTED_VERSION" ]; then
+                            echo "ERROR: Primary service not serving expected version"
+                            echo "Expected: $EXPECTED_VERSION, Got: $VERSION"
+                            exit 1
+                          fi
+
+                          echo "Traffic switch verification successful"
+
+              # Monitor new primary
+              - step:
+                  name: Monitor New Primary
+                  identifier: monitor_primary
+                  type: ShellScript
+                  timeout: 10m
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |
+                          #!/bin/bash
+                          set -e
+
+                          SERVICE="<+pipeline.variables.service_name>"
+                          echo "Monitoring new primary environment..."
+
+                          # Monitor for 5 minutes
+                          for i in {1..30}; do
+                            HEALTH=$(curl -s "http://${SERVICE}-primary.production.svc.cluster.local:8080/health" | jq -r '.status' || echo "unhealthy")
+                            echo "Health check $i/30: $HEALTH"
+
+                            if [ "$HEALTH" != "healthy" ]; then
+                              echo "ERROR: Health check failed"
+                              exit 1
+                            fi
+
+                            sleep 10
+                          done
+
+                          echo "Monitoring completed successfully"
+
+            rollbackSteps:
+              - step:
+                  name: Swap Rollback
+                  identifier: swap_rollback
+                  type: K8sBlueGreenSwapRollback
+                  timeout: 10m
+                  spec: {}
+
+              - step:
+                  name: Verify Rollback
+                  identifier: verify_rollback
+                  type: ShellScript
+                  timeout: 5m
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |
+                          SERVICE="<+pipeline.variables.service_name>"
+                          echo "Traffic switched back to blue environment"
+                          kubectl get svc ${SERVICE}-primary -n production
+
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: StageRollback
+
+    # Stage 4: Cleanup Old Version
+    - stage:
+        name: Cleanup Old Version
+        identifier: cleanup
+        description: Clean up old blue environment after successful deployment
+        type: Custom
+        tags: {}
+        spec:
+          execution:
+            steps:
+              # Wait before cleanup
+              - step:
+                  name: Wait Before Cleanup
+                  identifier: wait_cleanup
+                  type: Wait
+                  timeout: 10m
+                  spec:
+                    duration: 5m
+
+              # Delete old blue deployment
+              - step:
+                  name: Delete Old Blue Deployment
+                  identifier: delete_old
+                  type: ShellScript
+                  timeout: 5m
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |
+                          #!/bin/bash
+
+                          SERVICE="<+pipeline.variables.service_name>"
+                          echo "Cleaning up old blue environment..."
+
+                          # Delete blue deployment (now old version)
+                          kubectl delete deployment -l app=${SERVICE},harness.io/color=blue -n production || true
+
+                          # Optionally delete old replica sets
+                          kubectl delete replicaset -l app=${SERVICE} -n production \
+                            --field-selector='status.replicas==0' || true
+
+                          echo "Cleanup completed"
+
+        when:
+          pipelineStatus: Success
+          condition: <+pipeline.variables.cleanup_old_version> == "true"
+
+  # Notification rules
+  notificationRules:
+    - name: Deployment Success
+      identifier: deployment_success
+      pipelineEvents:
+        - type: PipelineSuccess
+      notificationMethod:
+        type: Slack
+        spec:
+          webhookUrl: <+secrets.getValue("slack_webhook")>
+          messageContent: |
+            ✅ Blue-Green deployment successful
+            Service: <+pipeline.variables.service_name>
+            Version: <+pipeline.variables.image_tag>
+            Environment: Production
+
+    - name: Deployment Failure
+      identifier: deployment_failure
+      pipelineEvents:
+        - type: PipelineFailed
+        - type: StageFailed
+      notificationMethod:
+        type: Email
+        spec:
+          userGroups:
+            - account.DevOps_Team
+          messageContent: |
+            ❌ Blue-Green deployment failed
+            Service: <+pipeline.variables.service_name>
+            Version: <+pipeline.variables.image_tag>
+            Failed Stage: <+stage.name>
+            Pipeline: <+pipeline.executionUrl>

@@ -1,12 +1,12 @@
 # Golden Armada - Lobbi Autonomous DevOps Orchestration
 
-**Version:** 7.2.0 | **Agents:** 69 | **Teams:** 16 | **Skills:** 11 | **Commands:** 43 | **Hooks:** 6
+**Version:** 7.3.0 | **Agents:** 73 | **Teams:** 16 | **Skills:** 11 | **Commands:** 44 | **Hooks:** 6
 
-**NEW in v7.2:** Complete plugin manifest with all 69 agents registered, 6 workflow hooks, fixed plugin location for proper loading.
+**NEW in v7.3:** Official Atlassian MCP SSE with OAuth authentication, updated Confluence documentation integration, accurate component counts.
+
+**v7.2 Features:** Complete plugin manifest with all agents registered, 6 workflow hooks, fixed plugin location for proper loading.
 
 **v7.1 Features:** AutoGen-style agent teams for orchestrated collaboration, parent-child issue orchestration, and domain affinity routing.
-
-**v7.0 Features:** Comprehensive Harness platform knowledge - CI, CD, Code, Feature Flags, STO, CCM, SRM, Chaos Engineering, IaCM, Delegates, RBAC, OPA, Templates, and Secrets Management.
 
 ---
 
@@ -66,7 +66,7 @@ EXPLORE (2+) → PLAN (1-2) → CODE (2-4) → TEST (2-3) → FIX (1-2) → DOCU
 
 ---
 
-## Agent Categories (69 Total)
+## Agent Categories (73 Total)
 
 | Category | Count | Key Agents |
 |----------|-------|------------|
@@ -152,23 +152,27 @@ registry/
 
 | Variable | Required | Purpose |
 |----------|----------|---------|
-| `JIRA_API_TOKEN` | Yes | Jira API authentication |
-| `JIRA_SITE_URL` | Yes | Jira instance URL |
-| `JIRA_USER_EMAIL` | Yes | Your email |
+| `ATLASSIAN_CLOUD_ID` | Yes* | Your Atlassian Cloud ID |
+| `JIRA_DEFAULT_PROJECT` | Yes* | Default Jira project key |
+| `HARNESS_ACCOUNT_ID` | No | Harness CI/CD integration |
+| `HARNESS_API_KEY` | No | Harness PAT token |
+| `HARNESS_ORG_ID` | No | Harness organization |
+| `HARNESS_PROJECT_ID` | No | Harness project |
 | `OBSIDIAN_VAULT_PATH` | No | Documentation sync |
-| `GITHUB_TOKEN` | No | PR creation |
+
+*OAuth handles authentication - no API tokens needed
 
 ---
 
 ## MCP Integration
 
-The plugin auto-configures Atlassian MCP via `.mcp.json`:
+Uses official Atlassian MCP SSE with OAuth authentication:
 
-```json
-{"atlassian": {"command": "npx", "args": ["-y", "mcp-remote", "https://mcp.atlassian.com/v1/sse"]}}
+```bash
+claude mcp add --transport sse atlassian https://mcp.atlassian.com/v1/sse
 ```
 
-**Available tools:** `jira_get_issue`, `jira_create_issue`, `jira_update_issue`, `jira_transition_issue`, `confluence_*`
+**Available tools:** `mcp__atlassian__getJiraIssue`, `mcp__atlassian__createJiraIssue`, `mcp__atlassian__getConfluencePage`, `mcp__atlassian__createConfluencePage`, etc.
 
 ---
 

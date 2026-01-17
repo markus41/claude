@@ -1,0 +1,538 @@
+# GitOps Pipeline Template with ArgoCD
+# CI/CD pipeline that updates GitOps repository and triggers ArgoCD sync
+# Follows GitOps best practices with separate config repository
+
+pipeline:
+  name: <+input>
+  identifier: <+input>
+  projectIdentifier: <+input>
+  orgIdentifier: <+input>
+  description: GitOps-based deployment with ArgoCD synchronization
+  tags:
+    pipeline_type: gitops
+    deployment_tool: argocd
+    template: gitops
+
+  variables:
+    - name: service_name
+      type: String
+      description: Service name to deploy
+      value: <+input>
+      required: true
+
+    - name: docker_registry
+      type: String
+      description: Docker registry URL
+      value: <+input>
+      required: true
+
+    - name: git_branch
+      type: String
+      description: Source code branch
+      value: main
+      default: main
+
+    - name: gitops_repo
+      type: String
+      description: GitOps repository URL
+      value: <+input>
+      required: true
+
+    - name: gitops_branch
+      type: String
+      description: GitOps repository branch
+      value: main
+      default: main
+
+    - name: environment
+      type: String
+      description: Target environment
+      value: <+input>.allowedValues(dev,staging,prod)
+      default: dev
+
+    - name: argocd_app_name
+      type: String
+      description: ArgoCD application name
+      value: <+input>
+      required: true
+
+    - name: auto_sync
+      type: String
+      description: Automatically sync ArgoCD application
+      value: <+input>.allowedValues(true,false)
+      default: "true"
+
+  stages:
+    # Stage 1: CI - Build and Push
+    - stage:
+        name: Build and Push
+        identifier: ci_stage
+        description: Build Docker image and push to registry
+        type: CI
+        tags: {}
+        spec:
+          cloneCodebase: true
+          execution:
+            steps:
+              # Run tests
+              - step:
+                  name: Run Tests
+                  identifier: run_tests
+                  type: Run
+                  timeout: 15m
+                  spec:
+                    connectorRef: docker_connector
+                    image: node:18-alpine
+                    shell: Sh
+                    command: |
+                      npm ci
+                      npm run test
+                      npm run lint
+
+              # Build and push image
+              - step:
+                  name: Build and Push Image
+                  identifier: build_push
+                  type: BuildAndPushDockerRegistry
+                  timeout: 15m
+                  spec:
+                    connectorRef: docker_connector
+                    repo: <+pipeline.variables.docker_registry>/<+pipeline.variables.service_name>
+                    tags:
+                      - <+pipeline.sequenceId>
+                      - <+pipeline.variables.environment>
+                      - <+codebase.commitSha>
+                    dockerfile: Dockerfile
+                    context: .
+                    labels:
+                      version: <+pipeline.sequenceId>
+                      commit: <+codebase.commitSha>
+                      branch: <+pipeline.variables.git_branch>
+
+              # Security scan
+              - step:
+                  name: Scan Image
+                  identifier: scan_image
+                  type: Run
+                  timeout: 10m
+                  spec:
+                    connectorRef: docker_connector
+                    image: aquasec/trivy:latest
+                    shell: Sh
+                    command: |
+                      trivy image --severity HIGH,CRITICAL \
+                        <+pipeline.variables.docker_registry>/<+pipeline.variables.service_name>:<+pipeline.sequenceId>
+
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: Abort
+
+    # Stage 2: Update GitOps Repository
+    - stage:
+        name: Update GitOps Repo
+        identifier: update_gitops
+        description: Update image tag in GitOps repository manifests
+        type: Custom
+        tags: {}
+        spec:
+          execution:
+            steps:
+              # Clone GitOps repository
+              - step:
+                  name: Clone GitOps Repository
+                  identifier: clone_gitops
+                  type: ShellScript
+                  timeout: 5m
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |
+                          #!/bin/bash
+                          set -e
+
+                          echo "Cloning GitOps repository..."
+
+                          cd /tmp
+                          rm -rf gitops-repo
+
+                          git clone <+pipeline.variables.gitops_repo> gitops-repo
+                          cd gitops-repo
+                          git checkout <+pipeline.variables.gitops_branch>
+
+                          echo "GitOps repository cloned successfully"
+
+              # Update image tag
+              - step:
+                  name: Update Image Tag
+                  identifier: update_image_tag
+                  type: ShellScript
+                  timeout: 5m
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |
+                          #!/bin/bash
+                          set -e
+
+                          cd /tmp/gitops-repo
+
+                          SERVICE_NAME="<+pipeline.variables.service_name>"
+                          ENVIRONMENT="<+pipeline.variables.environment>"
+                          NEW_TAG="<+pipeline.sequenceId>"
+                          IMAGE="<+pipeline.variables.docker_registry>/${SERVICE_NAME}:${NEW_TAG}"
+
+                          echo "Updating image tag to: $IMAGE"
+
+                          # Find and update image tag in manifests
+                          MANIFEST_PATH="environments/${ENVIRONMENT}/${SERVICE_NAME}"
+
+                          if [ -f "${MANIFEST_PATH}/kustomization.yaml" ]; then
+                            # Update Kustomize
+                            cd "$MANIFEST_PATH"
+                            kustomize edit set image "${SERVICE_NAME}=${IMAGE}"
+                          elif [ -f "${MANIFEST_PATH}/values.yaml" ]; then
+                            # Update Helm values
+                            yq eval ".image.tag = \"${NEW_TAG}\"" -i "${MANIFEST_PATH}/values.yaml"
+                          else
+                            # Update raw manifests
+                            find "$MANIFEST_PATH" -name "*.yaml" -type f -exec \
+                              sed -i "s|image: .*${SERVICE_NAME}:.*|image: ${IMAGE}|g" {} \;
+                          fi
+
+                          echo "Image tag updated successfully"
+
+              # Commit and push changes
+              - step:
+                  name: Commit and Push
+                  identifier: commit_push
+                  type: ShellScript
+                  timeout: 5m
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |
+                          #!/bin/bash
+                          set -e
+
+                          cd /tmp/gitops-repo
+
+                          # Configure git
+                          git config user.name "Harness CD"
+                          git config user.email "cd@harness.io"
+
+                          # Check for changes
+                          if git diff --quiet; then
+                            echo "No changes to commit"
+                            exit 0
+                          fi
+
+                          # Commit and push
+                          git add .
+                          git commit -m "Update <+pipeline.variables.service_name> to version <+pipeline.sequenceId>
+
+                          Environment: <+pipeline.variables.environment>
+                          Image: <+pipeline.variables.docker_registry>/<+pipeline.variables.service_name>:<+pipeline.sequenceId>
+                          Commit: <+codebase.commitSha>
+                          Pipeline: <+pipeline.executionUrl>
+                          "
+
+                          git push origin <+pipeline.variables.gitops_branch>
+
+                          echo "Changes pushed to GitOps repository"
+
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: Abort
+
+    # Stage 3: Sync ArgoCD
+    - stage:
+        name: Sync ArgoCD Application
+        identifier: sync_argocd
+        description: Trigger ArgoCD synchronization
+        type: Custom
+        tags: {}
+        spec:
+          execution:
+            steps:
+              # Wait for ArgoCD to detect changes
+              - step:
+                  name: Wait for ArgoCD Detection
+                  identifier: wait_detection
+                  type: Wait
+                  timeout: 2m
+                  spec:
+                    duration: 1m
+
+              # Trigger ArgoCD sync
+              - step:
+                  name: Trigger ArgoCD Sync
+                  identifier: trigger_sync
+                  type: ShellScript
+                  timeout: 5m
+                  when:
+                    stageStatus: Success
+                    condition: <+pipeline.variables.auto_sync> == "true"
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |
+                          #!/bin/bash
+                          set -e
+
+                          ARGOCD_SERVER="<+secrets.getValue('argocd_server')>"
+                          ARGOCD_TOKEN="<+secrets.getValue('argocd_token')>"
+                          APP_NAME="<+pipeline.variables.argocd_app_name>"
+
+                          echo "Triggering ArgoCD sync for application: $APP_NAME"
+
+                          # Login to ArgoCD
+                          argocd login "$ARGOCD_SERVER" \
+                            --auth-token "$ARGOCD_TOKEN" \
+                            --grpc-web
+
+                          # Sync application
+                          argocd app sync "$APP_NAME" \
+                            --prune \
+                            --async
+
+                          echo "ArgoCD sync triggered successfully"
+
+              # Wait for sync to complete
+              - step:
+                  name: Wait for Sync
+                  identifier: wait_sync
+                  type: ShellScript
+                  timeout: 15m
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |
+                          #!/bin/bash
+                          set -e
+
+                          ARGOCD_SERVER="<+secrets.getValue('argocd_server')>"
+                          ARGOCD_TOKEN="<+secrets.getValue('argocd_token')>"
+                          APP_NAME="<+pipeline.variables.argocd_app_name>"
+
+                          echo "Waiting for ArgoCD sync to complete..."
+
+                          argocd login "$ARGOCD_SERVER" \
+                            --auth-token "$ARGOCD_TOKEN" \
+                            --grpc-web
+
+                          # Wait for sync (timeout 10 minutes)
+                          argocd app wait "$APP_NAME" \
+                            --health \
+                            --timeout 600
+
+                          echo "ArgoCD sync completed successfully"
+
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: Abort
+
+    # Stage 4: Verify Deployment
+    - stage:
+        name: Verify Deployment
+        identifier: verify_deployment
+        description: Verify application health after deployment
+        type: Custom
+        tags: {}
+        spec:
+          execution:
+            steps:
+              # Check ArgoCD application health
+              - step:
+                  name: Check Application Health
+                  identifier: check_health
+                  type: ShellScript
+                  timeout: 5m
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |
+                          #!/bin/bash
+                          set -e
+
+                          ARGOCD_SERVER="<+secrets.getValue('argocd_server')>"
+                          ARGOCD_TOKEN="<+secrets.getValue('argocd_token')>"
+                          APP_NAME="<+pipeline.variables.argocd_app_name>"
+
+                          echo "Checking ArgoCD application health..."
+
+                          argocd login "$ARGOCD_SERVER" \
+                            --auth-token "$ARGOCD_TOKEN" \
+                            --grpc-web
+
+                          # Get application status
+                          HEALTH=$(argocd app get "$APP_NAME" -o json | jq -r '.status.health.status')
+                          SYNC=$(argocd app get "$APP_NAME" -o json | jq -r '.status.sync.status')
+
+                          echo "Health: $HEALTH"
+                          echo "Sync: $SYNC"
+
+                          if [ "$HEALTH" != "Healthy" ]; then
+                            echo "ERROR: Application is not healthy"
+                            exit 1
+                          fi
+
+                          if [ "$SYNC" != "Synced" ]; then
+                            echo "ERROR: Application is not synced"
+                            exit 1
+                          fi
+
+                          echo "Application is healthy and synced"
+
+              # Verify Kubernetes resources
+              - step:
+                  name: Verify Kubernetes Resources
+                  identifier: verify_k8s
+                  type: ShellScript
+                  timeout: 5m
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |
+                          #!/bin/bash
+                          set -e
+
+                          SERVICE_NAME="<+pipeline.variables.service_name>"
+                          NAMESPACE="<+pipeline.variables.environment>"
+
+                          echo "Verifying Kubernetes resources..."
+
+                          # Check deployment
+                          kubectl rollout status deployment/"$SERVICE_NAME" -n "$NAMESPACE" --timeout=300s
+
+                          # Check pods
+                          DESIRED=$(kubectl get deployment "$SERVICE_NAME" -n "$NAMESPACE" -o jsonpath='{.spec.replicas}')
+                          READY=$(kubectl get deployment "$SERVICE_NAME" -n "$NAMESPACE" -o jsonpath='{.status.readyReplicas}')
+
+                          echo "Desired replicas: $DESIRED"
+                          echo "Ready replicas: $READY"
+
+                          if [ "$DESIRED" != "$READY" ]; then
+                            echo "ERROR: Not all replicas are ready"
+                            exit 1
+                          fi
+
+                          # Verify image tag
+                          CURRENT_IMAGE=$(kubectl get deployment "$SERVICE_NAME" -n "$NAMESPACE" \
+                            -o jsonpath='{.spec.template.spec.containers[0].image}')
+                          echo "Current image: $CURRENT_IMAGE"
+
+                          EXPECTED_TAG="<+pipeline.sequenceId>"
+                          if [[ ! "$CURRENT_IMAGE" =~ ":$EXPECTED_TAG" ]]; then
+                            echo "ERROR: Image tag mismatch"
+                            exit 1
+                          fi
+
+                          echo "Kubernetes resources verified successfully"
+
+              # Run smoke tests
+              - step:
+                  name: Smoke Tests
+                  identifier: smoke_tests
+                  type: ShellScript
+                  timeout: 5m
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |
+                          #!/bin/bash
+                          set -e
+
+                          SERVICE_NAME="<+pipeline.variables.service_name>"
+                          NAMESPACE="<+pipeline.variables.environment>"
+                          SERVICE_URL="http://${SERVICE_NAME}.${NAMESPACE}.svc.cluster.local:8080"
+
+                          echo "Running smoke tests..."
+
+                          # Test health endpoint
+                          curl -f "$SERVICE_URL/health"
+
+                          # Test API endpoint
+                          curl -f "$SERVICE_URL/api/v1/status"
+
+                          echo "Smoke tests passed"
+
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: Abort
+
+  # Notification rules
+  notificationRules:
+    - name: Deployment Success
+      identifier: deployment_success
+      pipelineEvents:
+        - type: PipelineSuccess
+      notificationMethod:
+        type: Slack
+        spec:
+          webhookUrl: <+secrets.getValue("slack_webhook")>
+          messageContent: |
+            ✅ GitOps deployment successful
+            Service: <+pipeline.variables.service_name>
+            Environment: <+pipeline.variables.environment>
+            Version: <+pipeline.sequenceId>
+            ArgoCD App: <+pipeline.variables.argocd_app_name>
+
+    - name: Deployment Failure
+      identifier: deployment_failure
+      pipelineEvents:
+        - type: PipelineFailed
+        - type: StageFailed
+      notificationMethod:
+        type: Email
+        spec:
+          userGroups:
+            - account.DevOps_Team
+          messageContent: |
+            ❌ GitOps deployment failed
+            Service: <+pipeline.variables.service_name>
+            Environment: <+pipeline.variables.environment>
+            Stage: <+stage.name>
+            Pipeline: <+pipeline.executionUrl>

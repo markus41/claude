@@ -1,0 +1,54 @@
+{
+  "mcpServers": {
+    "harness": {
+      "type": "stdio",
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "harness/mcp-server", "stdio"],
+      "description": "Harness MCP server for pipeline and template operations",
+      "env": {
+        "HARNESS_API_KEY": "${HARNESS_API_KEY}",
+        "HARNESS_ACCOUNT_ID": "${HARNESS_ACCOUNT_ID}",
+        "HARNESS_DEFAULT_ORG_ID": "${HARNESS_ORG_ID}",
+        "HARNESS_DEFAULT_PROJECT_ID": "${HARNESS_PROJECT_ID}"
+      }
+    },
+    "scaffold": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@agiflowai/scaffold-mcp"],
+      "description": "Scaffolding MCP server for project generation"
+    },
+    "github": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "description": "GitHub MCP server for repository operations",
+      "env": {
+        "GITHUB_TOKEN": "${GITHUB_TOKEN}"
+      }
+    },
+    "context7": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"],
+      "description": "Context7 MCP for library documentation",
+      "optional": true
+    }
+  },
+  "setup": {
+    "instructions": "Configure Harness API credentials and GitHub token for full functionality",
+    "authMethod": "API Key / Token",
+    "documentation": "https://developer.harness.io/docs/platform/automation/mcp/"
+  },
+  "envRequired": [
+    "HARNESS_API_KEY",
+    "HARNESS_ACCOUNT_ID",
+    "HARNESS_ORG_ID",
+    "HARNESS_PROJECT_ID"
+  ],
+  "envOptional": [
+    "GITHUB_TOKEN",
+    "COOKIECUTTER_CONFIG",
+    "COPIER_CONFIG"
+  ]
+}

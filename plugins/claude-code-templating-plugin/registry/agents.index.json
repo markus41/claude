@@ -1,0 +1,238 @@
+{
+  "$schema": "../../../.claude/core/schemas/agents.schema.json",
+  "version": "1.0.0",
+  "lastUpdated": "2026-01-16T00:00:00.000Z",
+  "plugin": "claude-code-templating",
+  "agents": [
+    {
+      "name": "harness-expert",
+      "description": "Expert agent for Harness CI/CD pipeline generation, template management, service/environment configuration, and intelligent pipeline suggestions based on project analysis",
+      "model": "sonnet",
+      "color": "blue",
+      "file": "../agents/harness-expert.md",
+      "keywords": [
+        "harness",
+        "pipeline",
+        "ci-cd",
+        "deployment",
+        "templates",
+        "stages",
+        "steps",
+        "yaml-generation"
+      ],
+      "capabilities": [
+        "Pipeline YAML generation",
+        "Template creation (Step, Stage, Pipeline)",
+        "Service configuration generation",
+        "Environment configuration",
+        "Pipeline validation",
+        "Deployment strategy conversion",
+        "Infrastructure-as-code pipelines",
+        "Approval workflow design"
+      ],
+      "tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Grep",
+        "Glob"
+      ],
+      "whenToUse": "Activate when generating Harness CI/CD pipelines, creating reusable templates, auto-generating pipelines for scaffolded projects, or suggesting optimal pipeline configurations based on detected patterns."
+    },
+    {
+      "name": "scaffold-agent",
+      "description": "Project scaffolding specialist that analyzes requirements, selects optimal templates, orchestrates generation, creates CLAUDE.md configurations, and validates output structure for new projects",
+      "model": "sonnet",
+      "color": "blue",
+      "file": "../agents/scaffold-agent.md",
+      "keywords": [
+        "scaffolding",
+        "project-setup",
+        "templates",
+        "structure",
+        "initialization",
+        "configuration",
+        "validation"
+      ],
+      "capabilities": [
+        "Project requirements analysis and classification",
+        "Template selection and recommendation",
+        "Multi-template orchestration and composition",
+        "Project directory structure generation",
+        "CLAUDE.md configuration generation",
+        "Scaffolded output validation and verification",
+        "Documentation structure creation",
+        "Development environment setup guidance"
+      ],
+      "tools": [
+        "Read",
+        "Write",
+        "Glob",
+        "Grep",
+        "Bash",
+        "mcp__obsidian__get_file_contents",
+        "mcp__obsidian__list_files_in_vault"
+      ],
+      "temperature": 0.5,
+      "whenToUse": "Activate when initiating new projects, creating standardized project structures, selecting optimal templates, or generating initial CLAUDE.md project configurations."
+    },
+    {
+      "name": "codegen-agent",
+      "description": "Code generation specialist that generates API clients from OpenAPI specs, creates models from schemas (JSON Schema, Prisma, GraphQL), builds boilerplate code, maintains consistency, and generates accompanying documentation",
+      "model": "sonnet",
+      "color": "green",
+      "file": "../agents/codegen-agent.md",
+      "keywords": [
+        "code-generation",
+        "api-clients",
+        "models",
+        "schemas",
+        "boilerplate",
+        "consistency",
+        "openapi",
+        "graphql",
+        "prisma"
+      ],
+      "capabilities": [
+        "OpenAPI/Swagger client code generation",
+        "REST API client library creation",
+        "GraphQL client generation with type safety",
+        "Database model/schema generation (Prisma, TypeORM, SQLAlchemy)",
+        "JSON Schema TypeScript type generation",
+        "Database migration generation",
+        "Boilerplate code generation (controllers, services, repositories)",
+        "API endpoint skeleton generation",
+        "Type-safe generated code maintenance",
+        "Code style consistency enforcement",
+        "Inline documentation generation"
+      ],
+      "tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "Bash",
+        "mcp__ide__getDiagnostics"
+      ],
+      "temperature": 0.3,
+      "whenToUse": "Activate during CODE phase when automatic code generation can improve productivity and consistency, especially for OpenAPI clients, database models, GraphQL types, or boilerplate patterns."
+    },
+    {
+      "name": "database-agent",
+      "description": "Database specialist that designs database schemas, generates migrations, creates seed data, analyzes existing schemas, and recommends indexes and optimizations for data layer efficiency and scalability",
+      "model": "sonnet",
+      "color": "purple",
+      "file": "../agents/database-agent.md",
+      "keywords": [
+        "database-design",
+        "schema-design",
+        "migrations",
+        "seed-data",
+        "optimization",
+        "indexing",
+        "performance",
+        "analysis",
+        "data-modeling"
+      ],
+      "capabilities": [
+        "Relational database schema design (PostgreSQL, MySQL, SQLite)",
+        "NoSQL schema design (MongoDB, DynamoDB)",
+        "Migration script generation (UP and DOWN)",
+        "Seed data generation with realistic values",
+        "Existing schema analysis and documentation",
+        "Performance analysis and optimization recommendations",
+        "Index design and evaluation",
+        "Query analysis and optimization",
+        "N+1 query detection and prevention",
+        "Data integrity and constraint recommendations"
+      ],
+      "tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "Bash",
+        "mcp__ide__getDiagnostics"
+      ],
+      "temperature": 0.4,
+      "whenToUse": "Activate during PLAN and CODE phases when database design and optimization is needed, including schema design, migration generation, seed data creation, or performance analysis."
+    },
+    {
+      "name": "testing-agent",
+      "description": "Testing specialist that generates unit tests, creates integration test suites, builds test fixtures, analyzes code coverage, and suggests tests for uncovered paths to ensure comprehensive quality and confidence",
+      "model": "haiku",
+      "color": "orange",
+      "file": "../agents/testing-agent.md",
+      "keywords": [
+        "testing",
+        "unit-tests",
+        "integration-tests",
+        "coverage",
+        "fixtures",
+        "mocks",
+        "test-generation",
+        "e2e-tests",
+        "performance-testing"
+      ],
+      "capabilities": [
+        "Unit test generation (Jest, Vitest, pytest, unittest)",
+        "Integration test suite creation",
+        "End-to-end test generation (Playwright, Cypress, Selenium)",
+        "Test fixture and mock generation",
+        "Code coverage analysis and reporting",
+        "Coverage gap identification and suggestions",
+        "Performance and load test generation",
+        "Test data factory creation",
+        "API contract testing generation",
+        "Critical path test identification"
+      ],
+      "tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "Bash",
+        "mcp__ide__getDiagnostics"
+      ],
+      "temperature": 0.4,
+      "whenToUse": "Activate during TEST phase after CODE phase completes, for generating unit tests, creating integration test suites, analyzing code coverage, or building test fixtures."
+    }
+  ],
+  "categories": {
+    "scaffolding": ["scaffold-agent"],
+    "harness": ["harness-expert"],
+    "code-generation": ["codegen-agent"],
+    "database": ["database-agent"],
+    "testing": ["testing-agent"]
+  },
+  "routingRules": [
+    {
+      "pattern": "scaffold|create project|new project|bootstrap|initialize",
+      "agent": "scaffold-agent",
+      "priority": 100
+    },
+    {
+      "pattern": "harness|pipeline|ci-cd|deploy|template|stage|step",
+      "agent": "harness-expert",
+      "priority": 90
+    },
+    {
+      "pattern": "generate|codegen|api client|openapi|graphql|prisma|model",
+      "agent": "codegen-agent",
+      "priority": 80
+    },
+    {
+      "pattern": "database|schema|migration|seed|index|query|sql",
+      "agent": "database-agent",
+      "priority": 70
+    },
+    {
+      "pattern": "test|coverage|fixture|mock|e2e|integration test|unit test",
+      "agent": "testing-agent",
+      "priority": 60
+    }
+  ]
+}

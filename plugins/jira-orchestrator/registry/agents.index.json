@@ -1,7 +1,7 @@
 {
-  "version": "7.2.0",
-  "description": "Jira Orchestrator agent registry with modular Harness platform knowledge, comprehensive API expertise, CD deployment skills, SOLID/clean architecture enforcement, and AutoGen-style agent teams",
-  "total_agents": 69,
+  "version": "7.3.0",
+  "description": "Jira Orchestrator agent registry with official Atlassian MCP SSE, Harness platform integration, Confluence documentation, SOLID/clean architecture enforcement, and AutoGen-style agent teams",
+  "total_agents": 73,
   "total_skills": 11,
   "categories": {
     "council": {

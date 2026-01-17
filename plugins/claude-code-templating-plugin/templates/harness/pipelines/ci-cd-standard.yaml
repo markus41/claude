@@ -1,0 +1,601 @@
+# Standard CI/CD Pipeline Template
+# Complete CI/CD pipeline with build, test, security scanning, and deployment
+# Includes approval gates and rollback capabilities
+
+pipeline:
+  name: <+input>
+  identifier: <+input>
+  projectIdentifier: <+input>
+  orgIdentifier: <+input>
+  description: Standard CI/CD pipeline with automated testing and deployment
+  tags:
+    pipeline_type: ci-cd
+    template: standard
+
+  variables:
+    - name: service_name
+      type: String
+      description: Service name to build and deploy
+      value: <+input>
+      required: true
+
+    - name: git_branch
+      type: String
+      description: Git branch to build from
+      value: main
+      default: main
+
+    - name: docker_registry
+      type: String
+      description: Docker registry URL
+      value: <+input>
+      required: true
+
+    - name: environment
+      type: String
+      description: Target deployment environment
+      value: <+input>.allowedValues(dev,staging,prod)
+      default: dev
+
+    - name: run_security_scan
+      type: String
+      description: Enable security vulnerability scanning
+      value: <+input>.allowedValues(true,false)
+      default: "true"
+
+    - name: replicas
+      type: String
+      description: Number of pod replicas
+      value: "3"
+      default: "3"
+
+  stages:
+    # Stage 1: CI - Build and Test
+    - stage:
+        name: Build and Test
+        identifier: ci_stage
+        description: Build Docker image, run tests, and scan for vulnerabilities
+        type: CI
+        tags: {}
+        spec:
+          cloneCodebase: true
+          execution:
+            steps:
+              # Restore cache
+              - step:
+                  name: Restore Cache
+                  identifier: restore_cache
+                  type: RestoreCacheGCS
+                  timeout: 10m
+                  spec:
+                    connectorRef: gcs_connector
+                    bucket: <+pipeline.variables.service_name>-cache
+                    key: <+pipeline.variables.service_name>-{{ checksum "package-lock.json" }}
+                    archiveFormat: Tar
+                    failIfKeyNotFound: false
+
+              # Install dependencies
+              - step:
+                  name: Install Dependencies
+                  identifier: install_deps
+                  type: Run
+                  timeout: 10m
+                  spec:
+                    connectorRef: docker_connector
+                    image: node:18-alpine
+                    shell: Sh
+                    command: |
+                      npm ci
+                    envVariables:
+                      NODE_ENV: test
+
+              # Run unit tests
+              - step:
+                  name: Run Unit Tests
+                  identifier: unit_tests
+                  type: Run
+                  timeout: 15m
+                  spec:
+                    connectorRef: docker_connector
+                    image: node:18-alpine
+                    shell: Sh
+                    command: |
+                      npm run test:unit
+                      npm run test:coverage
+                    reports:
+                      type: JUnit
+                      spec:
+                        paths:
+                          - "test-results/junit.xml"
+
+              # Run integration tests
+              - step:
+                  name: Run Integration Tests
+                  identifier: integration_tests
+                  type: Run
+                  timeout: 20m
+                  spec:
+                    connectorRef: docker_connector
+                    image: node:18-alpine
+                    shell: Sh
+                    command: |
+                      npm run test:integration
+
+              # Lint and code quality
+              - step:
+                  name: Lint and Code Quality
+                  identifier: lint
+                  type: Run
+                  timeout: 5m
+                  spec:
+                    connectorRef: docker_connector
+                    image: node:18-alpine
+                    shell: Sh
+                    command: |
+                      npm run lint
+                      npm run format:check
+
+              # Build Docker image
+              - step:
+                  name: Build Docker Image
+                  identifier: build_image
+                  type: BuildAndPushDockerRegistry
+                  timeout: 15m
+                  spec:
+                    connectorRef: docker_connector
+                    repo: <+pipeline.variables.docker_registry>/<+pipeline.variables.service_name>
+                    tags:
+                      - <+pipeline.sequenceId>
+                      - <+pipeline.variables.git_branch>
+                      - latest
+                    dockerfile: Dockerfile
+                    context: .
+                    labels:
+                      version: <+pipeline.sequenceId>
+                      branch: <+pipeline.variables.git_branch>
+                      commit: <+codebase.commitSha>
+
+              # Security scan with Trivy
+              - step:
+                  name: Security Scan
+                  identifier: security_scan
+                  type: Run
+                  timeout: 10m
+                  when:
+                    stageStatus: Success
+                    condition: <+pipeline.variables.run_security_scan> == "true"
+                  spec:
+                    connectorRef: docker_connector
+                    image: aquasec/trivy:latest
+                    shell: Sh
+                    command: |
+                      trivy image --severity HIGH,CRITICAL \
+                        --exit-code 1 \
+                        <+pipeline.variables.docker_registry>/<+pipeline.variables.service_name>:<+pipeline.sequenceId>
+
+              # OWASP Dependency Check
+              - step:
+                  name: Dependency Check
+                  identifier: dependency_check
+                  type: Run
+                  timeout: 10m
+                  when:
+                    stageStatus: Success
+                    condition: <+pipeline.variables.run_security_scan> == "true"
+                  spec:
+                    connectorRef: docker_connector
+                    image: owasp/dependency-check:latest
+                    shell: Sh
+                    command: |
+                      dependency-check.sh --scan . --format HTML --format JSON
+
+              # Save cache
+              - step:
+                  name: Save Cache
+                  identifier: save_cache
+                  type: SaveCacheGCS
+                  timeout: 10m
+                  spec:
+                    connectorRef: gcs_connector
+                    bucket: <+pipeline.variables.service_name>-cache
+                    key: <+pipeline.variables.service_name>-{{ checksum "package-lock.json" }}
+                    sourcePaths:
+                      - node_modules
+                    archiveFormat: Tar
+
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: Abort
+
+    # Stage 2: Deploy to Dev
+    - stage:
+        name: Deploy to Dev
+        identifier: deploy_dev
+        description: Automated deployment to development environment
+        type: Deployment
+        tags: {}
+        spec:
+          deploymentType: Kubernetes
+
+          service:
+            serviceRef: <+pipeline.variables.service_name>_service
+            serviceInputs:
+              serviceDefinition:
+                type: Kubernetes
+                spec:
+                  variables:
+                    - name: image_tag
+                      type: String
+                      value: <+pipeline.sequenceId>
+                    - name: replicas
+                      type: String
+                      value: "1"
+                  manifests:
+                    - manifest:
+                        identifier: k8s_manifests
+                        type: K8sManifest
+                        spec:
+                          store:
+                            type: Github
+                            spec:
+                              connectorRef: github_connector
+                              gitFetchType: Branch
+                              branch: <+pipeline.variables.git_branch>
+                              paths:
+                                - kubernetes/
+
+          environment:
+            environmentRef: dev
+            deployToAll: false
+            infrastructureDefinitions:
+              - identifier: dev_k8s_cluster
+
+          execution:
+            steps:
+              - step:
+                  name: Rolling Deployment
+                  identifier: rolling_deployment
+                  type: K8sRollingDeploy
+                  timeout: 10m
+                  spec:
+                    skipDryRun: false
+                    pruningEnabled: false
+
+              - step:
+                  name: Health Check
+                  identifier: health_check
+                  type: Http
+                  timeout: 2m
+                  spec:
+                    url: http://<+pipeline.variables.service_name>.dev.svc.cluster.local:8080/health
+                    method: GET
+                    assertion: <+httpResponseCode> == 200
+
+              - step:
+                  name: Smoke Tests
+                  identifier: smoke_tests
+                  type: ShellScript
+                  timeout: 5m
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |
+                          #!/bin/bash
+                          set -e
+
+                          echo "Running smoke tests..."
+                          SERVICE_URL="http://<+pipeline.variables.service_name>.dev.svc.cluster.local:8080"
+
+                          # Test health endpoint
+                          curl -f "$SERVICE_URL/health"
+
+                          # Test API endpoint
+                          curl -f "$SERVICE_URL/api/v1/status"
+
+                          echo "Smoke tests passed"
+
+            rollbackSteps:
+              - step:
+                  name: Rollback Deployment
+                  identifier: rollback_deployment
+                  type: K8sRollingRollback
+                  timeout: 10m
+                  spec: {}
+
+        when:
+          pipelineStatus: Success
+          condition: <+pipeline.variables.environment> == "dev"
+
+    # Stage 3: Approval for Production
+    - stage:
+        name: Production Approval
+        identifier: prod_approval
+        description: Manual approval gate for production deployment
+        type: Approval
+        tags: {}
+        spec:
+          execution:
+            steps:
+              - step:
+                  name: Approve Production Deployment
+                  identifier: approve_prod
+                  type: HarnessApproval
+                  timeout: 1d
+                  spec:
+                    approvalMessage: |
+                      Production deployment requested:
+
+                      Service: <+pipeline.variables.service_name>
+                      Image Tag: <+pipeline.sequenceId>
+                      Branch: <+pipeline.variables.git_branch>
+                      Commit: <+codebase.commitSha>
+
+                      Tests Status: PASSED
+                      Security Scan: PASSED
+
+                      Please review and approve.
+                    includePipelineExecutionHistory: true
+                    approvers:
+                      minimumCount: 2
+                      disallowPipelineExecutor: true
+                      userGroups:
+                        - account.Production_Approvers
+                    approverInputs: []
+
+        when:
+          pipelineStatus: Success
+          condition: <+pipeline.variables.environment> == "prod"
+
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: Abort
+
+    # Stage 4: Deploy to Production
+    - stage:
+        name: Deploy to Production
+        identifier: deploy_prod
+        description: Rolling deployment to production environment
+        type: Deployment
+        tags: {}
+        spec:
+          deploymentType: Kubernetes
+
+          service:
+            serviceRef: <+pipeline.variables.service_name>_service
+            serviceInputs:
+              serviceDefinition:
+                type: Kubernetes
+                spec:
+                  variables:
+                    - name: image_tag
+                      type: String
+                      value: <+pipeline.sequenceId>
+                    - name: replicas
+                      type: String
+                      value: <+pipeline.variables.replicas>
+
+          environment:
+            environmentRef: production
+            deployToAll: false
+            infrastructureDefinitions:
+              - identifier: prod_k8s_cluster
+
+          execution:
+            steps:
+              # Pre-deployment health check
+              - step:
+                  name: Pre-Deployment Check
+                  identifier: pre_health_check
+                  type: ShellScript
+                  timeout: 5m
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |
+                          #!/bin/bash
+                          set -e
+
+                          echo "Running pre-deployment health checks..."
+
+                          if kubectl get deployment <+pipeline.variables.service_name> -n production &> /dev/null; then
+                            DESIRED=$(kubectl get deployment <+pipeline.variables.service_name> -n production -o jsonpath='{.spec.replicas}')
+                            READY=$(kubectl get deployment <+pipeline.variables.service_name> -n production -o jsonpath='{.status.readyReplicas}')
+
+                            if [ "$DESIRED" != "$READY" ]; then
+                              echo "ERROR: Not all replicas ready before deployment"
+                              exit 1
+                            fi
+                          fi
+
+              - step:
+                  name: Rolling Deployment
+                  identifier: rolling_deployment
+                  type: K8sRollingDeploy
+                  timeout: 15m
+                  spec:
+                    skipDryRun: false
+                    pruningEnabled: false
+
+              - step:
+                  name: Verify Deployment
+                  identifier: verify_deployment
+                  type: ShellScript
+                  timeout: 10m
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |
+                          #!/bin/bash
+                          set -e
+
+                          kubectl rollout status deployment/<+pipeline.variables.service_name> -n production --timeout=300s
+
+                          DESIRED=$(kubectl get deployment <+pipeline.variables.service_name> -n production -o jsonpath='{.spec.replicas}')
+                          READY=$(kubectl get deployment <+pipeline.variables.service_name> -n production -o jsonpath='{.status.readyReplicas}')
+
+                          if [ "$DESIRED" != "$READY" ]; then
+                            echo "ERROR: Not all replicas are ready"
+                            exit 1
+                          fi
+
+              - step:
+                  name: Health Check
+                  identifier: health_check
+                  type: Http
+                  timeout: 2m
+                  spec:
+                    url: http://<+pipeline.variables.service_name>.production.svc.cluster.local:8080/health
+                    method: GET
+                    assertion: <+httpResponseCode> == 200
+
+              - step:
+                  name: Production Smoke Tests
+                  identifier: prod_smoke_tests
+                  type: ShellScript
+                  timeout: 10m
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |
+                          #!/bin/bash
+                          set -e
+
+                          echo "Running production smoke tests..."
+                          SERVICE_URL="http://<+pipeline.variables.service_name>.production.svc.cluster.local:8080"
+
+                          # Test 1: Health endpoint
+                          curl -f "$SERVICE_URL/health"
+
+                          # Test 2: API endpoint
+                          curl -f "$SERVICE_URL/api/v1/status"
+
+                          # Test 3: Metrics endpoint
+                          curl -f "$SERVICE_URL/metrics"
+
+                          echo "All smoke tests passed"
+
+              - step:
+                  name: Monitor Metrics
+                  identifier: monitor_metrics
+                  type: ShellScript
+                  timeout: 5m
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |
+                          #!/bin/bash
+
+                          echo "Monitoring deployment metrics..."
+                          # Monitor error rate, latency, etc.
+                          sleep 60
+                          echo "Metrics look good"
+
+            rollbackSteps:
+              - step:
+                  name: Rollback Deployment
+                  identifier: rollback_deployment
+                  type: K8sRollingRollback
+                  timeout: 10m
+                  spec: {}
+
+              - step:
+                  name: Verify Rollback
+                  identifier: verify_rollback
+                  type: ShellScript
+                  timeout: 5m
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: |
+                          kubectl rollout status deployment/<+pipeline.variables.service_name> -n production
+                          echo "Rollback completed successfully"
+
+        when:
+          pipelineStatus: Success
+          condition: <+pipeline.variables.environment> == "prod"
+
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: StageRollback
+
+  # Notification rules
+  notificationRules:
+    - name: Pipeline Success
+      identifier: pipeline_success
+      pipelineEvents:
+        - type: PipelineSuccess
+      notificationMethod:
+        type: Slack
+        spec:
+          userGroups: []
+          webhookUrl: <+secrets.getValue("slack_webhook")>
+          messageContent: |
+            ✅ Deployment successful
+            Service: <+pipeline.variables.service_name>
+            Environment: <+pipeline.variables.environment>
+            Version: <+pipeline.sequenceId>
+
+    - name: Pipeline Failure
+      identifier: pipeline_failure
+      pipelineEvents:
+        - type: PipelineFailed
+        - type: StageFailed
+      notificationMethod:
+        type: Email
+        spec:
+          userGroups:
+            - account.DevOps_Team
+          recipients:
+            - devops@example.com
+          messageContent: |
+            ❌ Deployment failed
+            Service: <+pipeline.variables.service_name>
+            Environment: <+pipeline.variables.environment>
+            Stage: <+stage.name>
+
+    - name: Approval Pending
+      identifier: approval_pending
+      pipelineEvents:
+        - type: ApprovalWaiting
+      notificationMethod:
+        type: Slack
+        spec:
+          webhookUrl: <+secrets.getValue("slack_webhook")>
+          messageContent: |
+            ⏳ Production deployment approval pending
+            Service: <+pipeline.variables.service_name>
+            Version: <+pipeline.sequenceId>

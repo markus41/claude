@@ -1,0 +1,50 @@
+# Docker Build and Push Step Template
+# Build Docker image and push to container registry with multi-tag support
+
+step:
+  name: <+input>
+  identifier: <+input>
+  type: BuildAndPushDockerRegistry
+  timeout: <+input>
+  spec:
+    connectorRef: <+input>
+    repo: <+input>
+    tags:
+      - <+input>
+      - <+input>
+      - latest
+    dockerfile: <+input>
+    context: <+input>
+    labels:
+      version: <+input>
+      commit: <+codebase.commitSha>
+      branch: <+codebase.branch>
+      build_time: <+pipeline.startTs>
+    buildArgs:
+      - name: <+input>
+        value: <+input>
+    target: <+input>
+    optimize: true
+    caching: true
+    remoteCacheRepo: <+input>
+
+  # When condition (optional)
+  when:
+    stageStatus: Success
+    condition: <+input>
+
+  # Failure strategy
+  failureStrategies:
+    - onFailure:
+        errors:
+          - AllErrors
+        action:
+          type: Retry
+          spec:
+            retryCount: 2
+            retryIntervals:
+              - 30s
+              - 1m
+            onRetryFailure:
+              action:
+                type: Abort

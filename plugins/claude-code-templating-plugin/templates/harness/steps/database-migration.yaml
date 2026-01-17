@@ -1,0 +1,124 @@
+# Database Migration Step Template
+# Execute database migrations using Flyway or Liquibase patterns
+
+step:
+  name: <+input>
+  identifier: <+input>
+  type: ShellScript
+  timeout: <+input>
+  spec:
+    shell: Bash
+    onDelegate: true
+    source:
+      type: Inline
+      spec:
+        script: |
+          #!/bin/bash
+          set -e
+
+          # Database Migration Script
+          # Tool: <+input>.allowedValues(Flyway,Liquibase,Custom)
+
+          DB_HOST="<+secrets.getValue('db_host')>"
+          DB_PORT="<+secrets.getValue('db_port')>"
+          DB_NAME="<+secrets.getValue('db_name')>"
+          DB_USER="<+secrets.getValue('db_user')>"
+          DB_PASSWORD="<+secrets.getValue('db_password')>"
+
+          echo "Starting database migration..."
+          echo "Target database: $DB_NAME on $DB_HOST:$DB_PORT"
+
+          # Option 1: Flyway Migration
+          if [ "<+input>" == "Flyway" ]; then
+            flyway \
+              -url="jdbc:postgresql://$DB_HOST:$DB_PORT/$DB_NAME" \
+              -user="$DB_USER" \
+              -password="$DB_PASSWORD" \
+              -locations="filesystem:<+input>" \
+              -baselineOnMigrate=true \
+              -outOfOrder=false \
+              migrate
+
+          # Option 2: Liquibase Migration
+          elif [ "<+input>" == "Liquibase" ]; then
+            liquibase \
+              --url="jdbc:postgresql://$DB_HOST:$DB_PORT/$DB_NAME" \
+              --username="$DB_USER" \
+              --password="$DB_PASSWORD" \
+              --changeLogFile="<+input>" \
+              update
+
+          # Option 3: Custom SQL Scripts
+          elif [ "<+input>" == "Custom" ]; then
+            export PGPASSWORD="$DB_PASSWORD"
+
+            # Run migration scripts in order
+            for script in <+input>/*.sql; do
+              echo "Running migration: $script"
+              psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -f "$script"
+            done
+
+          # Option 4: Node.js/TypeORM Migration
+          elif [ "<+input>" == "TypeORM" ]; then
+            export DB_HOST DB_PORT DB_NAME DB_USER DB_PASSWORD
+            npm run migration:run
+
+          # Option 5: Django Migration
+          elif [ "<+input>" == "Django" ]; then
+            export DATABASE_URL="postgresql://$DB_USER:$DB_PASSWORD@$DB_HOST:$DB_PORT/$DB_NAME"
+            python manage.py migrate --noinput
+
+          # Option 6: Rails Migration
+          elif [ "<+input>" == "Rails" ]; then
+            export DATABASE_URL="postgresql://$DB_USER:$DB_PASSWORD@$DB_HOST:$DB_PORT/$DB_NAME"
+            bundle exec rails db:migrate
+
+          else
+            echo "ERROR: Unsupported migration tool"
+            exit 1
+          fi
+
+          echo "Database migration completed successfully"
+
+          # Verify migration
+          echo "Verifying migration..."
+
+          # Check database connectivity
+          if command -v psql &> /dev/null; then
+            export PGPASSWORD="$DB_PASSWORD"
+            psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" -c "SELECT version();" || {
+              echo "ERROR: Database verification failed"
+              exit 1
+            }
+          fi
+
+          echo "Migration verification successful"
+
+    environmentVariables:
+      - name: MIGRATION_TOOL
+        type: String
+        value: <+input>
+      - name: MIGRATION_PATH
+        type: String
+        value: <+input>
+      - name: FAIL_ON_ERROR
+        type: String
+        value: "true"
+
+  # When condition (optional)
+  when:
+    stageStatus: Success
+    condition: <+input>
+
+  # Failure strategy
+  failureStrategies:
+    - onFailure:
+        errors:
+          - AllErrors
+        action:
+          type: ManualIntervention
+          spec:
+            timeout: 1h
+            onTimeout:
+              action:
+                type: Abort

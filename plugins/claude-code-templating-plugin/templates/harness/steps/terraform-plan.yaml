@@ -1,0 +1,75 @@
+# Terraform Plan Step Template
+# Execute Terraform plan with backend configuration and variable files
+
+step:
+  name: <+input>
+  identifier: <+input>
+  type: TerraformPlan
+  timeout: <+input>
+  spec:
+    provisionerIdentifier: <+input>
+    configuration:
+      command: <+input>.allowedValues(Apply,Destroy)
+      configFiles:
+        store:
+          type: <+input>.allowedValues(Github,Gitlab,Bitbucket,Git)
+          spec:
+            gitFetchType: Branch
+            connectorRef: <+input>
+            branch: <+input>
+            folderPath: <+input>
+      secretManagerRef: <+input>
+      varFiles:
+        - varFile:
+            identifier: tfvars
+            spec:
+              content: |
+                # Terraform variables
+                environment = "<+input>"
+                region = "<+input>"
+                project = "<+input>"
+                <+input>
+            type: Inline
+        - varFile:
+            identifier: tfvars_from_repo
+            spec:
+              store:
+                type: Github
+                spec:
+                  connectorRef: <+input>
+                  gitFetchType: Branch
+                  branch: <+input>
+                  paths:
+                    - <+input>
+            type: Remote
+      backendConfig:
+        type: Inline
+        spec:
+          content: |
+            bucket = "<+input>"
+            key = "<+input>/terraform.tfstate"
+            region = "<+input>"
+            encrypt = true
+            dynamodb_table = "<+input>"
+      environmentVariables:
+        - name: TF_LOG
+          value: <+input>
+          type: String
+      targets:
+        - <+input>
+      workspace: <+input>
+      exportTerraformPlanJson: true
+      exportTerraformHumanReadablePlan: true
+
+  # When condition (optional)
+  when:
+    stageStatus: Success
+    condition: <+input>
+
+  # Failure strategy
+  failureStrategies:
+    - onFailure:
+        errors:
+          - AllErrors
+        action:
+          type: Abort

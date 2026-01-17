@@ -1,34 +1,24 @@
 {
   "mcpServers": {
     "atlassian": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "dotenv-cli",
-        "-e", ".env",
-        "--",
-        "npx",
-        "-y",
-        "@anthropic-ai/mcp-atlassian",
-        "--jira-url", "${ATLASSIAN_INSTANCE_URL}",
-        "--jira-email", "${ATLASSIAN_EMAIL}",
-        "--jira-token", "${ATLASSIAN_API_TOKEN}",
-        "--confluence-url", "${ATLASSIAN_INSTANCE_URL}/wiki",
-        "--confluence-email", "${ATLASSIAN_EMAIL}",
-        "--confluence-token", "${ATLASSIAN_API_TOKEN}"
-      ],
-      "description": "Atlassian Jira & Confluence MCP with API Token auth loaded from local .env file"
+      "type": "sse",
+      "url": "https://mcp.atlassian.com/v1/sse",
+      "description": "Official Atlassian MCP SSE for Jira & Confluence with OAuth authentication"
     }
   },
-  "envFile": ".env",
-  "envRequired": [
-    "ATLASSIAN_INSTANCE_URL",
-    "ATLASSIAN_EMAIL",
-    "ATLASSIAN_API_TOKEN"
-  ],
   "setup": {
-    "instructions": "Copy .env.example to .env and fill in your Atlassian credentials",
-    "envExample": ".env.example",
-    "tokenUrl": "https://id.atlassian.com/manage-profile/security/api-tokens"
-  }
+    "instructions": "Run: claude mcp add --transport sse atlassian https://mcp.atlassian.com/v1/sse",
+    "authMethod": "OAuth (browser-based)",
+    "documentation": "https://developer.atlassian.com/cloud/mcp/"
+  },
+  "envRequired": [
+    "ATLASSIAN_CLOUD_ID",
+    "JIRA_DEFAULT_PROJECT"
+  ],
+  "envOptional": [
+    "HARNESS_ACCOUNT_ID",
+    "HARNESS_API_KEY",
+    "HARNESS_ORG_ID",
+    "HARNESS_PROJECT_ID"
+  ]
 }

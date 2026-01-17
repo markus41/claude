@@ -1,0 +1,302 @@
+# Kubernetes Rolling Deployment Stage Template
+# Reusable stage for Kubernetes rolling deployments with health checks and rollback
+
+stage:
+  name: <+input>
+  identifier: <+input>
+  description: Kubernetes rolling deployment with verification and rollback
+  type: Deployment
+  tags:
+    deployment_type: kubernetes
+    strategy: rolling
+
+  spec:
+    deploymentType: Kubernetes
+
+    # Service configuration
+    service:
+      serviceRef: <+input>
+      serviceInputs:
+        serviceDefinition:
+          type: Kubernetes
+          spec:
+            variables:
+              - name: image_tag
+                type: String
+                description: Docker image tag to deploy
+                value: <+input>
+                required: true
+              - name: replicas
+                type: String
+                description: Number of pod replicas
+                value: <+input>
+                default: "3"
+              - name: cpu_limit
+                type: String
+                description: CPU resource limit
+                value: <+input>
+                default: "1000m"
+              - name: memory_limit
+                type: String
+                description: Memory resource limit
+                value: <+input>
+                default: "1Gi"
+            manifests:
+              - manifest:
+                  identifier: k8s_manifests
+                  type: K8sManifest
+                  spec:
+                    store:
+                      type: Github
+                      spec:
+                        connectorRef: <+input>
+                        gitFetchType: Branch
+                        branch: <+input>
+                        paths:
+                          - <+input>
+                    valuesPaths: []
+                    skipResourceVersioning: false
+
+    # Environment configuration
+    environment:
+      environmentRef: <+input>
+      deployToAll: false
+      environmentInputs:
+        identifier: <+input>
+        type: <+input>
+        variables:
+          - name: namespace
+            type: String
+            value: <+input>
+      infrastructureDefinitions:
+        - identifier: <+input>
+
+    # Execution steps
+    execution:
+      steps:
+        # Pre-deployment health check
+        - step:
+            name: Pre-Deployment Check
+            identifier: pre_health_check
+            type: ShellScript
+            timeout: 5m
+            spec:
+              shell: Bash
+              onDelegate: true
+              source:
+                type: Inline
+                spec:
+                  script: |
+                    #!/bin/bash
+                    set -e
+
+                    SERVICE_NAME="<+service.name>"
+                    NAMESPACE="<+env.name>"
+
+                    echo "Running pre-deployment health checks for $SERVICE_NAME in $NAMESPACE..."
+
+                    # Check if deployment exists
+                    if kubectl get deployment $SERVICE_NAME -n $NAMESPACE &> /dev/null; then
+                      # Verify all current replicas are ready
+                      DESIRED=$(kubectl get deployment $SERVICE_NAME -n $NAMESPACE -o jsonpath='{.spec.replicas}')
+                      READY=$(kubectl get deployment $SERVICE_NAME -n $NAMESPACE -o jsonpath='{.status.readyReplicas}')
+
+                      echo "Current state - Desired: $DESIRED, Ready: $READY"
+
+                      if [ "$DESIRED" != "$READY" ]; then
+                        echo "WARNING: Not all replicas ready before deployment"
+                        echo "This may indicate existing issues"
+                      fi
+                    else
+                      echo "Deployment does not exist, will create new deployment"
+                    fi
+
+                    echo "Pre-deployment check completed"
+
+        # Rolling deployment
+        - step:
+            name: Rolling Deployment
+            identifier: rolling_deployment
+            type: K8sRollingDeploy
+            timeout: 15m
+            spec:
+              skipDryRun: false
+              pruningEnabled: false
+
+        # Verify deployment
+        - step:
+            name: Verify Deployment
+            identifier: verify_deployment
+            type: ShellScript
+            timeout: 10m
+            spec:
+              shell: Bash
+              onDelegate: true
+              source:
+                type: Inline
+                spec:
+                  script: |
+                    #!/bin/bash
+                    set -e
+
+                    SERVICE_NAME="<+service.name>"
+                    NAMESPACE="<+env.name>"
+
+                    echo "Verifying deployment for $SERVICE_NAME..."
+
+                    # Wait for rollout to complete
+                    kubectl rollout status deployment/$SERVICE_NAME -n $NAMESPACE --timeout=300s
+
+                    # Verify all replicas are ready
+                    DESIRED=$(kubectl get deployment $SERVICE_NAME -n $NAMESPACE -o jsonpath='{.spec.replicas}')
+                    READY=$(kubectl get deployment $SERVICE_NAME -n $NAMESPACE -o jsonpath='{.status.readyReplicas}')
+
+                    echo "Desired replicas: $DESIRED"
+                    echo "Ready replicas: $READY"
+
+                    if [ "$DESIRED" != "$READY" ]; then
+                      echo "ERROR: Not all replicas are ready"
+                      exit 1
+                    fi
+
+                    # Verify image tag
+                    CURRENT_IMAGE=$(kubectl get deployment $SERVICE_NAME -n $NAMESPACE \
+                      -o jsonpath='{.spec.template.spec.containers[0].image}')
+                    echo "Current image: $CURRENT_IMAGE"
+
+                    echo "Deployment verification successful"
+
+        # Health check
+        - step:
+            name: Health Check
+            identifier: health_check
+            type: Http
+            timeout: 2m
+            spec:
+              url: <+input>
+              method: GET
+              assertion: <+httpResponseCode> == 200
+              headers: []
+              outputVariables: []
+
+        # Smoke tests
+        - step:
+            name: Smoke Tests
+            identifier: smoke_tests
+            type: ShellScript
+            timeout: 5m
+            spec:
+              shell: Bash
+              onDelegate: true
+              source:
+                type: Inline
+                spec:
+                  script: |
+                    #!/bin/bash
+                    set -e
+
+                    SERVICE_NAME="<+service.name>"
+                    NAMESPACE="<+env.name>"
+                    SERVICE_URL="http://${SERVICE_NAME}.${NAMESPACE}.svc.cluster.local:8080"
+
+                    echo "Running smoke tests for $SERVICE_NAME..."
+
+                    # Test 1: Health endpoint
+                    echo "Test 1: Health check"
+                    curl -f "$SERVICE_URL/health"
+
+                    # Test 2: API endpoint
+                    echo "Test 2: API status check"
+                    curl -f "$SERVICE_URL/api/v1/status"
+
+                    # Test 3: Metrics endpoint
+                    echo "Test 3: Metrics check"
+                    curl -f "$SERVICE_URL/metrics"
+
+                    echo "All smoke tests passed"
+
+        # Monitor metrics
+        - step:
+            name: Monitor Metrics
+            identifier: monitor_metrics
+            type: ShellScript
+            timeout: 5m
+            spec:
+              shell: Bash
+              onDelegate: true
+              source:
+                type: Inline
+                spec:
+                  script: |
+                    #!/bin/bash
+
+                    echo "Monitoring deployment metrics..."
+
+                    # Monitor error rate, latency, etc. from your monitoring solution
+                    # Example: Query Prometheus, Datadog, or other monitoring tools
+
+                    # Placeholder: Monitor for 1 minute
+                    sleep 60
+
+                    echo "Metrics monitoring completed"
+
+      # Rollback steps
+      rollbackSteps:
+        - step:
+            name: Rollback Deployment
+            identifier: rollback_deployment
+            type: K8sRollingRollback
+            timeout: 10m
+            spec: {}
+
+        - step:
+            name: Verify Rollback
+            identifier: verify_rollback
+            type: ShellScript
+            timeout: 5m
+            spec:
+              shell: Bash
+              onDelegate: true
+              source:
+                type: Inline
+                spec:
+                  script: |
+                    #!/bin/bash
+                    set -e
+
+                    SERVICE_NAME="<+service.name>"
+                    NAMESPACE="<+env.name>"
+
+                    echo "Verifying rollback for $SERVICE_NAME..."
+
+                    kubectl rollout status deployment/$SERVICE_NAME -n $NAMESPACE
+
+                    echo "Rollback completed successfully"
+
+        - step:
+            name: Notify Rollback
+            identifier: notify_rollback
+            type: ShellScript
+            timeout: 2m
+            spec:
+              shell: Bash
+              onDelegate: true
+              source:
+                type: Inline
+                spec:
+                  script: |
+                    echo "Deployment rolled back due to failure"
+                    echo "Service: <+service.name>"
+                    echo "Environment: <+env.name>"
+                    echo "Image Tag: <+serviceConfig.serviceDefinition.spec.variables.image_tag>"
+
+                    # Send notification to Slack, PagerDuty, etc.
+                    # curl -X POST <webhook_url> -d '{"text":"Rollback occurred"}'
+
+  # Failure strategies
+  failureStrategies:
+    - onFailure:
+        errors:
+          - AllErrors
+        action:
+          type: StageRollback
