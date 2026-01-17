@@ -190,6 +190,18 @@
       "source": "./plugins/aws-eks-helm-keycloak",
       "category": "infrastructure",
       "tags": ["aws", "eks", "kubernetes", "helm", "keycloak", "harness", "oidc", "ci-cd", "gitops"]
+    },
+    {
+      "name": "claude-code-templating",
+      "description": "Architect (Standard) - Universal templating and Harness expert plugin with multi-format support (Handlebars, Cookiecutter, Copier, Maven, Harness), 5 specialized agents, MCP integration, and automated CI/CD pipeline generation. 4 commands, 5 agents, 3 skills, 58 tests.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Brookside BI",
+        "email": "dev@brooksidebi.com"
+      },
+      "source": "./plugins/claude-code-templating-plugin",
+      "category": "templating",
+      "tags": ["templating", "scaffolding", "harness", "cookiecutter", "copier", "maven", "handlebars", "mcp", "ci-cd", "pipelines", "code-generation"]
     }
   ]
 }

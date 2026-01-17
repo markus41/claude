@@ -167,6 +167,28 @@
       }
     },
 
+    "templating": {
+      "claude-code-templating": {
+        "path": "../../plugins/claude-code-templating-plugin/.claude-plugin/plugin.json",
+        "callsign": "Architect",
+        "version": "1.0.0",
+        "description": "Universal templating and Harness expert plugin - multi-format templates, CI/CD pipeline generation, MCP integration",
+        "provides": { "commands": 4, "agents": 5, "skills": 3, "templates": "dynamic" },
+        "status": "active",
+        "tier": "standard",
+        "commandPrefix": "template",
+        "features": [
+          "Multi-format templates (Handlebars, Cookiecutter, Copier, Maven, Harness)",
+          "Harness CI/CD pipeline generation",
+          "MCP integration (harness, scaffold, github)",
+          "Pattern matching and intent detection",
+          "Project scaffolding with Harness integration",
+          "58 tests (39 unit + 19 integration)"
+        ],
+        "integrates": ["jira-orchestrator", "aws-eks-helm-keycloak", "iac-golden-architect"]
+      }
+    },
+
     "ai-advanced": {
       "cognitive-code-reasoner": {
         "path": "../plugins/cognitive-code-reasoner/plugin.json",
@@ -274,20 +296,21 @@
     "Librarian": "code-knowledge-graph",
     "Conductor": "multi-model-orchestration",
     "Cassandra": "predictive-failure-engine",
-    "Tribunal": "agent-review-council"
+    "Tribunal": "agent-review-council",
+    "Architect": "claude-code-templating"
   },
 
   "stats": {
-    "totalPlugins": 17,
+    "totalPlugins": 18,
     "byTier": {
       "enterprise": 1,
-      "standard": 10,
+      "standard": 11,
       "advanced": 6
     },
-    "totalCommands": 240,
-    "totalAgents": 210,
+    "totalCommands": 244,
+    "totalAgents": 215,
     "totalTeams": 16,
-    "totalSkills": 112,
+    "totalSkills": 115,
     "totalHooks": 69,
     "totalWorkflows": 3,
     "innovativePlugins": 7,
