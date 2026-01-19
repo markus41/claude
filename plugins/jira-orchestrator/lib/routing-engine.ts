@@ -7,11 +7,19 @@
  * - Plugin health and availability
  * - Cost optimization
  *
- * @version 1.0.0
- * @author architect-supreme
+ * Enhanced with MCP Resilience (v7.4):
+ * - Circuit breaker for MCP services
+ * - Tiered fallback strategies
+ * - Automatic recovery testing
+ *
+ * @version 1.1.0 (v7.4)
+ * @author architect-supreme, jira-orchestrator
  */
 
 import { MessageBus, getMessageBus } from './messagebus';
+import { MCPCircuitBreaker, getCircuitBreaker } from './mcp-circuit-breaker';
+import { MCPFallbackHandler, getFallbackHandler, DEFAULT_STRATEGIES } from './mcp-fallback-handler';
+import * as path from 'path';
 
 // ============================================
 // TYPES AND INTERFACES
@@ -409,9 +417,33 @@ export class RequestClassifier {
 export class CapabilityMatcher {
   private plugins: Map<string, PluginManifest> = new Map();
   private messageBus: MessageBus;
+  private circuitBreaker: MCPCircuitBreaker;
+  private fallbackHandler: MCPFallbackHandler;
 
-  constructor(messageBus?: MessageBus) {
+  constructor(messageBus?: MessageBus, circuitBreaker?: MCPCircuitBreaker, fallbackHandler?: MCPFallbackHandler) {
     this.messageBus = messageBus || getMessageBus();
+    this.circuitBreaker = circuitBreaker || getCircuitBreaker();
+    this.fallbackHandler = fallbackHandler || getFallbackHandler(
+      DEFAULT_STRATEGIES,
+      path.join(process.cwd(), 'sessions', 'queues')
+    );
+
+    // Listen to circuit breaker events for logging
+    this.setupCircuitBreakerLogging();
+  }
+
+  private setupCircuitBreakerLogging(): void {
+    this.circuitBreaker.on('circuit-opened', (event: any) => {
+      console.error(`[RoutingEngine] Circuit OPENED for ${event.server}: ${event.reason}`);
+    });
+
+    this.circuitBreaker.on('circuit-closed', (event: any) => {
+      console.log(`[RoutingEngine] Circuit CLOSED for ${event.server} after ${event.recoveryTime}ms`);
+    });
+
+    this.circuitBreaker.on('circuit-half-open', (event: any) => {
+      console.log(`[RoutingEngine] Circuit HALF-OPEN for ${event.server}, testing recovery...`);
+    });
   }
 
   registerPlugin(manifest: PluginManifest): void {
@@ -477,13 +509,100 @@ export class CapabilityMatcher {
   }
 
   private async healthCheck(pluginName: string): Promise<HealthStatus> {
-    // TODO: Implement actual health check via message bus
-    // For now, return mock healthy status
-    return {
-      status: 'up',
-      latency: 50,
-      errorRate: 0.01,
-    };
+    // Check circuit breaker status first
+    const circuitStatus = this.circuitBreaker.getStatus(pluginName);
+
+    // If circuit is OPEN, mark as down
+    if (circuitStatus.state === 'OPEN') {
+      return {
+        status: 'down',
+        latency: Infinity,
+        errorRate: 1.0,
+      };
+    }
+
+    // If circuit is HALF_OPEN, mark as degraded
+    if (circuitStatus.state === 'HALF_OPEN') {
+      return {
+        status: 'degraded',
+        latency: 500,
+        errorRate: 0.5,
+      };
+    }
+
+    // Perform actual health check with circuit breaker protection
+    try {
+      const startTime = Date.now();
+
+      const health = await this.circuitBreaker.execute(
+        pluginName,
+        async () => {
+          // Use message bus to ping the plugin
+          try {
+            const response = await Promise.race([
+              this.messageBus.request({
+                destination: pluginName,
+                topic: `plugin/${pluginName}/health`,
+                payload: { check: 'ping' },
+                timeout: 5000,
+              }),
+              new Promise<never>((_, reject) =>
+                setTimeout(() => reject(new Error('Health check timeout')), 5000)
+              ),
+            ]);
+
+            const latency = Date.now() - startTime;
+
+            return {
+              status: 'up' as const,
+              latency,
+              errorRate: 0.01,
+            };
+          } catch (error) {
+            throw error;
+          }
+        },
+        async () => {
+          // Fallback: use cached health status or degraded
+          return this.fallbackHandler.executeWithFallback(
+            pluginName,
+            'health_check',
+            async () => {
+              throw new Error('Health check failed');
+            },
+            { check: 'ping' }
+          ).then(result => {
+            if (result.source === 'cache') {
+              return result.result as HealthStatus;
+            }
+            return {
+              status: 'degraded' as const,
+              latency: 500,
+              errorRate: 0.3,
+            };
+          });
+        }
+      );
+
+      // Cache the health check result
+      this.fallbackHandler.cacheResponse(pluginName, 'health_check', { check: 'ping' }, health);
+
+      return health;
+    } catch (error) {
+      console.error(`[RoutingEngine] Health check failed for ${pluginName}:`, error);
+
+      // Try to get cached health status
+      const cached = this.fallbackHandler.getCached<HealthStatus>(pluginName, 'health_check', { check: 'ping' });
+      if (cached) {
+        return cached;
+      }
+
+      return {
+        status: 'down',
+        latency: Infinity,
+        errorRate: 1.0,
+      };
+    }
   }
 
   private calculateAvailability(health: HealthStatus): number {
@@ -712,11 +831,47 @@ export class RoutingDecisionEngine {
 export class RoutingEngine {
   private decisionEngine: RoutingDecisionEngine;
   private messageBus: MessageBus;
+  private circuitBreaker: MCPCircuitBreaker;
+  private fallbackHandler: MCPFallbackHandler;
 
-  constructor(messageBus?: MessageBus) {
+  constructor(messageBus?: MessageBus, circuitBreaker?: MCPCircuitBreaker, fallbackHandler?: MCPFallbackHandler) {
     this.messageBus = messageBus || getMessageBus();
-    const matcher = new CapabilityMatcher(this.messageBus);
+    this.circuitBreaker = circuitBreaker || getCircuitBreaker();
+    this.fallbackHandler = fallbackHandler || getFallbackHandler(
+      DEFAULT_STRATEGIES,
+      path.join(process.cwd(), 'sessions', 'queues')
+    );
+
+    const matcher = new CapabilityMatcher(this.messageBus, this.circuitBreaker, this.fallbackHandler);
     this.decisionEngine = new RoutingDecisionEngine(matcher);
+  }
+
+  /**
+   * Get circuit breaker status for all MCP servers
+   */
+  getCircuitStatus(): any[] {
+    return this.circuitBreaker.getAllStatuses();
+  }
+
+  /**
+   * Get fallback handler queue status
+   */
+  getQueueStatus(): any[] {
+    return this.fallbackHandler.getQueueStatus();
+  }
+
+  /**
+   * Get cache statistics
+   */
+  getCacheStats(): any {
+    return this.fallbackHandler.getCacheStats();
+  }
+
+  /**
+   * Process queued operations for a specific MCP server
+   */
+  async processQueue(server: string): Promise<{ processed: number; failed: number }> {
+    return this.fallbackHandler.processQueue(server);
   }
 
   registerPlugin(manifest: PluginManifest): void {
