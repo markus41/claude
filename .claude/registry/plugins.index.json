@@ -1,8 +1,55 @@
 {
   "$schema": "./schema/plugins.schema.json",
   "version": "1.0.0",
-  "lastUpdated": "2026-01-01",
+  "lastUpdated": "2026-01-16",
   "description": "Plugin registry for Claude Code orchestration plugins",
+
+  "installed": {
+    "jira-orchestrator": {
+      "version": "7.1.0",
+      "path": "../../plugins/jira-orchestrator",
+      "source": "local",
+      "installedAt": "2026-01-01T00:00:00.000Z",
+      "dependencies": {}
+    },
+    "frontend-design-system": {
+      "version": "1.0.0",
+      "path": "../../plugins/frontend-design-system",
+      "source": "local",
+      "installedAt": "2026-01-01T00:00:00.000Z",
+      "dependencies": {}
+    },
+    "aws-eks-helm-keycloak": {
+      "version": "1.0.0",
+      "path": "../../plugins/aws-eks-helm-keycloak",
+      "source": "local",
+      "installedAt": "2026-01-01T00:00:00.000Z",
+      "dependencies": {}
+    },
+    "claude-code-templating": {
+      "version": "1.0.0",
+      "path": "../../plugins/claude-code-templating-plugin",
+      "source": "local",
+      "installedAt": "2026-01-08T00:00:00.000Z",
+      "dependencies": {}
+    },
+    "langgraph-architect": {
+      "version": "1.0.0",
+      "path": "../../plugins/langgraph-architect",
+      "source": "local",
+      "installedAt": "2026-01-15T00:00:00.000Z",
+      "dependencies": {}
+    },
+    "infrastructure-template-generator": {
+      "version": "2.0.0",
+      "path": "./.claude/tools/plugin-cli/infrastructure-template-generator",
+      "source": "local",
+      "installedAt": "2026-01-19T00:00:00.000Z",
+      "dependencies": {}
+    }
+  },
+
+  "registry": {},
 
   "plugins": {
     "core": {
@@ -164,6 +211,32 @@
           "Interactive setup wizard"
         ],
         "integrates": ["jira-orchestrator", "release-orchestrator"]
+      },
+      "infrastructure-template-generator": {
+        "path": "./.claude/tools/plugin-cli/infrastructure-template-generator/.claude-plugin/plugin.json",
+        "callsign": "Forgemaster",
+        "version": "2.0.0",
+        "description": "Complete infrastructure template automation - Cookiecutter, Terraform, Harness pipelines, GitOps, and multi-agent council reviews",
+        "provides": { "commands": 16, "agents": 10, "skills": 4, "hooks": 1 },
+        "status": "active",
+        "tier": "standard",
+        "commandPrefix": "itg",
+        "features": [
+          "Source code pattern extraction and analysis",
+          "Cookiecutter/Copier template generation",
+          "Terraform module building with IaCM",
+          "Harness CI/CD pipeline generation",
+          "Harness Template Library integration",
+          "Repository management and PR automation",
+          "Direct Harness API publishing",
+          "Template registry with SemVer versioning",
+          "ArgoCD ApplicationSet generation",
+          "Progressive delivery (canary, blue-green)",
+          "Multi-agent council review system",
+          "Jira smart commit integration"
+        ],
+        "integrates": ["jira-orchestrator", "aws-eks-helm-keycloak", "claude-code-templating", "agent-review-council"],
+        "businessValue": "Reduces template-to-production time from 4-6 hours to <30 minutes"
       }
     },
 
@@ -297,21 +370,25 @@
     "Conductor": "multi-model-orchestration",
     "Cassandra": "predictive-failure-engine",
     "Tribunal": "agent-review-council",
-    "Architect": "claude-code-templating"
+    "Architect": "claude-code-templating",
+    "Forgemaster": "infrastructure-template-generator"
   },
 
   "stats": {
-    "totalPlugins": 18,
+    "totalInstalled": 6,
+    "totalAvailable": 19,
+    "lastUpdated": "2026-01-19T00:00:00.000Z",
+    "totalPlugins": 19,
     "byTier": {
       "enterprise": 1,
-      "standard": 11,
+      "standard": 12,
       "advanced": 6
     },
-    "totalCommands": 244,
-    "totalAgents": 215,
+    "totalCommands": 260,
+    "totalAgents": 225,
     "totalTeams": 16,
-    "totalSkills": 115,
-    "totalHooks": 69,
+    "totalSkills": 119,
+    "totalHooks": 70,
     "totalWorkflows": 3,
     "innovativePlugins": 7,
     "deliberationProtocols": 20

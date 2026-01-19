@@ -1,0 +1,440 @@
+{
+  "name": "infrastructure-template-generator",
+  "version": "2.0.0",
+  "description": "Transforms existing code into reusable scaffolding pipelines with Cookiecutter templates, Terraform modules, Harness pipelines, GitOps configurations, and multi-agent council reviews",
+  "author": "Brookside BI",
+  "license": "MIT",
+  "keywords": [
+    "infrastructure",
+    "templates",
+    "cookiecutter",
+    "terraform",
+    "harness",
+    "iac",
+    "scaffolding",
+    "code-generation",
+    "devops",
+    "ci-cd",
+    "gitops",
+    "argocd",
+    "council-review",
+    "repository-management"
+  ],
+  "categories": [
+    "infrastructure",
+    "devops",
+    "automation",
+    "gitops"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/brookside-bi/infrastructure-template-generator"
+  },
+  "provides": {
+    "commands": 16,
+    "agents": 10,
+    "skills": 4,
+    "hooks": 1
+  },
+  "agents": {
+    "source-analyzer": {
+      "description": "Analyzes source code to extract patterns for template generation",
+      "model": "sonnet",
+      "handler": "agents/source-analyzer.md",
+      "triggers": [
+        "analyze source",
+        "extract patterns",
+        "code analysis",
+        "project structure"
+      ]
+    },
+    "template-generator": {
+      "description": "Generates Cookiecutter/Copier templates from analyzed source patterns",
+      "model": "sonnet",
+      "handler": "agents/template-generator.md",
+      "triggers": [
+        "generate template",
+        "cookiecutter",
+        "copier template",
+        "scaffolding"
+      ]
+    },
+    "terraform-module-builder": {
+      "description": "Generates Terraform modules and infrastructure-as-code from analyzed patterns",
+      "model": "sonnet",
+      "handler": "agents/terraform-module-builder.md",
+      "triggers": [
+        "terraform module",
+        "infrastructure code",
+        "IaC generation",
+        "tfvars"
+      ]
+    },
+    "harness-pipeline-generator": {
+      "description": "Generates Harness CI/CD pipelines from analyzed build and deployment patterns",
+      "model": "sonnet",
+      "handler": "agents/harness-pipeline-generator.md",
+      "triggers": [
+        "harness pipeline",
+        "CI/CD generation",
+        "deployment pipeline",
+        "build automation"
+      ]
+    },
+    "harness-template-generator": {
+      "description": "Generates reusable Harness Templates (Stage, Step, Pipeline, StepGroup) for standardization across projects",
+      "model": "sonnet",
+      "handler": "agents/harness-template-generator.md",
+      "triggers": [
+        "harness template",
+        "stage template",
+        "step template",
+        "pipeline template",
+        "template library"
+      ]
+    },
+    "repository-manager": {
+      "description": "Manages repository lifecycle including initialization, branch management, PR automation, and branch protection via Harness OPA policies",
+      "model": "sonnet",
+      "handler": "agents/repository-manager.md",
+      "triggers": [
+        "repository init",
+        "create repo",
+        "branch management",
+        "pr automation",
+        "scaffold repo",
+        "initialize repository"
+      ]
+    },
+    "harness-api-client": {
+      "description": "Direct Harness API integration for publishing pipelines, templates, services, environments, and IaCM workspaces",
+      "model": "sonnet",
+      "handler": "agents/harness-api-client.md",
+      "triggers": [
+        "harness api",
+        "publish to harness",
+        "harness service",
+        "harness environment",
+        "harness publish",
+        "harness iacm"
+      ]
+    },
+    "template-registry-manager": {
+      "description": "Manages template registry with SemVer versioning, catalog search, usage analytics, and Harness Template Library sync",
+      "model": "sonnet",
+      "handler": "agents/template-registry-manager.md",
+      "triggers": [
+        "template registry",
+        "publish template",
+        "search templates",
+        "template catalog",
+        "template versioning",
+        "install template"
+      ]
+    },
+    "gitops-generator": {
+      "description": "Generates ArgoCD ApplicationSets, Harness GitX configurations, and progressive delivery patterns (canary, blue-green)",
+      "model": "sonnet",
+      "handler": "agents/gitops-generator.md",
+      "triggers": [
+        "gitops",
+        "argocd",
+        "applicationset",
+        "progressive delivery",
+        "canary deployment",
+        "blue green",
+        "harness gitx"
+      ]
+    },
+    "council-coordinator": {
+      "description": "Orchestrates multi-agent council reviews using blackboard pattern, weighted voting, and multiple deliberation protocols",
+      "model": "opus",
+      "handler": "agents/council-coordinator.md",
+      "triggers": [
+        "council review",
+        "multi-agent review",
+        "expert panel",
+        "code review council",
+        "template review"
+      ]
+    }
+  },
+  "skills": {
+    "pattern-extraction": {
+      "description": "Detect and extract patterns from codebases for template generation",
+      "handler": "skills/pattern-extraction/SKILL.md",
+      "triggers": [
+        "extract patterns",
+        "detect patterns",
+        "find variables",
+        "identify configuration"
+      ],
+      "filePatterns": [
+        "*.tf",
+        "*.tfvars",
+        "*.yaml",
+        "*.yml",
+        "*.json",
+        "package.json",
+        "pyproject.toml"
+      ]
+    },
+    "template-validation": {
+      "description": "Validate Cookiecutter templates, Terraform modules, and Harness pipelines",
+      "handler": "skills/template-validation/SKILL.md",
+      "triggers": [
+        "validate template",
+        "check syntax",
+        "verify terraform",
+        "validate pipeline"
+      ],
+      "filePatterns": [
+        "cookiecutter.json",
+        "*.tf",
+        "*.yaml",
+        "*.yml"
+      ]
+    },
+    "harness-api-operations": {
+      "description": "Harness REST API operations including authentication, rate limiting, error handling, and all major endpoints",
+      "handler": "skills/harness-api-operations/SKILL.md",
+      "triggers": [
+        "harness api",
+        "harness authentication",
+        "harness rate limit",
+        "harness error handling",
+        "harness endpoints"
+      ],
+      "filePatterns": [
+        "*.yaml",
+        "*.yml",
+        "harness*.json"
+      ]
+    },
+    "gitops-patterns": {
+      "description": "GitOps patterns including ApplicationSet generators, progressive delivery strategies, and Harness GitX configuration",
+      "handler": "skills/gitops-patterns/SKILL.md",
+      "triggers": [
+        "gitops patterns",
+        "applicationset",
+        "progressive delivery",
+        "argocd sync",
+        "canary deployment",
+        "blue green",
+        "harness gitx"
+      ],
+      "filePatterns": [
+        "*.yaml",
+        "*.yml",
+        "application*.yaml",
+        "rollout*.yaml"
+      ]
+    }
+  },
+  "commands": {
+    "/itg:analyze": {
+      "description": "Analyze a codebase to extract patterns for template generation",
+      "handler": "commands/analyze.md",
+      "aliases": ["/itg:scan", "/itg:inspect"],
+      "examples": [
+        "/itg:analyze ./my-project",
+        "/itg:analyze --depth deep --output json",
+        "/itg:analyze --preset node"
+      ]
+    },
+    "/itg:generate": {
+      "description": "Generate Cookiecutter templates from analyzed source patterns",
+      "handler": "commands/generate.md",
+      "aliases": ["/itg:create", "/itg:scaffold"],
+      "examples": [
+        "/itg:generate my-template",
+        "/itg:generate my-template --engine copier",
+        "/itg:generate my-template --preset full"
+      ]
+    },
+    "/itg:terraform": {
+      "description": "Generate Terraform modules from analyzed infrastructure patterns",
+      "handler": "commands/terraform.md",
+      "aliases": ["/itg:tf", "/itg:iac"],
+      "examples": [
+        "/itg:terraform my-module --provider azurerm",
+        "/itg:terraform my-module --harness-iacm",
+        "/itg:terraform my-module --preset azure-standard"
+      ]
+    },
+    "/itg:harness": {
+      "description": "Generate Harness CI/CD pipelines from analyzed build patterns",
+      "handler": "commands/harness.md",
+      "aliases": ["/itg:pipeline", "/itg:cicd"],
+      "examples": [
+        "/itg:harness my-pipeline --type ci-cd",
+        "/itg:harness my-pipeline --preset full-deployment",
+        "/itg:harness my-pipeline --include-approvals"
+      ]
+    },
+    "/itg:harness-template": {
+      "description": "Generate reusable Harness Templates for standardization across projects and organizations",
+      "handler": "commands/harness-template.md",
+      "aliases": ["/itg:htpl", "/itg:template"],
+      "examples": [
+        "/itg:harness-template k8s-deploy --preset k8s-deploy",
+        "/itg:harness-template docker-build --type step --category build",
+        "/itg:harness-template microservice-cicd --preset full-cicd --scope account"
+      ]
+    },
+    "/itg:repo:init": {
+      "description": "Initialize a new repository from template with branch protection and Jira integration",
+      "handler": "commands/repo-init.md",
+      "aliases": ["/itg:init", "/itg:new-repo"],
+      "examples": [
+        "/itg:repo:init my-service --template service --provider github",
+        "/itg:repo:init my-api --branch-strategy gitflow --jira-project IE",
+        "/itg:repo:init my-ui --template ui --enable-protection"
+      ]
+    },
+    "/itg:repo:scaffold": {
+      "description": "Apply a template to an existing repository with configurable merge strategies",
+      "handler": "commands/repo-scaffold.md",
+      "aliases": ["/itg:scaffold", "/itg:apply-template"],
+      "examples": [
+        "/itg:repo:scaffold microservice-v2 --target ./my-service",
+        "/itg:repo:scaffold my-template --merge-strategy merge --dry-run",
+        "/itg:repo:scaffold ci-template --variables '{\"name\": \"my-app\"}'"
+      ]
+    },
+    "/itg:repo:pr": {
+      "description": "Create pull request with auto-generated description and Jira linking",
+      "handler": "commands/repo-pr.md",
+      "aliases": ["/itg:pr", "/itg:pull-request"],
+      "examples": [
+        "/itg:repo:pr feature/new-api --jira-ticket IE-1234",
+        "/itg:repo:pr feature/auth --reviewers alice,bob --draft",
+        "/itg:repo:pr hotfix/security --auto-merge --labels urgent,security"
+      ]
+    },
+    "/itg:harness:publish": {
+      "description": "Publish pipeline/template directly to Harness via REST API",
+      "handler": "commands/harness-publish.md",
+      "aliases": ["/itg:publish", "/itg:deploy-harness"],
+      "examples": [
+        "/itg:harness:publish pipeline.yaml --type pipeline --org lobbi --project integration-engine",
+        "/itg:harness:publish service.yaml --type service --dry-run",
+        "/itg:harness:publish template.yaml --type template --validate-only"
+      ]
+    },
+    "/itg:service": {
+      "description": "Generate Harness service definitions with manifest and artifact configuration",
+      "handler": "commands/service.md",
+      "aliases": ["/itg:svc", "/itg:harness-service"],
+      "examples": [
+        "/itg:service payment-api --manifest-type kubernetes",
+        "/itg:service frontend --manifest-type helm --gitops",
+        "/itg:service backend --artifact-type ecr --org lobbi"
+      ]
+    },
+    "/itg:environment": {
+      "description": "Generate Harness environment configurations with infrastructure definitions",
+      "handler": "commands/environment.md",
+      "aliases": ["/itg:env", "/itg:harness-env"],
+      "examples": [
+        "/itg:environment payment-api --envs dev,staging,prod",
+        "/itg:environment backend --infrastructure-type kubernetes --include-overrides",
+        "/itg:environment frontend --type production --org lobbi"
+      ]
+    },
+    "/itg:inputset": {
+      "description": "Generate Harness input sets and overlays for pipeline configurations",
+      "handler": "commands/inputset.md",
+      "aliases": ["/itg:inputs", "/itg:harness-inputs"],
+      "examples": [
+        "/itg:inputset my-pipeline --environments dev,staging,prod",
+        "/itg:inputset ci-pipeline --overlay --name production-overrides",
+        "/itg:inputset deployment --org lobbi --project integration-engine"
+      ]
+    },
+    "/itg:registry:publish": {
+      "description": "Publish template to the ITG registry with versioning and metadata",
+      "handler": "commands/registry-publish.md",
+      "aliases": ["/itg:publish-template", "/itg:registry:push"],
+      "examples": [
+        "/itg:registry:publish ./templates/microservice-v2 --version 1.0.0",
+        "/itg:registry:publish ./templates/api --version 2.0.0-beta --status beta",
+        "/itg:registry:publish ./templates/infra --sync-harness --tags terraform,azure"
+      ]
+    },
+    "/itg:registry:search": {
+      "description": "Search the template catalog with filtering and sorting options",
+      "handler": "commands/registry-search.md",
+      "aliases": ["/itg:search", "/itg:find-template"],
+      "examples": [
+        "/itg:registry:search kubernetes",
+        "/itg:registry:search --category terraform --status stable",
+        "/itg:registry:search api --sort popularity --limit 10"
+      ]
+    },
+    "/itg:gitops": {
+      "description": "Generate ArgoCD ApplicationSets and Harness GitX configuration",
+      "handler": "commands/gitops.md",
+      "aliases": ["/itg:argocd", "/itg:applicationset"],
+      "examples": [
+        "/itg:gitops my-app --generator list --environments dev,staging,prod",
+        "/itg:gitops platform --generator matrix --progressive-delivery canary",
+        "/itg:gitops services --harness-gitx --analysis-template"
+      ]
+    },
+    "/itg:council": {
+      "description": "Run multi-agent council review for template and infrastructure improvements",
+      "handler": "commands/council.md",
+      "aliases": ["/itg:review", "/itg:council-review"],
+      "examples": [
+        "/itg:council ./templates/microservice-v2 --protocol expert-panel",
+        "/itg:council ./terraform --protocol red-blue-team --focus security",
+        "/itg:council ./pipelines --threshold 0.8 --auto-fix"
+      ]
+    }
+  },
+  "hooks": {
+    "template-generated": {
+      "description": "Hook triggered after template generation to validate and report",
+      "event": "PostToolUse",
+      "toolPattern": "(Write|Edit)",
+      "filePattern": "(cookiecutter\\.json|\\.tf$|\\.yaml$)",
+      "handler": "hooks/scripts/template-generated.sh"
+    }
+  },
+  "configuration": {
+    "localConfig": ".claude/itg.local.md",
+    "requiredEnvVars": [],
+    "optionalEnvVars": [
+      "ITG_DEFAULT_PROVIDER",
+      "ITG_OUTPUT_DIR",
+      "HARNESS_ACCOUNT_ID",
+      "HARNESS_ORG_ID",
+      "HARNESS_PROJECT_ID",
+      "HARNESS_API_KEY",
+      "HARNESS_API_BASE_URL",
+      "ITG_REGISTRY_PATH",
+      "GITHUB_TOKEN",
+      "GITLAB_TOKEN",
+      "JIRA_API_TOKEN",
+      "ARGOCD_SERVER",
+      "ARGOCD_AUTH_TOKEN"
+    ]
+  },
+  "dependencies": {
+    "tools": [
+      "cookiecutter",
+      "terraform",
+      "harness-cli"
+    ],
+    "optional": [
+      "tfsec",
+      "tflint",
+      "copier",
+      "argocd",
+      "kubectl",
+      "gh",
+      "glab"
+    ]
+  }
+}
