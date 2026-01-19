@@ -1,10 +1,29 @@
 {
   "$schema": "../../schema/mcp.schema.json",
   "name": "context7",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Context7 MCP for retrieving up-to-date documentation and code examples for any library. Essential for ensuring agents use current API patterns and library versions.",
   "provider": "builtin",
   "serverType": "stdio",
+
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@anthropic-ai/context7-mcp"],
+      "env": {},
+      "timeout": 30000,
+      "retry": {
+        "maxAttempts": 3,
+        "backoffMs": [1000, 2000, 4000]
+      },
+      "cache": {
+        "enabled": true,
+        "ttlLibraryMs": 3600000,
+        "ttlDocsMs": 1800000,
+        "deduplicationWindowMs": 5000
+      }
+    }
+  },
 
   "capabilities": {
     "tools": [
@@ -82,6 +101,13 @@
     "Use specific queries for better results",
     "Include context about what you're building"
   ],
+
+  "performance": {
+    "caching": "SQLite-based persistent cache with 1hr TTL for library IDs, 30min for docs",
+    "deduplication": "5s window for coalescing identical concurrent requests",
+    "retry": "Exponential backoff: 1s, 2s, 4s (3 attempts)",
+    "timeout": "30s per request with warning at 5s, critical at 15s"
+  },
 
   "priority": "high",
   "autoActivate": true

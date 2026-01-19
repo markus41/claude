@@ -4,12 +4,18 @@
  * Provides publish/subscribe, request/response, and RPC patterns
  * for inter-plugin communication.
  *
- * @version 1.0.0
- * @author architect-supreme
+ * Enhanced with Request Deduplication (v7.4):
+ * - Coalesces identical concurrent requests
+ * - Reduces redundant API calls
+ * - Tracks deduplication metrics
+ *
+ * @version 1.1.0 (v7.4)
+ * @author architect-supreme, jira-orchestrator
  */
 
 import { EventEmitter } from 'events';
 import { v4 as uuidv4 } from 'uuid';
+import { RequestDeduplicator } from './request-deduplicator';
 
 // ============================================
 // TYPES AND INTERFACES
@@ -90,6 +96,7 @@ export class MessageBus {
       timeout: NodeJS.Timeout;
     }
   >;
+  private deduplicator: RequestDeduplicator;
 
   constructor(pluginId: string) {
     this.pluginId = pluginId;
@@ -97,6 +104,7 @@ export class MessageBus {
     this.emitter.setMaxListeners(100); // Support many subscriptions
     this.subscriptions = new Map();
     this.pendingRequests = new Map();
+    this.deduplicator = new RequestDeduplicator({ defaultWindowMs: 5000 });
 
     // Subscribe to responses for this plugin
     this.setupResponseHandler();
@@ -110,24 +118,34 @@ export class MessageBus {
    * Publish a message to a topic
    */
   async publish(options: PublishOptions): Promise<void> {
-    const message: Message = {
-      messageId: uuidv4(),
-      timestamp: new Date().toISOString(),
-      source: this.pluginId,
-      destination: options.destination || '*',
-      topic: options.topic,
-      messageType: options.messageType,
-      priority: options.priority || 5,
-      headers: {
-        traceId: uuidv4(),
-        spanId: uuidv4(),
-        ...options.headers,
-      },
-      payload: options.payload,
-      metadata: options.metadata || {},
-    };
+    // Create request hash for deduplication
+    const hash = RequestDeduplicator.hashRequest(options.topic, options.payload);
 
-    this.emitMessage(message);
+    // Wrap in deduplicator for event-type messages
+    await this.deduplicator.execute(
+      hash,
+      async () => {
+        const message: Message = {
+          messageId: uuidv4(),
+          timestamp: new Date().toISOString(),
+          source: this.pluginId,
+          destination: options.destination || '*',
+          topic: options.topic,
+          messageType: options.messageType,
+          priority: options.priority || 5,
+          headers: {
+            traceId: uuidv4(),
+            spanId: uuidv4(),
+            ...options.headers,
+          },
+          payload: options.payload,
+          metadata: options.metadata || {},
+        };
+
+        this.emitMessage(message);
+      },
+      1000 // Short dedup window for publishes (1s)
+    );
   }
 
   /**
@@ -360,6 +378,7 @@ export class MessageBus {
     subscriptions: number;
     pendingRequests: number;
     topics: string[];
+    deduplication: any;
   } {
     return {
       subscriptions: Array.from(this.subscriptions.values()).reduce(
@@ -368,7 +387,15 @@ export class MessageBus {
       ),
       pendingRequests: this.pendingRequests.size,
       topics: Array.from(this.subscriptions.keys()),
+      deduplication: this.deduplicator.getMetrics(),
     };
+  }
+
+  /**
+   * Get deduplication metrics
+   */
+  getDeduplicationMetrics(): any {
+    return this.deduplicator.getMetrics();
   }
 
   /**
