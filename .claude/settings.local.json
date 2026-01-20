@@ -198,5 +198,10 @@
     "slack",
     "jira"
   ],
+  "enabledPlugins": {
+    "agent-architecture@context-engineering-marketplace": true,
+    "agent-development@context-engineering-marketplace": true,
+    "skill-creator@awesome-claude-skills": true
+  },
   "outputStyle": "agent-orchestrator"
 }
