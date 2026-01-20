@@ -1,6 +1,6 @@
 # Claude Code Templating Plugin
 
-**Version:** 1.0.0 | **Protocol:** EXPLORE > PLAN > CODE > TEST > FIX > DOCUMENT
+**Version:** 2.0.0 | **Protocol:** EXPLORE > PLAN > CODE > TEST > FIX > DOCUMENT
 
 ## Overview
 

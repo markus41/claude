@@ -1,7 +1,7 @@
 {
   "name": "claude-code-templating-plugin",
-  "version": "1.0.0",
-  "description": "Universal templating and Harness expert plugin for Claude Code - enables fully autonomous project generation, pipeline creation, and deployment automation",
+  "version": "2.0.0",
+  "description": "Universal templating and Harness expert plugin for Claude Code - enables fully autonomous project generation, pipeline creation, and deployment automation with database-backed registry",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -14,6 +14,7 @@
     "test:watch": "vitest watch",
     "test:coverage": "vitest run --coverage",
     "test:mcp:harness": "vitest run --filter mcp-harness",
+    "test:db": "vitest run --filter registry-db",
     "clean": "rimraf dist",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "npm run build"
@@ -28,7 +29,10 @@
     "mcp",
     "pipelines",
     "devops",
-    "code-generation"
+    "code-generation",
+    "database",
+    "prisma",
+    "redis"
   ],
   "author": {
     "name": "Markus Ahling",
@@ -45,6 +49,8 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
+    "@prisma/client": "^6.3.0",
+    "@upstash/redis": "^1.34.3",
     "handlebars": "^4.7.8",
     "nunjucks": "^3.2.4",
     "js-yaml": "^4.1.0",
@@ -57,7 +63,8 @@
     "eventemitter3": "^5.0.1",
     "chalk": "^5.3.0",
     "yaml": "^2.3.4",
-    "xml2js": "^0.6.2"
+    "xml2js": "^0.6.2",
+    "dotenv": "^16.4.7"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",
@@ -69,6 +76,7 @@
     "@typescript-eslint/eslint-plugin": "^6.13.0",
     "@typescript-eslint/parser": "^6.13.0",
     "eslint": "^8.55.0",
+    "prisma": "^6.3.0",
     "typescript": "^5.3.2",
     "vitest": "^1.0.0",
     "@vitest/coverage-v8": "^1.0.0",
@@ -76,6 +84,7 @@
   },
   "files": [
     "dist",
+    "lib",
     "templates",
     "agents",
     "skills",

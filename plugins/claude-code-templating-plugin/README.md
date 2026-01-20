@@ -1,9 +1,11 @@
 # Claude Code Templating Plugin
 
-> Universal templating and Harness expert plugin for Claude Code - enables fully autonomous project generation, pipeline creation, and deployment automation through a unified template interface.
+> Universal templating and Harness expert plugin for Claude Code - enables fully autonomous project generation, pipeline creation, and deployment automation through a unified template interface with database-backed registry and Redis caching.
 
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](./package.json)
+[![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](./package.json)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](./LICENSE)
+[![Database](https://img.shields.io/badge/database-Neon_PostgreSQL-green.svg)](https://neon.tech)
+[![Cache](https://img.shields.io/badge/cache-Upstash_Redis-red.svg)](https://upstash.com)
 
 ## Overview
 
