@@ -1,0 +1,66 @@
+{
+  "name": "@jira-orchestrator/core",
+  "version": "7.5.0",
+  "description": "Jira Orchestrator - Multi-agent orchestration system for Jira workflow automation",
+  "main": "lib/index.ts",
+  "type": "module",
+  "scripts": {
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:migrate:deploy": "prisma migrate deploy",
+    "db:studio": "prisma studio",
+    "db:reset": "prisma migrate reset",
+    "db:seed": "tsx scripts/seed.ts",
+    "db:setup": "npm run db:generate && npm run db:push",
+    "temporal:worker": "tsx lib/worker.ts",
+    "temporal:start": "tsx scripts/start-orchestration.ts",
+    "setup": "npm run db:setup",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint lib/",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.3.0",
+    "@prisma/adapter-neon": "^6.3.0",
+    "@neondatabase/serverless": "^0.10.4",
+    "@upstash/redis": "^1.34.3",
+    "@upstash/ratelimit": "^2.0.5",
+    "@temporalio/client": "^1.11.6",
+    "@temporalio/worker": "^1.11.6",
+    "@temporalio/workflow": "^1.11.6",
+    "@temporalio/activity": "^1.11.6",
+    "ws": "^8.18.0",
+    "dotenv": "^16.4.7",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "@types/ws": "^8.5.13",
+    "prisma": "^6.3.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.8",
+    "@vitest/coverage-v8": "^2.1.8",
+    "eslint": "^9.18.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Lobbi-Docs/claude.git",
+    "directory": "plugins/jira-orchestrator"
+  },
+  "keywords": [
+    "jira",
+    "orchestrator",
+    "claude",
+    "ai-agents",
+    "workflow",
+    "automation"
+  ],
+  "author": "Brookside BI",
+  "license": "MIT"
+}

@@ -4,6 +4,8 @@
 
 **NEW in v7.3:** Official Atlassian MCP SSE with OAuth authentication, updated Confluence documentation integration, accurate component counts.
 
+**v7.4 Features:** Enhanced external documentation publishing (GitHub Wiki, API docs, GitBook, Notion), expanded notification channels (Discord, PagerDuty), notification analytics, automated README sync, and database integration analysis (see `docs/DATABASE-INTEGRATION-ANALYSIS.md`).
+
 **v7.2 Features:** Complete plugin manifest with all agents registered, 6 workflow hooks, fixed plugin location for proper loading.
 
 **v7.1 Features:** AutoGen-style agent teams for orchestrated collaboration, parent-child issue orchestration, and domain affinity routing.
@@ -91,13 +93,14 @@ EXPLORE (2+) → PLAN (1-2) → CODE (2-4) → TEST (2-3) → FIX (1-2) → DOCU
 
 | Feature | Command | Description |
 |---------|---------|-------------|
-| **Notifications** | `/jira:notify` | Slack, Teams, Email, Webhooks |
+| **Notifications** | `/jira:notify` | Slack, Teams, Email, Discord, PagerDuty, Webhooks |
 | **Approvals** | `/jira:approve` | Multi-level workflows |
 | **Portfolio** | `/jira:portfolio` | Multi-project dashboards |
 | **SLA** | `/jira:sla` | Real-time monitoring |
 | **Compliance** | `/jira:compliance` | SOC2, GDPR, ISO27001 |
 | **Batch** | `/jira:batch` | Bulk operations |
 | **Export** | `/jira:export` | PDF, Excel, CSV |
+| **External Docs** | `/jira:docs-external` | GitHub Wiki, API docs, GitBook, Notion, README, Blog |
 
 ---
 

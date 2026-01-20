@@ -140,12 +140,37 @@ Lists available channels (Slack, Email, Teams, Webhooks, SMS) with status and co
 - Webhook registry: `jira-orchestrator/sessions/webhooks/endpoints.json`
 - Audit log: `jira-orchestrator/sessions/notifications/audit.log`
 
+## Analytics
+
+View notification analytics and metrics.
+
+```bash
+# View analytics dashboard
+/jira:notify analytics
+
+# Analytics for specific period
+/jira:notify analytics --period=7d
+
+# Channel performance
+/jira:notify analytics --channel=slack
+
+# User engagement metrics
+/jira:notify analytics --engagement
+```
+
+**Options:**
+- `--period`: Time period (1d, 7d, 30d, custom)
+- `--channel`: Filter by channel
+- `--engagement`: Show user engagement metrics
+- `--format`: Output format (table, json, dashboard)
+
 ## Related Commands
 
 - `/jira:status` - Session status
 - `/jira:work` - Work on issue (triggers notifications)
 - `/jira:pr` - Create PR (triggers notifications)
 - `/jira:deploy` - Deploy (triggers notifications)
+- `/jira:docs-external` - External documentation publishing
 
 ## Agent References
 

@@ -107,6 +107,44 @@ channels:
       max_per_day: 30
     urgent_only: true  # Only send SMS for urgent notifications
 
+  # Discord Configuration
+  discord:
+    enabled: false
+    bot_token: "${DISCORD_BOT_TOKEN}"
+    guild_id: "${DISCORD_GUILD_ID}"
+    channels:
+      engineering: "${DISCORD_CHANNEL_ENGINEERING}"  # Channel ID
+      releases: "${DISCORD_CHANNEL_RELEASES}"
+      incidents: "${DISCORD_CHANNEL_INCIDENTS}"
+      deployments: "${DISCORD_CHANNEL_DEPLOYMENTS}"
+    formatting:
+      embeds: true
+      markdown_support: true
+      mention_roles: true
+    rate_limits:
+      messages_per_second: 5
+      burst_size: 10
+    threading:
+      enabled: true
+      group_by: issue_key
+
+  # PagerDuty Configuration (for critical incidents)
+  pagerduty:
+    enabled: false
+    integration_key: "${PAGERDUTY_INTEGRATION_KEY}"
+    service_id: "${PAGERDUTY_SERVICE_ID}"
+    routing_key: "${PAGERDUTY_ROUTING_KEY}"
+    severity_mapping:
+      urgent: "critical"
+      normal: "warning"
+      low: "info"
+    auto_resolve: true
+    deduplication_key: "jira-{issue_key}"  # Prevent duplicate incidents
+    rate_limits:
+      max_per_hour: 20
+      max_per_day: 100
+    urgent_only: true  # Only create incidents for urgent notifications
+
 # ============================================================================
 # Webhook Endpoints
 # ============================================================================
