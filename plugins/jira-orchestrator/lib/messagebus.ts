@@ -354,8 +354,8 @@ export class MessageBus {
       const regex = new RegExp(
         '^' +
           pattern
-            .replace(/\*/g, '[^/]+')
-            .replace(/\*\*/g, '.*') +
+            .replace(/\*\*/g, '.*')
+            .replace(/\*/g, '[^/]+') +
           '$'
       );
 
