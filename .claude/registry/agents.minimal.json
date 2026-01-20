@@ -173,7 +173,18 @@
     "utility": {
       "context-cleanup-agent": { "path": "agents/utility/context-cleanup-agent.md", "model": "haiku" },
       "documentation-sync-agent": { "path": "agents/utility/documentation-sync-agent.md", "model": "haiku" },
-      "registry-manager-agent": { "path": "agents/utility/registry-manager-agent.md", "model": "haiku" }
+      "registry-manager-agent": { "path": "agents/utility/registry-manager-agent.md", "model": "haiku" },
+      "plugin-manager": {
+        "path": "agents/utility/plugin-manager.md",
+        "model": "sonnet",
+        "domains": ["plugins", "marketplace", "installation", "validation"],
+        "routing": {
+          "priority": "medium",
+          "complexityRange": [10, 60],
+          "prefer": ["plugin", "install", "marketplace", "registry"],
+          "avoid": []
+        }
+      }
     },
     "aws-eks-helm-keycloak": {
       "eks:setup-orchestrator": {
@@ -204,7 +215,7 @@
   },
 
   "counts": {
-    "total": 46,
+    "total": 47,
     "byCategory": {
       "core": 6,
       "devops": 6,
@@ -217,7 +228,7 @@
       "frontend-theming": 3,
       "selenium-testing": 3,
       "membership-domain": 4,
-      "utility": 3,
+      "utility": 4,
       "aws-eks-helm-keycloak": 4
     }
   }

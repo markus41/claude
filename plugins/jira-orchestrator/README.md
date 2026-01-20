@@ -1,6 +1,6 @@
 # Golden Armada - Lobbi Autonomous DevOps Orchestration
 
-**Version:** 7.3.0 | **Agents:** 73 | **Teams:** 16 | **Skills:** 11 | **Commands:** 44 | **Hooks:** 6
+**Version:** 7.5.0 | **Agents:** 77 | **Teams:** 16 | **Skills:** 13 | **Commands:** 45 | **Hooks:** 6
 
 **NEW in v7.3:** Official Atlassian MCP SSE with OAuth authentication, updated Confluence documentation integration, accurate component counts.
 
