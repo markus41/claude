@@ -108,7 +108,15 @@ export function loadHooksFile(hooksPath: string): unknown {
 
   try {
     const content = fs.readFileSync(hooksPath, 'utf-8');
-    return JSON.parse(content);
+    const parsed = JSON.parse(content);
+    
+    // Handle wrapped format: { hooks: { UserPromptSubmit: [...] } }
+    // Unwrap to expected format: { UserPromptSubmit: [...] }
+    if (parsed && typeof parsed === 'object' && 'hooks' in parsed && typeof parsed.hooks === 'object') {
+      return parsed.hooks;
+    }
+    
+    return parsed;
   } catch (error: any) {
     throw new Error(`Failed to parse hooks.json: ${error.message}`);
   }

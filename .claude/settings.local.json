@@ -175,7 +175,8 @@
       "mcp__MCP_DOCKER__jira_get_all_projects",
       "mcp__MCP_DOCKER__confluence_search",
       "mcp__MCP_DOCKER__jira_get_user_profile",
-      "mcp__MCP_DOCKER__jira_search"
+      "mcp__MCP_DOCKER__jira_search",
+      "Bash(powershell -Command:*)"
     ],
     "deny": [],
     "ask": []
