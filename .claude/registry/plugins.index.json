@@ -177,7 +177,7 @@
         "tier": "enterprise"
       },
       "code-quality-orchestrator": {
-        "path": "../plugins/code-quality-orchestrator/plugin.json",
+        "path": "../plugins/code-quality-orchestrator/.claude-plugin/plugin.json",
         "callsign": "Curator",
         "version": "1.0.0",
         "provides": { "commands": 12, "agents": 8, "skills": 5, "hooks": 6 },
@@ -188,7 +188,7 @@
 
     "workflow": {
       "git-workflow-orchestrator": {
-        "path": "../plugins/git-workflow-orchestrator/plugin.json",
+        "path": "../plugins/git-workflow-orchestrator/.claude-plugin/plugin.json",
         "callsign": "Sentinel",
         "version": "1.0.0",
         "description": "Advanced Git workflows, branching strategies, PR management",
@@ -198,7 +198,7 @@
         "integrates": ["jira-orchestrator", "code-quality-orchestrator"]
       },
       "release-orchestrator": {
-        "path": "../plugins/release-orchestrator/plugin.json",
+        "path": "../plugins/release-orchestrator/.claude-plugin/plugin.json",
         "callsign": "Herald",
         "version": "1.0.0",
         "description": "Release lifecycle, versioning, changelog, deployment coordination",
@@ -208,7 +208,7 @@
         "integrates": ["jira-orchestrator", "git-workflow-orchestrator", "notification-hub"]
       },
       "testing-orchestrator": {
-        "path": "../plugins/testing-orchestrator/plugin.json",
+        "path": "../plugins/testing-orchestrator/.claude-plugin/plugin.json",
         "callsign": "Validator",
         "version": "1.0.0",
         "description": "Comprehensive testing orchestration - unit, integration, E2E, performance",
@@ -221,7 +221,7 @@
 
     "communication": {
       "notification-hub": {
-        "path": "../plugins/notification-hub/plugin.json",
+        "path": "../plugins/notification-hub/.claude-plugin/plugin.json",
         "callsign": "Messenger",
         "version": "1.0.0",
         "description": "Unified notifications - Slack, Teams, Discord, Email, Webhooks",
@@ -231,7 +231,7 @@
         "integrates": ["jira-orchestrator", "release-orchestrator", "testing-orchestrator"]
       },
       "documentation-orchestrator": {
-        "path": "../plugins/documentation-orchestrator/plugin.json",
+        "path": "../plugins/documentation-orchestrator/.claude-plugin/plugin.json",
         "callsign": "Scribe",
         "version": "1.0.0",
         "description": "Documentation generation - API docs, README, architecture, diagrams",
@@ -244,7 +244,7 @@
 
     "analytics": {
       "analytics-dashboard": {
-        "path": "../plugins/analytics-dashboard/plugin.json",
+        "path": "../plugins/analytics-dashboard/.claude-plugin/plugin.json",
         "callsign": "Oracle",
         "version": "1.0.0",
         "description": "Velocity, burndown, DORA metrics, forecasting, cost analysis",
@@ -257,7 +257,7 @@
 
     "data": {
       "customer-data-migration-orchestrator": {
-        "path": "../plugins/customer-data-migration-orchestrator/plugin.json",
+        "path": "../plugins/customer-data-migration-orchestrator/.claude-plugin/plugin.json",
         "callsign": "Importer",
         "version": "1.0.0",
         "description": "Customer onboarding and legacy data migration - CSV, Excel, databases, APIs with AI-assisted mapping",
@@ -370,7 +370,7 @@
 
     "ai-advanced": {
       "cognitive-code-reasoner": {
-        "path": "../plugins/cognitive-code-reasoner/plugin.json",
+        "path": "../plugins/cognitive-code-reasoner/.claude-plugin/plugin.json",
         "callsign": "Didact",
         "version": "1.0.0",
         "description": "Ultra-deep debugging using extended thinking, hypothesis-driven analysis, causal chains",
@@ -382,7 +382,7 @@
         "integrates": ["jira-orchestrator", "testing-orchestrator", "code-quality-orchestrator"]
       },
       "autonomous-sprint-ai": {
-        "path": "../plugins/autonomous-sprint-ai/plugin.json",
+        "path": "../plugins/autonomous-sprint-ai/.claude-plugin/plugin.json",
         "callsign": "Strategos",
         "version": "1.0.0",
         "description": "Self-governing sprint management with autonomous planning, workload balancing, blocker prediction",
@@ -394,7 +394,7 @@
         "integrates": ["jira-orchestrator", "notification-hub", "analytics-dashboard"]
       },
       "code-knowledge-graph": {
-        "path": "../plugins/code-knowledge-graph/plugin.json",
+        "path": "../plugins/code-knowledge-graph/.claude-plugin/plugin.json",
         "callsign": "Librarian",
         "version": "1.0.0",
         "description": "Semantic knowledge graph for codebase understanding, impact analysis, architecture queries",
@@ -405,7 +405,7 @@
         "integrates": ["jira-orchestrator", "documentation-orchestrator", "testing-orchestrator", "cognitive-code-reasoner"]
       },
       "multi-model-orchestration": {
-        "path": "../plugins/multi-model-orchestration/plugin.json",
+        "path": "../plugins/multi-model-orchestration/.claude-plugin/plugin.json",
         "callsign": "Conductor",
         "version": "1.0.0",
         "description": "Dynamic LLM routing to optimal model (Claude/GPT/Gemini/Llama) based on task, cost, latency",
@@ -417,7 +417,7 @@
         "integrates": ["cognitive-code-reasoner", "testing-orchestrator", "documentation-orchestrator"]
       },
       "predictive-failure-engine": {
-        "path": "../plugins/predictive-failure-engine/plugin.json",
+        "path": "../plugins/predictive-failure-engine/.claude-plugin/plugin.json",
         "callsign": "Cassandra",
         "version": "1.0.0",
         "description": "ML-based bug prediction before they happen - pattern recognition, hotspot detection",
@@ -429,7 +429,7 @@
         "integrates": ["jira-orchestrator", "code-knowledge-graph", "testing-orchestrator", "cognitive-code-reasoner"]
       },
       "agent-review-council": {
-        "path": "../plugins/agent-review-council/plugin.json",
+        "path": "../plugins/agent-review-council/.claude-plugin/plugin.json",
         "callsign": "Tribunal",
         "version": "1.0.0",
         "description": "Revolutionary multi-agent deliberation with 20 protocols, 21 agents, and production automation",
