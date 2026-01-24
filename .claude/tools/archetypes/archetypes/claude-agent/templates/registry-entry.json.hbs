@@ -1,0 +1,13 @@
+{
+  "{{agentName}}": {
+    "path": "agents/{{category}}/{{agentName}}.md",
+    "model": "{{model}}",
+    "domains": [{{#each domains}}"{{this}}"{{#unless @last}}, {{/unless}}{{/each}}],
+    "routing": {
+      "priority": "{{priority}}",
+      "complexityRange": [{{#if (eq complexity "low (0-30)")}}0, 30{{/if}}{{#if (eq complexity "medium (20-60)")}}20, 60{{/if}}{{#if (eq complexity "high (40-80)")}}40, 80{{/if}}{{#if (eq complexity "expert (60-100)")}}60, 100{{/if}}{{#if (eq complexity "full (0-100)")}}0, 100{{/if}}],
+      "prefer": [{{#each domains}}"{{this}}"{{#unless @last}}, {{/unless}}{{/each}}],
+      "avoid": []
+    }
+  }
+}

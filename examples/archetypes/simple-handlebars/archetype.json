@@ -1,0 +1,39 @@
+{
+  "name": "simple-node-service",
+  "version": "1.0.0",
+  "description": "Simple Node.js service archetype using default Handlebars engine (no explicit engine configuration)",
+  "category": "service",
+  "tags": ["nodejs", "simple", "handlebars"],
+  "author": {
+    "name": "Example Team"
+  },
+  "variables": [
+    {
+      "name": "serviceName",
+      "type": "string",
+      "description": "Name of the service",
+      "required": true,
+      "validation": {
+        "pattern": "^[a-z0-9-]+$"
+      }
+    },
+    {
+      "name": "port",
+      "type": "number",
+      "description": "HTTP port",
+      "default": 3000,
+      "validation": {
+        "min": 1024,
+        "max": 65535
+      }
+    }
+  ],
+  "dependencies": [
+    {
+      "name": "express",
+      "type": "npm",
+      "version": "^4.18.0"
+    }
+  ],
+  "files": ["templates/**/*"]
+}

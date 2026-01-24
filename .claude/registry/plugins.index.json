@@ -7,35 +7,35 @@
   "installed": {
     "jira-orchestrator": {
       "version": "7.5.0",
-      "path": "../../plugins/jira-orchestrator",
+      "path": "../plugins/jira-orchestrator",
       "source": "local",
       "installedAt": "2026-01-01T00:00:00.000Z",
       "dependencies": {}
     },
     "frontend-design-system": {
       "version": "1.0.0",
-      "path": "../../plugins/frontend-design-system",
+      "path": "../plugins/frontend-design-system",
       "source": "local",
       "installedAt": "2026-01-01T00:00:00.000Z",
       "dependencies": {}
     },
     "aws-eks-helm-keycloak": {
       "version": "1.0.0",
-      "path": "../../plugins/aws-eks-helm-keycloak",
+      "path": "../plugins/aws-eks-helm-keycloak",
       "source": "local",
       "installedAt": "2026-01-01T00:00:00.000Z",
       "dependencies": {}
     },
     "claude-code-templating": {
       "version": "1.0.0",
-      "path": "../../plugins/claude-code-templating-plugin",
+      "path": "../plugins/claude-code-templating-plugin",
       "source": "local",
       "installedAt": "2026-01-08T00:00:00.000Z",
       "dependencies": {}
     },
     "langgraph-architect": {
       "version": "1.0.0",
-      "path": "../../plugins/langgraph-architect",
+      "path": "../plugins/langgraph-architect",
       "source": "local",
       "installedAt": "2026-01-15T00:00:00.000Z",
       "dependencies": {}
@@ -157,7 +157,7 @@
   "plugins": {
     "core": {
       "jira-orchestrator": {
-        "path": "../../plugins/jira-orchestrator/.claude-plugin/plugin.json",
+        "path": "../plugins/jira-orchestrator/.claude-plugin/plugin.json",
         "callsign": "Arbiter",
         "version": "7.5.0",
         "description": "Enterprise Jira orchestration with 77 agents, 16 teams, 45 commands, 13 skills. Features Atlassian MCP OAuth, Harness integration, Neon PostgreSQL, Redis caching, Temporal workflows, and structured reasoning frameworks.",
@@ -280,7 +280,7 @@
 
     "frontend": {
       "frontend-design-system": {
-        "path": "../../plugins/frontend-design-system/.claude-plugin/plugin.json",
+        "path": "../plugins/frontend-design-system/.claude-plugin/plugin.json",
         "callsign": "Stylist",
         "version": "1.0.0",
         "description": "263+ design styles with multi-tenant Keycloak theming for AI-powered frontend development",
@@ -300,7 +300,7 @@
 
     "infrastructure": {
       "aws-eks-helm-keycloak": {
-        "path": "../../plugins/aws-eks-helm-keycloak/.claude-plugin/plugin.json",
+        "path": "../plugins/aws-eks-helm-keycloak/.claude-plugin/plugin.json",
         "callsign": "Conduit",
         "version": "1.0.0",
         "description": "AWS EKS deployments with Helm, Keycloak authentication, and Harness CI/CD",
@@ -348,7 +348,7 @@
 
     "templating": {
       "claude-code-templating": {
-        "path": "../../plugins/claude-code-templating-plugin/.claude-plugin/plugin.json",
+        "path": "../plugins/claude-code-templating-plugin/.claude-plugin/plugin.json",
         "callsign": "Architect",
         "version": "1.0.0",
         "description": "Universal templating and Harness expert plugin - multi-format templates, CI/CD pipeline generation, MCP integration",

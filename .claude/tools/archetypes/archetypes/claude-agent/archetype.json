@@ -1,0 +1,91 @@
+{
+  "name": "claude-agent",
+  "version": "1.0.0",
+  "description": "Specialized Claude Code agent with defined capabilities, tool permissions, and domain expertise",
+  "category": "ai",
+  "author": "Lobbi-Docs",
+  "license": "MIT",
+  "keywords": ["agent", "claude", "ai", "automation", "specialist"],
+  "variables": [
+    {
+      "name": "agentName",
+      "type": "string",
+      "prompt": "Agent name (kebab-case):",
+      "required": true,
+      "validation": "^[a-z][a-z0-9-]*$",
+      "description": "Name of the agent (e.g., code-reviewer, db-architect)"
+    },
+    {
+      "name": "displayName",
+      "type": "string",
+      "prompt": "Display name:",
+      "required": true,
+      "description": "Human-readable agent name"
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "prompt": "Agent description:",
+      "required": true,
+      "description": "What this agent specializes in"
+    },
+    {
+      "name": "model",
+      "type": "choice",
+      "prompt": "Default model:",
+      "required": true,
+      "choices": ["opus", "sonnet", "haiku"],
+      "default": "sonnet",
+      "description": "Default model for this agent"
+    },
+    {
+      "name": "category",
+      "type": "choice",
+      "prompt": "Agent category:",
+      "required": true,
+      "choices": ["core", "devops", "security", "data", "frontend", "backend", "testing", "documentation", "utility"],
+      "default": "core",
+      "description": "Category for routing and organization"
+    },
+    {
+      "name": "domains",
+      "type": "multi-choice",
+      "prompt": "Domain expertise:",
+      "choices": ["backend", "frontend", "database", "api", "testing", "security", "infrastructure", "documentation", "debugging", "architecture", "performance", "devops"],
+      "default": ["backend"],
+      "description": "Areas of expertise for task routing"
+    },
+    {
+      "name": "tools",
+      "type": "multi-choice",
+      "prompt": "Allowed tools:",
+      "choices": ["Bash", "Read", "Write", "Edit", "Grep", "Glob", "WebFetch", "WebSearch"],
+      "default": ["Read", "Write", "Edit", "Grep", "Glob"],
+      "description": "Tools this agent can use"
+    },
+    {
+      "name": "complexity",
+      "type": "choice",
+      "prompt": "Complexity range:",
+      "choices": ["low (0-30)", "medium (20-60)", "high (40-80)", "expert (60-100)", "full (0-100)"],
+      "default": "medium (20-60)",
+      "description": "Task complexity this agent handles"
+    },
+    {
+      "name": "priority",
+      "type": "choice",
+      "prompt": "Routing priority:",
+      "choices": ["low", "medium", "high", "critical"],
+      "default": "medium",
+      "description": "Priority when multiple agents match"
+    },
+    {
+      "name": "author",
+      "type": "string",
+      "prompt": "Author name:",
+      "default": "Markus Ahling"
+    }
+  ],
+  "dependencies": [],
+  "files": ["templates/**/*"]
+}

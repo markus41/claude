@@ -1,0 +1,534 @@
+/**
+ * WorkflowBuilder - Full Visual Flow Builder Interface
+ *
+ * Complete workflow building experience with node palette, canvas, and properties panel
+ */
+
+import React, { useState, useCallback } from 'react';
+import ReactFlow, {
+  ReactFlowProvider,
+  Background,
+  Controls,
+  MiniMap,
+  addEdge,
+  Connection,
+  Edge,
+  Node,
+  NodeTypes,
+  Handle,
+  Position,
+  useReactFlow,
+} from 'reactflow';
+import { Search, Play, Save, FolderOpen, Layers } from 'lucide-react';
+import { WorkflowImporter, JIRA_TEMPLATE_CONFIG } from '../utils/workflowImporter';
+
+import 'reactflow/dist/style.css';
+
+// Node type definitions
+const nodeTypes = {
+  trigger: ({ data }: { data: any }) => (
+    <div className="px-4 py-2 shadow-md rounded-md bg-blue-100 border-2 border-blue-500">
+      <div className="text-xs font-bold text-blue-800">TRIGGER</div>
+      <div className="text-sm text-blue-900">{data.label}</div>
+      <Handle type="source" position={Position.Right} />
+    </div>
+  ),
+  phase: ({ data }: { data: any }) => (
+    <div className="px-4 py-2 shadow-md rounded-md bg-green-100 border-2 border-green-500">
+      <div className="text-xs font-bold text-green-800">PHASE</div>
+      <div className="text-sm text-green-900">{data.label}</div>
+      <Handle type="target" position={Position.Left} />
+      <Handle type="source" position={Position.Right} />
+    </div>
+  ),
+  agent: ({ data }: { data: any }) => (
+    <div className="px-4 py-2 shadow-md rounded-md bg-purple-100 border-2 border-purple-500">
+      <div className="text-xs font-bold text-purple-800">AGENT</div>
+      <div className="text-sm text-purple-900">{data.label}</div>
+      <Handle type="target" position={Position.Left} />
+      <Handle type="source" position={Position.Right} />
+    </div>
+  ),
+  action: ({ data }: { data: any }) => (
+    <div className="px-4 py-2 shadow-md rounded-md bg-orange-100 border-2 border-orange-500">
+      <div className="text-xs font-bold text-orange-800">ACTION</div>
+      <div className="text-sm text-orange-900">{data.label}</div>
+      <Handle type="target" position={Position.Left} />
+      <Handle type="source" position={Position.Right} />
+    </div>
+  ),
+  terminator: ({ data }: { data: any }) => (
+    <div className="px-4 py-2 shadow-md rounded-md bg-red-100 border-2 border-red-500">
+      <div className="text-xs font-bold text-red-800">TERMINATOR</div>
+      <div className="text-sm text-red-900">{data.label}</div>
+      <Handle type="target" position={Position.Left} />
+    </div>
+  ),
+  control: ({ data }: { data: any }) => (
+    <div className="px-4 py-2 shadow-md rounded-md bg-yellow-100 border-2 border-yellow-500">
+      <div className="text-xs font-bold text-yellow-800">CONTROL</div>
+      <div className="text-sm text-yellow-900">{data.label}</div>
+      <Handle type="target" position={Position.Left} />
+      <Handle type="source" position={Position.Right} />
+    </div>
+  ),
+};
+
+// Sample nodes with different types
+const initialNodes: Node[] = [
+  {
+    id: 'trigger-1',
+    type: 'trigger',
+    position: { x: 100, y: 100 },
+    data: { label: 'Epic Trigger', type: 'trigger' },
+  },
+  {
+    id: 'phase-1',
+    type: 'phase',
+    position: { x: 300, y: 100 },
+    data: { label: 'Research Phase', type: 'phase' },
+  },
+  {
+    id: 'agent-1',
+    type: 'agent',
+    position: { x: 500, y: 100 },
+    data: { label: 'AI Agent', type: 'agent' },
+  },
+  {
+    id: 'action-1',
+    type: 'action',
+    position: { x: 700, y: 100 },
+    data: { label: 'Generate Code', type: 'action' },
+  },
+  {
+    id: 'terminator-1',
+    type: 'terminator',
+    position: { x: 900, y: 100 },
+    data: { label: 'Success', type: 'terminator' },
+  },
+];
+
+const initialEdges: Edge[] = [
+  { id: 'e1-2', source: 'trigger-1', target: 'phase-1' },
+  { id: 'e2-3', source: 'phase-1', target: 'agent-1' },
+  { id: 'e3-4', source: 'agent-1', target: 'action-1' },
+  { id: 'e4-5', source: 'action-1', target: 'terminator-1' },
+];
+
+// Node palette items
+const paletteItems = [
+  { type: 'trigger', label: 'Epic Trigger', category: 'Triggers' },
+  { type: 'trigger', label: 'Task Trigger', category: 'Triggers' },
+  { type: 'trigger', label: 'Webhook Trigger', category: 'Triggers' },
+  { type: 'phase', label: 'Research Phase', category: 'Phases' },
+  { type: 'phase', label: 'Planning Phase', category: 'Phases' },
+  { type: 'phase', label: 'Coding Phase', category: 'Phases' },
+  { type: 'agent', label: 'Single Agent', category: 'Agents' },
+  { type: 'agent', label: 'Multi Agent', category: 'Agents' },
+  { type: 'agent', label: 'Specialist Agent', category: 'Agents' },
+  { type: 'action', label: 'API Call', category: 'Actions' },
+  { type: 'action', label: 'File Operation', category: 'Actions' },
+  { type: 'action', label: 'Git Operation', category: 'Actions' },
+  { type: 'terminator', label: 'Success', category: 'Terminators' },
+  { type: 'terminator', label: 'Failure', category: 'Terminators' },
+];
+
+function NodePalette({ onAddNode }: { onAddNode: (type: string, label: string) => void }) {
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const onDragStart = (event: React.DragEvent, nodeType: string, nodeLabel: string) => {
+    event.dataTransfer.setData('application/reactflow', nodeType);
+    event.dataTransfer.setData('application/nodelabel', nodeLabel);
+    event.dataTransfer.effectAllowed = 'move';
+  };
+
+  const filteredItems = paletteItems.filter(item =>
+    item.label.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const categories = Array.from(new Set(filteredItems.map(item => item.category)));
+
+  return (
+    <div className="h-full flex flex-col">
+      <div className="p-3 border-b">
+        <h3 className="font-semibold text-gray-800 mb-2">Node Palette</h3>
+        <div className="relative">
+          <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-400" />
+          <input
+            type="text"
+            placeholder="Search nodes..."
+            className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-md text-sm"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+      </div>
+
+      <div className="flex-1 overflow-y-auto p-3 space-y-4">
+        {categories.map(category => (
+          <div key={category}>
+            <h4 className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">
+              {category}
+            </h4>
+            <div className="space-y-1">
+              {filteredItems
+                .filter(item => item.category === category)
+                .map((item, index) => (
+                  <button
+                    key={`${item.type}-${item.label}-${index}`}
+                    className="w-full text-left p-2 rounded hover:bg-gray-100 transition-colors text-sm border border-gray-200 cursor-grab active:cursor-grabbing"
+                    onClick={() => onAddNode(item.type, item.label)}
+                    draggable
+                    onDragStart={(e) => onDragStart(e, item.type, item.label)}
+                  >
+                    <span className="text-xs text-gray-500 block">{item.type.toUpperCase()}</span>
+                    {item.label}
+                  </button>
+                ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function PropertiesPanel({ selectedNode }: { selectedNode: Node | null }) {
+  return (
+    <div className="h-full flex flex-col">
+      <div className="p-3 border-b">
+        <h3 className="font-semibold text-gray-800">Properties</h3>
+      </div>
+
+      <div className="flex-1 p-3">
+        {selectedNode ? (
+          <div className="space-y-4">
+            <div>
+              <label className="block text-xs font-medium text-gray-700 mb-1">Node ID</label>
+              <input
+                type="text"
+                value={selectedNode.id}
+                disabled
+                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm bg-gray-50"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-700 mb-1">Label</label>
+              <input
+                type="text"
+                value={selectedNode.data?.label || ''}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+                placeholder="Enter node label..."
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-700 mb-1">Type</label>
+              <input
+                type="text"
+                value={selectedNode.type || 'default'}
+                disabled
+                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm bg-gray-50"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-700 mb-1">Position</label>
+              <div className="grid grid-cols-2 gap-2">
+                <input
+                  type="number"
+                  value={Math.round(selectedNode.position.x)}
+                  disabled
+                  className="px-3 py-2 border border-gray-300 rounded-md text-sm bg-gray-50"
+                />
+                <input
+                  type="number"
+                  value={Math.round(selectedNode.position.y)}
+                  disabled
+                  className="px-3 py-2 border border-gray-300 rounded-md text-sm bg-gray-50"
+                />
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="text-center text-gray-500 text-sm mt-8">
+            Select a node to view and edit its properties
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function WorkflowCanvasInner() {
+  const [nodes, setNodes] = useState<Node[]>(initialNodes);
+  const [edges, setEdges] = useState<Edge[]>(initialEdges);
+  const [selectedNode, setSelectedNode] = useState<Node | null>(null);
+  const [showTemplateModal, setShowTemplateModal] = useState(false);
+  const reactFlowInstance = useReactFlow();
+
+  const onConnect = useCallback(
+    (params: Connection) => setEdges((eds) => addEdge(params, eds)),
+    []
+  );
+
+  const onNodeClick = useCallback((_: any, node: Node) => {
+    setSelectedNode(node);
+  }, []);
+
+  const addNode = useCallback((type: string, label: string) => {
+    const newNode: Node = {
+      id: `${type}-${Date.now()}`,
+      type,
+      position: { x: Math.random() * 500 + 100, y: Math.random() * 300 + 100 },
+      data: { label, type },
+    };
+    setNodes((nds) => [...nds, newNode]);
+  }, []);
+
+  const loadJiraTemplate = useCallback(async () => {
+    try {
+      // Create the Jira workflow template data directly
+      const jiraTemplate = {
+        id: "jira-dev-workflow",
+        name: "Jira DEMO to Local Dev",
+        description: "Connects Jira DEMO project to local development workflow",
+        version: "1.0.0",
+        nodes: [
+          {
+            id: "jira-trigger",
+            type: "trigger",
+            position: { x: 100, y: 100 },
+            data: { label: "DEMO Issue Trigger", type: "webhook" }
+          },
+          {
+            id: "issue-analysis",
+            type: "phase",
+            position: { x: 350, y: 100 },
+            data: { label: "Analyze Issue", type: "explore" }
+          },
+          {
+            id: "local-dev",
+            type: "phase",
+            position: { x: 600, y: 100 },
+            data: { label: "Local Development", type: "code" }
+          },
+          {
+            id: "test-validation",
+            type: "phase",
+            position: { x: 850, y: 100 },
+            data: { label: "Test & Validate", type: "test" }
+          },
+          {
+            id: "jira-update",
+            type: "action",
+            position: { x: 350, y: 250 },
+            data: { label: "Update DEMO Issue", type: "api" }
+          },
+          {
+            id: "success",
+            type: "terminator",
+            position: { x: 600, y: 250 },
+            data: { label: "Development Complete", type: "success" }
+          }
+        ],
+        edges: [
+          { id: "e1", source: "jira-trigger", target: "issue-analysis" },
+          { id: "e2", source: "issue-analysis", target: "local-dev" },
+          { id: "e3", source: "local-dev", target: "test-validation" },
+          { id: "e4", source: "test-validation", target: "jira-update" },
+          { id: "e5", source: "jira-update", target: "success" }
+        ]
+      };
+
+      // Convert to React Flow format
+      const convertedWorkflow = WorkflowImporter.convertToReactFlow(jiraTemplate);
+
+      setNodes(convertedWorkflow.nodes);
+      setEdges(convertedWorkflow.edges);
+      setShowTemplateModal(false);
+
+      console.log('Loaded Jira DEMO workflow template');
+    } catch (error) {
+      console.error('Failed to load Jira template:', error);
+    }
+  }, []);
+
+  const clearCanvas = useCallback(() => {
+    setNodes([]);
+    setEdges([]);
+    setSelectedNode(null);
+  }, []);
+
+  const onDrop = useCallback(
+    (event: React.DragEvent) => {
+      event.preventDefault();
+
+      const type = event.dataTransfer.getData('application/reactflow');
+      const label = event.dataTransfer.getData('application/nodelabel');
+
+      if (typeof type === 'undefined' || !type || !label) {
+        return;
+      }
+
+      const position = reactFlowInstance.screenToFlowPosition({
+        x: event.clientX,
+        y: event.clientY,
+      });
+
+      const newNode: Node = {
+        id: `${type}-${Date.now()}`,
+        type,
+        position,
+        data: { label, type },
+      };
+
+      setNodes((nds) => nds.concat(newNode));
+    },
+    [reactFlowInstance]
+  );
+
+  const onDragOver = useCallback((event: React.DragEvent) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'move';
+  }, []);
+
+  return (
+    <div className="h-screen bg-gray-50 flex flex-col">
+      {/* Header */}
+      <header className="bg-white border-b border-gray-200 px-4 py-3 flex-shrink-0">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-xl font-semibold text-gray-900">
+              Visual Flow Builder
+            </h1>
+            <p className="text-sm text-gray-500">
+              Drag nodes from the palette or click nodes in the canvas to configure them
+            </p>
+          </div>
+          <div className="flex items-center space-x-2">
+            <button className="flex items-center px-3 py-1.5 text-sm bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors">
+              <Play className="w-4 h-4 mr-1" />
+              Execute
+            </button>
+            <button className="flex items-center px-3 py-1.5 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+              <Save className="w-4 h-4 mr-1" />
+              Save
+            </button>
+            <button
+              onClick={() => setShowTemplateModal(true)}
+              className="flex items-center px-3 py-1.5 text-sm bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors"
+            >
+              <Layers className="w-4 h-4 mr-1" />
+              Templates
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Main workspace */}
+      <div className="flex-1 flex overflow-hidden" style={{ minHeight: '500px' }}>
+          {/* Node Palette - Left sidebar */}
+          <div className="w-64 bg-white border-r border-gray-200 flex-shrink-0">
+            <NodePalette onAddNode={addNode} />
+          </div>
+
+          {/* Canvas - Center */}
+          <div className="flex-1 relative" style={{ height: '100%', minHeight: '600px' }}>
+            <div style={{ width: '100%', height: '100%', minHeight: '600px' }}>
+              <ReactFlow
+                nodes={nodes}
+                edges={edges}
+                nodeTypes={nodeTypes as NodeTypes}
+                onConnect={onConnect}
+                onNodeClick={onNodeClick}
+                onDrop={onDrop}
+                onDragOver={onDragOver}
+                nodesDraggable={true}
+                nodesConnectable={true}
+                elementsSelectable={true}
+                selectNodesOnDrag={false}
+                panOnDrag={true}
+                fitView
+                attributionPosition="bottom-left"
+                style={{ width: '100%', height: '100%' }}
+              >
+                <Background />
+                <Controls />
+                <MiniMap />
+              </ReactFlow>
+            </div>
+          </div>
+
+          {/* Properties Panel - Right sidebar */}
+          <div className="w-80 bg-white border-l border-gray-200 flex-shrink-0">
+            <PropertiesPanel selectedNode={selectedNode} />
+          </div>
+      </div>
+
+      {/* Template Modal */}
+      {showTemplateModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full m-4">
+            <div className="px-6 py-4 border-b border-gray-200">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-gray-900">Workflow Templates</h3>
+                <button
+                  onClick={() => setShowTemplateModal(false)}
+                  className="text-gray-400 hover:text-gray-600"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+            <div className="px-6 py-4">
+              <div className="space-y-4">
+                <div className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 cursor-pointer"
+                     onClick={loadJiraTemplate}>
+                  <h4 className="font-semibold text-blue-600">Jira DEMO to Local Development</h4>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Connects Jira DEMO project issues to local development workflow with automatic updates and testing.
+                  </p>
+                  <div className="flex items-center justify-between mt-3">
+                    <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">Jira Integration</span>
+                    <span className="text-xs text-gray-500">6 nodes • 5 connections</span>
+                  </div>
+                </div>
+                <div className="border border-gray-200 rounded-lg p-4 opacity-50">
+                  <h4 className="font-semibold text-gray-400">More Templates Coming Soon</h4>
+                  <p className="text-sm text-gray-400 mt-1">
+                    Additional templates for different development workflows will be available soon.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="px-6 py-4 border-t border-gray-200 flex justify-between">
+              <button
+                onClick={clearCanvas}
+                className="px-4 py-2 text-sm text-red-600 hover:text-red-800"
+              >
+                Clear Canvas
+              </button>
+              <button
+                onClick={() => setShowTemplateModal(false)}
+                className="px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function WorkflowCanvas() {
+  return (
+    <ReactFlowProvider>
+      <WorkflowCanvasInner />
+    </ReactFlowProvider>
+  );
+}
+
+export function WorkflowBuilder() {
+  return <WorkflowCanvas />;
+}

@@ -1,0 +1,109 @@
+/**
+ * Template Engine Interface - Abstraction for multiple template engines
+ *
+ * Supports both Node.js-based engines (Handlebars) and external engines via bridge (Copier)
+ */
+
+import type { TemplateContext } from '../types.js';
+
+/**
+ * Core template engine interface that all implementations must satisfy
+ */
+export interface ITemplateEngine {
+  /**
+   * Process a template string with context
+   * Output should end with exactly one newline for file content
+   */
+  processString(templateString: string, context: TemplateContext): Promise<string> | string;
+
+  /**
+   * Process a template file with context
+   */
+  processFile(templatePath: string, context: TemplateContext): Promise<string>;
+
+  /**
+   * Process filename template (removes template extension and processes variables)
+   * Filenames should never contain newline characters
+   */
+  processFilename(templateFilename: string, context: TemplateContext): string;
+
+  /**
+   * Validate template syntax without processing
+   */
+  validateTemplate(templateString: string): { valid: boolean; error?: string };
+
+  /**
+   * Extract variables used in a template
+   */
+  extractVariables(templateString: string): string[];
+
+  /**
+   * Create a context object with default values
+   */
+  createContext(
+    variables: Record<string, unknown>,
+    computed?: Record<string, unknown>
+  ): TemplateContext;
+
+  /**
+   * Get engine metadata
+   */
+  getMetadata(): EngineMetadata;
+}
+
+/**
+ * Engine metadata for identification and capabilities
+ */
+export interface EngineMetadata {
+  /** Engine name (e.g., 'handlebars', 'copier') */
+  name: string;
+
+  /** Engine version */
+  version: string;
+
+  /** Template syntax (e.g., '{{ }}', '{% %}') */
+  syntax: string;
+
+  /** Whether engine supports updates (like Copier) */
+  supportsUpdates: boolean;
+
+  /** Whether engine requires external runtime */
+  requiresExternal: boolean;
+
+  /** File extensions this engine handles */
+  extensions: string[];
+}
+
+/**
+ * Template syntax detection result
+ */
+export interface SyntaxDetectionResult {
+  /** Detected engine name */
+  engine: string;
+
+  /** Confidence score (0-1) */
+  confidence: number;
+
+  /** Patterns that matched */
+  patterns: string[];
+}
+
+/**
+ * Template syntax detector
+ */
+export interface ITemplateSyntaxDetector {
+  /**
+   * Detect which template engine a file uses based on syntax
+   */
+  detect(content: string): SyntaxDetectionResult;
+
+  /**
+   * Check if content uses Jinja2 syntax (for Copier)
+   */
+  isJinja2(content: string): boolean;
+
+  /**
+   * Check if content uses Handlebars syntax
+   */
+  isHandlebars(content: string): boolean;
+}

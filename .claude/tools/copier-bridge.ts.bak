@@ -1,0 +1,579 @@
+/**
+ * Copier Bridge Adapter - Integrates Python Copier with Node.js archetype system
+ *
+ * Establishes scalable bridge to Copier for project lifecycle management including:
+ * - Template rendering with Jinja2 syntax
+ * - Project updates when templates change
+ * - Migration support
+ * - Answer file persistence (.copier-answers.yml)
+ *
+ * Best for: Organizations requiring template versioning and update propagation
+ */
+
+import { spawn, ChildProcess } from 'child_process';
+import { writeFile, readFile, unlink, mkdir } from 'fs/promises';
+import { join } from 'path';
+import { randomBytes } from 'crypto';
+import type { TemplateContext } from '../types.js';
+import type { ITemplateEngine, EngineMetadata } from './types.js';
+import {
+  type BridgeConfig,
+  type BridgeRequest,
+  type BridgeResponse,
+  type RenderRequest,
+  type UpdateRequest,
+  type ValidateRequest,
+  type VersionCheckRequest,
+  BridgeRequestType,
+  BridgeRequestSchema,
+  BridgeResponseSchema,
+  BridgeError,
+  BridgeErrorType,
+  ContextTransformer,
+  DEFAULT_BRIDGE_CONFIG
+} from './bridge-protocol.js';
+
+/**
+ * Copier Bridge Adapter
+ *
+ * Implements ITemplateEngine by delegating to Python Copier via subprocess
+ * with JSON file-based IPC for reliability and structured communication.
+ */
+export class CopierBridgeAdapter implements ITemplateEngine {
+  private config: Required<BridgeConfig>;
+  private available: boolean | null = null;
+  private versionInfo: { python: string; copier?: string } | null = null;
+
+  constructor(config: Partial<BridgeConfig>) {
+    this.config = {
+      ...DEFAULT_BRIDGE_CONFIG,
+      ...config,
+      runnerScript: config.runnerScript || DEFAULT_BRIDGE_CONFIG.runnerScript
+    };
+
+    if (!this.config.runnerScript) {
+      throw new BridgeError(
+        BridgeErrorType.INVALID_REQUEST,
+        'runnerScript path is required in bridge configuration'
+      );
+    }
+  }
+
+  /**
+   * Process a template string with context
+   * Validates environment before execution
+   */
+  async processString(templateString: string, context: TemplateContext): Promise<string> {
+    await this.ensureAvailable();
+
+    const request: RenderRequest = {
+      type: BridgeRequestType.RENDER,
+      templateString,
+      context: ContextTransformer.toCopierContext(context)
+    };
+
+    const response = await this.executeBridge(request);
+
+    if (!response.success || typeof response.result !== 'string') {
+      throw new BridgeError(
+        BridgeErrorType.SUBPROCESS_ERROR,
+        response.error || 'Template rendering failed',
+        { stderr: response.stderr }
+      );
+    }
+
+    // Ensure output ends with exactly one newline
+    return response.result.replace(/[\r\n]*$/, '') + '\n';
+  }
+
+  /**
+   * Process a template file with context
+   * Reads file and delegates to processString
+   */
+  async processFile(templatePath: string, context: TemplateContext): Promise<string> {
+    try {
+      const templateContent = await readFile(templatePath, 'utf-8');
+      return this.processString(templateContent, context);
+    } catch (error) {
+      throw new BridgeError(
+        BridgeErrorType.FILE_IO_ERROR,
+        `Failed to read template file: ${templatePath}`,
+        error
+      );
+    }
+  }
+
+  /**
+   * Process filename template (removes .jinja extension and processes variables)
+   * Copier uses .jinja extension instead of .hbs
+   */
+  processFilename(templateFilename: string, context: TemplateContext): string {
+    // Remove .jinja extension if present
+    let filename = templateFilename;
+    if (filename.endsWith('.jinja')) {
+      filename = filename.slice(0, -6);
+    }
+
+    // For simple variable substitution in filenames, we can use regex
+    // This avoids async subprocess call for every filename
+    const copierContext = ContextTransformer.toCopierContext(context);
+
+    // Replace Jinja2 variable syntax: {{ variable }}
+    filename = filename.replace(/\{\{\s*(\w+)\s*\}\}/g, (_, varName) => {
+      return String(copierContext[varName] ?? '');
+    });
+
+    // Remove any trailing whitespace/newlines
+    return filename.trimEnd();
+  }
+
+  /**
+   * Validate template syntax without processing
+   * Checks Jinja2 syntax validity
+   */
+  validateTemplate(templateString: string): { valid: boolean; error?: string } {
+    // Synchronous validation using regex patterns for common Jinja2 syntax
+    // For comprehensive validation, use validateTemplateAsync
+    try {
+      // Check for balanced braces
+      const openBraces = (templateString.match(/\{\{/g) || []).length;
+      const closeBraces = (templateString.match(/\}\}/g) || []).length;
+
+      if (openBraces !== closeBraces) {
+        return {
+          valid: false,
+          error: 'Unbalanced braces: {{ and }} count mismatch'
+        };
+      }
+
+      // Check for balanced blocks
+      const openBlocks = (templateString.match(/\{%\s*\w+/g) || []).length;
+      const endBlocks = (templateString.match(/\{%\s*end\w+/g) || []).length;
+
+      if (openBlocks !== endBlocks) {
+        return {
+          valid: false,
+          error: 'Unbalanced blocks: {% block %} and {% endblock %} mismatch'
+        };
+      }
+
+      return { valid: true };
+    } catch (error) {
+      return {
+        valid: false,
+        error: error instanceof Error ? error.message : String(error)
+      };
+    }
+  }
+
+  /**
+   * Validate template syntax asynchronously (comprehensive check via Python)
+   */
+  async validateTemplateAsync(templateString: string): Promise<{ valid: boolean; error?: string }> {
+    await this.ensureAvailable();
+
+    const request: ValidateRequest = {
+      type: BridgeRequestType.VALIDATE,
+      templateString
+    };
+
+    const response = await this.executeBridge(request);
+
+    if (!response.success) {
+      return { valid: false, error: response.error };
+    }
+
+    return response.result as { valid: boolean; error?: string };
+  }
+
+  /**
+   * Extract variables used in a template
+   * Detects Jinja2 variable syntax: {{ variable }}
+   */
+  extractVariables(templateString: string): string[] {
+    const variables = new Set<string>();
+
+    // Match {{ variable }} syntax
+    const variablePattern = /\{\{\s*(\w+)(?:\.\w+)*\s*(?:\|[^}]+)?\}\}/g;
+    let match;
+
+    while ((match = variablePattern.exec(templateString)) !== null) {
+      const varName = match[1];
+      // Filter out Jinja2 special variables
+      if (!this.isJinja2Special(varName)) {
+        variables.add(varName);
+      }
+    }
+
+    return Array.from(variables);
+  }
+
+  /**
+   * Check if variable name is a Jinja2 special/builtin
+   */
+  private isJinja2Special(name: string): boolean {
+    const specials = ['loop', 'self', 'super', 'varargs', 'kwargs', 'range'];
+    return specials.includes(name);
+  }
+
+  /**
+   * Create a context object with default values
+   * Compatible with Copier's context structure
+   */
+  createContext(
+    variables: Record<string, unknown>,
+    computed: Record<string, unknown> = {}
+  ): TemplateContext {
+    const now = new Date();
+
+    return {
+      variables,
+      computed: {
+        ...computed,
+        timestamp: now.toISOString(),
+        date: now.toLocaleDateString(),
+        time: now.toLocaleTimeString(),
+        year: now.getFullYear()
+      },
+      env: {
+        cwd: process.cwd(),
+        user: process.env.USER || process.env.USERNAME || 'unknown',
+        timestamp: now.toISOString(),
+        date: now.toLocaleDateString()
+      }
+    };
+  }
+
+  /**
+   * Get engine metadata
+   */
+  getMetadata(): EngineMetadata {
+    return {
+      name: 'copier',
+      version: this.versionInfo?.copier || 'unknown',
+      syntax: '{{ }} and {% %}',
+      supportsUpdates: true,
+      requiresExternal: true,
+      extensions: ['.jinja', '.j2']
+    };
+  }
+
+  /**
+   * Register a partial/include template
+   * Note: Copier/Jinja2 uses file-based includes, not string registration
+   */
+  registerPartial(name: string, _template: string): void {
+    // Jinja2 in Copier typically uses file-based includes
+    // This method is a no-op for compatibility with ITemplateEngine interface
+    // For actual partial support, use Jinja2's {% include %} with file paths
+    console.warn(
+      `[CopierBridge] registerPartial('${name}') called but Copier uses file-based includes. ` +
+      `Use {% include 'filename.jinja' %} syntax instead.`
+    );
+  }
+
+  /**
+   * Load and register a partial from file
+   * Note: Copier/Jinja2 uses file-based includes automatically
+   */
+  async loadPartial(name: string, path: string): Promise<void> {
+    // Jinja2 in Copier automatically loads includes from the file system
+    // This method is a no-op for compatibility with ITemplateEngine interface
+    console.warn(
+      `[CopierBridge] loadPartial('${name}', '${path}') called but Copier uses file-based includes. ` +
+      `Place templates in the template directory and use {% include 'filename.jinja' %} syntax.`
+    );
+  }
+
+  /**
+   * Get the file extension for this engine's templates
+   */
+  getExtension(): string {
+    return '.jinja';
+  }
+
+  /**
+   * Get the engine name
+   */
+  getName(): string {
+    return 'copier';
+  }
+
+  /**
+   * Update an existing project with new template version
+   * Core Copier feature - propagates template changes to generated projects
+   */
+  async updateProject(
+    templatePath: string,
+    projectPath: string,
+    options?: {
+      answersFile?: string;
+      skipAnsweredQuestions?: boolean;
+      force?: boolean;
+    }
+  ): Promise<{ filesCreated: string[]; filesUpdated: string[]; answersFile: string }> {
+    await this.ensureAvailable();
+
+    const request: UpdateRequest = {
+      type: BridgeRequestType.UPDATE,
+      templatePath,
+      outputPath: projectPath,
+      context: {},
+      options
+    };
+
+    const response = await this.executeBridge(request);
+
+    if (!response.success) {
+      throw new BridgeError(
+        BridgeErrorType.SUBPROCESS_ERROR,
+        response.error || 'Project update failed',
+        { stderr: response.stderr }
+      );
+    }
+
+    return response.result as {
+      filesCreated: string[];
+      filesUpdated: string[];
+      answersFile: string;
+    };
+  }
+
+  /**
+   * Check if Python and Copier are available
+   * Caches result to avoid repeated subprocess calls
+   */
+  async checkAvailability(): Promise<boolean> {
+    if (this.available !== null) {
+      return this.available;
+    }
+
+    try {
+      const request: VersionCheckRequest = {
+        type: BridgeRequestType.CHECK_VERSION
+      };
+
+      const response = await this.executeBridge(request);
+
+      if (response.success && response.result) {
+        const versionData = response.result as {
+          pythonVersion: string;
+          copierVersion?: string;
+          available: boolean;
+        };
+
+        this.versionInfo = {
+          python: versionData.pythonVersion,
+          copier: versionData.copierVersion
+        };
+
+        this.available = versionData.available;
+      } else {
+        this.available = false;
+      }
+    } catch (error) {
+      this.available = false;
+    }
+
+    return this.available;
+  }
+
+  /**
+   * Ensure Python and Copier are available, throw if not
+   */
+  private async ensureAvailable(): Promise<void> {
+    const available = await this.checkAvailability();
+
+    if (!available) {
+      if (!this.versionInfo?.python) {
+        throw new BridgeError(
+          BridgeErrorType.PYTHON_NOT_FOUND,
+          `Python executable not found at: ${this.config.pythonPath}\n` +
+          'Install Python 3.8+ or configure pythonPath in bridge config'
+        );
+      } else if (!this.versionInfo.copier) {
+        throw new BridgeError(
+          BridgeErrorType.COPIER_NOT_INSTALLED,
+          'Copier is not installed in Python environment\n' +
+          'Install with: pip install copier'
+        );
+      } else {
+        throw new BridgeError(
+          BridgeErrorType.SUBPROCESS_ERROR,
+          'Python/Copier environment check failed'
+        );
+      }
+    }
+  }
+
+  /**
+   * Execute bridge subprocess with retry logic and timeout
+   * Core communication layer with comprehensive error handling
+   */
+  private async executeBridge(
+    request: BridgeRequest,
+    retryCount = 0
+  ): Promise<BridgeResponse> {
+    // Validate request
+    const validation = BridgeRequestSchema.safeParse(request);
+    if (!validation.success) {
+      throw new BridgeError(
+        BridgeErrorType.INVALID_REQUEST,
+        'Invalid bridge request',
+        validation.error
+      );
+    }
+
+    // Generate temp file paths
+    const requestId = randomBytes(16).toString('hex');
+    const requestFile = join(this.config.tempDir, `copier-request-${requestId}.json`);
+    const responseFile = join(this.config.tempDir, `copier-response-${requestId}.json`);
+
+    try {
+      // Ensure temp directory exists
+      await mkdir(this.config.tempDir, { recursive: true });
+
+      // Write request to JSON file
+      await writeFile(requestFile, JSON.stringify(request, null, 2), 'utf-8');
+
+      // Execute Python subprocess
+      const response = await this.spawnPython(requestFile, responseFile);
+
+      // Clean up request file (keep response for debugging if verbose)
+      await unlink(requestFile).catch(() => {});
+
+      // Validate response
+      const responseValidation = BridgeResponseSchema.safeParse(response);
+      if (!responseValidation.success) {
+        throw new BridgeError(
+          BridgeErrorType.INVALID_RESPONSE,
+          'Invalid bridge response',
+          responseValidation.error
+        );
+      }
+
+      // Clean up response file unless verbose mode
+      if (!this.config.verbose) {
+        await unlink(responseFile).catch(() => {});
+      }
+
+      return response;
+    } catch (error) {
+      // Clean up temp files on error
+      await Promise.all([
+        unlink(requestFile).catch(() => {}),
+        unlink(responseFile).catch(() => {})
+      ]);
+
+      // Retry on transient errors
+      if (
+        retryCount < this.config.maxRetries &&
+        error instanceof BridgeError &&
+        (error.type === BridgeErrorType.TIMEOUT ||
+          error.type === BridgeErrorType.SUBPROCESS_ERROR)
+      ) {
+        return this.executeBridge(request, retryCount + 1);
+      }
+
+      throw error;
+    }
+  }
+
+  /**
+   * Spawn Python subprocess with timeout and error handling
+   */
+  private async spawnPython(requestFile: string, responseFile: string): Promise<BridgeResponse> {
+    return new Promise((resolve, reject) => {
+      const args = [this.config.runnerScript, requestFile, responseFile];
+
+      if (this.config.verbose) {
+        console.log(`[CopierBridge] Spawning: ${this.config.pythonPath} ${args.join(' ')}`);
+      }
+
+      const childProcess: ChildProcess = spawn(this.config.pythonPath, args, {
+        stdio: ['ignore', 'pipe', 'pipe'],
+        env: { ...process.env }
+      });
+
+      let stdout = '';
+      let stderr = '';
+      let timedOut = false;
+
+      // Set timeout
+      const timeout = setTimeout(() => {
+        timedOut = true;
+        childProcess.kill('SIGTERM');
+        reject(
+          new BridgeError(
+            BridgeErrorType.TIMEOUT,
+            `Bridge execution timed out after ${this.config.timeout}ms`
+          )
+        );
+      }, this.config.timeout);
+
+      // Collect output
+      childProcess.stdout?.on('data', (data: Buffer) => {
+        stdout += data.toString();
+      });
+
+      childProcess.stderr?.on('data', (data: Buffer) => {
+        stderr += data.toString();
+      });
+
+      // Handle completion
+      childProcess.on('close', async (code: number | null) => {
+        clearTimeout(timeout);
+
+        if (timedOut) {
+          return; // Already rejected
+        }
+
+        if (code !== 0) {
+          return reject(
+            new BridgeError(
+              BridgeErrorType.SUBPROCESS_ERROR,
+              `Python subprocess exited with code ${code}`,
+              { stdout, stderr }
+            )
+          );
+        }
+
+        try {
+          // Read response file
+          const responseContent = await readFile(responseFile, 'utf-8');
+          const response = JSON.parse(responseContent) as BridgeResponse;
+          resolve(response);
+        } catch (error) {
+          reject(
+            new BridgeError(
+              BridgeErrorType.INVALID_RESPONSE,
+              'Failed to read or parse response file',
+              { error, stdout, stderr }
+            )
+          );
+        }
+      });
+
+      // Handle spawn errors
+      childProcess.on('error', (error: Error) => {
+        clearTimeout(timeout);
+        reject(
+          new BridgeError(
+            BridgeErrorType.PYTHON_NOT_FOUND,
+            `Failed to spawn Python process: ${error.message}`,
+            error
+          )
+        );
+      });
+    });
+  }
+}
+
+/**
+ * Create Copier bridge adapter with default configuration
+ */
+export function createCopierBridge(runnerScriptPath: string): CopierBridgeAdapter {
+  return new CopierBridgeAdapter({
+    runnerScript: runnerScriptPath
+  });
+}

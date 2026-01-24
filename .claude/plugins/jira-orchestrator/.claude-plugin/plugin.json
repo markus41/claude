@@ -1,8 +1,16 @@
 {
+  "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
   "name": "jira-orchestrator",
+  "displayName": "Jira Orchestrator (Legacy)",
+  "callsign": "Arbiter-Legacy",
   "version": "7.2.0",
-  "description": "Comprehensive Jira orchestration plugin with 69 agents, 43 commands, 11 skills, and automated hook-based workflows. Features Harness platform integration, SOLID/clean architecture enforcement, and multi-agent collaboration patterns.",
-  "author": "Ahling Tech",
+  "description": "Legacy Jira orchestration plugin - See plugins/jira-orchestrator for the authoritative version (7.5.0).",
+  "deprecated": true,
+  "replacedBy": "../../../plugins/jira-orchestrator",
+  "author": {
+    "name": "Markus Ahling",
+    "email": "markus@lobbi.io"
+  },
   "license": "MIT",
   "keywords": [
     "jira",

@@ -1,0 +1,446 @@
+{
+  "name": "multi-engine-service",
+  "version": "1.0.0",
+  "description": "Comprehensive example archetype demonstrating all multi-engine features including Handlebars, Nunjucks, EJS, lifecycle hooks, and migrations",
+  "category": "service",
+  "tags": ["nodejs", "typescript", "multi-engine", "microservice", "example"],
+  "author": {
+    "name": "Claude Orchestration Team",
+    "email": "team@example.com",
+    "url": "https://github.com/example/archetypes"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/example/archetypes.git"
+  },
+  "engine": {
+    "type": "handlebars",
+    "version": "^4.7.0",
+    "config": {
+      "handlebars": {
+        "strict": true,
+        "noEscape": false,
+        "assumeObjects": false,
+        "preventIndent": false,
+        "helpers": ["./helpers/string-helpers.js", "./helpers/date-helpers.js"],
+        "partials": {
+          "header": "./partials/header.hbs",
+          "footer": "./partials/footer.hbs",
+          "license": "./partials/license.hbs"
+        }
+      }
+    }
+  },
+  "fileEngineOverrides": {
+    "templates/config/**/*.yaml": {
+      "type": "nunjucks",
+      "config": {
+        "nunjucks": {
+          "autoescape": false,
+          "throwOnUndefined": true,
+          "trimBlocks": true,
+          "lstripBlocks": true,
+          "tags": {
+            "variableStart": "<<",
+            "variableEnd": ">>",
+            "blockStart": "<%",
+            "blockEnd": "%>",
+            "commentStart": "<#",
+            "commentEnd": "#>"
+          },
+          "filters": {
+            "uppercase": "./filters/uppercase.js",
+            "env": "./filters/env-var.js"
+          }
+        }
+      }
+    },
+    "templates/scripts/**/*.sh": {
+      "type": "ejs",
+      "config": {
+        "ejs": {
+          "delimiter": "%",
+          "openDelimiter": "<",
+          "closeDelimiter": ">",
+          "strict": false,
+          "rmWhitespace": true
+        }
+      }
+    },
+    "templates/infrastructure/**/*.tf": {
+      "type": "ejs",
+      "config": {
+        "ejs": {
+          "delimiter": "#",
+          "rmWhitespace": true
+        }
+      }
+    },
+    "templates/docs/**/*.md": {
+      "type": "handlebars"
+    }
+  },
+  "lifecycle": {
+    "migrations": [
+      {
+        "version": "1.0.0",
+        "script": "./scripts/migrations/init-v1.sh",
+        "description": "Initialize v1.0.0 project structure"
+      },
+      {
+        "version": "1.1.0",
+        "script": "./scripts/migrations/add-docker-support.sh",
+        "description": "Add Docker and container orchestration support"
+      },
+      {
+        "version": "2.0.0",
+        "script": "./scripts/migrations/migrate-to-v2.sh",
+        "description": "Breaking: Migrate from CommonJS to ESM, update Node.js to v20+"
+      }
+    ],
+    "updateStrategy": "prompt",
+    "hooks": {
+      "preGenerate": [
+        "echo 'Starting project generation...'",
+        "echo 'Project: {{projectName}}' > .generation.log",
+        "date >> .generation.log"
+      ],
+      "postGenerate": [
+        "echo 'Installing dependencies...'",
+        "npm install",
+        "echo 'Building project...'",
+        "npm run build",
+        "echo 'Initializing git repository...'",
+        "git init",
+        "git add .",
+        "git commit -m 'Initial commit from archetype {{archetypeName}} v{{archetypeVersion}}'",
+        "echo 'Running initial tests...'",
+        "npm test",
+        "echo 'Project generation complete! See README.md for next steps.'"
+      ],
+      "preUpdate": [
+        "echo 'Preparing for archetype update...'",
+        "git stash save 'Pre-update stash'",
+        "npm run test -- --coverage",
+        "git stash apply"
+      ],
+      "postUpdate": [
+        "echo 'Update complete. Running migrations...'",
+        "npm install",
+        "npm run build",
+        "npm test",
+        "echo 'Update successful! Review CHANGELOG.md for changes.'"
+      ]
+    }
+  },
+  "variables": [
+    {
+      "name": "projectName",
+      "type": "string",
+      "description": "The name of your project (kebab-case)",
+      "required": true,
+      "prompt": "What is the name of your project?",
+      "validation": {
+        "pattern": "^[a-z0-9-]+$",
+        "min": 3,
+        "max": 50
+      }
+    },
+    {
+      "name": "projectDescription",
+      "type": "string",
+      "description": "A short description of your project",
+      "required": true,
+      "prompt": "Describe your project in one sentence:",
+      "validation": {
+        "min": 10,
+        "max": 200
+      }
+    },
+    {
+      "name": "authorName",
+      "type": "string",
+      "description": "Your name or organization name",
+      "required": true,
+      "prompt": "Author name:"
+    },
+    {
+      "name": "authorEmail",
+      "type": "string",
+      "description": "Your email address",
+      "required": false,
+      "prompt": "Author email (optional):",
+      "validation": {
+        "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+      }
+    },
+    {
+      "name": "license",
+      "type": "enum",
+      "description": "Choose a license for your project",
+      "default": "MIT",
+      "required": true,
+      "prompt": "Select a license:",
+      "validation": {
+        "choices": ["MIT", "Apache-2.0", "GPL-3.0", "BSD-3-Clause", "ISC", "Unlicense", "PROPRIETARY"]
+      }
+    },
+    {
+      "name": "nodeVersion",
+      "type": "enum",
+      "description": "Target Node.js version",
+      "default": "20",
+      "required": true,
+      "prompt": "Target Node.js version:",
+      "validation": {
+        "choices": ["18", "20", "22"]
+      }
+    },
+    {
+      "name": "packageManager",
+      "type": "enum",
+      "description": "Package manager to use",
+      "default": "npm",
+      "required": true,
+      "prompt": "Choose a package manager:",
+      "validation": {
+        "choices": ["npm", "yarn", "pnpm", "bun"]
+      }
+    },
+    {
+      "name": "useTypeScript",
+      "type": "boolean",
+      "description": "Use TypeScript instead of JavaScript",
+      "default": true,
+      "required": false,
+      "prompt": "Use TypeScript?"
+    },
+    {
+      "name": "enableDocker",
+      "type": "boolean",
+      "description": "Include Docker configuration",
+      "default": true,
+      "required": false,
+      "prompt": "Include Docker support?"
+    },
+    {
+      "name": "dockerBaseImage",
+      "type": "enum",
+      "description": "Docker base image",
+      "default": "node:20-alpine",
+      "required": false,
+      "prompt": "Select Docker base image:",
+      "when": "enableDocker === true",
+      "validation": {
+        "choices": [
+          "node:18-alpine",
+          "node:20-alpine",
+          "node:22-alpine",
+          "node:20-slim",
+          "node:20-bullseye"
+        ]
+      }
+    },
+    {
+      "name": "enableCI",
+      "type": "boolean",
+      "description": "Include CI/CD configuration",
+      "default": true,
+      "required": false,
+      "prompt": "Include CI/CD pipelines?"
+    },
+    {
+      "name": "ciProvider",
+      "type": "enum",
+      "description": "CI/CD provider",
+      "default": "github-actions",
+      "required": false,
+      "prompt": "Select CI/CD provider:",
+      "when": "enableCI === true",
+      "validation": {
+        "choices": [
+          "github-actions",
+          "gitlab-ci",
+          "circleci",
+          "jenkins",
+          "azure-pipelines"
+        ]
+      }
+    },
+    {
+      "name": "enableDatabase",
+      "type": "boolean",
+      "description": "Include database configuration",
+      "default": false,
+      "required": false,
+      "prompt": "Include database support?"
+    },
+    {
+      "name": "databaseType",
+      "type": "enum",
+      "description": "Database type",
+      "required": false,
+      "prompt": "Select database type:",
+      "when": "enableDatabase === true",
+      "validation": {
+        "choices": ["postgresql", "mysql", "mongodb", "redis", "sqlite"]
+      }
+    },
+    {
+      "name": "enableTesting",
+      "type": "boolean",
+      "description": "Include testing framework",
+      "default": true,
+      "required": false,
+      "prompt": "Include testing framework?"
+    },
+    {
+      "name": "testingFramework",
+      "type": "enum",
+      "description": "Testing framework",
+      "default": "jest",
+      "required": false,
+      "prompt": "Select testing framework:",
+      "when": "enableTesting === true",
+      "validation": {
+        "choices": ["jest", "vitest", "mocha", "ava", "tap"]
+      }
+    },
+    {
+      "name": "enableLinting",
+      "type": "boolean",
+      "description": "Include ESLint and Prettier",
+      "default": true,
+      "required": false,
+      "prompt": "Include linting and formatting?"
+    },
+    {
+      "name": "features",
+      "type": "multiselect",
+      "description": "Additional features to include",
+      "required": false,
+      "prompt": "Select additional features (space to select, enter to confirm):",
+      "validation": {
+        "choices": [
+          "authentication",
+          "logging",
+          "monitoring",
+          "rate-limiting",
+          "caching",
+          "graphql",
+          "websockets",
+          "queue"
+        ]
+      }
+    },
+    {
+      "name": "port",
+      "type": "number",
+      "description": "Default HTTP port",
+      "default": 3000,
+      "required": false,
+      "prompt": "Default HTTP port:",
+      "validation": {
+        "min": 1024,
+        "max": 65535
+      }
+    },
+    {
+      "name": "enableOpenAPI",
+      "type": "boolean",
+      "description": "Generate OpenAPI/Swagger documentation",
+      "default": true,
+      "required": false,
+      "prompt": "Generate OpenAPI documentation?"
+    },
+    {
+      "name": "gitHubRepo",
+      "type": "string",
+      "description": "GitHub repository (owner/repo)",
+      "required": false,
+      "prompt": "GitHub repository (optional):",
+      "validation": {
+        "pattern": "^[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+$"
+      }
+    }
+  ],
+  "dependencies": [
+    {
+      "name": "express",
+      "type": "npm",
+      "version": "^4.18.0"
+    },
+    {
+      "name": "dotenv",
+      "type": "npm",
+      "version": "^16.0.0"
+    },
+    {
+      "name": "typescript",
+      "type": "npm",
+      "version": "^5.3.0",
+      "dev": true
+    },
+    {
+      "name": "@types/node",
+      "type": "npm",
+      "version": "^20.10.0",
+      "dev": true
+    },
+    {
+      "name": "@types/express",
+      "type": "npm",
+      "version": "^4.17.0",
+      "dev": true
+    },
+    {
+      "name": "jest",
+      "type": "npm",
+      "version": "^29.7.0",
+      "dev": true
+    },
+    {
+      "name": "@types/jest",
+      "type": "npm",
+      "version": "^29.5.0",
+      "dev": true
+    },
+    {
+      "name": "eslint",
+      "type": "npm",
+      "version": "^8.55.0",
+      "dev": true
+    },
+    {
+      "name": "prettier",
+      "type": "npm",
+      "version": "^3.1.0",
+      "dev": true
+    }
+  ],
+  "files": [
+    "templates/**/*",
+    "!templates/**/*.test.*",
+    "!templates/**/node_modules/**",
+    "!templates/**/.DS_Store",
+    "helpers/**/*.js",
+    "filters/**/*.js",
+    "partials/**/*.hbs",
+    "scripts/migrations/**/*",
+    "LICENSE"
+  ],
+  "ignore": [
+    "*.log",
+    "node_modules/",
+    ".DS_Store",
+    "*.swp",
+    "*.swo",
+    ".env",
+    ".env.local",
+    "dist/",
+    "build/",
+    "coverage/",
+    ".nyc_output/",
+    "*.tmp"
+  ]
+}

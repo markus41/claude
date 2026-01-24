@@ -1,0 +1,53 @@
+{
+  "$schema": "https://claude.ai/schemas/plugin.json",
+  "name": "{{pluginName}}",
+  "version": "1.0.0",
+  "description": "{{description}}",
+  "author": "{{author}}",
+  "license": "MIT",
+  "keywords": [
+    "events",
+    "{{pattern}}",
+    "processing",
+    "{{transport}}"
+  ],
+  "categories": ["data", "automation"],
+  "engines": {
+    "claude-code": ">=1.0.0"
+  },
+  "eventProcessing": {
+    "pattern": "{{pattern}}",
+    "transport": "{{transport}}",
+    "persistence": "{{persistence}}"
+  },
+  "features": {
+    {{#each features}}
+    "{{this}}": true{{#unless @last}},{{/unless}}
+    {{/each}}
+  },
+  "commands": [
+    {
+      "name": "events:list",
+      "file": "commands/list.md",
+      "description": "List recent events"
+    },
+    {
+      "name": "events:replay",
+      "file": "commands/replay.md",
+      "description": "Replay events from store"
+    },
+    {
+      "name": "events:stats",
+      "file": "commands/stats.md",
+      "description": "Show event processing statistics"
+    }
+  ],
+  "agents": [
+    {
+      "name": "{{pluginName}}-handler",
+      "file": "agents/handler.md",
+      "model": "haiku",
+      "description": "Processes events from the event bus"
+    }
+  ]
+}

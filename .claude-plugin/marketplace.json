@@ -9,17 +9,6 @@
   },
   "plugins": [
     {
-      "name": "claude-orchestration",
-      "description": "Root orchestration system - Multi-LLM agent orchestration with 97+ specialized agents across 21 categories, mandatory orchestration protocol, and registry-first architecture",
-      "version": "4.0.0",
-      "author": {
-        "name": "Markus Ahling",
-        "email": "markus@example.com"
-      },
-      "source": "./",
-      "category": "orchestration"
-    },
-    {
       "name": "home-assistant-architect",
       "description": "Complete Home Assistant platform with frontend design, energy management, cameras, sensors, local LLM integration, and Ubuntu server deployment. 15 agents, 16 MCP tools.",
       "version": "2.0.0",
@@ -121,18 +110,6 @@
       },
       "source": "./plugins/orchestrate-complex",
       "category": "orchestration"
-    },
-    {
-      "name": "jira-orchestrator",
-      "description": "Arbiter - Enterprise Jira orchestration with 77 agents, 16 teams, 45 commands, 13 skills. Features Atlassian MCP OAuth, Harness CD, Neon PostgreSQL, Redis caching, Temporal workflows, Confluence sync, and structured reasoning frameworks (CoT, ToT, RCA).",
-      "version": "7.5.0",
-      "author": {
-        "name": "Markus Ahling",
-        "email": "markus@lobbi.io"
-      },
-      "source": "./plugins/jira-orchestrator",
-      "category": "integration",
-      "tags": ["jira", "confluence", "atlassian", "orchestration", "agile", "sprint", "enterprise", "harness", "ci-cd", "automation", "multi-agent", "mcp", "knowledge-graph", "clean-architecture", "solid", "neon", "redis", "temporal"]
     },
     {
       "name": "exec-automator",
@@ -414,6 +391,18 @@
       },
       "source": "./.claude/plugins/testforge",
       "category": "testing"
+    },
+    {
+      "name": "jira-orchestrator",
+      "description": "Arbiter - Enterprise Jira orchestration with 77 agents, 16 teams, 45 commands, 13 skills. Features Atlassian MCP OAuth, Harness integration, Neon PostgreSQL, Redis caching, Temporal workflows, and structured reasoning frameworks.",
+      "version": "7.5.0",
+      "author": {
+        "name": "Markus Ahling",
+        "email": "markus@lobbi.io"
+      },
+      "source": "./plugins/jira-orchestrator",
+      "category": "orchestration",
+      "tags": ["jira", "confluence", "atlassian", "orchestration", "harness", "neon", "redis", "temporal", "enterprise"]
     }
   ]
 }

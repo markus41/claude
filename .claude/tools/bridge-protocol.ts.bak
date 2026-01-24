@@ -1,0 +1,244 @@
+/**
+ * JSON Bridge Protocol - Communication format between Node.js and Python subprocess
+ *
+ * Enables secure, structured communication with external template engines
+ */
+
+import { z } from 'zod';
+import type { TemplateContext } from '../types.js';
+
+/**
+ * Bridge request types
+ */
+export enum BridgeRequestType {
+  RENDER = 'render',
+  UPDATE = 'update',
+  VALIDATE = 'validate',
+  EXTRACT_VARS = 'extract_vars',
+  CHECK_VERSION = 'check_version'
+}
+
+/**
+ * Bridge request schema (sent to Python)
+ */
+export const BridgeRequestSchema = z.object({
+  type: z.nativeEnum(BridgeRequestType),
+  templatePath: z.string().optional(),
+  templateString: z.string().optional(),
+  context: z.record(z.unknown()).optional(),
+  outputPath: z.string().optional(),
+  options: z.record(z.unknown()).optional()
+});
+
+export type BridgeRequest = z.infer<typeof BridgeRequestSchema>;
+
+/**
+ * Bridge response schema (received from Python)
+ */
+export const BridgeResponseSchema = z.object({
+  success: z.boolean(),
+  result: z.unknown().optional(),
+  error: z.string().optional(),
+  stderr: z.string().optional(),
+  metadata: z.object({
+    engineVersion: z.string().optional(),
+    processingTime: z.number().optional(),
+    warningsCount: z.number().optional()
+  }).optional()
+});
+
+export type BridgeResponse = z.infer<typeof BridgeResponseSchema>;
+
+/**
+ * Render request (template to string)
+ */
+export interface RenderRequest extends BridgeRequest {
+  type: BridgeRequestType.RENDER;
+  templateString: string;
+  context: Record<string, unknown>;
+}
+
+/**
+ * Update request (Copier project update)
+ */
+export interface UpdateRequest extends BridgeRequest {
+  type: BridgeRequestType.UPDATE;
+  templatePath: string;
+  outputPath: string;
+  context: Record<string, unknown>;
+  options?: {
+    answersFile?: string;
+    skipAnsweredQuestions?: boolean;
+    force?: boolean;
+  };
+}
+
+/**
+ * Validate request (check template syntax)
+ */
+export interface ValidateRequest extends BridgeRequest {
+  type: BridgeRequestType.VALIDATE;
+  templateString: string;
+}
+
+/**
+ * Extract variables request
+ */
+export interface ExtractVarsRequest extends BridgeRequest {
+  type: BridgeRequestType.EXTRACT_VARS;
+  templateString: string;
+}
+
+/**
+ * Version check request
+ */
+export interface VersionCheckRequest extends BridgeRequest {
+  type: BridgeRequestType.CHECK_VERSION;
+}
+
+/**
+ * Render response
+ */
+export interface RenderResponse extends BridgeResponse {
+  result: string;
+}
+
+/**
+ * Update response
+ */
+export interface UpdateResponse extends BridgeResponse {
+  result: {
+    filesCreated: string[];
+    filesUpdated: string[];
+    answersFile: string;
+  };
+}
+
+/**
+ * Validate response
+ */
+export interface ValidateResponse extends BridgeResponse {
+  result: {
+    valid: boolean;
+    error?: string;
+  };
+}
+
+/**
+ * Extract variables response
+ */
+export interface ExtractVarsResponse extends BridgeResponse {
+  result: string[];
+}
+
+/**
+ * Version check response
+ */
+export interface VersionCheckResponse extends BridgeResponse {
+  result: {
+    pythonVersion: string;
+    copierVersion?: string;
+    jinja2Version?: string;
+    available: boolean;
+  };
+}
+
+/**
+ * Bridge configuration
+ */
+export interface BridgeConfig {
+  /** Python executable path (defaults to 'python3' or 'python') */
+  pythonPath?: string;
+
+  /** Copier runner script path */
+  runnerScript: string;
+
+  /** Timeout for subprocess execution (milliseconds) */
+  timeout?: number;
+
+  /** Temp directory for JSON files */
+  tempDir?: string;
+
+  /** Enable verbose logging */
+  verbose?: boolean;
+
+  /** Maximum retries on transient failures */
+  maxRetries?: number;
+}
+
+/**
+ * Default bridge configuration
+ */
+export const DEFAULT_BRIDGE_CONFIG: Required<BridgeConfig> = {
+  pythonPath: process.platform === 'win32' ? 'python' : 'python3',
+  runnerScript: '', // Must be set by caller
+  timeout: 60000, // 60 seconds
+  tempDir: '/tmp',
+  verbose: false,
+  maxRetries: 3
+};
+
+/**
+ * Bridge error types
+ */
+export enum BridgeErrorType {
+  PYTHON_NOT_FOUND = 'PYTHON_NOT_FOUND',
+  COPIER_NOT_INSTALLED = 'COPIER_NOT_INSTALLED',
+  TIMEOUT = 'TIMEOUT',
+  INVALID_REQUEST = 'INVALID_REQUEST',
+  INVALID_RESPONSE = 'INVALID_RESPONSE',
+  SUBPROCESS_ERROR = 'SUBPROCESS_ERROR',
+  FILE_IO_ERROR = 'FILE_IO_ERROR'
+}
+
+/**
+ * Bridge error class
+ */
+export class BridgeError extends Error {
+  constructor(
+    public type: BridgeErrorType,
+    message: string,
+    public details?: unknown
+  ) {
+    super(message);
+    this.name = 'BridgeError';
+  }
+}
+
+/**
+ * Context transformer - Converts TemplateContext to Copier-compatible format
+ */
+export class ContextTransformer {
+  /**
+   * Transform TemplateContext to flat key-value pairs for Copier
+   */
+  static toCopierContext(context: TemplateContext): Record<string, unknown> {
+    return {
+      ...context.variables,
+      ...context.computed,
+      // Flatten env object with prefixes
+      cwd: context.env.cwd,
+      user: context.env.user,
+      timestamp: context.env.timestamp,
+      date: context.env.date
+    };
+  }
+
+  /**
+   * Transform Copier answers file back to TemplateContext
+   */
+  static fromCopierAnswers(
+    answers: Record<string, unknown>
+  ): Record<string, unknown> {
+    // Copier stores metadata in _* keys, filter those out for variables
+    const variables: Record<string, unknown> = {};
+
+    for (const [key, value] of Object.entries(answers)) {
+      if (!key.startsWith('_')) {
+        variables[key] = value;
+      }
+    }
+
+    return variables;
+  }
+}

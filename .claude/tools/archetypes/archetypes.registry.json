@@ -1,0 +1,113 @@
+{
+  "$schema": "https://claude.ai/schemas/archetype-registry.json",
+  "name": "claude-archetypes",
+  "version": "1.0.0",
+  "description": "Registry of available archetypes for plugin and component generation",
+  "lastUpdated": "2026-01-20",
+  "totalCount": 12,
+  "categories": {
+    "infrastructure": ["mcp-server", "api-integration", "webhook-handler"],
+    "processing": ["data-processor", "event-processor", "workflow-automation"],
+    "communication": ["notification-service"],
+    "ui": ["ui-component", "analytics-dashboard"],
+    "development": ["claude-agent", "cli-command", "testing-utility"]
+  },
+  "archetypes": [
+    {
+      "name": "mcp-server",
+      "version": "1.0.0",
+      "category": "infrastructure",
+      "description": "Model Context Protocol server with tool definitions",
+      "complexity": "high",
+      "templateCount": 10
+    },
+    {
+      "name": "api-integration",
+      "version": "1.0.0",
+      "category": "infrastructure",
+      "description": "REST/GraphQL API client with authentication and retry logic",
+      "complexity": "medium",
+      "templateCount": 8
+    },
+    {
+      "name": "webhook-handler",
+      "version": "1.0.0",
+      "category": "infrastructure",
+      "description": "Webhook receiver with signature verification and event processing",
+      "complexity": "medium",
+      "templateCount": 4
+    },
+    {
+      "name": "data-processor",
+      "version": "1.0.0",
+      "category": "processing",
+      "description": "Data transformation pipeline with validation and error handling",
+      "complexity": "medium",
+      "templateCount": 2
+    },
+    {
+      "name": "event-processor",
+      "version": "1.0.0",
+      "category": "processing",
+      "description": "Event-driven architecture with pub/sub, sourcing, and CQRS patterns",
+      "complexity": "high",
+      "templateCount": 4
+    },
+    {
+      "name": "workflow-automation",
+      "version": "1.0.0",
+      "category": "processing",
+      "description": "State machine workflow with persistence, retry, and notifications",
+      "complexity": "high",
+      "templateCount": 15
+    },
+    {
+      "name": "notification-service",
+      "version": "1.0.0",
+      "category": "communication",
+      "description": "Multi-channel notification delivery with templating and tracking",
+      "complexity": "medium",
+      "templateCount": 3
+    },
+    {
+      "name": "ui-component",
+      "version": "1.0.0",
+      "category": "ui",
+      "description": "React/Vue/Svelte component with styling and tests",
+      "complexity": "low",
+      "templateCount": 5
+    },
+    {
+      "name": "analytics-dashboard",
+      "version": "1.0.0",
+      "category": "ui",
+      "description": "Data visualization dashboard with charts and metrics",
+      "complexity": "medium",
+      "templateCount": 6
+    },
+    {
+      "name": "claude-agent",
+      "version": "1.0.0",
+      "category": "development",
+      "description": "Specialized Claude agent with routing configuration",
+      "complexity": "low",
+      "templateCount": 2
+    },
+    {
+      "name": "cli-command",
+      "version": "1.0.0",
+      "category": "development",
+      "description": "Slash command for Claude Code CLI with argument parsing",
+      "complexity": "low",
+      "templateCount": 1
+    },
+    {
+      "name": "testing-utility",
+      "version": "1.0.0",
+      "category": "development",
+      "description": "Test utilities and fixtures for development",
+      "complexity": "low",
+      "templateCount": 4
+    }
+  ]
+}

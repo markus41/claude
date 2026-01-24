@@ -1,0 +1,307 @@
+{
+  "id": "jira-dev-workflow",
+  "name": "Jira Issue to Local Development Workflow",
+  "description": "Connects Jira DEMO project issues to local development workflow with automatic updates",
+  "version": "1.0.0",
+  "nodes": [
+    {
+      "id": "jira-trigger",
+      "type": "trigger",
+      "position": { "x": 100, "y": 100 },
+      "data": {
+        "label": "Jira Issue Trigger",
+        "type": "webhook",
+        "config": {
+          "jiraProject": "DEMO",
+          "issueTypes": ["Task", "Bug", "Story"],
+          "status": ["To Do", "In Progress"],
+          "assignee": "current-user"
+        },
+        "description": "Monitors DEMO project for new issues or status changes"
+      }
+    },
+    {
+      "id": "issue-analysis",
+      "type": "phase",
+      "position": { "x": 350, "y": 100 },
+      "data": {
+        "label": "Issue Analysis Phase",
+        "type": "explore",
+        "config": {
+          "analysisSteps": [
+            "Parse issue requirements",
+            "Identify affected components",
+            "Estimate complexity",
+            "Check dependencies"
+          ]
+        },
+        "description": "Analyzes the Jira issue to understand requirements and scope"
+      }
+    },
+    {
+      "id": "dev-planning",
+      "type": "agent",
+      "position": { "x": 600, "y": 100 },
+      "data": {
+        "label": "Development Planning Agent",
+        "type": "specialist",
+        "config": {
+          "expertise": "software-architecture",
+          "tasks": [
+            "Create development plan",
+            "Identify required files",
+            "Set up local environment",
+            "Create feature branch"
+          ]
+        },
+        "description": "Creates detailed development plan based on Jira issue"
+      }
+    },
+    {
+      "id": "git-setup",
+      "type": "action",
+      "position": { "x": 100, "y": 250 },
+      "data": {
+        "label": "Git Branch Creation",
+        "type": "git",
+        "config": {
+          "operation": "create-branch",
+          "branchName": "{{ jira-trigger.issue.key }}-{{ jira-trigger.issue.summary | slugify }}",
+          "baseBranch": "main",
+          "repository": "local"
+        },
+        "description": "Creates feature branch based on Jira issue key and summary"
+      }
+    },
+    {
+      "id": "local-dev",
+      "type": "phase",
+      "position": { "x": 350, "y": 250 },
+      "data": {
+        "label": "Local Development Phase",
+        "type": "code",
+        "config": {
+          "workingDirectory": "C:\\Users\\MarkusAhling\\pro\\alpha-0.1\\claude",
+          "devSteps": [
+            "Set up development environment",
+            "Implement issue requirements",
+            "Write tests",
+            "Run local validation"
+          ]
+        },
+        "description": "Implements the feature/fix locally based on Jira requirements"
+      }
+    },
+    {
+      "id": "code-agent",
+      "type": "agent",
+      "position": { "x": 600, "y": 250 },
+      "data": {
+        "label": "Coding Agent",
+        "type": "single",
+        "config": {
+          "language": "typescript",
+          "framework": "react",
+          "testFramework": "jest",
+          "codeStandards": "typescript-strict"
+        },
+        "description": "Implements code changes according to Jira issue requirements"
+      }
+    },
+    {
+      "id": "test-validation",
+      "type": "phase",
+      "position": { "x": 100, "y": 400 },
+      "data": {
+        "label": "Test & Validation Phase",
+        "type": "test",
+        "config": {
+          "testTypes": ["unit", "integration", "e2e"],
+          "coverageThreshold": 80,
+          "linting": true,
+          "typeChecking": true
+        },
+        "description": "Runs comprehensive tests and validation on implemented changes"
+      }
+    },
+    {
+      "id": "quality-gate",
+      "type": "control",
+      "position": { "x": 350, "y": 400 },
+      "data": {
+        "label": "Quality Gate",
+        "type": "condition",
+        "config": {
+          "conditions": [
+            "{{ test-validation.allTestsPass }}",
+            "{{ test-validation.coverage >= 80 }}",
+            "{{ test-validation.noLintErrors }}",
+            "{{ test-validation.noTypeErrors }}"
+          ],
+          "passAction": "continue",
+          "failAction": "fix-loop"
+        },
+        "description": "Validates code quality before proceeding"
+      }
+    },
+    {
+      "id": "jira-update",
+      "type": "action",
+      "position": { "x": 600, "y": 400 },
+      "data": {
+        "label": "Update Jira Issue",
+        "type": "api",
+        "config": {
+          "endpoint": "jira-api",
+          "operation": "add-comment",
+          "issueKey": "{{ jira-trigger.issue.key }}",
+          "comment": "Development completed locally. Branch: {{ git-setup.branchName }}. Tests: {{ test-validation.summary }}",
+          "statusTransition": "In Review"
+        },
+        "description": "Updates Jira issue with development progress and moves to review"
+      }
+    },
+    {
+      "id": "pr-creation",
+      "type": "action",
+      "position": { "x": 100, "y": 550 },
+      "data": {
+        "label": "Create Pull Request",
+        "type": "git",
+        "config": {
+          "operation": "create-pr",
+          "title": "{{ jira-trigger.issue.key }}: {{ jira-trigger.issue.summary }}",
+          "description": "Fixes {{ jira-trigger.issue.key }}\n\n{{ jira-trigger.issue.description }}\n\n## Changes Made\n{{ local-dev.summary }}\n\n## Testing\n{{ test-validation.summary }}",
+          "baseBranch": "main",
+          "assignReviewer": true
+        },
+        "description": "Creates pull request with automatic Jira issue linking"
+      }
+    },
+    {
+      "id": "success",
+      "type": "terminator",
+      "position": { "x": 350, "y": 550 },
+      "data": {
+        "label": "Development Complete",
+        "type": "success",
+        "config": {
+          "notifications": [
+            {
+              "type": "jira-comment",
+              "message": "Development completed and PR created: {{ pr-creation.url }}"
+            },
+            {
+              "type": "slack",
+              "channel": "#dev-updates",
+              "message": "🚀 {{ jira-trigger.issue.key }} completed by {{ user.name }}"
+            }
+          ]
+        },
+        "description": "Successful completion with notifications sent"
+      }
+    },
+    {
+      "id": "fix-loop",
+      "type": "phase",
+      "position": { "x": 600, "y": 550 },
+      "data": {
+        "label": "Fix Issues Phase",
+        "type": "fix",
+        "config": {
+          "fixActions": [
+            "Review failing tests",
+            "Address lint errors",
+            "Fix type errors",
+            "Improve test coverage"
+          ],
+          "maxRetries": 3
+        },
+        "description": "Fixes quality issues and loops back to validation"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "jira-trigger",
+      "target": "issue-analysis"
+    },
+    {
+      "id": "e2",
+      "source": "issue-analysis",
+      "target": "dev-planning"
+    },
+    {
+      "id": "e3",
+      "source": "dev-planning",
+      "target": "git-setup"
+    },
+    {
+      "id": "e4",
+      "source": "git-setup",
+      "target": "local-dev"
+    },
+    {
+      "id": "e5",
+      "source": "local-dev",
+      "target": "code-agent"
+    },
+    {
+      "id": "e6",
+      "source": "code-agent",
+      "target": "test-validation"
+    },
+    {
+      "id": "e7",
+      "source": "test-validation",
+      "target": "quality-gate"
+    },
+    {
+      "id": "e8",
+      "source": "quality-gate",
+      "target": "jira-update",
+      "label": "quality-passed"
+    },
+    {
+      "id": "e9",
+      "source": "jira-update",
+      "target": "pr-creation"
+    },
+    {
+      "id": "e10",
+      "source": "pr-creation",
+      "target": "success"
+    },
+    {
+      "id": "e11",
+      "source": "quality-gate",
+      "target": "fix-loop",
+      "label": "quality-failed"
+    },
+    {
+      "id": "e12",
+      "source": "fix-loop",
+      "target": "test-validation",
+      "label": "retry"
+    }
+  ],
+  "variables": {
+    "jira": {
+      "project": "DEMO",
+      "baseUrl": "https://your-org.atlassian.net",
+      "apiToken": "${JIRA_API_TOKEN}"
+    },
+    "git": {
+      "repository": "local",
+      "remote": "origin",
+      "defaultBranch": "main"
+    },
+    "notifications": {
+      "slack": {
+        "webhook": "${SLACK_WEBHOOK_URL}",
+        "channel": "#dev-updates"
+      }
+    }
+  }
+}

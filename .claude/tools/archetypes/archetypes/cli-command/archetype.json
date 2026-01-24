@@ -1,0 +1,74 @@
+{
+  "name": "cli-command",
+  "version": "1.0.0",
+  "description": "Claude Code slash command with argument parsing, documentation, and execution logic",
+  "category": "automation",
+  "author": "Lobbi-Docs",
+  "license": "MIT",
+  "keywords": ["command", "cli", "slash-command", "automation", "tool"],
+  "variables": [
+    {
+      "name": "commandName",
+      "type": "string",
+      "prompt": "Command name (kebab-case, without /):",
+      "required": true,
+      "validation": "^[a-z][a-z0-9-:]*$",
+      "description": "Command name (e.g., deploy-check, db:migrate)"
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "prompt": "Command description:",
+      "required": true,
+      "description": "Brief description of what the command does"
+    },
+    {
+      "name": "category",
+      "type": "choice",
+      "prompt": "Command category:",
+      "required": true,
+      "choices": ["devops", "database", "testing", "documentation", "workflow", "utility", "analysis"],
+      "default": "utility",
+      "description": "Category for organization"
+    },
+    {
+      "name": "arguments",
+      "type": "multi-choice",
+      "prompt": "Argument types needed:",
+      "choices": ["positional", "flags", "options", "subcommands"],
+      "default": ["flags"],
+      "description": "Types of arguments the command accepts"
+    },
+    {
+      "name": "tools",
+      "type": "multi-choice",
+      "prompt": "Required tools:",
+      "choices": ["Bash", "Read", "Write", "Edit", "Grep", "Glob", "WebFetch"],
+      "default": ["Read", "Bash"],
+      "description": "Tools needed for execution"
+    },
+    {
+      "name": "outputFormat",
+      "type": "choice",
+      "prompt": "Primary output format:",
+      "choices": ["table", "json", "markdown", "plain", "interactive"],
+      "default": "table",
+      "description": "How results are displayed"
+    },
+    {
+      "name": "dangerous",
+      "type": "boolean",
+      "prompt": "Is this a dangerous/destructive command?",
+      "default": false,
+      "description": "Requires confirmation before execution"
+    },
+    {
+      "name": "author",
+      "type": "string",
+      "prompt": "Author name:",
+      "default": "Markus Ahling"
+    }
+  ],
+  "dependencies": [],
+  "files": ["templates/**/*"]
+}

@@ -1,0 +1,256 @@
+{
+  "name": "python-service-copier",
+  "version": "1.0.0",
+  "description": "Python microservice archetype using Copier for advanced templating and update management",
+  "category": "service",
+  "tags": ["python", "copier", "microservice", "fastapi"],
+  "author": {
+    "name": "Python Team",
+    "email": "python-team@example.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/example/python-service-template.git"
+  },
+  "engine": {
+    "type": "copier",
+    "version": "^8.0.0",
+    "config": {
+      "copier": {
+        "envops": {
+          "block_start_string": "{%",
+          "block_end_string": "%}",
+          "variable_start_string": "{{",
+          "variable_end_string": "}}",
+          "keep_trailing_newline": true
+        },
+        "exclude": [
+          "*.pyc",
+          "__pycache__",
+          "*.pyo",
+          "*.egg-info",
+          ".git",
+          ".pytest_cache",
+          ".mypy_cache",
+          "*.log"
+        ],
+        "skip_if_exists": [
+          ".env",
+          ".env.local",
+          "secrets.yaml",
+          "local_config.py"
+        ],
+        "tasks": [
+          "python -m venv venv",
+          "source venv/bin/activate || venv\\Scripts\\activate",
+          "pip install --upgrade pip",
+          "pip install -r requirements.txt",
+          "pip install -r requirements-dev.txt",
+          "pre-commit install",
+          "pytest tests/ -v"
+        ]
+      }
+    }
+  },
+  "lifecycle": {
+    "migrations": [
+      {
+        "version": "1.0.0",
+        "script": "./scripts/migrations/init-v1.py",
+        "description": "Initialize Python service v1.0.0"
+      },
+      {
+        "version": "1.1.0",
+        "script": "./scripts/migrations/add-async-support.py",
+        "description": "Add async/await support and migrate to asyncio"
+      },
+      {
+        "version": "2.0.0",
+        "script": "./scripts/migrations/upgrade-to-pydantic-v2.py",
+        "description": "Breaking: Upgrade from Pydantic v1 to v2"
+      }
+    ],
+    "updateStrategy": "merge",
+    "hooks": {
+      "preGenerate": [
+        "echo 'Preparing Python environment...'",
+        "python --version"
+      ],
+      "postGenerate": [
+        "echo 'Python service generated successfully!'",
+        "echo 'Next steps:'",
+        "echo '  1. Activate virtual environment: source venv/bin/activate'",
+        "echo '  2. Run tests: pytest'",
+        "echo '  3. Start server: uvicorn app.main:app --reload'"
+      ],
+      "preUpdate": [
+        "echo 'Backing up current configuration...'",
+        "cp .env .env.backup",
+        "git stash save 'Pre-update backup'"
+      ],
+      "postUpdate": [
+        "pip install -r requirements.txt --upgrade",
+        "alembic upgrade head",
+        "pytest tests/",
+        "echo 'Update complete!'"
+      ]
+    }
+  },
+  "variables": [
+    {
+      "name": "project_name",
+      "type": "string",
+      "description": "Python package name (snake_case)",
+      "required": true,
+      "validation": {
+        "pattern": "^[a-z][a-z0-9_]*$"
+      }
+    },
+    {
+      "name": "project_slug",
+      "type": "string",
+      "description": "Project slug for URLs (kebab-case)",
+      "required": true,
+      "validation": {
+        "pattern": "^[a-z0-9-]+$"
+      }
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "description": "Short project description",
+      "required": true,
+      "validation": {
+        "min": 10,
+        "max": 200
+      }
+    },
+    {
+      "name": "python_version",
+      "type": "enum",
+      "description": "Minimum Python version",
+      "default": "3.11",
+      "required": true,
+      "validation": {
+        "choices": ["3.9", "3.10", "3.11", "3.12"]
+      }
+    },
+    {
+      "name": "framework",
+      "type": "enum",
+      "description": "Web framework",
+      "default": "fastapi",
+      "required": true,
+      "validation": {
+        "choices": ["fastapi", "flask", "django", "starlette"]
+      }
+    },
+    {
+      "name": "use_docker",
+      "type": "boolean",
+      "description": "Include Docker configuration",
+      "default": true
+    },
+    {
+      "name": "use_database",
+      "type": "boolean",
+      "description": "Include database integration",
+      "default": true
+    },
+    {
+      "name": "database_type",
+      "type": "enum",
+      "description": "Database type",
+      "default": "postgresql",
+      "when": "use_database === true",
+      "validation": {
+        "choices": ["postgresql", "mysql", "sqlite", "mongodb"]
+      }
+    },
+    {
+      "name": "use_celery",
+      "type": "boolean",
+      "description": "Include Celery for async tasks",
+      "default": false
+    },
+    {
+      "name": "use_graphql",
+      "type": "boolean",
+      "description": "Include GraphQL support",
+      "default": false
+    }
+  ],
+  "dependencies": [
+    {
+      "name": "fastapi",
+      "type": "pip",
+      "version": ">=0.109.0"
+    },
+    {
+      "name": "uvicorn",
+      "type": "pip",
+      "version": ">=0.27.0"
+    },
+    {
+      "name": "pydantic",
+      "type": "pip",
+      "version": ">=2.5.0"
+    },
+    {
+      "name": "sqlalchemy",
+      "type": "pip",
+      "version": ">=2.0.0"
+    },
+    {
+      "name": "pytest",
+      "type": "pip",
+      "version": ">=7.4.0",
+      "dev": true
+    },
+    {
+      "name": "pytest-asyncio",
+      "type": "pip",
+      "version": ">=0.23.0",
+      "dev": true
+    },
+    {
+      "name": "black",
+      "type": "pip",
+      "version": ">=24.0.0",
+      "dev": true
+    },
+    {
+      "name": "ruff",
+      "type": "pip",
+      "version": ">=0.1.0",
+      "dev": true
+    },
+    {
+      "name": "mypy",
+      "type": "pip",
+      "version": ">=1.8.0",
+      "dev": true
+    }
+  ],
+  "files": [
+    "templates/**/*",
+    "!templates/**/__pycache__",
+    "!templates/**/*.pyc",
+    "scripts/migrations/**/*.py",
+    "copier.yml",
+    "LICENSE"
+  ],
+  "ignore": [
+    "*.pyc",
+    "*.pyo",
+    "__pycache__/",
+    "*.egg-info/",
+    ".pytest_cache/",
+    ".mypy_cache/",
+    ".ruff_cache/",
+    "venv/",
+    ".venv/",
+    ".env",
+    "*.log"
+  ]
+}

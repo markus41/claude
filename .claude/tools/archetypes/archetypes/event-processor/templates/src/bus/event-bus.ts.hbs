@@ -1,0 +1,164 @@
+/**
+ * Event Bus
+ *
+ * {{pattern}} event bus with {{transport}} transport.
+ * {{description}}
+ */
+
+export interface Event<T = unknown> {
+  id: string;
+  type: string;
+  aggregateId?: string;
+  timestamp: Date;
+  version: number;
+  data: T;
+  metadata?: Record<string, unknown>;
+}
+
+export interface EventHandler<T = unknown> {
+  eventType: string;
+  handle: (event: Event<T>) => Promise<void>;
+}
+
+export interface EventBusConfig {
+  transport: '{{transport}}';
+  {{#if (eq transport "redis")}}
+  redisUrl: string;
+  {{/if}}
+  {{#if (eq transport "kafka")}}
+  brokers: string[];
+  groupId: string;
+  {{/if}}
+  {{#if (includes features "partitioning")}}
+  partitions: number;
+  {{/if}}
+}
+
+/**
+ * EventBus
+ * Central event publishing and subscription hub
+ */
+export class EventBus {
+  private handlers: Map<string, EventHandler[]> = new Map();
+  private config: EventBusConfig;
+  {{#if (includes features "deduplication")}}
+  private processedIds: Set<string> = new Set();
+  {{/if}}
+
+  constructor(config: EventBusConfig) {
+    this.config = config;
+  }
+
+  /**
+   * Subscribe to an event type
+   */
+  subscribe<T>(eventType: string, handler: (event: Event<T>) => Promise<void>): void {
+    const handlers = this.handlers.get(eventType) || [];
+    handlers.push({ eventType, handle: handler as (event: Event) => Promise<void> });
+    this.handlers.set(eventType, handlers);
+  }
+
+  /**
+   * Publish an event
+   */
+  async publish<T>(event: Event<T>): Promise<void> {
+    {{#if (includes features "deduplication")}}
+    // Check for duplicates
+    if (this.processedIds.has(event.id)) {
+      console.log(`[EventBus] Duplicate event ignored: ${event.id}`);
+      return;
+    }
+    {{/if}}
+
+    const handlers = this.handlers.get(event.type) || [];
+
+    {{#if (includes features "ordering")}}
+    // Process in order
+    for (const handler of handlers) {
+      await handler.handle(event as Event);
+    }
+    {{else}}
+    // Process in parallel
+    await Promise.all(
+      handlers.map(handler => handler.handle(event as Event))
+    );
+    {{/if}}
+
+    {{#if (includes features "deduplication")}}
+    this.processedIds.add(event.id);
+    {{/if}}
+  }
+
+  /**
+   * Publish multiple events
+   */
+  async publishAll<T>(events: Event<T>[]): Promise<void> {
+    {{#if (includes features "ordering")}}
+    for (const event of events) {
+      await this.publish(event);
+    }
+    {{else}}
+    await Promise.all(events.map(e => this.publish(e)));
+    {{/if}}
+  }
+
+  /**
+   * Unsubscribe from an event type
+   */
+  unsubscribe(eventType: string, handler: EventHandler): void {
+    const handlers = this.handlers.get(eventType) || [];
+    const index = handlers.indexOf(handler);
+    if (index > -1) {
+      handlers.splice(index, 1);
+      this.handlers.set(eventType, handlers);
+    }
+  }
+
+  /**
+   * Get all registered event types
+   */
+  getEventTypes(): string[] {
+    return Array.from(this.handlers.keys());
+  }
+
+  /**
+   * Get handler count for an event type
+   */
+  getHandlerCount(eventType: string): number {
+    return (this.handlers.get(eventType) || []).length;
+  }
+}
+
+/**
+ * Create a new event
+ */
+export function createEvent<T>(
+  type: string,
+  data: T,
+  options: Partial<Omit<Event<T>, 'type' | 'data'>> = {}
+): Event<T> {
+  return {
+    id: options.id || `evt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+    type,
+    aggregateId: options.aggregateId,
+    timestamp: options.timestamp || new Date(),
+    version: options.version || 1,
+    data,
+    metadata: options.metadata,
+  };
+}
+
+// Export singleton instance
+export const eventBus = new EventBus({
+  transport: '{{transport}}',
+  {{#if (eq transport "redis")}}
+  redisUrl: process.env.REDIS_URL || 'redis://localhost:6379',
+  {{/if}}
+  {{#if (eq transport "kafka")}}
+  brokers: (process.env.KAFKA_BROKERS || 'localhost:9092').split(','),
+  groupId: process.env.KAFKA_GROUP_ID || '{{pluginName}}',
+  {{/if}}
+  {{#if (includes features "partitioning")}}
+  partitions: parseInt(process.env.EVENT_PARTITIONS || '4', 10),
+  {{/if}}
+});

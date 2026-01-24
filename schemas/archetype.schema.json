@@ -1,0 +1,434 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://claude.ai/schemas/archetype.schema.json",
+  "title": "Archetype Configuration Schema",
+  "description": "Schema for archetype.json files supporting multi-engine template rendering",
+  "type": "object",
+  "required": ["name", "version", "description", "category", "files"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Unique identifier for the archetype (kebab-case recommended)",
+      "pattern": "^[a-z0-9-]+$",
+      "minLength": 1,
+      "maxLength": 100,
+      "examples": ["mcp-server", "rest-api", "web-service"]
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version of the archetype",
+      "pattern": "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9.-]+)?(\\+[a-zA-Z0-9.-]+)?$",
+      "examples": ["1.0.0", "2.1.3-beta.1"]
+    },
+    "description": {
+      "type": "string",
+      "description": "Human-readable description of the archetype's purpose",
+      "minLength": 10,
+      "maxLength": 500
+    },
+    "category": {
+      "type": "string",
+      "description": "Primary category for archetype classification",
+      "enum": [
+        "infrastructure",
+        "service",
+        "ui",
+        "library",
+        "tool",
+        "agent",
+        "documentation",
+        "database",
+        "integration"
+      ]
+    },
+    "tags": {
+      "type": "array",
+      "description": "Additional tags for discovery and filtering",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]+$"
+      },
+      "uniqueItems": true,
+      "examples": [["typescript", "nodejs", "mcp"]]
+    },
+    "author": {
+      "type": "object",
+      "description": "Archetype author information",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "url": { "type": "string", "format": "uri" }
+      }
+    },
+    "repository": {
+      "type": "object",
+      "description": "Source repository information",
+      "properties": {
+        "type": { "type": "string", "enum": ["git", "svn", "hg"] },
+        "url": { "type": "string", "format": "uri" }
+      }
+    },
+    "engine": {
+      "type": "object",
+      "description": "Template engine configuration (defaults to handlebars if omitted)",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Template engine type",
+          "enum": [
+            "handlebars",
+            "nunjucks",
+            "eta",
+            "ejs",
+            "copier",
+            "cookiecutter"
+          ]
+        },
+        "version": {
+          "type": "string",
+          "description": "Optional semver constraint for engine version",
+          "pattern": "^[~^]?\\d+(\\.\\d+)?(\\.\\d+)?$",
+          "examples": ["^4.0.0", "~3.2.0", ">=2.0.0"]
+        },
+        "config": {
+          "type": "object",
+          "description": "Engine-specific configuration options",
+          "properties": {
+            "handlebars": {
+              "type": "object",
+              "properties": {
+                "noEscape": { "type": "boolean", "default": false },
+                "strict": { "type": "boolean", "default": false },
+                "assumeObjects": { "type": "boolean", "default": false },
+                "preventIndent": { "type": "boolean", "default": false },
+                "helpers": {
+                  "type": "array",
+                  "description": "Paths to custom helper modules",
+                  "items": { "type": "string" }
+                },
+                "partials": {
+                  "type": "object",
+                  "description": "Named partial paths",
+                  "additionalProperties": { "type": "string" }
+                }
+              }
+            },
+            "nunjucks": {
+              "type": "object",
+              "properties": {
+                "autoescape": { "type": "boolean", "default": true },
+                "throwOnUndefined": { "type": "boolean", "default": false },
+                "trimBlocks": { "type": "boolean", "default": false },
+                "lstripBlocks": { "type": "boolean", "default": false },
+                "tags": {
+                  "type": "object",
+                  "properties": {
+                    "blockStart": { "type": "string" },
+                    "blockEnd": { "type": "string" },
+                    "variableStart": { "type": "string" },
+                    "variableEnd": { "type": "string" },
+                    "commentStart": { "type": "string" },
+                    "commentEnd": { "type": "string" }
+                  }
+                },
+                "filters": {
+                  "type": "object",
+                  "description": "Custom filter definitions",
+                  "additionalProperties": { "type": "string" }
+                }
+              }
+            },
+            "eta": {
+              "type": "object",
+              "properties": {
+                "cache": { "type": "boolean", "default": false },
+                "autoEscape": { "type": "boolean", "default": true },
+                "autoTrim": { "type": "boolean", "default": [false, "nl"] },
+                "tags": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "minItems": 2,
+                  "maxItems": 2,
+                  "default": ["<%", "%>"]
+                },
+                "plugins": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                }
+              }
+            },
+            "ejs": {
+              "type": "object",
+              "properties": {
+                "delimiter": { "type": "string", "default": "%" },
+                "openDelimiter": { "type": "string", "default": "<" },
+                "closeDelimiter": { "type": "string", "default": ">" },
+                "strict": { "type": "boolean", "default": false },
+                "rmWhitespace": { "type": "boolean", "default": false },
+                "escape": {
+                  "type": "string",
+                  "description": "Function name for escaping"
+                }
+              }
+            },
+            "copier": {
+              "type": "object",
+              "properties": {
+                "envops": {
+                  "type": "object",
+                  "description": "Jinja2 environment options",
+                  "properties": {
+                    "block_start_string": { "type": "string" },
+                    "block_end_string": { "type": "string" },
+                    "variable_start_string": { "type": "string" },
+                    "variable_end_string": { "type": "string" },
+                    "keep_trailing_newline": { "type": "boolean" }
+                  }
+                },
+                "exclude": {
+                  "type": "array",
+                  "description": "Patterns to exclude from copying",
+                  "items": { "type": "string" }
+                },
+                "skip_if_exists": {
+                  "type": "array",
+                  "description": "Files to skip if they exist in destination",
+                  "items": { "type": "string" }
+                },
+                "tasks": {
+                  "type": "array",
+                  "description": "Shell commands to run after copy",
+                  "items": { "type": "string" }
+                }
+              }
+            },
+            "cookiecutter": {
+              "type": "object",
+              "properties": {
+                "replay": { "type": "boolean", "default": false },
+                "overwrite_if_exists": { "type": "boolean", "default": false },
+                "skip_if_file_exists": { "type": "boolean", "default": false },
+                "default_config": { "type": "boolean", "default": false }
+              }
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "fileEngineOverrides": {
+      "type": "object",
+      "description": "Per-file or per-pattern engine overrides for mixed-engine templates",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["type"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "handlebars",
+              "nunjucks",
+              "eta",
+              "ejs",
+              "copier",
+              "cookiecutter"
+            ]
+          },
+          "config": {
+            "type": "object",
+            "description": "Engine-specific config (same structure as engine.config)"
+          }
+        }
+      },
+      "examples": [
+        {
+          "templates/config/*.yaml": {
+            "type": "nunjucks",
+            "config": { "nunjucks": { "autoescape": false } }
+          },
+          "templates/docs/*.md": {
+            "type": "handlebars"
+          }
+        }
+      ]
+    },
+    "lifecycle": {
+      "type": "object",
+      "description": "Lifecycle hooks and update strategies",
+      "properties": {
+        "migrations": {
+          "type": "array",
+          "description": "Migration scripts for template updates (Copier-style)",
+          "items": {
+            "type": "object",
+            "required": ["version", "script"],
+            "properties": {
+              "version": {
+                "type": "string",
+                "description": "Target version for this migration",
+                "pattern": "^\\d+\\.\\d+\\.\\d+$"
+              },
+              "script": {
+                "type": "string",
+                "description": "Path to migration script or inline command"
+              },
+              "description": {
+                "type": "string",
+                "description": "Human-readable migration description"
+              }
+            }
+          },
+          "examples": [
+            [
+              {
+                "version": "2.0.0",
+                "script": "scripts/migrate-to-v2.sh",
+                "description": "Migrate configuration format to v2"
+              }
+            ]
+          ]
+        },
+        "updateStrategy": {
+          "type": "string",
+          "description": "Strategy for handling template updates",
+          "enum": ["overwrite", "merge", "skip", "prompt"],
+          "default": "prompt"
+        },
+        "hooks": {
+          "type": "object",
+          "description": "Lifecycle hook commands",
+          "properties": {
+            "preGenerate": {
+              "type": "array",
+              "description": "Commands to run before generation",
+              "items": { "type": "string" }
+            },
+            "postGenerate": {
+              "type": "array",
+              "description": "Commands to run after generation",
+              "items": { "type": "string" }
+            },
+            "preUpdate": {
+              "type": "array",
+              "description": "Commands to run before updates",
+              "items": { "type": "string" }
+            },
+            "postUpdate": {
+              "type": "array",
+              "description": "Commands to run after updates",
+              "items": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "variables": {
+      "type": "array",
+      "description": "Template variables with validation and defaults",
+      "items": {
+        "type": "object",
+        "required": ["name", "type"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Variable name (camelCase recommended)",
+            "pattern": "^[a-zA-Z_][a-zA-Z0-9_]*$"
+          },
+          "type": {
+            "type": "string",
+            "description": "Variable data type",
+            "enum": [
+              "string",
+              "number",
+              "boolean",
+              "array",
+              "object",
+              "enum",
+              "multiselect"
+            ]
+          },
+          "description": {
+            "type": "string",
+            "description": "Human-readable variable description"
+          },
+          "default": {
+            "description": "Default value for the variable"
+          },
+          "required": {
+            "type": "boolean",
+            "description": "Whether this variable is required",
+            "default": false
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Custom prompt text for interactive input"
+          },
+          "validation": {
+            "type": "object",
+            "description": "Validation rules",
+            "properties": {
+              "pattern": {
+                "type": "string",
+                "description": "Regex pattern for string validation"
+              },
+              "min": {
+                "type": "number",
+                "description": "Minimum value (number) or length (string/array)"
+              },
+              "max": {
+                "type": "number",
+                "description": "Maximum value (number) or length (string/array)"
+              },
+              "choices": {
+                "type": "array",
+                "description": "Valid choices for enum/multiselect types"
+              }
+            }
+          },
+          "when": {
+            "type": "string",
+            "description": "Conditional expression for showing this variable"
+          }
+        }
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "description": "Required dependencies for generated projects",
+      "items": {
+        "type": "object",
+        "required": ["name", "type"],
+        "properties": {
+          "name": { "type": "string" },
+          "type": {
+            "type": "string",
+            "enum": ["npm", "pip", "gem", "maven", "nuget", "cargo", "go"]
+          },
+          "version": { "type": "string" },
+          "dev": { "type": "boolean", "default": false }
+        }
+      }
+    },
+    "files": {
+      "type": "array",
+      "description": "File patterns to include in the archetype",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "examples": [["templates/**/*", "!templates/**/*.test.*"]]
+    },
+    "ignore": {
+      "type": "array",
+      "description": "File patterns to exclude from the archetype",
+      "items": { "type": "string" },
+      "examples": [["*.log", "node_modules/", ".DS_Store"]]
+    },
+    "extends": {
+      "type": "string",
+      "description": "Parent archetype to inherit from",
+      "examples": ["base-service", "@myorg/base-archetype"]
+    }
+  },
+  "additionalProperties": false
+}

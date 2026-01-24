@@ -1,0 +1,76 @@
+{
+  "name": "nunjucks-config-generator",
+  "version": "1.0.0",
+  "description": "Configuration generator using Nunjucks for precise YAML/JSON templating",
+  "category": "infrastructure",
+  "tags": ["nunjucks", "configuration", "yaml", "devops"],
+  "engine": {
+    "type": "nunjucks",
+    "version": "^3.2.0",
+    "config": {
+      "nunjucks": {
+        "autoescape": false,
+        "throwOnUndefined": true,
+        "trimBlocks": true,
+        "lstripBlocks": true,
+        "tags": {
+          "blockStart": "{%",
+          "blockEnd": "%}",
+          "variableStart": "{{",
+          "variableEnd": "}}",
+          "commentStart": "{#",
+          "commentEnd": "#}"
+        },
+        "filters": {
+          "yaml_safe": "./filters/yaml-safe.js",
+          "json_stringify": "./filters/json-stringify.js"
+        }
+      }
+    }
+  },
+  "lifecycle": {
+    "hooks": {
+      "postGenerate": [
+        "echo 'Validating generated YAML files...'",
+        "yamllint config/",
+        "echo 'Configuration files generated successfully!'"
+      ]
+    }
+  },
+  "variables": [
+    {
+      "name": "environment",
+      "type": "enum",
+      "description": "Target environment",
+      "required": true,
+      "validation": {
+        "choices": ["development", "staging", "production"]
+      }
+    },
+    {
+      "name": "clusterName",
+      "type": "string",
+      "description": "Kubernetes cluster name",
+      "required": true
+    },
+    {
+      "name": "namespace",
+      "type": "string",
+      "description": "Kubernetes namespace",
+      "default": "default",
+      "required": true
+    },
+    {
+      "name": "replicas",
+      "type": "number",
+      "description": "Number of replicas",
+      "default": 3,
+      "validation": {
+        "min": 1,
+        "max": 100
+      }
+    }
+  ],
+  "dependencies": [],
+  "files": ["templates/**/*.yaml", "templates/**/*.yml", "filters/**/*.js"]
+}
