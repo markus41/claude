@@ -1,9 +1,49 @@
 {
   "$schema": "../../../.claude/core/schemas/agents.schema.json",
-  "version": "1.0.0",
-  "lastUpdated": "2026-01-16T00:00:00.000Z",
+  "version": "1.1.0",
+  "lastUpdated": "2026-02-06T00:00:00.000Z",
   "plugin": "claude-code-templating",
   "agents": [
+    {
+      "name": "archetype-creator",
+      "description": "Creates reusable project archetypes from existing projects, designs template variable schemas, generates archetype configurations (Maven, Cookiecutter, Copier), and integrates with Structurizr for automatic architecture registration",
+      "model": "sonnet",
+      "color": "purple",
+      "file": "../agents/archetype-creator.md",
+      "keywords": [
+        "archetype",
+        "template-creation",
+        "project-to-template",
+        "cookiecutter",
+        "copier",
+        "maven-archetype",
+        "variable-schema",
+        "structurizr-integration",
+        "harness-templates",
+        "gradle"
+      ],
+      "capabilities": [
+        "Project analysis for template conversion",
+        "Variable extraction and schema design",
+        "Multi-format archetype generation (Maven, Cookiecutter, Copier, Harness)",
+        "Structurizr DSL fragment generation for architecture registration",
+        "Gradle task generation for template management",
+        "Template validation and testing",
+        "Architecture diagram auto-registration",
+        "Harness step/stage/pipeline template generation"
+      ],
+      "tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "Bash",
+        "Task"
+      ],
+      "temperature": 0.4,
+      "whenToUse": "Activate when converting existing projects to reusable templates, designing template variable schemas, generating archetype configurations, creating Structurizr fragments for architecture registration, or generating Harness templates."
+    },
     {
       "name": "harness-expert",
       "description": "Expert agent for Harness CI/CD pipeline generation, template management, service/environment configuration, and intelligent pipeline suggestions based on project analysis",
@@ -202,13 +242,20 @@
     }
   ],
   "categories": {
-    "scaffolding": ["scaffold-agent"],
-    "harness": ["harness-expert"],
+    "archetype": ["archetype-creator"],
+    "scaffolding": ["scaffold-agent", "archetype-creator"],
+    "harness": ["harness-expert", "archetype-creator"],
+    "architecture": ["archetype-creator"],
     "code-generation": ["codegen-agent"],
     "database": ["database-agent"],
     "testing": ["testing-agent"]
   },
   "routingRules": [
+    {
+      "pattern": "archetype|convert to template|create template|project to template|structurizr integration|architecture registration",
+      "agent": "archetype-creator",
+      "priority": 110
+    },
     {
       "pattern": "scaffold|create project|new project|bootstrap|initialize",
       "agent": "scaffold-agent",

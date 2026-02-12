@@ -2,23 +2,7 @@
   "mcpServers": {
     "atlassian": {
       "type": "sse",
-      "url": "https://mcp.atlassian.com/v1/sse",
-      "description": "Official Atlassian MCP SSE for Jira & Confluence with OAuth authentication"
+      "url": "https://mcp.atlassian.com/v1/sse"
     }
-  },
-  "setup": {
-    "instructions": "Run: claude mcp add --transport sse atlassian https://mcp.atlassian.com/v1/sse",
-    "authMethod": "OAuth (browser-based)",
-    "documentation": "https://developer.atlassian.com/cloud/mcp/"
-  },
-  "envRequired": [
-    "ATLASSIAN_CLOUD_ID",
-    "JIRA_DEFAULT_PROJECT"
-  ],
-  "envOptional": [
-    "HARNESS_ACCOUNT_ID",
-    "HARNESS_API_KEY",
-    "HARNESS_ORG_ID",
-    "HARNESS_PROJECT_ID"
-  ]
+  }
 }

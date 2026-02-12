@@ -1,11 +1,11 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "claude-orchestration",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Enterprise multi-agent orchestration system with 97+ specialized agents, mandatory 6-phase protocol, and comprehensive DevOps workflows",
   "owner": {
     "name": "Markus Ahling",
-    "email": "markus@example.com"
+    "email": "markus@lobbi.io"
   },
   "plugins": [
     {

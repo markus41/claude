@@ -1,14 +1,14 @@
 {
   "name": "claude-orchestration",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Professional-grade multi-LLM agent coordination with comprehensive registry system, mandatory orchestration protocol, and production-ready DevOps workflows. Portable and customizable for any project.",
-  "author": "Markus Ahling <contact@example.com>",
+  "author": {
+    "name": "Markus Ahling",
+    "email": "markus@lobbi.io"
+  },
   "license": "MIT",
   "homepage": "https://github.com/markus41/claude",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/markus41/claude"
-  },
+  "repository": "https://github.com/markus41/claude",
   "keywords": [
     "orchestration",
     "multi-agent",
@@ -20,30 +20,5 @@
     "docker",
     "ci-cd",
     "testing"
-  ],
-  "categories": ["orchestration", "agents", "devops"],
-  "provides": {
-    "agents": "dynamic",
-    "skills": "dynamic",
-    "commands": "dynamic",
-    "workflows": "dynamic",
-    "hooks": "dynamic"
-  },
-  "discovery": {
-    "agents": {
-      "enabled": true,
-      "directory": "../.claude/registry",
-      "pattern": "agents.index.json"
-    },
-    "skills": {
-      "enabled": true,
-      "directory": "../.claude/registry",
-      "pattern": "skills.index.json"
-    },
-    "commands": {
-      "enabled": true,
-      "directory": "../.claude/commands",
-      "pattern": "*.md"
-    }
-  }
+  ]
 }

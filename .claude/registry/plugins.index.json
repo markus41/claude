@@ -1,7 +1,7 @@
 {
   "$schema": "./schema/plugins.schema.json",
   "version": "1.0.0",
-  "lastUpdated": "2026-01-19",
+  "lastUpdated": "2026-01-31",
   "description": "Plugin registry for Claude Code orchestration plugins",
 
   "installed": {
@@ -54,10 +54,13 @@
       "name": "jira-orchestrator",
       "version": "7.5.0",
       "description": "Enterprise Jira orchestration with 77 agents, 16 teams, 45 commands, 13 skills. Features Atlassian MCP OAuth, Harness integration, Neon PostgreSQL, Redis caching, Temporal workflows, and structured reasoning frameworks.",
-      "author": "Markus Ahling",
+      "author": {
+        "name": "Markus Ahling",
+        "email": "markus@lobbi.io"
+      },
       "license": "MIT",
       "repository": "https://github.com/Lobbi-Docs/claude",
-      "keywords": ["jira", "confluence", "atlassian", "orchestration", "harness", "neon", "redis", "temporal"],
+      "keywords": ["jira", "orchestration", "atlassian", "harness", "ci-cd", "workflow", "automation", "agents", "mcp", "neon", "postgresql", "redis", "temporal"],
       "categories": ["integration", "orchestration", "devops", "automation"],
       "dependencies": {},
       "provides": {

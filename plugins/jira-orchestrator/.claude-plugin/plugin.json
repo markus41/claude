@@ -1,11 +1,11 @@
 {
-  "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
   "name": "jira-orchestrator",
-  "displayName": "Jira Orchestrator",
-  "callsign": "Arbiter",
   "version": "7.5.0",
   "description": "Enterprise Jira orchestration with 77 agents, 16 teams, 45 commands, 13 skills. Features Atlassian MCP OAuth, Harness integration, Neon PostgreSQL, Redis caching, Temporal workflows, and structured reasoning frameworks.",
-  "author": "Markus Ahling <markus@lobbi.io>",
+  "author": {
+    "name": "Markus Ahling",
+    "email": "markus@lobbi.io"
+  },
   "keywords": [
     "jira",
     "orchestration",
@@ -26,60 +26,6 @@
     "temporal"
   ],
   "license": "MIT",
-  "categories": ["integration", "orchestration", "devops", "automation"],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Lobbi-Docs/claude"
-  },
-
-  "mcpServers": {
-    "context7": {
-      "description": "Up-to-date documentation and code examples for any library",
-      "provider": "builtin",
-      "autoActivate": true,
-      "priority": "high",
-      "configPath": "../config/mcps/context7.json"
-    },
-    "sequentialthinking": {
-      "description": "Dynamic problem-solving through structured thought chains",
-      "provider": "builtin",
-      "autoActivate": false,
-      "priority": "high",
-      "configPath": "../config/mcps/sequential-thinking.json"
-    },
-    "memory": {
-      "description": "Persistent knowledge graph for organizational learning",
-      "provider": "builtin",
-      "autoActivate": true,
-      "priority": "high",
-      "configPath": "../config/mcps/memory.json"
-    }
-  },
-
-  "commandPrefix": "jira",
-  "tier": "enterprise",
-  "status": "active",
-  "provides": {
-    "agents": 77,
-    "commands": 45,
-    "skills": 13,
-    "hooks": 6,
-    "teams": 16,
-    "mcpServers": 3
-  },
-  "features": [
-    "autogen-teams",
-    "parent-child-orchestration",
-    "domain-affinity-routing",
-    "harness-ci-cd-integration",
-    "agent-council-review",
-    "clean-architecture-enforcement",
-    "neon-postgresql-persistence",
-    "redis-caching",
-    "temporal-workflows"
-  ],
-
-  "dependencies": {
-    "mcpServers": ["atlassian", "harness", "obsidian"]
-  }
+  "repository": "https://github.com/Lobbi-Docs/claude",
+  "mcpServers": "./.mcp.json"
 }
