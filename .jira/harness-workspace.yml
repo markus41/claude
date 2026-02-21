@@ -1,0 +1,27 @@
+# Harness workspace config for this repo.
+# Used by jira-orchestrator: harness_workspace_status, harness_workspace_create_prs
+# See: plugins/jira-orchestrator/skills/harness-mcp/SKILL.md
+
+harness:
+  workspace:
+    repositories:
+      - identifier: claude
+        path: .
+        jira_project: MAIN
+        description: "Claude orchestration monorepo (plugins, src, .claude)"
+
+    auto_create_repos: false
+    default_branch: main
+
+  review:
+    cross_repo_review: false
+    auto_approve:
+      enabled: false
+      max_files: 10
+      excluded_patterns:
+        - "*.md"
+        - "*.txt"
+
+  jira:
+    sync_enabled: true
+    aggregate_prs: true
