@@ -1,0 +1,19 @@
+{
+  "name": "claude-teams-hierarchy-lab",
+  "version": "0.1.0",
+  "description": "Experimental Claude Teams plugin template for hierarchical decomposition: Claude as orchestrator, teammate agents as managers, and specialist sub-agents for execution.",
+  "author": {
+    "name": "Marketplace Templates",
+    "email": "templates@example.com"
+  },
+  "keywords": [
+    "claude-teams",
+    "hierarchical-decomposition",
+    "multi-agent",
+    "orchestration",
+    "subagents",
+    "experimental"
+  ],
+  "license": "MIT",
+  "repository": "https://github.com/Lobbi-Docs/claude"
+}

@@ -1,0 +1,25 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "If this change affects agent definitions, verify manager/specialist boundaries remain explicit and no specialist is given orchestration authority. Report violations briefly."
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Before ending, summarize open escalations, unresolved dependencies, and whether hierarchy depth and ownership rules were respected."
+          }
+        ]
+      }
+    ]
+  }
+}
