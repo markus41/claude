@@ -1,0 +1,14 @@
+{
+  "name": "codebase-onboarding-guide",
+  "version": "1.0.0",
+  "description": "Comprehensive developer onboarding system that reduces time-to-productivity by generating architecture overviews, navigation indexes, code flow explanations, and practical how-to guides for new team members",
+  "author": {
+    "name": "Claude Orchestration Team"
+  },
+  "license": "MIT",
+  "keywords": [
+    "onboarding", "documentation", "architecture", "learning",
+    "developer-experience", "code-flow", "system-design", "glossary",
+    "code-navigation", "project-structure", "newcomer-guide"
+  ]
+}
