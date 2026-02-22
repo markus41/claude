@@ -632,11 +632,43 @@ export async function validateIssue(issueKey: string): Promise<{
 }> {
   console.log(`[Activity] validateIssue: ${issueKey}`);
 
-  // TODO: Integrate with Jira MCP
-  return {
-    exists: true,
-    accessible: true,
-    issueType: 'Task',
-    status: 'To Do',
-  };
+  try {
+    const issue = await callAtlassianMcp<{
+      key: string;
+      fields: {
+        issuetype?: { name: string };
+        status?: { name: string };
+      };
+    }>('getJiraIssue', { issueIdOrKey: issueKey });
+
+    console.log(`[Activity] validateIssue: ${issueKey} exists and is accessible`);
+
+    return {
+      exists: true,
+      accessible: true,
+      issueType: issue.fields?.issuetype?.name ?? 'Unknown',
+      status: issue.fields?.status?.name ?? 'Unknown',
+    };
+  } catch (error) {
+    console.warn(`[Activity] validateIssue: ${issueKey} validation failed:`, error);
+
+    // Distinguish between "not found" and "service error"
+    const message = (error as Error).message ?? '';
+    if (message.includes('404') || message.includes('not found')) {
+      return {
+        exists: false,
+        accessible: false,
+        issueType: 'Unknown',
+        status: 'Unknown',
+      };
+    }
+
+    // Service error - issue might exist but we cannot reach Jira
+    return {
+      exists: true, // assume exists; service is down
+      accessible: false,
+      issueType: 'Unknown',
+      status: 'Unknown',
+    };
+  }
 }
