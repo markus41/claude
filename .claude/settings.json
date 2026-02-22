@@ -1,91 +1,186 @@
 {
   "env": {
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+    "CLAUDE_CODE_DISABLE_AUTO_MEMORY": "0",
+    "MAX_THINKING_TOKENS": "31999"
   },
+  "model": "claude-sonnet-4-6",
   "teammateMode": "auto",
-  "agentTeams": {
-    "enabled": true,
-    "defaultTeamSize": 5,
-    "maxTeamSize": 8,
-    "defaultTeammateModel": "sonnet",
-    "teamLeadModel": "opus",
-    "requirePlanApproval": true,
-    "costCeiling": {
-      "maxTokensPerTeammate": 100000,
-      "maxTotalTokens": 500000
-    },
-    "hooks": {
-      "TeammateIdle": "Check for unclaimed tasks",
-      "TaskCompleted": "Validate completeness"
-    }
-  },
-  "version": "3.0.0",
-  "project": {
-    "name": "neural-orchestration-platform",
-    "patterns": [
-      "plan-then-execute",
-      "hierarchical-decomposition",
-      "blackboard",
-      "event-sourcing"
+  "enableAllProjectMcpServers": true,
+  "respectGitignore": true,
+  "permissions": {
+    "allow": [
+      "Bash(npm *)",
+      "Bash(pnpm *)",
+      "Bash(npx *)",
+      "Bash(node *)",
+      "Bash(git status *)",
+      "Bash(git log *)",
+      "Bash(git diff *)",
+      "Bash(git branch *)",
+      "Bash(git fetch *)",
+      "Bash(git stash *)",
+      "Bash(git checkout *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(git pull *)",
+      "Bash(gh *)",
+      "Bash(tree *)",
+      "Bash(python *)",
+      "Bash(python3 *)",
+      "Bash(pip *)",
+      "Bash(curl *)",
+      "Bash(az *)",
+      "Bash(terraform *)",
+      "Bash(docker *)",
+      "Bash(kubectl *)",
+      "Bash(helm *)",
+      "Bash(dotnet *)",
+      "Bash(chmod *)",
+      "Bash(mkdir *)",
+      "Bash(ln *)",
+      "Bash(sqlite3 *)",
+      "Bash(claude mcp *)",
+      "WebSearch",
+      "mcp__*"
     ],
-    "architecture": "microservices-mesh",
-    "description": "Ultra-sophisticated enterprise AI platform with advanced orchestration"
+    "deny": [
+      "Bash(rm -rf /)",
+      "Bash(rm -rf ~)",
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./secrets/**)"
+    ]
   },
-  "models": {
-    "strategic": "claude-opus-4-6",
-    "tactical": "claude-sonnet-4-6",
-    "operational": "claude-haiku-4-5-20251001",
-    "verification": "claude-opus-4-1",
-    "fallback": ["gpt-4", "mistral-large", "llama-3"]
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/session-init.sh",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo 'Reminder: Use subagents for research. Use Perplexity/Firecrawl MCP for web research. Check .claude/rules/ for project conventions. Review lessons-learned in .claude/rules/lessons-learned.md before proceeding.'"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/post-edit-lint.sh",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/lessons-learned-capture.sh",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/bash-safety-validator.sh",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/protect-critical-files.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Review the conversation and check: 1) Were all requested tasks completed? 2) Were any errors encountered that should be documented as lessons learned? 3) Are there uncommitted changes that should be committed? If any task is incomplete or errors occurred, respond with {\"ok\": false, \"reason\": \"description of what remains\"}. If everything is complete, respond with {\"ok\": true}. Context: $ARGUMENTS",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "TeammateIdle": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/teammate-idle-check.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "TaskCompleted": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/task-quality-gate.sh",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/subagent-results-log.sh",
+            "async": true,
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "permission_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '[NOTIFICATION] Permission prompt triggered' >> \"$CLAUDE_PROJECT_DIR\"/.claude/logs/notifications.log"
+          }
+        ]
+      }
+    ]
   },
-  "memory": {
-    "hierarchy": {
-      "sensory": "redis-streams",
-      "working": "redis-cache",
-      "episodic": "cosmos-db",
-      "semantic": "pinecone-vector",
-      "procedural": "git-versioned"
-    },
-    "synchronization": "crdt-based",
-    "consistency": "eventual-with-causal"
-  },
-  "execution": {
-    "parallelism": "adaptive",
-    "maxConcurrent": 20,
-    "queueStrategy": "priority-weighted",
-    "circuitBreaker": {
-      "enabled": true,
-      "threshold": 5,
-      "timeout": 30000,
-      "halfOpenAfter": 60000
-    }
-  },
-  "security": {
-    "model": "zero-trust-plus",
-    "encryption": "e2e-aes-256",
-    "authentication": "oauth2-pkce",
-    "authorization": "rbac-with-abac",
-    "sandboxing": "docker-gvisor",
-    "toolScoping": "dynamic-per-task",
-    "auditLogging": "immutable-append-only"
-  },
-  "agents": {
-    "contextWindow": 200000,
-    "defaultModel": "claude-sonnet-4",
-    "memoryStrategy": "hierarchical-persistent",
-    "stateManagement": "distributed-crdt"
-  },
-  "monitoring": {
-    "telemetry": "opentelemetry",
-    "traces": true,
-    "metrics": true,
-    "logs": true,
-    "exporters": ["datadog", "jaeger", "prometheus"]
-  },
-  "deployment": {
-    "platform": "kubernetes",
-    "iac": "terraform",
-    "regions": ["us-east-1", "eu-west-1", "ap-southeast-1"],
-    "autoScaling": true
+  "attribution": {
+    "commit": "Co-Authored-By: Claude <noreply@anthropic.com>",
+    "pr": "Generated with Claude Code"
   }
 }
