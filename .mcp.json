@@ -2,16 +2,67 @@
   "mcpServers": {
     "perplexity": {
       "command": "npx",
-      "args": ["-y", "@anthropic/perplexity-mcp"],
+      "args": [
+        "-y",
+        "@anthropic/perplexity-mcp"
+      ],
       "env": {
         "PERPLEXITY_API_KEY": "${PERPLEXITY_API_KEY}"
       }
     },
     "firecrawl": {
       "command": "npx",
-      "args": ["-y", "firecrawl-mcp"],
+      "args": [
+        "-y",
+        "firecrawl-mcp"
+      ],
       "env": {
         "FIRECRAWL_API_KEY": "${FIRECRAWL_API_KEY}"
+      }
+    },
+    "deploy-intelligence": {
+      "command": "node",
+      "args": [
+        ".claude/mcp-servers/deploy-intelligence/index.js"
+      ],
+      "env": {
+        "CLAUDE_PROJECT_DIR": "."
+      }
+    },
+    "lessons-learned": {
+      "command": "node",
+      "args": [
+        ".claude/mcp-servers/lessons-learned/index.js"
+      ],
+      "env": {
+        "CLAUDE_PROJECT_DIR": "."
+      }
+    },
+    "project-metrics": {
+      "command": "node",
+      "args": [
+        ".claude/mcp-servers/project-metrics/index.js"
+      ],
+      "env": {
+        "CLAUDE_PROJECT_DIR": "."
+      }
+    },
+    "code-quality-gate": {
+      "command": "node",
+      "args": [
+        ".claude/mcp-servers/code-quality-gate/index.js"
+      ],
+      "env": {
+        "CLAUDE_PROJECT_DIR": "."
+      }
+    },
+    "workflow-bridge": {
+      "command": "node",
+      "args": [
+        ".claude/mcp-servers/workflow-bridge/index.js"
+      ],
+      "env": {
+        "CLAUDE_PROJECT_DIR": "."
       }
     }
   }
