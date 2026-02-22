@@ -1,4 +1,24 @@
 {
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
+  "teammateMode": "auto",
+  "agentTeams": {
+    "enabled": true,
+    "defaultTeamSize": 5,
+    "maxTeamSize": 8,
+    "defaultTeammateModel": "sonnet",
+    "teamLeadModel": "opus",
+    "requirePlanApproval": true,
+    "costCeiling": {
+      "maxTokensPerTeammate": 100000,
+      "maxTotalTokens": 500000
+    },
+    "hooks": {
+      "TeammateIdle": "Check for unclaimed tasks",
+      "TaskCompleted": "Validate completeness"
+    }
+  },
   "version": "3.0.0",
   "project": {
     "name": "neural-orchestration-platform",
@@ -12,9 +32,9 @@
     "description": "Ultra-sophisticated enterprise AI platform with advanced orchestration"
   },
   "models": {
-    "strategic": "claude-opus-4-1",
-    "tactical": "claude-sonnet-4",
-    "operational": "claude-haiku-3",
+    "strategic": "claude-opus-4-6",
+    "tactical": "claude-sonnet-4-6",
+    "operational": "claude-haiku-4-5-20251001",
     "verification": "claude-opus-4-1",
     "fallback": ["gpt-4", "mistral-large", "llama-3"]
   },

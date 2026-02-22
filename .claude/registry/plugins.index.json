@@ -46,6 +46,55 @@
       "source": "local",
       "installedAt": "2026-01-19T00:00:00.000Z",
       "dependencies": {}
+    },
+    "agent-review-council": {
+      "version": "1.0.0",
+      "path": "../plugins/agent-review-council",
+      "source": "local",
+      "installedAt": "2026-02-22T00:00:00.000Z",
+      "dependencies": {}
+    },
+    "cognitive-code-reasoner": {
+      "version": "1.0.0",
+      "path": "../plugins/cognitive-code-reasoner",
+      "source": "local",
+      "installedAt": "2026-02-22T00:00:00.000Z",
+      "dependencies": {}
+    },
+    "multi-model-orchestration": {
+      "version": "1.0.0",
+      "path": "../plugins/multi-model-orchestration",
+      "source": "local",
+      "installedAt": "2026-02-22T00:00:00.000Z",
+      "dependencies": {}
+    },
+    "code-knowledge-graph": {
+      "version": "1.0.0",
+      "path": "../plugins/code-knowledge-graph",
+      "source": "local",
+      "installedAt": "2026-02-22T00:00:00.000Z",
+      "dependencies": {}
+    },
+    "predictive-failure-engine": {
+      "version": "1.0.0",
+      "path": "../plugins/predictive-failure-engine",
+      "source": "local",
+      "installedAt": "2026-02-22T00:00:00.000Z",
+      "dependencies": {}
+    },
+    "autonomous-sprint-ai": {
+      "version": "1.0.0",
+      "path": "../plugins/autonomous-sprint-ai",
+      "source": "local",
+      "installedAt": "2026-02-22T00:00:00.000Z",
+      "dependencies": {}
+    },
+    "notification-hub": {
+      "version": "1.0.0",
+      "path": "../plugins/notification-hub",
+      "source": "local",
+      "installedAt": "2026-02-22T00:00:00.000Z",
+      "dependencies": {}
     }
   },
 
@@ -153,6 +202,125 @@
         "agents": 10,
         "skills": 4,
         "hooks": 1
+      }
+    },
+    "agent-review-council": {
+      "name": "agent-review-council",
+      "version": "1.0.0",
+      "description": "Revolutionary multi-agent deliberation with 20 protocols, 21 agents, and production automation",
+      "author": "thelobbi.io",
+      "license": "MIT",
+      "repository": "https://github.com/Lobbi-Docs/claude",
+      "keywords": ["agents", "review", "deliberation", "council", "multi-agent"],
+      "categories": ["ai-advanced"],
+      "dependencies": {},
+      "provides": {
+        "commands": 12,
+        "agents": 21,
+        "skills": 6,
+        "hooks": 4
+      }
+    },
+    "cognitive-code-reasoner": {
+      "name": "cognitive-code-reasoner",
+      "version": "1.0.0",
+      "description": "Ultra-deep debugging using extended thinking, hypothesis-driven analysis, causal chains",
+      "author": "thelobbi.io",
+      "license": "MIT",
+      "repository": "https://github.com/Lobbi-Docs/claude",
+      "keywords": ["debugging", "reasoning", "extended-thinking", "cognitive", "analysis"],
+      "categories": ["ai-advanced"],
+      "dependencies": {},
+      "provides": {
+        "commands": 12,
+        "agents": 15,
+        "skills": 8,
+        "hooks": 4
+      }
+    },
+    "multi-model-orchestration": {
+      "name": "multi-model-orchestration",
+      "version": "1.0.0",
+      "description": "Dynamic LLM routing to optimal model (Claude/GPT/Gemini/Llama) based on task, cost, latency",
+      "author": "thelobbi.io",
+      "license": "MIT",
+      "repository": "https://github.com/Lobbi-Docs/claude",
+      "keywords": ["multi-model", "routing", "orchestration", "llm", "optimization"],
+      "categories": ["ai-advanced"],
+      "dependencies": {},
+      "provides": {
+        "commands": 14,
+        "agents": 10,
+        "skills": 6,
+        "hooks": 4
+      }
+    },
+    "code-knowledge-graph": {
+      "name": "code-knowledge-graph",
+      "version": "1.0.0",
+      "description": "Semantic knowledge graph for codebase understanding, impact analysis, architecture queries",
+      "author": "thelobbi.io",
+      "license": "MIT",
+      "repository": "https://github.com/Lobbi-Docs/claude",
+      "keywords": ["knowledge-graph", "semantic", "impact-analysis", "architecture", "codebase"],
+      "categories": ["ai-advanced"],
+      "dependencies": {},
+      "provides": {
+        "commands": 15,
+        "agents": 11,
+        "skills": 7,
+        "hooks": 4
+      }
+    },
+    "predictive-failure-engine": {
+      "name": "predictive-failure-engine",
+      "version": "1.0.0",
+      "description": "ML-based bug prediction before they happen - pattern recognition, hotspot detection",
+      "author": "thelobbi.io",
+      "license": "MIT",
+      "repository": "https://github.com/Lobbi-Docs/claude",
+      "keywords": ["prediction", "failure-detection", "ml", "bug-prediction", "hotspots"],
+      "categories": ["ai-advanced"],
+      "dependencies": {},
+      "provides": {
+        "commands": 14,
+        "agents": 11,
+        "skills": 7,
+        "hooks": 5
+      }
+    },
+    "autonomous-sprint-ai": {
+      "name": "autonomous-sprint-ai",
+      "version": "1.0.0",
+      "description": "Self-governing sprint management with autonomous planning, workload balancing, blocker prediction",
+      "author": "thelobbi.io",
+      "license": "MIT",
+      "repository": "https://github.com/Lobbi-Docs/claude",
+      "keywords": ["sprint", "autonomous", "planning", "agile", "workload-balancing"],
+      "categories": ["ai-advanced"],
+      "dependencies": {},
+      "provides": {
+        "commands": 14,
+        "agents": 12,
+        "skills": 7,
+        "hooks": 6
+      }
+    },
+    "notification-hub": {
+      "name": "notification-hub",
+      "version": "1.0.0",
+      "description": "Unified notifications - Slack, Teams, Discord, Email, Webhooks",
+      "author": "thelobbi.io",
+      "license": "MIT",
+      "repository": "https://github.com/Lobbi-Docs/claude",
+      "keywords": ["notifications", "slack", "teams", "discord", "webhooks"],
+      "categories": ["communication"],
+      "dependencies": {},
+      "provides": {
+        "commands": 14,
+        "agents": 9,
+        "skills": 5,
+        "hooks": 5
       }
     }
   },
@@ -484,9 +652,9 @@
   },
 
   "stats": {
-    "totalInstalled": 6,
+    "totalInstalled": 13,
     "totalAvailable": 19,
-    "lastUpdated": "2026-01-19T00:00:00.000Z",
+    "lastUpdated": "2026-02-22T00:00:00.000Z",
     "totalPlugins": 19,
     "byTier": {
       "enterprise": 1,

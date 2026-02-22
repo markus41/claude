@@ -14,6 +14,56 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 /**
+ * Maps agent names to their functional categories within the plugin ecosystem.
+ * Used by AgentMetricsCollector.getMetricsByCategory() to group execution
+ * metrics by category for aggregate analysis.
+ */
+const AGENT_CATEGORY_MAP: Record<string, string[]> = {
+  code: [
+    'code-implementer', 'code-reviewer', 'code-analyzer',
+    'bug-fixer', 'refactoring-specialist'
+  ],
+  testing: [
+    'tester', 'e2e-tester', 'test-runner',
+    'coverage-analyzer', 'quality-enforcer'
+  ],
+  planning: [
+    'planner', 'architect', 'scrum-master',
+    'product-owner', 'task-enricher'
+  ],
+  devops: [
+    'k8s-deployer', 'docker-builder', 'cicd-engineer',
+    'helm-specialist', 'terraform-specialist'
+  ],
+  documentation: [
+    'docs-writer', 'confluence-specialist',
+    'changelog-generator', 'documentation-writer'
+  ],
+  review: [
+    'security-sentinel', 'performance-guardian',
+    'maintainability-advocate', 'council-convener'
+  ],
+  triage: [
+    'triage-agent', 'requirements-analyzer',
+    'dependency-mapper', 'researcher'
+  ],
+  'ai-advanced': [
+    'cognitive-reasoner', 'predictive-engine',
+    'knowledge-graph', 'model-router'
+  ]
+};
+
+/**
+ * Reverse lookup: agent name -> category. Built once from AGENT_CATEGORY_MAP.
+ */
+const AGENT_TO_CATEGORY: Record<string, string> = {};
+for (const [category, agents] of Object.entries(AGENT_CATEGORY_MAP)) {
+  for (const agent of agents) {
+    AGENT_TO_CATEGORY[agent] = category;
+  }
+}
+
+/**
  * Single agent execution record
  */
 export interface AgentExecution {
@@ -364,10 +414,76 @@ export class AgentMetricsCollector {
    * Get metrics grouped by category (requires category mapping)
    */
   getMetricsByCategory(): Record<string, AggregateMetrics> {
-    // This would require category information from agent registry
-    // For now, return empty object
-    // TODO: Integrate with agent registry for category mapping
-    return {};
+    // Group executions by category using AGENT_TO_CATEGORY reverse map
+    const categoryExecutions: Record<string, AgentExecution[]> = {};
+
+    for (const exec of this.executions) {
+      const category = AGENT_TO_CATEGORY[exec.agentName] || 'uncategorized';
+      if (!categoryExecutions[category]) {
+        categoryExecutions[category] = [];
+      }
+      categoryExecutions[category].push(exec);
+    }
+
+    // Build AggregateMetrics per category
+    const result: Record<string, AggregateMetrics> = {};
+
+    for (const [category, executions] of Object.entries(categoryExecutions)) {
+      const totalExecutions = executions.length;
+      const totalSuccesses = executions.filter(e => e.success).length;
+      const totalFailures = totalExecutions - totalSuccesses;
+
+      const avgDurationMs = totalExecutions > 0
+        ? executions.reduce((sum, e) => sum + e.durationMs, 0) / totalExecutions
+        : 0;
+
+      // Top agents by usage within this category
+      const usageCounts: Record<string, number> = {};
+      for (const exec of executions) {
+        usageCounts[exec.agentName] = (usageCounts[exec.agentName] || 0) + 1;
+      }
+      const topAgentsByUsage = Object.entries(usageCounts)
+        .map(([name, count]) => ({ name, count }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 10);
+
+      // Top agents by duration within this category
+      const durationByAgent: Record<string, number[]> = {};
+      for (const exec of executions) {
+        if (!durationByAgent[exec.agentName]) {
+          durationByAgent[exec.agentName] = [];
+        }
+        durationByAgent[exec.agentName].push(exec.durationMs);
+      }
+      const topAgentsByDuration = Object.entries(durationByAgent)
+        .map(([name, durations]) => ({
+          name,
+          avgMs: durations.reduce((a, b) => a + b, 0) / durations.length
+        }))
+        .sort((a, b) => b.avgMs - a.avgMs)
+        .slice(0, 10);
+
+      // Failures by error type within this category
+      const failuresByErrorType: Record<string, number> = {};
+      for (const exec of executions) {
+        if (!exec.success && exec.errorType) {
+          failuresByErrorType[exec.errorType] = (failuresByErrorType[exec.errorType] || 0) + 1;
+        }
+      }
+
+      result[category] = {
+        totalExecutions,
+        totalSuccesses,
+        totalFailures,
+        overallSuccessRate: totalExecutions > 0 ? totalSuccesses / totalExecutions : 0,
+        avgDurationMs,
+        topAgentsByUsage,
+        topAgentsByDuration,
+        failuresByErrorType
+      };
+    }
+
+    return result;
   }
 
   /**
