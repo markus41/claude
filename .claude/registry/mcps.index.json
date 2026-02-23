@@ -822,11 +822,11 @@
     }
   },
   "stats": {
-    "totalMcpServers": 16,
+    "totalMcpServers": 17,
     "builtinServers": 7,
     "customServers": 4,
-    "localServers": 5,
-    "totalTools": 123,
+    "localServers": 6,
+    "totalTools": 185,
     "byCategory": {
       "core": 7,
       "project": 4,

@@ -4,16 +4,9 @@
   "lastUpdated": "2026-02-23",
   "description": "Plugin registry for Claude Code orchestration plugins - cleaned after Phase 1+2 consolidation",
   "installed": {
-    "jira-orchestrator": {
-      "version": "7.5.0",
-      "path": "../plugins/jira-orchestrator",
-      "source": "local",
-      "installedAt": "2026-01-01T00:00:00.000Z",
-      "dependencies": {}
-    },
-    "frontend-design-system": {
+    "ahling-command-center": {
       "version": "1.0.0",
-      "path": "../plugins/frontend-design-system",
+      "path": "../plugins/ahling-command-center",
       "source": "local",
       "installedAt": "2026-01-01T00:00:00.000Z",
       "dependencies": {}
@@ -25,25 +18,88 @@
       "installedAt": "2026-01-01T00:00:00.000Z",
       "dependencies": {}
     },
-    "claude-code-templating": {
+    "claude-code-templating-plugin": {
       "version": "1.0.0",
       "path": "../plugins/claude-code-templating-plugin",
       "source": "local",
       "installedAt": "2026-01-08T00:00:00.000Z",
       "dependencies": {}
     },
-    "langgraph-architect": {
+    "deployment-pipeline": {
       "version": "1.0.0",
-      "path": "../.claude/plugins/langgraph-architect",
+      "path": "../plugins/deployment-pipeline",
       "source": "local",
-      "installedAt": "2026-01-15T00:00:00.000Z",
+      "installedAt": "2026-01-01T00:00:00.000Z",
       "dependencies": {}
     },
-    "infrastructure-template-generator": {
-      "version": "2.0.0",
-      "path": "./.claude/tools/plugin-cli/infrastructure-template-generator",
+    "exec-automator": {
+      "version": "1.0.0",
+      "path": "../plugins/exec-automator",
       "source": "local",
-      "installedAt": "2026-01-19T00:00:00.000Z",
+      "installedAt": "2026-01-01T00:00:00.000Z",
+      "dependencies": {}
+    },
+    "fastapi-backend": {
+      "version": "0.1.0",
+      "path": "../plugins/fastapi-backend",
+      "source": "local",
+      "installedAt": "2026-01-01T00:00:00.000Z",
+      "dependencies": {}
+    },
+    "frontend-design-system": {
+      "version": "1.0.0",
+      "path": "../plugins/frontend-design-system",
+      "source": "local",
+      "installedAt": "2026-01-01T00:00:00.000Z",
+      "dependencies": {}
+    },
+    "fullstack-iac": {
+      "version": "1.0.0",
+      "path": "../plugins/fullstack-iac",
+      "source": "local",
+      "installedAt": "2026-01-01T00:00:00.000Z",
+      "dependencies": {}
+    },
+    "home-assistant-architect": {
+      "version": "2.0.0",
+      "path": "../plugins/home-assistant-architect",
+      "source": "local",
+      "installedAt": "2026-01-01T00:00:00.000Z",
+      "dependencies": {}
+    },
+    "jira-orchestrator": {
+      "version": "7.5.0",
+      "path": "../plugins/jira-orchestrator",
+      "source": "local",
+      "installedAt": "2026-01-01T00:00:00.000Z",
+      "dependencies": {}
+    },
+    "lobbi-platform-manager": {
+      "version": "1.0.0",
+      "path": "../plugins/lobbi-platform-manager",
+      "source": "local",
+      "installedAt": "2026-01-01T00:00:00.000Z",
+      "dependencies": {}
+    },
+    "marketplace-pro": {
+      "version": "1.0.0",
+      "path": "../plugins/marketplace-pro",
+      "source": "local",
+      "installedAt": "2026-02-23T00:00:00.000Z",
+      "dependencies": {}
+    },
+    "react-animation-studio": {
+      "version": "1.1.0",
+      "path": "../plugins/react-animation-studio",
+      "source": "local",
+      "installedAt": "2026-01-01T00:00:00.000Z",
+      "dependencies": {}
+    },
+    "team-accelerator": {
+      "version": "1.0.0",
+      "path": "../plugins/team-accelerator",
+      "source": "local",
+      "installedAt": "2026-01-01T00:00:00.000Z",
       "dependencies": {}
     }
   },
@@ -223,6 +279,23 @@
         "testing",
         "quality"
       ]
+    },
+    "marketplace-pro": {
+      "name": "marketplace-pro",
+      "version": "1.0.0",
+      "description": "Plugin marketplace with federation, composition engine, trust scoring, and dev studio",
+      "keywords": [
+        "marketplace",
+        "federation",
+        "plugins",
+        "composition",
+        "trust",
+        "dev-studio"
+      ],
+      "categories": [
+        "marketplace",
+        "orchestration"
+      ]
     }
   },
   "plugins": {
@@ -333,6 +406,14 @@
         "tier": "standard"
       }
     },
+    "marketplace-ecosystem": {
+      "marketplace-pro": {
+        "path": "../plugins/marketplace-pro/.claude-plugin/plugin.json",
+        "version": "1.0.0",
+        "status": "active",
+        "tier": "standard"
+      }
+    },
     "marketplace": {
       "api-integration-helper": {
         "path": "../.claude/plugins/api-integration-helper/.claude-plugin/plugin.json",
@@ -384,18 +465,17 @@
     "TestForge": "testforge"
   },
   "stats": {
-    "totalInstalled": 6,
+    "totalInstalled": 14,
     "totalPlugins": 20,
-    "totalAvailable": 5,
+    "totalAvailable": 6,
     "lastUpdated": "2026-02-23T00:00:00.000Z",
     "byTier": {
       "enterprise": 1,
       "standard": 19
     },
     "byLocation": {
-      "plugins/": 13,
-      ".claude/plugins/": 6,
-      ".claude/tools/": 1
+      "plugins/": 14,
+      ".claude/plugins/": 6
     }
   }
 }

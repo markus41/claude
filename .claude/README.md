@@ -47,7 +47,7 @@ This directory contains comprehensive documentation for Claude Code's orchestrat
 **Audience**: Architects, Engineering Leads, Product Managers
 **Key Sections**:
 - Executive Summary
-- Orchestration Inventory (20 commands, 23 agents)
+- Orchestration Inventory (120 commands, 137 agents)
 - Pattern Analysis (good patterns, anti-patterns)
 - Bottleneck Identification
 - Dependency Graph Analysis
@@ -217,7 +217,7 @@ This directory contains comprehensive documentation for Claude Code's orchestrat
 **Impact**: 35% overall speedup
 
 **Deliverables**:
-- [ ] TodoWrite integration for all 20 commands
+- [ ] TodoWrite integration for all 120 commands
 - [ ] Basic parallelization (independent agents)
 - [ ] Context cache prototype
 
