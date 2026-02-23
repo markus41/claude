@@ -49,3 +49,28 @@ Claude reads this at the start of each session to avoid repeating mistakes.
 - **Status:** RESOLVED
 - **Fix:** Complex heredoc scripts with pipes caused grep to treat shell arguments as file paths
 - **Prevention:** Use simple sequential `cmd | grep` pipes, not embedded in heredoc blocks
+
+### Error: Bash failure (2026-02-23T02:31:39Z)
+- **Tool:** Bash
+- **Input:** `ls /home/user/claude/.claude/tools/plugin-cli/src/ 2>/dev/null && echo "---" && ls /home/user/claude/.claude/tools/plugin-cli/src/commands/ 2>/dev/null`
+- **Error:** Exit code 2
+bundler.ts
+cli.ts
+doctor.ts
+linter.ts
+scaffolder.ts
+template-engine.ts
+types.ts
+validator.ts
+---
+
+bundler.ts
+cli.ts
+doctor.ts
+linter.ts
+scaffolder.ts
+template-engine.ts
+types.ts
+validator.ts
+---
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving

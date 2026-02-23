@@ -12,6 +12,7 @@
     "totalMcpTools": 123,
     "totalBuiltinTools": 17,
     "totalPlugins": 20,
+    "totalAvailablePlugins": 5,
     "totalTeams": 16,
     "lastConsolidation": "2026-02-23"
   },
@@ -142,8 +143,7 @@
       "docs|documentation|readme|api-docs": "agents/doc-writer",
       "test|e2e|coverage|regression": "agents/test-writer",
       "debug|bug|root-cause|hypothesis": "agents/debugger",
-      "metrics|velocity|burndown|dora": "mcps/project-metrics",
-      "council|debate|vote|adversarial": "plugins/agent-review-council"
+      "metrics|velocity|burndown|dora": "mcps/project-metrics"
     },
     "byTask": {
       "deploy": [

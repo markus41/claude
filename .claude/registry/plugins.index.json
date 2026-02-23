@@ -137,6 +137,92 @@
       "categories": [
         "infrastructure"
       ]
+    },
+    "api-integration-helper": {
+      "name": "api-integration-helper",
+      "version": "1.0.0",
+      "description": "Production-ready API integration specialist with typed clients, auth flows, and mock servers",
+      "keywords": [
+        "api",
+        "openapi",
+        "graphql",
+        "rest",
+        "client-generation",
+        "sdk-generation"
+      ],
+      "categories": [
+        "development",
+        "integration"
+      ]
+    },
+    "code-quality-orchestrator": {
+      "name": "code-quality-orchestrator",
+      "version": "1.0.0",
+      "description": "Unified code quality gates - static analysis, test coverage, security scanning, complexity analysis",
+      "keywords": [
+        "code-quality",
+        "linting",
+        "static-analysis",
+        "test-coverage",
+        "security-scanning",
+        "quality-gates"
+      ],
+      "categories": [
+        "quality",
+        "development"
+      ]
+    },
+    "dev-environment-bootstrap": {
+      "name": "dev-environment-bootstrap",
+      "version": "1.0.0",
+      "description": "Developer onboarding accelerator - Docker configs, env templates, IDE setup, dependency detection",
+      "keywords": [
+        "setup",
+        "environment",
+        "docker",
+        "onboarding",
+        "bootstrap",
+        "dev-container"
+      ],
+      "categories": [
+        "development",
+        "devops"
+      ]
+    },
+    "migration-wizard": {
+      "name": "migration-wizard",
+      "version": "1.0.0",
+      "description": "Complex code migrations between frameworks, libraries, and API versions with codemods and rollback",
+      "keywords": [
+        "migration",
+        "codemod",
+        "refactor",
+        "modernize",
+        "strangler-fig",
+        "upgrade"
+      ],
+      "categories": [
+        "development",
+        "migration"
+      ]
+    },
+    "testforge": {
+      "name": "testforge",
+      "version": "1.0.0",
+      "description": "Intelligent test generation - analyzes code behavior to auto-generate comprehensive tests",
+      "keywords": [
+        "test-generation",
+        "unit-test",
+        "integration-test",
+        "jest",
+        "pytest",
+        "vitest",
+        "coverage"
+      ],
+      "categories": [
+        "testing",
+        "quality"
+      ]
     }
   },
   "plugins": {
@@ -246,6 +332,43 @@
         "status": "active",
         "tier": "standard"
       }
+    },
+    "marketplace": {
+      "api-integration-helper": {
+        "path": "../.claude/plugins/api-integration-helper/.claude-plugin/plugin.json",
+        "callsign": "Connector",
+        "version": "1.0.0",
+        "status": "available",
+        "tier": "standard"
+      },
+      "code-quality-orchestrator": {
+        "path": "../.claude/plugins/code-quality-orchestrator/.claude-plugin/plugin.json",
+        "callsign": "Curator",
+        "version": "1.0.0",
+        "status": "available",
+        "tier": "standard"
+      },
+      "dev-environment-bootstrap": {
+        "path": "../.claude/plugins/dev-environment-bootstrap/.claude-plugin/plugin.json",
+        "callsign": "Bootstrap",
+        "version": "1.0.0",
+        "status": "available",
+        "tier": "standard"
+      },
+      "migration-wizard": {
+        "path": "../.claude/plugins/migration-wizard/.claude-plugin/plugin.json",
+        "callsign": "Migrator",
+        "version": "1.0.0",
+        "status": "available",
+        "tier": "standard"
+      },
+      "testforge": {
+        "path": "../.claude/plugins/testforge/.claude-plugin/plugin.json",
+        "callsign": "TestForge",
+        "version": "1.0.0",
+        "status": "available",
+        "tier": "standard"
+      }
     }
   },
   "callsignRegistry": {
@@ -253,20 +376,26 @@
     "Conduit": "aws-eks-helm-keycloak",
     "Stylist": "frontend-design-system",
     "Architect": "claude-code-templating",
-    "Forgemaster": "infrastructure-template-generator"
+    "Forgemaster": "infrastructure-template-generator",
+    "Connector": "api-integration-helper",
+    "Curator": "code-quality-orchestrator",
+    "Bootstrap": "dev-environment-bootstrap",
+    "Migrator": "migration-wizard",
+    "TestForge": "testforge"
   },
   "stats": {
     "totalInstalled": 6,
-    "totalPlugins": 19,
+    "totalPlugins": 20,
+    "totalAvailable": 5,
     "lastUpdated": "2026-02-23T00:00:00.000Z",
     "byTier": {
       "enterprise": 1,
-      "standard": 17,
-      "advanced": 1
+      "standard": 19
     },
     "byLocation": {
-      "plugins/": 14,
-      ".claude/plugins/": 6
+      "plugins/": 13,
+      ".claude/plugins/": 6,
+      ".claude/tools/": 1
     }
   }
 }
