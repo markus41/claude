@@ -1,9 +1,8 @@
 {
   "$schema": "./schema/plugins.schema.json",
-  "version": "1.0.0",
-  "lastUpdated": "2026-01-31",
-  "description": "Plugin registry for Claude Code orchestration plugins",
-
+  "version": "2.0.0",
+  "lastUpdated": "2026-02-23",
+  "description": "Plugin registry for Claude Code orchestration plugins - cleaned after Phase 1+2 consolidation",
   "installed": {
     "jira-orchestrator": {
       "version": "7.5.0",
@@ -35,7 +34,7 @@
     },
     "langgraph-architect": {
       "version": "1.0.0",
-      "path": "../plugins/langgraph-architect",
+      "path": "../.claude/plugins/langgraph-architect",
       "source": "local",
       "installedAt": "2026-01-15T00:00:00.000Z",
       "dependencies": {}
@@ -53,621 +52,250 @@
       "source": "local",
       "installedAt": "2026-02-22T00:00:00.000Z",
       "dependencies": {}
-    },
-    "cognitive-code-reasoner": {
-      "version": "1.0.0",
-      "path": "../plugins/cognitive-code-reasoner",
-      "source": "local",
-      "installedAt": "2026-02-22T00:00:00.000Z",
-      "dependencies": {}
-    },
-    "multi-model-orchestration": {
-      "version": "1.0.0",
-      "path": "../plugins/multi-model-orchestration",
-      "source": "local",
-      "installedAt": "2026-02-22T00:00:00.000Z",
-      "dependencies": {}
-    },
-    "code-knowledge-graph": {
-      "version": "1.0.0",
-      "path": "../plugins/code-knowledge-graph",
-      "source": "local",
-      "installedAt": "2026-02-22T00:00:00.000Z",
-      "dependencies": {}
-    },
-    "predictive-failure-engine": {
-      "version": "1.0.0",
-      "path": "../plugins/predictive-failure-engine",
-      "source": "local",
-      "installedAt": "2026-02-22T00:00:00.000Z",
-      "dependencies": {}
-    },
-    "autonomous-sprint-ai": {
-      "version": "1.0.0",
-      "path": "../plugins/autonomous-sprint-ai",
-      "source": "local",
-      "installedAt": "2026-02-22T00:00:00.000Z",
-      "dependencies": {}
-    },
-    "notification-hub": {
-      "version": "1.0.0",
-      "path": "../plugins/notification-hub",
-      "source": "local",
-      "installedAt": "2026-02-22T00:00:00.000Z",
-      "dependencies": {}
     }
   },
-
   "registry": {
     "jira-orchestrator": {
       "name": "jira-orchestrator",
       "version": "7.5.0",
-      "description": "Enterprise Jira orchestration with 77 agents, 16 teams, 45 commands, 13 skills. Features Atlassian MCP OAuth, Harness integration, Neon PostgreSQL, Redis caching, Temporal workflows, and structured reasoning frameworks.",
+      "description": "Enterprise Jira orchestration with agents, teams, commands, and skills",
       "author": {
         "name": "Markus Ahling",
         "email": "markus@lobbi.io"
       },
-      "license": "MIT",
-      "repository": "https://github.com/Lobbi-Docs/claude",
-      "keywords": ["jira", "orchestration", "atlassian", "harness", "ci-cd", "workflow", "automation", "agents", "mcp", "neon", "postgresql", "redis", "temporal"],
-      "categories": ["integration", "orchestration", "devops", "automation"],
-      "dependencies": {},
-      "provides": {
-        "commands": 45,
-        "agents": 77,
-        "skills": 13,
-        "hooks": 6
-      }
+      "keywords": [
+        "jira",
+        "orchestration",
+        "atlassian",
+        "harness",
+        "ci-cd"
+      ],
+      "categories": [
+        "integration",
+        "orchestration",
+        "devops"
+      ]
     },
     "frontend-design-system": {
       "name": "frontend-design-system",
       "version": "1.0.0",
-      "description": "263+ design styles with multi-tenant Keycloak theming for AI-powered frontend development",
-      "author": "Markus Ahling",
-      "license": "MIT",
-      "repository": "https://github.com/Lobbi-Docs/claude",
-      "keywords": ["frontend", "design-system", "keycloak", "theming"],
-      "categories": ["frontend"],
-      "dependencies": {},
-      "provides": {
-        "commands": 8,
-        "agents": 6,
-        "skills": 4,
-        "hooks": 4
-      }
+      "description": "Design styles with multi-tenant Keycloak theming",
+      "keywords": [
+        "frontend",
+        "design-system",
+        "keycloak",
+        "theming"
+      ],
+      "categories": [
+        "frontend"
+      ]
     },
     "aws-eks-helm-keycloak": {
       "name": "aws-eks-helm-keycloak",
       "version": "1.0.0",
-      "description": "AWS EKS deployments with Helm, Keycloak authentication, and Harness CI/CD",
-      "author": "Golden Armada",
-      "license": "MIT",
-      "repository": "https://github.com/Lobbi-Docs/claude",
-      "keywords": ["aws", "eks", "kubernetes", "helm", "keycloak", "harness"],
-      "categories": ["infrastructure"],
-      "dependencies": {},
-      "provides": {
-        "commands": 7,
-        "agents": 4,
-        "skills": 6,
-        "hooks": 2
-      }
+      "description": "AWS EKS deployments with Helm, Keycloak, and Harness CI/CD",
+      "keywords": [
+        "aws",
+        "eks",
+        "kubernetes",
+        "helm",
+        "keycloak"
+      ],
+      "categories": [
+        "infrastructure"
+      ]
     },
     "claude-code-templating": {
       "name": "claude-code-templating",
       "version": "1.0.0",
-      "description": "Universal templating and Harness expert plugin with multi-format support",
-      "author": "thelobbi.io",
-      "license": "MIT",
-      "repository": "https://github.com/Lobbi-Docs/claude",
-      "keywords": ["templating", "scaffolding", "harness", "cookiecutter"],
-      "categories": ["templating"],
-      "dependencies": {},
-      "provides": {
-        "commands": 4,
-        "agents": 5,
-        "skills": 3,
-        "hooks": 0
-      }
+      "description": "Universal templating and Harness expert plugin",
+      "keywords": [
+        "templating",
+        "scaffolding",
+        "harness"
+      ],
+      "categories": [
+        "templating"
+      ]
     },
     "langgraph-architect": {
       "name": "langgraph-architect",
       "version": "1.0.0",
-      "description": "Expert LangGraph/LangChain agent builder with comprehensive workflow orchestration",
-      "author": "Brookside BI",
-      "license": "MIT",
-      "repository": "https://github.com/Lobbi-Docs/claude",
-      "keywords": ["langgraph", "langchain", "agent-builder", "workflow"],
-      "categories": ["agents"],
-      "dependencies": {},
-      "provides": {
-        "commands": 8,
-        "agents": 12,
-        "skills": 6,
-        "hooks": 0
-      }
-    },
-    "infrastructure-template-generator": {
-      "name": "infrastructure-template-generator",
-      "version": "2.0.0",
-      "description": "Complete infrastructure template automation - Cookiecutter, Terraform, Harness pipelines, GitOps",
-      "author": "thelobbi.io",
-      "license": "MIT",
-      "repository": "https://github.com/Lobbi-Docs/claude",
-      "keywords": ["infrastructure", "terraform", "cookiecutter", "harness", "gitops"],
-      "categories": ["infrastructure"],
-      "dependencies": {},
-      "provides": {
-        "commands": 16,
-        "agents": 10,
-        "skills": 4,
-        "hooks": 1
-      }
+      "description": "LangGraph/LangChain agent builder with workflow orchestration",
+      "keywords": [
+        "langgraph",
+        "langchain",
+        "agent-builder"
+      ],
+      "categories": [
+        "agents"
+      ]
     },
     "agent-review-council": {
       "name": "agent-review-council",
       "version": "1.0.0",
-      "description": "Revolutionary multi-agent deliberation with 20 protocols, 21 agents, and production automation",
-      "author": "thelobbi.io",
-      "license": "MIT",
-      "repository": "https://github.com/Lobbi-Docs/claude",
-      "keywords": ["agents", "review", "deliberation", "council", "multi-agent"],
-      "categories": ["ai-advanced"],
-      "dependencies": {},
-      "provides": {
-        "commands": 12,
-        "agents": 21,
-        "skills": 6,
-        "hooks": 4
-      }
+      "description": "Multi-agent deliberation with review protocols",
+      "keywords": [
+        "agents",
+        "review",
+        "deliberation",
+        "council"
+      ],
+      "categories": [
+        "ai-advanced"
+      ]
     },
-    "cognitive-code-reasoner": {
-      "name": "cognitive-code-reasoner",
-      "version": "1.0.0",
-      "description": "Ultra-deep debugging using extended thinking, hypothesis-driven analysis, causal chains",
-      "author": "thelobbi.io",
-      "license": "MIT",
-      "repository": "https://github.com/Lobbi-Docs/claude",
-      "keywords": ["debugging", "reasoning", "extended-thinking", "cognitive", "analysis"],
-      "categories": ["ai-advanced"],
-      "dependencies": {},
-      "provides": {
-        "commands": 12,
-        "agents": 15,
-        "skills": 8,
-        "hooks": 4
-      }
-    },
-    "multi-model-orchestration": {
-      "name": "multi-model-orchestration",
-      "version": "1.0.0",
-      "description": "Dynamic LLM routing to optimal model (Claude/GPT/Gemini/Llama) based on task, cost, latency",
-      "author": "thelobbi.io",
-      "license": "MIT",
-      "repository": "https://github.com/Lobbi-Docs/claude",
-      "keywords": ["multi-model", "routing", "orchestration", "llm", "optimization"],
-      "categories": ["ai-advanced"],
-      "dependencies": {},
-      "provides": {
-        "commands": 14,
-        "agents": 10,
-        "skills": 6,
-        "hooks": 4
-      }
-    },
-    "code-knowledge-graph": {
-      "name": "code-knowledge-graph",
-      "version": "1.0.0",
-      "description": "Semantic knowledge graph for codebase understanding, impact analysis, architecture queries",
-      "author": "thelobbi.io",
-      "license": "MIT",
-      "repository": "https://github.com/Lobbi-Docs/claude",
-      "keywords": ["knowledge-graph", "semantic", "impact-analysis", "architecture", "codebase"],
-      "categories": ["ai-advanced"],
-      "dependencies": {},
-      "provides": {
-        "commands": 15,
-        "agents": 11,
-        "skills": 7,
-        "hooks": 4
-      }
-    },
-    "predictive-failure-engine": {
-      "name": "predictive-failure-engine",
-      "version": "1.0.0",
-      "description": "ML-based bug prediction before they happen - pattern recognition, hotspot detection",
-      "author": "thelobbi.io",
-      "license": "MIT",
-      "repository": "https://github.com/Lobbi-Docs/claude",
-      "keywords": ["prediction", "failure-detection", "ml", "bug-prediction", "hotspots"],
-      "categories": ["ai-advanced"],
-      "dependencies": {},
-      "provides": {
-        "commands": 14,
-        "agents": 11,
-        "skills": 7,
-        "hooks": 5
-      }
-    },
-    "autonomous-sprint-ai": {
-      "name": "autonomous-sprint-ai",
-      "version": "1.0.0",
-      "description": "Self-governing sprint management with autonomous planning, workload balancing, blocker prediction",
-      "author": "thelobbi.io",
-      "license": "MIT",
-      "repository": "https://github.com/Lobbi-Docs/claude",
-      "keywords": ["sprint", "autonomous", "planning", "agile", "workload-balancing"],
-      "categories": ["ai-advanced"],
-      "dependencies": {},
-      "provides": {
-        "commands": 14,
-        "agents": 12,
-        "skills": 7,
-        "hooks": 6
-      }
-    },
-    "notification-hub": {
-      "name": "notification-hub",
-      "version": "1.0.0",
-      "description": "Unified notifications - Slack, Teams, Discord, Email, Webhooks",
-      "author": "thelobbi.io",
-      "license": "MIT",
-      "repository": "https://github.com/Lobbi-Docs/claude",
-      "keywords": ["notifications", "slack", "teams", "discord", "webhooks"],
-      "categories": ["communication"],
-      "dependencies": {},
-      "provides": {
-        "commands": 14,
-        "agents": 9,
-        "skills": 5,
-        "hooks": 5
-      }
+    "infrastructure-template-generator": {
+      "name": "infrastructure-template-generator",
+      "version": "2.0.0",
+      "description": "Infrastructure template automation - Cookiecutter, Terraform, Harness, GitOps",
+      "keywords": [
+        "infrastructure",
+        "terraform",
+        "cookiecutter",
+        "harness"
+      ],
+      "categories": [
+        "infrastructure"
+      ]
     }
   },
-
   "plugins": {
     "core": {
       "jira-orchestrator": {
         "path": "../plugins/jira-orchestrator/.claude-plugin/plugin.json",
         "callsign": "Arbiter",
         "version": "7.5.0",
-        "description": "Enterprise Jira orchestration with 77 agents, 16 teams, 45 commands, 13 skills. Features Atlassian MCP OAuth, Harness integration, Neon PostgreSQL, Redis caching, Temporal workflows, and structured reasoning frameworks.",
-        "provides": { "commands": 45, "agents": 77, "teams": 16, "skills": 13, "hooks": 6, "mcpServers": 3 },
-        "features": [
-          "autogen-teams",
-          "parent-child-orchestration",
-          "domain-affinity-routing",
-          "harness-ci-cd-integration",
-          "agent-council-review",
-          "clean-architecture-enforcement",
-          "neon-postgresql-persistence",
-          "redis-caching",
-          "temporal-workflows"
-        ],
         "status": "active",
         "tier": "enterprise"
-      },
-      "code-quality-orchestrator": {
-        "path": "../plugins/code-quality-orchestrator/.claude-plugin/plugin.json",
-        "callsign": "Curator",
-        "version": "1.0.0",
-        "provides": { "commands": 12, "agents": 8, "skills": 5, "hooks": 6 },
-        "status": "active",
-        "tier": "standard"
       }
     },
-
-    "workflow": {
-      "git-workflow-orchestrator": {
-        "path": "../plugins/git-workflow-orchestrator/.claude-plugin/plugin.json",
-        "callsign": "Sentinel",
-        "version": "1.0.0",
-        "description": "Advanced Git workflows, branching strategies, PR management",
-        "provides": { "commands": 15, "agents": 10, "skills": 6, "hooks": 5 },
-        "status": "active",
-        "tier": "standard",
-        "integrates": ["jira-orchestrator", "code-quality-orchestrator"]
-      },
-      "release-orchestrator": {
-        "path": "../plugins/release-orchestrator/.claude-plugin/plugin.json",
-        "callsign": "Herald",
-        "version": "1.0.0",
-        "description": "Release lifecycle, versioning, changelog, deployment coordination",
-        "provides": { "commands": 14, "agents": 9, "skills": 5, "hooks": 4 },
-        "status": "active",
-        "tier": "standard",
-        "integrates": ["jira-orchestrator", "git-workflow-orchestrator", "notification-hub"]
-      },
-      "testing-orchestrator": {
-        "path": "../plugins/testing-orchestrator/.claude-plugin/plugin.json",
-        "callsign": "Validator",
-        "version": "1.0.0",
-        "description": "Comprehensive testing orchestration - unit, integration, E2E, performance",
-        "provides": { "commands": 18, "agents": 12, "skills": 8, "hooks": 6 },
-        "status": "active",
-        "tier": "standard",
-        "integrates": ["jira-orchestrator", "code-quality-orchestrator", "release-orchestrator"]
-      }
-    },
-
-    "communication": {
-      "notification-hub": {
-        "path": "../plugins/notification-hub/.claude-plugin/plugin.json",
-        "callsign": "Messenger",
-        "version": "1.0.0",
-        "description": "Unified notifications - Slack, Teams, Discord, Email, Webhooks",
-        "provides": { "commands": 14, "agents": 9, "skills": 5, "hooks": 5 },
-        "status": "active",
-        "tier": "standard",
-        "integrates": ["jira-orchestrator", "release-orchestrator", "testing-orchestrator"]
-      },
-      "documentation-orchestrator": {
-        "path": "../plugins/documentation-orchestrator/.claude-plugin/plugin.json",
-        "callsign": "Scribe",
-        "version": "1.0.0",
-        "description": "Documentation generation - API docs, README, architecture, diagrams",
-        "provides": { "commands": 16, "agents": 11, "skills": 7, "hooks": 4 },
-        "status": "active",
-        "tier": "standard",
-        "integrates": ["jira-orchestrator", "code-quality-orchestrator", "release-orchestrator"]
-      }
-    },
-
-    "analytics": {
-      "analytics-dashboard": {
-        "path": "../plugins/analytics-dashboard/.claude-plugin/plugin.json",
-        "callsign": "Oracle",
-        "version": "1.0.0",
-        "description": "Velocity, burndown, DORA metrics, forecasting, cost analysis",
-        "provides": { "commands": 16, "agents": 10, "skills": 6, "hooks": 3 },
-        "status": "active",
-        "tier": "standard",
-        "integrates": ["jira-orchestrator", "git-workflow-orchestrator", "testing-orchestrator", "release-orchestrator"]
-      }
-    },
-
-    "data": {
-      "customer-data-migration-orchestrator": {
-        "path": "../plugins/customer-data-migration-orchestrator/.claude-plugin/plugin.json",
-        "callsign": "Importer",
-        "version": "1.0.0",
-        "description": "Customer onboarding and legacy data migration - CSV, Excel, databases, APIs with AI-assisted mapping",
-        "provides": { "commands": 15, "agents": 13, "skills": 8, "hooks": 5, "workflows": 3 },
-        "status": "active",
-        "tier": "standard",
-        "innovative": true,
-        "dataSources": ["csv", "excel", "json", "xml", "postgresql", "mysql", "sqlserver", "oracle", "mongodb", "salesforce", "hubspot", "rest-api"],
-        "features": [
-          "AI-assisted field mapping with confidence scores",
-          "Auto-detect schema, encoding, and data patterns",
-          "Comprehensive validation with fix suggestions",
-          "Batch processing with checkpointing",
-          "Incremental sync for ongoing updates",
-          "Full audit trail for compliance"
-        ],
-        "integrates": ["jira-orchestrator", "notification-hub", "audit-logger"]
-      }
-    },
-
     "frontend": {
       "frontend-design-system": {
         "path": "../plugins/frontend-design-system/.claude-plugin/plugin.json",
         "callsign": "Stylist",
         "version": "1.0.0",
-        "description": "263+ design styles with multi-tenant Keycloak theming for AI-powered frontend development",
-        "provides": { "commands": 8, "agents": 6, "skills": 4, "hooks": 4 },
         "status": "active",
-        "tier": "standard",
-        "features": [
-          "263+ curated design styles",
-          "Multi-tenant Keycloak theming",
-          "CSS/Tailwind generation",
-          "Accessibility validation",
-          "Design token management"
-        ],
-        "integrates": ["jira-orchestrator", "documentation-orchestrator"]
+        "tier": "standard"
+      },
+      "react-animation-studio": {
+        "path": "../plugins/react-animation-studio/.claude-plugin/plugin.json",
+        "version": "1.0.0",
+        "status": "active",
+        "tier": "standard"
       }
     },
-
     "infrastructure": {
       "aws-eks-helm-keycloak": {
         "path": "../plugins/aws-eks-helm-keycloak/.claude-plugin/plugin.json",
         "callsign": "Conduit",
         "version": "1.0.0",
-        "description": "AWS EKS deployments with Helm, Keycloak authentication, and Harness CI/CD",
-        "provides": { "commands": 7, "agents": 4, "skills": 6, "hooks": 2 },
         "status": "active",
-        "tier": "standard",
-        "commandPrefix": "eks",
-        "features": [
-          "AWS EKS cluster management",
-          "Helm chart deployments",
-          "Keycloak OIDC authentication",
-          "Harness CI/CD integration",
-          "Local development with Kind",
-          "Interactive setup wizard"
-        ],
-        "integrates": ["jira-orchestrator", "release-orchestrator"]
+        "tier": "standard"
+      },
+      "fullstack-iac": {
+        "path": "../plugins/fullstack-iac/.claude-plugin/plugin.json",
+        "version": "1.0.0",
+        "status": "active",
+        "tier": "standard"
+      },
+      "deployment-pipeline": {
+        "path": "../plugins/deployment-pipeline/.claude-plugin/plugin.json",
+        "version": "1.0.0",
+        "status": "active",
+        "tier": "standard"
       },
       "infrastructure-template-generator": {
         "path": "./.claude/tools/plugin-cli/infrastructure-template-generator/.claude-plugin/plugin.json",
         "callsign": "Forgemaster",
         "version": "2.0.0",
-        "description": "Complete infrastructure template automation - Cookiecutter, Terraform, Harness pipelines, GitOps, and multi-agent council reviews",
-        "provides": { "commands": 16, "agents": 10, "skills": 4, "hooks": 1 },
         "status": "active",
-        "tier": "standard",
-        "commandPrefix": "itg",
-        "features": [
-          "Source code pattern extraction and analysis",
-          "Cookiecutter/Copier template generation",
-          "Terraform module building with IaCM",
-          "Harness CI/CD pipeline generation",
-          "Harness Template Library integration",
-          "Repository management and PR automation",
-          "Direct Harness API publishing",
-          "Template registry with SemVer versioning",
-          "ArgoCD ApplicationSet generation",
-          "Progressive delivery (canary, blue-green)",
-          "Multi-agent council review system",
-          "Jira smart commit integration"
-        ],
-        "integrates": ["jira-orchestrator", "aws-eks-helm-keycloak", "claude-code-templating", "agent-review-council"],
-        "businessValue": "Reduces template-to-production time from 4-6 hours to <30 minutes"
+        "tier": "standard"
       }
     },
-
     "templating": {
       "claude-code-templating": {
         "path": "../plugins/claude-code-templating-plugin/.claude-plugin/plugin.json",
         "callsign": "Architect",
         "version": "1.0.0",
-        "description": "Universal templating and Harness expert plugin - multi-format templates, CI/CD pipeline generation, MCP integration",
-        "provides": { "commands": 4, "agents": 5, "skills": 3, "templates": "dynamic" },
         "status": "active",
-        "tier": "standard",
-        "commandPrefix": "template",
-        "features": [
-          "Multi-format templates (Handlebars, Cookiecutter, Copier, Maven, Harness)",
-          "Harness CI/CD pipeline generation",
-          "MCP integration (harness, scaffold, github)",
-          "Pattern matching and intent detection",
-          "Project scaffolding with Harness integration",
-          "58 tests (39 unit + 19 integration)"
-        ],
-        "integrates": ["jira-orchestrator", "aws-eks-helm-keycloak", "iac-golden-architect"]
+        "tier": "standard"
       }
     },
-
     "ai-advanced": {
-      "cognitive-code-reasoner": {
-        "path": "../plugins/cognitive-code-reasoner/.claude-plugin/plugin.json",
-        "callsign": "Didact",
-        "version": "1.0.0",
-        "description": "Ultra-deep debugging using extended thinking, hypothesis-driven analysis, causal chains",
-        "provides": { "commands": 12, "agents": 15, "skills": 8, "hooks": 4, "reasoningPatterns": 12 },
-        "status": "active",
-        "tier": "advanced",
-        "innovative": true,
-        "thinkingModes": ["ultrathink", "deepthink", "quickthink"],
-        "integrates": ["jira-orchestrator", "testing-orchestrator", "code-quality-orchestrator"]
-      },
-      "autonomous-sprint-ai": {
-        "path": "../plugins/autonomous-sprint-ai/.claude-plugin/plugin.json",
-        "callsign": "Strategos",
-        "version": "1.0.0",
-        "description": "Self-governing sprint management with autonomous planning, workload balancing, blocker prediction",
-        "provides": { "commands": 14, "agents": 12, "skills": 7, "hooks": 6, "decisionEngines": 5 },
-        "status": "active",
-        "tier": "advanced",
-        "innovative": true,
-        "autonomyLevels": ["advisor", "assistant", "partner", "autopilot"],
-        "integrates": ["jira-orchestrator", "notification-hub", "analytics-dashboard"]
-      },
-      "code-knowledge-graph": {
-        "path": "../plugins/code-knowledge-graph/.claude-plugin/plugin.json",
-        "callsign": "Librarian",
-        "version": "1.0.0",
-        "description": "Semantic knowledge graph for codebase understanding, impact analysis, architecture queries",
-        "provides": { "commands": 15, "agents": 11, "skills": 7, "hooks": 4, "graphTypes": 8 },
-        "status": "active",
-        "tier": "advanced",
-        "innovative": true,
-        "integrates": ["jira-orchestrator", "documentation-orchestrator", "testing-orchestrator", "cognitive-code-reasoner"]
-      },
-      "multi-model-orchestration": {
-        "path": "../plugins/multi-model-orchestration/.claude-plugin/plugin.json",
-        "callsign": "Conductor",
-        "version": "1.0.0",
-        "description": "Dynamic LLM routing to optimal model (Claude/GPT/Gemini/Llama) based on task, cost, latency",
-        "provides": { "commands": 14, "agents": 10, "skills": 6, "hooks": 4, "routingStrategies": 8 },
-        "status": "active",
-        "tier": "advanced",
-        "innovative": true,
-        "supportedModels": ["claude", "gpt", "gemini", "llama", "mistral"],
-        "integrates": ["cognitive-code-reasoner", "testing-orchestrator", "documentation-orchestrator"]
-      },
-      "predictive-failure-engine": {
-        "path": "../plugins/predictive-failure-engine/.claude-plugin/plugin.json",
-        "callsign": "Cassandra",
-        "version": "1.0.0",
-        "description": "ML-based bug prediction before they happen - pattern recognition, hotspot detection",
-        "provides": { "commands": 14, "agents": 11, "skills": 7, "hooks": 5, "predictionModels": 8 },
-        "status": "active",
-        "tier": "advanced",
-        "innovative": true,
-        "predictions": ["change-risk", "hotspots", "security", "performance", "concurrency"],
-        "integrates": ["jira-orchestrator", "code-knowledge-graph", "testing-orchestrator", "cognitive-code-reasoner"]
-      },
       "agent-review-council": {
         "path": "../plugins/agent-review-council/.claude-plugin/plugin.json",
         "callsign": "Tribunal",
         "version": "1.0.0",
-        "description": "Revolutionary multi-agent deliberation with 20 protocols, 21 agents, and production automation",
-        "provides": { "commands": 12, "agents": 21, "skills": 6, "hooks": 4, "deliberationProtocols": 20 },
         "status": "active",
-        "tier": "advanced",
-        "innovative": true,
-        "protocols": [
-          "adversarial", "socratic", "dialectic", "jury", "delphi", "devils-advocate",
-          "round-robin", "autogen-team", "panel-discussion", "fishbowl", "think-tank",
-          "red-blue-team", "rapid-fire", "world-cafe", "six-thinking-hats",
-          "appreciative-inquiry", "consensus-circle", "lightning-decision-jam",
-          "dual-track-agile", "expert-panel"
-        ],
-        "features": [
-          "Red/Blue Team security audits",
-          "AutoGen hierarchical coordination",
-          "Six Thinking Hats balanced review",
-          "Appreciative Inquiry positive focus",
-          "Lightning Decision Jam rapid consensus",
-          "Production automation hooks",
-          "Slack/GitHub/Jira integration"
-        ],
-        "integrates": ["jira-orchestrator", "code-quality-orchestrator", "git-workflow-orchestrator", "cognitive-code-reasoner"]
+        "tier": "advanced"
+      },
+      "langgraph-architect": {
+        "path": "../.claude/plugins/langgraph-architect/.claude-plugin/plugin.json",
+        "version": "1.0.0",
+        "status": "active",
+        "tier": "standard"
+      }
+    },
+    "domain": {
+      "home-assistant-architect": {
+        "path": "../plugins/home-assistant-architect/.claude-plugin/plugin.json",
+        "version": "1.0.0",
+        "status": "active",
+        "tier": "standard"
+      },
+      "lobbi-platform-manager": {
+        "path": "../plugins/lobbi-platform-manager/.claude-plugin/plugin.json",
+        "version": "1.0.0",
+        "status": "active",
+        "tier": "standard"
+      },
+      "ahling-command-center": {
+        "path": "../plugins/ahling-command-center/.claude-plugin/plugin.json",
+        "version": "1.0.0",
+        "status": "active",
+        "tier": "standard"
+      },
+      "exec-automator": {
+        "path": "../plugins/exec-automator/.claude-plugin/plugin.json",
+        "version": "1.0.0",
+        "status": "active",
+        "tier": "standard"
+      },
+      "fastapi-backend": {
+        "path": "../plugins/fastapi-backend/.claude-plugin/plugin.json",
+        "version": "1.0.0",
+        "status": "active",
+        "tier": "standard"
+      },
+      "team-accelerator": {
+        "path": "../plugins/team-accelerator/.claude-plugin/plugin.json",
+        "version": "1.0.0",
+        "status": "active",
+        "tier": "standard"
       }
     }
   },
-
   "callsignRegistry": {
     "Arbiter": "jira-orchestrator",
     "Conduit": "aws-eks-helm-keycloak",
     "Stylist": "frontend-design-system",
-    "Curator": "code-quality-orchestrator",
-    "Sentinel": "git-workflow-orchestrator",
-    "Herald": "release-orchestrator",
-    "Validator": "testing-orchestrator",
-    "Messenger": "notification-hub",
-    "Scribe": "documentation-orchestrator",
-    "Oracle": "analytics-dashboard",
-    "Importer": "customer-data-migration-orchestrator",
-    "Didact": "cognitive-code-reasoner",
-    "Strategos": "autonomous-sprint-ai",
-    "Librarian": "code-knowledge-graph",
-    "Conductor": "multi-model-orchestration",
-    "Cassandra": "predictive-failure-engine",
     "Tribunal": "agent-review-council",
     "Architect": "claude-code-templating",
     "Forgemaster": "infrastructure-template-generator"
   },
-
   "stats": {
-    "totalInstalled": 13,
-    "totalAvailable": 19,
-    "lastUpdated": "2026-02-22T00:00:00.000Z",
-    "totalPlugins": 19,
+    "totalInstalled": 7,
+    "totalPlugins": 20,
+    "lastUpdated": "2026-02-23T00:00:00.000Z",
     "byTier": {
       "enterprise": 1,
-      "standard": 12,
-      "advanced": 6
+      "standard": 17,
+      "advanced": 2
     },
-    "totalCommands": 262,
-    "totalAgents": 233,
-    "totalTeams": 16,
-    "totalSkills": 121,
-    "totalHooks": 69,
-    "totalWorkflows": 3,
-    "innovativePlugins": 7,
-    "deliberationProtocols": 20
+    "byLocation": {
+      "plugins/": 14,
+      ".claude/plugins/": 6
+    }
   }
 }
