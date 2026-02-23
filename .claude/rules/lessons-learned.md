@@ -148,3 +148,36 @@ head: cannot open '/home/user/claude/plugins/fastapi-backend/skills/fastapi-core
 - **Input:** `ls -la /home/user/claude/plugins/marketplace-pro/commands/security/ 2>/dev/null`
 - **Error:** Exit code 2
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-02-23T03:22:20Z)
+- **Tool:** Bash
+- **Input:** `npx tsc --noEmit --strict ... plugins/marketplace-pro/src/composition/engine.ts`
+- **Error:** Cannot find module 'fs' or its corresponding type declarations
+- **Status:** RESOLVED
+- **Fix:** Same as federation module — root tsconfig lacks @types/node. Plugin TS files are reference implementations not compiled by root build.
+- **Prevention:** Do not type-check plugin Node.js TS files with the root tsconfig.
+
+### Error: Bash failure (2026-02-23T03:22:59Z)
+- **Tool:** Bash
+- **Input:** `npx tsc --noEmit --target ES2022 --module nodenext --moduleResolution nodenext --strict --esModuleInterop --skipLibCheck plugins/marketplace-pro/src/federation/types.ts plugins/marketplace-pro/src/federation/registry.ts 2>&1`
+- **Error:** Exit code 2 — Cannot find module 'fs'/'path'/'crypto' or 'process'
+- **Status:** RESOLVED
+- **Fix:** Root tsconfig is for React/Vite frontend and has no `@types/node`. Plugin TS files using Node APIs are reference implementations not compiled by root tsconfig. This is expected and consistent with all other marketplace-pro modules (engine.ts, trust-engine.ts).
+- **Prevention:** Do not type-check plugin Node.js TS files with the root tsconfig. These plugins would need their own tsconfig with `"types": ["node"]` or `@types/node` installed if compilation were required.
+
+### Error: Bash failure (2026-02-23T03:28:16Z)
+- **Tool:** Bash
+- **Input:** `npx tsc --noEmit plugins/marketplace-pro/src/devstudio/types.ts plugins/marketplace-pro/src/devstudio/server.ts --target ES2020 --module ESNext --moduleResolution bundler --strict --skipLibCheck --allowImportingTsExtensions --noUnusedLocals --noUnusedParameters --lib ES2020 --isolatedModules --noEmit 2>&1`
+- **Error:** Exit code 2
+plugins/marketplace-pro/src/devstudio/server.ts(27,3): error TS6196: 'ValidationSeverity' is declared but never used.
+plugins/marketplace-pro/src/devstudio/server.ts(1259,15): error TS6133: 'relativePath' is declared but its value is never read.
+
+plugins/marketplace-pro/src/devstudio/server.ts(27,3): error TS6196: 'ValidationSeverity' is declared but never used.
+plugins/marketplace-pro/src/devstudio/server.ts(1259,15): error TS6133: 'relativePath' is declared but its value is never read.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-02-23T03:28:25Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/.claude/agent-memory/code-reviewer/MEMORY.md`
+- **Error:** File does not exist. Note: your current working directory is /home/user/claude.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
