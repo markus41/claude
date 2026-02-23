@@ -115,3 +115,36 @@ Traceback (most recent call last):
   File "<string>", line 3, in <module>
 FileNotFoundError: [Errno 2] No such file or directory: '.claude/registry/index.json'
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-02-23T03:10:48Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/plugins/ahling-command-center/agents/acc-agent.md`
+- **Error:** File does not exist. Note: your current working directory is /home/user/claude.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-02-23T03:11:02Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/plugins/ahling-command-center/agents/acc-agent.md`
+- **Error:** File does not exist. Note: your current working directory is /home/user/claude.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-02-23T03:12:21Z)
+- **Tool:** Bash
+- **Input:** `head -100 /home/user/claude/plugins/fastapi-backend/skills/fastapi-core/SKILL.md`
+- **Error:** Exit code 1
+head: cannot open '/home/user/claude/plugins/fastapi-backend/skills/fastapi-core/SKILL.md' for reading: No such file or directory
+
+head: cannot open '/home/user/claude/plugins/fastapi-backend/skills/fastapi-core/SKILL.md' for reading: No such file or directory
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-02-23T03:12:55Z)
+- **Tool:** Read
+- **Input:** `/tmp/claude-0/-home-user-claude/tasks/a063b03.output`
+- **Error:** File content (89831 tokens) exceeds maximum allowed tokens (25000). Please use offset and limit parameters to read specific portions of the file, or use the GrepTool to search for specific content.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-02-23T03:16:29Z)
+- **Tool:** Bash
+- **Input:** `ls -la /home/user/claude/plugins/marketplace-pro/commands/security/ 2>/dev/null`
+- **Error:** Exit code 2
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
