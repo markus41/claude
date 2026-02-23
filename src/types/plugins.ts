@@ -130,6 +130,28 @@ export interface PluginSearchResult {
   hasMore: boolean;
 }
 
+export type PluginMetricsPeriod = 'day' | 'week' | 'month';
+
+export interface PluginCategory {
+  name: string;
+  count: number;
+}
+
+export interface PluginReviewSubmission {
+  rating: number;
+  title?: string;
+  content?: string;
+}
+
+export interface PluginInstallationRequest {
+  configuration?: Record<string, unknown>;
+  grant_permissions?: string[];
+}
+
+export interface PluginUpdateConfigurationRequest {
+  configuration: Record<string, unknown>;
+}
+
 // Plugin type metadata
 export const PLUGIN_TYPE_INFO: Record<PluginType, {
   label: string;
