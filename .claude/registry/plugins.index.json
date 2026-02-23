@@ -46,13 +46,6 @@
       "installedAt": "2026-01-19T00:00:00.000Z",
       "dependencies": {}
     },
-    "agent-review-council": {
-      "version": "1.0.0",
-      "path": "../plugins/agent-review-council",
-      "source": "local",
-      "installedAt": "2026-02-22T00:00:00.000Z",
-      "dependencies": {}
-    }
   },
   "registry": {
     "jira-orchestrator": {
@@ -129,20 +122,6 @@
       ],
       "categories": [
         "agents"
-      ]
-    },
-    "agent-review-council": {
-      "name": "agent-review-council",
-      "version": "1.0.0",
-      "description": "Multi-agent deliberation with review protocols",
-      "keywords": [
-        "agents",
-        "review",
-        "deliberation",
-        "council"
-      ],
-      "categories": [
-        "ai-advanced"
       ]
     },
     "infrastructure-template-generator": {
@@ -223,13 +202,6 @@
       }
     },
     "ai-advanced": {
-      "agent-review-council": {
-        "path": "../plugins/agent-review-council/.claude-plugin/plugin.json",
-        "callsign": "Tribunal",
-        "version": "1.0.0",
-        "status": "active",
-        "tier": "advanced"
-      },
       "langgraph-architect": {
         "path": "../.claude/plugins/langgraph-architect/.claude-plugin/plugin.json",
         "version": "1.0.0",
@@ -280,18 +252,18 @@
     "Arbiter": "jira-orchestrator",
     "Conduit": "aws-eks-helm-keycloak",
     "Stylist": "frontend-design-system",
-    "Tribunal": "agent-review-council",
+
     "Architect": "claude-code-templating",
     "Forgemaster": "infrastructure-template-generator"
   },
   "stats": {
-    "totalInstalled": 7,
-    "totalPlugins": 20,
+    "totalInstalled": 6,
+    "totalPlugins": 19,
     "lastUpdated": "2026-02-23T00:00:00.000Z",
     "byTier": {
       "enterprise": 1,
       "standard": 17,
-      "advanced": 2
+      "advanced": 1
     },
     "byLocation": {
       "plugins/": 14,
