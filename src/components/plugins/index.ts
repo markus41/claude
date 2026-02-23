@@ -7,6 +7,7 @@
 export { PluginCard } from './PluginCard';
 export { PluginSearch } from './PluginSearch';
 export { PluginDetails } from './PluginDetails';
+export { PluginConfigurationModal } from './PluginConfigurationModal';
 export { PluginMarketplace } from './PluginMarketplace';
 export { InstalledPlugins } from './InstalledPlugins';
 

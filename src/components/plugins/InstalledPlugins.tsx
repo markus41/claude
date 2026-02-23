@@ -5,15 +5,15 @@
  */
 
 import React, { useState, useCallback } from 'react';
-import { PluginCard } from './PluginCard';
 import { PluginDetails } from './PluginDetails';
+import { PluginConfigurationModal } from './PluginConfigurationModal';
 import {
   useInstalledPlugins,
   usePluginInstallation,
   usePluginReviews,
   usePluginMetrics,
 } from '../../hooks/usePlugins';
-import type { Plugin, PluginInstallation, PluginType } from '../../types/plugins';
+import type { PluginInstallation, PluginType } from '../../types/plugins';
 import { PLUGIN_TYPE_INFO } from '../../types/plugins';
 
 interface InstalledPluginsProps {
@@ -25,6 +25,7 @@ export function InstalledPlugins({
 }: InstalledPluginsProps) {
   const [selectedInstallation, setSelectedInstallation] = useState<PluginInstallation | null>(null);
   const [showDetails, setShowDetails] = useState(false);
+  const [showConfigModal, setShowConfigModal] = useState(false);
   const [activeType, setActiveType] = useState<PluginType | 'all'>('all');
 
   // Installed plugins
@@ -77,6 +78,24 @@ export function InstalledPlugins({
     setShowDetails(false);
     setSelectedInstallation(null);
   }, []);
+
+  const handleOpenConfigure = useCallback(() => {
+    setShowConfigModal(true);
+  }, []);
+
+  const handleCloseConfigure = useCallback(() => {
+    setShowConfigModal(false);
+  }, []);
+
+  const handleSaveConfiguration = useCallback(async (configuration: Record<string, unknown>) => {
+    if (!selectedInstallation) return;
+
+    await updateConfig(configuration);
+    setSelectedInstallation((prev) => (
+      prev ? { ...prev, configuration } : prev
+    ));
+    await refresh();
+  }, [refresh, selectedInstallation, updateConfig]);
 
   const groupedInstallations = installations.reduce((groups, installation) => {
     const type = installation.plugin.type;
@@ -250,11 +269,20 @@ export function InstalledPlugins({
             reviews={reviews}
             metrics={metrics}
             onUninstall={handleUninstall}
-            onConfigure={() => {/* TODO: Open configuration */}}
+            onConfigure={handleOpenConfigure}
             onClose={handleCloseDetails}
             loading={actionLoading}
           />
         </div>
+      )}
+
+      {showConfigModal && selectedInstallation && (
+        <PluginConfigurationModal
+          plugin={selectedInstallation.plugin}
+          installation={selectedInstallation}
+          onSave={handleSaveConfiguration}
+          onClose={handleCloseConfigure}
+        />
       )}
     </div>
   );
