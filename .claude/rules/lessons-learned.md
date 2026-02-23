@@ -49,3 +49,4 @@ Claude reads this at the start of each session to avoid repeating mistakes.
 - **Status:** RESOLVED
 - **Fix:** Complex heredoc scripts with pipes caused grep to treat shell arguments as file paths
 - **Prevention:** Use simple sequential `cmd | grep` pipes, not embedded in heredoc blocks
+
