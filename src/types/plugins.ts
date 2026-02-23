@@ -58,6 +58,12 @@ export interface Plugin {
   documentationUrl?: string;
   iconUrl?: string;
 
+  // Configuration schema
+  configSchema?: Record<string, unknown>;
+  configurationSchema?: Record<string, unknown>;
+  config_schema?: Record<string, unknown>;
+  configuration_schema?: Record<string, unknown>;
+
   // Permissions
   permissions: PluginPermission[];
   resourceLimits?: ResourceLimits;
