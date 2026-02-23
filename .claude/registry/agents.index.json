@@ -3,185 +3,422 @@
   "version": "4.1.0",
   "description": "Minimal agent index - paths, models, and routing hints. Use keywords.json for search.",
   "note": "Full metadata in agents.index.json (loaded on-demand)",
-
   "agents": {
     "core": {
-      "coder": {
-        "path": "agents/core/coder.md",
-        "model": "sonnet",
-        "domains": ["backend", "frontend", "fullstack"],
-        "routing": { "priority": "medium", "complexityRange": [0, 100] }
-      },
       "researcher": {
-        "path": "agents/core/researcher.md",
+        "path": "agents/researcher.md",
         "model": "sonnet",
-        "domains": ["research", "analysis", "documentation"],
-        "routing": { "priority": "low", "complexityRange": [0, 100] }
-      },
-      "tester": {
-        "path": "agents/core/tester.md",
-        "model": "sonnet",
-        "domains": ["testing", "qa", "automation"],
-        "routing": { "priority": "medium", "complexityRange": [0, 100] }
-      },
-      "reviewer": {
-        "path": "agents/core/reviewer.md",
-        "model": "sonnet",
-        "domains": ["backend", "api", "security"],
+        "domains": [
+          "research",
+          "analysis",
+          "documentation"
+        ],
         "routing": {
-          "priority": "high",
-          "complexityRange": [30, 80],
-          "avoid": ["frontend", "ui"],
-          "prefer": ["backend", "api", "database", "security"]
+          "priority": "low",
+          "complexityRange": [
+            0,
+            100
+          ]
         }
       },
-      "planner": {
-        "path": "agents/core/planner.md",
+      "code-reviewer": {
+        "path": "agents/code-reviewer.md",
         "model": "sonnet",
-        "domains": ["architecture", "planning", "design"],
-        "routing": { "priority": "high", "complexityRange": [0, 100] }
+        "domains": [
+          "backend",
+          "api",
+          "security",
+          "code-review"
+        ],
+        "routing": {
+          "priority": "high",
+          "complexityRange": [
+            30,
+            80
+          ]
+        }
       },
       "debugger": {
-        "path": "agents/core/debugger.md",
+        "path": "agents/debugger.md",
         "model": "sonnet",
-        "domains": ["debugging", "troubleshooting", "performance"],
-        "routing": { "priority": "medium", "complexityRange": [0, 100] }
+        "domains": [
+          "debugging",
+          "troubleshooting",
+          "performance"
+        ],
+        "routing": {
+          "priority": "medium",
+          "complexityRange": [
+            0,
+            100
+          ]
+        }
+      },
+      "test-writer": {
+        "path": "agents/test-writer.md",
+        "model": "sonnet",
+        "domains": [
+          "testing",
+          "qa",
+          "automation"
+        ],
+        "routing": {
+          "priority": "medium",
+          "complexityRange": [
+            0,
+            100
+          ]
+        }
+      },
+      "doc-writer": {
+        "path": "agents/doc-writer.md",
+        "model": "sonnet",
+        "domains": [
+          "documentation",
+          "readme",
+          "comments"
+        ],
+        "routing": {
+          "priority": "low",
+          "complexityRange": [
+            0,
+            60
+          ]
+        }
+      },
+      "security-reviewer": {
+        "path": "agents/security-reviewer.md",
+        "model": "sonnet",
+        "domains": [
+          "security",
+          "vulnerabilities",
+          "audit"
+        ],
+        "routing": {
+          "priority": "high",
+          "complexityRange": [
+            30,
+            100
+          ]
+        }
       }
     },
     "devops": {
       "infrastructure-specialist": {
         "path": "agents/devops/infrastructure-specialist.md",
         "model": "opus",
-        "domains": ["infrastructure", "distributed-systems", "multi-service", "kubernetes", "redis", "terraform", "cloud"],
+        "domains": [
+          "infrastructure",
+          "distributed-systems",
+          "multi-service",
+          "kubernetes",
+          "redis",
+          "terraform",
+          "cloud"
+        ],
         "routing": {
           "priority": "critical",
-          "complexityRange": [60, 100],
-          "prefer": ["infrastructure", "kubernetes", "redis", "terraform", "helm", "multi-service", "distributed", "clustering", "pub-sub", "microservices"],
-          "avoid": []
+          "complexityRange": [
+            60,
+            100
+          ],
+          "prefer": [
+            "infrastructure",
+            "kubernetes",
+            "redis",
+            "terraform",
+            "helm",
+            "multi-service",
+            "distributed"
+          ]
         }
       },
-      "cicd-engineer": {
-        "path": "agents/devops/cicd-engineer.md",
-        "model": "sonnet",
-        "domains": ["devops", "ci-cd", "automation"],
-        "routing": { "priority": "medium", "complexityRange": [30, 100] }
+      "docker-ops": {
+        "path": "agents/docker-ops.md",
+        "model": "haiku",
+        "domains": [
+          "docker",
+          "containers",
+          "registry"
+        ],
+        "routing": {
+          "priority": "medium",
+          "complexityRange": [
+            20,
+            80
+          ]
+        }
       },
-      "k8s-deployer": {
-        "path": "agents/devops/k8s-deployer.md",
+      "k8s-image-auditor": {
+        "path": "agents/k8s-image-auditor.md",
         "model": "sonnet",
-        "domains": ["kubernetes", "deployment", "infrastructure"],
-        "routing": { "priority": "high", "complexityRange": [40, 100] }
+        "domains": [
+          "kubernetes",
+          "deployment",
+          "images",
+          "audit"
+        ],
+        "routing": {
+          "priority": "high",
+          "complexityRange": [
+            40,
+            100
+          ]
+        }
       },
-      "docker-builder": {
-        "path": "agents/devops/docker-builder.md",
+      "ansible-specialist": {
+        "path": "agents/devops/ansible-specialist.md",
         "model": "sonnet",
-        "domains": ["docker", "containers", "devops"],
-        "routing": { "priority": "medium", "complexityRange": [20, 80] }
-      },
-      "sre-engineer": {
-        "path": "agents/devops/sre-engineer.md",
-        "model": "sonnet",
-        "domains": ["sre", "reliability", "monitoring", "infrastructure"],
-        "routing": { "priority": "high", "complexityRange": [50, 100] }
-      },
-      "gitops-specialist": {
-        "path": "agents/devops/gitops-specialist.md",
-        "model": "sonnet",
-        "domains": ["gitops", "automation", "deployment"],
-        "routing": { "priority": "medium", "complexityRange": [30, 90] }
+        "domains": [
+          "ansible",
+          "automation",
+          "configuration"
+        ],
+        "routing": {
+          "priority": "medium",
+          "complexityRange": [
+            30,
+            90
+          ]
+        }
       }
     },
     "keycloak": {
-      "keycloak-realm-admin": { "path": "agents/keycloak/keycloak-realm-admin.md", "model": "sonnet" },
-      "keycloak-theme-developer": { "path": "agents/keycloak/keycloak-theme-developer.md", "model": "sonnet" },
-      "keycloak-identity-specialist": { "path": "agents/keycloak/keycloak-identity-specialist.md", "model": "sonnet" },
-      "keycloak-auth-flow-designer": { "path": "agents/keycloak/keycloak-auth-flow-designer.md", "model": "sonnet" },
-      "keycloak-security-auditor": { "path": "agents/keycloak/keycloak-security-auditor.md", "model": "sonnet" }
+      "keycloak-realm-admin": {
+        "path": "agents/keycloak/keycloak-realm-admin.md",
+        "model": "sonnet"
+      },
+      "keycloak-theme-developer": {
+        "path": "agents/keycloak/keycloak-theme-developer.md",
+        "model": "sonnet"
+      },
+      "keycloak-identity-specialist": {
+        "path": "agents/keycloak/keycloak-identity-specialist.md",
+        "model": "sonnet"
+      },
+      "keycloak-auth-flow-designer": {
+        "path": "agents/keycloak/keycloak-auth-flow-designer.md",
+        "model": "sonnet"
+      },
+      "keycloak-security-auditor": {
+        "path": "agents/keycloak/keycloak-security-auditor.md",
+        "model": "sonnet"
+      }
     },
     "mongodb-atlas": {
-      "mongodb-atlas-admin": { "path": "agents/mongodb-atlas/mongodb-atlas-admin.md", "model": "sonnet" },
-      "mongodb-schema-designer": { "path": "agents/mongodb-atlas/mongodb-schema-designer.md", "model": "sonnet" },
-      "mongodb-query-optimizer": { "path": "agents/mongodb-atlas/mongodb-query-optimizer.md", "model": "sonnet" },
-      "mongodb-aggregation-specialist": { "path": "agents/mongodb-atlas/mongodb-aggregation-specialist.md", "model": "sonnet" }
+      "mongodb-atlas-admin": {
+        "path": "agents/mongodb-atlas/mongodb-atlas-admin.md",
+        "model": "sonnet"
+      },
+      "mongodb-schema-designer": {
+        "path": "agents/mongodb-atlas/mongodb-schema-designer.md",
+        "model": "sonnet"
+      },
+      "mongodb-query-optimizer": {
+        "path": "agents/mongodb-atlas/mongodb-query-optimizer.md",
+        "model": "sonnet"
+      },
+      "mongodb-aggregation-specialist": {
+        "path": "agents/mongodb-atlas/mongodb-aggregation-specialist.md",
+        "model": "sonnet"
+      }
     },
     "kubernetes": {
-      "k8s-architect": { "path": "agents/kubernetes/k8s-architect.md", "model": "sonnet" },
-      "k8s-debugger": { "path": "agents/kubernetes/k8s-debugger.md", "model": "sonnet" },
-      "k8s-security-specialist": { "path": "agents/kubernetes/k8s-security-specialist.md", "model": "sonnet" },
-      "k8s-resource-optimizer": { "path": "agents/kubernetes/k8s-resource-optimizer.md", "model": "sonnet" }
+      "k8s-architect": {
+        "path": "agents/kubernetes/k8s-architect.md",
+        "model": "sonnet"
+      },
+      "k8s-debugger": {
+        "path": "agents/kubernetes/k8s-debugger.md",
+        "model": "sonnet"
+      },
+      "k8s-security-specialist": {
+        "path": "agents/kubernetes/k8s-security-specialist.md",
+        "model": "sonnet"
+      },
+      "k8s-resource-optimizer": {
+        "path": "agents/kubernetes/k8s-resource-optimizer.md",
+        "model": "sonnet"
+      }
     },
     "helm": {
-      "helm-chart-developer": { "path": "agents/helm/helm-chart-developer.md", "model": "sonnet" },
-      "helm-values-manager": { "path": "agents/helm/helm-values-manager.md", "model": "sonnet" },
-      "helm-release-manager": { "path": "agents/helm/helm-release-manager.md", "model": "sonnet" }
+      "helm-chart-developer": {
+        "path": "agents/helm/helm-chart-developer.md",
+        "model": "sonnet"
+      },
+      "helm-values-manager": {
+        "path": "agents/helm/helm-values-manager.md",
+        "model": "sonnet"
+      },
+      "helm-release-manager": {
+        "path": "agents/helm/helm-release-manager.md",
+        "model": "sonnet"
+      }
     },
     "multi-tenant": {
-      "multi-tenant-architect": { "path": "agents/multi-tenant/multi-tenant-architect.md", "model": "sonnet" },
-      "tenant-provisioning-specialist": { "path": "agents/multi-tenant/tenant-provisioning-specialist.md", "model": "sonnet" }
+      "multi-tenant-architect": {
+        "path": "agents/multi-tenant/multi-tenant-architect.md",
+        "model": "sonnet"
+      },
+      "tenant-provisioning-specialist": {
+        "path": "agents/multi-tenant/tenant-provisioning-specialist.md",
+        "model": "sonnet"
+      }
     },
     "stripe-payment": {
-      "stripe-integration-specialist": { "path": "agents/stripe-payment/stripe-integration-specialist.md", "model": "sonnet" },
-      "subscription-lifecycle-manager": { "path": "agents/stripe-payment/subscription-lifecycle-manager.md", "model": "sonnet" },
-      "invoice-manager": { "path": "agents/stripe-payment/invoice-manager.md", "model": "sonnet" }
+      "stripe-integration-specialist": {
+        "path": "agents/stripe-payment/stripe-integration-specialist.md",
+        "model": "sonnet"
+      },
+      "subscription-lifecycle-manager": {
+        "path": "agents/stripe-payment/subscription-lifecycle-manager.md",
+        "model": "sonnet"
+      },
+      "invoice-manager": {
+        "path": "agents/stripe-payment/invoice-manager.md",
+        "model": "sonnet"
+      }
     },
     "frontend-theming": {
       "theme-system-architect": {
         "path": "agents/frontend-theming/theme-system-architect.md",
         "model": "sonnet",
-        "domains": ["frontend", "ui", "theming", "architecture"],
+        "domains": [
+          "frontend",
+          "ui",
+          "theming",
+          "architecture"
+        ],
         "routing": {
           "priority": "high",
-          "complexityRange": [40, 100],
-          "prefer": ["frontend", "ui", "react", "css", "theming"],
-          "avoid": ["backend"]
+          "complexityRange": [
+            40,
+            100
+          ],
+          "prefer": [
+            "frontend",
+            "ui",
+            "react",
+            "css",
+            "theming"
+          ],
+          "avoid": [
+            "backend"
+          ]
         }
       },
       "theme-builder": {
         "path": "agents/frontend-theming/theme-builder.md",
         "model": "sonnet",
-        "domains": ["frontend", "ui", "theming", "css"],
+        "domains": [
+          "frontend",
+          "ui",
+          "theming",
+          "css"
+        ],
         "routing": {
           "priority": "high",
-          "complexityRange": [20, 80],
-          "prefer": ["frontend", "ui", "react", "css", "theming"],
-          "avoid": ["backend"]
+          "complexityRange": [
+            20,
+            80
+          ],
+          "prefer": [
+            "frontend",
+            "ui",
+            "react",
+            "css",
+            "theming"
+          ],
+          "avoid": [
+            "backend"
+          ]
         }
       },
       "white-label-specialist": {
         "path": "agents/frontend-theming/white-label-specialist.md",
         "model": "sonnet",
-        "domains": ["frontend", "ui", "theming", "branding"],
+        "domains": [
+          "frontend",
+          "ui",
+          "theming",
+          "branding"
+        ],
         "routing": {
           "priority": "high",
-          "complexityRange": [30, 90],
-          "prefer": ["frontend", "ui", "react", "css", "theming", "branding"],
-          "avoid": ["backend"]
+          "complexityRange": [
+            30,
+            90
+          ],
+          "prefer": [
+            "frontend",
+            "ui",
+            "react",
+            "css",
+            "theming",
+            "branding"
+          ],
+          "avoid": [
+            "backend"
+          ]
         }
       }
     },
     "selenium-testing": {
-      "selenium-test-architect": { "path": "agents/selenium-testing/selenium-test-architect.md", "model": "sonnet" },
-      "auth-flow-tester": { "path": "agents/selenium-testing/auth-flow-tester.md", "model": "sonnet" },
-      "member-journey-tester": { "path": "agents/selenium-testing/member-journey-tester.md", "model": "sonnet" }
+      "selenium-test-architect": {
+        "path": "agents/selenium-testing/selenium-test-architect.md",
+        "model": "sonnet"
+      },
+      "auth-flow-tester": {
+        "path": "agents/selenium-testing/auth-flow-tester.md",
+        "model": "sonnet"
+      },
+      "member-journey-tester": {
+        "path": "agents/selenium-testing/member-journey-tester.md",
+        "model": "sonnet"
+      }
     },
     "membership-domain": {
-      "membership-specialist": { "path": "agents/membership-domain/membership-specialist.md", "model": "sonnet" },
-      "member-engagement-agent": { "path": "agents/membership-domain/member-engagement-agent.md", "model": "sonnet" },
-      "membership-analytics-agent": { "path": "agents/membership-domain/membership-analytics-agent.md", "model": "sonnet" },
-      "directory-manager": { "path": "agents/membership-domain/directory-manager.md", "model": "sonnet" }
+      "membership-specialist": {
+        "path": "agents/membership-domain/membership-specialist.md",
+        "model": "sonnet"
+      },
+      "member-engagement-agent": {
+        "path": "agents/membership-domain/member-engagement-agent.md",
+        "model": "sonnet"
+      },
+      "membership-analytics-agent": {
+        "path": "agents/membership-domain/membership-analytics-agent.md",
+        "model": "sonnet"
+      },
+      "directory-manager": {
+        "path": "agents/membership-domain/directory-manager.md",
+        "model": "sonnet"
+      }
     },
     "utility": {
-      "context-cleanup-agent": { "path": "agents/utility/context-cleanup-agent.md", "model": "haiku" },
-      "documentation-sync-agent": { "path": "agents/utility/documentation-sync-agent.md", "model": "haiku" },
-      "registry-manager-agent": { "path": "agents/utility/registry-manager-agent.md", "model": "haiku" }
+      "context-cleanup-agent": {
+        "path": "agents/utility/context-cleanup-agent.md",
+        "model": "haiku"
+      },
+      "plugin-manager": {
+        "path": "agents/utility/plugin-manager.md",
+        "model": "haiku"
+      },
+      "regex-expert": {
+        "path": "agents/utility/regex-expert.md",
+        "model": "haiku"
+      },
+      "registry-manager-agent": {
+        "path": "agents/utility/registry-manager-agent.md",
+        "model": "haiku"
+      }
     }
   },
-
   "counts": {
-    "total": 42,
+    "total": 45,
     "byCategory": {
       "core": 6,
-      "devops": 6,
+      "devops": 4,
       "keycloak": 5,
       "mongodb-atlas": 4,
       "kubernetes": 4,
@@ -191,7 +428,7 @@
       "frontend-theming": 3,
       "selenium-testing": 3,
       "membership-domain": 4,
-      "utility": 3
+      "utility": 4
     }
   }
 }
