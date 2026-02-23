@@ -2,7 +2,8 @@
 .claude/logs/
 
 # Claude Orchestration - Runtime State (NEVER COMMIT)
-.claude/orchestration/db/agents.db
+.claude/orchestration/db/*.db
+.claude/orchestration/.claude/
 .claude/orchestration/__pycache__/
 .claude/orchestration/*.pyc
 .claude/orchestration/checkpoints/
@@ -11,6 +12,12 @@
 .claude/orchestration/locks/
 .claude/orchestration/messages/
 .claude/orchestration/.session_env
+
+# Test artifacts
+test-metrics/
+
+# Backup files
+*.bak
 
 # Python
 __pycache__/
