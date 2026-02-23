@@ -181,3 +181,21 @@ plugins/marketplace-pro/src/devstudio/server.ts(1259,15): error TS6133: 'relativ
 - **Input:** `/home/user/claude/.claude/agent-memory/code-reviewer/MEMORY.md`
 - **Error:** File does not exist. Note: your current working directory is /home/user/claude.
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: JSON structure assumption
+- **Tool:** Bash
+- **Status:** RESOLVED
+- **Fix:** commands.minimal.json `commands` field is a flat list, not a dict of categories. Check structure before assuming dict.
+- **Prevention:** Always inspect JSON structure with `type()` check before calling `.items()` on it.
+
+### Error: Bash escapes `!=` in inline python
+- **Tool:** Bash
+- **Status:** RESOLVED
+- **Fix:** Bash escapes `!` inside double-quoted strings. Use heredoc (`<< 'PYEOF'`) for multi-line python instead of inline `-c "..."`.
+- **Prevention:** Always use heredoc for python scripts with `!=` or `!` operators.
+
+### Error: Git push rejected (remote ahead)
+- **Tool:** Bash
+- **Status:** RESOLVED
+- **Fix:** Use `git stash && git pull --rebase origin <branch> && git stash pop` when local has uncommitted changes and remote is ahead.
+- **Prevention:** Always `git pull --rebase` before pushing. If unstaged changes exist, stash first.
