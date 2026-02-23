@@ -74,3 +74,101 @@ done`
 - **Status:** RESOLVED
 - **Fix:** Use simple sequential commands with `echo "HEADER"` followed by `ls | grep` on separate lines; avoid complex heredoc scripts with pipes and redirects when using grep
 - **Prevention:** When filtering ls output, use `ls /path/ | grep -iE "pattern"` as simple two-command pipes, not embedded in larger heredoc blocks
+
+### Error: Bash failure (2026-02-23T01:07:40Z)
+- **Tool:** Bash
+- **Input:** `python3 -c "
+import json
+
+with open('/home/user/claude/.claude/registry/plugins.index.json') as f:
+    data = json.load(f)
+
+# Get the actual plugin list
+plugins_section = data.get('plugins', {})
+installed = data.get('installed', [])
+registry = data.get('registry', [])
+
+print('=== installed ===')
+for p in installed:
+    print(' -', p.get('name','?'), '|', p.get('id','?'))
+
+print()
+print('=== registry (first 30) ===')
+if isinstance(registry, list):
+    for p in registry[:30]:
+        print(' -', p.get('name','?'), '|', p.get('id','?'))
+elif isinstance(registry, dict):
+    for k in list(registry.keys())[:30]:
+        print(' -', k)
+" 2>/dev/null`
+- **Error:** Exit code 1
+=== installed ===
+
+=== installed ===
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-02-23T01:07:52Z)
+- **Tool:** Bash
+- **Input:** `python3 -c "
+import json
+
+with open('/home/user/claude/.claude/registry/plugins.index.json') as f:
+    data = json.load(f)
+
+installed = data.get('installed', [])
+registry = data.get('registry', [])
+
+print('=== installed ===')
+for p in installed:
+    print(' -', p.get('name','?'), '|', p.get('id','?'))
+
+print()
+print('=== registry (first 30) ===')
+if isinstance(registry, list):
+    for p in registry[:30]:
+        print(' -', p.get('name','?'), '|', p.get('id','?'))
+elif isinstance(registry, dict):
+    for k in list(registry.keys())[:30]:
+        print(' -', k)
+"`
+- **Error:** Exit code 1
+=== installed ===
+Traceback (most recent call last):
+  File "<string>", line 12, in <module>
+AttributeError: 'str' object has no attribute 'get'
+
+=== installed ===
+Traceback (most recent call last):
+  File "<string>", line 12, in <module>
+AttributeError: 'str' object has no attribute 'get'
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Task failure (2026-02-23T01:08:04Z)
+- **Tool:** Task
+- **Input:** `N/A`
+- **Error:** Cannot resume agent a4fdfad: it is still running. Use TaskStop to stop it first, or wait for it to complete.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-02-23T01:11:13Z)
+- **Tool:** Bash
+- **Input:** `git add .claude/skills/docker/SKILL.md .claude/skills/e2e-testing/SKILL.md .claude/skills/fix-and-learn/SKILL.md .claude/skills/helm/SKILL.md .claude/skills/jira-smart-commits.md .claude/skills/lessons-review/SKILL.md .claude/rules/lessons-learned.md && git commit -m "$(cat <<'EOF'
+refactor: Phase 2 skills cleanup - remove 6 redundant skills
+
+Removed:
+- docker/ skill (covered by docker-build/)
+- helm/ skill (covered by helm-deploy/)
+- fix-and-learn/ (covered by debugging skill + lessons-learned MCP)
+- e2e-testing/ (covered by testing skill)
+- lessons-review/ (covered by lessons-learned MCP server)
+- jira-smart-commits.md (stray file, not in subdirectory)
+
+Also captures lessons-learned from research agent errors.
+
+https://claude.ai/code/session_01YPvN7sqzdynz1npqr1us9E
+EOF
+)"`
+- **Error:** Exit code 128
+fatal: pathspec '.claude/skills/docker/SKILL.md' did not match any files
+
+fatal: pathspec '.claude/skills/docker/SKILL.md' did not match any files
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
