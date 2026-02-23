@@ -1,12 +1,7 @@
-# Keycloak Setup Workflow
-
-Multi-agent workflow for setting up and configuring Keycloak for the Alpha Members Platform.
-
-## Workflow Metadata
-```yaml
+---
 name: keycloak-setup
-type: sequential
 description: Complete Keycloak setup including realm, clients, auth flows, and themes
+pattern: sequential
 agents:
   - keycloak-realm-admin
   - keycloak-auth-flow-designer
@@ -16,15 +11,13 @@ triggers:
   - "setup keycloak"
   - "configure keycloak"
   - "initialize auth"
-stages:
-  - realm-setup
-  - client-configuration
-  - auth-flow-design
-  - theme-customization
-  - security-audit
 estimatedDuration: "2-4 hours"
 priority: high
-```
+---
+
+# Keycloak Setup Workflow
+
+Multi-agent workflow for setting up and configuring Keycloak for the Alpha Members Platform.
 
 ## Workflow Stages
 
