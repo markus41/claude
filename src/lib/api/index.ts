@@ -33,3 +33,21 @@ export {
   getTemplatesByCategory,
   searchTemplatesByTags,
 } from './templates';
+
+export {
+  searchMarketplacePlugins,
+  getFeaturedPlugins,
+  getPopularPlugins,
+  getMarketplacePlugin,
+  getPluginReviews,
+  submitPluginReview,
+  getPluginCategories,
+  getInstalledPlugins,
+  getPluginInstallation,
+  installPlugin,
+  uninstallPlugin,
+  updatePluginConfiguration,
+  enablePlugin,
+  disablePlugin,
+  getPluginMetrics,
+} from './plugins';

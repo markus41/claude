@@ -5,41 +5,43 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
+import { ApiError } from '@/lib/api/client';
+import {
+  disablePlugin,
+  enablePlugin,
+  getFeaturedPlugins,
+  getInstalledPlugins,
+  getMarketplacePlugin,
+  getPluginCategories,
+  getPluginInstallation,
+  getPluginMetrics,
+  getPluginReviews,
+  getPopularPlugins,
+  installPlugin,
+  searchMarketplacePlugins,
+  submitPluginReview,
+  uninstallPlugin,
+  updatePluginConfiguration,
+} from '@/lib/api/plugins';
 import type {
   Plugin,
+  PluginCategory,
   PluginInstallation,
   PluginReview,
   PluginMetrics,
+  PluginMetricsPeriod,
   PluginSearchFilters,
   PluginSearchResult,
   PluginType,
 } from '../types/plugins';
 
-const API_BASE = '/api/v1';
-
-// ============================================================================
-// API Helpers
-// ============================================================================
-
-async function fetchApi<T>(
-  endpoint: string,
-  options?: RequestInit
-): Promise<T> {
-  const response = await fetch(`${API_BASE}${endpoint}`, {
-    ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      ...options?.headers,
-    },
-  });
-
-  if (!response.ok) {
-    const error = await response.json().catch(() => ({ error: 'Unknown error' }));
-    throw new Error(error.error || `API error: ${response.status}`);
+const getErrorMessage = (error: unknown, fallback: string): string => {
+  if (error instanceof Error) {
+    return error.message;
   }
 
-  return response.json();
-}
+  return fallback;
+};
 
 // ============================================================================
 // Search Hooks
@@ -57,22 +59,10 @@ export function usePluginSearch(initialFilters?: PluginSearchFilters) {
     setError(null);
 
     try {
-      const params = new URLSearchParams();
-      if (searchFilters.query) params.set('query', searchFilters.query);
-      if (searchFilters.type) params.set('type', searchFilters.type);
-      if (searchFilters.category) params.set('category', searchFilters.category);
-      if (searchFilters.tags?.length) params.set('tags', searchFilters.tags.join(','));
-      if (searchFilters.isVerified) params.set('is_verified', 'true');
-      if (searchFilters.isOfficial) params.set('is_official', 'true');
-      if (searchFilters.minRating) params.set('min_rating', String(searchFilters.minRating));
-      if (searchFilters.sortBy) params.set('sort_by', searchFilters.sortBy);
-
-      const data = await fetchApi<PluginSearchResult>(
-        `/marketplace/plugins?${params.toString()}`
-      );
+      const data = await searchMarketplacePlugins(searchFilters);
       setResult(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Search failed');
+      setError(getErrorMessage(err, 'Search failed'));
     } finally {
       setLoading(false);
     }
@@ -109,9 +99,9 @@ export function useFeaturedPlugins() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchApi<{ plugins: Plugin[] }>('/marketplace/featured')
+    getFeaturedPlugins()
       .then((data) => setPlugins(data.plugins))
-      .catch((err) => setError(err.message))
+      .catch((err) => setError(getErrorMessage(err, 'Failed to load featured plugins')))
       .finally(() => setLoading(false));
   }, []);
 
@@ -128,9 +118,9 @@ export function usePopularPlugins(limit: number = 10) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchApi<{ plugins: Plugin[] }>(`/marketplace/popular?limit=${limit}`)
+    getPopularPlugins(limit)
       .then((data) => setPlugins(data.plugins))
-      .catch((err) => setError(err.message))
+      .catch((err) => setError(getErrorMessage(err, 'Failed to load popular plugins')))
       .finally(() => setLoading(false));
   }, [limit]);
 
@@ -155,9 +145,9 @@ export function usePlugin(pluginId: string | null) {
     setLoading(true);
     setError(null);
 
-    fetchApi<Plugin>(`/marketplace/plugins/${pluginId}`)
+    getMarketplacePlugin(pluginId)
       .then(setPlugin)
-      .catch((err) => setError(err.message))
+      .catch((err) => setError(getErrorMessage(err, 'Failed to load plugin')))
       .finally(() => setLoading(false));
   }, [pluginId]);
 
@@ -180,12 +170,10 @@ export function usePluginReviews(pluginId: string | null) {
     setError(null);
 
     try {
-      const data = await fetchApi<{ reviews: PluginReview[] }>(
-        `/marketplace/plugins/${pluginId}/reviews`
-      );
+      const data = await getPluginReviews(pluginId);
       setReviews(data.reviews);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load reviews');
+      setError(getErrorMessage(err, 'Failed to load reviews'));
     } finally {
       setLoading(false);
     }
@@ -198,10 +186,7 @@ export function usePluginReviews(pluginId: string | null) {
   ) => {
     if (!pluginId) return;
 
-    await fetchApi(`/marketplace/plugins/${pluginId}/reviews`, {
-      method: 'POST',
-      body: JSON.stringify({ rating, title, content }),
-    });
+    await submitPluginReview(pluginId, { rating, title, content });
 
     await fetchReviews();
   }, [pluginId, fetchReviews]);
@@ -227,13 +212,10 @@ export function useInstalledPlugins(type?: PluginType) {
     setError(null);
 
     try {
-      const params = type ? `?type=${type}` : '';
-      const data = await fetchApi<{ installations: PluginInstallation[] }>(
-        `/plugins/installed${params}`
-      );
+      const data = await getInstalledPlugins(type);
       setInstallations(data.installations);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load installations');
+      setError(getErrorMessage(err, 'Failed to load installations'));
     } finally {
       setLoading(false);
     }
@@ -271,16 +253,14 @@ export function usePluginInstallation(pluginId: string | null) {
     setError(null);
 
     try {
-      const data = await fetchApi<PluginInstallation | null>(
-        `/plugins/${pluginId}/installation`
-      );
+      const data = await getPluginInstallation(pluginId);
       setInstallation(data);
     } catch (err) {
       // 404 means not installed
-      if (err instanceof Error && err.message.includes('404')) {
+      if (err instanceof ApiError && err.status === 404) {
         setInstallation(null);
       } else {
-        setError(err instanceof Error ? err.message : 'Failed to check installation');
+        setError(getErrorMessage(err, 'Failed to check installation'));
       }
     } finally {
       setLoading(false);
@@ -297,13 +277,13 @@ export function usePluginInstallation(pluginId: string | null) {
     setError(null);
 
     try {
-      const data = await fetchApi<PluginInstallation>(`/plugins/${pluginId}/install`, {
-        method: 'POST',
-        body: JSON.stringify({ configuration, grant_permissions: grantPermissions }),
+      const data = await installPlugin(pluginId, {
+        configuration,
+        grant_permissions: grantPermissions,
       });
       setInstallation(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Installation failed');
+      setError(getErrorMessage(err, 'Installation failed'));
       throw err;
     } finally {
       setActionLoading(false);
@@ -317,10 +297,10 @@ export function usePluginInstallation(pluginId: string | null) {
     setError(null);
 
     try {
-      await fetchApi(`/plugins/${pluginId}/uninstall`, { method: 'POST' });
+      await uninstallPlugin(pluginId);
       setInstallation(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Uninstallation failed');
+      setError(getErrorMessage(err, 'Uninstallation failed'));
       throw err;
     } finally {
       setActionLoading(false);
@@ -334,13 +314,10 @@ export function usePluginInstallation(pluginId: string | null) {
     setError(null);
 
     try {
-      const data = await fetchApi<PluginInstallation>(`/plugins/${pluginId}/config`, {
-        method: 'PUT',
-        body: JSON.stringify({ configuration }),
-      });
+      const data = await updatePluginConfiguration(pluginId, { configuration });
       setInstallation(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Configuration update failed');
+      setError(getErrorMessage(err, 'Configuration update failed'));
       throw err;
     } finally {
       setActionLoading(false);
@@ -354,13 +331,12 @@ export function usePluginInstallation(pluginId: string | null) {
     setError(null);
 
     try {
-      const endpoint = enabled ? 'enable' : 'disable';
-      const data = await fetchApi<PluginInstallation>(`/plugins/${pluginId}/${endpoint}`, {
-        method: 'POST',
-      });
+      const data = enabled
+        ? await enablePlugin(pluginId)
+        : await disablePlugin(pluginId);
       setInstallation(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to update plugin state');
+      setError(getErrorMessage(err, 'Failed to update plugin state'));
       throw err;
     } finally {
       setActionLoading(false);
@@ -389,7 +365,10 @@ export function usePluginInstallation(pluginId: string | null) {
 // Plugin Metrics Hook
 // ============================================================================
 
-export function usePluginMetrics(pluginId: string | null, period: 'day' | 'week' | 'month' = 'week') {
+export function usePluginMetrics(
+  pluginId: string | null,
+  period: PluginMetricsPeriod = 'week'
+) {
   const [metrics, setMetrics] = useState<PluginMetrics | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -403,9 +382,9 @@ export function usePluginMetrics(pluginId: string | null, period: 'day' | 'week'
     setLoading(true);
     setError(null);
 
-    fetchApi<PluginMetrics>(`/plugins/${pluginId}/metrics?period=${period}`)
+    getPluginMetrics(pluginId, period)
       .then(setMetrics)
-      .catch((err) => setError(err.message))
+      .catch((err) => setError(getErrorMessage(err, 'Failed to load metrics')))
       .finally(() => setLoading(false));
   }, [pluginId, period]);
 
@@ -417,17 +396,14 @@ export function usePluginMetrics(pluginId: string | null, period: 'day' | 'week'
 // ============================================================================
 
 export function usePluginCategories(type?: PluginType) {
-  const [categories, setCategories] = useState<Array<{ name: string; count: number }>>([]);
+  const [categories, setCategories] = useState<PluginCategory[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const params = type ? `?type=${type}` : '';
-    fetchApi<{ categories: Array<{ name: string; count: number }> }>(
-      `/marketplace/categories${params}`
-    )
+    getPluginCategories(type)
       .then((data) => setCategories(data.categories))
-      .catch((err) => setError(err.message))
+      .catch((err) => setError(getErrorMessage(err, 'Failed to load categories')))
       .finally(() => setLoading(false));
   }, [type]);
 
