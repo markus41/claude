@@ -45,7 +45,7 @@
       "source": "local",
       "installedAt": "2026-01-19T00:00:00.000Z",
       "dependencies": {}
-    },
+    }
   },
   "registry": {
     "jira-orchestrator": {
@@ -252,7 +252,6 @@
     "Arbiter": "jira-orchestrator",
     "Conduit": "aws-eks-helm-keycloak",
     "Stylist": "frontend-design-system",
-
     "Architect": "claude-code-templating",
     "Forgemaster": "infrastructure-template-generator"
   },
