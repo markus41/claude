@@ -1,12 +1,7 @@
-# Tenant Onboarding Workflow
-
-Complete multi-tenant onboarding workflow for Lobbi platform, handling tenant provisioning, configuration, billing setup, and admin account creation.
-
-## Workflow Metadata
-```yaml
+---
 name: tenant-onboarding
-type: sequential
 description: End-to-end tenant onboarding including provisioning, billing, admin setup, and theme customization
+pattern: sequential
 agents:
   - tenant-provisioning-specialist
   - stripe-integration-specialist
@@ -18,16 +13,13 @@ triggers:
   - "new tenant"
   - "create organization"
   - "setup tenant"
-stages:
-  - tenant-provision
-  - keycloak-realm-setup
-  - billing-configuration
-  - admin-account-creation
-  - theme-customization
-  - welcome-notification
 estimatedDuration: "45-90 minutes"
 priority: high
-```
+---
+
+# Tenant Onboarding Workflow
+
+Complete multi-tenant onboarding workflow for Lobbi platform, handling tenant provisioning, configuration, billing setup, and admin account creation.
 
 ## Workflow Stages
 

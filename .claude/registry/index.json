@@ -1,22 +1,21 @@
 {
   "$schema": "./schema/registry.schema.json",
   "version": "5.0.0",
-  "lastUpdated": "2025-12-26",
+  "lastUpdated": "2026-02-23",
   "description": "Central registry for Claude Code resources - agents, skills, commands, workflows, MCPs, tools, plugins",
-
   "metadata": {
-    "totalAgents": 239,
-    "totalSkills": 112,
-    "totalCommands": 238,
-    "totalWorkflows": 10,
-    "totalMcpServers": 8,
-    "totalMcpTools": 80,
-    "totalBuiltinTools": 17,
-    "totalPlugins": 14,
+    "totalAgents": 137,
+    "totalSkills": 53,
+    "totalCommands": 120,
+    "totalWorkflows": 20,
+    "totalMcpServers": 17,
+    "totalMcpTools": 185,
+    "totalBuiltinTools": 18,
+    "totalPlugins": 20,
+    "totalAvailablePlugins": 6,
     "totalTeams": 16,
-    "innovativePlugins": 6
+    "lastConsolidation": "2026-02-23"
   },
-
   "indexes": {
     "agents": "./agents.minimal.json",
     "agentsFull": "./agents.index.json",
@@ -33,27 +32,38 @@
     "teams": "./teams.minimal.json",
     "teamsFull": "./teams.index.json"
   },
-
   "loadStrategy": {
     "default": "minimal",
-    "onDemand": ["agentsFull", "skillsFull", "commandsFull", "workflowsFull", "mcpsFull", "teamsFull", "activation"],
+    "onDemand": [
+      "agentsFull",
+      "skillsFull",
+      "commandsFull",
+      "workflowsFull",
+      "mcpsFull",
+      "teamsFull",
+      "activation"
+    ],
     "note": "Use minimal indexes at startup, load full metadata on-demand. Minimal files ~10KB vs Full ~120KB"
   },
-
   "activation": {
     "unified": "./activation/unified.activation.json",
     "skills": "./activation/skills.activation.json"
   },
-
   "search": {
     "enabled": true,
     "fuzzyMatch": true,
     "keywordIndex": "./search/keywords.json"
   },
-
   "orchestration": {
     "protocol": "4.0.0",
-    "mandatoryPhases": ["explore", "plan", "code", "test", "fix", "document"],
+    "mandatoryPhases": [
+      "explore",
+      "plan",
+      "code",
+      "test",
+      "fix",
+      "document"
+    ],
     "subAgentLimits": {
       "minimum": 3,
       "maximum": 13,
@@ -62,31 +72,54 @@
     "stateDirectory": "../orchestration/state",
     "hooksScript": "../hooks/orchestration-hooks.sh"
   },
-
   "categories": {
     "agents": [
-      "core", "devops", "development", "frontend", "languages",
-      "security", "data-ai", "operations", "cloud", "swarm",
-      "github", "atlassian", "documentation", "testing", "golden-armada"
+      "core",
+      "devops",
+      "development",
+      "frontend",
+      "languages",
+      "security",
+      "data-ai",
+      "operations",
+      "cloud",
+      "swarm",
+      "github",
+      "atlassian",
+      "documentation",
+      "testing",
+      "golden-armada"
     ],
     "skills": [
-      "reasoning", "infrastructure", "development", "frontend", "data",
-      "cloud", "security", "project-management"
+      "reasoning",
+      "infrastructure",
+      "development",
+      "frontend",
+      "data",
+      "cloud",
+      "security",
+      "project-management"
     ],
     "commands": [
-      "core", "development", "deployment", "security",
-      "atlassian", "orchestration", "analysis"
+      "core",
+      "development",
+      "deployment",
+      "security",
+      "atlassian",
+      "orchestration",
+      "analysis"
     ],
     "mcps": [
-      "core", "project", "extension"
+      "core",
+      "project",
+      "extension"
     ]
   },
-
   "quickLookup": {
     "byTrigger": {
       "k8s|kubernetes|kubectl|pod|deployment": "skills/kubernetes",
-      "docker|dockerfile|container|image": "skills/docker",
-      "helm|chart|values": "skills/helm",
+      "docker|dockerfile|container|image": "skills/docker-build",
+      "helm|chart|values": "skills/helm-deploy",
       "jira|sprint|backlog|issue": "skills/jira",
       "confluence|wiki|page": "skills/confluence",
       "test|pytest|unittest|coverage": "skills/testing",
@@ -105,41 +138,95 @@
       "vercel|deploy|preview": "mcps/vercel",
       "github|pr|issue|branch": "mcps/github",
       "playwright|e2e|browser": "mcps/playwright",
-      "git|branch|commit|merge|rebase|pr": "plugins/git-workflow-orchestrator",
-      "release|deploy|changelog|version": "plugins/release-orchestrator",
-      "docs|documentation|readme|api-docs": "plugins/documentation-orchestrator",
-      "test|e2e|coverage|regression": "plugins/testing-orchestrator",
-      "notify|slack|teams|alert": "plugins/notification-hub",
-      "metrics|velocity|burndown|dora": "plugins/analytics-dashboard",
-      "debug|bug|root-cause|hypothesis": "plugins/cognitive-code-reasoner",
-      "autonomous|autopilot|self-manage": "plugins/autonomous-sprint-ai",
-      "graph|impact|dependency|semantic": "plugins/code-knowledge-graph",
-      "model|route|ensemble|llm": "plugins/multi-model-orchestration",
-      "predict|risk|failure|hotspot": "plugins/predictive-failure-engine",
-      "council|debate|vote|adversarial": "plugins/agent-review-council"
+      "git|branch|commit|merge|rebase|pr": "skills/git-workflows",
+      "release|deploy|changelog|version": "skills/helm-deploy",
+      "docs|documentation|readme|api-docs": "agents/doc-writer",
+      "test|e2e|coverage|regression": "agents/test-writer",
+      "debug|bug|root-cause|hypothesis": "agents/debugger",
+      "metrics|velocity|burndown|dora": "mcps/project-metrics"
     },
     "byTask": {
-      "deploy": ["k8s-deployer", "docker-builder", "helm-specialist", "cicd-engineer"],
-      "review": ["reviewer", "security-auditor", "code-analyzer"],
-      "test": ["tester", "e2e-tester", "qa-engineer", "penetration-tester"],
-      "build": ["coder", "docker-builder", "cicd-engineer"],
-      "debug": ["debugger", "incident-responder", "observability"],
-      "design": ["system-architect", "api-designer", "database-specialist"],
-      "document": ["docs-writer", "api-documenter", "confluence-specialist"],
-      "plan": ["planner", "product-owner", "scrum-master"]
+      "deploy": [
+        "k8s-deployer",
+        "docker-builder",
+        "helm-specialist",
+        "cicd-engineer"
+      ],
+      "review": [
+        "reviewer",
+        "security-auditor",
+        "code-analyzer"
+      ],
+      "test": [
+        "tester",
+        "e2e-tester",
+        "qa-engineer",
+        "penetration-tester"
+      ],
+      "build": [
+        "coder",
+        "docker-builder",
+        "cicd-engineer"
+      ],
+      "debug": [
+        "debugger",
+        "incident-responder",
+        "observability"
+      ],
+      "design": [
+        "system-architect",
+        "api-designer",
+        "database-specialist"
+      ],
+      "document": [
+        "docs-writer",
+        "api-documenter",
+        "confluence-specialist"
+      ],
+      "plan": [
+        "planner",
+        "product-owner",
+        "scrum-master"
+      ]
     },
     "byMcp": {
-      "database": ["supabase", "upstash"],
-      "deployment": ["vercel", "github"],
-      "testing": ["playwright"],
-      "documentation": ["context7"],
-      "project-management": ["atlassian"]
+      "database": [
+        "supabase",
+        "upstash"
+      ],
+      "deployment": [
+        "vercel",
+        "github"
+      ],
+      "testing": [
+        "playwright"
+      ],
+      "documentation": [
+        "context7"
+      ],
+      "project-management": [
+        "atlassian"
+      ]
     }
   },
-
   "contextActivation": {
     "enabled": true,
-    "evaluationOrder": ["keywords", "fileContext", "directoryContext", "envVars", "recentUsage"],
-    "profiles": ["minimal", "standard", "full", "reasoning", "database", "frontend", "devops", "project-management"]
+    "evaluationOrder": [
+      "keywords",
+      "fileContext",
+      "directoryContext",
+      "envVars",
+      "recentUsage"
+    ],
+    "profiles": [
+      "minimal",
+      "standard",
+      "full",
+      "reasoning",
+      "database",
+      "frontend",
+      "devops",
+      "project-management"
+    ]
   }
 }

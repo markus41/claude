@@ -9,6 +9,7 @@ import React, { useState, useCallback } from 'react';
 import { PluginCard } from './PluginCard';
 import { PluginSearch } from './PluginSearch';
 import { PluginDetails } from './PluginDetails';
+import { PluginConfigurationModal } from './PluginConfigurationModal';
 import {
   usePluginSearch,
   useFeaturedPlugins,
@@ -31,6 +32,7 @@ export function PluginMarketplace({
 }: PluginMarketplaceProps) {
   const [selectedPlugin, setSelectedPlugin] = useState<Plugin | null>(null);
   const [showDetails, setShowDetails] = useState(false);
+  const [showConfigModal, setShowConfigModal] = useState(false);
 
   // Search
   const {
@@ -56,6 +58,8 @@ export function PluginMarketplace({
     actionLoading,
     install,
     uninstall,
+    updateConfig,
+    refresh: refreshInstallation,
   } = usePluginInstallation(selectedPlugin?.id || null);
 
   const { reviews } = usePluginReviews(selectedPlugin?.id || null);
@@ -90,6 +94,20 @@ export function PluginMarketplace({
     setShowDetails(false);
     setSelectedPlugin(null);
   }, []);
+
+
+  const handleOpenConfigure = useCallback(() => {
+    setShowConfigModal(true);
+  }, []);
+
+  const handleCloseConfigure = useCallback(() => {
+    setShowConfigModal(false);
+  }, []);
+
+  const handleSaveConfiguration = useCallback(async (configuration: Record<string, unknown>) => {
+    await updateConfig(configuration);
+    await refreshInstallation();
+  }, [refreshInstallation, updateConfig]);
 
   const hasSearchQuery = !!(filters.query || filters.type || filters.category);
 
@@ -274,12 +292,22 @@ export function PluginMarketplace({
             metrics={metrics}
             onInstall={handleInstall}
             onUninstall={handleUninstall}
-            onConfigure={() => {/* TODO: Open configuration */}}
+            onConfigure={handleOpenConfigure}
             onClose={handleCloseDetails}
             loading={installLoading || actionLoading}
           />
         </div>
       )}
+
+      {showConfigModal && selectedPlugin && installation && (
+        <PluginConfigurationModal
+          plugin={selectedPlugin}
+          installation={installation}
+          onSave={handleSaveConfiguration}
+          onClose={handleCloseConfigure}
+        />
+      )}
+
     </div>
   );
 }

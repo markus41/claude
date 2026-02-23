@@ -2,148 +2,348 @@
   "$schema": "./schema/mcps.schema.json",
   "version": "1.0.0",
   "description": "Model Context Protocol (MCP) server registry - dynamic discovery and activation",
-
   "mcpServers": {
     "core": {
       "supabase": {
         "description": "Supabase database operations, migrations, and TypeScript type generation",
         "provider": "builtin",
-        "keywords": ["database", "supabase", "sql", "migration", "schema", "types", "edge-function"],
+        "keywords": [
+          "database",
+          "supabase",
+          "sql",
+          "migration",
+          "schema",
+          "types",
+          "edge-function"
+        ],
         "capabilities": {
           "tools": [
-            "list_tables", "list_extensions", "list_migrations", "apply_migration",
-            "execute_sql", "get_logs", "get_advisors", "get_project_url", "get_anon_key",
-            "generate_typescript_types", "list_edge_functions", "get_edge_function",
-            "deploy_edge_function", "create_branch", "list_branches", "delete_branch",
-            "merge_branch", "reset_branch", "rebase_branch", "search_docs"
+            "list_tables",
+            "list_extensions",
+            "list_migrations",
+            "apply_migration",
+            "execute_sql",
+            "get_logs",
+            "get_advisors",
+            "get_project_url",
+            "get_anon_key",
+            "generate_typescript_types",
+            "list_edge_functions",
+            "get_edge_function",
+            "deploy_edge_function",
+            "create_branch",
+            "list_branches",
+            "delete_branch",
+            "merge_branch",
+            "reset_branch",
+            "rebase_branch",
+            "search_docs"
           ],
           "resources": []
         },
         "autoActivate": true,
-        "triggers": ["supabase", "database", "sql", "migration", "edge-function", "rls", "postgres"],
+        "triggers": [
+          "supabase",
+          "database",
+          "sql",
+          "migration",
+          "edge-function",
+          "rls",
+          "postgres"
+        ],
         "priority": "high"
       },
       "vercel": {
         "description": "Vercel deployment, project management, and domain configuration",
         "provider": "builtin",
-        "keywords": ["vercel", "deploy", "hosting", "domain", "nextjs", "preview"],
+        "keywords": [
+          "vercel",
+          "deploy",
+          "hosting",
+          "domain",
+          "nextjs",
+          "preview"
+        ],
         "capabilities": {
           "tools": [
-            "search_vercel_documentation", "deploy_to_vercel", "list_projects", "get_project",
-            "list_deployments", "get_deployment", "get_deployment_build_logs",
-            "get_access_to_vercel_url", "web_fetch_vercel_url", "list_teams",
+            "search_vercel_documentation",
+            "deploy_to_vercel",
+            "list_projects",
+            "get_project",
+            "list_deployments",
+            "get_deployment",
+            "get_deployment_build_logs",
+            "get_access_to_vercel_url",
+            "web_fetch_vercel_url",
+            "list_teams",
             "check_domain_availability_and_price"
           ],
           "resources": []
         },
         "autoActivate": true,
-        "triggers": ["vercel", "deploy", "preview", "domain", "hosting"],
+        "triggers": [
+          "vercel",
+          "deploy",
+          "preview",
+          "domain",
+          "hosting"
+        ],
         "priority": "high"
       },
       "upstash": {
         "description": "Upstash Redis database and QStash message queue management",
         "provider": "builtin",
-        "keywords": ["redis", "cache", "queue", "qstash", "upstash", "workflow"],
+        "keywords": [
+          "redis",
+          "cache",
+          "queue",
+          "qstash",
+          "upstash",
+          "workflow"
+        ],
         "capabilities": {
           "tools": [
-            "redis_database_create_new", "redis_database_delete", "redis_database_list_databases",
-            "redis_database_get_details", "redis_database_update_regions", "redis_database_reset_password",
-            "redis_database_get_statistics", "redis_database_manage_backup", "redis_database_list_backups",
-            "redis_database_set_daily_backup", "redis_database_run_redis_commands",
-            "qstash_get_user_token", "qstash_publish_message", "qstash_logs_list", "qstash_logs_get",
-            "qstash_dlq_list", "qstash_dlq_get", "qstash_schedules_list", "qstash_schedules_manage",
-            "workflow_logs_list", "workflow_logs_get", "workflow_dlq_list", "workflow_dlq_get", "workflow_dlq_manage"
+            "redis_database_create_new",
+            "redis_database_delete",
+            "redis_database_list_databases",
+            "redis_database_get_details",
+            "redis_database_update_regions",
+            "redis_database_reset_password",
+            "redis_database_get_statistics",
+            "redis_database_manage_backup",
+            "redis_database_list_backups",
+            "redis_database_set_daily_backup",
+            "redis_database_run_redis_commands",
+            "qstash_get_user_token",
+            "qstash_publish_message",
+            "qstash_logs_list",
+            "qstash_logs_get",
+            "qstash_dlq_list",
+            "qstash_dlq_get",
+            "qstash_schedules_list",
+            "qstash_schedules_manage",
+            "workflow_logs_list",
+            "workflow_logs_get",
+            "workflow_dlq_list",
+            "workflow_dlq_get",
+            "workflow_dlq_manage"
           ],
           "resources": []
         },
         "autoActivate": true,
-        "triggers": ["redis", "cache", "queue", "qstash", "upstash", "rate-limit"],
+        "triggers": [
+          "redis",
+          "cache",
+          "queue",
+          "qstash",
+          "upstash",
+          "rate-limit"
+        ],
         "priority": "medium"
       },
       "github": {
         "description": "GitHub repository, issue, and pull request management",
         "provider": "builtin",
-        "keywords": ["github", "git", "pr", "issue", "repository", "branch", "commit"],
+        "keywords": [
+          "github",
+          "git",
+          "pr",
+          "issue",
+          "repository",
+          "branch",
+          "commit"
+        ],
         "capabilities": {
           "tools": [
-            "create_or_update_file", "search_repositories", "create_repository", "get_file_contents",
-            "push_files", "create_issue", "create_pull_request", "fork_repository", "create_branch",
-            "list_commits", "list_issues", "update_issue", "add_issue_comment", "search_code",
-            "search_issues", "search_users", "get_issue", "get_pull_request", "list_pull_requests",
-            "create_pull_request_review", "merge_pull_request", "get_pull_request_files",
-            "get_pull_request_status", "update_pull_request_branch", "get_pull_request_comments",
+            "create_or_update_file",
+            "search_repositories",
+            "create_repository",
+            "get_file_contents",
+            "push_files",
+            "create_issue",
+            "create_pull_request",
+            "fork_repository",
+            "create_branch",
+            "list_commits",
+            "list_issues",
+            "update_issue",
+            "add_issue_comment",
+            "search_code",
+            "search_issues",
+            "search_users",
+            "get_issue",
+            "get_pull_request",
+            "list_pull_requests",
+            "create_pull_request_review",
+            "merge_pull_request",
+            "get_pull_request_files",
+            "get_pull_request_status",
+            "update_pull_request_branch",
+            "get_pull_request_comments",
             "get_pull_request_reviews"
           ],
           "resources": []
         },
         "autoActivate": true,
-        "triggers": ["github", "git", "pr", "pull-request", "issue", "branch", "commit", "repo"],
+        "triggers": [
+          "github",
+          "git",
+          "pr",
+          "pull-request",
+          "issue",
+          "branch",
+          "commit",
+          "repo"
+        ],
         "priority": "high"
       },
       "playwright": {
         "description": "Browser automation for testing and web interaction",
         "provider": "builtin",
-        "keywords": ["browser", "playwright", "test", "automation", "e2e", "screenshot"],
+        "keywords": [
+          "browser",
+          "playwright",
+          "test",
+          "automation",
+          "e2e",
+          "screenshot"
+        ],
         "capabilities": {
           "tools": [
-            "browser_close", "browser_resize", "browser_console_messages", "browser_handle_dialog",
-            "browser_evaluate", "browser_file_upload", "browser_fill_form", "browser_install",
-            "browser_press_key", "browser_type", "browser_navigate", "browser_navigate_back",
-            "browser_network_requests", "browser_run_code", "browser_take_screenshot",
-            "browser_snapshot", "browser_click", "browser_drag", "browser_hover",
-            "browser_select_option", "browser_tabs", "browser_wait_for"
+            "browser_close",
+            "browser_resize",
+            "browser_console_messages",
+            "browser_handle_dialog",
+            "browser_evaluate",
+            "browser_file_upload",
+            "browser_fill_form",
+            "browser_install",
+            "browser_press_key",
+            "browser_type",
+            "browser_navigate",
+            "browser_navigate_back",
+            "browser_network_requests",
+            "browser_run_code",
+            "browser_take_screenshot",
+            "browser_snapshot",
+            "browser_click",
+            "browser_drag",
+            "browser_hover",
+            "browser_select_option",
+            "browser_tabs",
+            "browser_wait_for"
           ],
           "resources": []
         },
         "autoActivate": false,
-        "triggers": ["browser", "playwright", "e2e", "screenshot", "automation", "test-ui"],
+        "triggers": [
+          "browser",
+          "playwright",
+          "e2e",
+          "screenshot",
+          "automation",
+          "test-ui"
+        ],
         "priority": "medium"
       },
       "context7": {
         "description": "Up-to-date documentation and code examples for any library",
         "provider": "builtin",
-        "keywords": ["docs", "documentation", "library", "api", "reference", "examples"],
+        "keywords": [
+          "docs",
+          "documentation",
+          "library",
+          "api",
+          "reference",
+          "examples"
+        ],
         "capabilities": {
           "tools": [
-            "resolve-library-id", "get-library-docs"
+            "resolve-library-id",
+            "get-library-docs"
           ],
           "resources": []
         },
         "autoActivate": true,
-        "triggers": ["library", "docs", "documentation", "api-reference", "how-to", "example"],
+        "triggers": [
+          "library",
+          "docs",
+          "documentation",
+          "api-reference",
+          "how-to",
+          "example"
+        ],
         "priority": "high"
       },
       "ide": {
         "description": "VS Code IDE integration for diagnostics and code execution",
         "provider": "builtin",
-        "keywords": ["vscode", "ide", "diagnostics", "jupyter", "notebook"],
+        "keywords": [
+          "vscode",
+          "ide",
+          "diagnostics",
+          "jupyter",
+          "notebook"
+        ],
         "capabilities": {
           "tools": [
-            "getDiagnostics", "executeCode"
+            "getDiagnostics",
+            "executeCode"
           ],
           "resources": []
         },
         "autoActivate": true,
-        "triggers": ["vscode", "diagnostics", "linter", "jupyter", "notebook", "kernel"],
+        "triggers": [
+          "vscode",
+          "diagnostics",
+          "linter",
+          "jupyter",
+          "notebook",
+          "kernel"
+        ],
         "priority": "medium"
       }
     },
-
     "project": {
       "harness": {
         "description": "Harness CD platform integration for pipelines, connectors, Git repositories, pull requests, code review comments, and dashboards via MCP",
         "provider": "custom",
         "configPath": ".claude/mcp/harness-mcp.json",
-        "keywords": ["harness", "cd", "pipeline", "deployment", "connector", "gitops", "kubernetes", "git", "repository", "pull-request", "pr", "comment", "review"],
+        "keywords": [
+          "harness",
+          "cd",
+          "pipeline",
+          "deployment",
+          "connector",
+          "gitops",
+          "kubernetes",
+          "git",
+          "repository",
+          "pull-request",
+          "pr",
+          "comment",
+          "review"
+        ],
         "capabilities": {
           "tools": [
-            "harness_get_connector", "harness_list_connectors", "harness_get_connector_catalogue",
-            "harness_list_pipelines", "harness_get_pipeline", "harness_trigger_pipeline",
-            "harness_get_execution", "harness_list_executions", "harness_get_execution_url",
-            "harness_list_dashboards", "harness_get_dashboard",
-            "harness_get_repository", "harness_list_repositories",
-            "harness_get_pull_request", "harness_list_pull_requests", "harness_create_pull_request",
-            "harness_get_pull_request_checks", "harness_get_pull_request_activities"
+            "harness_get_connector",
+            "harness_list_connectors",
+            "harness_get_connector_catalogue",
+            "harness_list_pipelines",
+            "harness_get_pipeline",
+            "harness_trigger_pipeline",
+            "harness_get_execution",
+            "harness_list_executions",
+            "harness_get_execution_url",
+            "harness_list_dashboards",
+            "harness_get_dashboard",
+            "harness_get_repository",
+            "harness_list_repositories",
+            "harness_get_pull_request",
+            "harness_list_pull_requests",
+            "harness_create_pull_request",
+            "harness_get_pull_request_checks",
+            "harness_get_pull_request_activities"
           ],
           "resources": [
             "harness://connector/{connectorId}",
@@ -154,21 +354,55 @@
           ]
         },
         "autoActivate": false,
-        "triggers": ["harness", "cd", "pipeline", "deployment", "connector", "gitops", "harness git", "harness pr", "harness repository", "harness comment"],
+        "triggers": [
+          "harness",
+          "cd",
+          "pipeline",
+          "deployment",
+          "connector",
+          "gitops",
+          "harness git",
+          "harness pr",
+          "harness repository",
+          "harness comment"
+        ],
         "priority": "medium",
-        "requiredEnvVars": ["HARNESS_API_KEY", "HARNESS_DEFAULT_ORG_ID", "HARNESS_DEFAULT_PROJECT_ID"]
+        "requiredEnvVars": [
+          "HARNESS_API_KEY",
+          "HARNESS_DEFAULT_ORG_ID",
+          "HARNESS_DEFAULT_PROJECT_ID"
+        ]
       },
       "atlassian": {
         "description": "Atlassian Jira and Confluence integration for project management",
         "provider": "custom",
         "configPath": ".claude/mcp/atlassian-mcp.json",
-        "keywords": ["jira", "confluence", "atlassian", "issue", "sprint", "wiki", "documentation"],
+        "keywords": [
+          "jira",
+          "confluence",
+          "atlassian",
+          "issue",
+          "sprint",
+          "wiki",
+          "documentation"
+        ],
         "capabilities": {
           "tools": [
-            "jira_create_issue", "jira_get_issue", "jira_update_issue", "jira_transition_issue",
-            "jira_search", "jira_add_comment", "jira_get_sprint", "jira_move_to_sprint",
-            "confluence_create_page", "confluence_get_page", "confluence_update_page",
-            "confluence_search", "confluence_add_labels", "confluence_get_space", "confluence_list_pages"
+            "jira_create_issue",
+            "jira_get_issue",
+            "jira_update_issue",
+            "jira_transition_issue",
+            "jira_search",
+            "jira_add_comment",
+            "jira_get_sprint",
+            "jira_move_to_sprint",
+            "confluence_create_page",
+            "confluence_get_page",
+            "confluence_update_page",
+            "confluence_search",
+            "confluence_add_labels",
+            "confluence_get_space",
+            "confluence_list_pages"
           ],
           "resources": [
             "jira://project/{projectKey}",
@@ -179,21 +413,50 @@
           ]
         },
         "autoActivate": false,
-        "triggers": ["jira", "confluence", "sprint", "backlog", "wiki", "issue", "story", "epic"],
+        "triggers": [
+          "jira",
+          "confluence",
+          "sprint",
+          "backlog",
+          "wiki",
+          "issue",
+          "story",
+          "epic"
+        ],
         "priority": "medium",
-        "requiredEnvVars": ["JIRA_URL", "JIRA_API_TOKEN", "CONFLUENCE_URL", "CONFLUENCE_API_TOKEN"]
+        "requiredEnvVars": [
+          "JIRA_URL",
+          "JIRA_API_TOKEN",
+          "CONFLUENCE_URL",
+          "CONFLUENCE_API_TOKEN"
+        ]
       },
       "n8n": {
         "description": "n8n workflow automation and integration platform for workflow execution, webhooks, and data transformation",
         "provider": "http",
         "url": "https://the-lobbi.app.n8n.cloud/mcp-server/http",
-        "keywords": ["n8n", "workflow", "automation", "webhook", "integration", "pipeline", "etl"],
+        "keywords": [
+          "n8n",
+          "workflow",
+          "automation",
+          "webhook",
+          "integration",
+          "pipeline",
+          "etl"
+        ],
         "capabilities": {
           "tools": [],
           "resources": []
         },
         "autoActivate": false,
-        "triggers": ["workflow", "n8n", "automation", "webhook", "pipeline", "integration"],
+        "triggers": [
+          "workflow",
+          "n8n",
+          "automation",
+          "webhook",
+          "pipeline",
+          "integration"
+        ],
         "priority": "medium",
         "authentication": "bearer-token"
       },
@@ -201,12 +464,27 @@
         "description": "Obsidian vault for centralized documentation, templates, and ADRs",
         "provider": "custom",
         "configPath": ".claude/mcp/obsidian-mcp.json",
-        "keywords": ["obsidian", "vault", "documentation", "template", "adr", "wiki", "notes"],
+        "keywords": [
+          "obsidian",
+          "vault",
+          "documentation",
+          "template",
+          "adr",
+          "wiki",
+          "notes"
+        ],
         "capabilities": {
           "tools": [
-            "list_files_in_vault", "list_files_in_dir", "get_file_contents",
-            "simple_search", "complex_search", "append_content", "patch_content",
-            "get_periodic_note", "get_recent_periodic_notes", "batch_get_file_contents",
+            "list_files_in_vault",
+            "list_files_in_dir",
+            "get_file_contents",
+            "simple_search",
+            "complex_search",
+            "append_content",
+            "patch_content",
+            "get_periodic_note",
+            "get_recent_periodic_notes",
+            "batch_get_file_contents",
             "delete_file"
           ],
           "resources": [
@@ -218,7 +496,15 @@
           ]
         },
         "autoActivate": false,
-        "triggers": ["documentation", "vault", "obsidian", "adr", "template", "wiki", "research"],
+        "triggers": [
+          "documentation",
+          "vault",
+          "obsidian",
+          "adr",
+          "template",
+          "wiki",
+          "research"
+        ],
         "priority": "medium",
         "requiredConfig": {
           "vaultPath": "C:\\Users\\MarkusAhling\\obsidian",
@@ -226,24 +512,223 @@
         }
       }
     },
-
     "extension": {
       "custom-mcp-server": {
         "description": "Template for creating custom MCP servers",
         "provider": "custom",
         "configPath": ".claude/tools/mcp-server/config.json",
-        "keywords": ["custom", "mcp", "tool", "extension"],
+        "keywords": [
+          "custom",
+          "mcp",
+          "tool",
+          "extension"
+        ],
         "capabilities": {
-          "tools": ["execute_agent", "get_agent_status", "list_agents"],
+          "tools": [
+            "execute_agent",
+            "get_agent_status",
+            "list_agents"
+          ],
           "resources": []
         },
         "autoActivate": false,
         "triggers": [],
         "priority": "low"
+      },
+      "deploy-intelligence": {
+        "description": "Docker/K8s/Helm deployment tracking, image audit, stale deploy detection, and volume monitoring",
+        "provider": "local",
+        "serverPath": ".claude/mcp-servers/deploy-intelligence/index.js",
+        "keywords": [
+          "docker",
+          "kubernetes",
+          "k8s",
+          "helm",
+          "deploy",
+          "image",
+          "container",
+          "registry",
+          "volume",
+          "pvc"
+        ],
+        "capabilities": {
+          "tools": [
+            "deploy_build_log",
+            "deploy_k8s_images",
+            "deploy_helm_releases",
+            "deploy_audit",
+            "deploy_volumes",
+            "deploy_record_build",
+            "deploy_image_history"
+          ],
+          "resources": []
+        },
+        "autoActivate": true,
+        "triggers": [
+          "docker",
+          "k8s",
+          "kubernetes",
+          "helm",
+          "deploy",
+          "image",
+          "container",
+          "registry",
+          "volume",
+          "pvc",
+          "stale",
+          "cache"
+        ],
+        "priority": "high"
+      },
+      "lessons-learned": {
+        "description": "Self-learning knowledge base that captures errors, fixes, patterns, and suggests new rules",
+        "provider": "local",
+        "serverPath": ".claude/mcp-servers/lessons-learned/index.js",
+        "keywords": [
+          "lessons",
+          "errors",
+          "fixes",
+          "patterns",
+          "knowledge",
+          "learning",
+          "rules"
+        ],
+        "capabilities": {
+          "tools": [
+            "lessons_search",
+            "lessons_add",
+            "lessons_resolve",
+            "lessons_patterns",
+            "lessons_stats",
+            "rules_suggest"
+          ],
+          "resources": []
+        },
+        "autoActivate": true,
+        "triggers": [
+          "error",
+          "lesson",
+          "fix",
+          "pattern",
+          "knowledge",
+          "learning",
+          "mistake"
+        ],
+        "priority": "high"
+      },
+      "project-metrics": {
+        "description": "Git statistics, code health, DORA metrics, hotspot analysis, dependency audit, and session tracking",
+        "provider": "local",
+        "serverPath": ".claude/mcp-servers/project-metrics/index.js",
+        "keywords": [
+          "metrics",
+          "git",
+          "statistics",
+          "health",
+          "dora",
+          "hotspot",
+          "dependencies",
+          "velocity"
+        ],
+        "capabilities": {
+          "tools": [
+            "metrics_git_stats",
+            "metrics_code_health",
+            "metrics_session_log",
+            "metrics_dora",
+            "metrics_hotspots",
+            "metrics_dependencies"
+          ],
+          "resources": []
+        },
+        "autoActivate": false,
+        "triggers": [
+          "metrics",
+          "statistics",
+          "velocity",
+          "health",
+          "hotspot",
+          "dora",
+          "churn",
+          "dependencies"
+        ],
+        "priority": "medium"
+      },
+      "code-quality-gate": {
+        "description": "Automated quality gate with TypeScript, lint, security scanning, and scoring for pre-commit validation",
+        "provider": "local",
+        "serverPath": ".claude/mcp-servers/code-quality-gate/index.js",
+        "keywords": [
+          "quality",
+          "lint",
+          "typecheck",
+          "security",
+          "scan",
+          "score",
+          "gate",
+          "pre-commit"
+        ],
+        "capabilities": {
+          "tools": [
+            "quality_check",
+            "quality_typecheck",
+            "quality_lint",
+            "quality_security_scan",
+            "quality_score",
+            "quality_pre_commit"
+          ],
+          "resources": []
+        },
+        "autoActivate": false,
+        "triggers": [
+          "quality",
+          "lint",
+          "typecheck",
+          "security-scan",
+          "pre-commit",
+          "gate",
+          "score"
+        ],
+        "priority": "medium"
+      },
+      "workflow-bridge": {
+        "description": "End-to-end deployment pipeline orchestration with gates, rollback plans, changelogs, and environment tracking",
+        "provider": "local",
+        "serverPath": ".claude/mcp-servers/workflow-bridge/index.js",
+        "keywords": [
+          "workflow",
+          "pipeline",
+          "gate",
+          "rollback",
+          "changelog",
+          "environment",
+          "orchestration"
+        ],
+        "capabilities": {
+          "tools": [
+            "workflow_pipeline",
+            "workflow_status",
+            "workflow_gate",
+            "workflow_rollback_plan",
+            "workflow_changelog",
+            "workflow_environments"
+          ],
+          "resources": []
+        },
+        "autoActivate": false,
+        "triggers": [
+          "pipeline",
+          "workflow",
+          "gate",
+          "rollback",
+          "changelog",
+          "environment",
+          "deploy-pipeline"
+        ],
+        "priority": "medium"
       }
     }
   },
-
   "toolAliases": {
     "db": "mcp__supabase__execute_sql",
     "migrate": "mcp__supabase__apply_migration",
@@ -255,9 +740,19 @@
     "vault": "mcp__obsidian__list_files_in_vault",
     "vault-read": "mcp__obsidian__get_file_contents",
     "vault-search": "mcp__obsidian__simple_search",
-    "vault-add": "mcp__obsidian__append_content"
+    "vault-add": "mcp__obsidian__append_content",
+    "audit": "mcp__deploy-intelligence__deploy_audit",
+    "k8s-images": "mcp__deploy-intelligence__deploy_k8s_images",
+    "build-log": "mcp__deploy-intelligence__deploy_build_log",
+    "volumes": "mcp__deploy-intelligence__deploy_volumes",
+    "lessons": "mcp__lessons-learned__lessons_search",
+    "git-stats": "mcp__project-metrics__metrics_git_stats",
+    "hotspots": "mcp__project-metrics__metrics_hotspots",
+    "quality": "mcp__code-quality-gate__quality_check",
+    "gate": "mcp__workflow-bridge__workflow_gate",
+    "rollback": "mcp__workflow-bridge__workflow_rollback_plan",
+    "envs": "mcp__workflow-bridge__workflow_environments"
   },
-
   "activationRules": {
     "contextBased": {
       "enabled": true,
@@ -270,40 +765,87 @@
       }
     },
     "filePatterns": {
-      ".sql": ["supabase"],
-      "supabase/**": ["supabase"],
-      "vercel.json": ["vercel"],
-      ".github/**": ["github"],
-      "playwright.config.*": ["playwright"],
-      "*.spec.ts": ["playwright"],
-      "*.test.ts": ["playwright"]
+      ".sql": [
+        "supabase"
+      ],
+      "supabase/**": [
+        "supabase"
+      ],
+      "vercel.json": [
+        "vercel"
+      ],
+      ".github/**": [
+        "github"
+      ],
+      "playwright.config.*": [
+        "playwright"
+      ],
+      "*.spec.ts": [
+        "playwright"
+      ],
+      "*.test.ts": [
+        "playwright"
+      ],
+      "Dockerfile*": [
+        "deploy-intelligence"
+      ],
+      "docker-compose*": [
+        "deploy-intelligence"
+      ],
+      "**/helm/**": [
+        "deploy-intelligence",
+        "workflow-bridge"
+      ],
+      "**/charts/**": [
+        "deploy-intelligence"
+      ],
+      "**/k8s/**": [
+        "deploy-intelligence"
+      ]
     },
     "projectType": {
-      "nextjs": ["vercel", "supabase", "context7"],
-      "supabase-project": ["supabase", "upstash"],
-      "full-stack": ["supabase", "vercel", "upstash", "github"]
+      "nextjs": [
+        "vercel",
+        "supabase",
+        "context7"
+      ],
+      "supabase-project": [
+        "supabase",
+        "upstash"
+      ],
+      "full-stack": [
+        "supabase",
+        "vercel",
+        "upstash",
+        "github"
+      ]
     }
   },
-
   "stats": {
-    "totalMcpServers": 10,
+    "totalMcpServers": 17,
     "builtinServers": 7,
-    "customServers": 3,
-    "totalTools": 91,
+    "customServers": 4,
+    "localServers": 6,
+    "totalTools": 185,
     "byCategory": {
       "core": 7,
-      "project": 3,
-      "extension": 0
+      "project": 4,
+      "extension": 6
     }
   },
-
   "models": {
     "anthropic": {
       "opus": {
         "description": "Claude Opus 4.5 - Most capable model for complex reasoning and architecture",
         "modelId": "claude-opus-4-5-20251101",
         "provider": "anthropic",
-        "strengths": ["architecture", "planning", "analysis", "code-review", "creative"],
+        "strengths": [
+          "architecture",
+          "planning",
+          "analysis",
+          "code-review",
+          "creative"
+        ],
         "pricing": {
           "inputPer1M": 15.00,
           "outputPer1M": 75.00,
@@ -321,14 +863,25 @@
           "toolUse": true,
           "streaming": true
         },
-        "useCases": ["critical tasks", "system design", "complex analysis", "strategic planning"],
+        "useCases": [
+          "critical tasks",
+          "system design",
+          "complex analysis",
+          "strategic planning"
+        ],
         "priority": "high"
       },
       "sonnet": {
         "description": "Claude Sonnet 4.5 - Balanced model for development and analysis",
         "modelId": "claude-sonnet-4-5-20250929",
         "provider": "anthropic",
-        "strengths": ["code-generation", "analysis", "coordination", "debugging", "refactoring"],
+        "strengths": [
+          "code-generation",
+          "analysis",
+          "coordination",
+          "debugging",
+          "refactoring"
+        ],
         "pricing": {
           "inputPer1M": 3.00,
           "outputPer1M": 15.00,
@@ -346,14 +899,24 @@
           "toolUse": true,
           "streaming": true
         },
-        "useCases": ["coding", "general tasks", "coordination", "analysis"],
+        "useCases": [
+          "coding",
+          "general tasks",
+          "coordination",
+          "analysis"
+        ],
         "priority": "high"
       },
       "haiku": {
         "description": "Claude Haiku 4 - Fast and cost-effective for simple tasks",
         "modelId": "claude-haiku-4-20250130",
         "provider": "anthropic",
-        "strengths": ["simple-task", "documentation", "factual", "testing"],
+        "strengths": [
+          "simple-task",
+          "documentation",
+          "factual",
+          "testing"
+        ],
         "pricing": {
           "inputPer1M": 0.80,
           "outputPer1M": 4.00,
@@ -371,7 +934,12 @@
           "toolUse": true,
           "streaming": true
         },
-        "useCases": ["documentation", "simple tasks", "fast responses", "high volume"],
+        "useCases": [
+          "documentation",
+          "simple tasks",
+          "fast responses",
+          "high volume"
+        ],
         "priority": "medium"
       }
     },
@@ -380,7 +948,12 @@
         "description": "GPT-4 Turbo - OpenAI's most capable model",
         "modelId": "gpt-4-turbo-2024-04-09",
         "provider": "openai",
-        "strengths": ["architecture", "code-generation", "creative", "analysis"],
+        "strengths": [
+          "architecture",
+          "code-generation",
+          "creative",
+          "analysis"
+        ],
         "pricing": {
           "inputPer1M": 10.00,
           "outputPer1M": 30.00,
@@ -398,14 +971,22 @@
           "toolUse": true,
           "streaming": true
         },
-        "useCases": ["complex reasoning", "creative tasks", "code generation"],
+        "useCases": [
+          "complex reasoning",
+          "creative tasks",
+          "code generation"
+        ],
         "priority": "medium"
       },
       "gpt-3.5-turbo": {
         "description": "GPT-3.5 Turbo - Fast and economical",
         "modelId": "gpt-3.5-turbo",
         "provider": "openai",
-        "strengths": ["simple-task", "documentation", "factual"],
+        "strengths": [
+          "simple-task",
+          "documentation",
+          "factual"
+        ],
         "pricing": {
           "inputPer1M": 0.50,
           "outputPer1M": 1.50,
@@ -423,7 +1004,11 @@
           "toolUse": true,
           "streaming": true
         },
-        "useCases": ["simple queries", "quick tasks", "cost optimization"],
+        "useCases": [
+          "simple queries",
+          "quick tasks",
+          "cost optimization"
+        ],
         "priority": "low"
       }
     },
@@ -432,7 +1017,11 @@
         "description": "Gemini 1.5 Pro - Large context window for extensive analysis",
         "modelId": "gemini-1.5-pro",
         "provider": "google",
-        "strengths": ["analysis", "code-generation", "creative"],
+        "strengths": [
+          "analysis",
+          "code-generation",
+          "creative"
+        ],
         "pricing": {
           "inputPer1M": 1.25,
           "outputPer1M": 5.00,
@@ -450,14 +1039,22 @@
           "toolUse": true,
           "streaming": true
         },
-        "useCases": ["large context", "document analysis", "code review"],
+        "useCases": [
+          "large context",
+          "document analysis",
+          "code review"
+        ],
         "priority": "medium"
       },
       "gemini-flash": {
         "description": "Gemini 1.5 Flash - Extremely fast and cost-effective",
         "modelId": "gemini-1.5-flash",
         "provider": "google",
-        "strengths": ["simple-task", "documentation", "factual"],
+        "strengths": [
+          "simple-task",
+          "documentation",
+          "factual"
+        ],
         "pricing": {
           "inputPer1M": 0.075,
           "outputPer1M": 0.30,
@@ -475,7 +1072,11 @@
           "toolUse": true,
           "streaming": true
         },
-        "useCases": ["high volume", "real-time", "cost-sensitive"],
+        "useCases": [
+          "high volume",
+          "real-time",
+          "cost-sensitive"
+        ],
         "priority": "low"
       }
     }

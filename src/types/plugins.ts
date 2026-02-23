@@ -58,6 +58,12 @@ export interface Plugin {
   documentationUrl?: string;
   iconUrl?: string;
 
+  // Configuration schema
+  configSchema?: Record<string, unknown>;
+  configurationSchema?: Record<string, unknown>;
+  config_schema?: Record<string, unknown>;
+  configuration_schema?: Record<string, unknown>;
+
   // Permissions
   permissions: PluginPermission[];
   resourceLimits?: ResourceLimits;
@@ -128,6 +134,28 @@ export interface PluginSearchResult {
   page: number;
   pageSize: number;
   hasMore: boolean;
+}
+
+export type PluginMetricsPeriod = 'day' | 'week' | 'month';
+
+export interface PluginCategory {
+  name: string;
+  count: number;
+}
+
+export interface PluginReviewSubmission {
+  rating: number;
+  title?: string;
+  content?: string;
+}
+
+export interface PluginInstallationRequest {
+  configuration?: Record<string, unknown>;
+  grant_permissions?: string[];
+}
+
+export interface PluginUpdateConfigurationRequest {
+  configuration: Record<string, unknown>;
 }
 
 // Plugin type metadata

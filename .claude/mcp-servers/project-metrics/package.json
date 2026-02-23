@@ -1,0 +1,11 @@
+{
+  "name": "@claude-custom/project-metrics-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for project metrics, git analytics, and quality tracking",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {}
+}
