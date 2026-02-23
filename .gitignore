@@ -3,6 +3,7 @@
 
 # Claude Orchestration - Runtime State (NEVER COMMIT)
 .claude/orchestration/db/*.db
+.claude/orchestration/db/agent-activity.json
 .claude/orchestration/.claude/
 .claude/orchestration/__pycache__/
 .claude/orchestration/*.pyc
