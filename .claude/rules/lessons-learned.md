@@ -74,3 +74,44 @@ types.ts
 validator.ts
 ---
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-02-23T02:40:30Z)
+- **Tool:** Bash
+- **Input:** `python3 -c "
+import json, os
+idx = json.load(open('.claude/registry/index.json'))
+print('=== SKILL REFERENCES IN QUICKLOOKUP ===')
+broken = 0
+for trigger, target in idx['quickLookup']['byTrigger'].items():
+    parts = target.split('/')
+    if parts[0] == 'skills':
+        skill_dir = f'.claude/skills/{parts[1]}'
+        skill_md = f'{skill_dir}/SKILL.md'
+        if not os.path.isfile(skill_md):
+            print(f'  BROKEN: {trigger[:40]:40s} -> {target} (no SKILL.md)')
+            broken += 1
+        else:
+            print(f'  OK:     {trigger[:40]:40s} -> {target}')
+    elif parts[0] == 'agents':
+        import glob
+        matches = glob.glob(f'.claude/agents/**/{parts[1]}.md', recursive=True)
+        if not matches:
+            matches = glob.glob(f'.claude/agents/{parts[1]}.md')
+        if not matches:
+            print(f'  BROKEN: {trigger[:40]:40s} -> {target} (no agent .md)')
+            broken += 1
+        else:
+            print(f'  OK:     {trigger[:40]:40s} -> {target}')
+    else:
+        print(f'  SKIP:   {trigger[:40]:40s} -> {target} (mcp/external)')
+print(f'\nTotal broken: {broken}')
+"`
+- **Error:** Exit code 1
+Traceback (most recent call last):
+  File "<string>", line 3, in <module>
+FileNotFoundError: [Errno 2] No such file or directory: '.claude/registry/index.json'
+
+Traceback (most recent call last):
+  File "<string>", line 3, in <module>
+FileNotFoundError: [Errno 2] No such file or directory: '.claude/registry/index.json'
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving

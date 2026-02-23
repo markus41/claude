@@ -118,8 +118,8 @@
   "quickLookup": {
     "byTrigger": {
       "k8s|kubernetes|kubectl|pod|deployment": "skills/kubernetes",
-      "docker|dockerfile|container|image": "skills/docker",
-      "helm|chart|values": "skills/helm",
+      "docker|dockerfile|container|image": "skills/docker-build",
+      "helm|chart|values": "skills/helm-deploy",
       "jira|sprint|backlog|issue": "skills/jira",
       "confluence|wiki|page": "skills/confluence",
       "test|pytest|unittest|coverage": "skills/testing",
