@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "claude-orchestration",
-  "version": "4.0.1",
+  "version": "4.1.0",
   "description": "Enterprise multi-agent orchestration system with 97+ specialized agents, mandatory 6-phase protocol, and comprehensive DevOps workflows",
   "owner": {
     "name": "Markus Ahling",
@@ -29,16 +29,6 @@
       "category": "platform"
     },
     {
-      "name": "iac-golden-architect",
-      "description": "The Dredgen - Comprehensive Infrastructure as Code command center for multi-cloud Terraform, Harness CD, HashiCorp Vault, and Terraformer",
-      "version": "1.0.0",
-      "author": {
-        "name": "Golden Armada"
-      },
-      "source": "./plugins/iac-golden-architect",
-      "category": "infrastructure"
-    },
-    {
       "name": "frontend-design-system",
       "description": "263+ design styles with multi-tenant Keycloak theming for AI-powered frontend development. 6 agents, 8 commands, 6 skills.",
       "version": "1.0.0",
@@ -49,16 +39,6 @@
       "category": "frontend"
     },
     {
-      "name": "chakra-react-toolkit",
-      "description": "Comprehensive frontend development toolkit for React/Next.js projects using Chakra UI with accessibility auditing and theming tools",
-      "version": "1.0.0",
-      "author": {
-        "name": "Markus Ahling"
-      },
-      "source": "./plugins/chakra-react-toolkit",
-      "category": "frontend"
-    },
-    {
       "name": "team-accelerator",
       "description": "Enterprise development toolkit for teams - DevOps, code quality, integrations, workflow automation, and performance optimization",
       "version": "1.0.0",
@@ -66,16 +46,6 @@
         "name": "Markus Ahling"
       },
       "source": "./plugins/team-accelerator",
-      "category": "devops"
-    },
-    {
-      "name": "container-workflow",
-      "description": "Enforcer (Spartan) - Comprehensive Docker/Container workflow automation with CI/CD pipelines, security scanning (Trivy), release management, and 15 proactive agents for containerized application development",
-      "version": "1.0.0",
-      "author": {
-        "name": "Markus Ahling"
-      },
-      "source": "./plugins/container-workflow",
       "category": "devops"
     },
     {
@@ -101,17 +71,6 @@
       "category": "backend"
     },
     {
-      "name": "orchestrate-complex",
-      "description": "Mendicant (Forerunner) - Advanced multi-agent orchestration system with DAG-based parallel execution, 4 orchestration patterns (Plan-then-Execute, Hierarchical Decomposition, Blackboard, Event Sourcing), mandatory 6-phase protocol enforcement",
-      "version": "1.0.0",
-      "author": {
-        "name": "Brookside BI",
-        "email": "contact@brooksidebi.com"
-      },
-      "source": "./plugins/orchestrate-complex",
-      "category": "orchestration"
-    },
-    {
       "name": "exec-automator",
       "description": "Genesis (Forerunner) - AI-Powered Executive Director Automation Platform - Analyze organizational responsibilities, score automation potential with 6-factor algorithm, generate LangGraph workflows, and deploy 11 specialized agents for trade associations and nonprofits",
       "version": "1.0.0",
@@ -123,17 +82,6 @@
       "category": "automation"
     },
     {
-      "name": "frontend-powerhouse",
-      "description": "Titan (Spartan) - Maximum-capacity frontend development plugin with 13 specialized subagents, ultrathink integration, and comprehensive React/Next.js/Chakra UI tooling",
-      "version": "1.0.0",
-      "author": {
-        "name": "Brookside BI",
-        "email": "support@brooksidebi.com"
-      },
-      "source": "./plugins/frontend-powerhouse",
-      "category": "frontend"
-    },
-    {
       "name": "fullstack-iac",
       "description": "Zenith (Forerunner) - Complete full-stack development and infrastructure automation. FastAPI, React/Vite, Ansible, Terraform, Kubernetes with production-ready templates and CI/CD pipelines.",
       "version": "1.0.0",
@@ -143,27 +91,6 @@
       },
       "source": "./plugins/fullstack-iac",
       "category": "fullstack"
-    },
-    {
-      "name": "agent-review-council",
-      "description": "Tribunal (Forerunner) - Revolutionary multi-agent deliberation system with 20 protocols (Round Robin, AutoGen, Red/Blue Team, Six Thinking Hats, Appreciative Inquiry, etc.). 21 agents debate, vote, and reach consensus on code quality. Production-ready automation included.",
-      "version": "1.0.0",
-      "author": {
-        "name": "The Lobbi",
-        "email": "developers@thelobbi.io"
-      },
-      "source": "./.claude/plugins/agent-review-council",
-      "category": "orchestration",
-      "tags": [
-        "multi-agent",
-        "deliberation",
-        "code-review",
-        "debate",
-        "consensus",
-        "adversarial",
-        "security",
-        "automation"
-      ]
     },
     {
       "name": "aws-eks-helm-keycloak",
@@ -239,36 +166,6 @@
       ]
     },
     {
-      "name": "analytics-dashboard",
-      "description": "Oracle - Seer of patterns and foresight. Provides comprehensive analytics including velocity tracking, burndown charts, cost analysis, forecasting, and team performance metrics. Integrates with Jira for sprint analytics and GitHub for development metrics.",
-      "version": "1.0.0",
-      "author": {
-        "name": "The Lobbi"
-      },
-      "source": "./.claude/plugins/analytics-dashboard",
-      "category": "orchestration"
-    },
-    {
-      "name": "autonomous-sprint-ai",
-      "description": "Strategos - The Supreme Commander. Revolutionary self-governing sprint management AI that autonomously plans sprints, rebalances workloads, predicts blockers, negotiates scope, and makes real-time decisions. Operates with configurable autonomy levels from advisor to full autopilot.",
-      "version": "1.0.0",
-      "author": {
-        "name": "The Lobbi"
-      },
-      "source": "./.claude/plugins/autonomous-sprint-ai",
-      "category": "orchestration"
-    },
-    {
-      "name": "code-knowledge-graph",
-      "description": "Librarian - The Keeper of Infinite Archives. Builds a semantic knowledge graph of your entire codebase, understanding relationships between code entities, architectural patterns, data flows, and domain concepts. Enables impact analysis, architectural queries, and semantic code search.",
-      "version": "1.0.0",
-      "author": {
-        "name": "The Lobbi"
-      },
-      "source": "./.claude/plugins/code-knowledge-graph",
-      "category": "orchestration"
-    },
-    {
       "name": "code-quality-orchestrator",
       "description": "Curator - Ancient guardian of code excellence. Orchestrates 5 quality gates (Static Analysis, Test Coverage, Security Scanning, Complexity Analysis, Dependency Health) in a unified flow. Ensures pristine code through Forerunner precision and automated enforcement.",
       "version": "1.0.0",
@@ -277,86 +174,6 @@
       },
       "source": "./.claude/plugins/code-quality-orchestrator",
       "category": "devops"
-    },
-    {
-      "name": "cognitive-code-reasoner",
-      "description": "Didact - The Teacher of deep understanding. Revolutionary debugging and code analysis using extended thinking and multi-step cognitive reasoning. Employs hypothesis-driven debugging, causal chain analysis, temporal state reconstruction, and emergent bug pattern detection.",
-      "version": "1.0.0",
-      "author": {
-        "name": "The Lobbi"
-      },
-      "source": "./.claude/plugins/cognitive-code-reasoner",
-      "category": "debugging"
-    },
-    {
-      "name": "documentation-orchestrator",
-      "description": "Scribe - Keeper of knowledge and wisdom. Orchestrates documentation generation including API docs, README files, architecture diagrams, code documentation, and knowledge base management. Integrates with Confluence for wiki sync and Obsidian for personal knowledge management.",
-      "version": "1.0.0",
-      "author": {
-        "name": "The Lobbi"
-      },
-      "source": "./.claude/plugins/documentation-orchestrator",
-      "category": "documentation"
-    },
-    {
-      "name": "git-workflow-orchestrator",
-      "description": "Sentinel - Guardian of the codebase timeline. Orchestrates advanced Git workflows including trunk-based development, GitFlow, ship/show/ask patterns, branch protection, rebasing strategies, conflict resolution, and merge automation.",
-      "version": "1.0.0",
-      "author": {
-        "name": "The Lobbi"
-      },
-      "source": "./.claude/plugins/git-workflow-orchestrator",
-      "category": "devops"
-    },
-    {
-      "name": "multi-model-orchestration",
-      "description": "Conductor - The Orchestrator of Intelligences. Revolutionary multi-LLM orchestration that dynamically routes tasks to the optimal AI model (Claude, GPT, Gemini, Llama, Mistral) based on task characteristics, cost, latency, and capability matching.",
-      "version": "1.0.0",
-      "author": {
-        "name": "The Lobbi"
-      },
-      "source": "./.claude/plugins/multi-model-orchestration",
-      "category": "orchestration"
-    },
-    {
-      "name": "notification-hub",
-      "description": "Messenger - Voice across dimensions. Unified notification orchestration for Slack, Microsoft Teams, Discord, Email, and Webhooks. Manages approval workflows, escalation chains, and intelligent notification routing with digest and priority management.",
-      "version": "1.0.0",
-      "author": {
-        "name": "The Lobbi"
-      },
-      "source": "./.claude/plugins/notification-hub",
-      "category": "integration"
-    },
-    {
-      "name": "predictive-failure-engine",
-      "description": "Cassandra - The Oracle of Inevitable Fates. Revolutionary AI that predicts bugs and failures BEFORE they happen using pattern recognition, code smell analysis, historical failure correlation, and probabilistic modeling.",
-      "version": "1.0.0",
-      "author": {
-        "name": "The Lobbi"
-      },
-      "source": "./.claude/plugins/predictive-failure-engine",
-      "category": "orchestration"
-    },
-    {
-      "name": "release-orchestrator",
-      "description": "Herald - Announcer of new horizons. Orchestrates the complete release lifecycle including semantic versioning, changelog generation, release notes, deployment coordination, rollback management, and feature flag integration.",
-      "version": "1.0.0",
-      "author": {
-        "name": "The Lobbi"
-      },
-      "source": "./.claude/plugins/release-orchestrator",
-      "category": "devops"
-    },
-    {
-      "name": "testing-orchestrator",
-      "description": "Validator - Arbiter of truth and correctness. Orchestrates comprehensive testing including unit tests, integration tests, E2E tests, performance tests, and regression detection. Integrates with Jira for test case linking and CI/CD for automated test execution.",
-      "version": "1.0.0",
-      "author": {
-        "name": "The Lobbi"
-      },
-      "source": "./.claude/plugins/testing-orchestrator",
-      "category": "testing"
     },
     {
       "name": "api-integration-helper",
@@ -369,36 +186,6 @@
       "category": "integration"
     },
     {
-      "name": "customer-data-migration-orchestrator",
-      "description": "Terraformer - Universal data migration platform with source adapters. Like Terraform for infrastructure, but for customer data. Connect ANY source (Salesforce, HubSpot, Stripe, legacy DBs, CSVs) and automatically transform to YOUR target schema.",
-      "version": "2.0.0",
-      "author": {
-        "name": "Lobbi Engineering"
-      },
-      "source": "./.claude/plugins/customer-data-migration-orchestrator",
-      "category": "migration"
-    },
-    {
-      "name": "database-schema-designer",
-      "description": "Architect - Master builder of data structures. Orchestrates production-grade database schema design, optimization, and evolution. Detects N+1 queries, suggests optimal indexes, plans zero-downtime migrations, and ensures schemas perform at scale.",
-      "version": "1.0.0",
-      "author": {
-        "name": "The Lobbi"
-      },
-      "source": "./.claude/plugins/database-schema-designer",
-      "category": "database"
-    },
-    {
-      "name": "debug-detective",
-      "description": "Sherlock - Master investigator of code mysteries. Systematically debugs issues through hypothesis formation, evidence gathering, stack trace analysis, data flow tracing, git bisect automation, and state comparison.",
-      "version": "1.0.0",
-      "author": {
-        "name": "The Lobbi"
-      },
-      "source": "./.claude/plugins/debug-detective",
-      "category": "debugging"
-    },
-    {
       "name": "dev-environment-bootstrap",
       "description": "Bootstrap - Developer onboarding accelerator. Analyzes project requirements, detects missing dependencies, generates Docker/docker-compose configs, creates .env templates, sets up pre-commit hooks, configures IDE settings (VSCode/Cursor).",
       "version": "1.0.0",
@@ -407,16 +194,6 @@
       },
       "source": "./.claude/plugins/dev-environment-bootstrap",
       "category": "development"
-    },
-    {
-      "name": "fixer",
-      "description": "Fixer - Error Resolution Engine. Diagnoses, fixes, and prevents common programming errors across TypeScript, Python, Rust, and Go. Features error-parsing, stack-trace-analysis, pattern-matching, and solution-search capabilities.",
-      "version": "1.0.0",
-      "author": {
-        "name": "Brookside BI"
-      },
-      "source": "./.claude/plugins/fixer",
-      "category": "debugging"
     },
     {
       "name": "migration-wizard",
@@ -462,8 +239,8 @@
     },
     {
       "name": "tvs-microsoft-deploy",
-      "description": "Consul (Forerunner) - Enterprise Microsoft ecosystem orchestrator for TVS (Trusted Virtual Solutions) multi-entity multi-tenant deployment. 12 specialized agents across Entra ID, Dataverse, Power Platform, Fabric, Azure IaC, and A3 Firebase extraction. CLI-first dual control plane with Playwright browser fallback achieving 95-98% automated coverage via pac CLI, az CLI, Graph API, and Fabric REST. Covers TVS VA platform (Power Pages + Copilot Studio + Stripe billing), broker portal, Lobbi Consulting CRM, Medicare Consulting, TAIA FMO carrier normalization sprint, and multi-entity Fabric analytics. 12 agents, 12 commands, 7 skills, 5 hooks, 5 workflows.",
-      "version": "1.0.0",
+      "description": "Consul (Forerunner) - Enterprise Microsoft ecosystem orchestrator for TVS (Trusted Virtual Solutions) multi-entity multi-tenant deployment. 19 specialized agents across Entra ID, Dataverse, Power Platform, Fabric, Azure IaC, Power Pages, Excel automation, embedded analytics, M365 governance, and A3 Firebase extraction. CLI-first dual control plane with Playwright browser fallback achieving 95-98% automated coverage via pac CLI, az CLI, Graph API, and Fabric REST. Covers TVS VA platform (Power Pages + Copilot Studio + Stripe billing), broker portal, Lobbi Consulting CRM, Medicare Consulting, TAIA FMO carrier normalization sprint, and multi-entity Fabric analytics. 19 agents, 17 commands, 17 skills, 9 hooks, 5 workflows.",
+      "version": "1.1.0",
       "author": {
         "name": "Markus Ahling",
         "email": "markus@lobbi.io"
@@ -490,7 +267,10 @@
         "copilot-studio",
         "onelake",
         "bicep",
-        "graph-api"
+        "graph-api",
+        "power-bi-embedded",
+        "planner",
+        "m365-governance"
       ]
     }
   ]

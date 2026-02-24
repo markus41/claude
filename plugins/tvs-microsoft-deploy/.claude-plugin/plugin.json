@@ -1,7 +1,7 @@
 {
   "name": "tvs-microsoft-deploy",
-  "version": "1.0.0",
-  "description": "Consul (Forerunner) - Enterprise Microsoft ecosystem orchestrator for TVS (Trusted Virtual Solutions) multi-entity multi-tenant deployment. 12 agents, 14 commands, 7 skills, 9 hooks, 5 workflows.",
+  "version": "1.1.0",
+  "description": "Consul (Forerunner) - Enterprise Microsoft ecosystem orchestrator for TVS (Trusted Virtual Solutions) multi-entity multi-tenant deployment. 19 agents, 18 commands, 17 skills, 14 hooks, 5 workflows. MCP server for Graph API, Dataverse, Fabric, and Planner.",
   "author": {
     "name": "Markus Ahling",
     "email": "markus@lobbi.io"
@@ -26,7 +26,14 @@
     "copilot-studio",
     "onelake",
     "bicep",
-    "graph-api"
+    "graph-api",
+    "power-bi-embedded",
+    "planner",
+    "m365-governance",
+    "dlp",
+    "excel-automation",
+    "solution-architect",
+    "pipeline-orchestration"
   ],
   "repository": "https://github.com/Lobbi-Docs/claude",
   "license": "MIT",
@@ -42,7 +49,14 @@
     "agents/carrier-normalization-agent.md",
     "agents/michelle-scripts-agent.md",
     "agents/consulting-crm-agent.md",
-    "agents/browser-fallback-agent.md"
+    "agents/browser-fallback-agent.md",
+    "agents/power-pages-agent.md",
+    "agents/excel-automation-agent.md",
+    "agents/fabric-pipeline-agent.md",
+    "agents/embedded-analytics-agent.md",
+    "agents/client-solution-architect-agent.md",
+    "agents/planner-orchestrator-agent.md",
+    "agents/m365-governance-agent.md"
   ],
   "skills": [
     "skills/pac-cli.md",
@@ -51,7 +65,17 @@
     "skills/graph-api.md",
     "skills/power-automate-rest.md",
     "skills/stripe-integration.md",
-    "skills/firebase-extract.md"
+    "skills/firebase-extract.md",
+    "skills/dataverse-architecture.md",
+    "skills/embedded-analytics-go-to-market.md",
+    "skills/excel-enterprise-automation.md",
+    "skills/fabric-engineering.md",
+    "skills/fabric-pipeline-authoring.md",
+    "skills/microsoft-graph-admin.md",
+    "skills/planner-orchestration.md",
+    "skills/power-platform-alm.md",
+    "skills/sharepoint-governance.md",
+    "skills/teams-operations.md"
   ],
   "commands": [
     "commands/deploy-all.md",
@@ -67,7 +91,11 @@
     "commands/quick-start.md",
     "commands/status-check.md",
     "commands/taia-readiness.md",
-    "commands/browser-fallback.md"
+    "commands/browser-fallback.md",
+    "commands/identity-attestation.md",
+    "commands/identity-drift.md",
+    "commands/orchestrate-planner.md",
+    "commands/health.md"
   ],
   "hooks": {
     "PreToolUse": [
@@ -106,6 +134,28 @@
       {
         "matcher": "Bash",
         "command": "hooks/audit-metadata-check.sh"
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "command": "hooks/audit-pac-operations.sh"
+      },
+      {
+        "matcher": "Bash",
+        "command": "hooks/audit-graph-api-calls.sh"
+      },
+      {
+        "matcher": "Bash",
+        "command": "hooks/audit-fabric-operations.sh"
+      },
+      {
+        "matcher": "Bash",
+        "command": "hooks/audit-azure-provisioning.sh"
+      },
+      {
+        "matcher": "Bash",
+        "command": "hooks/audit-dataverse-changes.sh"
       }
     ]
   },
