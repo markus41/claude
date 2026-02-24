@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Upload Fabric notebooks and create scheduled runs.
+"""Upload Fabric notebooks and create orchestrated pipeline-aligned runs.
 
 Reads .ipynb files from fabric/notebooks/ and uploads them to the
 appropriate Fabric workspace via the REST API.
@@ -12,6 +12,7 @@ Required env vars:
     A3_ARCHIVE_WS_ID  - A3 Archive workspace ID (for a3_archive_validate)
 """
 
+import argparse
 import base64
 import json
 import os
@@ -76,19 +77,40 @@ def upload_notebook(headers, workspace_id, notebook_path):
         return None
 
 
-def schedule_notebook(headers, workspace_id, notebook_id, name):
+def schedule_notebook(headers, workspace_id, notebook_id, name, orchestration_metadata):
     resp = requests.post(
         f"{FABRIC_API}/workspaces/{workspace_id}/items/{notebook_id}/jobs/instances",
         headers=headers,
         json={"executionData": {"parameters": {}, "optimisticConcurrency": True}},
     )
     if resp.status_code in (200, 201, 202):
-        print(f"    Scheduled run for: {name}")
+        schedule = orchestration_metadata.get("schedule", {})
+        pipeline_id = orchestration_metadata.get("pipeline_id", "unmapped")
+        print(
+            f"    Scheduled run for: {name} "
+            f"(pipeline={pipeline_id}, cron={schedule.get('cron_utc', 'n/a')})"
+        )
     else:
         print(f"    Schedule skipped for {name}: {resp.status_code}", file=sys.stderr)
 
 
+def get_orchestration_metadata(notebook_path):
+    payload = json.loads(notebook_path.read_text(encoding="utf-8"))
+    return payload.get("metadata", {}).get("tvs_orchestration", {})
+
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Print orchestration metadata without uploading notebooks",
+    )
+    return parser.parse_args()
+
+
 def main():
+    args = parse_args()
     headers = get_headers()
     notebooks = discover_notebooks()
 
@@ -106,9 +128,17 @@ def main():
             print(f"  SKIP: {name} (no workspace ID in {ws_env_var})")
             continue
 
+        orchestration_metadata = get_orchestration_metadata(nb_path)
+        if not orchestration_metadata:
+            print(f"  WARN: {name} missing tvs_orchestration metadata")
+
+        if args.dry_run:
+            print(f"  DRY-RUN: {name} -> {orchestration_metadata}")
+            continue
+
         nb_id = upload_notebook(headers, ws_id, nb_path)
         if nb_id:
-            schedule_notebook(headers, ws_id, nb_id, name)
+            schedule_notebook(headers, ws_id, nb_id, name, orchestration_metadata)
 
     print("\nDone.")
 

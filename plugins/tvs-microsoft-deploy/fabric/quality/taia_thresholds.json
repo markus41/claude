@@ -1,0 +1,5 @@
+{
+  "carrier_count_min": 25,
+  "commission_total_variance_pct_max": 0.02,
+  "agent_hierarchy_consistency_min": 0.995
+}
