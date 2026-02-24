@@ -94,6 +94,31 @@ echo "Carrier records must be present in a3_archive/ lakehouse"
 - Document mapping decisions and confidence levels
 - Export summary to taia-sale-prep workflow
 
+
+## Workbook quality gates (required)
+
+Before Phase 4 testing, score workbook quality gates for carrier mapping and commission reconciliation artifacts:
+
+```bash
+python scripts/excel/analyze_workbook.py \
+  --workbook data/carriers/carrier_mapping.xlsx \
+  --profile carrier_mapping \
+  --output plugins/tvs-microsoft-deploy/control-plane/out/carrier_mapping.quality.json
+
+python scripts/excel/analyze_workbook.py \
+  --workbook data/carriers/commission_reconciliation.xlsx \
+  --profile commission_reconciliation \
+  --output plugins/tvs-microsoft-deploy/control-plane/out/commission_reconciliation.quality.json
+```
+
+Normalize and export only when both workbook scores are >= 90 and all workbook gates pass:
+
+```bash
+python scripts/excel/normalize_workbook.py --input data/carriers/carrier_mapping.xlsx --output out/carrier_mapping.normalized.xlsx
+python scripts/excel/export_to_dataverse.py --workbook out/carrier_mapping.normalized.xlsx --sheet CarrierMap --table tvs_carriermap --output out/carrier_mapping.dataverse.ndjson
+python scripts/excel/export_to_fabric.py --workbook out/carrier_mapping.normalized.xlsx --sheet CarrierMap --output-dir out/fabric_carrier_mapping
+```
+
 ## Output
 
 ```
