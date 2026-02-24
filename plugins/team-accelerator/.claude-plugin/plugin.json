@@ -23,7 +23,7 @@
   ],
   "license": "MIT",
   "repository": "https://github.com/Lobbi-Docs/claude",
-  "contextEntry": "CONTEXT.md",
+  "contextEntry": "CONTEXT_SUMMARY.md",
   "$schema": "../../../schemas/plugin.schema.json",
   "permissions": {
     "requires": [],
@@ -34,7 +34,7 @@
     "requires": []
   },
   "context": {
-    "entry": "CONTEXT.md",
+    "entry": "CONTEXT_SUMMARY.md",
     "title": "team-accelerator",
     "summary": "Enterprise development toolkit for teams - DevOps, code quality, integrations, workflow automation, documentation, and performance optimization across multi-cloud and full-stack platforms",
     "tags": [
@@ -51,6 +51,19 @@
       "harness",
       "playwright",
       "prometheus"
+    ],
+    "bootstrapFiles": [
+      "CONTEXT_SUMMARY.md"
+    ],
+    "maxTokens": 1200,
+    "excludeGlobs": [
+      "**/node_modules/**",
+      "**/.git/**",
+      "**/dist/**"
+    ],
+    "lazyLoadSections": [
+      "skills/**",
+      "**/README.md"
     ]
   }
 }

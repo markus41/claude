@@ -31,6 +31,17 @@ export interface PluginManifest {
   contextEntry?: string;
   /** Extracted short context text loaded from contextEntry. */
   contextSummary?: string;
+  /** Context loading policy and bootstrap strategy. */
+  context?: {
+    entry?: string;
+    bootstrapFiles?: string[];
+    maxTokens?: number;
+    excludeGlobs?: string[];
+    lazyLoadSections?: string[];
+    title?: string;
+    summary?: string;
+    tags?: string[];
+  };
   /** Capability declarations. Absent means the plugin declares nothing. */
   capabilities?: PluginCapabilities;
   /** Optional module map for multi-module plugins. */

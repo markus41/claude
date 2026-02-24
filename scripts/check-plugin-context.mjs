@@ -32,10 +32,23 @@ for (const pluginName of pluginDirs) {
     fail(`${pluginName}: plugin manifest is missing required "contextEntry" field`);
     continue;
   }
-  const contextPath = path.join(pluginRoot, contextEntry);
+
+  const bootstrapFiles = manifest?.context?.bootstrapFiles;
+  if (!Array.isArray(bootstrapFiles) || bootstrapFiles.length === 0) {
+    fail(`${pluginName}: plugin cannot be published without context.bootstrapFiles`);
+    continue;
+  }
+
+  const summaryPath = path.join(pluginRoot, "CONTEXT_SUMMARY.md");
+  if (!fs.existsSync(summaryPath)) {
+    fail(`${pluginName}: plugin cannot be published without CONTEXT_SUMMARY.md`);
+    continue;
+  }
+
+  const contextPath = path.join(pluginRoot, bootstrapFiles[0]);
 
   if (!fs.existsSync(contextPath)) {
-    fail(`${pluginName}: missing context entry file at ${contextEntry}`);
+    fail(`${pluginName}: missing bootstrap context file at ${bootstrapFiles[0]}`);
     continue;
   }
 
@@ -44,11 +57,11 @@ for (const pluginName of pluginDirs) {
   const tokens = estimateTokens(text);
 
   if (lines > MAX_LINES) {
-    fail(`${pluginName}: ${contextEntry} has ${lines} lines (max ${MAX_LINES})`);
+    fail(`${pluginName}: ${bootstrapFiles[0]} has ${lines} lines (max ${MAX_LINES})`);
   }
 
   if (tokens > MAX_ESTIMATED_TOKENS) {
-    fail(`${pluginName}: ${contextEntry} estimated ${tokens} tokens (max ${MAX_ESTIMATED_TOKENS})`);
+    fail(`${pluginName}: ${bootstrapFiles[0]} estimated ${tokens} tokens (max ${MAX_ESTIMATED_TOKENS})`);
   }
 }
 

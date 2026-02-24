@@ -454,8 +454,7 @@ export class RegistryClient {
 
       const name = manifest.name as string;
       const version = (manifest.version as string) || '0.0.0';
-      const contextEntry = (manifest.contextEntry as string) || 'CONTEXT.md';
-      const description = this.readContextDescription(dirPath, entry.name, contextEntry)
+      const description = this.readContextDescription(dirPath, entry.name, manifest)
         || (manifest.description as string)
         || '';
 
@@ -493,9 +492,9 @@ export class RegistryClient {
    * Read the plugin context entry and return a short description line.
    * Falls back to an empty string if the file is missing/unreadable.
    */
-  private readContextDescription(dirPath: string, pluginDir: string, contextEntry: string): string {
-    const contextPath = path.join(dirPath, pluginDir, contextEntry);
-    if (!fs.existsSync(contextPath)) return '';
+  private readContextDescription(dirPath: string, pluginDir: string, manifest: Record<string, unknown>): string {
+    const contextPath = this.resolveBootstrapContextPath(dirPath, pluginDir, manifest);
+    if (!contextPath || !fs.existsSync(contextPath)) return '';
 
     try {
       const lines = fs.readFileSync(contextPath, 'utf8')
@@ -506,6 +505,30 @@ export class RegistryClient {
     } catch {
       return '';
     }
+  }
+
+
+  /** Resolve the first available bootstrap context file for registry indexing. */
+  private resolveBootstrapContextPath(dirPath: string, pluginDir: string, manifest: Record<string, unknown>): string | null {
+    const context = manifest.context as Record<string, unknown> | undefined;
+    const bootstrapFiles = Array.isArray(context?.bootstrapFiles)
+      ? context?.bootstrapFiles.filter((item): item is string => typeof item === 'string')
+      : [];
+
+    const candidates = [
+      bootstrapFiles[0],
+      typeof context?.entry === 'string' ? context.entry : undefined,
+      typeof manifest.contextEntry === 'string' ? manifest.contextEntry : undefined,
+      'CONTEXT_SUMMARY.md',
+      'CONTEXT.md',
+    ].filter((item): item is string => Boolean(item && item.trim()));
+
+    for (const rel of candidates) {
+      const fullPath = path.join(dirPath, pluginDir, rel);
+      if (fs.existsSync(fullPath)) return fullPath;
+    }
+
+    return null;
   }
 
   /** Fetch from a remote URL. */

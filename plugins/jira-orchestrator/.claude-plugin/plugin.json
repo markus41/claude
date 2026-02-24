@@ -28,7 +28,7 @@
   "license": "MIT",
   "repository": "https://github.com/Lobbi-Docs/claude",
   "mcpServers": "./.mcp.json",
-  "contextEntry": "CONTEXT.md",
+  "contextEntry": "CONTEXT_SUMMARY.md",
   "$schema": "../../../schemas/plugin.schema.json",
   "permissions": {
     "requires": [],
@@ -39,7 +39,7 @@
     "requires": []
   },
   "context": {
-    "entry": "CONTEXT.md",
+    "entry": "CONTEXT_SUMMARY.md",
     "title": "jira-orchestrator",
     "summary": "Enterprise Jira orchestration with 77 agents, 16 teams, 45 commands, 13 skills. Features Atlassian MCP OAuth, Harness integration, Neon PostgreSQL, Redis caching, Temporal workflows, and structured reasoning frameworks.",
     "tags": [
@@ -60,6 +60,19 @@
       "postgresql",
       "redis",
       "temporal"
+    ],
+    "bootstrapFiles": [
+      "CONTEXT_SUMMARY.md"
+    ],
+    "maxTokens": 1200,
+    "excludeGlobs": [
+      "**/node_modules/**",
+      "**/.git/**",
+      "**/dist/**"
+    ],
+    "lazyLoadSections": [
+      "skills/**",
+      "**/README.md"
     ]
   }
 }

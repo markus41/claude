@@ -35,6 +35,15 @@ for (const pluginName of pluginDirs) {
     if (manifest?.context?.entry !== manifest?.contextEntry) {
       issues.push(`${pluginName}: context.entry must match contextEntry for compatibility`);
     }
+
+    if (!Array.isArray(manifest?.context?.bootstrapFiles) || manifest.context.bootstrapFiles.length === 0) {
+      issues.push(`${pluginName}: context.bootstrapFiles must contain at least one bootstrap file`);
+    }
+
+    const summaryPath = path.join(pluginRoot, 'CONTEXT_SUMMARY.md');
+    if (!fs.existsSync(summaryPath)) {
+      issues.push(`${pluginName}: missing required CONTEXT_SUMMARY.md`);
+    }
   } else {
     issues.push(`${pluginName}: missing .claude-plugin/plugin.json`);
   }

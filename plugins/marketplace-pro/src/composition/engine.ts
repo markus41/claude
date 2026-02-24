@@ -91,7 +91,7 @@ export class CapabilityMatcher {
       try {
         const raw = fs.readFileSync(manifestPath, 'utf-8');
         const parsed = JSON.parse(raw) as PluginManifest;
-        parsed.contextSummary = this.loadContextSummary(entry, parsed.contextEntry);
+        parsed.contextSummary = this.loadContextSummary(entry, parsed);
 
         // Normalise: ensure capabilities always has provides/requires arrays
         if (!parsed.capabilities) {
@@ -125,14 +125,9 @@ export class CapabilityMatcher {
    * Load a compact context summary for the plugin.
    * The context entry is expected to be a concise operator-facing markdown file.
    */
-  private loadContextSummary(pluginDirName: string, contextEntry?: string): string {
-    const contextPath = path.join(
-      this.pluginsDir,
-      pluginDirName,
-      contextEntry || 'CONTEXT.md',
-    );
-
-    if (!fs.existsSync(contextPath)) return '';
+  private loadContextSummary(pluginDirName: string, manifest: PluginManifest): string {
+    const contextPath = this.resolveBootstrapContextPath(pluginDirName, manifest);
+    if (!contextPath || !fs.existsSync(contextPath)) return '';
 
     const content = fs.readFileSync(contextPath, 'utf-8');
     return content
@@ -142,6 +137,31 @@ export class CapabilityMatcher {
       .slice(0, 12)
       .join(' ')
       .slice(0, 800);
+  }
+
+  /**
+   * Resolve the first bootstrap context file.
+   * Preference order:
+   *  1. context.bootstrapFiles[0] (typically CONTEXT_SUMMARY.md)
+   *  2. context.entry/contextEntry
+   *  3. CONTEXT_SUMMARY.md
+   *  4. CONTEXT.md
+   */
+  private resolveBootstrapContextPath(pluginDirName: string, manifest: PluginManifest): string | null {
+    const candidates = [
+      manifest.context?.bootstrapFiles?.[0],
+      manifest.context?.entry,
+      manifest.contextEntry,
+      'CONTEXT_SUMMARY.md',
+      'CONTEXT.md',
+    ].filter((item): item is string => Boolean(item && item.trim()));
+
+    for (const rel of candidates) {
+      const fullPath = path.join(this.pluginsDir, pluginDirName, rel);
+      if (fs.existsSync(fullPath)) return fullPath;
+    }
+
+    return null;
   }
 
   /** Return all loaded manifests. */

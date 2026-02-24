@@ -17,7 +17,7 @@
     "platform-management"
   ],
   "repository": "https://github.com/the-lobbi/keycloak-alpha",
-  "contextEntry": "CONTEXT.md",
+  "contextEntry": "CONTEXT_SUMMARY.md",
   "$schema": "../../../schemas/plugin.schema.json",
   "permissions": {
     "requires": [],
@@ -28,7 +28,7 @@
     "requires": []
   },
   "context": {
-    "entry": "CONTEXT.md",
+    "entry": "CONTEXT_SUMMARY.md",
     "title": "lobbi-platform-manager",
     "summary": "Streamline development on the-lobbi/keycloak-alpha with Keycloak management, service orchestration, and test generation",
     "tags": [
@@ -40,6 +40,19 @@
       "testing",
       "devops",
       "platform-management"
+    ],
+    "bootstrapFiles": [
+      "CONTEXT_SUMMARY.md"
+    ],
+    "maxTokens": 1200,
+    "excludeGlobs": [
+      "**/node_modules/**",
+      "**/.git/**",
+      "**/dist/**"
+    ],
+    "lazyLoadSections": [
+      "skills/**",
+      "**/README.md"
     ]
   }
 }
