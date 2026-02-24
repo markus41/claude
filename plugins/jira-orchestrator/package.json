@@ -15,11 +15,13 @@
     "db:setup": "npm run db:generate && npm run db:push",
     "temporal:worker": "tsx lib/worker.ts",
     "temporal:start": "tsx scripts/start-orchestration.ts",
-    "setup": "npm run db:setup",
+    "setup": "npm run db:setup && npm run validate:integrations",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
     "lint": "eslint lib/",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "validate:integrations": "tsx scripts/validate-integrations.ts",
+    "ci": "npm run lint && npm run typecheck && npm run test && npm run validate:integrations"
   },
   "dependencies": {
     "@prisma/client": "^6.3.0",
