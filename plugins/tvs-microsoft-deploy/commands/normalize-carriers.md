@@ -25,8 +25,7 @@ Carrier normalization sprint for TAIA FMO sale preparation. Deduplicates carrier
 
 ```bash
 # Verify A3 extraction is complete (must run /tvs:extract-a3 first)
-curl -s -H "Authorization: Bearer $FABRIC_TOKEN" \
-  "https://api.fabric.microsoft.com/v1/workspaces/$A3_ARCHIVE_WS_ID/lakehouses" | jq '.value | length'
+python3 plugins/tvs-microsoft-deploy/scripts/api/fabric_request.py "/workspaces/$A3_ARCHIVE_WS_ID/lakehouses" --entity "${TVS_ENTITY:-tvs}" | jq '.value | length'
 
 # Verify carrier data exists in a3_archive lakehouse
 echo "Carrier records must be present in a3_archive/ lakehouse"

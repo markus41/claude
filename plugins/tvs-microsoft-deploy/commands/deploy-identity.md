@@ -31,13 +31,12 @@ fi
 [ -z "$TVS_TENANT_ID" ] && { echo "FAIL: TVS_TENANT_ID not set"; exit 1; }
 
 # 3. Validate Graph API access
-curl -sf -H "Authorization: Bearer $GRAPH_TOKEN" \
-  "https://graph.microsoft.com/v1.0/organization" > /dev/null \
+python3 plugins/tvs-microsoft-deploy/scripts/api/graph_request.py "/organization" --entity "${TVS_ENTITY:-tvs}" > /dev/null \
   || { echo "FAIL: Graph API token invalid or expired"; exit 1; }
 
 # 4. Confirm sufficient admin privileges
-ROLES=$(curl -s -H "Authorization: Bearer $GRAPH_TOKEN" \
-  "https://graph.microsoft.com/v1.0/me/memberOf" | jq -r '.value[].displayName')
+ROLES=$(python3 plugins/tvs-microsoft-deploy/scripts/api/graph_request.py "/me/memberOf" --entity "${TVS_ENTITY:-tvs}" \
+  | jq -r '.value[].displayName')
 echo "$ROLES" | grep -q "Global Administrator" \
   || echo "WARN: Global Admin role recommended for full provisioning"
 ```

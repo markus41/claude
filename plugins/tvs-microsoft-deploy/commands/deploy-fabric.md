@@ -30,8 +30,7 @@ Provisions Microsoft Fabric workspaces and OneLake lakehouses for all TVS entiti
 [ -z "$FABRIC_CAPACITY_ID" ] && { echo "FAIL: FABRIC_CAPACITY_ID not set"; exit 1; }
 
 # 3. Validate Fabric API access
-curl -sf -H "Authorization: Bearer $FABRIC_TOKEN" \
-  "https://api.fabric.microsoft.com/v1/capacities/$FABRIC_CAPACITY_ID" > /dev/null \
+python3 plugins/tvs-microsoft-deploy/scripts/api/fabric_request.py "/capacities/$FABRIC_CAPACITY_ID" --entity "${TVS_ENTITY:-tvs}" > /dev/null \
   || { echo "FAIL: Fabric token invalid or capacity not accessible"; exit 1; }
 
 # 4. Verify Dataverse URLs for shortcut creation
