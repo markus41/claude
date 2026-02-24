@@ -7,7 +7,7 @@
 
 import { readFile, stat } from 'fs/promises';
 import { join, extname } from 'path';
-import { existsSync } from 'fs';
+import { existsSync, statSync } from 'fs';
 import glob from 'fast-glob';
 import type {
   TemplateContext,
@@ -66,6 +66,23 @@ export interface LoadedContext {
 }
 
 /**
+ * Cache metadata for loaded context
+ */
+interface ContextCacheMetadata {
+  /** Cache entry creation timestamp */
+  createdAt: number;
+  /** Hash of effective load options */
+  optionsHash: string;
+  /** Fingerprint of scanned files */
+  fileFingerprint: string;
+}
+
+interface ContextCacheEntry {
+  context: LoadedContext;
+  metadata: ContextCacheMetadata;
+}
+
+/**
  * Context loading statistics
  */
 export interface ContextStats {
@@ -104,6 +121,8 @@ const DEFAULT_OPTIONS: Required<ContextLoadOptions> = {
   maxContextTokens: 50000,
 };
 
+const CACHE_TTL_MS = 30_000;
+
 /**
  * Context Manager
  *
@@ -112,7 +131,7 @@ const DEFAULT_OPTIONS: Required<ContextLoadOptions> = {
  */
 export class ContextManager {
   private readonly options: Required<ContextLoadOptions>;
-  private readonly contextCache: Map<string, LoadedContext> = new Map();
+  private readonly contextCache: Map<string, ContextCacheEntry> = new Map();
 
   constructor(options?: ContextLoadOptions) {
     this.options = { ...DEFAULT_OPTIONS, ...options };
@@ -128,12 +147,21 @@ export class ContextManager {
   ): Promise<LoadedContext> {
     const startTime = Date.now();
     const opts = { ...this.options, ...options };
+    const optionsHash = this.hashLoadOptions(opts);
 
     // Check cache
-    const cacheKey = this.getCacheKey(basePath, variables);
+    const cacheKey = this.getCacheKey(basePath, variables, optionsHash);
     const cached = this.contextCache.get(cacheKey);
     if (cached) {
-      return cached;
+      const cacheAge = Date.now() - cached.metadata.createdAt;
+      if (cacheAge <= CACHE_TTL_MS) {
+        const currentFingerprint = await this.createFileFingerprint(basePath, opts);
+        if (currentFingerprint === cached.metadata.fileFingerprint) {
+          return cached.context;
+        }
+      }
+
+      this.contextCache.delete(cacheKey);
     }
 
     const stats: ContextStats = {
@@ -144,13 +172,7 @@ export class ContextManager {
       durationMs: 0,
     };
 
-    // Find files - returns string[] when stats is not true
-    const files = await glob(opts.include, {
-      cwd: basePath,
-      ignore: opts.exclude,
-      deep: opts.maxDepth,
-      onlyFiles: true,
-    });
+    const files = await this.findFiles(basePath, opts);
 
     stats.filesScanned = files.length;
 
@@ -249,7 +271,14 @@ export class ContextManager {
     };
 
     // Cache result
-    this.contextCache.set(cacheKey, result);
+    this.contextCache.set(cacheKey, {
+      context: result,
+      metadata: {
+        createdAt: Date.now(),
+        optionsHash,
+        fileFingerprint: this.createFingerprintFromFileStats(basePath, files),
+      },
+    });
 
     return result;
   }
@@ -454,9 +483,72 @@ export class ContextManager {
    */
   private getCacheKey(
     basePath: string,
-    variables: Record<string, unknown>
+    variables: Record<string, unknown>,
+    optionsHash: string
   ): string {
-    return `${basePath}:${JSON.stringify(variables)}`;
+    return `${basePath}:${optionsHash}:${JSON.stringify(variables)}`;
+  }
+
+  private async findFiles(
+    basePath: string,
+    opts: Required<ContextLoadOptions>
+  ): Promise<string[]> {
+    return glob(opts.include, {
+      cwd: basePath,
+      ignore: opts.exclude,
+      deep: opts.maxDepth,
+      onlyFiles: true,
+    });
+  }
+
+  private async createFileFingerprint(
+    basePath: string,
+    opts: Required<ContextLoadOptions>
+  ): Promise<string> {
+    const files = await this.findFiles(basePath, opts);
+    return this.createFingerprintFromFileStats(basePath, files);
+  }
+
+  private createFingerprintFromFileStats(basePath: string, files: string[]): string {
+    const fileSignatures: string[] = [];
+
+    for (const file of [...files].sort()) {
+      try {
+        const filePath = join(basePath, file);
+        const fileStat = statSync(filePath);
+        fileSignatures.push(`${file}:${fileStat.mtimeMs}:${fileStat.size}`);
+      } catch {
+        // Ignore files that disappear during fingerprinting
+      }
+    }
+
+    return this.hashString(fileSignatures.join('|'));
+  }
+
+  private hashLoadOptions(opts: Required<ContextLoadOptions>): string {
+    return this.hashString(JSON.stringify({
+      maxDepth: opts.maxDepth,
+      include: opts.include,
+      exclude: opts.exclude,
+      maxFileSize: opts.maxFileSize,
+      maxContextTokens: opts.maxContextTokens,
+    }));
+  }
+
+  private hashString(value: string): string {
+    let hash = 2166136261;
+
+    for (let i = 0; i < value.length; i++) {
+      hash ^= value.charCodeAt(i);
+      hash +=
+        (hash << 1) +
+        (hash << 4) +
+        (hash << 7) +
+        (hash << 8) +
+        (hash << 24);
+    }
+
+    return (hash >>> 0).toString(16);
   }
 }
 
