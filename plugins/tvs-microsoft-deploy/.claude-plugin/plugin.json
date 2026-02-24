@@ -1,7 +1,7 @@
 {
   "name": "tvs-microsoft-deploy",
   "version": "1.0.0",
-  "description": "Consul (Forerunner) - Enterprise Microsoft ecosystem orchestrator for TVS (Trusted Virtual Solutions) multi-entity multi-tenant deployment. 12 agents, 13 commands, 7 skills, 5 hooks, 5 workflows.",
+  "description": "Consul (Forerunner) - Enterprise Microsoft ecosystem orchestrator for TVS (Trusted Virtual Solutions) multi-entity multi-tenant deployment. 12 agents, 13 commands, 7 skills, 9 hooks, 5 workflows.",
   "author": {
     "name": "Markus Ahling",
     "email": "markus@lobbi.io"
@@ -89,6 +89,22 @@
       {
         "matcher": "Bash",
         "command": "hooks/hipaa-config-guard.sh"
+      },
+      {
+        "matcher": "Bash",
+        "command": "hooks/scope-permission-misuse-check.sh"
+      },
+      {
+        "matcher": "Bash",
+        "command": "hooks/tenant-drift-check.sh"
+      },
+      {
+        "matcher": "Bash",
+        "command": "hooks/unsafe-destructive-call-check.sh"
+      },
+      {
+        "matcher": "Bash",
+        "command": "hooks/audit-metadata-check.sh"
       }
     ]
   },
