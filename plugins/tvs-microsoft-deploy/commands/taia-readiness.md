@@ -51,3 +51,18 @@ python plugins/tvs-microsoft-deploy/scripts/taia_readiness_checks.py \
 ```
 
 The command fails readiness when carrier counts, commission variance, or agent hierarchy consistency breach policy thresholds.
+
+## M365 operational output
+
+After generating `taia-readiness.json`, emit machine-readable and collaboration-ready outputs for automated Teams posts, Planner tasks, approvals, and SharePoint checklist updates:
+
+```bash
+python plugins/tvs-microsoft-deploy/scripts/m365_operational_update.py \
+  --event-type taia-readiness \
+  --input plugins/tvs-microsoft-deploy/control-plane/out/taia-readiness.json \
+  --json-out plugins/tvs-microsoft-deploy/control-plane/out/taia-readiness.m365.json \
+  --ops-out plugins/tvs-microsoft-deploy/control-plane/out/taia-readiness.ops-update.md
+```
+
+Use `taia-readiness.m365.json` for workflow automation and `taia-readiness.ops-update.md` for transition-room collaboration updates.
+
