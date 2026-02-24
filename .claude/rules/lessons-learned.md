@@ -376,13 +376,31 @@ FileNotFoundError: [Errno 2] No such file or directory: '/home/user/claude/plugi
 Traceback (most recent call last):
   File "<stdin>", line 92, in <module>
 FileNotFoundError: [Errno 2] No such file or directory: '/home/user/claude/plugins/rosa-microsoft-deploy/scripts/seed_keyvault.sh'
-- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+- **Status:** RESOLVED
+- **Fix:** Background agents were writing to old `rosa-microsoft-deploy` path after mid-build rename to `tvs-microsoft-deploy`. Files exist at new path.
+- **Prevention:** When renaming a plugin mid-build, stop/wait for all background agents before renaming. Background agents retain old paths from their initial prompt.
 
 ### Error: Bash failure (2026-02-24T08:13:32Z)
 - **Tool:** Bash
 - **Input:** `chmod +x /home/user/claude/plugins/rosa-microsoft-deploy/scripts/seed_keyvault.sh`
 - **Error:** Exit code 1
 chmod: cannot access '/home/user/claude/plugins/rosa-microsoft-deploy/scripts/seed_keyvault.sh': No such file or directory
+- **Status:** RESOLVED
+- **Fix:** Same root cause — background agent used old path. File exists at `tvs-microsoft-deploy/scripts/seed_keyvault.sh`.
+- **Prevention:** Same as above — stop background agents before directory rename.
 
-chmod: cannot access '/home/user/claude/plugins/rosa-microsoft-deploy/scripts/seed_keyvault.sh': No such file or directory
-- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+### Error: Read failure (2026-02-24T08:14:28Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/plugins/rosa-microsoft-deploy/scripts/provision_fabric.py`
+- **Error:** File does not exist. Note: your current working directory is /home/user/claude.
+- **Status:** RESOLVED
+- **Fix:** File exists at renamed path `tvs-microsoft-deploy/scripts/provision_fabric.py`.
+- **Prevention:** After directory rename, update all file path references to new name.
+
+### Error: Bash failure (2026-02-24T08:18:00Z)
+- **Tool:** Bash
+- **Input:** `python3 << 'PYEOF' ... (background agent writing scripts to old rosa-microsoft-deploy path)`
+- **Error:** FileNotFoundError: rosa-microsoft-deploy directory no longer exists (renamed to tvs-microsoft-deploy)
+- **Status:** RESOLVED
+- **Fix:** Background agent retained old path from initial prompt. Scripts already exist at tvs-microsoft-deploy/scripts/.
+- **Prevention:** Stop all background agents before renaming directories. Background agents cannot detect mid-flight path changes.
