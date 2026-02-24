@@ -119,6 +119,8 @@ pr_creation:
 
 1. **Validate & Fetch** - Get issue from Jira
 2. **Transition** - Set status to "In Progress"
+   - Trigger draft PR scaffolding via `commands/pr.md` unless issue has `no-draft-pr` label
+   - Pre-fill draft PR body with Jira context + initial checklist
 3. **Tag Management** - Apply domain/status/type tags
 4. **Sub-Issue Detection** - Find all subtasks/linked issues
 5. **Load PR Plan Artifact** - Read `.claude/orchestration/plans/{ISSUE-KEY}-plan.json`
@@ -134,6 +136,23 @@ pr_creation:
 15. **Commit & PR** - Smart commit with tracking
 16. **Jira Comments** - Post milestones: start, sub-count, agents, checkpoint updates, phase completions, PR, transitions, summary
 17. **Final Summary** - Audit trail with metrics
+
+## Draft PR Scaffolding on Work Start
+
+When an issue transitions to **In Progress**, orchestrator hooks should create a draft PR scaffold immediately.
+
+### Behavior
+
+- Source workflow: `/jira:work` transition event
+- PR generation command: `/jira:pr` in draft mode
+- Initial PR body content:
+  - Jira issue context (summary/description/labels)
+  - Initial acceptance checklist
+  - Progress notes section (append-only updates for later commits)
+
+### Opt-Out
+
+If issue contains label `no-draft-pr`, skip automatic draft PR creation and checklist sync.
 
 ## Success Criteria
 
