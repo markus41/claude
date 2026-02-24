@@ -22,6 +22,78 @@ global:
       - "security_scan == 'passed'"
       - "no_breaking_changes == true"
 
+# Jira PR Readiness Gate Policies
+jira_readiness:
+  enabled: true
+  issue_link_template: "https://jira.example.com/browse/%{issue_key}"
+  pr_tool_patterns:
+    - "gh_pr_create"
+    - "mcp__github__create_pull_request"
+    - "mcp__make_pr__make_pr"
+    - "harness_create_pull_request"
+
+  # Baseline policy used when no team/project override exists.
+  default:
+    definition_of_ready_label: "definition-of-ready"
+    acceptance_criteria_fields:
+      - "customfield_10038"
+      - "acceptance_criteria"
+    required_fields_by_issue_type:
+      Story:
+        - assignee
+        - acceptance_criteria
+        - priority
+        - component
+        - sprint
+        - definition_of_ready_label
+      Task:
+        - assignee
+        - priority
+        - component
+        - sprint
+        - definition_of_ready_label
+      Bug:
+        - assignee
+        - priority
+        - component
+        - sprint
+      default:
+        - assignee
+        - priority
+
+  # Team-level overrides. Attach with JIRA_TEAM=<team-key>.
+  teams:
+    platform:
+      definition_of_ready_label: "platform-dor"
+      acceptance_criteria_fields:
+        - "customfield_10038"
+        - "customfield_10201"
+      required_fields_by_issue_type:
+        Story:
+          - assignee
+          - acceptance_criteria
+          - priority
+          - component
+          - sprint
+          - definition_of_ready_label
+
+  # Project-level overrides by Jira project key (e.g. PROJ-123).
+  projects:
+    ENG:
+      definition_of_ready_label: "eng-dor"
+      required_fields_by_issue_type:
+        Story:
+          - assignee
+          - acceptance_criteria
+          - priority
+          - component
+          - sprint
+          - definition_of_ready_label
+        Spike:
+          - assignee
+          - priority
+          - sprint
+
 # Approval Workflows
 workflows:
   # Standard Pull Request Approval
