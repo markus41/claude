@@ -27,7 +27,8 @@ npm ci
 # Install plugin wiring (sets up hooks automatically)
 bash scripts/install.sh
 
-# Verify
+# Validate integration contracts and verify
+npm run validate:integrations
 claude /jira:setup
 ```
 
@@ -36,6 +37,19 @@ claude /jira:setup
 - Commit `package-lock.json` and use `npm ci` for local development and CI.
 - Use `npm install` only when intentionally changing dependencies, then commit the updated lockfile in the same PR.
 - Never commit `node_modules/`, `dist/`, or `build/` directories; publish generated bundles as release artifacts instead.
+
+---
+
+
+## CI Validation Flow
+
+Run the plugin CI checks (including integration contract validation):
+
+```bash
+npm run ci
+```
+
+`npm run validate:integrations` writes a machine-readable report to `sessions/reports/integration-health.json` for CI ingestion and release gates.
 
 ---
 
