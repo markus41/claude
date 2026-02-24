@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tvs.local/schemas/planner-workflow.schema.json",
+  "title": "Planner Workflow Orchestration Schema",
+  "description": "Operational workflow model for Planner orchestration across EXPLORE/PLAN/CODE/TEST/FIX/DOCUMENT phases.",
+  "type": "object",
+  "required": ["workflowId", "name", "owners", "phases"],
+  "properties": {
+    "workflowId": {"type": "string", "pattern": "^[a-zA-Z0-9._:-]{3,128}$"},
+    "name": {"type": "string", "minLength": 3},
+    "description": {"type": "string"},
+    "version": {"type": "string", "default": "1.0.0"},
+    "planner": {
+      "type": "object",
+      "properties": {
+        "planId": {"type": "string"},
+        "groupId": {"type": "string"},
+        "labelMap": {
+          "type": "object",
+          "additionalProperties": {"type": "string"}
+        }
+      },
+      "additionalProperties": false
+    },
+    "owners": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/owner"}},
+    "metadata": {
+      "type": "object",
+      "additionalProperties": {"type": ["string", "number", "boolean", "null"]}
+    },
+    "phases": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/phase"}}
+  },
+  "$defs": {
+    "owner": {
+      "type": "object",
+      "required": ["type", "id", "displayName"],
+      "properties": {
+        "type": {"type": "string", "enum": ["user", "group", "service"]},
+        "id": {"type": "string", "minLength": 2},
+        "displayName": {"type": "string", "minLength": 2},
+        "email": {"type": "string", "format": "email"}
+      },
+      "additionalProperties": false
+    },
+    "sla": {
+      "type": "object",
+      "required": ["targetHours"],
+      "properties": {
+        "targetHours": {"type": "integer", "minimum": 1},
+        "warningHours": {"type": "integer", "minimum": 1},
+        "breachHours": {"type": "integer", "minimum": 1}
+      },
+      "additionalProperties": false
+    },
+    "evidenceLink": {
+      "type": "object",
+      "required": ["name", "url", "type"],
+      "properties": {
+        "name": {"type": "string", "minLength": 2},
+        "url": {"type": "string", "format": "uri"},
+        "type": {"type": "string", "enum": ["document", "dashboard", "ticket", "recording", "artifact"]},
+        "notes": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "dependency": {
+      "type": "object",
+      "required": ["phaseId"],
+      "properties": {
+        "phaseId": {"type": "string", "minLength": 2},
+        "kind": {"type": "string", "enum": ["blocks", "relates-to", "requires-evidence"], "default": "blocks"},
+        "notes": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "taskTemplate": {
+      "type": "object",
+      "required": ["title"],
+      "properties": {
+        "title": {"type": "string", "minLength": 3},
+        "description": {"type": "string"},
+        "ownerIds": {"type": "array", "items": {"type": "string"}, "default": []},
+        "labels": {"type": "array", "items": {"type": "string"}, "default": []},
+        "checklist": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 2},
+          "default": []
+        },
+        "evidenceRequired": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/evidenceLink"},
+          "default": []
+        }
+      },
+      "additionalProperties": false
+    },
+    "phase": {
+      "type": "object",
+      "required": ["id", "name", "state", "owners", "sla"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-zA-Z0-9._:-]{2,64}$"},
+        "name": {"type": "string", "enum": ["EXPLORE", "PLAN", "CODE", "TEST", "FIX", "DOCUMENT"]},
+        "state": {"type": "string", "enum": ["pending", "in-progress", "blocked", "completed"]},
+        "owners": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/owner"}},
+        "sla": {"$ref": "#/$defs/sla"},
+        "dependencies": {"type": "array", "items": {"$ref": "#/$defs/dependency"}, "default": []},
+        "evidenceLinks": {"type": "array", "items": {"$ref": "#/$defs/evidenceLink"}, "default": []},
+        "taskTemplates": {"type": "array", "items": {"$ref": "#/$defs/taskTemplate"}, "default": []},
+        "planner": {
+          "type": "object",
+          "properties": {
+            "bucketId": {"type": "string"},
+            "taskIds": {"type": "array", "items": {"type": "string"}, "default": []}
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
