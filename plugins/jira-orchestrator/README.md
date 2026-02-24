@@ -19,12 +19,23 @@
 ## Quick Start
 
 ```bash
-# Install (sets up hooks automatically)
+cd plugins/jira-orchestrator
+
+# Deterministic install from package-lock.json
+npm ci
+
+# Install plugin wiring (sets up hooks automatically)
 bash scripts/install.sh
 
 # Verify
 claude /jira:setup
 ```
+
+### Dependency + lockfile policy
+
+- Commit `package-lock.json` and use `npm ci` for local development and CI.
+- Use `npm install` only when intentionally changing dependencies, then commit the updated lockfile in the same PR.
+- Never commit `node_modules/`, `dist/`, or `build/` directories; publish generated bundles as release artifacts instead.
 
 ---
 

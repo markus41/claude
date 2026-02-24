@@ -1,4 +1,4 @@
-name: Prevent tracked node_modules
+name: Prevent tracked dependencies and build artifacts
 
 on:
   pull_request:
@@ -8,18 +8,11 @@ on:
       - master
 
 jobs:
-  check-node-modules:
+  dependency-hygiene:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Fail if node_modules is tracked
-        run: |
-          set -euo pipefail
-          tracked=$(git ls-files 'plugins/claude-code-templating-plugin/node_modules/**')
-          if [ -n "$tracked" ]; then
-            echo "Tracked node_modules files detected:"
-            echo "$tracked"
-            exit 1
-          fi
+      - name: Fail if dependency folders or build artifacts are tracked
+        run: scripts/check-no-tracked-deps.sh

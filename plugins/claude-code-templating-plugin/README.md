@@ -38,6 +38,12 @@ npm install
 git add package-lock.json
 ```
 
+### Dependency + lockfile policy
+
+- `npm ci` is required for CI and recommended for all fresh local installs.
+- Treat `package-lock.json` as mandatory and commit lockfile changes with dependency updates.
+- Do not commit `node_modules/`, `dist/`, or `build/`; if a packaged bundle is required, attach it as a release artifact.
+
 ## Configuration
 
 ### Environment Variables

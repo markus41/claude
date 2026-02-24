@@ -37,6 +37,13 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-lock.yaml
 
+# Nested dependencies and generated artifacts (plugin-safe)
+**/node_modules/
+**/.pnpm/
+**/.yarn/
+**/dist/
+**/build/
+
 # IDE
 .vscode/
 .idea/
