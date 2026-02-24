@@ -129,3 +129,6 @@ Overall: 22/23 checks passed
 
 - `/tvs:cost-report` — Financial health view
 - `/tvs:deploy-all` — Deploy/redeploy components with issues
+- `/tvs:taia-readiness` — TAIA sale and wind-down readiness scorecard
+- `/tvs:deploy-planner` — Jira-style orchestration boards on Microsoft Planner
+- `/tvs:deploy-embedded-analytics` — Fabric + Power Pages embedded analytics rollout

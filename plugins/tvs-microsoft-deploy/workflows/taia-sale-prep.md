@@ -8,6 +8,15 @@
 
 ---
 
+
+## Operational Runbook Additions
+
+- Run `/tvs:taia-readiness` before any buyer-facing checkpoint publication.
+- Use `workflows/taia-day0-day30.md` as the transition execution plan after close.
+- Enforce `hooks/taia-winddown-guard.sh` for destructive command safety in TAIA tenant context.
+
+---
+
 ## Dependency Graph
 
 ```

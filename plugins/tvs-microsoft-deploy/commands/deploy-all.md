@@ -42,7 +42,11 @@ for var in "${REQUIRED_VARS[@]}"; do
   [ -z "${!var}" ] && { echo "FAIL: $var not set"; exit 1; }
 done
 
-# 4. Fabric token validity
+# 4. TAIA wind-down safety (when touching TAIA resources)
+# Ensure guard hook is enabled and intent marker is used for destructive operations.
+# export TAIA_TENANT_ID=<tenant-guid>
+
+# 5. Fabric token validity
 curl -sf -H "Authorization: Bearer $FABRIC_TOKEN" \
   "https://api.fabric.microsoft.com/v1/capacities" > /dev/null || { echo "FAIL: FABRIC_TOKEN expired"; exit 1; }
 ```
@@ -75,6 +79,7 @@ curl -sf -H "Authorization: Bearer $FABRIC_TOKEN" \
   4. Portal (Power Pages broker portal, Copilot Studio bots)
   5. Azure (Key Vault, Functions, Static Web Apps, App Insights)
   6. Teams (VA workspace, entity channels, shared mailboxes)
+  7. Planner + Embedded Analytics (workflow boards and client analytics packages)
 - Calculate estimated cost impact per tier (Tier 1 ~$1,349, Tier 2 ~$2,610, Tier 3 ~$5,083)
 - Generate rollback checkpoints between each phase
 - Produce deployment manifest JSON at `/tmp/rosa-deploy-manifest.json`
@@ -98,6 +103,11 @@ curl -sf -H "Authorization: Bearer $FABRIC_TOKEN" \
 - Execute `tvs:deploy-teams` for workspace and channel provisioning
 - Wire Stripe billing widget into broker portal
 - Configure Teams shared mailbox routing per entity
+
+**Agent 6b - Planner + Analytics Productizer:**
+- Execute `tvs:deploy-planner` for operational workflow orchestration
+- Execute `tvs:deploy-embedded-analytics` for client-facing analytics packages
+- Validate RLS and embed token handoff to Power Pages
 
 ### Phase 4: TEST (2 agents)
 
