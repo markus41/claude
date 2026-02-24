@@ -61,14 +61,14 @@
       "entry": "./src/federation/registry.ts"
     }
   },
-  "contextEntry": "CONTEXT.md",
+  "contextEntry": "CONTEXT_SUMMARY.md",
   "$schema": "../../../schemas/plugin.schema.json",
   "permissions": {
     "requires": [],
     "optional": []
   },
   "context": {
-    "entry": "CONTEXT.md",
+    "entry": "CONTEXT_SUMMARY.md",
     "title": "marketplace-pro",
     "summary": "Advanced plugin marketplace platform with intent-based composition, supply chain security, contextual intelligence, dev studio hot-reload, and federated registry protocol. Transforms the marketplace from a package manager into an enterprise orchestration platform.",
     "tags": [
@@ -86,6 +86,19 @@
       "sandboxing",
       "lockfile",
       "policy-engine"
+    ],
+    "bootstrapFiles": [
+      "CONTEXT_SUMMARY.md"
+    ],
+    "maxTokens": 1200,
+    "excludeGlobs": [
+      "**/node_modules/**",
+      "**/.git/**",
+      "**/dist/**"
+    ],
+    "lazyLoadSections": [
+      "skills/**",
+      "**/README.md"
     ]
   }
 }

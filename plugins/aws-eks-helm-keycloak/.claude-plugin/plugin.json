@@ -22,7 +22,7 @@
     "gitops",
     "developer-experience"
   ],
-  "contextEntry": "CONTEXT.md",
+  "contextEntry": "CONTEXT_SUMMARY.md",
   "$schema": "../../../schemas/plugin.schema.json",
   "permissions": {
     "requires": [],
@@ -33,7 +33,7 @@
     "requires": []
   },
   "context": {
-    "entry": "CONTEXT.md",
+    "entry": "CONTEXT_SUMMARY.md",
     "title": "aws-eks-helm-keycloak",
     "summary": "The Conduit-Artisan Hybrid - AWS EKS deployments with Helm, Keycloak authentication, and Harness CI/CD. Combines pipeline excellence with developer velocity.",
     "tags": [
@@ -49,6 +49,19 @@
       "ci-cd",
       "gitops",
       "developer-experience"
+    ],
+    "bootstrapFiles": [
+      "CONTEXT_SUMMARY.md"
+    ],
+    "maxTokens": 1200,
+    "excludeGlobs": [
+      "**/node_modules/**",
+      "**/.git/**",
+      "**/dist/**"
+    ],
+    "lazyLoadSections": [
+      "skills/**",
+      "**/README.md"
     ]
   }
 }
