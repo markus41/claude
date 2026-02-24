@@ -1,7 +1,18 @@
 ---
+name: ahling-command-center:acc-ollama
+intent: Manage Ollama models, GPU allocation, and model serving with RX 7900 XTX optimization
+tags:
+  - ahling-command-center
+  - command
+  - acc-ollama
+inputs: []
+risk: medium
+cost: medium
 description: Manage Ollama models, GPU allocation, and model serving with RX 7900 XTX optimization
-argument-hint: "<operation> [model-name] [--gpu-layers N]"
-allowed-tools: ["Bash", "Read", "Write"]
+allowed-tools:
+  - Bash
+  - Read
+  - Write
 ---
 
 Manage Ollama models including pulling, listing, running, GPU optimization for AMD RX 7900 XTX, model creation, and performance tuning.

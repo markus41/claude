@@ -1,7 +1,14 @@
 ---
 name: endpoint
+intent: Generate a complete FastAPI CRUD endpoint with router, schemas, service layer, and tests
+tags:
+  - fastapi-backend
+  - command
+  - endpoint
+inputs: []
+risk: medium
+cost: medium
 description: Generate a complete FastAPI CRUD endpoint with router, schemas, service layer, and tests
-argument-hint: "[resource_name] [--fields name:str,email:str] [--auth] [--cache]"
 allowed-tools:
   - Read
   - Write

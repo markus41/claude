@@ -1,7 +1,19 @@
 ---
+name: fullstack-iac:monorepo
+intent: Create full-stack monorepo with multiple services - API, web, admin, mobile
+tags:
+  - fullstack-iac
+  - command
+  - monorepo
+inputs: []
+risk: medium
+cost: medium
 description: Create full-stack monorepo with multiple services - API, web, admin, mobile
-argument-hint: "[name] --services [api,web,admin]"
-allowed-tools: ["Write", "Bash", "Read", "Edit"]
+allowed-tools:
+  - Write
+  - Bash
+  - Read
+  - Edit
 ---
 
 # Zenith Monorepo

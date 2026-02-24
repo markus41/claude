@@ -1,24 +1,21 @@
 ---
 name: ingest-agent
+intent: Data ingestion specialist managing Firebase extraction from A3, CSV imports, API data pulls, and ETL pipeline coordination
+tags:
+  - tvs-microsoft-deploy
+  - agent
+  - ingest-agent
+inputs: []
+risk: medium
+cost: medium
 description: Data ingestion specialist managing Firebase extraction from A3, CSV imports, API data pulls, and ETL pipeline coordination
 model: sonnet
-codename: CONDUIT
-role: Data Ingestion Engineer
-browser_fallback: false
 tools:
   - Bash
   - Read
   - Write
   - Grep
   - Glob
-keywords:
-  - firebase
-  - data-ingestion
-  - csv-import
-  - etl
-  - a3-migration
-  - api-pull
-  - data-pipeline
 ---
 
 > Docs Hub: [Architecture Hub](../docs/architecture/README.md#agent-topology)

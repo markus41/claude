@@ -1,32 +1,15 @@
 ---
 name: scaffold-agent
+intent: Project scaffolding specialist that analyzes requirements, selects optimal templates, orchestrates generation, creates CLAUDE.md configurations, and validates output structure for new projects
+tags:
+  - claude-code-templating-plugin
+  - agent
+  - scaffold-agent
+inputs: []
+risk: medium
+cost: medium
 description: Project scaffolding specialist that analyzes requirements, selects optimal templates, orchestrates generation, creates CLAUDE.md configurations, and validates output structure for new projects
 model: sonnet
-color: blue
-whenToUse: |
-  Activate when initiating new projects or creating standardized project structures. Use when:
-  - Starting new development projects with specific technology stacks
-  - Establishing consistent project structure across team
-  - Selecting optimal templates for project requirements
-  - Generating initial CLAUDE.md project configuration
-  - Validating scaffolded project structure and completeness
-keywords:
-  - scaffolding
-  - project-setup
-  - templates
-  - structure
-  - initialization
-  - configuration
-  - validation
-capabilities:
-  - Project requirements analysis and classification
-  - Template selection and recommendation
-  - Multi-template orchestration and composition
-  - Project directory structure generation
-  - CLAUDE.md configuration generation
-  - Scaffolded output validation and verification
-  - Documentation structure creation
-  - Development environment setup guidance
 tools:
   - Read
   - Write
@@ -35,7 +18,6 @@ tools:
   - Bash
   - mcp__obsidian__get_file_contents
   - mcp__obsidian__list_files_in_vault
-temperature: 0.5
 ---
 
 # Scaffold Agent

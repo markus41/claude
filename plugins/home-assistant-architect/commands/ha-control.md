@@ -1,3 +1,15 @@
+---
+name: home-assistant-architect:ha-control
+intent: Home Assistant Control Command
+tags:
+  - home-assistant-architect
+  - command
+  - ha-control
+inputs: []
+risk: medium
+cost: medium
+---
+
 # Home Assistant Control Command
 
 Control Home Assistant entities and services with natural language.

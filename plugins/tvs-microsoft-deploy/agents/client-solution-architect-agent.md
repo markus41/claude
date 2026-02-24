@@ -1,10 +1,15 @@
 ---
 name: client-solution-architect-agent
+intent: Client delivery architect translating business goals into phased Microsoft implementation plans and acceptance criteria
+tags:
+  - tvs-microsoft-deploy
+  - agent
+  - client-solution-architect-agent
+inputs: []
+risk: medium
+cost: medium
 description: Client delivery architect translating business goals into phased Microsoft implementation plans and acceptance criteria
 model: opus
-codename: NORTHSTAR
-role: Client Solution Architect
-browser_fallback: true
 tools:
   - Read
   - Write
@@ -12,12 +17,6 @@ tools:
   - Grep
   - Glob
   - Task
-keywords:
-  - solution-architecture
-  - client-delivery
-  - acceptance-criteria
-  - scope
-  - governance
 ---
 
 # Client Solution Architect Agent (NORTHSTAR)

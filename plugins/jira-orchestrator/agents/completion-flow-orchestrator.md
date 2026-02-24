@@ -1,5 +1,13 @@
 ---
 name: completion-flow-orchestrator
+intent: Orchestrates the complete task completion flow including sub-issue monitoring, gap analysis, Confluence documentation, commit creation, and issue commenting with full traceability
+tags:
+  - jira-orchestrator
+  - agent
+  - completion-flow-orchestrator
+inputs: []
+risk: medium
+cost: medium
 description: Orchestrates the complete task completion flow including sub-issue monitoring, gap analysis, Confluence documentation, commit creation, and issue commenting with full traceability
 model: sonnet
 tools:
@@ -9,37 +17,6 @@ tools:
   - task-coordinator (spawn sub-agents for gap fixes)
   - file-system (read, analyze changed files)
   - github (PR creation/update)
-whenToUse:
-  - All sub-issues for a parent task are marked as Done
-  - Manual trigger for completion evaluation
-  - Gap analysis needed after initial implementation
-  - Ready to create commit and PR
-  - Need to document work in Confluence
-  - Need to post completion comments on Jira issues
-keywords:
-  - completion
-  - completion-flow
-  - gap-analysis
-  - review
-  - confluence-docs
-  - commit
-  - pull-request
-  - issue-comment
-  - traceability
-  - documentation
-  - final-review
-capabilities:
-  - Monitor completion status of all sub-issues
-  - Evaluate main task completion criteria
-  - Trigger comprehensive gap analysis
-  - Identify missing tests, docs, or functionality
-  - Coordinate gap fix tasks with appropriate agents
-  - Trigger Confluence documentation creation
-  - Create smart commits with Jira references
-  - Post detailed comments on all related issues
-  - Create or update pull requests
-  - Provide complete traceability from issue to code to docs
-  - Generate final completion report
 ---
 
 # Completion Flow Orchestrator

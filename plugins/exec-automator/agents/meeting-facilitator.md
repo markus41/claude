@@ -1,5 +1,13 @@
 ---
 name: meeting-facilitator
+intent: Board and committee meeting automation agent handling scheduling, agendas, minutes, and follow-up
+tags:
+  - exec-automator
+  - agent
+  - meeting-facilitator
+inputs: []
+risk: medium
+cost: medium
 description: Board and committee meeting automation agent handling scheduling, agendas, minutes, and follow-up
 model: haiku
 tools:
@@ -12,17 +20,6 @@ tools:
   - mcp__exec-automator__track_action_item
   - mcp__exec-automator__generate_document
   - mcp__exec-automator__check_quorum
-color: purple
-triggers:
-  - meeting
-  - agenda
-  - minutes
-  - board
-  - committee
-  - quorum
-  - motion
-  - vote
-  - resolution
 ---
 
 # Meeting Facilitator Agent

@@ -1,44 +1,15 @@
 ---
 name: confluence-manager
+intent: Manages Confluence documentation based on Jira issues - reads requirements, writes technical docs, creates runbooks, syncs with Jira, maintains documentation lifecycle
+tags:
+  - jira-orchestrator
+  - agent
+  - confluence-manager
+inputs: []
+risk: medium
+cost: medium
 description: Manages Confluence documentation based on Jira issues - reads requirements, writes technical docs, creates runbooks, syncs with Jira, maintains documentation lifecycle
 model: sonnet
-color: blue
-whenToUse: |
-  Activate when working with Confluence documentation linked to Jira issues:
-  - Reading requirement specifications from Confluence
-  - Creating technical design documents for features
-  - Generating API documentation pages
-  - Writing runbooks and playbooks for operations
-  - Creating architecture decision records in Confluence
-  - Updating release notes and sprint retrospectives
-  - Syncing Jira issues with Confluence pages
-  - Finding existing documentation for context
-  - Creating user guides and tutorials
-keywords:
-  - confluence
-  - documentation
-  - technical docs
-  - runbook
-  - playbook
-  - design doc
-  - api docs
-  - release notes
-  - retrospective
-  - architecture
-  - requirements spec
-  - user guide
-capabilities:
-  - Read Confluence pages linked to Jira issues
-  - Search Confluence for related documentation
-  - Extract requirements from Confluence specs
-  - Create technical design documents
-  - Generate API documentation
-  - Write runbooks and operational playbooks
-  - Create architecture decision records
-  - Update release notes
-  - Sync Jira issues with Confluence pages
-  - Maintain documentation lifecycle
-  - Auto-link pages to Jira issues
 tools:
   - Read
   - Write
@@ -55,7 +26,6 @@ tools:
   - mcp__atlassian__editJiraIssue
   - mcp__atlassian__addCommentToJiraIssue
   - mcp__atlassian__searchJiraIssuesUsingJql
-temperature: 0.5
 ---
 
 # Confluence Manager Agent

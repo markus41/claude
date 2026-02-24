@@ -1,0 +1,138 @@
+{
+  "version": 1,
+  "plugin": "ahling-command-center",
+  "type": "agents",
+  "generatedBy": "scripts/generate-plugin-indexes.mjs",
+  "entries": [
+    {
+      "name": "agent-architect",
+      "intent": "Microsoft Agent Framework architect for the Ahling Command Center. Designs and deploys multi-agent systems using AutoGen and Semantic Kernel, orchestrates agent workflows, and integrates with Ollama, Neo4j, and Temporal.",
+      "tags": [
+        "ahling-command-center",
+        "agent",
+        "agent-architect"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/agent-architect.md"
+    },
+    {
+      "name": "compose-builder",
+      "intent": "Docker Compose builder agent for the Ahling Command Center. Creates Docker Compose files from service specifications, manages multi-file compositions, and optimizes container configurations for AMD RX 7900 XTX GPU workloads.",
+      "tags": [
+        "ahling-command-center",
+        "agent",
+        "compose-builder"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/compose-builder.md"
+    },
+    {
+      "name": "config-generator",
+      "intent": "Configuration generation agent for the Ahling Command Center. Generates service configurations with HashiCorp Vault secret integration, manages environment variables, and creates templated configs for 70+ services.",
+      "tags": [
+        "ahling-command-center",
+        "agent",
+        "config-generator"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/config-generator.md"
+    },
+    {
+      "name": "ha-coordinator",
+      "intent": "Home Assistant coordination agent for the Ahling Command Center. Coordinates automations, manages presence detection, optimizes energy usage, integrates voice pipeline (Whisper/Piper), and orchestrates smart home devices.",
+      "tags": [
+        "ahling-command-center",
+        "agent",
+        "ha-coordinator"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/ha-coordinator.md"
+    },
+    {
+      "name": "health-monitor",
+      "intent": "Health monitoring agent for the Ahling Command Center. Monitors service health, detects issues, tracks resource usage, and reports status for 70+ services with real-time alerting and dashboards.",
+      "tags": [
+        "ahling-command-center",
+        "agent",
+        "health-monitor"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/health-monitor.md"
+    },
+    {
+      "name": "infrastructure-architect",
+      "intent": "Infrastructure architecture agent for the Ahling Command Center. Designs deployment plans, analyzes service dependencies, architects the full 70+ service infrastructure, and creates phased rollout strategies optimized for AMD RX 7900 XTX hardware.",
+      "tags": [
+        "ahling-command-center",
+        "agent",
+        "infrastructure-architect"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/infrastructure-architect.md"
+    },
+    {
+      "name": "ollama-orchestrator",
+      "intent": "Ollama orchestration agent for the Ahling Command Center. Manages Ollama models, GPU scheduling, multi-model orchestration, and LLM inference optimization for AMD RX 7900 XTX with ROCm.",
+      "tags": [
+        "ahling-command-center",
+        "agent",
+        "ollama-orchestrator"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/ollama-orchestrator.md"
+    },
+    {
+      "name": "resource-optimizer",
+      "intent": "Resource optimization agent for the Ahling Command Center. Optimizes resource allocation for specific hardware configurations (24-core CPU, 61GB RAM, RX 7900 XTX), balances workloads, and maximizes performance across 70+ services.",
+      "tags": [
+        "ahling-command-center",
+        "agent",
+        "resource-optimizer"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/resource-optimizer.md"
+    },
+    {
+      "name": "troubleshooter",
+      "intent": "Troubleshooting agent for the Ahling Command Center. Diagnoses and fixes service issues with root cause analysis, provides remediation steps, and maintains troubleshooting runbooks for 70+ services.",
+      "tags": [
+        "ahling-command-center",
+        "agent",
+        "troubleshooter"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/troubleshooter.md"
+    },
+    {
+      "name": "vault-manager",
+      "intent": "HashiCorp Vault management agent for the Ahling Command Center. Manages secrets, policies, dynamic credentials, secret rotation, and audit logging for 70+ services with zero-trust security architecture.",
+      "tags": [
+        "ahling-command-center",
+        "agent",
+        "vault-manager"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/vault-manager.md"
+    }
+  ]
+}

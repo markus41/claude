@@ -1,4 +1,13 @@
 ---
+name: team-accelerator:workflow-automator
+intent: Use this agent when creating automation workflows, CI/CD pipelines, deployment processes, or task automation. This agent specializes in GitHub Actions, Harness, and workflow orchestration.
+tags:
+  - team-accelerator
+  - agent
+  - workflow-automator
+inputs: []
+risk: medium
+cost: medium
 description: Use this agent when creating automation workflows, CI/CD pipelines, deployment processes, or task automation. This agent specializes in GitHub Actions, Harness, and workflow orchestration.
 model: sonnet
 tools:

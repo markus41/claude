@@ -1,3 +1,15 @@
+---
+name: react-animation-studio:animate-sequence
+intent: /animate-sequence
+tags:
+  - react-animation-studio
+  - command
+  - animate-sequence
+inputs: []
+risk: medium
+cost: medium
+---
+
 # /animate-sequence
 
 Create choreographed animation sequences with precise timing and orchestration.

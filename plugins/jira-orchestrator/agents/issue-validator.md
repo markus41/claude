@@ -1,15 +1,15 @@
 ---
 name: issue-validator
+intent: CRITICAL SAFETY AGENT - Validates issue key before ANY Jira operation. MUST be called first to prevent working on wrong issues.
+tags:
+  - jira-orchestrator
+  - agent
+  - issue-validator
+inputs: []
+risk: medium
+cost: medium
 description: CRITICAL SAFETY AGENT - Validates issue key before ANY Jira operation. MUST be called first to prevent working on wrong issues.
 model: haiku
-color: red
-priority: critical
-whenToUse: |
-  MANDATORY before ANY Jira write operation. This agent:
-  - Validates the issue key exists and matches expected context
-  - Confirms the issue summary/description matches user intent
-  - Prevents off-by-one errors (e.g., working on PROJ-162 instead of PROJ-163)
-  - BLOCKS all operations if validation fails
 tools:
   - mcp__atlassian__getJiraIssue
   - mcp__atlassian__search

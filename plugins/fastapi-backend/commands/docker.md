@@ -1,7 +1,14 @@
 ---
 name: docker
+intent: Build and manage Docker containers for FastAPI application
+tags:
+  - fastapi-backend
+  - command
+  - docker
+inputs: []
+risk: medium
+cost: medium
 description: Build and manage Docker containers for FastAPI application
-argument-hint: "[build|run|push|compose] [--tag latest] [--registry] [--platform linux/amd64]"
 allowed-tools:
   - Bash
   - Read

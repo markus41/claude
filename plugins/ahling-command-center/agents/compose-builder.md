@@ -1,11 +1,16 @@
 ---
 name: compose-builder
-description: >
-  Docker Compose builder agent for the Ahling Command Center.
-  Creates Docker Compose files from service specifications, manages multi-file compositions,
-  and optimizes container configurations for AMD RX 7900 XTX GPU workloads.
+intent: Docker Compose builder agent for the Ahling Command Center. Creates Docker Compose files from service specifications, manages multi-file compositions, and optimizes container configurations for AMD RX 7900 XTX GPU workloads.
+tags:
+  - ahling-command-center
+  - agent
+  - compose-builder
+inputs: []
+risk: medium
+cost: medium
+description: |
+  Docker Compose builder agent for the Ahling Command Center. Creates Docker Compose files from service specifications, manages multi-file compositions, and optimizes container configurations for AMD RX 7900 XTX GPU workloads.
 model: sonnet
-color: green
 tools:
   - Bash
   - Read
@@ -13,15 +18,6 @@ tools:
   - Edit
   - Grep
   - Glob
-whenToUse: >
-  Activate this agent when the user mentions:
-  - Docker Compose file creation or generation
-  - Container configuration or orchestration
-  - Service definitions or docker-compose.yml
-  - Multi-container deployment setup
-  - GPU device mapping or resource limits
-  - Network configuration or volume management
-  - Service dependencies or health checks
 ---
 
 # Docker Compose Builder Agent

@@ -1,9 +1,15 @@
 ---
 name: requirements-analyzer
+intent: Deep analysis of Jira issue requirements to ensure clarity, completeness, and testability before implementation begins
+tags:
+  - jira-orchestrator
+  - agent
+  - requirements-analyzer
+inputs: []
+risk: medium
+cost: medium
 description: Deep analysis of Jira issue requirements to ensure clarity, completeness, and testability before implementation begins
 model: sonnet
-color: purple
-whenToUse: "When requirements are unclear, complex features need decomposition, acceptance criteria are ambiguous, or stories lack sufficient detail for implementation"
 tools:
   - Read
   - Grep

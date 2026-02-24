@@ -1,7 +1,20 @@
 ---
+name: lobbi-platform-manager:keycloak-setup
+intent: Initialize Keycloak realm, client, and base configuration for multi-tenant setup
+tags:
+  - lobbi-platform-manager
+  - command
+  - keycloak-setup
+inputs: []
+risk: medium
+cost: medium
 description: Initialize Keycloak realm, client, and base configuration for multi-tenant setup
-argument-hint: "[realm] [client-id]"
-allowed-tools: ["Bash", "Read", "Write", "Grep", "mcp__MCP_DOCKER__brave_web_search"]
+allowed-tools:
+  - Bash
+  - Read
+  - Write
+  - Grep
+  - mcp__MCP_DOCKER__brave_web_search
 ---
 
 Initialize Keycloak realm and client configuration for the-lobbi/keycloak-alpha platform with proper OAuth settings, multi-tenant claims, and environment variable updates.

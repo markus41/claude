@@ -1,10 +1,14 @@
 ---
 name: mp:policy
+intent: Manage and evaluate security policies controlling plugin installation and registry access
+tags:
+  - marketplace-pro
+  - command
+  - policy
+inputs: []
+risk: medium
+cost: medium
 description: Manage and evaluate security policies controlling plugin installation and registry access
-arguments:
-  - name: action
-    description: "Action: check <plugin-name>, list, or enforce"
-    required: true
 allowed-tools:
   - Bash
   - Read

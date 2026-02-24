@@ -1,10 +1,15 @@
 ---
 name: identity-agent
+intent: Entra ID specialist managing tenant configurations, conditional access, MFA, YubiKey FIDO2, and license assignments across all TVS Holdings entities
+tags:
+  - tvs-microsoft-deploy
+  - agent
+  - identity-agent
+inputs: []
+risk: medium
+cost: medium
 description: Entra ID specialist managing tenant configurations, conditional access, MFA, YubiKey FIDO2, and license assignments across all TVS Holdings entities
 model: opus
-codename: SHIELD
-role: Identity & Access Management Architect
-browser_fallback: false
 tools:
   - Bash
   - Read
@@ -12,17 +17,6 @@ tools:
   - Grep
   - Glob
   - Task
-keywords:
-  - entra-id
-  - conditional-access
-  - mfa
-  - yubikey
-  - fido2
-  - license-assignment
-  - app-registration
-  - graph-api
-  - tenant-config
-  - identity
 ---
 
 > Docs Hub: [Architecture Hub](../docs/architecture/README.md#agent-topology)

@@ -1,13 +1,14 @@
 ---
 name: mp:compose
+intent: Resolve an intent into an ordered plugin composition plan using greedy set cover and Kahn's topological sort
+tags:
+  - marketplace-pro
+  - command
+  - compose
+inputs: []
+risk: medium
+cost: medium
 description: Resolve an intent into an ordered plugin composition plan using greedy set cover and Kahn's topological sort
-arguments:
-  - name: intent
-    description: "Intent description or path to composition.yaml"
-    required: true
-  - name: mode
-    description: "Execution mode: plan, install, or dry-run (default: plan)"
-    required: false
 allowed-tools:
   - Bash
   - Read

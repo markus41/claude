@@ -1,7 +1,14 @@
 ---
 name: mp:help
+intent: Show all available marketplace-pro commands organized by module
+tags:
+  - marketplace-pro
+  - command
+  - help
+inputs: []
+risk: medium
+cost: medium
 description: Show all available marketplace-pro commands organized by module
-arguments: []
 allowed-tools: []
 ---
 

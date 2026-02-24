@@ -1,5 +1,13 @@
 ---
 name: mp:dev
+intent: Plugin Dev Studio — hot-reload dev server, interactive playground, dependency graph visualization, and validation suite for plugin development.
+tags:
+  - marketplace-pro
+  - command
+  - dev
+inputs: []
+risk: medium
+cost: medium
 description: Plugin Dev Studio — hot-reload dev server, interactive playground, dependency graph visualization, and validation suite for plugin development.
 allowed-tools:
   - Bash
@@ -8,8 +16,6 @@ allowed-tools:
   - Edit
   - Glob
   - Grep
-related-skills:
-  - devstudio
 ---
 
 # Plugin Dev Studio

@@ -1,11 +1,16 @@
 ---
 name: resource-optimizer
-description: >
-  Resource optimization agent for the Ahling Command Center.
-  Optimizes resource allocation for specific hardware configurations (24-core CPU, 61GB RAM, RX 7900 XTX),
-  balances workloads, and maximizes performance across 70+ services.
+intent: Resource optimization agent for the Ahling Command Center. Optimizes resource allocation for specific hardware configurations (24-core CPU, 61GB RAM, RX 7900 XTX), balances workloads, and maximizes performance across 70+ services.
+tags:
+  - ahling-command-center
+  - agent
+  - resource-optimizer
+inputs: []
+risk: medium
+cost: medium
+description: |
+  Resource optimization agent for the Ahling Command Center. Optimizes resource allocation for specific hardware configurations (24-core CPU, 61GB RAM, RX 7900 XTX), balances workloads, and maximizes performance across 70+ services.
 model: sonnet
-color: orange
 tools:
   - Bash
   - Read
@@ -13,15 +18,6 @@ tools:
   - Edit
   - Grep
   - Glob
-whenToUse: >
-  Activate this agent when the user mentions:
-  - Resource optimization or performance tuning
-  - CPU, RAM, or GPU allocation
-  - Hardware configuration or resource limits
-  - Performance bottlenecks or slow services
-  - Workload balancing or scheduling
-  - GPU utilization or VRAM management
-  - System performance or throughput optimization
 ---
 
 # Resource Optimizer Agent

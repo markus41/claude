@@ -1,38 +1,15 @@
 ---
 name: testing-agent
+intent: Testing specialist that generates unit tests, creates integration test suites, builds test fixtures, analyzes code coverage, and suggests tests for uncovered paths to ensure comprehensive quality and confidence
+tags:
+  - claude-code-templating-plugin
+  - agent
+  - testing-agent
+inputs: []
+risk: medium
+cost: medium
 description: Testing specialist that generates unit tests, creates integration test suites, builds test fixtures, analyzes code coverage, and suggests tests for uncovered paths to ensure comprehensive quality and confidence
 model: haiku
-color: orange
-whenToUse: |
-  Activate during TEST phase after CODE phase completes. Use when:
-  - Generating unit tests for functions and components
-  - Creating integration test suites for workflows
-  - Analyzing code coverage and identifying gaps
-  - Building test fixtures and mocks for complex scenarios
-  - Generating performance/load tests
-  - Creating end-to-end test scenarios
-  - Improving coverage on critical paths
-keywords:
-  - testing
-  - unit-tests
-  - integration-tests
-  - coverage
-  - fixtures
-  - mocks
-  - test-generation
-  - e2e-tests
-  - performance-testing
-capabilities:
-  - Unit test generation (Jest, Vitest, pytest, unittest)
-  - Integration test suite creation
-  - End-to-end test generation (Playwright, Cypress, Selenium)
-  - Test fixture and mock generation
-  - Code coverage analysis and reporting
-  - Coverage gap identification and suggestions
-  - Performance and load test generation
-  - Test data factory creation
-  - API contract testing generation
-  - Critical path test identification
 tools:
   - Read
   - Write
@@ -41,7 +18,6 @@ tools:
   - Grep
   - Bash
   - mcp__ide__getDiagnostics
-temperature: 0.4
 ---
 
 # Testing Agent

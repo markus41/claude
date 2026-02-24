@@ -1,9 +1,15 @@
 ---
 name: webhook-publisher
+intent: Publishes Jira orchestration events to external webhook endpoints with retry logic, signature verification, and event filtering
+tags:
+  - jira-orchestrator
+  - agent
+  - webhook-publisher
+inputs: []
+risk: medium
+cost: medium
 description: Publishes Jira orchestration events to external webhook endpoints with retry logic, signature verification, and event filtering
 model: haiku
-color: green
-whenToUse: When notification-router determines an event should be sent to external systems via HTTP webhooks
 tools:
   - Read
   - Write

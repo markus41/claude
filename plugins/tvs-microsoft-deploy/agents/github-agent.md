@@ -1,10 +1,15 @@
 ---
 name: github-agent
+intent: GitHub and CI/CD specialist managing monorepo structure, GitHub Actions workflows, branch policies, and PR automation for TVS Holdings
+tags:
+  - tvs-microsoft-deploy
+  - agent
+  - github-agent
+inputs: []
+risk: medium
+cost: medium
 description: GitHub and CI/CD specialist managing monorepo structure, GitHub Actions workflows, branch policies, and PR automation for TVS Holdings
 model: sonnet
-codename: HARBOR
-role: GitHub & CI/CD Engineer
-browser_fallback: false
 tools:
   - Bash
   - Read
@@ -12,15 +17,6 @@ tools:
   - Edit
   - Grep
   - Glob
-keywords:
-  - github
-  - github-actions
-  - ci-cd
-  - monorepo
-  - branch-policy
-  - pull-request
-  - workflows
-  - automation
 ---
 
 > Docs Hub: [Architecture Hub](../docs/architecture/README.md#agent-topology)

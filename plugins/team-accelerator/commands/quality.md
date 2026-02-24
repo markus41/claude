@@ -1,12 +1,14 @@
 ---
+name: team-accelerator:quality
+intent: Run comprehensive code quality checks including linting, static analysis, security scanning, and dependency audits
+tags:
+  - team-accelerator
+  - command
+  - quality
+inputs: []
+risk: medium
+cost: medium
 description: Run comprehensive code quality checks including linting, static analysis, security scanning, and dependency audits
-arguments:
-  - name: scope
-    description: "Check scope: all, lint, security, deps, or metrics"
-    required: false
-  - name: fix
-    description: "Auto-fix issues where possible: true or false (default: false)"
-    required: false
 ---
 
 # Quality Command

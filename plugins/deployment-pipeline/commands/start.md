@@ -1,5 +1,13 @@
 ---
 name: deploy:start
+intent: Start a new deployment pipeline
+tags:
+  - deployment-pipeline
+  - command
+  - start
+inputs: []
+risk: medium
+cost: medium
 description: Start a new deployment pipeline
 allowed-tools:
   - Bash

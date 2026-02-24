@@ -1,7 +1,14 @@
 ---
 name: task
+intent: Generate a background task with ARQ, Celery, or Dramatiq
+tags:
+  - fastapi-backend
+  - command
+  - task
+inputs: []
+risk: medium
+cost: medium
 description: Generate a background task with ARQ, Celery, or Dramatiq
-argument-hint: "[task_name] [--framework arq|celery|dramatiq] [--scheduled] [--retry]"
 allowed-tools:
   - Read
   - Write

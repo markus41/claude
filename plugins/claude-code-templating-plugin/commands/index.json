@@ -1,0 +1,82 @@
+{
+  "version": 1,
+  "plugin": "claude-code-templating-plugin",
+  "type": "commands",
+  "generatedBy": "scripts/generate-plugin-indexes.mjs",
+  "entries": [
+    {
+      "name": "archetype",
+      "intent": "Complete archetype lifecycle - analyze projects, create templates, scaffold new projects, register architecture, generate Harness templates, and export diagrams",
+      "tags": [
+        "archetype",
+        "template",
+        "scaffold",
+        "structurizr",
+        "harness",
+        "gradle"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/archetype.md"
+    },
+    {
+      "name": "generate",
+      "intent": "Generate code, models, and tests from schemas and specifications - API clients, data models, test suites, database migrations",
+      "tags": [
+        "generate",
+        "code",
+        "models",
+        "tests",
+        "migrations"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/generate.md"
+    },
+    {
+      "name": "harness",
+      "intent": "Harness CI/CD operations - create and validate pipelines, manage templates (step/stage/pipeline), list templates, and trigger deployments",
+      "tags": [
+        "harness",
+        "cicd",
+        "pipeline",
+        "deployment",
+        "template"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/harness.md"
+    },
+    {
+      "name": "scaffold",
+      "intent": "Scaffold complete projects with automatic Harness integration, environment configuration, and post-generation setup",
+      "tags": [
+        "scaffold",
+        "project",
+        "setup",
+        "harness",
+        "initialization"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/scaffold.md"
+    },
+    {
+      "name": "template",
+      "intent": "Manage and interact with templates - list, search, view details, generate from templates, and validate template configurations",
+      "tags": [
+        "template",
+        "generation",
+        "configuration"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/template.md"
+    }
+  ]
+}

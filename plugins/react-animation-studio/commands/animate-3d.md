@@ -1,3 +1,15 @@
+---
+name: react-animation-studio:animate-3d
+intent: /animate-3d Command
+tags:
+  - react-animation-studio
+  - command
+  - animate-3d
+inputs: []
+risk: medium
+cost: medium
+---
+
 # /animate-3d Command
 
 Create CSS/JS-based 3D animations including flip cards, tilt effects, rotating cubes, parallax depth layers, and 3D carousels without WebGL.

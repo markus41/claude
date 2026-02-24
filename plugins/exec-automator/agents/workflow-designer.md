@@ -1,5 +1,13 @@
 ---
 name: workflow-designer
+intent: LangGraph workflow architect that designs optimal state machines for process automation
+tags:
+  - exec-automator
+  - agent
+  - workflow-designer
+inputs: []
+risk: medium
+cost: medium
 description: LangGraph workflow architect that designs optimal state machines for process automation
 model: sonnet
 tools:
@@ -8,18 +16,6 @@ tools:
   - Glob
   - Grep
   - Bash
-color: purple
-trigger:
-  - langgraph
-  - workflow
-  - state machine
-  - state graph
-  - process flow
-  - automation workflow
-  - workflow design
-  - state transitions
-  - conditional routing
-  - checkpointing
 ---
 
 # Workflow Designer Agent

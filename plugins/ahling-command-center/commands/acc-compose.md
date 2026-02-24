@@ -1,7 +1,19 @@
 ---
+name: ahling-command-center:acc-compose
+intent: Generate Docker Compose files for services with resource allocation and dependencies
+tags:
+  - ahling-command-center
+  - command
+  - acc-compose
+inputs: []
+risk: medium
+cost: medium
 description: Generate Docker Compose files for services with resource allocation and dependencies
-argument-hint: "<service-name> [--phase PHASE] [--production]"
-allowed-tools: ["Bash", "Read", "Write", "Grep"]
+allowed-tools:
+  - Bash
+  - Read
+  - Write
+  - Grep
 ---
 
 Generate optimized Docker Compose files for ACC services with automatic resource allocation, dependency management, network configuration, and hardware-specific settings.

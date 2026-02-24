@@ -1,5 +1,13 @@
 ---
 name: security-reviewer
+intent: Security-focused code reviewer for FastAPI applications, identifying vulnerabilities, OWASP compliance, and authentication/authorization issues
+tags:
+  - fastapi-backend
+  - agent
+  - security-reviewer
+inputs: []
+risk: medium
+cost: medium
 description: Security-focused code reviewer for FastAPI applications, identifying vulnerabilities, OWASP compliance, and authentication/authorization issues
 model: sonnet
 tools:
@@ -7,16 +15,6 @@ tools:
   - Grep
   - Glob
   - WebSearch
-keywords:
-  - security review
-  - vulnerability
-  - owasp
-  - authentication
-  - authorization
-  - injection
-  - xss
-  - csrf
-  - security audit
 ---
 
 # Security Reviewer Agent

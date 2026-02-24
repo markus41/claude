@@ -1,10 +1,15 @@
 ---
 name: fabric-pipeline-agent
+intent: Microsoft Fabric pipeline and notebook operator for ingestion, transformation, and refresh orchestration
+tags:
+  - tvs-microsoft-deploy
+  - agent
+  - fabric-pipeline-agent
+inputs: []
+risk: medium
+cost: medium
 description: Microsoft Fabric pipeline and notebook operator for ingestion, transformation, and refresh orchestration
 model: sonnet
-codename: FLOWGRID
-role: Fabric Pipeline Engineer
-browser_fallback: true
 tools:
   - Bash
   - Read
@@ -12,12 +17,6 @@ tools:
   - Edit
   - Grep
   - Glob
-keywords:
-  - fabric-pipeline
-  - dataflow
-  - notebook
-  - lakehouse
-  - refresh
 ---
 
 # Fabric Pipeline Agent (FLOWGRID)

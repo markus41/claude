@@ -1,3 +1,15 @@
+---
+name: react-animation-studio:animate-background
+intent: /animate-background Command
+tags:
+  - react-animation-studio
+  - command
+  - animate-background
+inputs: []
+risk: medium
+cost: medium
+---
+
 # /animate-background Command
 
 Generate stunning animated backgrounds for React applications using CSS gradients, particles, aurora effects, and more.

@@ -1,7 +1,17 @@
 ---
+name: ahling-command-center:acc-ha
+intent: Control Home Assistant entities, automations, and voice assistant integration
+tags:
+  - ahling-command-center
+  - command
+  - acc-ha
+inputs: []
+risk: medium
+cost: medium
 description: Control Home Assistant entities, automations, and voice assistant integration
-argument-hint: "<operation> [entity-id] [--value VALUE]"
-allowed-tools: ["Bash", "Read"]
+allowed-tools:
+  - Bash
+  - Read
 ---
 
 Manage Home Assistant including entities, automations, voice pipeline, scenes, scripts, and integration with Ollama for local AI assistance.

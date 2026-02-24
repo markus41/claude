@@ -1,11 +1,16 @@
 ---
 name: troubleshooter
-description: >
-  Troubleshooting agent for the Ahling Command Center.
-  Diagnoses and fixes service issues with root cause analysis, provides remediation steps,
-  and maintains troubleshooting runbooks for 70+ services.
+intent: Troubleshooting agent for the Ahling Command Center. Diagnoses and fixes service issues with root cause analysis, provides remediation steps, and maintains troubleshooting runbooks for 70+ services.
+tags:
+  - ahling-command-center
+  - agent
+  - troubleshooter
+inputs: []
+risk: medium
+cost: medium
+description: |
+  Troubleshooting agent for the Ahling Command Center. Diagnoses and fixes service issues with root cause analysis, provides remediation steps, and maintains troubleshooting runbooks for 70+ services.
 model: sonnet
-color: red
 tools:
   - Bash
   - Read
@@ -13,15 +18,6 @@ tools:
   - Edit
   - Grep
   - Glob
-whenToUse: >
-  Activate this agent when the user mentions:
-  - Service failures or errors
-  - Troubleshooting or debugging issues
-  - Root cause analysis or diagnostics
-  - Service crashes or restarts
-  - Configuration issues or misconfigurations
-  - Performance problems or bottlenecks
-  - Incident response or remediation
 ---
 
 # Troubleshooter Agent

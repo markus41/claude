@@ -1,17 +1,14 @@
 ---
 name: jira:sprint
+intent: Sprint planning, metrics, and quality - consolidated command for all sprint operations
+tags:
+  - jira-orchestrator
+  - command
+  - sprint
+inputs: []
+risk: medium
+cost: medium
 description: Sprint planning, metrics, and quality - consolidated command for all sprint operations
-arguments:
-  - name: action
-    description: Action to perform (plan, metrics, quality, team)
-    required: false
-    default: metrics
-  - name: sprint_id
-    description: Sprint ID or name
-    required: false
-  - name: team
-    description: Team identifier
-    required: false
 ---
 
 # /jira:sprint

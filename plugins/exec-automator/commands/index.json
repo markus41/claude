@@ -1,0 +1,193 @@
+{
+  "version": 1,
+  "plugin": "exec-automator",
+  "type": "commands",
+  "generatedBy": "scripts/generate-plugin-indexes.mjs",
+  "entries": [
+    {
+      "name": "exec:analyze",
+      "intent": "Analyze organizational documents to extract executive director responsibilities and automation opportunities",
+      "tags": [
+        "analysis",
+        "documents",
+        "responsibilities",
+        "extraction",
+        "automation-potential"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/analyze.md"
+    },
+    {
+      "name": "exec:customize",
+      "intent": "Customize automation workflows, scoring weights, and agent behaviors",
+      "tags": [
+        "customization",
+        "configuration",
+        "tuning"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/customize.md"
+    },
+    {
+      "name": "exec:dashboard",
+      "intent": "Display automation status, metrics, and performance dashboard",
+      "tags": [
+        "dashboard",
+        "metrics",
+        "monitoring",
+        "analytics",
+        "performance"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/dashboard.md"
+    },
+    {
+      "name": "exec:deploy",
+      "intent": "Deploy generated LangGraph workflows to execution environment with validation, monitoring, and rollback capabilities",
+      "tags": [
+        "exec-automator",
+        "command",
+        "deploy"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/deploy.md"
+    },
+    {
+      "name": "exec:export",
+      "intent": "Export automation configurations, workflows, reports, and data from the exec-automator platform",
+      "tags": [
+        "export",
+        "backup",
+        "data",
+        "configuration",
+        "reports"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/export.md"
+    },
+    {
+      "name": "exec:generate",
+      "intent": "Generate production-ready LangGraph workflow code from scored automation designs",
+      "tags": [
+        "generation",
+        "langgraph",
+        "langchain",
+        "code",
+        "automation"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/generate.md"
+    },
+    {
+      "name": "exec:integrate",
+      "intent": "Configure and manage external system integrations (CRM, AMS, Calendar, etc.)",
+      "tags": [
+        "integration",
+        "api",
+        "connections",
+        "oauth",
+        "sync"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/integrate.md"
+    },
+    {
+      "name": "exec:map",
+      "intent": "Map responsibilities to LangGraph workflow nodes, edges, and state - Transform analyzed executive director responsibilities into comprehensive LangGraph workflow architecture with node definitions, state schemas, edge relationships, and human-in-the-loop checkpoints",
+      "tags": [
+        "mapping",
+        "langgraph",
+        "workflows",
+        "architecture"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/map.md"
+    },
+    {
+      "name": "exec:orchestrate",
+      "intent": "Full pipeline orchestrator for executive director automation - analyze documents, map processes, score automation potential, generate LangGraph workflows, simulate execution, and deploy AI agents",
+      "tags": [
+        "exec-automator",
+        "command",
+        "orchestrate"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/orchestrate.md"
+    },
+    {
+      "name": "exec:report",
+      "intent": "Generate comprehensive automation analysis and ROI reports with executive summaries, performance metrics, cost savings analysis, and strategic recommendations",
+      "tags": [
+        "reporting",
+        "analysis",
+        "roi",
+        "executive",
+        "compliance"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/report.md"
+    },
+    {
+      "name": "exec:score",
+      "intent": "Calculate automation potential scores using 6-factor weighted algorithm",
+      "tags": [
+        "scoring",
+        "automation",
+        "analysis"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/score.md"
+    },
+    {
+      "name": "exec:simulate",
+      "intent": "Simulate workflow execution with test data to validate before deployment",
+      "tags": [
+        "simulation",
+        "testing",
+        "validation",
+        "quality-assurance",
+        "workflow-testing"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/simulate.md"
+    },
+    {
+      "name": "exec:template",
+      "intent": "Manage workflow templates and document templates for automation - create, edit, import, export, and apply pre-built templates for common executive tasks",
+      "tags": [
+        "templates",
+        "workflows",
+        "documents",
+        "automation"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/template.md"
+    }
+  ]
+}

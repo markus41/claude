@@ -1,7 +1,14 @@
 ---
 name: jira:process-worklogs
+intent: Process pending worklogs and post them to Jira
+tags:
+  - jira-orchestrator
+  - command
+  - process-worklogs
+inputs: []
+risk: medium
+cost: medium
 description: Process pending worklogs and post them to Jira
-arguments: []
 ---
 
 # Process Pending Worklogs

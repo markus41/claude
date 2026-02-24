@@ -1,3 +1,15 @@
+---
+name: home-assistant-architect:ha-camera-nvr
+intent: Home Assistant Camera and NVR Integration Agent
+tags:
+  - home-assistant-architect
+  - agent
+  - ha-camera-nvr
+inputs: []
+risk: medium
+cost: medium
+---
+
 # Home Assistant Camera and NVR Integration Agent
 
 Complete camera and NVR (Network Video Recorder) integration with motion detection, object recognition, recording management, and multi-camera dashboards.

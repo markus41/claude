@@ -1,7 +1,15 @@
 ---
 name: mp:recommend
+intent: Scan the current project and recommend plugins based on detected stack, patterns, and capability gaps
+tags:
+  - marketplace-pro
+  - command
+  - recommend
+inputs:
+  - '[--verbose] [--dir <path>] [--top <n>]'
+risk: medium
+cost: medium
 description: Scan the current project and recommend plugins based on detected stack, patterns, and capability gaps
-arguments: "[--verbose] [--dir <path>] [--top <n>]"
 ---
 
 # Plugin Recommendation Engine

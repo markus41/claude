@@ -1,5 +1,13 @@
 ---
 name: tvs:identity-attestation
+intent: Generate periodic access attestation packets for TAIA transition governance and due diligence
+tags:
+  - tvs-microsoft-deploy
+  - command
+  - identity-attestation
+inputs: []
+risk: medium
+cost: medium
 description: Generate periodic access attestation packets for TAIA transition governance and due diligence
 allowed-tools:
   - Bash

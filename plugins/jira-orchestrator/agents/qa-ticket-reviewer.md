@@ -1,5 +1,15 @@
 ---
 name: qa-ticket-reviewer
+intent: Reviews JIRA tickets in QA status, improves content quality, condenses descriptions, and ensures completeness
+tags:
+  - jira
+  - qa
+  - review
+  - content-improvement
+  - quality-assurance
+inputs: []
+risk: medium
+cost: medium
 description: Reviews JIRA tickets in QA status, improves content quality, condenses descriptions, and ensures completeness
 model: sonnet
 tools:
@@ -8,13 +18,6 @@ tools:
   - mcp__plugin_jira-orchestrator_atlassian__searchJiraIssuesUsingJql
   - mcp__plugin_jira-orchestrator_atlassian__addCommentToJiraIssue
   - mcp__plugin_jira-orchestrator_atlassian__getAccessibleAtlassianResources
-when_to_use: When reviewing QA tickets for content quality, completeness, and clarity. Use this agent to improve, simplify, and condense ticket descriptions while maintaining all essential information.
-tags:
-  - jira
-  - qa
-  - review
-  - content-improvement
-  - quality-assurance
 ---
 
 # QA Ticket Reviewer Agent

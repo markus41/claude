@@ -1,24 +1,17 @@
 ---
 name: exec:dashboard
-description: Display automation status, metrics, and performance dashboard
-color: cyan
-icon: layout-dashboard
+intent: Display automation status, metrics, and performance dashboard
 tags:
   - dashboard
   - metrics
   - monitoring
   - analytics
   - performance
+inputs: []
+risk: medium
+cost: medium
+description: Display automation status, metrics, and performance dashboard
 model: claude-sonnet-4-5
-arguments:
-  - name: view
-    description: Dashboard view (overview, workflows, agents, performance)
-    required: false
-    default: overview
-  - name: period
-    description: Time period (today, week, month, quarter)
-    required: false
-    default: week
 ---
 
 # Executive Automation Dashboard

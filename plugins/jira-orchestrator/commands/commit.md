@@ -1,47 +1,15 @@
 ---
 name: jira:commit
-description: Create git commit with Jira smart commit syntax for automatic issue updates
-arguments:
-  - name: message
-    description: Commit message or 'auto' to generate from issue context
-    required: false
-  - name: --issue
-    description: Jira issue key (auto-detected from branch)
-    required: false
-  - name: --time
-    description: Work time to log (e.g., 2h, 1d 4h 30m)
-    required: false
-  - name: --transition
-    description: Jira status transition (e.g., "In Review", "Done")
-    required: false
-  - name: --comment
-    description: Comment to add to Jira issue
-    required: false
-  - name: --validate
-    description: Validate without committing
-    required: false
-    type: boolean
-  - name: --dry-run
-    description: Show preview without changes
-    required: false
-    type: boolean
-  - name: --validate-transitions
-    description: Pre-validate workflow transition
-    required: false
-    type: boolean
-  - name: --check-worklog
-    description: Verify time tracking enabled
-    required: false
-    type: boolean
-  - name: --strict
-    description: Fail on validation warnings
-    required: false
-    type: boolean
+intent: Create git commit with Jira smart commit syntax for automatic issue updates
 tags:
   - jira
   - git
   - smart-commit
   - automation
+inputs: []
+risk: medium
+cost: medium
+description: Create git commit with Jira smart commit syntax for automatic issue updates
 examples:
   - command: /jira:commit "Fixed auth bug" --time 2h
   - command: /jira:commit auto --issue PROJ-123 --transition "In Review"

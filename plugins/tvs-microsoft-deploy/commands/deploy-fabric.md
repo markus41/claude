@@ -1,5 +1,13 @@
 ---
 name: tvs:deploy-fabric
+intent: Fabric workspace provisioning - creates workspaces, lakehouses, deploys notebooks, creates Dataverse shortcuts
+tags:
+  - tvs-microsoft-deploy
+  - command
+  - deploy-fabric
+inputs: []
+risk: medium
+cost: medium
 description: Fabric workspace provisioning - creates workspaces, lakehouses, deploys notebooks, creates Dataverse shortcuts
 allowed-tools:
   - Bash

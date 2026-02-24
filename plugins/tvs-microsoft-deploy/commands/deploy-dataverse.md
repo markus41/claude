@@ -1,5 +1,13 @@
 ---
 name: tvs:deploy-dataverse
+intent: Dataverse schema + Power Platform ALM deployment (pack/unpack, managed promotion, env vars, connection refs, release gates, Copilot Studio)
+tags:
+  - tvs-microsoft-deploy
+  - command
+  - deploy-dataverse
+inputs: []
+risk: medium
+cost: medium
 description: Dataverse schema + Power Platform ALM deployment (pack/unpack, managed promotion, env vars, connection refs, release gates, Copilot Studio)
 allowed-tools:
   - Bash

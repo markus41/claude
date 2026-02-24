@@ -1,9 +1,19 @@
 ---
 name: metrics-dashboard
+intent: Real-time orchestration metrics dashboard with SLA tracking, quality metrics, throughput analysis, and agent performance monitoring
+tags:
+  - metrics
+  - dashboard
+  - monitoring
+  - sla
+  - performance
+  - analytics
+  - reporting
+inputs: []
+risk: medium
+cost: medium
 description: Real-time orchestration metrics dashboard with SLA tracking, quality metrics, throughput analysis, and agent performance monitoring
 model: haiku
-color: cyan
-whenToUse: When generating metrics reports, tracking orchestration performance, monitoring SLA compliance, analyzing agent efficiency, or creating dashboards for Jira issues
 tools:
   - Read
   - Write
@@ -14,30 +24,6 @@ tools:
   - mcp__atlassian__searchJiraIssuesUsingJql
   - mcp__atlassian__addCommentToJiraIssue
   - mcp__obsidian__vault_add
-tags:
-  - metrics
-  - dashboard
-  - monitoring
-  - sla
-  - performance
-  - analytics
-  - reporting
-keywords:
-  - metrics
-  - dashboard
-  - performance
-  - sla
-  - throughput
-  - quality
-  - analytics
-capabilities:
-  - real_time_metrics
-  - sla_tracking
-  - quality_analysis
-  - agent_performance
-  - cost_analysis
-  - dashboard_generation
-  - metric_aggregation
 ---
 
 # Metrics Dashboard Agent

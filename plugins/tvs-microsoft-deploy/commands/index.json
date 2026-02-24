@@ -1,0 +1,242 @@
+{
+  "version": 1,
+  "plugin": "tvs-microsoft-deploy",
+  "type": "commands",
+  "generatedBy": "scripts/generate-plugin-indexes.mjs",
+  "entries": [
+    {
+      "name": "tvs:browser-fallback",
+      "intent": "Manual browser automation fallback using Playwright for portal operations lacking CLI/API coverage",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "command",
+        "browser-fallback"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/browser-fallback.md"
+    },
+    {
+      "name": "tvs:cost-report",
+      "intent": "Cost analysis across all TVS Holdings entities with tier projections",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "command",
+        "cost-report"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/cost-report.md"
+    },
+    {
+      "name": "tvs:deploy-all",
+      "intent": "Full platform deployment orchestrated from control-plane manifests and overlays",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "command",
+        "deploy-all"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/deploy-all.md"
+    },
+    {
+      "name": "tvs:deploy-azure",
+      "intent": "Azure infrastructure deployment - Bicep templates for Key Vault, Functions, Static Web Apps, App Insights",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "command",
+        "deploy-azure"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/deploy-azure.md"
+    },
+    {
+      "name": "tvs:deploy-dataverse",
+      "intent": "Dataverse schema + Power Platform ALM deployment (pack/unpack, managed promotion, env vars, connection refs, release gates, Copilot Studio)",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "command",
+        "deploy-dataverse"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/deploy-dataverse.md"
+    },
+    {
+      "name": "tvs:deploy-fabric",
+      "intent": "Fabric workspace provisioning - creates workspaces, lakehouses, deploys notebooks, creates Dataverse shortcuts",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "command",
+        "deploy-fabric"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/deploy-fabric.md"
+    },
+    {
+      "name": "tvs:deploy-identity",
+      "intent": "Entra ID deployment - users, licenses, conditional access, app registrations, FIDO2 configuration",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "command",
+        "deploy-identity"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/deploy-identity.md"
+    },
+    {
+      "name": "tvs:deploy-portal",
+      "intent": "Power Pages and Copilot Studio deployment - broker portal, Stripe billing widget, conversational bots",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "command",
+        "deploy-portal"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/deploy-portal.md"
+    },
+    {
+      "name": "tvs:deploy-teams",
+      "intent": "Teams workspace provisioning for VAs with HIPAA-aware configuration",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "command",
+        "deploy-teams"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/deploy-teams.md"
+    },
+    {
+      "name": "tvs:extract-a3",
+      "intent": "A3 Firebase extraction - bulk extract brokers, commissions, carriers, contacts, activities to OneLake. CRITICAL PATH WEEK 1.",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "command",
+        "extract-a3"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/extract-a3.md"
+    },
+    {
+      "name": "tvs:health",
+      "intent": "Unified health dashboard across all TVS Holdings entities with traffic-light status indicators",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "command",
+        "health"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/health.md"
+    },
+    {
+      "name": "tvs:identity-attestation",
+      "intent": "Generate periodic access attestation packets for TAIA transition governance and due diligence",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "command",
+        "identity-attestation"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/identity-attestation.md"
+    },
+    {
+      "name": "tvs:identity-drift",
+      "intent": "Detect Entra identity drift and produce remediation recommendations",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "command",
+        "identity-drift"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/identity-drift.md"
+    },
+    {
+      "name": "tvs:normalize-carriers",
+      "intent": "Carrier normalization sprint for TAIA FMO sale preparation",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "command",
+        "normalize-carriers"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/normalize-carriers.md"
+    },
+    {
+      "name": "tvs:orchestrate-planner",
+      "intent": "Full lifecycle Planner orchestration for workflow templates and live plans",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "command",
+        "orchestrate-planner"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/orchestrate-planner.md"
+    },
+    {
+      "name": "tvs:quick-start",
+      "intent": "End-to-end bootstrap for TVS Microsoft Deploy that can initialize a fresh repo or configure an existing repo to the required baseline",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "command",
+        "quick-start"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/quick-start.md"
+    },
+    {
+      "name": "tvs:status-check",
+      "intent": "Health check using control-plane dry-run outputs as the verification source of truth",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "command",
+        "status-check"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/status-check.md"
+    },
+    {
+      "name": "tvs:taia-readiness",
+      "intent": "TAIA transition readiness check driven by control-plane wind-down overlay",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "command",
+        "taia-readiness"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/taia-readiness.md"
+    }
+  ]
+}

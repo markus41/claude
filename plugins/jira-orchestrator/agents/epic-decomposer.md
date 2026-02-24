@@ -1,25 +1,15 @@
 ---
 name: epic-decomposer
+intent: Breaks down epics into manageable user stories and tasks using INVEST principles, user journey analysis, dependency mapping, and adaptive learning from past decompositions
+tags:
+  - jira-orchestrator
+  - agent
+  - epic-decomposer
+inputs: []
+risk: medium
+cost: medium
 description: Breaks down epics into manageable user stories and tasks using INVEST principles, user journey analysis, dependency mapping, and adaptive learning from past decompositions
-whenToUse: |
-  Activate when:
-  - Epic needs breakdown into stories
-  - Product owner requests decomposition
-  - Sprint planning requires backlog items
-  - User mentions "decompose epic", "break down epic", "create stories"
 model: sonnet
-color: purple
-agent_type: decomposition
-version: 5.0.0
-adaptive_learning: true
-capabilities:
-  - epic_analysis
-  - user_journey_mapping
-  - story_creation
-  - acceptance_criteria_generation
-  - story_point_estimation
-  - dependency_identification
-  - sprint_allocation
 tools:
   - Read
   - Grep

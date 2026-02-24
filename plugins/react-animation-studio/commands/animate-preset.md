@@ -1,3 +1,15 @@
+---
+name: react-animation-studio:animate-preset
+intent: /animate-preset
+tags:
+  - react-animation-studio
+  - command
+  - animate-preset
+inputs: []
+risk: medium
+cost: medium
+---
+
 # /animate-preset
 
 Apply pre-built animation presets from a curated library of beautiful, tested animations.

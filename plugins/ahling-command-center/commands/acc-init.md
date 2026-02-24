@@ -1,7 +1,20 @@
 ---
+name: ahling-command-center:acc-init
+intent: Initialize the Ahling Command Center project structure with 70+ services configuration
+tags:
+  - ahling-command-center
+  - command
+  - acc-init
+inputs: []
+risk: medium
+cost: medium
 description: Initialize the Ahling Command Center project structure with 70+ services configuration
-argument-hint: "[--path PATH] [--minimal]"
-allowed-tools: ["Bash", "Read", "Write", "Glob", "Grep"]
+allowed-tools:
+  - Bash
+  - Read
+  - Write
+  - Glob
+  - Grep
 ---
 
 Initialize the complete Ahling Command Center project structure with directories, configuration templates, and base files for managing 70+ self-hosted services with Vault integration.

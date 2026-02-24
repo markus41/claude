@@ -1,20 +1,14 @@
 ---
 name: jira:confluence
+intent: Read, write, sync, create, or link Confluence pages to Jira issues
+tags:
+  - jira-orchestrator
+  - command
+  - confluence
+inputs: []
+risk: medium
+cost: medium
 description: Read, write, sync, create, or link Confluence pages to Jira issues
-arguments:
-  - name: issue_key
-    description: Jira issue key (e.g., PROJ-123)
-    required: true
-  - name: action
-    description: Action (read|write|sync|create|link)
-    default: read
-  - name: page_type
-    description: Page type (tdd|api|adr|runbook|release-notes)
-    required: false
-  - name: space_key
-    description: Confluence space key (optional)
-    required: false
-version: 1.0.0
 ---
 
 # Jira-Confluence Integration

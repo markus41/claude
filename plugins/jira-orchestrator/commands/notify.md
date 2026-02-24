@@ -1,7 +1,14 @@
 ---
 name: jira:notify
+intent: Manage notifications, webhooks, channels, and subscriptions
+tags:
+  - jira-orchestrator
+  - command
+  - notify
+inputs: []
+risk: medium
+cost: medium
 description: Manage notifications, webhooks, channels, and subscriptions
-argument-hint: "[action] [options]"
 ---
 
 # /jira:notify

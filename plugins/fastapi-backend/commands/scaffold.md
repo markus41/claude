@@ -1,7 +1,14 @@
 ---
 name: scaffold
+intent: Generate a complete FastAPI project structure with best practices
+tags:
+  - fastapi-backend
+  - command
+  - scaffold
+inputs: []
+risk: medium
+cost: medium
 description: Generate a complete FastAPI project structure with best practices
-argument-hint: "[project_name] [--template full|minimal|api-only] [--auth] [--db mongo]"
 allowed-tools:
   - Bash
   - Read

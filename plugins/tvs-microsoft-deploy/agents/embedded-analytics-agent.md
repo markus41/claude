@@ -1,10 +1,15 @@
 ---
 name: embedded-analytics-agent
+intent: Embedded analytics specialist for Power BI embedding, tenant isolation, and application-facing semantic model access
+tags:
+  - tvs-microsoft-deploy
+  - agent
+  - embedded-analytics-agent
+inputs: []
+risk: medium
+cost: medium
 description: Embedded analytics specialist for Power BI embedding, tenant isolation, and application-facing semantic model access
 model: sonnet
-codename: BEACON
-role: Embedded Analytics Engineer
-browser_fallback: true
 tools:
   - Bash
   - Read
@@ -12,12 +17,6 @@ tools:
   - Edit
   - Grep
   - Glob
-keywords:
-  - embedded-analytics
-  - power-bi-embed
-  - semantic-model
-  - rls
-  - app-owns-data
 ---
 
 # Embedded Analytics Agent (BEACON)

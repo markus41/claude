@@ -1,5 +1,13 @@
 ---
 name: tvs:browser-fallback
+intent: Manual browser automation fallback using Playwright for portal operations lacking CLI/API coverage
+tags:
+  - tvs-microsoft-deploy
+  - command
+  - browser-fallback
+inputs: []
+risk: medium
+cost: medium
 description: Manual browser automation fallback using Playwright for portal operations lacking CLI/API coverage
 allowed-tools:
   - Bash

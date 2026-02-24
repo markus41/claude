@@ -1,4 +1,13 @@
 ---
+name: aws-eks-helm-keycloak:preview
+intent: Create ephemeral preview environment for feature branch testing with unique URL and Keycloak client
+tags:
+  - aws-eks-helm-keycloak
+  - command
+  - preview
+inputs: []
+risk: medium
+cost: medium
 description: Create ephemeral preview environment for feature branch testing with unique URL and Keycloak client
 ---
 

@@ -1,29 +1,23 @@
 ---
 name: review-progress-tracker
-description: Track review status across all sub-item chunks with progress dashboards in Jira
-model: haiku
-color: green
-whenToUse: |
-  Activate to:
-  - Create review progress dashboard on parent Jira issue
-  - Track which reviewers approved which chunks
-  - Update progress as reviews complete
-  - Calculate estimated time to full approval
-
-  Works with review-facilitator to provide visibility into review progress.
-
-tools:
-  - Bash
-  - Read
-  - mcp__atlassian__getJiraIssue
-  - mcp__atlassian__searchJiraIssuesUsingJql
-  - mcp__atlassian__addCommentToJiraIssue
+intent: Track review status across all sub-item chunks with progress dashboards in Jira
 tags:
   - jira
   - review
   - progress
   - dashboard
   - tracking
+inputs: []
+risk: medium
+cost: medium
+description: Track review status across all sub-item chunks with progress dashboards in Jira
+model: haiku
+tools:
+  - Bash
+  - Read
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__searchJiraIssuesUsingJql
+  - mcp__atlassian__addCommentToJiraIssue
 ---
 
 # Review Progress Tracker Agent

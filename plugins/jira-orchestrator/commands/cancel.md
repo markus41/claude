@@ -1,8 +1,19 @@
 ---
 name: jira:cancel
+intent: Cancel ongoing Jira issue orchestration and save checkpoint for resume
+tags:
+  - jira-orchestrator
+  - command
+  - cancel
+inputs: []
+risk: medium
+cost: medium
 description: Cancel ongoing Jira issue orchestration and save checkpoint for resume
-argument-hint: "<ISSUE-KEY> [--force] [--no-checkpoint]"
-allowed-tools: ["Bash", "Read", "Write", "KillShell"]
+allowed-tools:
+  - Bash
+  - Read
+  - Write
+  - KillShell
 ---
 
 Cancel active orchestration, stop sub-agents, save checkpoint, update Jira, and enable resume.

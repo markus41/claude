@@ -1,7 +1,14 @@
 ---
 name: test
+intent: Generate comprehensive pytest test suite for FastAPI endpoints with async support
+tags:
+  - fastapi-backend
+  - command
+  - test
+inputs: []
+risk: medium
+cost: medium
 description: Generate comprehensive pytest test suite for FastAPI endpoints with async support
-argument-hint: "[endpoint_or_service] [--unit] [--integration] [--e2e]"
 allowed-tools:
   - Read
   - Write

@@ -1,3 +1,15 @@
+---
+name: home-assistant-architect:ha-mcp
+intent: Home Assistant MCP Command
+tags:
+  - home-assistant-architect
+  - command
+  - ha-mcp
+inputs: []
+risk: medium
+cost: medium
+---
+
 # Home Assistant MCP Command
 
 Configure and manage MCP server integration for Claude with Home Assistant.

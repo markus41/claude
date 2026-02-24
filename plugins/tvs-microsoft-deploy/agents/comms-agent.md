@@ -1,23 +1,20 @@
 ---
 name: comms-agent
+intent: Teams and Exchange specialist provisioning workspaces, channels, shared mailboxes, and HIPAA-aware communications for TVS Holdings
+tags:
+  - tvs-microsoft-deploy
+  - agent
+  - comms-agent
+inputs: []
+risk: medium
+cost: medium
 description: Teams and Exchange specialist provisioning workspaces, channels, shared mailboxes, and HIPAA-aware communications for TVS Holdings
 model: sonnet
-codename: SIGNAL
-role: Communications Infrastructure Engineer
-browser_fallback: true
 tools:
   - Bash
   - Read
   - Write
   - Grep
-keywords:
-  - teams
-  - exchange
-  - shared-mailbox
-  - channels
-  - hipaa
-  - communications
-  - notifications
 ---
 
 > Docs Hub: [Architecture Hub](../docs/architecture/README.md#agent-topology)

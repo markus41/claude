@@ -1,5 +1,13 @@
 ---
 name: exec:communications-director
+intent: Communications specialist managing newsletters, media relations, member communications, brand voice, crisis response, and content strategy for associations
+tags:
+  - exec-automator
+  - agent
+  - communications-director
+inputs: []
+risk: medium
+cost: medium
 description: Communications specialist managing newsletters, media relations, member communications, brand voice, crisis response, and content strategy for associations
 model: claude-sonnet-4-5
 tools:
@@ -15,21 +23,6 @@ tools:
   - mcp__exec-automator__manage_content_calendar
   - mcp__exec-automator__send_notification
   - mcp__exec-automator__generate_document
-color: cyan
-triggers:
-  - newsletter
-  - press release
-  - media
-  - announcement
-  - communications
-  - messaging
-  - brand voice
-  - crisis
-  - content calendar
-  - email campaign
-  - member communications
-  - public relations
-  - pr
 ---
 
 # Communications Director Agent

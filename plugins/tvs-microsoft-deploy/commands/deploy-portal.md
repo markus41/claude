@@ -1,5 +1,13 @@
 ---
 name: tvs:deploy-portal
+intent: Power Pages and Copilot Studio deployment - broker portal, Stripe billing widget, conversational bots
+tags:
+  - tvs-microsoft-deploy
+  - command
+  - deploy-portal
+inputs: []
+risk: medium
+cost: medium
 description: Power Pages and Copilot Studio deployment - broker portal, Stripe billing widget, conversational bots
 allowed-tools:
   - Bash

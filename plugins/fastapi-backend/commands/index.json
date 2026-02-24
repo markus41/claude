@@ -1,0 +1,138 @@
+{
+  "version": 1,
+  "plugin": "fastapi-backend",
+  "type": "commands",
+  "generatedBy": "scripts/generate-plugin-indexes.mjs",
+  "entries": [
+    {
+      "name": "deploy",
+      "intent": "Deploy FastAPI application to Kubernetes cluster with Helm",
+      "tags": [
+        "fastapi-backend",
+        "command",
+        "deploy"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/deploy.md"
+    },
+    {
+      "name": "dev",
+      "intent": "Start FastAPI development server with hot reload and proper configuration",
+      "tags": [
+        "fastapi-backend",
+        "command",
+        "dev"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/dev.md"
+    },
+    {
+      "name": "docker",
+      "intent": "Build and manage Docker containers for FastAPI application",
+      "tags": [
+        "fastapi-backend",
+        "command",
+        "docker"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/docker.md"
+    },
+    {
+      "name": "endpoint",
+      "intent": "Generate a complete FastAPI CRUD endpoint with router, schemas, service layer, and tests",
+      "tags": [
+        "fastapi-backend",
+        "command",
+        "endpoint"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/endpoint.md"
+    },
+    {
+      "name": "migrate",
+      "intent": "Run Beanie/MongoDB migrations and index management",
+      "tags": [
+        "fastapi-backend",
+        "command",
+        "migrate"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/migrate.md"
+    },
+    {
+      "name": "model",
+      "intent": "Generate a Beanie document model with indexes, validation, and relationships",
+      "tags": [
+        "fastapi-backend",
+        "command",
+        "model"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/model.md"
+    },
+    {
+      "name": "scaffold",
+      "intent": "Generate a complete FastAPI project structure with best practices",
+      "tags": [
+        "fastapi-backend",
+        "command",
+        "scaffold"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/scaffold.md"
+    },
+    {
+      "name": "task",
+      "intent": "Generate a background task with ARQ, Celery, or Dramatiq",
+      "tags": [
+        "fastapi-backend",
+        "command",
+        "task"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/task.md"
+    },
+    {
+      "name": "test",
+      "intent": "Generate comprehensive pytest test suite for FastAPI endpoints with async support",
+      "tags": [
+        "fastapi-backend",
+        "command",
+        "test"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/test.md"
+    },
+    {
+      "name": "ws",
+      "intent": "Generate a WebSocket endpoint with connection management and authentication",
+      "tags": [
+        "fastapi-backend",
+        "command",
+        "ws"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/ws.md"
+    }
+  ]
+}

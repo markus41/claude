@@ -1,7 +1,17 @@
 ---
+name: ahling-command-center:acc-knowledge
+intent: Query and update the knowledge graph (Neo4j) with vector search (Qdrant) integration
+tags:
+  - ahling-command-center
+  - command
+  - acc-knowledge
+inputs: []
+risk: medium
+cost: medium
 description: Query and update the knowledge graph (Neo4j) with vector search (Qdrant) integration
-argument-hint: "<operation> [query] [--embed]"
-allowed-tools: ["Bash", "Read"]
+allowed-tools:
+  - Bash
+  - Read
 ---
 
 Manage ACC knowledge graph using Neo4j for structured data and Qdrant for vector embeddings with semantic search capabilities.

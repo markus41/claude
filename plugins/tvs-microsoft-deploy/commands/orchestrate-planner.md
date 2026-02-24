@@ -1,5 +1,13 @@
 ---
 name: tvs:orchestrate-planner
+intent: Full lifecycle Planner orchestration for workflow templates and live plans
+tags:
+  - tvs-microsoft-deploy
+  - command
+  - orchestrate-planner
+inputs: []
+risk: medium
+cost: medium
 description: Full lifecycle Planner orchestration for workflow templates and live plans
 allowed-tools:
   - Bash

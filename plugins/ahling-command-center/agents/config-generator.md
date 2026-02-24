@@ -1,11 +1,16 @@
 ---
 name: config-generator
-description: >
-  Configuration generation agent for the Ahling Command Center.
-  Generates service configurations with HashiCorp Vault secret integration,
-  manages environment variables, and creates templated configs for 70+ services.
+intent: Configuration generation agent for the Ahling Command Center. Generates service configurations with HashiCorp Vault secret integration, manages environment variables, and creates templated configs for 70+ services.
+tags:
+  - ahling-command-center
+  - agent
+  - config-generator
+inputs: []
+risk: medium
+cost: medium
+description: |
+  Configuration generation agent for the Ahling Command Center. Generates service configurations with HashiCorp Vault secret integration, manages environment variables, and creates templated configs for 70+ services.
 model: sonnet
-color: blue
 tools:
   - Bash
   - Read
@@ -13,15 +18,6 @@ tools:
   - Edit
   - Grep
   - Glob
-whenToUse: >
-  Activate this agent when the user mentions:
-  - Configuration generation or templating
-  - Environment variable management
-  - Vault secret integration or secret management
-  - Service configuration files (.env, yaml, json)
-  - Configuration validation or syntax checking
-  - Templated config generation from specifications
-  - Credential rotation or secret updates
 ---
 
 # Configuration Generator Agent

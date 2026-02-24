@@ -1,12 +1,14 @@
 ---
+name: team-accelerator:status
+intent: Display team dashboard with deployment status, test results, quality metrics, and workflow health across all environments
+tags:
+  - team-accelerator
+  - command
+  - status
+inputs: []
+risk: medium
+cost: medium
 description: Display team dashboard with deployment status, test results, quality metrics, and workflow health across all environments
-arguments:
-  - name: view
-    description: "Dashboard view: all, deployments, tests, quality, or workflows"
-    required: false
-  - name: environment
-    description: "Filter by environment: dev, staging, prod, or all (default: all)"
-    required: false
 ---
 
 # Status Command

@@ -1,8 +1,14 @@
 ---
 name: pr-fix
-description: "[DEPRECATED] Use /jira:pr --fix instead"
-deprecated: true
-redirect: /jira:pr --fix
+intent: '[DEPRECATED] Use /jira:pr --fix instead'
+tags:
+  - jira-orchestrator
+  - command
+  - pr-fix
+inputs: []
+risk: medium
+cost: medium
+description: '[DEPRECATED] Use /jira:pr --fix instead'
 ---
 
 # DEPRECATED: Use `/jira:pr --fix`

@@ -1,11 +1,19 @@
 ---
 name: jira:sync
+intent: Bi-directional sync - pull Jira details, push local progress, detect & resolve conflicts
+tags:
+  - jira-orchestrator
+  - command
+  - sync
+inputs: []
+risk: medium
+cost: medium
 description: Bi-directional sync - pull Jira details, push local progress, detect & resolve conflicts
-argument-hint: "[ISSUE-KEY]"
-argument-help: "Optional (e.g., PROJ-123). Omit to sync all active issues"
-allowed-tools: ["Read", "Write", "Bash", "Glob"]
-category: "jira"
-aliases: ["jira-sync"]
+allowed-tools:
+  - Read
+  - Write
+  - Bash
+  - Glob
 ---
 
 # Jira Sync Command

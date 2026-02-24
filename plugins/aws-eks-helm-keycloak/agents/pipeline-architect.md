@@ -1,13 +1,15 @@
 ---
 name: pipeline-architect
+intent: Designs optimal Harness pipeline structures for AWS EKS deployments with Helm and Keycloak
+tags:
+  - aws-eks-helm-keycloak
+  - agent
+  - pipeline-architect
+inputs: []
+risk: medium
+cost: medium
 description: Designs optimal Harness pipeline structures for AWS EKS deployments with Helm and Keycloak
 model: sonnet
-triggers:
-  - pipeline design
-  - harness pipeline
-  - deployment pipeline
-  - ci cd design
-  - pipeline optimization
 allowed-tools:
   - Read
   - Write

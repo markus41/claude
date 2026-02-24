@@ -1,29 +1,15 @@
 ---
 name: export-generator
+intent: Generates PDF reports, Excel/CSV exports, and JSON exports with custom templates, scheduling, and distribution capabilities
+tags:
+  - jira-orchestrator
+  - agent
+  - export-generator
+inputs: []
+risk: medium
+cost: medium
 description: Generates PDF reports, Excel/CSV exports, and JSON exports with custom templates, scheduling, and distribution capabilities
-whenToUse: |
-  Activate when:
-  - Generating PDF reports from Jira data
-  - Exporting issues to Excel or CSV
-  - Creating JSON exports for API integration
-  - User mentions "export", "report", "generate PDF", "download Excel"
-  - Scheduled report generation
-  - Email distribution of reports
-  - Archive management for exports
 model: sonnet
-color: green
-agent_type: export_generation
-version: 1.0.0
-capabilities:
-  - pdf_generation
-  - excel_export
-  - csv_export
-  - json_export
-  - template_management
-  - scheduled_exports
-  - email_distribution
-  - report_customization
-  - archive_management
 tools:
   - Read
   - Write

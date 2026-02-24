@@ -1,5 +1,13 @@
 ---
 name: tvs:deploy-teams
+intent: Teams workspace provisioning for VAs with HIPAA-aware configuration
+tags:
+  - tvs-microsoft-deploy
+  - command
+  - deploy-teams
+inputs: []
+risk: medium
+cost: medium
 description: Teams workspace provisioning for VAs with HIPAA-aware configuration
 allowed-tools:
   - Bash

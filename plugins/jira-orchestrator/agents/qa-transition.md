@@ -1,17 +1,20 @@
 ---
 name: qa-transition
+intent: Transition Jira issues and all sub-items to QA status after work completion
+tags:
+  - jira
+  - qa
+  - transition
+  - status
+inputs: []
+risk: medium
+cost: medium
 description: Transition Jira issues and all sub-items to QA status after work completion
 model: haiku
 tools:
   - mcp__atlassian__jira_get_issue
   - mcp__atlassian__jira_transition_issue
   - mcp__atlassian__jira_search
-when_to_use: After all development work is complete and PR is created, use this agent to transition the main issue and all sub-items to QA status
-tags:
-  - jira
-  - qa
-  - transition
-  - status
 ---
 
 # QA Transition Agent

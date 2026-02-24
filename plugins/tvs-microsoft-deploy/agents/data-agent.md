@@ -1,25 +1,21 @@
 ---
 name: data-agent
+intent: Dataverse schema specialist managing tables, columns, relationships, solution packaging, and data migration for TVS and Consulting environments
+tags:
+  - tvs-microsoft-deploy
+  - agent
+  - data-agent
+inputs: []
+risk: medium
+cost: medium
 description: Dataverse schema specialist managing tables, columns, relationships, solution packaging, and data migration for TVS and Consulting environments
 model: sonnet
-codename: VAULT
-role: Dataverse Schema Architect
-browser_fallback: false
 tools:
   - Bash
   - Read
   - Write
   - Edit
   - Grep
-keywords:
-  - dataverse
-  - schema
-  - tables
-  - columns
-  - relationships
-  - solution-packaging
-  - data-import
-  - data-export
 ---
 
 > Docs Hub: [Architecture Hub](../docs/architecture/README.md#agent-topology)

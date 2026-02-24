@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "plugin": "team-accelerator",
+  "type": "commands",
+  "generatedBy": "scripts/generate-plugin-indexes.mjs",
+  "entries": [
+    {
+      "name": "team-accelerator:deploy",
+      "intent": "Deploy applications to multi-cloud environments (Azure, AWS, GCP, Kubernetes) with support for Helm charts, GitHub Actions, and Harness pipelines",
+      "tags": [
+        "team-accelerator",
+        "command",
+        "deploy"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/deploy.md"
+    },
+    {
+      "name": "team-accelerator:docs",
+      "intent": "Generate and manage documentation including OpenAPI specs, Mermaid diagrams, README files, changelogs, and ADRs",
+      "tags": [
+        "team-accelerator",
+        "command",
+        "docs"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/docs.md"
+    },
+    {
+      "name": "team-accelerator:integrate",
+      "intent": "Generate and manage API integrations including REST clients, GraphQL schemas, database connections, and webhook handlers",
+      "tags": [
+        "team-accelerator",
+        "command",
+        "integrate"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/integrate.md"
+    },
+    {
+      "name": "team-accelerator:perf",
+      "intent": "Performance monitoring and optimization with k6 load testing, Prometheus queries, Grafana dashboards, and profiling tools",
+      "tags": [
+        "team-accelerator",
+        "command",
+        "perf"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/perf.md"
+    },
+    {
+      "name": "team-accelerator:quality",
+      "intent": "Run comprehensive code quality checks including linting, static analysis, security scanning, and dependency audits",
+      "tags": [
+        "team-accelerator",
+        "command",
+        "quality"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/quality.md"
+    },
+    {
+      "name": "team-accelerator:status",
+      "intent": "Display team dashboard with deployment status, test results, quality metrics, and workflow health across all environments",
+      "tags": [
+        "team-accelerator",
+        "command",
+        "status"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/status.md"
+    },
+    {
+      "name": "team-accelerator:test",
+      "intent": "Run test suites including unit tests, integration tests, E2E tests (Playwright/Selenium), and generate coverage reports",
+      "tags": [
+        "team-accelerator",
+        "command",
+        "test"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/test.md"
+    },
+    {
+      "name": "team-accelerator:workflow",
+      "intent": "Manage CI/CD workflows with GitHub Actions and Harness pipelines - create, validate, trigger, and monitor workflows",
+      "tags": [
+        "team-accelerator",
+        "command",
+        "workflow"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/workflow.md"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "plugin": "lobbi-platform-manager",
+  "type": "agents",
+  "generatedBy": "scripts/generate-plugin-indexes.mjs",
+  "entries": [
+    {
+      "name": "env-manager",
+      "intent": "Environment configuration manager for the-lobbi/keycloak-alpha repository. Validates environment variables, generates configuration files, checks for missing variables, and ensures proper environment-specific defaults across 8 microservices.",
+      "tags": [
+        "lobbi-platform-manager",
+        "agent",
+        "env-manager"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/env-manager.md"
+    },
+    {
+      "name": "keycloak-admin",
+      "intent": "Keycloak administration agent for the-lobbi/keycloak-alpha repository. Handles realm provisioning, user management, client configuration, theme deployment, and multi-tenant authentication workflows. Expert in Keycloak Admin API and OIDC protocols.",
+      "tags": [
+        "lobbi-platform-manager",
+        "agent",
+        "keycloak-admin"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/keycloak-admin.md"
+    },
+    {
+      "name": "service-orchestrator",
+      "intent": "Service orchestration agent for the-lobbi/keycloak-alpha repository. Monitors health, validates dependencies, manages service lifecycle across 8 microservices. Expert in Docker Compose, service mesh patterns, and failure recovery.",
+      "tags": [
+        "lobbi-platform-manager",
+        "agent",
+        "service-orchestrator"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/service-orchestrator.md"
+    },
+    {
+      "name": "test-generator",
+      "intent": "Automated test generation agent for the-lobbi/keycloak-alpha repository. Generates Jest test suites from Express routes with Keycloak auth mocking, MongoDB/PostgreSQL fixtures, and integration test patterns for microservices.",
+      "tags": [
+        "lobbi-platform-manager",
+        "agent",
+        "test-generator"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/test-generator.md"
+    }
+  ]
+}

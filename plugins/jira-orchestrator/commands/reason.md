@@ -1,3 +1,15 @@
+---
+name: jira-orchestrator:reason
+intent: Reasoning Command
+tags:
+  - jira-orchestrator
+  - command
+  - reason
+inputs: []
+risk: medium
+cost: medium
+---
+
 # Reasoning Command
 
 Invoke structured reasoning frameworks with mandatory documentation lookup.

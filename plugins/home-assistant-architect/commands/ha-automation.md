@@ -1,3 +1,15 @@
+---
+name: home-assistant-architect:ha-automation
+intent: Home Assistant Automation Command
+tags:
+  - home-assistant-architect
+  - command
+  - ha-automation
+inputs: []
+risk: medium
+cost: medium
+---
+
 # Home Assistant Automation Command
 
 Create, manage, and debug Home Assistant automations.

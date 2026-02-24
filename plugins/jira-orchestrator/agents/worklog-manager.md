@@ -1,17 +1,20 @@
 ---
 name: worklog-manager
-description: Manages Jira time tracking and worklog entries with smart time parsing, validation, and remaining estimate tracking
-model: haiku
-tools:
-  - mcp__atlassian__getJiraIssue
-  - mcp__atlassian__addWorklogToJiraIssue
-when_to_use: When adding time entries to Jira tickets, validating time tracking configuration, or managing worklogs with intelligent time string parsing and validation.
+intent: Manages Jira time tracking and worklog entries with smart time parsing, validation, and remaining estimate tracking
 tags:
   - jira
   - time-tracking
   - worklog
   - time-management
   - productivity
+inputs: []
+risk: medium
+cost: medium
+description: Manages Jira time tracking and worklog entries with smart time parsing, validation, and remaining estimate tracking
+model: haiku
+tools:
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__addWorklogToJiraIssue
 ---
 
 # Worklog Manager Agent

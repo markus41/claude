@@ -1,9 +1,15 @@
 ---
 name: deployment-orchestrator
+intent: Orchestrates deployment workflows through state transitions with Harness CD integration
+tags:
+  - deployment-pipeline
+  - agent
+  - orchestrator
+inputs: []
+risk: medium
+cost: medium
 description: Orchestrates deployment workflows through state transitions with Harness CD integration
 model: sonnet
-version: 1.0.0
-category: devops
 tools:
   - Bash
   - Read

@@ -1,5 +1,13 @@
 ---
 name: tvs:health
+intent: Unified health dashboard across all TVS Holdings entities with traffic-light status indicators
+tags:
+  - tvs-microsoft-deploy
+  - command
+  - health
+inputs: []
+risk: medium
+cost: medium
 description: Unified health dashboard across all TVS Holdings entities with traffic-light status indicators
 allowed-tools:
   - Bash

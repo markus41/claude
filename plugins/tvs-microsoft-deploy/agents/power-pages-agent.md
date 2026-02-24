@@ -1,10 +1,15 @@
 ---
 name: power-pages-agent
+intent: Dedicated Power Pages engineer for portal buildouts, web roles, table permissions, and release governance
+tags:
+  - tvs-microsoft-deploy
+  - agent
+  - power-pages-agent
+inputs: []
+risk: medium
+cost: medium
 description: Dedicated Power Pages engineer for portal buildouts, web roles, table permissions, and release governance
 model: sonnet
-codename: PORTALSMITH
-role: Power Pages Engineer
-browser_fallback: true
 tools:
   - Bash
   - Read
@@ -12,12 +17,6 @@ tools:
   - Edit
   - Grep
   - Glob
-keywords:
-  - power-pages
-  - portal
-  - web-role
-  - table-permissions
-  - liquid
 ---
 
 # Power Pages Agent (PORTALSMITH)

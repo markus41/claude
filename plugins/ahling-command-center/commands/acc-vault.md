@@ -1,7 +1,18 @@
 ---
+name: ahling-command-center:acc-vault
+intent: Manage HashiCorp Vault secrets - set, get, list, rotate, and backup
+tags:
+  - ahling-command-center
+  - command
+  - acc-vault
+inputs: []
+risk: medium
+cost: medium
 description: Manage HashiCorp Vault secrets - set, get, list, rotate, and backup
-argument-hint: "<operation> [path] [--key KEY] [--value VALUE]"
-allowed-tools: ["Bash", "Read", "Write"]
+allowed-tools:
+  - Bash
+  - Read
+  - Write
 ---
 
 Manage HashiCorp Vault secrets for ACC services including setting secrets, retrieving values, listing paths, rotating credentials, and backing up secret data.

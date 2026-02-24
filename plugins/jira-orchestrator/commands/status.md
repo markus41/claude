@@ -1,7 +1,14 @@
 ---
 name: jira:status
+intent: Monitor active Jira orchestration sessions and track sub-agent progress across all phases
+tags:
+  - jira-orchestrator
+  - command
+  - status
+inputs: []
+risk: medium
+cost: medium
 description: Monitor active Jira orchestration sessions and track sub-agent progress across all phases
-argument-hint: "[ISSUE-KEY] [--format=dashboard] [--depth=detailed]"
 ---
 
 # /jira:status

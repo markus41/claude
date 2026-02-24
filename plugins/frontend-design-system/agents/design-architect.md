@@ -1,22 +1,21 @@
 ---
-description: "Strategic design decisions, style selection, and design system architecture"
-when_to_use: "selecting design styles, planning design systems, establishing visual identity, brand guidelines"
+name: frontend-design-system:design-architect
+intent: Strategic design decisions, style selection, and design system architecture
+tags:
+  - frontend-design-system
+  - agent
+  - design-architect
+inputs: []
+risk: medium
+cost: medium
+description: Strategic design decisions, style selection, and design system architecture
+model: sonnet
 tools:
   - Read
   - Write
   - Glob
   - Grep
   - WebFetch
-model: sonnet
-color: blue
-category: frontend
-expertise:
-  - Design system architecture
-  - Visual identity planning
-  - Style selection from 263+ design styles
-  - Brand alignment
-  - Design token strategy
-  - Design hierarchy establishment
 ---
 
 # Design Architect Agent

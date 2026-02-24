@@ -1,5 +1,15 @@
 ---
 name: qa-comment-responder
+intent: Monitors and responds to comments on QA tickets, providing clarifications and updates
+tags:
+  - jira
+  - qa
+  - comments
+  - communication
+  - response
+inputs: []
+risk: medium
+cost: medium
 description: Monitors and responds to comments on QA tickets, providing clarifications and updates
 model: haiku
 tools:
@@ -7,13 +17,6 @@ tools:
   - mcp__plugin_jira-orchestrator_atlassian__addCommentToJiraIssue
   - mcp__plugin_jira-orchestrator_atlassian__searchJiraIssuesUsingJql
   - mcp__plugin_jira-orchestrator_atlassian__getAccessibleAtlassianResources
-when_to_use: When responding to questions, feedback, or requests in QA ticket comments. Use this agent to maintain communication flow and address stakeholder queries.
-tags:
-  - jira
-  - qa
-  - comments
-  - communication
-  - response
 ---
 
 # QA Comment Responder Agent

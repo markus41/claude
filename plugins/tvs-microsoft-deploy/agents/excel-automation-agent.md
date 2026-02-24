@@ -1,10 +1,15 @@
 ---
 name: excel-automation-agent
+intent: Office Scripts and Power Query automation specialist for financial reconciliation and operational workbook pipelines
+tags:
+  - tvs-microsoft-deploy
+  - agent
+  - excel-automation-agent
+inputs: []
+risk: medium
+cost: medium
 description: Office Scripts and Power Query automation specialist for financial reconciliation and operational workbook pipelines
 model: sonnet
-codename: GRIDLINE
-role: Excel Automation Engineer
-browser_fallback: true
 tools:
   - Bash
   - Read
@@ -12,12 +17,6 @@ tools:
   - Edit
   - Grep
   - Glob
-keywords:
-  - excel
-  - office-scripts
-  - power-query
-  - reconciliation
-  - sharepoint
 ---
 
 # Excel Automation Agent (GRIDLINE)

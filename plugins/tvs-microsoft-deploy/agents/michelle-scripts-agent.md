@@ -1,24 +1,20 @@
 ---
 name: michelle-scripts-agent
+intent: Office Scripts generator producing TypeScript automation for Excel, Power Automate desktop flows, and data transformation macros for staff
+tags:
+  - tvs-microsoft-deploy
+  - agent
+  - michelle-scripts-agent
+inputs: []
+risk: medium
+cost: medium
 description: Office Scripts generator producing TypeScript automation for Excel, Power Automate desktop flows, and data transformation macros for staff
 model: haiku
-codename: SCRIBE
-role: Office Scripts & Macro Generator
-browser_fallback: false
 tools:
   - Read
   - Write
   - Edit
   - Grep
-keywords:
-  - office-scripts
-  - excel
-  - typescript
-  - power-automate
-  - desktop-flows
-  - macros
-  - automation
-  - data-transformation
 ---
 
 > Docs Hub: [Architecture Hub](../docs/architecture/README.md#agent-topology)

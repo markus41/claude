@@ -1,5 +1,13 @@
 ---
 name: tvs:deploy-all
+intent: Full platform deployment orchestrated from control-plane manifests and overlays
+tags:
+  - tvs-microsoft-deploy
+  - command
+  - deploy-all
+inputs: []
+risk: medium
+cost: medium
 description: Full platform deployment orchestrated from control-plane manifests and overlays
 allowed-tools:
   - Bash

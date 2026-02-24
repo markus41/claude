@@ -1,6 +1,15 @@
 ---
-description: "Multi-tenant theming with Keycloak realm integration and design token management"
-when_to_use: "creating tenant themes, Keycloak theming, realm-specific designs, white-labeling"
+name: frontend-design-system:theme-engineer
+intent: Multi-tenant theming with Keycloak realm integration and design token management
+tags:
+  - frontend-design-system
+  - agent
+  - theme-engineer
+inputs: []
+risk: medium
+cost: medium
+description: Multi-tenant theming with Keycloak realm integration and design token management
+model: sonnet
 tools:
   - Read
   - Write
@@ -8,17 +17,6 @@ tools:
   - Glob
   - Grep
   - Bash
-model: sonnet
-color: purple
-category: frontend
-expertise:
-  - Multi-tenant theming architecture
-  - Keycloak theme customization
-  - Realm-specific branding
-  - CSS variable runtime switching
-  - White-label solutions
-  - Login page customization
-  - Theme inheritance and overrides
 ---
 
 # Theme Engineer Agent

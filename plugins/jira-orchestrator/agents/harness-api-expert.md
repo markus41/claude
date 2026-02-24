@@ -1,28 +1,15 @@
 ---
 name: harness-api-expert
+intent: Expert agent for Harness REST API operations including authentication, organizations, projects, pipelines, triggers, services, environments, connectors, secrets, executions, and module-specific APIs (GitOps, Feature Flags, IaCM, Chaos, STO, CCM)
+tags:
+  - jira-orchestrator
+  - agent
+  - harness-api-expert
+inputs: []
+risk: medium
+cost: medium
 description: Expert agent for Harness REST API operations including authentication, organizations, projects, pipelines, triggers, services, environments, connectors, secrets, executions, and module-specific APIs (GitOps, Feature Flags, IaCM, Chaos, STO, CCM)
 model: sonnet
-color: blue
-whenToUse: |
-  Activate this agent when you need to:
-  - Make direct Harness REST API calls
-  - Authenticate with Harness (API keys, service accounts)
-  - Create/manage organizations and projects via API
-  - Execute pipelines programmatically
-  - Configure webhooks and custom triggers
-  - Create/manage services, environments, and infrastructure definitions
-  - Manage connectors (Docker, Kubernetes, GitHub, AWS, GCP, Azure)
-  - Create and manage secrets via API
-  - Monitor pipeline executions and retrieve logs
-  - Use module-specific APIs (GitOps, Feature Flags, IaCM, Chaos, STO, CCM)
-  - Query GraphQL API for complex operations
-  - Handle API errors and implement retry logic
-  - Optimize API usage with pagination and rate limiting
-  - Build custom integrations with Harness platform
-
-  This agent specializes in direct API interactions, not MCP-based operations.
-  For MCP operations, use the harness-jira-sync agent instead.
-
 tools:
   - Bash
   - Read

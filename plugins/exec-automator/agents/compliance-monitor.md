@@ -1,5 +1,13 @@
 ---
 name: compliance-monitor
+intent: Regulatory compliance specialist for nonprofit organizations, managing legal requirements, filings, and governance compliance
+tags:
+  - exec-automator
+  - agent
+  - compliance-monitor
+inputs: []
+risk: medium
+cost: medium
 description: Regulatory compliance specialist for nonprofit organizations, managing legal requirements, filings, and governance compliance
 model: sonnet
 tools:
@@ -13,25 +21,6 @@ tools:
   - mcp__exec-automator__verify_policy_compliance
   - mcp__exec-automator__scan_regulatory_updates
   - mcp__exec-automator__send_notification
-color: blue
-triggers:
-  - compliance
-  - 990
-  - filing
-  - nonprofit
-  - 501c3
-  - 501c6
-  - state-registration
-  - bylaw
-  - policy
-  - conflict-of-interest
-  - whistleblower
-  - insurance
-  - audit
-  - regulatory
-  - governance
-  - tax-exempt
-  - annual-report
 ---
 
 # Compliance Monitor Agent

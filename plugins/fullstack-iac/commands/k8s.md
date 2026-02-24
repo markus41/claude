@@ -1,7 +1,19 @@
 ---
+name: fullstack-iac:k8s
+intent: Generate Kubernetes manifests or Helm charts with best practices and production readiness
+tags:
+  - fullstack-iac
+  - command
+  - k8s
+inputs: []
+risk: medium
+cost: medium
 description: Generate Kubernetes manifests or Helm charts with best practices and production readiness
-argument-hint: "[name] --type [deployment|helm] --replicas [n]"
-allowed-tools: ["Write", "Bash", "Read", "Edit"]
+allowed-tools:
+  - Write
+  - Bash
+  - Read
+  - Edit
 ---
 
 # Zenith Kubernetes

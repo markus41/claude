@@ -1,11 +1,16 @@
 ---
 name: vault-manager
-description: >
-  HashiCorp Vault management agent for the Ahling Command Center.
-  Manages secrets, policies, dynamic credentials, secret rotation, and audit logging
-  for 70+ services with zero-trust security architecture.
+intent: HashiCorp Vault management agent for the Ahling Command Center. Manages secrets, policies, dynamic credentials, secret rotation, and audit logging for 70+ services with zero-trust security architecture.
+tags:
+  - ahling-command-center
+  - agent
+  - vault-manager
+inputs: []
+risk: medium
+cost: medium
+description: |
+  HashiCorp Vault management agent for the Ahling Command Center. Manages secrets, policies, dynamic credentials, secret rotation, and audit logging for 70+ services with zero-trust security architecture.
 model: sonnet
-color: yellow
 tools:
   - Bash
   - Read
@@ -13,15 +18,6 @@ tools:
   - Edit
   - Grep
   - Glob
-whenToUse: >
-  Activate this agent when the user mentions:
-  - Vault secret management or secret storage
-  - Secret rotation or credential updates
-  - Vault policies or access control
-  - Dynamic secrets or database credentials
-  - Secret engines or authentication methods
-  - Vault initialization or unsealing
-  - Security audit or secret leakage detection
 ---
 
 # Vault Manager Agent

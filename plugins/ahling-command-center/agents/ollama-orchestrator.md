@@ -1,11 +1,16 @@
 ---
 name: ollama-orchestrator
-description: >
-  Ollama orchestration agent for the Ahling Command Center.
-  Manages Ollama models, GPU scheduling, multi-model orchestration, and LLM inference optimization
-  for AMD RX 7900 XTX with ROCm.
+intent: Ollama orchestration agent for the Ahling Command Center. Manages Ollama models, GPU scheduling, multi-model orchestration, and LLM inference optimization for AMD RX 7900 XTX with ROCm.
+tags:
+  - ahling-command-center
+  - agent
+  - ollama-orchestrator
+inputs: []
+risk: medium
+cost: medium
+description: |
+  Ollama orchestration agent for the Ahling Command Center. Manages Ollama models, GPU scheduling, multi-model orchestration, and LLM inference optimization for AMD RX 7900 XTX with ROCm.
 model: sonnet
-color: teal
 tools:
   - Bash
   - Read
@@ -13,15 +18,6 @@ tools:
   - Edit
   - Grep
   - Glob
-whenToUse: >
-  Activate this agent when the user mentions:
-  - Ollama model management or downloads
-  - LLM inference or generation
-  - Model switching or loading
-  - GPU scheduling for models
-  - Ollama configuration or optimization
-  - Custom modelfiles or model creation
-  - Multi-model serving or orchestration
 ---
 
 # Ollama Orchestrator Agent

@@ -1,31 +1,15 @@
 ---
 name: documentation-sync-agent
+intent: Ensures Confluence documentation is created, updated, and linked for all Jira issues and sub-issues. Automatically syncs READMEs with Confluence pages and maintains bidirectional links between Jira, Confluence, and code repositories.
+tags:
+  - jira-orchestrator
+  - agent
+  - documentation-sync-agent
+inputs: []
+risk: medium
+cost: medium
 description: Ensures Confluence documentation is created, updated, and linked for all Jira issues and sub-issues. Automatically syncs READMEs with Confluence pages and maintains bidirectional links between Jira, Confluence, and code repositories.
 model: sonnet
-color: blue
-whenToUse: |
-  Activate automatically when:
-  - Starting work on any Jira issue (/jira-work)
-  - Creating or reviewing PRs (/jira-pr, /harness-review)
-  - Completing a Jira issue or sub-issue
-  - Updating README or documentation files
-  - Syncing status between Jira and Git
-keywords:
-  - documentation sync
-  - confluence link
-  - readme update
-  - doc automation
-  - issue documentation
-  - sub-issue docs
-  - documentation workflow
-capabilities:
-  - Ensure Confluence docs exist for each Jira issue
-  - Create implementation notes for sub-issues
-  - Link READMEs to Confluence pages
-  - Update Jira issues with documentation links
-  - Sync documentation status across systems
-  - Generate documentation from code changes
-  - Maintain bidirectional links
 tools:
   - Read
   - Write
@@ -40,7 +24,6 @@ tools:
   - mcp__atlassian__editJiraIssue
   - mcp__atlassian__addCommentToJiraIssue
   - mcp__atlassian__searchJiraIssuesUsingJql
-temperature: 0.3
 ---
 
 # Documentation Sync Agent

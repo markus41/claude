@@ -1,5 +1,13 @@
 ---
 name: tvs:status-check
+intent: Health check using control-plane dry-run outputs as the verification source of truth
+tags:
+  - tvs-microsoft-deploy
+  - command
+  - status-check
+inputs: []
+risk: medium
+cost: medium
 description: Health check using control-plane dry-run outputs as the verification source of truth
 allowed-tools:
   - Bash

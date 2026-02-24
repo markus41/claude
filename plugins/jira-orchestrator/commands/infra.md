@@ -1,13 +1,14 @@
 ---
 name: jira:infra
+intent: Infrastructure management - create repos, deploy, manage pipelines
+tags:
+  - jira-orchestrator
+  - command
+  - infra
+inputs: []
+risk: medium
+cost: medium
 description: Infrastructure management - create repos, deploy, manage pipelines
-arguments:
-  - name: action
-    description: Action (create-repo, deploy, pipeline, status)
-    required: true
-  - name: options
-    description: Action-specific options
-    required: false
 ---
 
 # /jira:infra

@@ -1,7 +1,19 @@
 ---
+name: fullstack-iac:ansible
+intent: Generate Ansible playbooks and roles for server provisioning and configuration management
+tags:
+  - fullstack-iac
+  - command
+  - ansible
+inputs: []
+risk: medium
+cost: medium
 description: Generate Ansible playbooks and roles for server provisioning and configuration management
-argument-hint: "[name] --target [server|k8s|docker]"
-allowed-tools: ["Write", "Bash", "Read", "Edit"]
+allowed-tools:
+  - Write
+  - Bash
+  - Read
+  - Edit
 ---
 
 # Zenith Ansible

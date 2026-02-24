@@ -1,3 +1,15 @@
+---
+name: home-assistant-architect:local-llm-manager
+intent: Local LLM Manager Agent
+tags:
+  - home-assistant-architect
+  - agent
+  - local-llm-manager
+inputs: []
+risk: medium
+cost: medium
+---
+
 # Local LLM Manager Agent
 
 Deploy, configure, and optimize local Large Language Models using Ollama, LocalAI, and other backends for Home Assistant voice assistants and intelligent automation.

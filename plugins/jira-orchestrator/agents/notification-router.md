@@ -1,9 +1,15 @@
 ---
 name: notification-router
+intent: Routes Jira orchestration events to appropriate notification channels (Slack, Teams, Email, Webhooks) with intelligent filtering, batching, and priority management
+tags:
+  - jira-orchestrator
+  - agent
+  - notification-router
+inputs: []
+risk: medium
+cost: medium
 description: Routes Jira orchestration events to appropriate notification channels (Slack, Teams, Email, Webhooks) with intelligent filtering, batching, and priority management
 model: haiku
-color: blue
-whenToUse: When orchestration events need to be broadcast to team members, stakeholders, or external systems via configured notification channels
 tools:
   - Read
   - Write

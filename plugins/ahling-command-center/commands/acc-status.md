@@ -1,7 +1,17 @@
 ---
+name: ahling-command-center:acc-status
+intent: Check infrastructure health and service status across all ACC phases
+tags:
+  - ahling-command-center
+  - command
+  - acc-status
+inputs: []
+risk: medium
+cost: medium
 description: Check infrastructure health and service status across all ACC phases
-argument-hint: "[--phase PHASE] [--service SERVICE] [--verbose]"
-allowed-tools: ["Bash", "Read"]
+allowed-tools:
+  - Bash
+  - Read
 ---
 
 Comprehensive health check of ACC infrastructure including service availability, resource usage, dependency validation, and performance metrics across all deployment phases.

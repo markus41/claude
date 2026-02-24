@@ -1,5 +1,13 @@
 ---
 name: tvs:extract-a3
+intent: A3 Firebase extraction - bulk extract brokers, commissions, carriers, contacts, activities to OneLake. CRITICAL PATH WEEK 1.
+tags:
+  - tvs-microsoft-deploy
+  - command
+  - extract-a3
+inputs: []
+risk: medium
+cost: medium
 description: A3 Firebase extraction - bulk extract brokers, commissions, carriers, contacts, activities to OneLake. CRITICAL PATH WEEK 1.
 allowed-tools:
   - Bash

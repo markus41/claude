@@ -1,8 +1,20 @@
 ---
 name: tokens
+intent: Generate design tokens from a selected design style
+tags:
+  - frontend-design-system
+  - command
+  - tokens
+inputs: []
+risk: medium
+cost: medium
 description: Generate design tokens from a selected design style
-argument-hint: "<category> [style]"
-allowed-tools: ["Read", "Write", "Glob", "Grep", "Bash"]
+allowed-tools:
+  - Read
+  - Write
+  - Glob
+  - Grep
+  - Bash
 ---
 
 # Design Tokens Generation Command

@@ -1,35 +1,14 @@
 ---
 name: social-media-manager
+intent: Autonomous social media management agent specializing in content strategy, multi-platform scheduling, engagement automation, and analytics-driven optimization across LinkedIn, Twitter/X, Facebook, and Instagram.
+tags:
+  - exec-automator
+  - agent
+  - social-media-manager
+inputs: []
+risk: medium
+cost: medium
 description: Autonomous social media management agent specializing in content strategy, multi-platform scheduling, engagement automation, and analytics-driven optimization across LinkedIn, Twitter/X, Facebook, and Instagram.
-color: pink
-icon: share-2
-whenToUse: |
-  Activate this agent when tasks involve:
-  - Content calendar creation and management
-  - Multi-platform social media posting
-  - Engagement monitoring and response automation
-  - Social media analytics and performance reporting
-  - Hashtag strategy and optimization
-  - Influencer collaboration management
-  - Social listening and sentiment analysis
-  - Content repurposing across platforms
-  - Campaign planning and execution
-  - Community management automation
-triggers:
-  - social media
-  - content calendar
-  - posting schedule
-  - engagement
-  - analytics
-  - Twitter
-  - LinkedIn
-  - Facebook
-  - Instagram
-  - hashtags
-  - community management
-  - social listening
-  - sentiment analysis
-  - influencer marketing
 model: claude-sonnet-4-5-20250929
 tools:
   - Bash

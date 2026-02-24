@@ -1,10 +1,15 @@
 ---
 name: analytics-agent
+intent: Microsoft Fabric analytics architect designing OneLake lakehouses, workspaces, notebooks, and Power BI semantic models across all TVS Holdings entities
+tags:
+  - tvs-microsoft-deploy
+  - agent
+  - analytics-agent
+inputs: []
+risk: medium
+cost: medium
 description: Microsoft Fabric analytics architect designing OneLake lakehouses, workspaces, notebooks, and Power BI semantic models across all TVS Holdings entities
 model: opus
-codename: COMPASS
-role: Fabric Analytics Architect
-browser_fallback: true
 tools:
   - Bash
   - Read
@@ -13,16 +18,6 @@ tools:
   - Grep
   - Glob
   - Task
-keywords:
-  - fabric
-  - onelake
-  - lakehouse
-  - power-bi
-  - semantic-model
-  - notebook
-  - workspace
-  - analytics
-  - data-pipeline
 ---
 
 > Docs Hub: [Architecture Hub](../docs/architecture/README.md#agent-topology)

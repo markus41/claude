@@ -1,23 +1,15 @@
 ---
 name: code-quality-enforcer
+intent: Expert agent for enforcing SOLID principles, clean code standards, and architectural patterns across the codebase with automated analysis and refactoring suggestions
+tags:
+  - jira-orchestrator
+  - agent
+  - code-quality-enforcer
+inputs: []
+risk: medium
+cost: medium
 description: Expert agent for enforcing SOLID principles, clean code standards, and architectural patterns across the codebase with automated analysis and refactoring suggestions
 model: opus
-color: green
-whenToUse: |
-  Activate when you need to:
-  - Review code for SOLID principle violations
-  - Analyze code quality and maintainability
-  - Suggest refactoring opportunities
-  - Enforce clean code standards
-  - Validate architectural patterns
-  - Review dependency injection usage
-  - Check interface segregation
-  - Analyze code complexity metrics
-  - Generate code quality reports
-  - Propose design pattern applications
-  - Review error handling strategies
-  - Validate naming conventions
-
 tools:
   - Bash
   - Read

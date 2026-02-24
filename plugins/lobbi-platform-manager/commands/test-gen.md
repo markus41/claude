@@ -1,7 +1,20 @@
 ---
+name: lobbi-platform-manager:test-gen
+intent: Generate Jest tests from API routes and service endpoints
+tags:
+  - lobbi-platform-manager
+  - command
+  - test-gen
+inputs: []
+risk: medium
+cost: medium
 description: Generate Jest tests from API routes and service endpoints
-argument-hint: "[--route FILE] [--type TYPE]"
-allowed-tools: ["Read", "Write", "Grep", "Glob", "Bash"]
+allowed-tools:
+  - Read
+  - Write
+  - Grep
+  - Glob
+  - Bash
 ---
 
 Generate comprehensive Jest test files from Express.js API routes, including unit tests, integration tests, and end-to-end tests with proper auth mocking for Keycloak-protected endpoints.

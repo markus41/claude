@@ -1,20 +1,14 @@
 ---
 name: jira:approve
+intent: Request, view, and process approvals (pr, deploy, release, issue)
+tags:
+  - jira-orchestrator
+  - command
+  - approve
+inputs: []
+risk: medium
+cost: medium
 description: Request, view, and process approvals (pr, deploy, release, issue)
-arguments:
-  - name: action
-    description: request|approve|reject|status|list|history|configure
-    required: true
-  - name: target
-    description: Type (pr|deploy|release|issue) or approval_id
-    required: false
-  - name: identifier
-    description: PR#, environment, version, or issue key
-    required: false
-  - name: comment
-    description: Justification for approval/rejection
-    required: false
-version: 1.0.0
 ---
 
 # Jira Approval Workflows

@@ -1,7 +1,18 @@
 ---
+name: ahling-command-center:acc-orchestrate
+intent: Run multi-agent workflows combining Ollama, AutoGen, Home Assistant, and knowledge systems
+tags:
+  - ahling-command-center
+  - command
+  - acc-orchestrate
+inputs: []
+risk: medium
+cost: medium
 description: Run multi-agent workflows combining Ollama, AutoGen, Home Assistant, and knowledge systems
-argument-hint: "<workflow-name> [--params JSON]"
-allowed-tools: ["Bash", "Read", "Write"]
+allowed-tools:
+  - Bash
+  - Read
+  - Write
 ---
 
 Execute complex multi-agent workflows that orchestrate multiple ACC services including Ollama for reasoning, knowledge graph for context, Home Assistant for actions, and agents for collaboration.

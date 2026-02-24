@@ -1,7 +1,19 @@
 ---
+name: fullstack-iac:new
+intent: Create complete full-stack project with all configurations - infrastructure, frontend, backend, CI/CD
+tags:
+  - fullstack-iac
+  - command
+  - new
+inputs: []
+risk: medium
+cost: medium
 description: Create complete full-stack project with all configurations - infrastructure, frontend, backend, CI/CD
-argument-hint: "[project-name] --stack [full|api|frontend] --db [postgres|mongo|redis]"
-allowed-tools: ["Write", "Bash", "Read", "Edit"]
+allowed-tools:
+  - Write
+  - Bash
+  - Read
+  - Edit
 ---
 
 # Zenith New Project

@@ -1,29 +1,15 @@
 ---
 name: dependency-mapper
+intent: Cross-project dependency detection, visualization, impact analysis, circular dependency detection, critical path calculation, and blocking issue identification
+tags:
+  - jira-orchestrator
+  - agent
+  - dependency-mapper
+inputs: []
+risk: medium
+cost: medium
 description: Cross-project dependency detection, visualization, impact analysis, circular dependency detection, critical path calculation, and blocking issue identification
-whenToUse: |
-  Activate when:
-  - Mapping dependencies across multiple projects
-  - Visualizing dependency networks and graphs
-  - Analyzing impact of changes on dependent issues
-  - Detecting circular dependencies
-  - Calculating critical paths through work
-  - Identifying blocking issues
-  - Assessing dependency health
-  - User mentions "dependencies", "blockers", "impact analysis", "dependency graph"
 model: sonnet
-color: red
-agent_type: analysis
-version: 1.0.0
-capabilities:
-  - dependency_detection
-  - graph_visualization
-  - impact_analysis
-  - circular_detection
-  - critical_path_calculation
-  - dependency_health_scoring
-  - blocker_identification
-  - dependency_recommendation
 tools:
   - Read
   - Write
