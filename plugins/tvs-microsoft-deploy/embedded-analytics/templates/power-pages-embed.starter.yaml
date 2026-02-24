@@ -1,0 +1,53 @@
+version: 1
+name: power-pages-embedded-analytics-starter
+description: Starter deployment template for embedding Power BI in Power Pages.
+parameters:
+  environment:
+    type: string
+    allowed: [dev, test, prod]
+  tenantCode:
+    type: string
+  region:
+    type: string
+  powerPagesSiteName:
+    type: string
+  powerBIWorkspaceId:
+    type: string
+  powerBIReportId:
+    type: string
+  embedApiBaseUrl:
+    type: string
+resources:
+  - type: powerpages.site
+    name: "${powerPagesSiteName}"
+    settings:
+      appInsightsEnabled: true
+      authProvider: "entra-external-id"
+      customDomains:
+        - "analytics.${tenantCode}.example.com"
+  - type: powerpages.webTemplate
+    name: analytics-embed-page
+    content: |
+      <div id="reportContainer" style="height:850px"></div>
+      <script>
+        async function loadReport() {
+          const res = await fetch("${embedApiBaseUrl}/embed-token?tenant=${tenantCode}&reportId=${powerBIReportId}");
+          const embedData = await res.json();
+          const config = {
+            type: "report",
+            tokenType: window['powerbi-client'].models.TokenType.Embed,
+            accessToken: embedData.token,
+            embedUrl: embedData.embedUrl,
+            id: "${powerBIReportId}",
+            permissions: window['powerbi-client'].models.Permissions.Read
+          };
+          const container = document.getElementById("reportContainer");
+          powerbi.embed(container, config);
+        }
+        loadReport();
+      </script>
+  - type: powerpages.webRole
+    name: analytics-viewer
+    settings:
+      requiresAuthentication: true
+      source: "entra-group:embedded-analytics-users"
