@@ -1,0 +1,9 @@
+settings:
+  taiaWindDown: false
+resources:
+  - id: dv-tvs
+    environment: prod
+  - id: pps-broker-solution
+    environment: prod
+  - id: fabric-core
+    environment: prod

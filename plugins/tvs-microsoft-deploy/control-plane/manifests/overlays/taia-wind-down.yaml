@@ -1,0 +1,9 @@
+settings:
+  taiaWindDown: true
+resources:
+  - id: flow-taia-transition
+    operation: decommission
+  - id: teams-ops
+    operation: pause
+    tags:
+      - taia-wind-down

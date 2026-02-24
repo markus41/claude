@@ -45,7 +45,7 @@ az login --tenant $TVS_TENANT_ID
 /tvs:status-check
 ```
 
-## Commands (12)
+## Commands (13)
 
 | Command | Description |
 |---------|-------------|
@@ -60,6 +60,7 @@ az login --tenant $TVS_TENANT_ID
 | `/tvs:deploy-teams` | Teams VA workspace with HIPAA config |
 | `/tvs:cost-report` | Cost analysis across all Rosa entities |
 | `/tvs:status-check` | Health check across all resources |
+| `/tvs:taia-readiness` | TAIA wind-down readiness from control-plane overlays |
 | `/tvs:browser-fallback` | Playwright fallback for portal operations |
 
 ## Agents (12)

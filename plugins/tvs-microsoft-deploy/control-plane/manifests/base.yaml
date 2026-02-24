@@ -1,0 +1,68 @@
+manifestVersion: v1
+tenant:
+  id: tvs-primary
+  name: Trusted Virtual Solutions
+  defaultEnvironment: dev
+settings:
+  taiaWindDown: false
+resources:
+  - id: sub-platform
+    type: azure.subscription
+    name: rg-rosa-platform
+    properties:
+      subscriptionId: 00000000-0000-0000-0000-000000000001
+  - id: entra-platform-admins
+    type: entra.group
+    name: TVS-Platform-Admins
+    dependsOn:
+      - sub-platform
+  - id: entra-fabric-app
+    type: entra.app
+    name: tvs-fabric-orchestrator
+    dependsOn:
+      - entra-platform-admins
+  - id: dv-tvs
+    type: dataverse.environment
+    name: tvs-dataverse
+    environment: dev
+    dependsOn:
+      - entra-fabric-app
+  - id: pps-broker-solution
+    type: powerplatform.solution
+    name: broker-portal-core
+    environment: dev
+    dependsOn:
+      - dv-tvs
+  - id: fabric-core
+    type: fabric.workspace
+    name: tvs-core-workspace
+    environment: dev
+    dependsOn:
+      - dv-tvs
+  - id: fabric-core-lakehouse
+    type: fabric.lakehouse
+    name: tvs-core-lakehouse
+    environment: dev
+    dependsOn:
+      - fabric-core
+  - id: fabric-curation-notebook
+    type: fabric.notebook
+    name: curated_transform
+    environment: dev
+    dependsOn:
+      - fabric-core-lakehouse
+  - id: teams-ops
+    type: teams.channel
+    name: operations
+    dependsOn:
+      - pps-broker-solution
+  - id: sp-broker-site
+    type: sharepoint.site
+    name: Broker Operations
+    dependsOn:
+      - teams-ops
+  - id: flow-taia-transition
+    type: automation.asset
+    name: taia-transition-flow
+    dependsOn:
+      - pps-broker-solution
