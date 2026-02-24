@@ -4,7 +4,17 @@ Comprehensive Claude Code plugin for Home Assistant automation, local LLM integr
 
 ## Features
 
-### Sub-Agents (8 Specialized)
+## Registry Snapshot
+
+<!-- registry-summary:start -->
+- Sub-agents: **15**
+- Commands: **9**
+- Skills: **8**
+- Hook entries (config, scripts, and hook events): **10**
+- MCP entrypoints: **2**
+<!-- registry-summary:end -->
+
+### Sub-Agents
 
 | Agent | Purpose | Model |
 |-------|---------|-------|
@@ -176,7 +186,7 @@ HA_VOICE_MODEL=llama3.2:3b
 │                                                                      │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐               │
 │  │   Agents     │  │   Commands   │  │    Skills    │               │
-│  │  (8 types)   │  │  (8 types)   │  │  (4 types)   │               │
+│  │  (dynamic)   │  │  (dynamic)   │  │  (dynamic)   │               │
 │  └──────────────┘  └──────────────┘  └──────────────┘               │
 │          │                │                 │                        │
 │          └────────────────┼─────────────────┘                        │

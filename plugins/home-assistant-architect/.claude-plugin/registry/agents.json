@@ -1,0 +1,66 @@
+{
+  "kind": "agents",
+  "entries": [
+    {
+      "id": "ha-automation-architect",
+      "path": "agents/ha-automation-architect.md"
+    },
+    {
+      "id": "ha-camera-nvr",
+      "path": "agents/ha-camera-nvr.md"
+    },
+    {
+      "id": "ha-customization-expert",
+      "path": "agents/ha-customization-expert.md"
+    },
+    {
+      "id": "ha-dashboard-designer",
+      "path": "agents/ha-dashboard-designer.md"
+    },
+    {
+      "id": "ha-data-writer",
+      "path": "agents/ha-data-writer.md"
+    },
+    {
+      "id": "ha-device-controller",
+      "path": "agents/ha-device-controller.md"
+    },
+    {
+      "id": "ha-diagnostics",
+      "path": "agents/ha-diagnostics.md"
+    },
+    {
+      "id": "ha-energy-management",
+      "path": "agents/ha-energy-management.md"
+    },
+    {
+      "id": "ha-energy-optimizer",
+      "path": "agents/ha-energy-optimizer.md"
+    },
+    {
+      "id": "ha-frontend-builder",
+      "path": "agents/ha-frontend-builder.md"
+    },
+    {
+      "id": "ha-security-auditor",
+      "path": "agents/ha-security-auditor.md"
+    },
+    {
+      "id": "ha-sensor-manager",
+      "path": "agents/ha-sensor-manager.md"
+    },
+    {
+      "id": "ha-voice-assistant",
+      "path": "agents/ha-voice-assistant.md"
+    },
+    {
+      "id": "local-llm-manager",
+      "path": "agents/local-llm-manager.md"
+    },
+    {
+      "id": "ubuntu-ha-deployer",
+      "path": "agents/ubuntu-ha-deployer.md"
+    }
+  ],
+  "count": 15
+}

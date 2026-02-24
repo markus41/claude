@@ -17,5 +17,19 @@
     "mcp-server",
     "ubuntu",
     "iot"
-  ]
+  ],
+  "registries": {
+    "commands": ".claude-plugin/registry/commands.json",
+    "agents": ".claude-plugin/registry/agents.json",
+    "skills": ".claude-plugin/registry/skills.json",
+    "hooks": ".claude-plugin/registry/hooks.json",
+    "mcpEntrypoints": ".claude-plugin/registry/mcp-entrypoints.json"
+  },
+  "registryCounts": {
+    "commands": 9,
+    "agents": 15,
+    "skills": 8,
+    "hooks": 10,
+    "mcpEntrypoints": 2
+  }
 }

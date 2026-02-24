@@ -12,7 +12,9 @@
     "test:ui": "vitest --ui",
     "test:e2e": "playwright test",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "ha:registry:generate": "node plugins/home-assistant-architect/scripts/generate-registry.ts",
+    "ha:registry:check": "node plugins/home-assistant-architect/scripts/generate-registry.ts --check"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.0",
