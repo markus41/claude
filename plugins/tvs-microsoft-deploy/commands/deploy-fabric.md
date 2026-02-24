@@ -10,6 +10,8 @@ allowed-tools:
   - Glob
 ---
 
+> Docs Hub: [CLI Hub](../docs/cli/README.md#command-index)
+
 # Fabric Workspace Provisioning
 
 Provisions Microsoft Fabric workspaces and OneLake lakehouses for all TVS entities. Creates the six core workspaces (tvs, consulting, lobbi_platform, media, a3_archive, consolidated), deploys Spark notebooks, and establishes Dataverse shortcuts for real-time data access.

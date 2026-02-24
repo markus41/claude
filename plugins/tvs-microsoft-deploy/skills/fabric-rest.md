@@ -4,6 +4,8 @@ description: This skill should be used when working with fabric/**, *.ipynb note
 version: 1.0.0
 ---
 
+> Docs Hub: [Skills Hub](../docs/skills/README.md#skill-index)
+
 # Microsoft Fabric REST API Operations
 
 Complete reference for Fabric REST API operations across TVS Holdings workspaces.

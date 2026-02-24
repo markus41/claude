@@ -4,6 +4,8 @@ description: This skill should be used when working with stripe/**, billing/**, 
 version: 1.0.0
 ---
 
+> Docs Hub: [Skills Hub](../docs/skills/README.md#skill-index)
+
 # Stripe Integration for TVS Holdings
 
 Complete reference for Stripe API operations supporting TVS Motor broker subscription tiers and VA time-tracking billing.

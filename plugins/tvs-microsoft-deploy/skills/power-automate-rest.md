@@ -4,6 +4,8 @@ description: This skill should be used when working with flows/**, or *.flow.jso
 version: 1.0.0
 ---
 
+> Docs Hub: [Skills Hub](../docs/skills/README.md#skill-index)
+
 # Power Automate REST API Operations
 
 Complete reference for Power Automate flow management across TVS Holdings environments.

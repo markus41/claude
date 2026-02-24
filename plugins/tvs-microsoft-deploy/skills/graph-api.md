@@ -4,6 +4,8 @@ description: This skill should be used when working with identity/**, teams/**, 
 version: 1.0.0
 ---
 
+> Docs Hub: [Skills Hub](../docs/skills/README.md#skill-index)
+
 # Microsoft Graph API Operations
 
 Complete reference for Microsoft Graph API operations across TVS Holdings Entra ID tenancy.

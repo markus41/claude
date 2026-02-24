@@ -6,6 +6,8 @@ allowed-tools:
   - Read
 ---
 
+> Docs Hub: [CLI Hub](../docs/cli/README.md#command-index)
+
 # Identity Access Attestation
 
 Generates CSV + JSON audit artifacts for governance review and buyer due diligence.

@@ -8,6 +8,8 @@ allowed-tools:
   - Task
 ---
 
+> Docs Hub: [CLI Hub](../docs/cli/README.md#command-index)
+
 # Status Check
 
 Read-only health validation driven by control-plane outputs.

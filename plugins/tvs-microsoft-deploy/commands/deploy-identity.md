@@ -9,6 +9,8 @@ allowed-tools:
   - Grep
 ---
 
+> Docs Hub: [CLI Hub](../docs/cli/README.md#command-index)
+
 # Entra ID Identity Deployment
 
 Provisions and configures Microsoft Entra ID (Azure AD) for TVS Holdings entities. Creates users, assigns Microsoft 365 licenses, configures conditional access policies, registers service principal applications, and sets up FIDO2 passwordless authentication.

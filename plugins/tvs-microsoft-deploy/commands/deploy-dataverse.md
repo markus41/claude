@@ -10,6 +10,8 @@ allowed-tools:
   - Glob
 ---
 
+> Docs Hub: [CLI Hub](../docs/cli/README.md#command-index)
+
 # Dataverse + Power Platform ALM Deployment
 
 Deploys Microsoft Dataverse schema, Power Automate flows, and Copilot Studio assets through a governed ALM lifecycle. Includes unpack/pack/import operations, managed/unmanaged strategy, environment-variable and connection-reference validation, version promotion, and release gates.

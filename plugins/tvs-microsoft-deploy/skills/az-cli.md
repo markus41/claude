@@ -4,6 +4,8 @@ description: This skill should be used when working with *.bicep files, infra/**
 version: 1.0.0
 ---
 
+> Docs Hub: [Skills Hub](../docs/skills/README.md#skill-index)
+
 # Azure CLI (az) Operations
 
 Complete reference for Azure resource management across TVS Holdings entities.

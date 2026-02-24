@@ -9,6 +9,8 @@ allowed-tools:
   - Task
 ---
 
+> Docs Hub: [CLI Hub](../docs/cli/README.md#command-index)
+
 # Cost Report
 
 Calculates current Microsoft 365 + Azure + Fabric costs across all TVS Holdings entities. Projects costs by tier and generates markdown report.

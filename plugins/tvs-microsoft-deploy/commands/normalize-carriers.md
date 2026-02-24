@@ -11,6 +11,8 @@ allowed-tools:
   - Task
 ---
 
+> Docs Hub: [CLI Hub](../docs/cli/README.md#command-index)
+
 # Normalize Carriers
 
 Carrier normalization sprint for TAIA FMO sale preparation. Deduplicates carrier names, normalizes commission structures, and maps agent hierarchies from A3 legacy data.

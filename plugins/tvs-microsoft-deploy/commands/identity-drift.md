@@ -6,6 +6,8 @@ allowed-tools:
   - Read
 ---
 
+> Docs Hub: [CLI Hub](../docs/cli/README.md#command-index)
+
 # Identity Drift Detection
 
 Runs tenant identity drift scans for stale app credentials, orphaned service principals, and over-privileged Graph scopes.

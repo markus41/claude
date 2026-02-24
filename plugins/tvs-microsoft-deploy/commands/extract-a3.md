@@ -10,6 +10,8 @@ allowed-tools:
   - Glob
 ---
 
+> Docs Hub: [CLI Hub](../docs/cli/README.md#command-index)
+
 # A3 Firebase Extraction
 
 CRITICAL PATH - WEEK 1 PRIORITY. Bulk extracts all data from the A3 Firebase database (brokers, commissions, carriers, contacts, activities) and loads it into the `tvs-a3-archive` OneLake lakehouse. This is the foundational data migration step for TAIA wind-down and carrier normalization.
