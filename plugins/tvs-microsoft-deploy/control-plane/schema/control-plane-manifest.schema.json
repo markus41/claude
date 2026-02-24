@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tvs.local/schemas/control-plane-manifest.schema.json",
+  "title": "TVS Microsoft Deploy Control Plane Manifest",
+  "type": "object",
+  "required": ["manifestVersion", "tenant", "resources"],
+  "properties": {
+    "manifestVersion": { "type": "string", "pattern": "^v[0-9]+$" },
+    "tenant": {
+      "type": "object",
+      "required": ["id", "name"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "defaultEnvironment": { "type": "string", "enum": ["dev", "test", "prod"] }
+      },
+      "additionalProperties": true
+    },
+    "settings": {
+      "type": "object",
+      "properties": {
+        "taiaWindDown": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    },
+    "resources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "name"],
+        "properties": {
+          "id": { "type": "string" },
+          "type": {
+            "type": "string",
+            "enum": [
+              "azure.subscription",
+              "dataverse.environment",
+              "powerplatform.solution",
+              "fabric.workspace",
+              "fabric.lakehouse",
+              "fabric.notebook",
+              "entra.app",
+              "entra.group",
+              "teams.channel",
+              "sharepoint.site",
+              "automation.asset"
+            ]
+          },
+          "name": { "type": "string" },
+          "environment": { "type": "string", "enum": ["dev", "test", "prod"] },
+          "operation": {
+            "type": "string",
+            "enum": ["create", "update", "validate", "pause", "decommission"],
+            "default": "create"
+          },
+          "dependsOn": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "properties": { "type": "object" },
+          "tags": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": false
+}

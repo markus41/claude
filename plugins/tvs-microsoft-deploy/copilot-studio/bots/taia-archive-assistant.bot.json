@@ -1,0 +1,6 @@
+{
+  "name": "taia-archive-assistant",
+  "version": "1.0.0",
+  "topics": ["archive-status", "retention-policy"],
+  "fallbackFlow": "taia-archival"
+}

@@ -1,0 +1,757 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/PowerApps-Tooling/main/schemas/dataverse-table.schema.json",
+  "metadata": {
+    "entity": "Consulting",
+    "publisher": "tvs",
+    "prefix": "tvs_",
+    "environment": "org-consulting-{env}.crm.dynamics.com",
+    "description": "Dataverse table definitions for Lobbi Consulting and Medicare Consulting entities",
+    "entities": [
+      "Lobbi Consulting",
+      "Medicare Consulting"
+    ]
+  },
+  "tables": {
+    "Accounts": {
+      "logicalName": "tvs_consultingaccount",
+      "displayName": "Consulting Account",
+      "pluralName": "Consulting Accounts",
+      "description": "Client accounts for consulting engagements across Lobbi and Medicare",
+      "ownership": "UserOwned",
+      "primaryColumn": "tvs_name",
+      "columns": {
+        "tvs_name": {
+          "type": "String",
+          "maxLength": 200,
+          "required": true,
+          "displayName": "Account Name"
+        },
+        "tvs_entity": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Owning Entity",
+          "description": "Which consulting entity owns this account",
+          "options": [
+            {
+              "label": "Lobbi Consulting",
+              "value": 100000000
+            },
+            {
+              "label": "Medicare Consulting",
+              "value": 100000001
+            }
+          ]
+        },
+        "tvs_industry": {
+          "type": "Choice",
+          "required": false,
+          "displayName": "Industry",
+          "options": [
+            {
+              "label": "Insurance",
+              "value": 100000000
+            },
+            {
+              "label": "Healthcare",
+              "value": 100000001
+            },
+            {
+              "label": "Financial Services",
+              "value": 100000002
+            },
+            {
+              "label": "Government",
+              "value": 100000003
+            },
+            {
+              "label": "Education",
+              "value": 100000004
+            },
+            {
+              "label": "Technology",
+              "value": 100000005
+            },
+            {
+              "label": "Other",
+              "value": 100000006
+            }
+          ]
+        },
+        "tvs_status": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Status",
+          "options": [
+            {
+              "label": "Prospect",
+              "value": 100000000
+            },
+            {
+              "label": "Qualified Lead",
+              "value": 100000001
+            },
+            {
+              "label": "Active Client",
+              "value": 100000002
+            },
+            {
+              "label": "Inactive",
+              "value": 100000003
+            },
+            {
+              "label": "Archived",
+              "value": 100000004
+            }
+          ]
+        },
+        "tvs_revenue": {
+          "type": "Currency",
+          "required": false,
+          "displayName": "Annual Revenue",
+          "precision": 2
+        },
+        "tvs_website": {
+          "type": "String",
+          "maxLength": 500,
+          "required": false,
+          "displayName": "Website",
+          "format": "url"
+        },
+        "tvs_address": {
+          "type": "Memo",
+          "maxLength": 1000,
+          "required": false,
+          "displayName": "Address"
+        },
+        "tvs_accountmanager": {
+          "type": "Lookup",
+          "required": false,
+          "displayName": "Account Manager",
+          "relatedTable": "systemuser"
+        }
+      },
+      "relationships": [
+        {
+          "type": "OneToMany",
+          "relatedTable": "tvs_consultingcontact",
+          "lookupColumn": "tvs_accountid",
+          "displayName": "Account Contacts"
+        },
+        {
+          "type": "OneToMany",
+          "relatedTable": "tvs_engagement",
+          "lookupColumn": "tvs_accountid",
+          "displayName": "Account Engagements"
+        }
+      ]
+    },
+    "Contacts": {
+      "logicalName": "tvs_consultingcontact",
+      "displayName": "Consulting Contact",
+      "pluralName": "Consulting Contacts",
+      "description": "Contacts at consulting client organizations",
+      "ownership": "UserOwned",
+      "primaryColumn": "tvs_fullname",
+      "columns": {
+        "tvs_firstname": {
+          "type": "String",
+          "maxLength": 100,
+          "required": true,
+          "displayName": "First Name"
+        },
+        "tvs_lastname": {
+          "type": "String",
+          "maxLength": 100,
+          "required": true,
+          "displayName": "Last Name"
+        },
+        "tvs_fullname": {
+          "type": "String",
+          "maxLength": 200,
+          "required": false,
+          "displayName": "Full Name",
+          "computed": true,
+          "formula": "tvs_firstname + ' ' + tvs_lastname"
+        },
+        "tvs_email": {
+          "type": "String",
+          "maxLength": 320,
+          "required": true,
+          "displayName": "Email",
+          "format": "email"
+        },
+        "tvs_phone": {
+          "type": "String",
+          "maxLength": 50,
+          "required": false,
+          "displayName": "Phone",
+          "format": "phone"
+        },
+        "tvs_accountid": {
+          "type": "Lookup",
+          "required": true,
+          "displayName": "Account",
+          "relatedTable": "tvs_consultingaccount"
+        },
+        "tvs_title": {
+          "type": "String",
+          "maxLength": 200,
+          "required": false,
+          "displayName": "Job Title"
+        },
+        "tvs_role": {
+          "type": "Choice",
+          "required": false,
+          "displayName": "Role",
+          "options": [
+            {
+              "label": "Executive Sponsor",
+              "value": 100000000
+            },
+            {
+              "label": "Project Lead",
+              "value": 100000001
+            },
+            {
+              "label": "Technical Lead",
+              "value": 100000002
+            },
+            {
+              "label": "Subject Matter Expert",
+              "value": 100000003
+            },
+            {
+              "label": "Stakeholder",
+              "value": 100000004
+            },
+            {
+              "label": "End User",
+              "value": 100000005
+            }
+          ]
+        },
+        "tvs_isactive": {
+          "type": "Boolean",
+          "required": false,
+          "displayName": "Active",
+          "defaultValue": true
+        }
+      }
+    },
+    "Engagements": {
+      "logicalName": "tvs_engagement",
+      "displayName": "Consulting Engagement",
+      "pluralName": "Consulting Engagements",
+      "description": "Consulting projects and engagement contracts",
+      "ownership": "UserOwned",
+      "primaryColumn": "tvs_name",
+      "columns": {
+        "tvs_name": {
+          "type": "String",
+          "maxLength": 300,
+          "required": true,
+          "displayName": "Engagement Name"
+        },
+        "tvs_accountid": {
+          "type": "Lookup",
+          "required": true,
+          "displayName": "Account",
+          "relatedTable": "tvs_consultingaccount"
+        },
+        "tvs_type": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Engagement Type",
+          "options": [
+            {
+              "label": "Strategy",
+              "value": 100000000
+            },
+            {
+              "label": "Implementation",
+              "value": 100000001
+            },
+            {
+              "label": "Assessment",
+              "value": 100000002
+            },
+            {
+              "label": "Training",
+              "value": 100000003
+            },
+            {
+              "label": "Managed Services",
+              "value": 100000004
+            },
+            {
+              "label": "Staff Augmentation",
+              "value": 100000005
+            }
+          ]
+        },
+        "tvs_status": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Status",
+          "options": [
+            {
+              "label": "Proposed",
+              "value": 100000000
+            },
+            {
+              "label": "Negotiation",
+              "value": 100000001
+            },
+            {
+              "label": "Active",
+              "value": 100000002
+            },
+            {
+              "label": "On Hold",
+              "value": 100000003
+            },
+            {
+              "label": "Completed",
+              "value": 100000004
+            },
+            {
+              "label": "Canceled",
+              "value": 100000005
+            }
+          ]
+        },
+        "tvs_startdate": {
+          "type": "DateTime",
+          "required": false,
+          "displayName": "Start Date",
+          "format": "DateOnly"
+        },
+        "tvs_enddate": {
+          "type": "DateTime",
+          "required": false,
+          "displayName": "End Date",
+          "format": "DateOnly"
+        },
+        "tvs_value": {
+          "type": "Currency",
+          "required": false,
+          "displayName": "Engagement Value",
+          "precision": 2,
+          "description": "Total contract value"
+        },
+        "tvs_invoicedamount": {
+          "type": "Currency",
+          "required": false,
+          "displayName": "Invoiced Amount",
+          "precision": 2
+        },
+        "tvs_projectmanager": {
+          "type": "Lookup",
+          "required": false,
+          "displayName": "Project Manager",
+          "relatedTable": "systemuser"
+        },
+        "tvs_description": {
+          "type": "Memo",
+          "maxLength": 10000,
+          "required": false,
+          "displayName": "Description"
+        }
+      },
+      "relationships": [
+        {
+          "type": "OneToMany",
+          "relatedTable": "tvs_activity",
+          "lookupColumn": "tvs_regardingid",
+          "displayName": "Engagement Activities"
+        },
+        {
+          "type": "OneToMany",
+          "relatedTable": "tvs_implementation",
+          "lookupColumn": "tvs_engagementid",
+          "displayName": "Engagement Implementations"
+        }
+      ]
+    },
+    "Activities": {
+      "logicalName": "tvs_activity",
+      "displayName": "Consulting Activity",
+      "pluralName": "Consulting Activities",
+      "description": "Meetings, calls, emails, and tasks related to consulting work",
+      "ownership": "UserOwned",
+      "primaryColumn": "tvs_subject",
+      "columns": {
+        "tvs_subject": {
+          "type": "String",
+          "maxLength": 500,
+          "required": true,
+          "displayName": "Subject"
+        },
+        "tvs_type": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Activity Type",
+          "options": [
+            {
+              "label": "Meeting",
+              "value": 100000000
+            },
+            {
+              "label": "Phone Call",
+              "value": 100000001
+            },
+            {
+              "label": "Email",
+              "value": 100000002
+            },
+            {
+              "label": "Task",
+              "value": 100000003
+            },
+            {
+              "label": "Workshop",
+              "value": 100000004
+            },
+            {
+              "label": "Presentation",
+              "value": 100000005
+            },
+            {
+              "label": "Site Visit",
+              "value": 100000006
+            }
+          ]
+        },
+        "tvs_regardingid": {
+          "type": "Lookup",
+          "required": false,
+          "displayName": "Regarding",
+          "relatedTable": "tvs_engagement",
+          "description": "Related engagement"
+        },
+        "tvs_scheduleddate": {
+          "type": "DateTime",
+          "required": false,
+          "displayName": "Scheduled Date",
+          "format": "DateAndTime"
+        },
+        "tvs_completeddate": {
+          "type": "DateTime",
+          "required": false,
+          "displayName": "Completed Date",
+          "format": "DateAndTime"
+        },
+        "tvs_description": {
+          "type": "Memo",
+          "maxLength": 10000,
+          "required": false,
+          "displayName": "Description"
+        },
+        "tvs_status": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Status",
+          "options": [
+            {
+              "label": "Scheduled",
+              "value": 100000000
+            },
+            {
+              "label": "In Progress",
+              "value": 100000001
+            },
+            {
+              "label": "Completed",
+              "value": 100000002
+            },
+            {
+              "label": "Canceled",
+              "value": 100000003
+            }
+          ]
+        },
+        "tvs_owner": {
+          "type": "Lookup",
+          "required": false,
+          "displayName": "Owner",
+          "relatedTable": "systemuser"
+        },
+        "tvs_duration": {
+          "type": "WholeNumber",
+          "required": false,
+          "displayName": "Duration (minutes)",
+          "minValue": 0,
+          "maxValue": 1440
+        }
+      }
+    },
+    "SharedProspects": {
+      "logicalName": "tvs_sharedprospect",
+      "displayName": "Shared Prospect",
+      "pluralName": "Shared Prospects",
+      "description": "Cross-entity prospect referrals between TVS Holdings entities",
+      "ownership": "OrganizationOwned",
+      "primaryColumn": "tvs_name",
+      "columns": {
+        "tvs_name": {
+          "type": "String",
+          "maxLength": 300,
+          "required": true,
+          "displayName": "Prospect Name"
+        },
+        "tvs_sourceentity": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Source Entity",
+          "description": "Entity that originated the referral",
+          "options": [
+            {
+              "label": "TAIA",
+              "value": 100000000
+            },
+            {
+              "label": "TVS",
+              "value": 100000001
+            },
+            {
+              "label": "Lobbi Consulting",
+              "value": 100000002
+            },
+            {
+              "label": "Medicare Consulting",
+              "value": 100000003
+            },
+            {
+              "label": "Media Company",
+              "value": 100000004
+            }
+          ]
+        },
+        "tvs_targetentity": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Target Entity",
+          "description": "Entity the prospect is being referred to",
+          "options": [
+            {
+              "label": "TAIA",
+              "value": 100000000
+            },
+            {
+              "label": "TVS",
+              "value": 100000001
+            },
+            {
+              "label": "Lobbi Consulting",
+              "value": 100000002
+            },
+            {
+              "label": "Medicare Consulting",
+              "value": 100000003
+            },
+            {
+              "label": "Media Company",
+              "value": 100000004
+            }
+          ]
+        },
+        "tvs_contactname": {
+          "type": "String",
+          "maxLength": 200,
+          "required": true,
+          "displayName": "Contact Name"
+        },
+        "tvs_contactemail": {
+          "type": "String",
+          "maxLength": 320,
+          "required": false,
+          "displayName": "Contact Email",
+          "format": "email"
+        },
+        "tvs_contactphone": {
+          "type": "String",
+          "maxLength": 50,
+          "required": false,
+          "displayName": "Contact Phone",
+          "format": "phone"
+        },
+        "tvs_status": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Status",
+          "options": [
+            {
+              "label": "New",
+              "value": 100000000
+            },
+            {
+              "label": "Contacted",
+              "value": 100000001
+            },
+            {
+              "label": "Qualified",
+              "value": 100000002
+            },
+            {
+              "label": "Converted",
+              "value": 100000003
+            },
+            {
+              "label": "Disqualified",
+              "value": 100000004
+            },
+            {
+              "label": "Stale",
+              "value": 100000005
+            }
+          ]
+        },
+        "tvs_assignedto": {
+          "type": "Lookup",
+          "required": false,
+          "displayName": "Assigned To",
+          "relatedTable": "systemuser"
+        },
+        "tvs_notes": {
+          "type": "Memo",
+          "maxLength": 5000,
+          "required": false,
+          "displayName": "Notes"
+        },
+        "tvs_referraldate": {
+          "type": "DateTime",
+          "required": true,
+          "displayName": "Referral Date",
+          "format": "DateOnly"
+        },
+        "tvs_converteddate": {
+          "type": "DateTime",
+          "required": false,
+          "displayName": "Converted Date",
+          "format": "DateOnly"
+        }
+      }
+    },
+    "Implementations": {
+      "logicalName": "tvs_implementation",
+      "displayName": "Implementation",
+      "pluralName": "Implementations",
+      "description": "Implementation phases within consulting engagements",
+      "ownership": "UserOwned",
+      "primaryColumn": "tvs_name",
+      "columns": {
+        "tvs_name": {
+          "type": "String",
+          "maxLength": 300,
+          "required": true,
+          "displayName": "Implementation Name"
+        },
+        "tvs_engagementid": {
+          "type": "Lookup",
+          "required": true,
+          "displayName": "Engagement",
+          "relatedTable": "tvs_engagement"
+        },
+        "tvs_phase": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Phase",
+          "options": [
+            {
+              "label": "Discovery",
+              "value": 100000000
+            },
+            {
+              "label": "Design",
+              "value": 100000001
+            },
+            {
+              "label": "Build",
+              "value": 100000002
+            },
+            {
+              "label": "Test",
+              "value": 100000003
+            },
+            {
+              "label": "Deploy",
+              "value": 100000004
+            },
+            {
+              "label": "Hypercare",
+              "value": 100000005
+            },
+            {
+              "label": "Closed",
+              "value": 100000006
+            }
+          ]
+        },
+        "tvs_status": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Status",
+          "options": [
+            {
+              "label": "Not Started",
+              "value": 100000000
+            },
+            {
+              "label": "In Progress",
+              "value": 100000001
+            },
+            {
+              "label": "At Risk",
+              "value": 100000002
+            },
+            {
+              "label": "Completed",
+              "value": 100000003
+            },
+            {
+              "label": "Deferred",
+              "value": 100000004
+            }
+          ]
+        },
+        "tvs_golivedate": {
+          "type": "DateTime",
+          "required": false,
+          "displayName": "Go-Live Date",
+          "format": "DateOnly"
+        },
+        "tvs_actualgolivedate": {
+          "type": "DateTime",
+          "required": false,
+          "displayName": "Actual Go-Live Date",
+          "format": "DateOnly"
+        },
+        "tvs_notes": {
+          "type": "Memo",
+          "maxLength": 10000,
+          "required": false,
+          "displayName": "Notes"
+        },
+        "tvs_completionpercent": {
+          "type": "WholeNumber",
+          "required": false,
+          "displayName": "Completion %",
+          "minValue": 0,
+          "maxValue": 100
+        },
+        "tvs_risksandissues": {
+          "type": "Memo",
+          "maxLength": 10000,
+          "required": false,
+          "displayName": "Risks & Issues"
+        },
+        "tvs_lead": {
+          "type": "Lookup",
+          "required": false,
+          "displayName": "Implementation Lead",
+          "relatedTable": "systemuser"
+        }
+      }
+    }
+  }
+}

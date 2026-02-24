@@ -1,0 +1,8 @@
+{
+  "carrier_count": 29,
+  "commission_total_source": 1823400.22,
+  "commission_total_modeled": 1819950.10,
+  "agent_hierarchy_consistency": 0.998,
+  "workbook_quality_score": 96.8,
+  "workbook_quality_gate_pass_rate": 1.0
+}

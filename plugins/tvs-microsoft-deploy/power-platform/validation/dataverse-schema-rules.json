@@ -1,0 +1,40 @@
+{
+  "requiredPublisherPrefix": "tvs_",
+  "forbidTypeChanges": true,
+  "requiredLookupTargets": {
+    "tvs_task": [
+      "tvs_account"
+    ],
+    "tvs_timeentry": [
+      "tvs_task",
+      "tvs_contact"
+    ],
+    "tvs_sharedprospect": [
+      "tvs_account"
+    ]
+  },
+  "requiredColumns": {
+    "tvs_subscription": [
+      "tvs_tier",
+      "tvs_monthlyhours",
+      "tvs_stripesubscriptionid"
+    ],
+    "tvs_automationlog": [
+      "tvs_triggertype",
+      "tvs_status",
+      "tvs_executedat"
+    ]
+  },
+  "allowedStatusValues": {
+    "tvs_engagement.tvs_status": [
+      "Active",
+      "OnHold",
+      "Complete"
+    ],
+    "tvs_task.tvs_status": [
+      "Backlog",
+      "InProgress",
+      "Done"
+    ]
+  }
+}

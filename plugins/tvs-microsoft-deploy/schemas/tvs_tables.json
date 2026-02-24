@@ -1,0 +1,769 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/PowerApps-Tooling/main/schemas/dataverse-table.schema.json",
+  "metadata": {
+    "entity": "TVS",
+    "publisher": "tvs",
+    "prefix": "tvs_",
+    "environment": "org-tvs-{env}.crm.dynamics.com",
+    "description": "Dataverse table definitions for TVS (Technology & Virtual Staffing) entity"
+  },
+  "tables": {
+    "Accounts": {
+      "logicalName": "tvs_account",
+      "displayName": "TVS Account",
+      "pluralName": "TVS Accounts",
+      "description": "Client accounts for TVS virtual staffing services",
+      "ownership": "UserOwned",
+      "primaryColumn": "tvs_name",
+      "columns": {
+        "tvs_name": {
+          "type": "String",
+          "maxLength": 200,
+          "required": true,
+          "displayName": "Account Name",
+          "description": "Legal or DBA name of the client company"
+        },
+        "tvs_industry": {
+          "type": "Choice",
+          "required": false,
+          "displayName": "Industry",
+          "description": "Primary industry vertical",
+          "options": [
+            {
+              "label": "Insurance",
+              "value": 100000000
+            },
+            {
+              "label": "Financial Services",
+              "value": 100000001
+            },
+            {
+              "label": "Healthcare",
+              "value": 100000002
+            },
+            {
+              "label": "Technology",
+              "value": 100000003
+            },
+            {
+              "label": "Real Estate",
+              "value": 100000004
+            },
+            {
+              "label": "Legal",
+              "value": 100000005
+            },
+            {
+              "label": "Other",
+              "value": 100000006
+            }
+          ]
+        },
+        "tvs_tier": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Service Tier",
+          "description": "Stripe subscription tier determining monthly hours",
+          "options": [
+            {
+              "label": "Starter",
+              "value": 100000000
+            },
+            {
+              "label": "Basic",
+              "value": 100000001
+            },
+            {
+              "label": "Advanced",
+              "value": 100000002
+            },
+            {
+              "label": "Enterprise",
+              "value": 100000003
+            }
+          ]
+        },
+        "tvs_status": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Account Status",
+          "description": "Current lifecycle status of the account",
+          "options": [
+            {
+              "label": "Prospect",
+              "value": 100000000
+            },
+            {
+              "label": "Onboarding",
+              "value": 100000001
+            },
+            {
+              "label": "Active",
+              "value": 100000002
+            },
+            {
+              "label": "Paused",
+              "value": 100000003
+            },
+            {
+              "label": "Churned",
+              "value": 100000004
+            }
+          ]
+        },
+        "tvs_stripecustomerid": {
+          "type": "String",
+          "maxLength": 255,
+          "required": false,
+          "displayName": "Stripe Customer ID",
+          "description": "Stripe customer identifier (cus_*)",
+          "format": "text"
+        },
+        "tvs_email": {
+          "type": "String",
+          "maxLength": 320,
+          "required": false,
+          "displayName": "Primary Email",
+          "format": "email"
+        },
+        "tvs_phone": {
+          "type": "String",
+          "maxLength": 50,
+          "required": false,
+          "displayName": "Primary Phone",
+          "format": "phone"
+        },
+        "tvs_monthlyhours": {
+          "type": "WholeNumber",
+          "required": false,
+          "displayName": "Monthly Hours Allotment",
+          "description": "Contracted monthly hours based on tier",
+          "minValue": 0,
+          "maxValue": 1000
+        },
+        "tvs_onboarddate": {
+          "type": "DateTime",
+          "required": false,
+          "displayName": "Onboard Date",
+          "format": "DateOnly"
+        }
+      },
+      "relationships": [
+        {
+          "type": "OneToMany",
+          "relatedTable": "tvs_contact",
+          "lookupColumn": "tvs_accountid",
+          "displayName": "Account Contacts"
+        },
+        {
+          "type": "OneToMany",
+          "relatedTable": "tvs_subscription",
+          "lookupColumn": "tvs_accountid",
+          "displayName": "Account Subscriptions"
+        },
+        {
+          "type": "OneToMany",
+          "relatedTable": "tvs_task",
+          "lookupColumn": "tvs_accountid",
+          "displayName": "Account Tasks"
+        },
+        {
+          "type": "OneToMany",
+          "relatedTable": "tvs_deliverable",
+          "lookupColumn": "tvs_accountid",
+          "displayName": "Account Deliverables"
+        }
+      ]
+    },
+    "Contacts": {
+      "logicalName": "tvs_contact",
+      "displayName": "TVS Contact",
+      "pluralName": "TVS Contacts",
+      "description": "Individual contacts associated with TVS accounts",
+      "ownership": "UserOwned",
+      "primaryColumn": "tvs_fullname",
+      "columns": {
+        "tvs_firstname": {
+          "type": "String",
+          "maxLength": 100,
+          "required": true,
+          "displayName": "First Name"
+        },
+        "tvs_lastname": {
+          "type": "String",
+          "maxLength": 100,
+          "required": true,
+          "displayName": "Last Name"
+        },
+        "tvs_fullname": {
+          "type": "String",
+          "maxLength": 200,
+          "required": false,
+          "displayName": "Full Name",
+          "computed": true,
+          "formula": "tvs_firstname + ' ' + tvs_lastname"
+        },
+        "tvs_email": {
+          "type": "String",
+          "maxLength": 320,
+          "required": true,
+          "displayName": "Email Address",
+          "format": "email"
+        },
+        "tvs_phone": {
+          "type": "String",
+          "maxLength": 50,
+          "required": false,
+          "displayName": "Phone Number",
+          "format": "phone"
+        },
+        "tvs_accountid": {
+          "type": "Lookup",
+          "required": true,
+          "displayName": "Account",
+          "relatedTable": "tvs_account",
+          "description": "Parent TVS account"
+        },
+        "tvs_role": {
+          "type": "Choice",
+          "required": false,
+          "displayName": "Role",
+          "description": "Contact's role at the client organization",
+          "options": [
+            {
+              "label": "Primary Contact",
+              "value": 100000000
+            },
+            {
+              "label": "Billing Contact",
+              "value": 100000001
+            },
+            {
+              "label": "Technical Contact",
+              "value": 100000002
+            },
+            {
+              "label": "Decision Maker",
+              "value": 100000003
+            },
+            {
+              "label": "End User",
+              "value": 100000004
+            }
+          ]
+        },
+        "tvs_isactive": {
+          "type": "Boolean",
+          "required": false,
+          "displayName": "Active",
+          "defaultValue": true
+        }
+      }
+    },
+    "Subscriptions": {
+      "logicalName": "tvs_subscription",
+      "displayName": "TVS Subscription",
+      "pluralName": "TVS Subscriptions",
+      "description": "Stripe-backed subscription records for TVS clients",
+      "ownership": "OrganizationOwned",
+      "primaryColumn": "tvs_name",
+      "columns": {
+        "tvs_name": {
+          "type": "String",
+          "maxLength": 200,
+          "required": true,
+          "displayName": "Subscription Name",
+          "description": "Auto-generated: {Account} - {Tier} Subscription"
+        },
+        "tvs_accountid": {
+          "type": "Lookup",
+          "required": true,
+          "displayName": "Account",
+          "relatedTable": "tvs_account"
+        },
+        "tvs_tier": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Tier",
+          "options": [
+            {
+              "label": "Starter",
+              "value": 100000000,
+              "monthlyPrice": 360,
+              "monthlyHours": 20
+            },
+            {
+              "label": "Basic",
+              "value": 100000001,
+              "monthlyPrice": 640,
+              "monthlyHours": 40
+            },
+            {
+              "label": "Advanced",
+              "value": 100000002,
+              "monthlyPrice": 1200,
+              "monthlyHours": 80
+            }
+          ]
+        },
+        "tvs_monthlyhours": {
+          "type": "WholeNumber",
+          "required": true,
+          "displayName": "Monthly Hours",
+          "description": "Contracted hours per month",
+          "minValue": 0,
+          "maxValue": 500
+        },
+        "tvs_startdate": {
+          "type": "DateTime",
+          "required": true,
+          "displayName": "Start Date",
+          "format": "DateOnly"
+        },
+        "tvs_enddate": {
+          "type": "DateTime",
+          "required": false,
+          "displayName": "End Date",
+          "format": "DateOnly"
+        },
+        "tvs_status": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Status",
+          "options": [
+            {
+              "label": "Trialing",
+              "value": 100000000
+            },
+            {
+              "label": "Active",
+              "value": 100000001
+            },
+            {
+              "label": "Past Due",
+              "value": 100000002
+            },
+            {
+              "label": "Canceled",
+              "value": 100000003
+            },
+            {
+              "label": "Paused",
+              "value": 100000004
+            }
+          ]
+        },
+        "tvs_stripesubscriptionid": {
+          "type": "String",
+          "maxLength": 255,
+          "required": false,
+          "displayName": "Stripe Subscription ID",
+          "description": "Stripe subscription identifier (sub_*)"
+        },
+        "tvs_currentperiodend": {
+          "type": "DateTime",
+          "required": false,
+          "displayName": "Current Period End",
+          "format": "DateOnly"
+        },
+        "tvs_monthlyprice": {
+          "type": "Currency",
+          "required": false,
+          "displayName": "Monthly Price",
+          "precision": 2
+        }
+      }
+    },
+    "Tasks": {
+      "logicalName": "tvs_task",
+      "displayName": "TVS Task",
+      "pluralName": "TVS Tasks",
+      "description": "Work tasks assigned to virtual assistants for TVS clients",
+      "ownership": "UserOwned",
+      "primaryColumn": "tvs_title",
+      "columns": {
+        "tvs_title": {
+          "type": "String",
+          "maxLength": 500,
+          "required": true,
+          "displayName": "Task Title"
+        },
+        "tvs_description": {
+          "type": "Memo",
+          "maxLength": 10000,
+          "required": false,
+          "displayName": "Description"
+        },
+        "tvs_assignedto": {
+          "type": "Lookup",
+          "required": false,
+          "displayName": "Assigned To",
+          "relatedTable": "systemuser",
+          "description": "VA user assigned to this task"
+        },
+        "tvs_accountid": {
+          "type": "Lookup",
+          "required": true,
+          "displayName": "Account",
+          "relatedTable": "tvs_account"
+        },
+        "tvs_status": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Status",
+          "options": [
+            {
+              "label": "Not Started",
+              "value": 100000000
+            },
+            {
+              "label": "In Progress",
+              "value": 100000001
+            },
+            {
+              "label": "Blocked",
+              "value": 100000002
+            },
+            {
+              "label": "In Review",
+              "value": 100000003
+            },
+            {
+              "label": "Completed",
+              "value": 100000004
+            },
+            {
+              "label": "Canceled",
+              "value": 100000005
+            }
+          ]
+        },
+        "tvs_priority": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Priority",
+          "options": [
+            {
+              "label": "Low",
+              "value": 100000000
+            },
+            {
+              "label": "Medium",
+              "value": 100000001
+            },
+            {
+              "label": "High",
+              "value": 100000002
+            },
+            {
+              "label": "Urgent",
+              "value": 100000003
+            }
+          ]
+        },
+        "tvs_duedate": {
+          "type": "DateTime",
+          "required": false,
+          "displayName": "Due Date",
+          "format": "DateOnly"
+        },
+        "tvs_estimatedhours": {
+          "type": "Decimal",
+          "required": false,
+          "displayName": "Estimated Hours",
+          "precision": 2,
+          "minValue": 0
+        },
+        "tvs_actualhours": {
+          "type": "Decimal",
+          "required": false,
+          "displayName": "Actual Hours",
+          "precision": 2,
+          "minValue": 0,
+          "computed": true
+        },
+        "tvs_completeddate": {
+          "type": "DateTime",
+          "required": false,
+          "displayName": "Completed Date",
+          "format": "DateOnly"
+        }
+      },
+      "relationships": [
+        {
+          "type": "OneToMany",
+          "relatedTable": "tvs_timeentry",
+          "lookupColumn": "tvs_taskid",
+          "displayName": "Task Time Entries"
+        },
+        {
+          "type": "OneToMany",
+          "relatedTable": "tvs_deliverable",
+          "lookupColumn": "tvs_taskid",
+          "displayName": "Task Deliverables"
+        }
+      ]
+    },
+    "TimeEntries": {
+      "logicalName": "tvs_timeentry",
+      "displayName": "TVS Time Entry",
+      "pluralName": "TVS Time Entries",
+      "description": "Time tracking records for VA work, reconciled with Paylocity",
+      "ownership": "UserOwned",
+      "primaryColumn": "tvs_name",
+      "columns": {
+        "tvs_name": {
+          "type": "String",
+          "maxLength": 200,
+          "required": false,
+          "displayName": "Entry Name",
+          "computed": true,
+          "formula": "tvs_userid.fullname + ' - ' + tvs_date"
+        },
+        "tvs_taskid": {
+          "type": "Lookup",
+          "required": true,
+          "displayName": "Task",
+          "relatedTable": "tvs_task"
+        },
+        "tvs_userid": {
+          "type": "Lookup",
+          "required": true,
+          "displayName": "User",
+          "relatedTable": "systemuser"
+        },
+        "tvs_hours": {
+          "type": "Decimal",
+          "required": true,
+          "displayName": "Hours",
+          "precision": 2,
+          "minValue": 0.25,
+          "maxValue": 24.00
+        },
+        "tvs_date": {
+          "type": "DateTime",
+          "required": true,
+          "displayName": "Date",
+          "format": "DateOnly"
+        },
+        "tvs_description": {
+          "type": "Memo",
+          "maxLength": 2000,
+          "required": false,
+          "displayName": "Work Description"
+        },
+        "tvs_billable": {
+          "type": "Boolean",
+          "required": true,
+          "displayName": "Billable",
+          "defaultValue": true,
+          "description": "Whether this time counts against client allotment"
+        },
+        "tvs_paylocitysynced": {
+          "type": "Boolean",
+          "required": false,
+          "displayName": "Paylocity Synced",
+          "defaultValue": false
+        },
+        "tvs_paylocitydiscrepancy": {
+          "type": "Boolean",
+          "required": false,
+          "displayName": "Has Discrepancy",
+          "defaultValue": false
+        }
+      }
+    },
+    "Deliverables": {
+      "logicalName": "tvs_deliverable",
+      "displayName": "TVS Deliverable",
+      "pluralName": "TVS Deliverables",
+      "description": "Client deliverables produced by VAs",
+      "ownership": "UserOwned",
+      "primaryColumn": "tvs_title",
+      "columns": {
+        "tvs_title": {
+          "type": "String",
+          "maxLength": 500,
+          "required": true,
+          "displayName": "Deliverable Title"
+        },
+        "tvs_accountid": {
+          "type": "Lookup",
+          "required": true,
+          "displayName": "Account",
+          "relatedTable": "tvs_account"
+        },
+        "tvs_taskid": {
+          "type": "Lookup",
+          "required": false,
+          "displayName": "Related Task",
+          "relatedTable": "tvs_task"
+        },
+        "tvs_status": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Status",
+          "options": [
+            {
+              "label": "Draft",
+              "value": 100000000
+            },
+            {
+              "label": "In Progress",
+              "value": 100000001
+            },
+            {
+              "label": "In Review",
+              "value": 100000002
+            },
+            {
+              "label": "Approved",
+              "value": 100000003
+            },
+            {
+              "label": "Delivered",
+              "value": 100000004
+            },
+            {
+              "label": "Rejected",
+              "value": 100000005
+            }
+          ]
+        },
+        "tvs_completeddate": {
+          "type": "DateTime",
+          "required": false,
+          "displayName": "Completed Date",
+          "format": "DateOnly"
+        },
+        "tvs_approvedby": {
+          "type": "Lookup",
+          "required": false,
+          "displayName": "Approved By",
+          "relatedTable": "systemuser"
+        },
+        "tvs_description": {
+          "type": "Memo",
+          "maxLength": 5000,
+          "required": false,
+          "displayName": "Description"
+        },
+        "tvs_fileurl": {
+          "type": "String",
+          "maxLength": 2000,
+          "required": false,
+          "displayName": "File URL",
+          "format": "url"
+        }
+      }
+    },
+    "AutomationLog": {
+      "logicalName": "tvs_automationlog",
+      "displayName": "TVS Automation Log",
+      "pluralName": "TVS Automation Logs",
+      "description": "Audit trail for Power Automate flows and automated processes",
+      "ownership": "OrganizationOwned",
+      "primaryColumn": "tvs_flowname",
+      "columns": {
+        "tvs_flowname": {
+          "type": "String",
+          "maxLength": 500,
+          "required": true,
+          "displayName": "Flow Name"
+        },
+        "tvs_triggertype": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Trigger Type",
+          "options": [
+            {
+              "label": "Scheduled",
+              "value": 100000000
+            },
+            {
+              "label": "Event Driven",
+              "value": 100000001
+            },
+            {
+              "label": "Manual",
+              "value": 100000002
+            },
+            {
+              "label": "Webhook",
+              "value": 100000003
+            },
+            {
+              "label": "Dataverse Trigger",
+              "value": 100000004
+            }
+          ]
+        },
+        "tvs_status": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Status",
+          "options": [
+            {
+              "label": "Success",
+              "value": 100000000
+            },
+            {
+              "label": "Failed",
+              "value": 100000001
+            },
+            {
+              "label": "Partial",
+              "value": 100000002
+            },
+            {
+              "label": "Timeout",
+              "value": 100000003
+            },
+            {
+              "label": "Skipped",
+              "value": 100000004
+            }
+          ]
+        },
+        "tvs_executedat": {
+          "type": "DateTime",
+          "required": true,
+          "displayName": "Executed At",
+          "format": "DateAndTime"
+        },
+        "tvs_duration": {
+          "type": "WholeNumber",
+          "required": false,
+          "displayName": "Duration (ms)",
+          "description": "Execution time in milliseconds",
+          "minValue": 0
+        },
+        "tvs_error": {
+          "type": "Memo",
+          "maxLength": 10000,
+          "required": false,
+          "displayName": "Error Details"
+        },
+        "tvs_inputpayload": {
+          "type": "Memo",
+          "maxLength": 50000,
+          "required": false,
+          "displayName": "Input Payload"
+        },
+        "tvs_outputpayload": {
+          "type": "Memo",
+          "maxLength": 50000,
+          "required": false,
+          "displayName": "Output Payload"
+        },
+        "tvs_correlationid": {
+          "type": "String",
+          "maxLength": 100,
+          "required": false,
+          "displayName": "Correlation ID",
+          "description": "Distributed tracing correlation identifier"
+        }
+      }
+    }
+  }
+}

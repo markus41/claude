@@ -199,3 +199,208 @@ plugins/marketplace-pro/src/devstudio/server.ts(1259,15): error TS6133: 'relativ
 - **Status:** RESOLVED
 - **Fix:** Use `git stash && git pull --rebase origin <branch> && git stash pop` when local has uncommitted changes and remote is ahead.
 - **Prevention:** Always `git pull --rebase` before pushing. If unstaged changes exist, stash first.
+
+### Error: Bash failure (2026-02-24T07:44:47Z)
+- **Tool:** Bash
+- **Input:** `ls -la /home/user/claude/plugins/marketplace-pro/hooks/ 2>/dev/null`
+- **Error:** Exit code 2
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-02-24T07:48:31Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/.claude/plugins/migration-wizard`
+- **Error:** EISDIR: illegal operation on a directory, read '/home/user/claude/.claude/plugins/migration-wizard'
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-02-24T07:48:39Z)
+- **Tool:** Bash
+- **Input:** `ls -laR /home/user/claude/plugins/migration-wizard/ 2>/dev/null`
+- **Error:** Exit code 2
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-02-24T07:50:52Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/plugins/exec-automator/agents/admin-coordinator.md`
+- **Error:** File content (30974 tokens) exceeds maximum allowed tokens (25000). Please use offset and limit parameters to read specific portions of the file, or use the GrepTool to search for specific content.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-02-24T07:57:13Z)
+- **Tool:** Bash
+- **Input:** `sleep 20 && echo "=== FILE COUNTS ===" && echo "Agents: $(ls /home/user/claude/plugins/rosa-microsoft-deploy/agents/ | wc -l)/12" && echo "Skills: $(ls /home/user/claude/plugins/rosa-microsoft-deploy/skills/ | wc -l)/7" && echo "Commands: $(ls /home/user/claude/plugins/rosa-microsoft-deploy/commands/ | wc -l)/12" && echo "Workflows: $(ls /home/user/claude/plugins/rosa-microsoft-deploy/workflows/ | wc -l)/5" && echo "Schemas: $(ls /home/user/claude/plugins/rosa-microsoft-deploy/schemas/ 2>/dev/null | wc -l)/3" && echo "Scripts: $(ls /home/user/claude/plugins/rosa-microsoft-deploy/scripts/ 2>/dev/null | wc -l)/7" && echo "Functions: $(find /home/user/claude/plugins/rosa-microsoft-deploy/functions/ -type f 2>/dev/null | wc -l)/6" && echo "Infra: $(find /home/user/claude/plugins/rosa-microsoft-deploy/infra/ -type f 2>/dev/null | wc -l)/5" && echo "Notebooks: $(ls /home/user/claude/plugins/rosa-microsoft-deploy/fabric/notebooks/ 2>/dev/null | wc -l)/4" && echo "Identity: $(ls /home/user/claude/plugins/rosa-microsoft-deploy/identity/ 2>/dev/null | wc -l)/1" && echo "GitHub: $(ls /home/user/claude/plugins/rosa-microsoft-deploy/.github/workflows/ 2>/dev/null | wc -l)/3" && echo "=== MISSING ===" && echo "Agents:" && for f in identity-agent platform-agent data-agent ingest-agent azure-agent github-agent comms-agent analytics-agent carrier-normalization-agent michelle-scripts-agent consulting-crm-agent browser-fallback-agent; do [ ! -f "/home/user/claude/plugins/rosa-microsoft-deploy/agents/$f.md" ] && echo "  MISSING: $f.md"; done && echo "Skills:" && for f in pac-cli az-cli fabric-rest graph-api power-automate-rest stripe-integration firebase-extract; do [ ! -f "/home/user/claude/plugins/rosa-microsoft-deploy/skills/$f.md" ] && echo "  MISSING: $f.md"; done && echo "Commands:" && for f in deploy-all deploy-identity deploy-dataverse deploy-fabric deploy-portal deploy-azure extract-a3 normalize-carriers deploy-teams cost-report status-check browser-fallback; do [ ! -f "/home/user/claude/plugins/rosa-microsoft-deploy/commands/$f.md" ] && echo "  MISSING: $f.md"; done && echo "Workflows:" && for f in week1-critical-path taia-sale-prep tvs-foundation full-platform scale-polish; do [ ! -f "/home/user/claude/plugins/rosa-microsoft-deploy/workflows/$f.md" ] && echo "  MISSING: $f.md"; done`
+- **Error:** Exit code 1
+=== FILE COUNTS ===
+Agents: 9/12
+Skills: 7/7
+Commands: 7/12
+Workflows: 1/5
+Schemas: 0/3
+Scripts: 0/7
+Functions: 0/6
+Infra: 0/5
+Notebooks: 0/4
+Identity: 0/1
+GitHub: 0/3
+=== MISSING ===
+Agents:
+  MISSING: michelle-scripts-agent.md
+  MISSING: consulting-crm-agent.md
+  MISSING: browser-fallback-agent.md
+Skills:
+
+=== FILE COUNTS ===
+Agents: 9/12
+Skills: 7/7
+Commands: 7/12
+Workflows: 1/5
+Schemas: 0/3
+Scripts: 0/7
+Functions: 0/6
+Infra: 0/5
+Notebooks: 0/4
+Identity: 0/1
+GitHub: 0/3
+=== MISSING ===
+Agents:
+  MISSING: michelle-scripts-agent.md
+  MISSING: consulting-crm-agent.md
+  MISSING: browser-fallback-agent.md
+Skills:
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-02-24T08:11:40Z)
+- **Tool:** Bash
+- **Input:** `python3 << 'PYEOF'
+content = r'''#!/usr/bin/env bash
+# seed_keyvault.sh - Seed Azure Key Vault secrets from environment variables
+#
+# Reads expected variables from .env.template comments and stores each
+# one in the kv-rosa-holdings Key Vault using Azure CLI.
+#
+# Usage: ./seed_keyvault.sh [--vault-name VAULT] [--dry-run]
+#
+# Prerequisites:
+#   - Azure CLI installed and authenticated (az login)
+#   - Appropriate Key Vault access policies or RBAC assigned
+
+set -euo pipefail
+
+VAULT_NAME="kv-rosa-holdings"
+DRY_RUN=false
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --vault-name) VAULT_NAME="$2"; shift 2 ;;
+        --dry-run) DRY_RUN=true; shift ;;
+        *) echo "Unknown option: $1"; exit 1 ;;
+    esac
+done
+
+# Expected secrets derived from .env.template
+SECRETS=(
+    "FABRIC-TOKEN:FABRIC_TOKEN"
+    "FABRIC-CAPACITY-ID:FABRIC_CAPACITY_ID"
+    "GRAPH-TOKEN:GRAPH_TOKEN"
+    "TVS-DATAVERSE-ENV-URL:TVS_DATAVERSE_ENV_URL"
+    "CONSULTING-DATAVERSE-ENV-URL:CONSULTING_DATAVERSE_ENV_URL"
+    "STRIPE-SECRET-KEY:STRIPE_SECRET_KEY"
+    "STRIPE-WEBHOOK-SECRET:STRIPE_WEBHOOK_SECRET"
+    "FIREBASE-PROJECT-ID:FIREBASE_PROJECT_ID"
+    "FIREBASE-SERVICE-ACCOUNT:FIREBASE_SERVICE_ACCOUNT"
+    "PAYLOCITY-CLIENT-ID:PAYLOCITY_CLIENT_ID"
+    "PAYLOCITY-CLIENT-SECRET:PAYLOCITY_CLIENT_SECRET"
+    "PAYLOCITY-COMPANY-ID:PAYLOCITY_COMPANY_ID"
+    "FLOW-ENVIRONMENT-ID:FLOW_ENVIRONMENT_ID"
+    "APPINSIGHTS-CONNECTION-STRING:APPINSIGHTS_CONNECTION_STRING"
+)
+
+echo "=== Seeding Key Vault: ${VAULT_NAME} ==="
+echo ""
+
+SUCCESS=0
+SKIPPED=0
+FAILED=0
+
+for entry in "${SECRETS[@]}"; do
+    KV_NAME="${entry%%:*}"
+    ENV_VAR="${entry##*:}"
+    VALUE="${!ENV_VAR:-}"
+
+    if [[ -z "$VALUE" ]]; then
+        echo "  SKIP: ${KV_NAME} (${ENV_VAR} not set)"
+        SKIPPED=$((SKIPPED + 1))
+        continue
+    fi
+
+    if [[ "$DRY_RUN" == "true" ]]; then
+        echo "  DRY-RUN: Would set ${KV_NAME} from ${ENV_VAR}"
+        SUCCESS=$((SUCCESS + 1))
+        continue
+    fi
+
+    if az keyvault secret set \
+        --vault-name "${VAULT_NAME}" \
+        --name "${KV_NAME}" \
+        --value "${VALUE}" \
+        --output none 2>/dev/null; then
+        echo "  OK: ${KV_NAME}"
+        SUCCESS=$((SUCCESS + 1))
+    else
+        echo "  FAIL: ${KV_NAME}"
+        FAILED=$((FAILED + 1))
+    fi
+done
+
+echo ""
+echo "=== Summary ==="
+echo "  Stored:  ${SUCCESS}"
+echo "  Skipped: ${SKIPPED}"
+echo "  Failed:  ${FAILED}"
+
+if [[ "$FAILED" -gt 0 ]]; then
+    exit 1
+fi
+'''
+
+with open('/home/user/claude/plugins/rosa-microsoft-deploy/scripts/seed_keyvault.sh', 'w') as f:
+    f.write(content)
+
+import os
+os.chmod('/home/user/claude/plugins/rosa-microsoft-deploy/scripts/seed_keyvault.sh', 0o755)
+print("Created seed_keyvault.sh (executable)")
+PYEOF`
+- **Error:** Exit code 1
+Traceback (most recent call last):
+  File "<stdin>", line 92, in <module>
+FileNotFoundError: [Errno 2] No such file or directory: '/home/user/claude/plugins/rosa-microsoft-deploy/scripts/seed_keyvault.sh'
+
+Traceback (most recent call last):
+  File "<stdin>", line 92, in <module>
+FileNotFoundError: [Errno 2] No such file or directory: '/home/user/claude/plugins/rosa-microsoft-deploy/scripts/seed_keyvault.sh'
+- **Status:** RESOLVED
+- **Fix:** Background agents were writing to old `rosa-microsoft-deploy` path after mid-build rename to `tvs-microsoft-deploy`. Files exist at new path.
+- **Prevention:** When renaming a plugin mid-build, stop/wait for all background agents before renaming. Background agents retain old paths from their initial prompt.
+
+### Error: Bash failure (2026-02-24T08:13:32Z)
+- **Tool:** Bash
+- **Input:** `chmod +x /home/user/claude/plugins/rosa-microsoft-deploy/scripts/seed_keyvault.sh`
+- **Error:** Exit code 1
+chmod: cannot access '/home/user/claude/plugins/rosa-microsoft-deploy/scripts/seed_keyvault.sh': No such file or directory
+- **Status:** RESOLVED
+- **Fix:** Same root cause — background agent used old path. File exists at `tvs-microsoft-deploy/scripts/seed_keyvault.sh`.
+- **Prevention:** Same as above — stop background agents before directory rename.
+
+### Error: Read failure (2026-02-24T08:14:28Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/plugins/rosa-microsoft-deploy/scripts/provision_fabric.py`
+- **Error:** File does not exist. Note: your current working directory is /home/user/claude.
+- **Status:** RESOLVED
+- **Fix:** File exists at renamed path `tvs-microsoft-deploy/scripts/provision_fabric.py`.
+- **Prevention:** After directory rename, update all file path references to new name.
+
+### Error: Bash failure (2026-02-24T08:18:00Z)
+- **Tool:** Bash
+- **Input:** `python3 << 'PYEOF' ... (background agent writing scripts to old rosa-microsoft-deploy path)`
+- **Error:** FileNotFoundError: rosa-microsoft-deploy directory no longer exists (renamed to tvs-microsoft-deploy)
+- **Status:** RESOLVED
+- **Fix:** Background agent retained old path from initial prompt. Scripts already exist at tvs-microsoft-deploy/scripts/.
+- **Prevention:** Stop all background agents before renaming directories. Background agents cannot detect mid-flight path changes.

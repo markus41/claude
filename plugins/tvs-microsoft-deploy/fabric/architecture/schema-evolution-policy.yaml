@@ -1,0 +1,19 @@
+version: 1
+policy:
+  compatibility_levels:
+    bronze: additive_only
+    silver: backward_compatible
+    gold: strict_semantic_versioning
+  enforcement:
+    contract_registry: fabric/architecture/ingestion-contracts.yaml
+    contract_version_column: _contract_version
+    schema_hash_column: _schema_hash
+  drift_workflow:
+    detect: compare incoming schema hash to contract registry
+    classify:
+      additive: auto-approve and notify #data-platform-alerts
+      type_widening: require approval from analytics-owner
+      destructive: block run and open incident
+  retention:
+    rejected_records_days: 90
+    schema_change_audit_days: 365

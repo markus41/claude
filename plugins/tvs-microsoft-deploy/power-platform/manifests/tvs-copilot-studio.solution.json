@@ -1,0 +1,16 @@
+{
+  "name": "TVSCopilotStudio",
+  "publisher": "tvs_",
+  "version": "1.3.0",
+  "type": "managed",
+  "description": "Copilot Studio conversational bot assets promoted with Dataverse, flows, and apps.",
+  "botAssets": [
+    "plugins/tvs-microsoft-deploy/copilot-studio/bots/commission-assistant.bot.json",
+    "plugins/tvs-microsoft-deploy/copilot-studio/bots/offboarding-assistant.bot.json",
+    "plugins/tvs-microsoft-deploy/copilot-studio/bots/taia-archive-assistant.bot.json"
+  ],
+  "requiredEnvironmentVariables": [
+    "COPILOT_STUDIO_BOT_ENDPOINT",
+    "COPILOT_STUDIO_RUNTIME_ENV"
+  ]
+}
