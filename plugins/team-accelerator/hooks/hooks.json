@@ -1,45 +1,113 @@
 {
   "$schema": "../../../schemas/hooks.schema.json",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "plugin": "team-accelerator",
-  "description": "",
+  "description": "Team accelerator quality and delivery checks",
   "hooks": [
     {
+      "id": "security-check",
       "event": "PreToolUse",
+      "severity": "block",
+      "description": "Security validation for file edits.",
+      "trigger": {
+        "scope": "tool",
+        "tools": [
+          "Write",
+          "Edit"
+        ],
+        "file_patterns": [
+          "**/*.{ts,tsx,js,jsx,py,sql,json,yml,yaml,env}"
+        ]
+      },
       "handlers": [
         {
           "type": "prompt",
-          "prompt": "Before writing or editing files, ensure:\n\n1. **Code Quality Checks:**\n   - No hardcoded secrets (API keys, passwords, tokens)\n   - No console.log/print statements in production code\n   - Proper error handling for async operations\n   - No TODO/FIXME comments without associated issues\n\n2. **Security Validation:**\n   - No SQL injection vulnerabilities\n   - No XSS vulnerabilities in user inputs\n   - Proper input validation and sanitization\n   - No insecure dependencies\n\n3. **Best Practices:**\n   - Follow project coding standards\n   - Maintain consistent formatting\n   - Add appropriate comments for complex logic\n   - Ensure type safety (TypeScript/type hints)\n\n4. **File-Specific Rules:**\n   - Package files: Validate semver, check for vulnerable deps\n   - Config files: Validate JSON/YAML syntax\n   - Source files: Check for unused imports, variables\n   - Test files: Ensure proper assertions and coverage\n\nRespond with:\n- \u2705 PASS: No issues found\n- \u26a0\ufe0f WARN: Issues found (advisory mode)\n- \u274c BLOCK: Critical issues (strict mode)"
+          "prompt": "Run the security check for edited files (secrets, injection/XSS risk, validation gaps).",
+          "doc_ref": "docs/hooks/prompt-guidance.md#team-accelerator"
         }
-      ],
-      "matcher": "Write|Edit"
+      ]
     },
     {
+      "id": "formatting-check",
+      "event": "PreToolUse",
+      "severity": "warn",
+      "description": "Formatting and code-quality baseline for edits.",
+      "trigger": {
+        "scope": "tool",
+        "tools": [
+          "Write",
+          "Edit"
+        ],
+        "file_patterns": [
+          "**/*.{ts,tsx,js,jsx,py,md,json,yml,yaml}"
+        ]
+      },
+      "handlers": [
+        {
+          "type": "prompt",
+          "prompt": "Run formatting/lint/type checks and flag unresolved TODO/FIXME entries.",
+          "doc_ref": "docs/hooks/prompt-guidance.md#team-accelerator"
+        }
+      ]
+    },
+    {
+      "id": "deployment-followup",
       "event": "PostToolUse",
+      "severity": "warn",
+      "description": "Deployment follow-up for shell actions.",
+      "trigger": {
+        "scope": "tool",
+        "tools": [
+          "Bash"
+        ],
+        "command_patterns": [
+          "(deploy|kubectl|helm|docker (push|build)|npm publish|terraform apply)"
+        ]
+      },
       "handlers": [
         {
           "type": "prompt",
-          "prompt": "Bash command executed. If this was a deployment-related action (deploy, kubectl, helm, docker push/build, npm publish, terraform apply), consider:\n\n1. **Notification**: Team should be notified of deployment actions\n2. **Verification**: Validate the operation completed successfully\n3. **Documentation**: Log significant changes\n\nWas this a deployment action that needs follow-up?"
+          "prompt": "If deployment-related, require notify + verify + log follow-up checklist.",
+          "doc_ref": "docs/hooks/prompt-guidance.md#team-accelerator"
         }
-      ],
-      "matcher": "Bash"
+      ]
     },
     {
+      "id": "docs-impact-check",
       "event": "PostToolUse",
+      "severity": "advisory",
+      "description": "Documentation impact review after source changes.",
+      "trigger": {
+        "scope": "tool",
+        "tools": [
+          "Write",
+          "Edit"
+        ],
+        "file_patterns": [
+          "**/*.{ts,tsx,js,jsx,py,go,java,cs,rb,php}"
+        ]
+      },
       "handlers": [
         {
           "type": "prompt",
-          "prompt": "A source file has been modified. Consider:\n\n1. **Documentation Impact**: Does this change require documentation updates?\n2. **API Changes**: Are there breaking changes to document?\n3. **Obsidian Sync**: Should this be logged in the knowledge base?\n\nProvide a checklist of documentation tasks, or confirm no updates are needed."
+          "prompt": "Assess docs/API/knowledge-base impact and list required updates.",
+          "doc_ref": "docs/hooks/prompt-guidance.md#team-accelerator"
         }
-      ],
-      "matcher": "Write"
+      ]
     },
     {
+      "id": "session-summary",
       "event": "Stop",
+      "severity": "advisory",
+      "description": "Concise quality summary at task stop.",
+      "trigger": {
+        "scope": "task"
+      },
       "handlers": [
         {
           "type": "prompt",
-          "prompt": "Task completion summary:\n\n**Review the session and provide:**\n\n1. **Test Execution Summary** (if tests were run):\n   - Total tests run, passed/failed/skipped counts\n   - Coverage percentage (if available)\n\n2. **Quality Metrics:**\n   - Code quality observations\n   - Issues resolved\n   - Technical debt changes\n\n3. **Recommendations:**\n   - Areas needing additional testing\n   - Documentation updates needed\n\nFormat as a concise summary suitable for team review."
+          "prompt": "Provide concise session summary: tests, quality deltas, and recommended next actions.",
+          "doc_ref": "docs/hooks/prompt-guidance.md#team-accelerator"
         }
       ]
     }

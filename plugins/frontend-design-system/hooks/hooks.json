@@ -1,68 +1,108 @@
 {
   "$schema": "../../../schemas/hooks.schema.json",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "plugin": "frontend-design-system",
   "description": "",
   "hooks": [
     {
+      "id": "style-consistency-checker",
       "event": "PreToolUse",
+      "severity": "advisory",
+      "description": "Checks style consistency before writing CSS/SCSS/TSX/JSX files",
+      "trigger": {
+        "scope": "tool",
+        "legacy": {
+          "toolPattern": "(Write|Edit)",
+          "filePattern": "\\.(css|scss|tsx|jsx)$"
+        },
+        "tools": [
+          "(Write|Edit)"
+        ],
+        "file_patterns": [
+          "\\.(css|scss|tsx|jsx)$"
+        ]
+      },
       "handlers": [
         {
           "type": "command",
           "script": "scripts/check-style-consistency.sh"
         }
-      ],
-      "id": "style-consistency-checker",
-      "description": "Checks style consistency before writing CSS/SCSS/TSX/JSX files",
-      "trigger": {
-        "toolPattern": "(Write|Edit)",
-        "filePattern": "\\.(css|scss|tsx|jsx)$"
-      }
+      ]
     },
     {
+      "id": "accessibility-validator",
       "event": "PreToolUse",
+      "severity": "advisory",
+      "description": "Validates accessibility before writing TSX/JSX component files",
+      "trigger": {
+        "scope": "tool",
+        "legacy": {
+          "toolPattern": "(Write|Edit)",
+          "filePattern": "\\.(tsx|jsx)$"
+        },
+        "tools": [
+          "(Write|Edit)"
+        ],
+        "file_patterns": [
+          "\\.(tsx|jsx)$"
+        ]
+      },
       "handlers": [
         {
           "type": "command",
           "script": "scripts/validate-accessibility.sh"
         }
-      ],
-      "id": "accessibility-validator",
-      "description": "Validates accessibility before writing TSX/JSX component files",
-      "trigger": {
-        "toolPattern": "(Write|Edit)",
-        "filePattern": "\\.(tsx|jsx)$"
-      }
+      ]
     },
     {
+      "id": "theme-sync",
       "event": "PostToolUse",
+      "severity": "advisory",
+      "description": "Syncs themes after writing theme or token files",
+      "trigger": {
+        "scope": "tool",
+        "legacy": {
+          "toolPattern": "(Write|Edit)",
+          "filePattern": "(theme|tokens).*\\.(ts|json|css)$"
+        },
+        "tools": [
+          "(Write|Edit)"
+        ],
+        "file_patterns": [
+          "(theme|tokens).*\\.(ts|json|css)$"
+        ]
+      },
       "handlers": [
         {
           "type": "command",
           "script": "scripts/sync-themes.sh"
         }
-      ],
-      "id": "theme-sync",
-      "description": "Syncs themes after writing theme or token files",
-      "trigger": {
-        "toolPattern": "(Write|Edit)",
-        "filePattern": "(theme|tokens).*\\.(ts|json|css)$"
-      }
+      ]
     },
     {
+      "id": "design-token-updater",
       "event": "PostToolUse",
+      "severity": "advisory",
+      "description": "Updates design tokens after editing token files",
+      "trigger": {
+        "scope": "tool",
+        "legacy": {
+          "toolPattern": "Edit",
+          "filePattern": "design-tokens\\.(json|ts)$"
+        },
+        "tools": [
+          "Edit"
+        ],
+        "file_patterns": [
+          "design-tokens\\.(json|ts)$"
+        ]
+      },
       "handlers": [
         {
           "type": "command",
           "script": "scripts/update-tokens.sh"
         }
-      ],
-      "id": "design-token-updater",
-      "description": "Updates design tokens after editing token files",
-      "trigger": {
-        "toolPattern": "Edit",
-        "filePattern": "design-tokens\\.(json|ts)$"
-      }
+      ]
     }
   ],
   "settings": {}

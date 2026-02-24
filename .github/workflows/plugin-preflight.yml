@@ -7,6 +7,7 @@ on:
       - 'schemas/plugin.schema.json'
       - 'schemas/hooks.schema.json'
       - 'scripts/validate-plugin-schema.mjs'
+      - 'scripts/lint-hooks.mjs'
       - 'package.json'
       - '.github/workflows/plugin-preflight.yml'
   push:
@@ -17,6 +18,7 @@ on:
       - 'schemas/plugin.schema.json'
       - 'schemas/hooks.schema.json'
       - 'scripts/validate-plugin-schema.mjs'
+      - 'scripts/lint-hooks.mjs'
       - 'package.json'
       - '.github/workflows/plugin-preflight.yml'
 
@@ -32,5 +34,7 @@ jobs:
         run: npm ci
       - name: Validate plugin schemas
         run: npm run check:plugin-schema
+      - name: Lint plugin hooks
+        run: npm run check:hooks
       - name: Validate plugin context entry files
         run: npm run check:plugin-context

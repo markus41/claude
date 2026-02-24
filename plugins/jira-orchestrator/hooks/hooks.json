@@ -1,74 +1,102 @@
 {
   "$schema": "../../../schemas/hooks.schema.json",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "plugin": "jira-orchestrator",
   "description": "Jira Orchestrator Plugin Hooks - Automated workflow triggers for Jira integration",
   "hooks": [
     {
+      "id": "userpromptsubmit-1",
       "event": "UserPromptSubmit",
+      "severity": "advisory",
+      "description": "UserPromptSubmit hook",
+      "trigger": {
+        "scope": "prompt",
+        "prompt_patterns": [
+          "\\b[A-Z]{2,10}-\\d+\\b"
+        ]
+      },
       "handlers": [
         {
           "type": "command",
           "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/detect-jira-issue.sh",
           "timeout": 5000
         }
-      ],
-      "matcher": "\\b[A-Z]{2,10}-\\d+\\b"
+      ]
     },
     {
+      "id": "posttooluse-2",
       "event": "PostToolUse",
+      "severity": "advisory",
+      "description": "PostToolUse hook",
+      "trigger": {
+        "scope": "tool",
+        "command_patterns": [
+          "jira_get_issue|getJiraIssue|mcp__atlassian__getJiraIssue"
+        ]
+      },
       "handlers": [
         {
           "type": "command",
           "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/triage-trigger.sh",
           "timeout": 5000
         }
-      ],
-      "matcher": "jira_get_issue|getJiraIssue|mcp__atlassian__getJiraIssue"
+      ]
     },
     {
+      "id": "pretooluse-deploy-gates",
       "event": "PreToolUse",
+      "severity": "advisory",
+      "description": "Run deployment review and PR size gates before pipeline actions.",
+      "trigger": {
+        "scope": "tool",
+        "command_patterns": [
+          "harness_deploy|harness_create_deployment|execute_pipeline|harness_create_pull_request"
+        ]
+      },
       "handlers": [
         {
           "type": "command",
           "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/review-gate.sh",
           "timeout": 10000
-        }
-      ],
-      "matcher": "harness_deploy|harness_create_deployment|execute_pipeline|harness_create_pull_request"
-    },
-    {
-      "event": "PreToolUse",
-      "handlers": [
+        },
         {
           "type": "command",
           "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/pr-size-guard.sh main",
           "timeout": 10000
         }
-      ],
-      "matcher": "harness_deploy|harness_create_deployment|execute_pipeline|harness_create_pull_request"
+      ]
     },
     {
+      "id": "stop-5",
       "event": "Stop",
+      "severity": "advisory",
+      "description": "Stop hook",
+      "trigger": {
+        "scope": "task"
+      },
       "handlers": [
         {
           "type": "command",
           "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/docs-reminder.sh",
           "timeout": 5000
         }
-      ],
-      "matcher": ""
+      ]
     },
     {
+      "id": "sessionstart-6",
       "event": "SessionStart",
+      "severity": "advisory",
+      "description": "SessionStart hook",
+      "trigger": {
+        "scope": "session"
+      },
       "handlers": [
         {
           "type": "command",
           "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/session-resume.sh",
           "timeout": 5000
         }
-      ],
-      "matcher": ""
+      ]
     }
   ],
   "settings": {}

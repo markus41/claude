@@ -1,98 +1,72 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://claude.local/schemas/hooks.schema.json",
-  "title": "Claude Plugin Hooks",
+  "title": "Claude Plugin Hooks (Canonical)",
   "type": "object",
-  "required": [
-    "version",
-    "plugin",
-    "hooks"
-  ],
+  "additionalProperties": false,
+  "required": ["$schema", "version", "plugin", "hooks"],
   "properties": {
-    "$schema": {
-      "type": "string"
-    },
-    "version": {
-      "type": "string",
-      "minLength": 1
-    },
-    "plugin": {
-      "type": "string",
-      "minLength": 1
-    },
-    "description": {
-      "type": "string"
-    },
-    "settings": {
-      "type": "object",
-      "additionalProperties": true
-    },
-    "metadata": {
-      "type": "object",
-      "additionalProperties": true
-    },
+    "$schema": { "type": "string" },
+    "version": { "type": "string", "const": "2.0.0" },
+    "plugin": { "type": "string", "minLength": 1 },
+    "description": { "type": "string" },
+    "settings": { "type": "object", "additionalProperties": true },
+    "metadata": { "type": "object", "additionalProperties": true },
     "hooks": {
       "type": "array",
-      "items": {
-        "type": "object",
-        "required": [
-          "event",
-          "handlers"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "event": {
-            "type": "string",
-            "enum": [
-              "SessionStart",
-              "UserPromptSubmit",
-              "PreToolUse",
-              "PostToolUse",
-              "Stop",
-              "SessionEnd",
-              "PreCompact",
-              "TaskCompleted"
-            ]
-          },
-          "description": {
-            "type": "string"
-          },
-          "matcher": {
-            "type": "string"
-          },
-          "trigger": {
-            "type": "object",
-            "additionalProperties": true
-          },
-          "handlers": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "required": [
-                "type"
-              ],
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "minLength": 1
-                }
-              },
-              "additionalProperties": true
-            }
-          },
-          "metadata": {
-            "type": "object",
-            "additionalProperties": true
-          }
-        },
-        "additionalProperties": true
-      }
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/hook" }
     }
   },
-  "additionalProperties": true
+  "definitions": {
+    "hook": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "event", "severity", "description", "trigger", "handlers"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string" },
+        "event": {
+          "type": "string",
+          "enum": ["SessionStart", "UserPromptSubmit", "PreToolUse", "PostToolUse", "Stop", "SessionEnd", "PreCompact", "TaskCompleted"]
+        },
+        "severity": { "type": "string", "enum": ["advisory", "warn", "block"] },
+        "description": { "type": "string", "minLength": 1 },
+        "trigger": { "$ref": "#/definitions/trigger" },
+        "handlers": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/definitions/handler" }
+        },
+        "metadata": { "type": "object", "additionalProperties": true }
+      }
+    },
+    "trigger": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scope"],
+      "properties": {
+        "scope": { "type": "string", "enum": ["session", "prompt", "tool", "task"] },
+        "tools": { "type": "array", "items": { "type": "string" } },
+        "file_patterns": { "type": "array", "items": { "type": "string" } },
+        "command_patterns": { "type": "array", "items": { "type": "string" } },
+        "prompt_patterns": { "type": "array", "items": { "type": "string" } },
+        "task_types": { "type": "array", "items": { "type": "string" } },
+        "legacy": { "type": "object", "additionalProperties": true }
+      }
+    },
+    "handler": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["type"],
+      "properties": {
+        "type": { "type": "string", "minLength": 1 },
+        "prompt": { "type": "string", "maxLength": 280 },
+        "doc_ref": { "type": "string" },
+        "command": { "type": "string" },
+        "script": { "type": "string" },
+        "timeout": { "type": "integer", "minimum": 1 }
+      }
+    }
+  }
 }

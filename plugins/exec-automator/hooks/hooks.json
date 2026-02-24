@@ -1,11 +1,17 @@
 {
   "$schema": "../../../schemas/hooks.schema.json",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "plugin": "exec-automator",
   "description": "Hook definitions for executive director automation workflow tracking and state management",
   "hooks": [
     {
+      "id": "sessionstart-1",
       "event": "SessionStart",
+      "severity": "advisory",
+      "description": "SessionStart hook",
+      "trigger": {
+        "scope": "session"
+      },
       "handlers": [
         {
           "type": "prompt",
@@ -14,16 +20,29 @@
       ]
     },
     {
+      "id": "userpromptsubmit-2",
       "event": "UserPromptSubmit",
+      "severity": "advisory",
+      "description": "UserPromptSubmit hook",
+      "trigger": {
+        "scope": "prompt"
+      },
       "handlers": [
         {
           "type": "prompt",
-          "prompt": "Detect organizational documents (RFPs, bylaws, job descriptions) and suggest analysis workflows. Look for keywords: rfp, job description, bylaws, executive director, ed responsibilities, association, nonprofit, trade association."
+          "prompt": "Detect organizational documents (RFPs, bylaws, job descriptions) and suggest analysis workflows. Look for keywords: rfp, job description, bylaws, executive director, ed responsibilities, association, nonprofit, trade association.",
+          "doc_ref": "docs/hooks/prompt-guidance.md"
         }
       ]
     },
     {
+      "id": "posttooluse-3",
       "event": "PostToolUse",
+      "severity": "advisory",
+      "description": "PostToolUse hook",
+      "trigger": {
+        "scope": "tool"
+      },
       "handlers": [
         {
           "type": "prompt",
@@ -32,7 +51,13 @@
       ]
     },
     {
+      "id": "sessionend-4",
       "event": "SessionEnd",
+      "severity": "advisory",
+      "description": "SessionEnd hook",
+      "trigger": {
+        "scope": "session"
+      },
       "handlers": [
         {
           "type": "prompt",

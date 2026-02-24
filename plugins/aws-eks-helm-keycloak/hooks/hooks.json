@@ -1,28 +1,45 @@
 {
   "$schema": "../../../schemas/hooks.schema.json",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "plugin": "aws-eks-helm-keycloak",
   "description": "",
   "hooks": [
     {
+      "id": "pretooluse-1",
       "event": "PreToolUse",
+      "severity": "advisory",
+      "description": "PreToolUse hook",
+      "trigger": {
+        "scope": "tool",
+        "tools": [
+          "Bash"
+        ]
+      },
       "handlers": [
         {
           "type": "prompt",
-          "prompt": "Validates Helm charts, security, and Keycloak configuration before deployment. If the Bash command matches 'helm install', 'helm upgrade', or 'kubectl apply', perform strict validation with security scanning and Keycloak checks. Block on errors."
+          "prompt": "Validates Helm charts, security, and Keycloak configuration before deployment. If the Bash command matches 'helm install', 'helm upgrade', or 'kubectl apply', perform strict validation with security scanning and Keycloak checks. Block on errors.",
+          "doc_ref": "docs/hooks/prompt-guidance.md"
         }
-      ],
-      "matcher": "Bash"
+      ]
     },
     {
+      "id": "posttooluse-2",
       "event": "PostToolUse",
+      "severity": "advisory",
+      "description": "PostToolUse hook",
+      "trigger": {
+        "scope": "tool",
+        "tools": [
+          "Bash"
+        ]
+      },
       "handlers": [
         {
           "type": "prompt",
           "prompt": "If the Bash command matched 'helm install' or 'helm upgrade' with Keycloak settings, sync Keycloak realm and client configuration after successful deployment."
         }
-      ],
-      "matcher": "Bash"
+      ]
     }
   ],
   "settings": {

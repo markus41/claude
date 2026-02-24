@@ -1,11 +1,20 @@
 {
   "$schema": "../../../schemas/hooks.schema.json",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "plugin": "home-assistant-architect",
   "description": "Scoped event-driven hooks for Home Assistant and Ollama workflows",
   "hooks": [
     {
+      "id": "userpromptsubmit-1",
       "event": "UserPromptSubmit",
+      "severity": "advisory",
+      "description": "UserPromptSubmit hook",
+      "trigger": {
+        "scope": "prompt",
+        "prompt_patterns": [
+          "(^|\\s)/(ha-control|ha-automation|ha-deploy|ha-diagnose|ha-voice|ha-backup|ha-mcp|ollama-setup)\\b|\\b(home assistant|hass|homeassistant|configuration\\.ya?ml|automations?\\.ya?ml|secrets\\.ya?ml|scenes\\.ya?ml|scripts\\.ya?ml|assist_pipeline)\\b|\\bmcp__home_assistant__"
+        ]
+      },
       "handlers": [
         {
           "type": "prompt",
@@ -13,13 +22,22 @@
           "debounce_key": "ha-userprompt-context",
           "debounce_scope": "session",
           "debounce_window_seconds": 900,
-          "prompt": "Handle Home Assistant intent only when the user references HA-specific commands, HA config files, HA domains/entities, or Home Assistant MCP tools. Do not trigger on generic verbs (for example: set, adjust, turn on) without HA context."
+          "prompt": "Handle Home Assistant intent only when the user references HA-specific commands, HA config files, HA domains/entities, or Home Assistant MCP tools. Do not trigger on generic verbs (for example: set, adjust, turn on) without HA context.",
+          "doc_ref": "docs/hooks/prompt-guidance.md"
         }
-      ],
-      "matcher": "(^|\\s)/(ha-control|ha-automation|ha-deploy|ha-diagnose|ha-voice|ha-backup|ha-mcp|ollama-setup)\\b|\\b(home assistant|hass|homeassistant|configuration\\.ya?ml|automations?\\.ya?ml|secrets\\.ya?ml|scenes\\.ya?ml|scripts\\.ya?ml|assist_pipeline)\\b|\\bmcp__home_assistant__"
+      ]
     },
     {
+      "id": "pretooluse-2",
       "event": "PreToolUse",
+      "severity": "block",
+      "description": "PreToolUse hook",
+      "trigger": {
+        "scope": "tool",
+        "tools": [
+          "Write|Edit|MultiEdit"
+        ]
+      },
       "handlers": [
         {
           "type": "prompt",
@@ -27,10 +45,10 @@
           "debounce_key": "ha-yaml-prewrite",
           "debounce_scope": "session",
           "debounce_window_seconds": 300,
-          "prompt": "Before editing Home Assistant YAML, validate syntax and key HA structures (trigger/condition/action, service calls, entity_id, secrets references). Skip this reminder for non-HA files."
+          "prompt": "Before editing Home Assistant YAML, validate syntax and key HA structures (trigger/condition/action, service calls, entity_id, secrets references). Skip this reminder for non-HA files.",
+          "doc_ref": "docs/hooks/prompt-guidance.md"
         }
       ],
-      "matcher": "Write|Edit|MultiEdit",
       "metadata": {
         "conditions": {
           "path_any": [
@@ -47,7 +65,16 @@
       }
     },
     {
+      "id": "pretooluse-3",
       "event": "PreToolUse",
+      "severity": "warn",
+      "description": "PreToolUse hook",
+      "trigger": {
+        "scope": "tool",
+        "tools": [
+          "Bash"
+        ]
+      },
       "handlers": [
         {
           "type": "prompt",
@@ -58,7 +85,6 @@
           "prompt": "For HA/Ollama shell commands only: verify target host, auth token usage, and service impact before execution. Do not emit for unrelated Bash commands."
         }
       ],
-      "matcher": "Bash",
       "metadata": {
         "conditions": {
           "command_any": [
@@ -76,7 +102,16 @@
       }
     },
     {
+      "id": "posttooluse-4",
       "event": "PostToolUse",
+      "severity": "warn",
+      "description": "PostToolUse hook",
+      "trigger": {
+        "scope": "tool",
+        "tools": [
+          "Bash"
+        ]
+      },
       "handlers": [
         {
           "type": "prompt",
@@ -87,7 +122,6 @@
           "prompt": "After HA/Ollama commands, check service health/state once per debounce window (HA core status, API responsiveness, and Ollama model/service availability)."
         }
       ],
-      "matcher": "Bash",
       "metadata": {
         "conditions": {
           "command_any": [
@@ -100,7 +134,16 @@
       }
     },
     {
+      "id": "posttooluse-5",
       "event": "PostToolUse",
+      "severity": "block",
+      "description": "PostToolUse hook",
+      "trigger": {
+        "scope": "tool",
+        "tools": [
+          "Write|Edit|MultiEdit"
+        ]
+      },
       "handlers": [
         {
           "type": "prompt",
@@ -111,7 +154,6 @@
           "prompt": "Review Home Assistant config edits for security and reliability (secret leakage, unsafe external URLs/commands, privileged add-ons, and invalid entity/service references)."
         }
       ],
-      "matcher": "Write|Edit|MultiEdit",
       "metadata": {
         "conditions": {
           "path_any": [
@@ -128,7 +170,16 @@
       }
     },
     {
+      "id": "taskcompleted-6",
       "event": "TaskCompleted",
+      "severity": "advisory",
+      "description": "TaskCompleted hook",
+      "trigger": {
+        "scope": "task",
+        "command_patterns": [
+          "ha-deploy|ha-automation|ha-config|ollama-setup"
+        ]
+      },
       "handlers": [
         {
           "type": "prompt",
@@ -138,11 +189,16 @@
           "debounce_window_seconds": 900,
           "prompt": "Run focused health checks only after HA/Ollama task types (ha-deploy, ha-automation, ha-config, ollama-setup)."
         }
-      ],
-      "matcher": "ha-deploy|ha-automation|ha-config|ollama-setup"
+      ]
     },
     {
+      "id": "sessionend-7",
       "event": "SessionEnd",
+      "severity": "advisory",
+      "description": "SessionEnd hook",
+      "trigger": {
+        "scope": "session"
+      },
       "handlers": [
         {
           "type": "prompt",
