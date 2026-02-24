@@ -31,5 +31,41 @@
     "flip-card",
     "parallax"
   ],
-  "contextEntry": "CONTEXT.md"
+  "contextEntry": "CONTEXT.md",
+  "$schema": "../../../schemas/plugin.schema.json",
+  "permissions": {
+    "requires": [],
+    "optional": []
+  },
+  "capabilities": {
+    "provides": [],
+    "requires": []
+  },
+  "context": {
+    "entry": "CONTEXT.md",
+    "title": "react-animation-studio",
+    "summary": "Create beautiful, performant web animations for React and TypeScript applications. Includes background effects, text animations, 3D transforms, creative visual effects, Framer Motion, GSAP, and more.",
+    "tags": [
+      "react",
+      "animation",
+      "framer-motion",
+      "gsap",
+      "css-animations",
+      "typescript",
+      "motion-design",
+      "spring-physics",
+      "micro-interactions",
+      "page-transitions",
+      "scroll-animations",
+      "creative-effects",
+      "background-animations",
+      "text-animations",
+      "3d-transforms",
+      "particles",
+      "aurora",
+      "typewriter",
+      "flip-card",
+      "parallax"
+    ]
+  }
 }

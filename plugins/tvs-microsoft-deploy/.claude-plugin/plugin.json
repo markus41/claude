@@ -187,5 +187,48 @@
       "schemas/fabric_workspaces.json"
     ]
   },
-  "contextEntry": "CONTEXT.md"
+  "contextEntry": "CONTEXT.md",
+  "$schema": "../../../schemas/plugin.schema.json",
+  "permissions": {
+    "requires": [],
+    "optional": []
+  },
+  "capabilities": {
+    "provides": [],
+    "requires": []
+  },
+  "context": {
+    "entry": "CONTEXT.md",
+    "title": "tvs-microsoft-deploy",
+    "summary": "Consul (Forerunner) - Enterprise Microsoft ecosystem orchestrator for TVS (Trusted Virtual Solutions) multi-entity multi-tenant deployment. 19 agents, 18 commands, 17 skills, 14 hooks, 5 workflows. MCP server for Graph API, Dataverse, Fabric, and Planner.",
+    "tags": [
+      "microsoft",
+      "power-platform",
+      "dataverse",
+      "fabric",
+      "azure",
+      "entra",
+      "multi-tenant",
+      "tvs",
+      "tvs-holdings",
+      "fmo-sale",
+      "stripe",
+      "firebase",
+      "pac-cli",
+      "playwright",
+      "office-scripts",
+      "power-pages",
+      "copilot-studio",
+      "onelake",
+      "bicep",
+      "graph-api",
+      "power-bi-embedded",
+      "planner",
+      "m365-governance",
+      "dlp",
+      "excel-automation",
+      "solution-architect",
+      "pipeline-orchestration"
+    ]
+  }
 }

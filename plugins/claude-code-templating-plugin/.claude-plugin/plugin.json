@@ -23,5 +23,33 @@
     "ci-cd",
     "infrastructure"
   ],
-  "contextEntry": "CONTEXT.md"
+  "contextEntry": "CONTEXT.md",
+  "$schema": "../../../schemas/plugin.schema.json",
+  "permissions": {
+    "requires": [],
+    "optional": []
+  },
+  "capabilities": {
+    "provides": [],
+    "requires": []
+  },
+  "context": {
+    "entry": "CONTEXT.md",
+    "title": "claude-code-templating",
+    "summary": "Universal templating and Harness expert plugin for Claude Code - enables fully autonomous project generation, pipeline creation, and deployment automation through a unified template interface. Supports Handlebars, Cookiecutter, Copier, Maven archetypes, and Harness pipelines. 4 commands, 5 agents, 3 skills.",
+    "tags": [
+      "templating",
+      "scaffolding",
+      "harness",
+      "pipelines",
+      "cookiecutter",
+      "copier",
+      "maven-archetype",
+      "mcp",
+      "code-generation",
+      "devops",
+      "ci-cd",
+      "infrastructure"
+    ]
+  }
 }

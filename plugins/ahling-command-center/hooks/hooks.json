@@ -1,26 +1,29 @@
 {
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "prompt",
-            "prompt": "Before executing Docker or deployment commands in ACC context, verify:\n\n1. **Docker Availability**: Is Docker daemon running?\n2. **Network Setup**: Do ACC networks (acc-backend, acc-frontend) exist?\n3. **Vault Status**: If secrets are needed, is Vault accessible?\n4. **Resource Check**: Are there sufficient resources for the operation?\n\nProceed if prerequisites are met, or suggest running acc-init first."
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "prompt",
-            "prompt": "After Docker/deployment command execution, consider:\n\n1. **Health Check**: Should we verify service health?\n2. **Log Review**: Are there any error indicators?\n3. **Resource Status**: Check current resource utilization?\n\nSuggest next steps based on the operation performed."
-          }
-        ]
-      }
-    ]
-  }
+  "$schema": "../../../schemas/hooks.schema.json",
+  "version": "1.0.0",
+  "plugin": "ahling-command-center",
+  "description": "",
+  "hooks": [
+    {
+      "event": "PreToolUse",
+      "handlers": [
+        {
+          "type": "prompt",
+          "prompt": "Before executing Docker or deployment commands in ACC context, verify:\n\n1. **Docker Availability**: Is Docker daemon running?\n2. **Network Setup**: Do ACC networks (acc-backend, acc-frontend) exist?\n3. **Vault Status**: If secrets are needed, is Vault accessible?\n4. **Resource Check**: Are there sufficient resources for the operation?\n\nProceed if prerequisites are met, or suggest running acc-init first."
+        }
+      ],
+      "matcher": "Bash"
+    },
+    {
+      "event": "PostToolUse",
+      "handlers": [
+        {
+          "type": "prompt",
+          "prompt": "After Docker/deployment command execution, consider:\n\n1. **Health Check**: Should we verify service health?\n2. **Log Review**: Are there any error indicators?\n3. **Resource Status**: Check current resource utilization?\n\nSuggest next steps based on the operation performed."
+        }
+      ],
+      "matcher": "Bash"
+    }
+  ],
+  "settings": {}
 }

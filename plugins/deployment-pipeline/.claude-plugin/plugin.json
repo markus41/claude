@@ -17,5 +17,29 @@
     "deployment",
     "pipeline"
   ],
-  "contextEntry": "CONTEXT.md"
+  "contextEntry": "CONTEXT.md",
+  "$schema": "../../../schemas/plugin.schema.json",
+  "permissions": {
+    "requires": [],
+    "optional": []
+  },
+  "capabilities": {
+    "provides": [],
+    "requires": []
+  },
+  "context": {
+    "entry": "CONTEXT.md",
+    "title": "deployment-pipeline",
+    "summary": "Harness CD integration pipeline with state-machine workflow orchestration",
+    "tags": [
+      "workflow",
+      "automation",
+      "state-machine",
+      "orchestration",
+      "harness",
+      "ci-cd",
+      "deployment",
+      "pipeline"
+    ]
+  }
 }

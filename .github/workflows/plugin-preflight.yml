@@ -1,0 +1,36 @@
+name: Plugin Preflight
+
+on:
+  pull_request:
+    paths:
+      - 'plugins/**'
+      - 'schemas/plugin.schema.json'
+      - 'schemas/hooks.schema.json'
+      - 'scripts/validate-plugin-schema.mjs'
+      - 'package.json'
+      - '.github/workflows/plugin-preflight.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'plugins/**'
+      - 'schemas/plugin.schema.json'
+      - 'schemas/hooks.schema.json'
+      - 'scripts/validate-plugin-schema.mjs'
+      - 'package.json'
+      - '.github/workflows/plugin-preflight.yml'
+
+jobs:
+  plugin-preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm ci
+      - name: Validate plugin schemas
+        run: npm run check:plugin-schema
+      - name: Validate plugin context entry files
+        run: npm run check:plugin-context
