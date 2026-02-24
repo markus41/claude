@@ -67,6 +67,25 @@
       ]
     },
     {
+      "id": "pretooluse-jira-readiness-pr-gate",
+      "event": "PreToolUse",
+      "severity": "blocking",
+      "description": "Block PR creation until Jira Definition of Ready fields are complete.",
+      "trigger": {
+        "scope": "tool",
+        "command_patterns": [
+          "gh_pr_create|mcp__github__create_pull_request|mcp__make_pr__make_pr|harness_create_pull_request"
+        ]
+      },
+      "handlers": [
+        {
+          "type": "command",
+          "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/jira-readiness-gate.sh",
+          "timeout": 10000
+        }
+      ]
+    },
+    {
       "id": "stop-5",
       "event": "Stop",
       "severity": "advisory",
