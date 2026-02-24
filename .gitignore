@@ -65,3 +65,6 @@ build/
 
 # Local settings (keep template, ignore local overrides)
 .claude/settings.local.json
+
+# Deprecated plugin directory (renamed to tvs-microsoft-deploy)
+plugins/rosa-microsoft-deploy/
