@@ -237,7 +237,11 @@
     "excludeGlobs": [
       "**/node_modules/**",
       "**/.git/**",
-      "**/dist/**"
+      "**/dist/**",
+      "**/build/**",
+      "**/coverage/**",
+      "**/*.zip",
+      "**/*.tar*"
     ],
     "lazyLoadSections": [
       "skills/**",
