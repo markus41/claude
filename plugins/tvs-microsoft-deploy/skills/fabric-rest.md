@@ -283,3 +283,40 @@ curl -s -H "${AUTH_HEADER}" \
 | `409 Conflict` | Duplicate name | Use unique `displayName` or update existing |
 | `429 TooManyRequests` | Rate limit hit | Implement exponential backoff (start 1s, max 60s) |
 | `CapacityNotActive` | Capacity is paused | Resume capacity before operations |
+
+## Ad Hoc Pipeline Patterns
+
+For ad hoc pipeline specs and templates, use:
+
+- `fabric/pipelines/spec-format.md`
+- `fabric/pipelines/adhoc_pipeline.schema.json`
+- `fabric/pipelines/templates/*.pipeline.yaml`
+- `scripts/fabric/create_adhoc_pipeline.py`
+- `scripts/fabric/run_adhoc_pipeline.py`
+
+Use these patterns:
+
+1. Keep raw extracts isolated in source-specific sinks before conformed marts.
+2. Model each notebook execution as an explicit transform step with timeout + retry policy.
+3. Enforce at least one row-count/freshness quality rule and one schema/PK integrity rule.
+4. Declare lineage `owner`, `upstream`, and `downstream` for every pipeline to meet audit expectations.
+
+## Retry Strategy (Fabric Jobs)
+
+- `429` and `5xx`: retry with exponential backoff.
+- Recommended defaults for ad hoc runs:
+  - `max_attempts`: `3-4`
+  - `initial_backoff_seconds`: `30-60`
+  - `max_backoff_seconds`: `600-1200`
+- Avoid immediate replays for data-quality failures; fix input data or rule thresholds first.
+
+## Lineage Requirements
+
+Every pipeline spec should include:
+
+- `lineage.owner`: accountable mailbox or on-call alias.
+- `lineage.upstream`: source system/table identifiers (`dataverse/account`, `adls/a3-archive`).
+- `lineage.downstream`: dependent lakehouse tables, semantic models, or reports.
+- `lineage.tags`: discoverability labels (`ad-hoc`, `kpi-mart`, `dataverse`).
+
+For implementation guidance, see `skills/fabric-pipeline-authoring.md`.
