@@ -118,3 +118,37 @@ Smoke checks verify:
 
 Governed by `orchestration-protocol-enforcer` hook. Minimum 6 sub-agents enforced. Dataverse deployment depends on `tvs:deploy-identity` completing first (service principals needed for app-level access).
 
+## Unified Command Contract
+
+### Contract
+- **Schema:** `../cli/command.schema.json`
+- **Required shared arguments:** `--entity`, `--tenant`
+- **Optional shared safety arguments:** `--strict`, `--dry-run`, `--export-json`, `--plan-id`
+- **Error catalog:** `../cli/error-codes.json`
+- **Operator remediation format:** `../cli/operator-remediation.md`
+
+### Shared argument patterns
+```text
+--entity <tvs|consulting|taia|all>
+--tenant <tenant-id>
+--strict
+--dry-run
+--export-json <path>
+--plan-id <plan-id>
+```
+
+### Unified examples
+```bash
+# TVS
+/tvs:deploy-dataverse --entity tvs --tenant tvs-prod --plan-id PLAN-TVS-001
+
+# Consulting
+/tvs:deploy-dataverse --entity consulting --tenant consulting-prod --plan-id PLAN-CONSULTING-001
+
+# TAIA
+/tvs:deploy-dataverse --entity taia --tenant taia-prod --plan-id PLAN-TAIA-001
+
+# Cross-entity safe mode
+/tvs:deploy-dataverse --entity all --tenant shared-ops --strict --dry-run --export-json docs/cli/deploy-dataverse.json --plan-id PLAN-SAFE-001
+```
+

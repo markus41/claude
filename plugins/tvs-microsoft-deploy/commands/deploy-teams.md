@@ -122,3 +122,38 @@ TVS Holdings VA Workspace
 
 - `/tvs:deploy-identity` — Must run first for user accounts
 - `workflows/tvs-foundation.md` — Teams is step 7
+
+## Unified Command Contract
+
+### Contract
+- **Schema:** `../cli/command.schema.json`
+- **Required shared arguments:** `--entity`, `--tenant`
+- **Optional shared safety arguments:** `--strict`, `--dry-run`, `--export-json`, `--plan-id`
+- **Error catalog:** `../cli/error-codes.json`
+- **Operator remediation format:** `../cli/operator-remediation.md`
+
+### Shared argument patterns
+```text
+--entity <tvs|consulting|taia|all>
+--tenant <tenant-id>
+--strict
+--dry-run
+--export-json <path>
+--plan-id <plan-id>
+```
+
+### Unified examples
+```bash
+# TVS
+/tvs:deploy-teams --entity tvs --tenant tvs-prod --plan-id PLAN-TVS-001
+
+# Consulting
+/tvs:deploy-teams --entity consulting --tenant consulting-prod --plan-id PLAN-CONSULTING-001
+
+# TAIA
+/tvs:deploy-teams --entity taia --tenant taia-prod --plan-id PLAN-TAIA-001
+
+# Cross-entity safe mode
+/tvs:deploy-teams --entity all --tenant shared-ops --strict --dry-run --export-json docs/cli/deploy-teams.json --plan-id PLAN-SAFE-001
+```
+

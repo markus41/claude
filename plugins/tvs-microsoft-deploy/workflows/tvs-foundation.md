@@ -8,6 +8,20 @@
 
 ---
 
+## Agent Assignment by Phase
+
+| Phase | Primary Agent | Supporting Agents | Exit Handoff |
+|---|---|---|---|
+| Step 1: Dataverse schema deployment | platform-agent | client-solution-architect-agent, m365-governance-agent | Solution import report + role matrix |
+| Step 2: Fabric workspace provisioning | fabric-pipeline-agent | analytics-agent, planner-orchestrator-agent | Workspace manifest + access audit |
+| Step 3: Power Pages v1 | power-pages-agent | platform-agent, identity-agent | Portal permission matrix + publish log |
+| Step 4: Copilot Studio v1 | platform-agent | client-solution-architect-agent, m365-governance-agent | Bot topic and escalation map |
+| Step 5: Core Power Automate flows | planner-orchestrator-agent | platform-agent, fabric-pipeline-agent | Flow runbook + incident routing |
+| Step 6: Stripe wiring | azure-agent | m365-governance-agent, embedded-analytics-agent | Secret wiring + event validation |
+| Step 7: Teams VA workspace | m365-governance-agent | identity-agent, client-solution-architect-agent | Access governance sign-off |
+
+---
+
 ## Dependency Graph
 
 ```

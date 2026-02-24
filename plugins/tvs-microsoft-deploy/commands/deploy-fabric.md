@@ -166,3 +166,38 @@ OneLake/
     silver/              -- Cleaned, deduplicated, typed
     gold/                -- KPI rollups, executive dashboards
 ```
+
+## Unified Command Contract
+
+### Contract
+- **Schema:** `../cli/command.schema.json`
+- **Required shared arguments:** `--entity`, `--tenant`
+- **Optional shared safety arguments:** `--strict`, `--dry-run`, `--export-json`, `--plan-id`
+- **Error catalog:** `../cli/error-codes.json`
+- **Operator remediation format:** `../cli/operator-remediation.md`
+
+### Shared argument patterns
+```text
+--entity <tvs|consulting|taia|all>
+--tenant <tenant-id>
+--strict
+--dry-run
+--export-json <path>
+--plan-id <plan-id>
+```
+
+### Unified examples
+```bash
+# TVS
+/tvs:deploy-fabric --entity tvs --tenant tvs-prod --plan-id PLAN-TVS-001
+
+# Consulting
+/tvs:deploy-fabric --entity consulting --tenant consulting-prod --plan-id PLAN-CONSULTING-001
+
+# TAIA
+/tvs:deploy-fabric --entity taia --tenant taia-prod --plan-id PLAN-TAIA-001
+
+# Cross-entity safe mode
+/tvs:deploy-fabric --entity all --tenant shared-ops --strict --dry-run --export-json docs/cli/deploy-fabric.json --plan-id PLAN-SAFE-001
+```
+

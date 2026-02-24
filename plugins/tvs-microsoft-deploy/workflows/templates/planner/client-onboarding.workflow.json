@@ -1,0 +1,15 @@
+{
+  "workflowId": "client-onboarding",
+  "name": "Client Onboarding",
+  "description": "Client onboarding from discovery through implementation handoff.",
+  "version": "1.1.0",
+  "owners": [{"type":"group","id":"client-success","displayName":"Client Success"}],
+  "phases": [
+    {"id":"explore","name":"EXPLORE","state":"pending","owners":[{"type":"group","id":"solutions","displayName":"Solutions Team"}],"sla":{"targetHours":16},"dependencies":[],"evidenceLinks":[],"taskTemplates":[{"title":"Capture business and technical discovery","checklist":["Use cases prioritized","System constraints captured"]}]},
+    {"id":"plan","name":"PLAN","state":"pending","owners":[{"type":"group","id":"client-success","displayName":"Client Success"}],"sla":{"targetHours":24},"dependencies":[{"phaseId":"explore"}],"evidenceLinks":[],"taskTemplates":[{"title":"Finalize onboarding blueprint","checklist":["Milestones aligned with client","Resource plan approved"]}]},
+    {"id":"code","name":"CODE","state":"pending","owners":[{"type":"group","id":"implementation","displayName":"Implementation Team"}],"sla":{"targetHours":56},"dependencies":[{"phaseId":"plan"}],"evidenceLinks":[],"taskTemplates":[{"title":"Configure solution baseline","checklist":["Environments provisioned","Initial integrations connected"]}]},
+    {"id":"test","name":"TEST","state":"pending","owners":[{"type":"group","id":"client-uat","displayName":"Client UAT"}],"sla":{"targetHours":24},"dependencies":[{"phaseId":"code"}],"evidenceLinks":[],"taskTemplates":[{"title":"Execute client UAT plan","checklist":["Critical flows signed off","Defects triaged"]}]},
+    {"id":"fix","name":"FIX","state":"pending","owners":[{"type":"group","id":"implementation","displayName":"Implementation Team"}],"sla":{"targetHours":16},"dependencies":[{"phaseId":"test"}],"evidenceLinks":[],"taskTemplates":[{"title":"Resolve UAT issues","checklist":["Defects remediated","Retest passed"]}]},
+    {"id":"document","name":"DOCUMENT","state":"pending","owners":[{"type":"group","id":"enablement","displayName":"Enablement"}],"sla":{"targetHours":16},"dependencies":[{"phaseId":"fix"}],"evidenceLinks":[],"taskTemplates":[{"title":"Deliver onboarding closeout pack","checklist":["Runbook delivered","Training complete","Hypercare schedule agreed"]}]}
+  ]
+}

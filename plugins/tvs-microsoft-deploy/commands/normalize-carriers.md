@@ -134,3 +134,38 @@ Data Quality Score:     94.2%
 
 - `/tvs:extract-a3` — Must run first to populate a3_archive
 - `workflows/taia-sale-prep.md` — Parent workflow for FMO sale
+
+## Unified Command Contract
+
+### Contract
+- **Schema:** `../cli/command.schema.json`
+- **Required shared arguments:** `--entity`, `--tenant`
+- **Optional shared safety arguments:** `--strict`, `--dry-run`, `--export-json`, `--plan-id`
+- **Error catalog:** `../cli/error-codes.json`
+- **Operator remediation format:** `../cli/operator-remediation.md`
+
+### Shared argument patterns
+```text
+--entity <tvs|consulting|taia|all>
+--tenant <tenant-id>
+--strict
+--dry-run
+--export-json <path>
+--plan-id <plan-id>
+```
+
+### Unified examples
+```bash
+# TVS
+/tvs:normalize-carriers --entity tvs --tenant tvs-prod --plan-id PLAN-TVS-001
+
+# Consulting
+/tvs:normalize-carriers --entity consulting --tenant consulting-prod --plan-id PLAN-CONSULTING-001
+
+# TAIA
+/tvs:normalize-carriers --entity taia --tenant taia-prod --plan-id PLAN-TAIA-001
+
+# Cross-entity safe mode
+/tvs:normalize-carriers --entity all --tenant shared-ops --strict --dry-run --export-json docs/cli/normalize-carriers.json --plan-id PLAN-SAFE-001
+```
+

@@ -148,3 +148,38 @@ Governed by `orchestration-protocol-enforcer` hook. Minimum 5 sub-agents enforce
 - **Medicare Consulting:** HIPAA-aware conditional access (stricter device compliance)
 - **Media Company:** Minimal licensing, content contributor roles only
 - **TAIA:** Wind-down only -- disable accounts, transfer licenses, do NOT create new users
+
+## Unified Command Contract
+
+### Contract
+- **Schema:** `../cli/command.schema.json`
+- **Required shared arguments:** `--entity`, `--tenant`
+- **Optional shared safety arguments:** `--strict`, `--dry-run`, `--export-json`, `--plan-id`
+- **Error catalog:** `../cli/error-codes.json`
+- **Operator remediation format:** `../cli/operator-remediation.md`
+
+### Shared argument patterns
+```text
+--entity <tvs|consulting|taia|all>
+--tenant <tenant-id>
+--strict
+--dry-run
+--export-json <path>
+--plan-id <plan-id>
+```
+
+### Unified examples
+```bash
+# TVS
+/tvs:deploy-identity --entity tvs --tenant tvs-prod --plan-id PLAN-TVS-001
+
+# Consulting
+/tvs:deploy-identity --entity consulting --tenant consulting-prod --plan-id PLAN-CONSULTING-001
+
+# TAIA
+/tvs:deploy-identity --entity taia --tenant taia-prod --plan-id PLAN-TAIA-001
+
+# Cross-entity safe mode
+/tvs:deploy-identity --entity all --tenant shared-ops --strict --dry-run --export-json docs/cli/deploy-identity.json --plan-id PLAN-SAFE-001
+```
+

@@ -6,6 +6,21 @@
 
 Final phase: remaining automations, consolidated holdings dashboard, Lobbi platform API integration, media company analytics, husband entity onboarding, and production monitoring.
 
+## Agent Assignment by Phase
+
+| Phase | Primary Agent | Supporting Agents | Exit Handoff |
+|---|---|---|---|
+| Step 1: Remaining automation flows | planner-orchestrator-agent | platform-agent, client-solution-architect-agent | Automation operations baseline |
+| Step 2: Consolidated dashboard | embedded-analytics-agent | analytics-agent, fabric-pipeline-agent | Published dashboard + RLS test |
+| Step 3: Lobbi platform API integration | client-solution-architect-agent | azure-agent, embedded-analytics-agent | API contract + auth decision record |
+| Step 4: Media company analytics | fabric-pipeline-agent | embedded-analytics-agent, analytics-agent | Media ingestion and model runbook |
+| Step 5: Husband entity onboarding | client-solution-architect-agent | m365-governance-agent, planner-orchestrator-agent | Entity onboarding checklist |
+| Step 6: Monitoring + alerting | azure-agent | m365-governance-agent, planner-orchestrator-agent | Alert routing matrix |
+| Step 7: Security hardening | m365-governance-agent | identity-agent, client-solution-architect-agent | Compliance closure memo |
+
+### Future Client-Delivery Rule
+- Reuse this phase-assignment pattern when creating any new client-delivery workflow in `workflows/`.
+
 ## Dependency Graph
 
 ```

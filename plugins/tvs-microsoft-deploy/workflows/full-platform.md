@@ -8,6 +8,24 @@
 
 ---
 
+## Agent Assignment by Phase
+
+| Phase | Primary Agent | Supporting Agents | Exit Handoff |
+|---|---|---|---|
+| Step 1: Remaining automation flows | planner-orchestrator-agent | platform-agent, client-solution-architect-agent | Flow deployment ledger + health baseline |
+| Step 2: React portal components | power-pages-agent | embedded-analytics-agent, client-solution-architect-agent | UX and auth acceptance notes |
+| Step 3: Azure Functions deployment | azure-agent | fabric-pipeline-agent, m365-governance-agent | Runtime validation + secrets verification |
+| Step 4: Fabric notebooks | fabric-pipeline-agent | analytics-agent, embedded-analytics-agent | Pipeline runbook + refresh SLA |
+| Step 5: Power BI dashboards | embedded-analytics-agent | analytics-agent, fabric-pipeline-agent | Published report IDs + RLS matrix |
+| Step 6: Consulting CRM deployment | client-solution-architect-agent | planner-orchestrator-agent, m365-governance-agent | Client acceptance checklist |
+
+### Future Client-Delivery Workflow Standard
+- New client-delivery workflows must include an `Agent Assignment by Phase` table at the top.
+- planner-orchestrator-agent is responsible for gate checks and escalations between specialist agents.
+- m365-governance-agent must sign off any phase involving external sharing, data rooms, or regulated data handling.
+
+---
+
 ## Dependency Graph
 
 ```

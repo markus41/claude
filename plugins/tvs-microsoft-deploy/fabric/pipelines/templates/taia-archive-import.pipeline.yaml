@@ -1,0 +1,52 @@
+pipeline_id: pl_taia_archive_import
+display_name: TAIA Archive Import
+workspace_id: ws-a3archive-prod-00000005
+sources:
+  - id: src_taia_archive_drop
+    type: adls_gen2
+    object: /a3-archive/exports/
+    connection_ref: adls-taia-archive
+    watermark_column: export_ts
+transforms:
+  - id: tr_a3_archive_validate
+    type: notebook
+    notebook_path: fabric/notebooks/a3_archive_validate.ipynb
+    timeout_minutes: 90
+sinks:
+  - id: sink_archive_raw
+    type: lakehouse_table
+    lakehouse_id: lh-a3-archive-prod
+    target: Tables/archive_commission_raw
+    mode: append
+schedule:
+  frequency: adhoc
+  cron_utc: null
+  timezone: UTC
+  retry:
+    max_attempts: 3
+    initial_backoff_seconds: 60
+    max_backoff_seconds: 900
+quality_rules:
+  - id: qr_archive_required_columns
+    type: schema_match
+    operator: "="
+    threshold: 1
+    severity: error
+  - id: qr_archive_min_rows
+    type: row_count
+    operator: ">="
+    threshold: 100
+    severity: warning
+lineage:
+  owner: taia-ops@tvs.example
+  domain: taia-archive
+  upstream:
+    - firebase/export
+    - adls/a3-archive
+  downstream:
+    - lakehouse/archive_commission_raw
+    - semantic-model/taia_due_diligence
+  tags:
+    - ad-hoc
+    - taia
+    - archive
