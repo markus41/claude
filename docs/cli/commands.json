@@ -91,6 +91,13 @@
     "path": "plugins/tvs-microsoft-deploy/commands/normalize-carriers.md"
   },
   {
+    "file": "quick-start.md",
+    "name": "tvs:quick-start",
+    "description": "End-to-end bootstrap for TVS Microsoft Deploy that can initialize a fresh repo or configure an existing repo to the required baseline",
+    "usage": "/tvs:quick-start [--repo <path>] [--create-repo <path>] [--env dev|test|prod] [--tenant <tenant-id>] [--entity tvs|consulting|taia|all] [--dry-run]",
+    "path": "plugins/tvs-microsoft-deploy/commands/quick-start.md"
+  },
+  {
     "file": "status-check.md",
     "name": "tvs:status-check",
     "description": "Health check using control-plane dry-run outputs as the verification source of truth",
