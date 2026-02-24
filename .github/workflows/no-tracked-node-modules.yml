@@ -1,0 +1,25 @@
+name: Prevent tracked node_modules
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  check-node-modules:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Fail if node_modules is tracked
+        run: |
+          set -euo pipefail
+          tracked=$(git ls-files 'plugins/claude-code-templating-plugin/node_modules/**')
+          if [ -n "$tracked" ]; then
+            echo "Tracked node_modules files detected:"
+            echo "$tracked"
+            exit 1
+          fi

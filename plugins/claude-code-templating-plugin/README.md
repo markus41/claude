@@ -19,11 +19,23 @@ The Claude Code Templating Plugin streamlines development workflows by providing
 
 ## Installation
 
+For a fresh checkout, install dependencies from the committed lockfile and then build:
+
 ```bash
-# From the plugin directory
 cd plugins/claude-code-templating-plugin
-npm install
+
+# Install exact dependency versions from package-lock.json
+npm ci
+
+# Compile TypeScript
 npm run build
+```
+
+If `package-lock.json` is missing or dependencies are intentionally updated, regenerate it and commit the lockfile:
+
+```bash
+npm install
+git add package-lock.json
 ```
 
 ## Configuration
@@ -208,6 +220,7 @@ Test generation and coverage:
 ### Building
 
 ```bash
+npm ci               # Install exact dependencies for local/dev CI parity
 npm run build        # Compile TypeScript
 npm run dev          # Watch mode
 npm run typecheck    # Type checking only
