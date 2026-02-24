@@ -1,11 +1,29 @@
 {
   "$schema": "../../../schemas/hooks.schema.json",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "plugin": "fullstack-iac",
   "description": "",
   "hooks": [
     {
+      "id": "python-lint",
       "event": "PreToolUse",
+      "severity": "warn",
+      "description": "Lint Python files before writing to ensure PEP 8 compliance and catch common errors",
+      "trigger": {
+        "scope": "tool",
+        "legacy": {
+          "tool": "Write",
+          "condition": {
+            "file_pattern": "**/*.py"
+          }
+        },
+        "file_patterns": [
+          "**/*.py"
+        ],
+        "tools": [
+          "Write"
+        ]
+      },
       "handlers": [
         {
           "type": "validate",
@@ -32,17 +50,28 @@
           "on_error": "suggest_fix"
         }
       ],
-      "description": "Lint Python files before writing to ensure PEP 8 compliance and catch common errors",
-      "name": "python-lint",
-      "trigger": {
-        "tool": "Write",
-        "condition": {
-          "file_pattern": "**/*.py"
-        }
-      }
+      "name": "python-lint"
     },
     {
+      "id": "typescript-lint",
       "event": "PreToolUse",
+      "severity": "warn",
+      "description": "Lint TypeScript/JavaScript files before writing to ensure code quality",
+      "trigger": {
+        "scope": "tool",
+        "legacy": {
+          "tool": "Write",
+          "condition": {
+            "file_pattern": "**/*.{ts,tsx,js,jsx}"
+          }
+        },
+        "file_patterns": [
+          "**/*.{ts,tsx,js,jsx}"
+        ],
+        "tools": [
+          "Write"
+        ]
+      },
       "handlers": [
         {
           "type": "validate",
@@ -62,17 +91,28 @@
           "on_error": "suggest_fix"
         }
       ],
-      "description": "Lint TypeScript/JavaScript files before writing to ensure code quality",
-      "name": "typescript-lint",
-      "trigger": {
-        "tool": "Write",
-        "condition": {
-          "file_pattern": "**/*.{ts,tsx,js,jsx}"
-        }
-      }
+      "name": "typescript-lint"
     },
     {
+      "id": "terraform-validate",
       "event": "PreToolUse",
+      "severity": "block",
+      "description": "Validate Terraform configuration before writing to catch syntax and configuration errors",
+      "trigger": {
+        "scope": "tool",
+        "legacy": {
+          "tool": "Write",
+          "condition": {
+            "file_pattern": "**/*.tf"
+          }
+        },
+        "file_patterns": [
+          "**/*.tf"
+        ],
+        "tools": [
+          "Write"
+        ]
+      },
       "handlers": [
         {
           "type": "validate",
@@ -92,17 +132,31 @@
           "on_error": "warn"
         }
       ],
-      "description": "Validate Terraform configuration before writing to catch syntax and configuration errors",
-      "name": "terraform-validate",
-      "trigger": {
-        "tool": "Write",
-        "condition": {
-          "file_pattern": "**/*.tf"
-        }
-      }
+      "name": "terraform-validate"
     },
     {
+      "id": "kubernetes-validate",
       "event": "PreToolUse",
+      "severity": "block",
+      "description": "Validate Kubernetes manifests before writing to ensure proper YAML structure and API compliance",
+      "trigger": {
+        "scope": "tool",
+        "legacy": {
+          "tool": "Write",
+          "condition": {
+            "file_pattern": "**/k8s/**/*.{yaml,yml}",
+            "or": {
+              "file_pattern": "**/kubernetes/**/*.{yaml,yml}"
+            }
+          }
+        },
+        "file_patterns": [
+          "**/k8s/**/*.{yaml,yml}"
+        ],
+        "tools": [
+          "Write"
+        ]
+      },
       "handlers": [
         {
           "type": "validate",
@@ -120,20 +174,28 @@
           "on_error": "warn"
         }
       ],
-      "description": "Validate Kubernetes manifests before writing to ensure proper YAML structure and API compliance",
-      "name": "kubernetes-validate",
-      "trigger": {
-        "tool": "Write",
-        "condition": {
-          "file_pattern": "**/k8s/**/*.{yaml,yml}",
-          "or": {
-            "file_pattern": "**/kubernetes/**/*.{yaml,yml}"
-          }
-        }
-      }
+      "name": "kubernetes-validate"
     },
     {
+      "id": "docker-validate",
       "event": "PreToolUse",
+      "severity": "block",
+      "description": "Validate Dockerfile before writing to ensure best practices and security",
+      "trigger": {
+        "scope": "tool",
+        "legacy": {
+          "tool": "Write",
+          "condition": {
+            "file_pattern": "**/Dockerfile*"
+          }
+        },
+        "file_patterns": [
+          "**/Dockerfile*"
+        ],
+        "tools": [
+          "Write"
+        ]
+      },
       "handlers": [
         {
           "type": "validate",
@@ -156,17 +218,31 @@
           "on_error": "warn"
         }
       ],
-      "description": "Validate Dockerfile before writing to ensure best practices and security",
-      "name": "docker-validate",
-      "trigger": {
-        "tool": "Write",
-        "condition": {
-          "file_pattern": "**/Dockerfile*"
-        }
-      }
+      "name": "docker-validate"
     },
     {
+      "id": "sql-validate",
       "event": "PreToolUse",
+      "severity": "warn",
+      "description": "Validate SQL migration files before writing",
+      "trigger": {
+        "scope": "tool",
+        "legacy": {
+          "tool": "Write",
+          "condition": {
+            "file_pattern": "**/migrations/**/*.sql",
+            "or": {
+              "file_pattern": "**/alembic/versions/**/*.py"
+            }
+          }
+        },
+        "file_patterns": [
+          "**/migrations/**/*.sql"
+        ],
+        "tools": [
+          "Write"
+        ]
+      },
       "handlers": [
         {
           "type": "validate",
@@ -184,24 +260,32 @@
           "on_error": "warn"
         }
       ],
-      "description": "Validate SQL migration files before writing",
-      "name": "sql-validate",
-      "trigger": {
-        "tool": "Write",
-        "condition": {
-          "file_pattern": "**/migrations/**/*.sql",
-          "or": {
-            "file_pattern": "**/alembic/versions/**/*.py"
-          }
-        }
-      }
+      "name": "sql-validate"
     },
     {
+      "id": "post-scaffold-fastapi",
       "event": "PostToolUse",
+      "severity": "advisory",
+      "description": "Provide next steps after scaffolding a FastAPI application",
+      "trigger": {
+        "scope": "tool",
+        "legacy": {
+          "tool": "Bash",
+          "condition": {
+            "command_pattern": "*scaffold-fastapi*"
+          }
+        },
+        "command_patterns": [
+          "*scaffold-fastapi*"
+        ],
+        "tools": [
+          "Bash"
+        ]
+      },
       "handlers": [
         {
           "type": "message",
-          "content": "\u2713 FastAPI application scaffolded successfully!\n\nNext steps:\n1. Install dependencies: cd {app_name} && pip install -r requirements.txt\n2. Set up environment: cp .env.example .env (then edit with your values)\n3. Run migrations: alembic upgrade head\n4. Start dev server: uvicorn app.main:app --reload\n5. View API docs: http://localhost:8000/docs\n\nOptional:\n- Add tests: pytest tests/ -v --cov=app\n- Add Docker: docker-compose up -d\n- Deploy: Use /zenith-deploy or /scaffold-kubernetes"
+          "content": "✓ FastAPI application scaffolded successfully!\n\nNext steps:\n1. Install dependencies: cd {app_name} && pip install -r requirements.txt\n2. Set up environment: cp .env.example .env (then edit with your values)\n3. Run migrations: alembic upgrade head\n4. Start dev server: uvicorn app.main:app --reload\n5. View API docs: http://localhost:8000/docs\n\nOptional:\n- Add tests: pytest tests/ -v --cov=app\n- Add Docker: docker-compose up -d\n- Deploy: Use /zenith-deploy or /scaffold-kubernetes"
         },
         {
           "type": "suggest_commands",
@@ -212,21 +296,32 @@
           ]
         }
       ],
-      "description": "Provide next steps after scaffolding a FastAPI application",
-      "name": "post-scaffold-fastapi",
-      "trigger": {
-        "tool": "Bash",
-        "condition": {
-          "command_pattern": "*scaffold-fastapi*"
-        }
-      }
+      "name": "post-scaffold-fastapi"
     },
     {
+      "id": "post-scaffold-react",
       "event": "PostToolUse",
+      "severity": "advisory",
+      "description": "Provide next steps after scaffolding a React application",
+      "trigger": {
+        "scope": "tool",
+        "legacy": {
+          "tool": "Bash",
+          "condition": {
+            "command_pattern": "*scaffold-react-vite*"
+          }
+        },
+        "command_patterns": [
+          "*scaffold-react-vite*"
+        ],
+        "tools": [
+          "Bash"
+        ]
+      },
       "handlers": [
         {
           "type": "message",
-          "content": "\u2713 React + Vite application scaffolded successfully!\n\nNext steps:\n1. Install dependencies: cd {app_name} && npm install\n2. Start dev server: npm run dev\n3. View application: http://localhost:5173\n4. Build for production: npm run build\n\nOptional:\n- Add tests: npm run test\n- Add backend: /scaffold-fastapi --name {app_name}-api\n- Configure CI/CD: /scaffold-ci-github --app {app_name}\n- Preview production build: npm run preview"
+          "content": "✓ React + Vite application scaffolded successfully!\n\nNext steps:\n1. Install dependencies: cd {app_name} && npm install\n2. Start dev server: npm run dev\n3. View application: http://localhost:5173\n4. Build for production: npm run build\n\nOptional:\n- Add tests: npm run test\n- Add backend: /scaffold-fastapi --name {app_name}-api\n- Configure CI/CD: /scaffold-ci-github --app {app_name}\n- Preview production build: npm run preview"
         },
         {
           "type": "suggest_commands",
@@ -237,21 +332,32 @@
           ]
         }
       ],
-      "description": "Provide next steps after scaffolding a React application",
-      "name": "post-scaffold-react",
-      "trigger": {
-        "tool": "Bash",
-        "condition": {
-          "command_pattern": "*scaffold-react-vite*"
-        }
-      }
+      "name": "post-scaffold-react"
     },
     {
+      "id": "post-scaffold-fullstack",
       "event": "PostToolUse",
+      "severity": "advisory",
+      "description": "Provide comprehensive next steps after scaffolding a full-stack application",
+      "trigger": {
+        "scope": "tool",
+        "legacy": {
+          "tool": "Bash",
+          "condition": {
+            "command_pattern": "*scaffold-fullstack*"
+          }
+        },
+        "command_patterns": [
+          "*scaffold-fullstack*"
+        ],
+        "tools": [
+          "Bash"
+        ]
+      },
       "handlers": [
         {
           "type": "message",
-          "content": "\u2713 Full-stack application scaffolded successfully!\n\nYour project structure:\n{app_name}/\n\u251c\u2500\u2500 frontend/    (React + Vite)\n\u251c\u2500\u2500 backend/     (FastAPI)\n\u251c\u2500\u2500 infrastructure/ (Docker Compose)\n\u2514\u2500\u2500 .github/workflows/ (CI/CD)\n\nQuick start:\n1. Start all services: docker-compose up -d\n2. Frontend: http://localhost:5173\n3. Backend API: http://localhost:8000\n4. API docs: http://localhost:8000/docs\n\nDevelopment workflow:\n1. Frontend dev: cd frontend && npm run dev\n2. Backend dev: cd backend && uvicorn app.main:app --reload\n3. Run tests: npm test (frontend), pytest (backend)\n\nNext steps:\n- Add infrastructure: /scaffold-kubernetes or /scaffold-terraform\n- Set up CI/CD: /scaffold-ci-github (already included!)\n- Deploy: /zenith-deploy --app {app_name} --env staging"
+          "content": "✓ Full-stack application scaffolded successfully!\n\nYour project structure:\n{app_name}/\n├── frontend/    (React + Vite)\n├── backend/     (FastAPI)\n├── infrastructure/ (Docker Compose)\n└── .github/workflows/ (CI/CD)\n\nQuick start:\n1. Start all services: docker-compose up -d\n2. Frontend: http://localhost:5173\n3. Backend API: http://localhost:8000\n4. API docs: http://localhost:8000/docs\n\nDevelopment workflow:\n1. Frontend dev: cd frontend && npm run dev\n2. Backend dev: cd backend && uvicorn app.main:app --reload\n3. Run tests: npm test (frontend), pytest (backend)\n\nNext steps:\n- Add infrastructure: /scaffold-kubernetes or /scaffold-terraform\n- Set up CI/CD: /scaffold-ci-github (already included!)\n- Deploy: /zenith-deploy --app {app_name} --env staging"
         },
         {
           "type": "suggest_commands",
@@ -262,21 +368,32 @@
           ]
         }
       ],
-      "description": "Provide comprehensive next steps after scaffolding a full-stack application",
-      "name": "post-scaffold-fullstack",
-      "trigger": {
-        "tool": "Bash",
-        "condition": {
-          "command_pattern": "*scaffold-fullstack*"
-        }
-      }
+      "name": "post-scaffold-fullstack"
     },
     {
+      "id": "post-scaffold-kubernetes",
       "event": "PostToolUse",
+      "severity": "advisory",
+      "description": "Provide deployment instructions after scaffolding Kubernetes manifests",
+      "trigger": {
+        "scope": "tool",
+        "legacy": {
+          "tool": "Bash",
+          "condition": {
+            "command_pattern": "*scaffold-kubernetes*"
+          }
+        },
+        "command_patterns": [
+          "*scaffold-kubernetes*"
+        ],
+        "tools": [
+          "Bash"
+        ]
+      },
       "handlers": [
         {
           "type": "message",
-          "content": "\u2713 Kubernetes manifests generated successfully!\n\nGenerated files:\n- k8s/deployment.yaml (application deployment)\n- k8s/service.yaml (service exposure)\n- k8s/ingress.yaml (external access)\n- k8s/configmap.yaml (configuration)\n- k8s/secret.yaml (secrets - remember to fill in!)\n- helm/ (Helm chart for easy deployment)\n\nDeploy to cluster:\n1. Create namespace: kubectl create namespace {namespace}\n2. Create secrets: kubectl apply -f k8s/secret.yaml -n {namespace}\n3. Deploy app: kubectl apply -f k8s/ -n {namespace}\n4. Check status: kubectl get all -n {namespace}\n\nOr use Helm:\n1. helm install {app_name} ./helm/{app_name} -n {namespace}\n2. Check status: helm status {app_name} -n {namespace}\n\nVerify deployment:\n- kubectl logs -n {namespace} -l app={app_name} -f\n- kubectl get ingress -n {namespace}"
+          "content": "✓ Kubernetes manifests generated successfully!\n\nGenerated files:\n- k8s/deployment.yaml (application deployment)\n- k8s/service.yaml (service exposure)\n- k8s/ingress.yaml (external access)\n- k8s/configmap.yaml (configuration)\n- k8s/secret.yaml (secrets - remember to fill in!)\n- helm/ (Helm chart for easy deployment)\n\nDeploy to cluster:\n1. Create namespace: kubectl create namespace {namespace}\n2. Create secrets: kubectl apply -f k8s/secret.yaml -n {namespace}\n3. Deploy app: kubectl apply -f k8s/ -n {namespace}\n4. Check status: kubectl get all -n {namespace}\n\nOr use Helm:\n1. helm install {app_name} ./helm/{app_name} -n {namespace}\n2. Check status: helm status {app_name} -n {namespace}\n\nVerify deployment:\n- kubectl logs -n {namespace} -l app={app_name} -f\n- kubectl get ingress -n {namespace}"
         },
         {
           "type": "suggest_commands",
@@ -287,21 +404,32 @@
           ]
         }
       ],
-      "description": "Provide deployment instructions after scaffolding Kubernetes manifests",
-      "name": "post-scaffold-kubernetes",
-      "trigger": {
-        "tool": "Bash",
-        "condition": {
-          "command_pattern": "*scaffold-kubernetes*"
-        }
-      }
+      "name": "post-scaffold-kubernetes"
     },
     {
+      "id": "post-scaffold-terraform",
       "event": "PostToolUse",
+      "severity": "advisory",
+      "description": "Provide provisioning instructions after scaffolding Terraform modules",
+      "trigger": {
+        "scope": "tool",
+        "legacy": {
+          "tool": "Bash",
+          "condition": {
+            "command_pattern": "*scaffold-terraform*"
+          }
+        },
+        "command_patterns": [
+          "*scaffold-terraform*"
+        ],
+        "tools": [
+          "Bash"
+        ]
+      },
       "handlers": [
         {
           "type": "message",
-          "content": "\u2713 Terraform infrastructure modules generated!\n\nGenerated modules:\n{modules_list}\n\nSetup:\n1. Configure backend: Edit terraform/backend.tf\n2. Set variables: Edit terraform/terraform.tfvars\n3. Initialize: cd terraform && terraform init\n\nPlan and apply:\n1. Preview changes: terraform plan\n2. Review the plan carefully!\n3. Apply changes: terraform apply\n4. Verify: terraform show\n\nBest practices:\n- Use remote state (S3/Azure/GCS)\n- Enable state locking\n- Use workspaces for environments\n- Never commit secrets or .tfstate files\n\nCleanup:\n- terraform destroy (when you want to tear down)"
+          "content": "✓ Terraform infrastructure modules generated!\n\nGenerated modules:\n{modules_list}\n\nSetup:\n1. Configure backend: Edit terraform/backend.tf\n2. Set variables: Edit terraform/terraform.tfvars\n3. Initialize: cd terraform && terraform init\n\nPlan and apply:\n1. Preview changes: terraform plan\n2. Review the plan carefully!\n3. Apply changes: terraform apply\n4. Verify: terraform show\n\nBest practices:\n- Use remote state (S3/Azure/GCS)\n- Enable state locking\n- Use workspaces for environments\n- Never commit secrets or .tfstate files\n\nCleanup:\n- terraform destroy (when you want to tear down)"
         },
         {
           "type": "suggest_commands",
@@ -312,21 +440,32 @@
           ]
         }
       ],
-      "description": "Provide provisioning instructions after scaffolding Terraform modules",
-      "name": "post-scaffold-terraform",
-      "trigger": {
-        "tool": "Bash",
-        "condition": {
-          "command_pattern": "*scaffold-terraform*"
-        }
-      }
+      "name": "post-scaffold-terraform"
     },
     {
+      "id": "post-deploy",
       "event": "PostToolUse",
+      "severity": "advisory",
+      "description": "Provide verification steps after deployment",
+      "trigger": {
+        "scope": "tool",
+        "legacy": {
+          "tool": "Bash",
+          "condition": {
+            "command_pattern": "*zenith-deploy*"
+          }
+        },
+        "command_patterns": [
+          "*zenith-deploy*"
+        ],
+        "tools": [
+          "Bash"
+        ]
+      },
       "handlers": [
         {
           "type": "message",
-          "content": "\u2713 Deployment completed!\n\nVerification checklist:\n\u25a1 Application health: /zenith-status --app {app_name} --env {env}\n\u25a1 Check logs: kubectl logs -n {namespace} -l app={app_name} --tail=100\n\u25a1 Test endpoints: curl https://{app_name}.{domain}/health\n\u25a1 Monitor metrics: Check your monitoring dashboard\n\u25a1 Run smoke tests: (if configured)\n\nRollback if needed:\n- /zenith-rollback --app {app_name} --env {env} --version {previous_version}\n\nNext steps:\n- Set up monitoring alerts\n- Configure autoscaling\n- Review security audit: /zenith-audit --app {app_name}\n- Document deployment in Obsidian vault"
+          "content": "✓ Deployment completed!\n\nVerification checklist:\n□ Application health: /zenith-status --app {app_name} --env {env}\n□ Check logs: kubectl logs -n {namespace} -l app={app_name} --tail=100\n□ Test endpoints: curl https://{app_name}.{domain}/health\n□ Monitor metrics: Check your monitoring dashboard\n□ Run smoke tests: (if configured)\n\nRollback if needed:\n- /zenith-rollback --app {app_name} --env {env} --version {previous_version}\n\nNext steps:\n- Set up monitoring alerts\n- Configure autoscaling\n- Review security audit: /zenith-audit --app {app_name}\n- Document deployment in Obsidian vault"
         },
         {
           "type": "suggest_commands",
@@ -352,21 +491,32 @@
           ]
         }
       ],
-      "description": "Provide verification steps after deployment",
-      "name": "post-deploy",
-      "trigger": {
-        "tool": "Bash",
-        "condition": {
-          "command_pattern": "*zenith-deploy*"
-        }
-      }
+      "name": "post-deploy"
     },
     {
+      "id": "post-ci-scaffold",
       "event": "PostToolUse",
+      "severity": "advisory",
+      "description": "Provide next steps after scaffolding CI/CD pipelines",
+      "trigger": {
+        "scope": "tool",
+        "legacy": {
+          "tool": "Bash",
+          "condition": {
+            "command_pattern": "*scaffold-ci-*"
+          }
+        },
+        "command_patterns": [
+          "*scaffold-ci-*"
+        ],
+        "tools": [
+          "Bash"
+        ]
+      },
       "handlers": [
         {
           "type": "message",
-          "content": "\u2713 CI/CD pipeline configuration generated!\n\nGenerated files:\n{pipeline_files}\n\nSetup:\n1. Review pipeline configuration\n2. Add required secrets to your CI/CD platform:\n   - Cloud credentials (AWS_ACCESS_KEY_ID, etc.)\n   - Docker registry credentials\n   - Kubernetes cluster access\n   - Application secrets\n3. Commit and push: git add . && git commit -m \"Add CI/CD pipeline\" && git push\n\nPipeline stages:\n- Test: Run unit and integration tests\n- Build: Build Docker images\n- Security: Scan for vulnerabilities\n- Deploy: Deploy to target environment\n\nFirst run:\n1. Push to trigger pipeline\n2. Monitor pipeline execution\n3. Review test results and security scans\n4. Approve deployment to production (if manual approval required)"
+          "content": "✓ CI/CD pipeline configuration generated!\n\nGenerated files:\n{pipeline_files}\n\nSetup:\n1. Review pipeline configuration\n2. Add required secrets to your CI/CD platform:\n   - Cloud credentials (AWS_ACCESS_KEY_ID, etc.)\n   - Docker registry credentials\n   - Kubernetes cluster access\n   - Application secrets\n3. Commit and push: git add . && git commit -m \"Add CI/CD pipeline\" && git push\n\nPipeline stages:\n- Test: Run unit and integration tests\n- Build: Build Docker images\n- Security: Scan for vulnerabilities\n- Deploy: Deploy to target environment\n\nFirst run:\n1. Push to trigger pipeline\n2. Monitor pipeline execution\n3. Review test results and security scans\n4. Approve deployment to production (if manual approval required)"
         },
         {
           "type": "suggest_commands",
@@ -377,21 +527,32 @@
           ]
         }
       ],
-      "description": "Provide next steps after scaffolding CI/CD pipelines",
-      "name": "post-ci-scaffold",
-      "trigger": {
-        "tool": "Bash",
-        "condition": {
-          "command_pattern": "*scaffold-ci-*"
-        }
-      }
+      "name": "post-ci-scaffold"
     },
     {
+      "id": "post-audit",
       "event": "PostToolUse",
+      "severity": "advisory",
+      "description": "Provide remediation guidance after security audit",
+      "trigger": {
+        "scope": "tool",
+        "legacy": {
+          "tool": "Bash",
+          "condition": {
+            "command_pattern": "*zenith-audit*"
+          }
+        },
+        "command_patterns": [
+          "*zenith-audit*"
+        ],
+        "tools": [
+          "Bash"
+        ]
+      },
       "handlers": [
         {
           "type": "message",
-          "content": "\u2713 Security audit completed!\n\nReview the audit report for:\n- Dependency vulnerabilities\n- Container security issues\n- Infrastructure misconfigurations\n- Secret exposure risks\n- Compliance gaps\n\nRemediation priority:\n1. Critical vulnerabilities (immediate action)\n2. High severity issues (within 24 hours)\n3. Medium severity issues (within 1 week)\n4. Low severity issues (backlog)\n\nNext steps:\n1. Review detailed findings\n2. Update dependencies with vulnerabilities\n3. Fix configuration issues\n4. Re-run audit to verify fixes\n5. Document remediation in Obsidian vault"
+          "content": "✓ Security audit completed!\n\nReview the audit report for:\n- Dependency vulnerabilities\n- Container security issues\n- Infrastructure misconfigurations\n- Secret exposure risks\n- Compliance gaps\n\nRemediation priority:\n1. Critical vulnerabilities (immediate action)\n2. High severity issues (within 24 hours)\n3. Medium severity issues (within 1 week)\n4. Low severity issues (backlog)\n\nNext steps:\n1. Review detailed findings\n2. Update dependencies with vulnerabilities\n3. Fix configuration issues\n4. Re-run audit to verify fixes\n5. Document remediation in Obsidian vault"
         },
         {
           "type": "suggest_commands",
@@ -400,34 +561,38 @@
           ]
         }
       ],
-      "description": "Provide remediation guidance after security audit",
-      "name": "post-audit",
-      "trigger": {
-        "tool": "Bash",
-        "condition": {
-          "command_pattern": "*zenith-audit*"
-        }
-      }
+      "name": "post-audit"
     },
     {
+      "id": "post-database-scaffold",
       "event": "PostToolUse",
+      "severity": "advisory",
+      "description": "Provide setup instructions after scaffolding database configuration",
+      "trigger": {
+        "scope": "tool",
+        "legacy": {
+          "tool": "Bash",
+          "condition": {
+            "command_pattern": "*scaffold*",
+            "and": {
+              "file_created_pattern": "**/migrations/**"
+            }
+          }
+        },
+        "command_patterns": [
+          "*scaffold*"
+        ],
+        "tools": [
+          "Bash"
+        ]
+      },
       "handlers": [
         {
           "type": "message",
-          "content": "\u2713 Database configuration generated!\n\nSetup:\n1. Start database: docker-compose up -d db\n2. Create database: (usually auto-created by docker-compose)\n3. Run migrations: alembic upgrade head (for PostgreSQL)\n4. Verify: psql -h localhost -U {db_user} -d {db_name} -c '\\dt'\n\nDevelopment workflow:\n- Create migration: alembic revision --autogenerate -m \"description\"\n- Apply migration: alembic upgrade head\n- Rollback: alembic downgrade -1\n- Check status: alembic current\n\nBest practices:\n- Always test migrations on staging first\n- Create backup before production migrations\n- Migrations should be idempotent\n- Include both upgrade and downgrade paths"
+          "content": "✓ Database configuration generated!\n\nSetup:\n1. Start database: docker-compose up -d db\n2. Create database: (usually auto-created by docker-compose)\n3. Run migrations: alembic upgrade head (for PostgreSQL)\n4. Verify: psql -h localhost -U {db_user} -d {db_name} -c '\\dt'\n\nDevelopment workflow:\n- Create migration: alembic revision --autogenerate -m \"description\"\n- Apply migration: alembic upgrade head\n- Rollback: alembic downgrade -1\n- Check status: alembic current\n\nBest practices:\n- Always test migrations on staging first\n- Create backup before production migrations\n- Migrations should be idempotent\n- Include both upgrade and downgrade paths"
         }
       ],
-      "description": "Provide setup instructions after scaffolding database configuration",
-      "name": "post-database-scaffold",
-      "trigger": {
-        "tool": "Bash",
-        "condition": {
-          "command_pattern": "*scaffold*",
-          "and": {
-            "file_created_pattern": "**/migrations/**"
-          }
-        }
-      }
+      "name": "post-database-scaffold"
     }
   ],
   "settings": {}

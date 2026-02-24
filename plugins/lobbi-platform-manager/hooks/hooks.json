@@ -1,21 +1,38 @@
 {
   "$schema": "../../../schemas/hooks.schema.json",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "plugin": "lobbi-platform-manager",
   "description": "",
   "hooks": [
     {
+      "id": "pretooluse-1",
       "event": "PreToolUse",
+      "severity": "advisory",
+      "description": "PreToolUse hook",
+      "trigger": {
+        "scope": "tool",
+        "tools": [
+          "Write|Edit"
+        ]
+      },
       "handlers": [
         {
           "type": "prompt",
           "prompt": "Validate no secrets are committed and security best practices are followed for .env, .json, .js, and .ts files."
         }
-      ],
-      "matcher": "Write|Edit"
+      ]
     },
     {
+      "id": "posttooluse-2",
       "event": "PostToolUse",
+      "severity": "advisory",
+      "description": "PostToolUse hook",
+      "trigger": {
+        "scope": "tool",
+        "tools": [
+          "Write|Edit"
+        ]
+      },
       "handlers": [
         {
           "type": "prompt",
@@ -25,8 +42,7 @@
           "type": "prompt",
           "prompt": "Validate Keycloak configuration changes for files matching keycloak, realm, or theme patterns."
         }
-      ],
-      "matcher": "Write|Edit"
+      ]
     }
   ],
   "settings": {}
