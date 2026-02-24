@@ -86,6 +86,25 @@
       ]
     },
     {
+      "id": "pretooluse-merge-evidence-gate",
+      "event": "PreToolUse",
+      "severity": "blocking",
+      "description": "Block merge/deploy actions until required evidence sections are complete.",
+      "trigger": {
+        "scope": "tool",
+        "command_patterns": [
+          "gh_pr_merge|mcp__github__merge_pull_request|harness_merge_pull_request|harness_deploy|execute_pipeline"
+        ]
+      },
+      "handlers": [
+        {
+          "type": "command",
+          "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/merge-evidence-gate.sh",
+          "timeout": 10000
+        }
+      ]
+    },
+    {
       "id": "posttooluse-pr-jira-transition-routing",
       "event": "PostToolUse",
       "severity": "advisory",

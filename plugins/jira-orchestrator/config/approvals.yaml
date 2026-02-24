@@ -94,6 +94,65 @@ jira_readiness:
           - priority
           - sprint
 
+# Merge Evidence Gate Policies
+merge_evidence_gate:
+  enabled: true
+  merge_tool_patterns:
+    - "gh_pr_merge"
+    - "mcp__github__merge_pull_request"
+    - "harness_merge_pull_request"
+    - "harness_deploy"
+    - "execute_pipeline"
+  evidence_sections:
+    test_results:
+      guidance: "Attach passing CI/test run URLs or summarized results with timestamp and owner."
+    rollback_plan:
+      guidance: "Document rollback commands, owner, and blast radius expectations."
+    release_notes_impact:
+      guidance: "State customer-visible impact and release-note entry (or explicitly 'none')."
+  default:
+    default_risk_tier: medium
+    required_sections_by_risk_tier:
+      low:
+        - test_results
+      medium:
+        - test_results
+        - rollback_plan
+      high:
+        - test_results
+        - rollback_plan
+        - release_notes_impact
+      critical:
+        - test_results
+        - rollback_plan
+        - release_notes_impact
+      default:
+        - test_results
+        - rollback_plan
+    override_authorization:
+      authorized_roles:
+        - engineering_manager
+        - release_manager
+        - incident_commander
+  projects:
+    ENG:
+      required_sections_by_risk_tier:
+        low:
+          - test_results
+          - release_notes_impact
+        medium:
+          - test_results
+          - rollback_plan
+          - release_notes_impact
+        high:
+          - test_results
+          - rollback_plan
+          - release_notes_impact
+      override_authorization:
+        authorized_roles:
+          - engineering_manager
+          - director_engineering
+
 # Approval Workflows
 workflows:
   # Standard Pull Request Approval
