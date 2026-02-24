@@ -8,6 +8,24 @@
 
 ---
 
+## Agent Assignment by Phase
+
+| Phase | Primary Agent | Supporting Agents | Handoff Trigger |
+|---|---|---|---|
+| Step 1: Carrier normalization | platform-agent | planner-orchestrator-agent, fabric-pipeline-agent | Canonical carrier exports published |
+| Step 2: Commission reconciliation | excel-automation-agent | m365-governance-agent, client-solution-architect-agent | Reconciliation outputs signed and uploaded |
+| Step 3: Buyer analytics report | embedded-analytics-agent | fabric-pipeline-agent, analytics-agent | Buyer report published + PDF exported |
+| Step 4: Decommission decision gate | client-solution-architect-agent | planner-orchestrator-agent, m365-governance-agent | Jira decision recorded (SELL/DECOMMISSION) |
+| Step 5: Data room preparation | m365-governance-agent | excel-automation-agent, power-pages-agent | Data room checklist complete + access review passed |
+| Step 6: Post-sale service contract | client-solution-architect-agent | planner-orchestrator-agent, comms-agent | Contract package approved by Markus |
+
+### Cross-Phase Escalation + Handoff Protocol
+- All phase exits must include a handoff packet with `Context`, `Inputs Ready`, `Work Requested`, `Success Criteria`, `Deadline`, and `Return Artifact Path`.
+- Compliance, privacy, or external sharing risk escalates to m365-governance-agent and Markus before next phase begins.
+- Any blocked dependency over 1 business day escalates through planner-orchestrator-agent for resequencing.
+
+---
+
 ## Dependency Graph
 
 ```
