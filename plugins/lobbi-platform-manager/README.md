@@ -883,3 +883,12 @@ Initial release:
 ---
 
 **Made with ❤️ for the Lobbi Platform**
+
+## Plugin Manifest & Hook Schemas
+
+Plugin authors should validate manifest and hooks files against the canonical repository schemas:
+
+- Manifest: [`schemas/plugin.schema.json`](../../schemas/plugin.schema.json) for `.claude-plugin/plugin.json`
+- Hooks: [`schemas/hooks.schema.json`](../../schemas/hooks.schema.json) for `hooks/hooks.json`
+
+Run `npm run check:plugin-schema` from the repository root before submitting changes.

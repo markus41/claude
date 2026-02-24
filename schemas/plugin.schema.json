@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://claude.local/schemas/plugin.schema.json",
+  "title": "Claude Plugin Manifest",
+  "type": "object",
+  "required": [
+    "name",
+    "version",
+    "description",
+    "keywords",
+    "permissions",
+    "capabilities",
+    "context"
+  ],
+  "properties": {
+    "$schema": { "type": "string" },
+    "name": { "type": "string", "minLength": 1 },
+    "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+].*)?$" },
+    "description": { "type": "string", "minLength": 1 },
+    "author": {
+      "oneOf": [
+        { "type": "string" },
+        {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "email": { "type": "string" },
+            "url": { "type": "string" }
+          },
+          "required": ["name"],
+          "additionalProperties": true
+        }
+      ]
+    },
+    "license": { "type": "string" },
+    "homepage": { "type": "string" },
+    "repository": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "object", "additionalProperties": true }
+      ]
+    },
+    "keywords": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    },
+    "permissions": {
+      "type": "object",
+      "properties": {
+        "requires": { "type": "array", "items": { "type": "string" } },
+        "optional": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["requires", "optional"],
+      "additionalProperties": true
+    },
+    "capabilities": {
+      "type": "object",
+      "properties": {
+        "provides": { "type": "array", "items": { "type": "string" } },
+        "requires": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["provides", "requires"],
+      "additionalProperties": true
+    },
+    "context": {
+      "type": "object",
+      "required": ["entry", "title", "summary", "tags"],
+      "properties": {
+        "entry": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "summary": { "type": "string", "minLength": 1 },
+        "tags": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": true
+    },
+    "contextEntry": { "type": "string" }
+  },
+  "additionalProperties": true
+}

@@ -61,5 +61,31 @@
       "entry": "./src/federation/registry.ts"
     }
   },
-  "contextEntry": "CONTEXT.md"
+  "contextEntry": "CONTEXT.md",
+  "$schema": "../../../schemas/plugin.schema.json",
+  "permissions": {
+    "requires": [],
+    "optional": []
+  },
+  "context": {
+    "entry": "CONTEXT.md",
+    "title": "marketplace-pro",
+    "summary": "Advanced plugin marketplace platform with intent-based composition, supply chain security, contextual intelligence, dev studio hot-reload, and federated registry protocol. Transforms the marketplace from a package manager into an enterprise orchestration platform.",
+    "tags": [
+      "marketplace",
+      "plugin-management",
+      "composition",
+      "security",
+      "trust-scoring",
+      "supply-chain",
+      "federated-registry",
+      "hot-reload",
+      "dev-studio",
+      "intelligence",
+      "fingerprinting",
+      "sandboxing",
+      "lockfile",
+      "policy-engine"
+    ]
+  }
 }

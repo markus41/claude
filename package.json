@@ -15,7 +15,8 @@
     "type-check": "tsc --noEmit",
     "ha:registry:generate": "node plugins/home-assistant-architect/scripts/generate-registry.ts",
     "ha:registry:check": "node plugins/home-assistant-architect/scripts/generate-registry.ts --check",
-    "check:plugin-context": "node scripts/check-plugin-context.mjs"
+    "check:plugin-context": "node scripts/check-plugin-context.mjs",
+    "check:plugin-schema": "node scripts/validate-plugin-schema.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.0",

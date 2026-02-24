@@ -32,5 +32,29 @@
     "hooks": 10,
     "mcpEntrypoints": 2
   },
-  "contextEntry": "CONTEXT.md"
+  "contextEntry": "CONTEXT.md",
+  "$schema": "../../../schemas/plugin.schema.json",
+  "permissions": {
+    "requires": [],
+    "optional": []
+  },
+  "capabilities": {
+    "provides": [],
+    "requires": []
+  },
+  "context": {
+    "entry": "CONTEXT.md",
+    "title": "home-assistant-architect",
+    "summary": "Complete Home Assistant platform with frontend design, energy management, cameras, sensors, local LLM integration, and Ubuntu server deployment",
+    "tags": [
+      "home-assistant",
+      "smart-home",
+      "automation",
+      "ollama",
+      "local-llm",
+      "mcp-server",
+      "ubuntu",
+      "iot"
+    ]
+  }
 }

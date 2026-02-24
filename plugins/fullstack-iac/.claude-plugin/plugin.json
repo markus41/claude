@@ -22,5 +22,33 @@
   ],
   "license": "MIT",
   "repository": "https://github.com/Lobbi-Docs/claude",
-  "contextEntry": "CONTEXT.md"
+  "contextEntry": "CONTEXT.md",
+  "$schema": "../../../schemas/plugin.schema.json",
+  "permissions": {
+    "requires": [],
+    "optional": []
+  },
+  "capabilities": {
+    "provides": [],
+    "requires": []
+  },
+  "context": {
+    "entry": "CONTEXT.md",
+    "title": "fullstack-iac",
+    "summary": "Zenith (Forerunner) - Complete full-stack development and infrastructure automation. FastAPI, React/Vite, Ansible, Terraform, Kubernetes with production-ready templates and CI/CD pipelines.",
+    "tags": [
+      "fastapi",
+      "react",
+      "vite",
+      "ansible",
+      "terraform",
+      "kubernetes",
+      "docker",
+      "full-stack",
+      "infrastructure-as-code",
+      "ci-cd",
+      "templates",
+      "scaffolding"
+    ]
+  }
 }

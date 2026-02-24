@@ -1,34 +1,69 @@
 {
-  "style-consistency-checker": {
-    "event": "PreToolUse",
-    "description": "Checks style consistency before writing CSS/SCSS/TSX/JSX files",
-    "toolPattern": "(Write|Edit)",
-    "filePattern": "\\.(css|scss|tsx|jsx)$",
-    "type": "command",
-    "script": "scripts/check-style-consistency.sh"
-  },
-  "accessibility-validator": {
-    "event": "PreToolUse",
-    "description": "Validates accessibility before writing TSX/JSX component files",
-    "toolPattern": "(Write|Edit)",
-    "filePattern": "\\.(tsx|jsx)$",
-    "type": "command",
-    "script": "scripts/validate-accessibility.sh"
-  },
-  "theme-sync": {
-    "event": "PostToolUse",
-    "description": "Syncs themes after writing theme or token files",
-    "toolPattern": "(Write|Edit)",
-    "filePattern": "(theme|tokens).*\\.(ts|json|css)$",
-    "type": "command",
-    "script": "scripts/sync-themes.sh"
-  },
-  "design-token-updater": {
-    "event": "PostToolUse",
-    "description": "Updates design tokens after editing token files",
-    "toolPattern": "Edit",
-    "filePattern": "design-tokens\\.(json|ts)$",
-    "type": "command",
-    "script": "scripts/update-tokens.sh"
-  }
+  "$schema": "../../../schemas/hooks.schema.json",
+  "version": "1.0.0",
+  "plugin": "frontend-design-system",
+  "description": "",
+  "hooks": [
+    {
+      "event": "PreToolUse",
+      "handlers": [
+        {
+          "type": "command",
+          "script": "scripts/check-style-consistency.sh"
+        }
+      ],
+      "id": "style-consistency-checker",
+      "description": "Checks style consistency before writing CSS/SCSS/TSX/JSX files",
+      "trigger": {
+        "toolPattern": "(Write|Edit)",
+        "filePattern": "\\.(css|scss|tsx|jsx)$"
+      }
+    },
+    {
+      "event": "PreToolUse",
+      "handlers": [
+        {
+          "type": "command",
+          "script": "scripts/validate-accessibility.sh"
+        }
+      ],
+      "id": "accessibility-validator",
+      "description": "Validates accessibility before writing TSX/JSX component files",
+      "trigger": {
+        "toolPattern": "(Write|Edit)",
+        "filePattern": "\\.(tsx|jsx)$"
+      }
+    },
+    {
+      "event": "PostToolUse",
+      "handlers": [
+        {
+          "type": "command",
+          "script": "scripts/sync-themes.sh"
+        }
+      ],
+      "id": "theme-sync",
+      "description": "Syncs themes after writing theme or token files",
+      "trigger": {
+        "toolPattern": "(Write|Edit)",
+        "filePattern": "(theme|tokens).*\\.(ts|json|css)$"
+      }
+    },
+    {
+      "event": "PostToolUse",
+      "handlers": [
+        {
+          "type": "command",
+          "script": "scripts/update-tokens.sh"
+        }
+      ],
+      "id": "design-token-updater",
+      "description": "Updates design tokens after editing token files",
+      "trigger": {
+        "toolPattern": "Edit",
+        "filePattern": "design-tokens\\.(json|ts)$"
+      }
+    }
+  ],
+  "settings": {}
 }
