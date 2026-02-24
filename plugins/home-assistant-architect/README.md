@@ -39,11 +39,46 @@ Comprehensive Claude Code plugin for Home Assistant automation, local LLM integr
 
 ### Hooks
 
-- State change monitoring
-- Health checks on task completion
-- YAML validation before writes
-- Security scanning
-- Backup reminders
+Hook behavior is intentionally scoped to Home Assistant and Ollama contexts to avoid noisy reminders.
+
+#### Triggering Rules
+
+- **UserPromptSubmit** fires only when prompts include explicit HA/Ollama signals:
+  - Plugin commands (`/ha-control`, `/ha-automation`, `/ha-deploy`, `/ha-diagnose`, `/ha-voice`, `/ha-backup`, `/ha-mcp`, `/ollama-setup`)
+  - HA-specific files/domains (`configuration.yaml`, `automations.yaml`, `secrets.yaml`, `scripts.yaml`, `scenes.yaml`, `assist_pipeline`)
+  - HA MCP tool namespace references (`mcp__home_assistant__...`)
+- **PreToolUse (Write/Edit/MultiEdit)** runs only for HA config paths such as:
+  - `configuration.yaml`, `secrets.yaml`, `automations.yaml`, `scripts.yaml`, `scenes.yaml`
+  - `blueprints/**/*.yaml`, `packages/**/*.yaml`, `homeassistant/**/*.yaml`
+- **PreToolUse/PostToolUse (Bash)** runs only for HA/Ollama command domains:
+  - `ha core|addons|supervisor`, `hass`, `homeassistant`, `docker ... homeassistant`, `ollama`
+  - HA API calls like `curl ... /api/states` or `curl ... /api/services`
+- **TaskCompleted** health-check prompts run only for HA task labels (`ha-deploy`, `ha-automation`, `ha-config`, `ollama-setup`).
+
+#### Severity + Debounce Model
+
+Each reminder now carries a severity and session-level debounce policy:
+
+- **High severity**: configuration integrity/security checks after HA file edits.
+- **Medium severity**: command safety and service verification for HA/Ollama shell actions.
+- **Info severity**: scoped intent detection, task completion checks, and end-of-session backup reminders.
+
+Debounce keys suppress repeated prompts in the same session (for example, a YAML pre-write reminder shown once every few minutes instead of on every edit).
+
+#### Examples
+
+**Will trigger**
+
+- `/ha-control turn on kitchen_light`
+- Editing `/config/automations.yaml`
+- Running `ha core restart`
+- Running `ollama list`
+
+**Will not trigger**
+
+- Generic prompt: "turn on logging" (no HA context)
+- Editing `docs/notes.yaml` outside HA config paths
+- Running unrelated shell commands like `npm test`
 
 ### MCP Server
 
