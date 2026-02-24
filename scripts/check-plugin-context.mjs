@@ -45,6 +45,12 @@ for (const pluginName of pluginDirs) {
     continue;
   }
 
+  const claudeGuidePath = path.join(pluginRoot, 'CLAUDE.md');
+  if (!fs.existsSync(claudeGuidePath)) {
+    fail(`${pluginName}: plugin cannot be published without CLAUDE.md`);
+    continue;
+  }
+
   const contextPath = path.join(pluginRoot, bootstrapFiles[0]);
 
   if (!fs.existsSync(contextPath)) {

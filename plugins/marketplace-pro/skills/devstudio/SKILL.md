@@ -111,6 +111,34 @@ EOF
 ```
 
 ```bash
+# Create required operator runbook
+cat > my-plugin/CLAUDE.md << 'EOF'
+# My Plugin Guide
+
+## Purpose
+- Brief description of plugin intent.
+
+## Supported Commands
+- command-name (commands/command-name.md)
+
+## Prohibited Actions
+- List destructive or out-of-scope operations.
+
+## Required Validation Checks
+- npm run check:plugin-context
+- npm run check:plugin-schema
+
+## Context Budget
+1. CONTEXT_SUMMARY.md
+2. commands/index (or commands/)
+3. README.md and only task-relevant deep docs
+
+## Escalation Path
+- Describe who reviews risky or blocking changes.
+EOF
+```
+
+```bash
 
 # Create operator context entrypoint (keep concise)
 cat > my-plugin/CONTEXT.md << 'EOF'
@@ -197,6 +225,7 @@ Fix all errors before publishing. Warnings are advisory but should be addressed.
 | `version` field | error | Must be a non-empty string |
 | `description` field | error | Must be a non-empty string |
 | `contextEntry` field | error | Must reference `CONTEXT.md` or `PLUGIN_CONTEXT.md` |
+| `CLAUDE.md` present | error | Plugin root must include CLAUDE.md runbook |
 | `capabilities` present | warning | Plugin should declare capabilities |
 | `capabilities.provides` is array | error | Must be an array of strings |
 | `capabilities.requires` is array | error | Must be an array of strings |
@@ -217,6 +246,7 @@ Fix all errors before publishing. Warnings are advisory but should be addressed.
 plugin-root/
   .claude-plugin/
     plugin.json          # Plugin manifest (validated by HotReloader)
+  CLAUDE.md              # Required operator runbook and context budget
   CONTEXT.md             # Minimal operator context entrypoint
   commands/
     *.md                 # Slash commands (validated for frontmatter)
