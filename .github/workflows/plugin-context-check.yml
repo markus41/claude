@@ -1,0 +1,28 @@
+name: Plugin Context Entry Check
+
+on:
+  pull_request:
+    paths:
+      - 'plugins/**'
+      - 'scripts/check-plugin-context.mjs'
+      - 'package.json'
+      - '.github/workflows/plugin-context-check.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'plugins/**'
+      - 'scripts/check-plugin-context.mjs'
+      - 'package.json'
+      - '.github/workflows/plugin-context-check.yml'
+
+jobs:
+  check-plugin-context:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Validate plugin context entry files
+        run: node scripts/check-plugin-context.mjs

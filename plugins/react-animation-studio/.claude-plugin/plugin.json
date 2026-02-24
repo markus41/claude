@@ -30,5 +30,6 @@
     "typewriter",
     "flip-card",
     "parallax"
-  ]
+  ],
+  "contextEntry": "CONTEXT.md"
 }

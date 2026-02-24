@@ -31,5 +31,6 @@
     "skills": 8,
     "hooks": 10,
     "mcpEntrypoints": 2
-  }
+  },
+  "contextEntry": "CONTEXT.md"
 }

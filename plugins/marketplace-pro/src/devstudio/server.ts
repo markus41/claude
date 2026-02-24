@@ -621,7 +621,7 @@ export class HotReloader {
     // Validate required fields
     const lines = raw.split('\n');
 
-    const requiredFields = ['name', 'version', 'description'];
+    const requiredFields = ['name', 'version', 'description', 'contextEntry'];
     for (const field of requiredFields) {
       if (!parsed[field]) {
         const lineNum = this.findFieldLine(lines, field);
@@ -648,6 +648,25 @@ export class HotReloader {
         message: '"version" must be a string',
         severity: 'error',
       });
+    }
+
+    if (parsed['contextEntry'] && typeof parsed['contextEntry'] !== 'string') {
+      errors.push({
+        line: this.findFieldLine(lines, 'contextEntry'),
+        message: '"contextEntry" must be a string',
+        severity: 'error',
+      });
+    }
+
+    if (typeof parsed['contextEntry'] === 'string') {
+      const contextPath = path.join(this.pluginPath, parsed['contextEntry']);
+      if (!fs.existsSync(contextPath)) {
+        errors.push({
+          line: this.findFieldLine(lines, 'contextEntry'),
+          message: `contextEntry file not found: ${parsed['contextEntry']}`,
+          severity: 'error',
+        });
+      }
     }
 
     // Validate capabilities structure if present

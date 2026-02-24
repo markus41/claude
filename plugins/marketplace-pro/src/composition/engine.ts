@@ -91,6 +91,7 @@ export class CapabilityMatcher {
       try {
         const raw = fs.readFileSync(manifestPath, 'utf-8');
         const parsed = JSON.parse(raw) as PluginManifest;
+        parsed.contextSummary = this.loadContextSummary(entry, parsed.contextEntry);
 
         // Normalise: ensure capabilities always has provides/requires arrays
         if (!parsed.capabilities) {
@@ -118,6 +119,29 @@ export class CapabilityMatcher {
     }
 
     return this.manifests;
+  }
+
+  /**
+   * Load a compact context summary for the plugin.
+   * The context entry is expected to be a concise operator-facing markdown file.
+   */
+  private loadContextSummary(pluginDirName: string, contextEntry?: string): string {
+    const contextPath = path.join(
+      this.pluginsDir,
+      pluginDirName,
+      contextEntry || 'CONTEXT.md',
+    );
+
+    if (!fs.existsSync(contextPath)) return '';
+
+    const content = fs.readFileSync(contextPath, 'utf-8');
+    return content
+      .split('\n')
+      .map((line) => line.trim())
+      .filter((line) => line.length > 0)
+      .slice(0, 12)
+      .join(' ')
+      .slice(0, 800);
   }
 
   /** Return all loaded manifests. */

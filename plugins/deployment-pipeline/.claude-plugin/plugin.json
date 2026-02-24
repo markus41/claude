@@ -16,5 +16,6 @@
     "ci-cd",
     "deployment",
     "pipeline"
-  ]
+  ],
+  "contextEntry": "CONTEXT.md"
 }

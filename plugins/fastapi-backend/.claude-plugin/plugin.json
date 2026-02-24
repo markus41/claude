@@ -24,5 +24,6 @@
     "observability"
   ],
   "repository": "https://github.com/Lobbi-Docs/claude",
-  "license": "MIT"
+  "license": "MIT",
+  "contextEntry": "CONTEXT.md"
 }

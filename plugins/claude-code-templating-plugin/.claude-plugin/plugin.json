@@ -22,5 +22,6 @@
     "devops",
     "ci-cd",
     "infrastructure"
-  ]
+  ],
+  "contextEntry": "CONTEXT.md"
 }

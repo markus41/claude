@@ -16,5 +16,6 @@
     "devops",
     "platform-management"
   ],
-  "repository": "https://github.com/the-lobbi/keycloak-alpha"
+  "repository": "https://github.com/the-lobbi/keycloak-alpha",
+  "contextEntry": "CONTEXT.md"
 }
