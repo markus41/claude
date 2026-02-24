@@ -1,12 +1,12 @@
 ---
 name: Power Platform CLI (pac)
-description: This skill should be used when working with *.solution files, dataverse/**, pages/**, copilot-studio/**, or *.crmsolution files. It provides Power Platform CLI operations for Dataverse solution management, Power Pages deployment, Copilot Studio bot deployment, and environment administration across ROSA Holdings entities.
+description: This skill should be used when working with *.solution files, dataverse/**, pages/**, copilot-studio/**, or *.crmsolution files. It provides Power Platform CLI operations for Dataverse solution management, Power Pages deployment, Copilot Studio bot deployment, and environment administration across TVS Holdings entities.
 version: 1.0.0
 ---
 
 # Power Platform CLI (pac) Operations
 
-Complete reference for Power Platform CLI operations across ROSA Holdings environments.
+Complete reference for Power Platform CLI operations across TVS Holdings environments.
 
 ## Authentication Profiles
 
@@ -17,27 +17,27 @@ Complete reference for Power Platform CLI operations across ROSA Holdings enviro
 pac auth create \
   --name "tvs-prod" \
   --environment "https://tvs-prod.crm8.dynamics.com" \
-  --tenant "rosa-holdings.onmicrosoft.com" \
+  --tenant "tvs-holdings.onmicrosoft.com" \
   --kind Admin
 
 # TVS Motor Company - Development
 pac auth create \
   --name "tvs-dev" \
   --environment "https://tvs-dev.crm8.dynamics.com" \
-  --tenant "rosa-holdings.onmicrosoft.com"
+  --tenant "tvs-holdings.onmicrosoft.com"
 
 # Consulting Entity - Production
 pac auth create \
   --name "consulting-prod" \
   --environment "https://consulting-prod.crm.dynamics.com" \
-  --tenant "rosa-holdings.onmicrosoft.com" \
+  --tenant "tvs-holdings.onmicrosoft.com" \
   --kind Admin
 
 # Consulting Entity - Development
 pac auth create \
   --name "consulting-dev" \
   --environment "https://consulting-dev.crm.dynamics.com" \
-  --tenant "rosa-holdings.onmicrosoft.com"
+  --tenant "tvs-holdings.onmicrosoft.com"
 ```
 
 ### Profile Management
@@ -211,7 +211,7 @@ pac modelbuilder build \
 # Generate TypeScript types from Dataverse tables
 pac modelbuilder generate \
   --environment "https://tvs-dev.crm8.dynamics.com" \
-  --entityList "rosa_broker,rosa_commission,rosa_carrier" \
+  --entityList "tvs_broker,tvs_commission,tvs_carrier" \
   --outputDirectory "./src/types/dataverse/"
 ```
 

@@ -64,11 +64,11 @@ as Steps 2 and 4 depend on deployed functions.
 #### Client Lifecycle Flows (6 flows)
 | # | Flow Name | Trigger | Purpose |
 |---|-----------|---------|---------|
-| 6 | Client Onboarding | `rosa_subscription` created | Welcome email, setup checklist, assign onboarding tasks |
+| 6 | Client Onboarding | `tvs_subscription` created | Welcome email, setup checklist, assign onboarding tasks |
 | 7 | Subscription Renewal Reminder | Scheduled (daily) | Email clients 30/14/7 days before renewal |
 | 8 | Subscription Cancellation | Stripe `subscription.deleted` | Offboarding tasks, exit survey, data retention |
-| 9 | Client Satisfaction Survey | `rosa_deliverable` count = 5 | Trigger NPS survey after every 5th deliverable |
-| 10 | Hours Approaching Limit | `rosa_timeentry` created | Alert client at 80%/95%/100% of tier hours |
+| 9 | Client Satisfaction Survey | `tvs_deliverable` count = 5 | Trigger NPS survey after every 5th deliverable |
+| 10 | Hours Approaching Limit | `tvs_timeentry` created | Alert client at 80%/95%/100% of tier hours |
 | 11 | Overage Approval | Hours > tier limit | Request client approval before overage billing |
 
 #### VA Operations Flows (5 flows)
@@ -115,10 +115,10 @@ as Steps 2 and 4 depend on deployed functions.
 **Depends on:** tvs-foundation.md Step 3 (Power Pages scaffold), Step 3 here (Stripe webhook)
 
 ### Prerequisites
-- GitHub monorepo `rosa-holdings/platform` with `apps/broker-portal/` scaffold
+- GitHub monorepo `tvs-holdings/platform` with `apps/broker-portal/` scaffold
 - Entra app registration `app-broker-portal` for SPA auth
 - Stripe publishable key available
-- Dataverse OData API accessible via `app-rosa-ingest` service principal
+- Dataverse OData API accessible via `app-tvs-ingest` service principal
 
 ### Component Architecture
 ```
@@ -195,7 +195,7 @@ apps/broker-portal/          # Vite + React + TypeScript
 **Depends on:** tvs-foundation.md Step 2 (Key Vault), Step 6 (Stripe wiring tested)
 
 ### Prerequisites
-- Azure Function App `func-rosa-ingest` provisioned (Consumption plan)
+- Azure Function App `func-tvs-ingest` provisioned (Consumption plan)
 - Key Vault secrets accessible by Function App managed identity
 - GitHub monorepo `functions/` directory scaffolded
 
@@ -230,9 +230,9 @@ apps/broker-portal/          # Vite + React + TypeScript
 ### Execution Sequence
 1. **Provision Function App**:
    ```bash
-   az functionapp create --name func-rosa-ingest \
-     --resource-group rg-rosa-holdings \
-     --storage-account strosadata \
+   az functionapp create --name func-tvs-ingest \
+     --resource-group rg-tvs-holdings \
+     --storage-account sttvsdata \
      --consumption-plan-location eastus2 \
      --runtime node --runtime-version 20 \
      --functions-version 4
@@ -425,10 +425,10 @@ apps/broker-portal/          # Vite + React + TypeScript
 2. **Consulting-specific tables**:
    | Table | Entity | Purpose |
    |-------|--------|---------|
-   | `rosa_engagement` | Both | Consulting engagement tracking |
-   | `rosa_prospect` | Both | Sales pipeline prospects |
-   | `rosa_implementation` | Both | Implementation project tracking |
-   | `rosa_sharedprospect` | Shared | Cross-entity prospect sharing |
+   | `tvs_engagement` | Both | Consulting engagement tracking |
+   | `tvs_prospect` | Both | Sales pipeline prospects |
+   | `tvs_implementation` | Both | Implementation project tracking |
+   | `tvs_sharedprospect` | Shared | Cross-entity prospect sharing |
 3. **Lobbi Consulting configuration**:
    - Business unit: Lobbi Consulting
    - Security roles: Consultant, Manager, Admin

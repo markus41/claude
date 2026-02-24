@@ -2,7 +2,7 @@
 # seed_keyvault.sh - Seed Azure Key Vault secrets from environment variables
 #
 # Reads expected variables from .env.template comments and stores each
-# one in the kv-rosa-holdings Key Vault using Azure CLI.
+# one in the kv-tvs-holdings Key Vault using Azure CLI.
 #
 # Usage: ./seed_keyvault.sh [--vault-name VAULT] [--dry-run]
 #
@@ -12,7 +12,7 @@
 
 set -euo pipefail
 
-VAULT_NAME="kv-rosa-holdings"
+VAULT_NAME="kv-tvs-holdings"
 DRY_RUN=false
 
 while [[ $# -gt 0 ]]; do

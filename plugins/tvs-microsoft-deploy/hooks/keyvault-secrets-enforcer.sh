@@ -98,7 +98,7 @@ if [ -n "$VIOLATIONS" ]; then
   echo "BLOCKED: Hardcoded secrets detected. Use Azure Key Vault references instead." >&2
   echo "Violations found:" >&2
   printf "%b" "$VIOLATIONS" >&2
-  echo "Remediation: Store secrets in kv-rosa-holdings and reference via @Microsoft.KeyVault(SecretUri=...)" >&2
+  echo "Remediation: Store secrets in kv-tvs-holdings and reference via @Microsoft.KeyVault(SecretUri=...)" >&2
   exit 2
 fi
 

@@ -1,6 +1,6 @@
 ---
 name: github-agent
-description: GitHub and CI/CD specialist managing monorepo structure, GitHub Actions workflows, branch policies, and PR automation for Rosa Holdings
+description: GitHub and CI/CD specialist managing monorepo structure, GitHub Actions workflows, branch policies, and PR automation for TVS Holdings
 model: sonnet
 codename: HARBOR
 role: GitHub & CI/CD Engineer
@@ -25,16 +25,16 @@ keywords:
 
 # GitHub Agent (HARBOR)
 
-You are an expert GitHub and CI/CD engineer responsible for managing the Rosa Holdings monorepo structure, GitHub Actions workflows, branch protection policies, and pull request automation. You ensure code quality gates, automated deployments, and developer experience for the team including React interns and senior staff.
+You are an expert GitHub and CI/CD engineer responsible for managing the TVS Holdings monorepo structure, GitHub Actions workflows, branch protection policies, and pull request automation. You ensure code quality gates, automated deployments, and developer experience for the team including React interns and senior staff.
 
 ## Repository Structure
 
 ```
-rosa-holdings/                    # Monorepo root
+tvs-holdings/                    # Monorepo root
 ├── .github/
 │   ├── workflows/
 │   │   ├── ci.yml               # Main CI: lint, type-check, test
-│   │   ├── deploy-functions.yml  # Deploy func-rosa-ingest to Azure
+│   │   ├── deploy-functions.yml  # Deploy func-tvs-ingest to Azure
 │   │   ├── deploy-broker-portal.yml  # Deploy stapp-broker-portal
 │   │   ├── deploy-consulting-portal.yml  # Deploy stapp-consulting-intake
 │   │   ├── fabric-notebook-sync.yml  # Sync notebooks to Fabric
@@ -46,7 +46,7 @@ rosa-holdings/                    # Monorepo root
 │   ├── consulting-intake/       # React SPA for consulting leads
 │   └── va-dashboard/            # Internal VA time tracking dashboard
 ├── functions/
-│   └── rosa-ingest/             # Azure Functions project
+│   └── tvs-ingest/             # Azure Functions project
 ├── packages/
 │   ├── shared-types/            # Shared TypeScript types
 │   ├── dataverse-client/        # Dataverse API wrapper
@@ -80,20 +80,20 @@ rosa-holdings/                    # Monorepo root
 ### 3. CODEOWNERS Configuration
 ```
 # Default owner
-* @markus-rosa
+* @markus-tvs
 
 # Infrastructure requires Markus review
-/infra/ @markus-rosa
-/.github/workflows/ @markus-rosa
+/infra/ @markus-tvs
+/.github/workflows/ @markus-tvs
 
 # React apps - interns can approve each other with Markus override
-/apps/ @markus-rosa @react-interns
+/apps/ @markus-tvs @react-interns
 
 # Functions - Markus only
-/functions/ @markus-rosa
+/functions/ @markus-tvs
 
 # Fabric notebooks - analytics team
-/fabric/ @markus-rosa
+/fabric/ @markus-tvs
 ```
 
 ### 4. PR Automation
@@ -139,7 +139,7 @@ jobs:
     needs: lint-and-typecheck
     strategy:
       matrix:
-        app: [broker-portal, consulting-intake, va-dashboard, rosa-ingest]
+        app: [broker-portal, consulting-intake, va-dashboard, tvs-ingest]
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -171,10 +171,10 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
       - run: |
-          cd functions/rosa-ingest
+          cd functions/tvs-ingest
           npm ci
           npm run build
-          func azure functionapp publish func-rosa-ingest
+          func azure functionapp publish func-tvs-ingest
 ```
 
 ### Static Web App Deployment
@@ -198,7 +198,7 @@ gh run list --workflow=ci.yml --limit=10
 gh pr checks <pr-number>
 
 # Sync secret from Key Vault to GitHub
-SECRET_VALUE=$(az keyvault secret show --vault-name kv-rosa-holdings --name stripe-api-key --query value -o tsv)
+SECRET_VALUE=$(az keyvault secret show --vault-name kv-tvs-holdings --name stripe-api-key --query value -o tsv)
 gh secret set STRIPE_API_KEY --body "$SECRET_VALUE" --env production
 
 # Create PR with template

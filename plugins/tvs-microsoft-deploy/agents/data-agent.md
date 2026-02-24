@@ -32,38 +32,38 @@ You are an expert Dataverse schema architect responsible for designing, creating
 
 | Table (Logical Name) | Display Name | Description |
 |----------------------|--------------|-------------|
-| `rosa_account` | Account | Client companies subscribing to TVS services |
-| `rosa_contact` | Contact | Individual contacts at client accounts |
-| `rosa_subscription` | Subscription | Active service subscriptions with Stripe tier mapping |
-| `rosa_task` | Task | VA work items assigned and tracked |
-| `rosa_timeentry` | Time Entry | Billable/non-billable time logged by VAs |
-| `rosa_deliverable` | Deliverable | Completed work products delivered to clients |
-| `rosa_automationlog` | Automation Log | Audit trail of automated actions and bot interactions |
+| `tvs_account` | Account | Client companies subscribing to TVS services |
+| `tvs_contact` | Contact | Individual contacts at client accounts |
+| `tvs_subscription` | Subscription | Active service subscriptions with Stripe tier mapping |
+| `tvs_task` | Task | VA work items assigned and tracked |
+| `tvs_timeentry` | Time Entry | Billable/non-billable time logged by VAs |
+| `tvs_deliverable` | Deliverable | Completed work products delivered to clients |
+| `tvs_automationlog` | Automation Log | Audit trail of automated actions and bot interactions |
 
 ### TVS Column Specifications
 
-#### rosa_subscription
+#### tvs_subscription
 | Column | Type | Required | Notes |
 |--------|------|----------|-------|
-| `rosa_name` | Text (100) | Yes | Subscription display name |
-| `rosa_accountid` | Lookup (rosa_account) | Yes | Parent account |
-| `rosa_tier` | Choice | Yes | Starter/Basic/Advanced |
-| `rosa_monthlyhours` | Whole Number | Yes | 20/40/80 per tier |
-| `rosa_monthlyrate` | Currency | Yes | $360/$640/$1200 |
-| `rosa_stripecustomerid` | Text (50) | No | Stripe customer reference |
-| `rosa_stripesubscriptionid` | Text (50) | No | Stripe subscription reference |
-| `rosa_startdate` | Date Only | Yes | Subscription start |
-| `rosa_status` | Choice | Yes | Active/Paused/Cancelled |
+| `tvs_name` | Text (100) | Yes | Subscription display name |
+| `tvs_accountid` | Lookup (tvs_account) | Yes | Parent account |
+| `tvs_tier` | Choice | Yes | Starter/Basic/Advanced |
+| `tvs_monthlyhours` | Whole Number | Yes | 20/40/80 per tier |
+| `tvs_monthlyrate` | Currency | Yes | $360/$640/$1200 |
+| `tvs_stripecustomerid` | Text (50) | No | Stripe customer reference |
+| `tvs_stripesubscriptionid` | Text (50) | No | Stripe subscription reference |
+| `tvs_startdate` | Date Only | Yes | Subscription start |
+| `tvs_status` | Choice | Yes | Active/Paused/Cancelled |
 
-#### rosa_timeentry
+#### tvs_timeentry
 | Column | Type | Required | Notes |
 |--------|------|----------|-------|
-| `rosa_taskid` | Lookup (rosa_task) | Yes | Related task |
-| `rosa_contactid` | Lookup (rosa_contact) | Yes | VA who logged time |
-| `rosa_duration` | Decimal (2) | Yes | Hours (0.25 increments) |
-| `rosa_billable` | Yes/No | Yes | Default: Yes |
-| `rosa_date` | Date Only | Yes | Work date |
-| `rosa_description` | Text (500) | No | Work description |
+| `tvs_taskid` | Lookup (tvs_task) | Yes | Related task |
+| `tvs_contactid` | Lookup (tvs_contact) | Yes | VA who logged time |
+| `tvs_duration` | Decimal (2) | Yes | Hours (0.25 increments) |
+| `tvs_billable` | Yes/No | Yes | Default: Yes |
+| `tvs_date` | Date Only | Yes | Work date |
+| `tvs_description` | Text (500) | No | Work description |
 
 ## Consulting Dataverse Schema
 
@@ -71,43 +71,43 @@ You are an expert Dataverse schema architect responsible for designing, creating
 
 | Table (Logical Name) | Display Name | Description |
 |----------------------|--------------|-------------|
-| `rosa_cengagement` | Engagement | Consulting engagements with clients |
-| `rosa_cactivity` | Activity | Consulting activities and touchpoints |
-| `rosa_csharedprospect` | Shared Prospect | Prospects shared between Lobbi and Medicare |
-| `rosa_cimplementation` | Implementation | Active implementation projects |
+| `tvs_cengagement` | Engagement | Consulting engagements with clients |
+| `tvs_cactivity` | Activity | Consulting activities and touchpoints |
+| `tvs_csharedprospect` | Shared Prospect | Prospects shared between Lobbi and Medicare |
+| `tvs_cimplementation` | Implementation | Active implementation projects |
 
 ### Consulting Column Specifications
 
-#### rosa_cengagement
+#### tvs_cengagement
 | Column | Type | Required | Notes |
 |--------|------|----------|-------|
-| `rosa_name` | Text (200) | Yes | Engagement title |
-| `rosa_accountid` | Lookup (account) | Yes | Client account |
-| `rosa_entity` | Choice | Yes | Lobbi/Medicare |
-| `rosa_stage` | Choice | Yes | Prospect/Proposal/Active/Closed |
-| `rosa_value` | Currency | No | Estimated engagement value |
-| `rosa_startdate` | Date Only | No | Engagement start |
-| `rosa_enddate` | Date Only | No | Engagement end |
+| `tvs_name` | Text (200) | Yes | Engagement title |
+| `tvs_accountid` | Lookup (account) | Yes | Client account |
+| `tvs_entity` | Choice | Yes | Lobbi/Medicare |
+| `tvs_stage` | Choice | Yes | Prospect/Proposal/Active/Closed |
+| `tvs_value` | Currency | No | Estimated engagement value |
+| `tvs_startdate` | Date Only | No | Engagement start |
+| `tvs_enddate` | Date Only | No | Engagement end |
 
 ## Core Responsibilities
 
 ### 1. Schema Design & Creation
-- Design tables following `rosa_` prefix convention for custom entities
-- Consulting tables use `rosa_c` prefix to differentiate from TVS
+- Design tables following `tvs_` prefix convention for custom entities
+- Consulting tables use `tvs_c` prefix to differentiate from TVS
 - Enforce column naming standards and data types
 - Create relationships with referential integrity rules
 
 ### 2. Relationship Management
 ```
-rosa_account 1:N rosa_subscription (ParentAccount)
-rosa_account 1:N rosa_contact (Company)
-rosa_subscription 1:N rosa_task (Subscription)
-rosa_task 1:N rosa_timeentry (Task)
-rosa_task 1:N rosa_deliverable (Task)
-rosa_subscription 1:N rosa_automationlog (Subscription)
-rosa_csharedprospect N:1 account (SharedAccount)
-rosa_cengagement 1:N rosa_cactivity (Engagement)
-rosa_cengagement 1:N rosa_cimplementation (Engagement)
+tvs_account 1:N tvs_subscription (ParentAccount)
+tvs_account 1:N tvs_contact (Company)
+tvs_subscription 1:N tvs_task (Subscription)
+tvs_task 1:N tvs_timeentry (Task)
+tvs_task 1:N tvs_deliverable (Task)
+tvs_subscription 1:N tvs_automationlog (Subscription)
+tvs_csharedprospect N:1 account (SharedAccount)
+tvs_cengagement 1:N tvs_cactivity (Engagement)
+tvs_cengagement 1:N tvs_cimplementation (Engagement)
 ```
 
 ### 3. Solution Packaging
@@ -143,7 +143,7 @@ rosa_cengagement 1:N rosa_cimplementation (Engagement)
 ### Schema Change Workflow
 ```
 IF change == "new_table":
-    validate naming convention (rosa_ prefix)
+    validate naming convention (tvs_ prefix)
     create in dev environment
     add to solution
     test with sample data
@@ -170,8 +170,8 @@ ELIF change == "new_relationship":
 
 ## Naming Conventions
 
-- Table logical name: `rosa_` + lowercase entity name (e.g., `rosa_subscription`)
-- Column logical name: `rosa_` + lowercase column name (e.g., `rosa_monthlyhours`)
-- Consulting prefix: `rosa_c` + lowercase entity name (e.g., `rosa_cengagement`)
-- Choice global option sets: `rosa_` + descriptor (e.g., `rosa_subscriptiontier`)
-- Relationship schema name: `rosa_` + parent + `_` + child (e.g., `rosa_account_subscription`)
+- Table logical name: `tvs_` + lowercase entity name (e.g., `tvs_subscription`)
+- Column logical name: `tvs_` + lowercase column name (e.g., `tvs_monthlyhours`)
+- Consulting prefix: `tvs_c` + lowercase entity name (e.g., `tvs_cengagement`)
+- Choice global option sets: `tvs_` + descriptor (e.g., `tvs_subscriptiontier`)
+- Relationship schema name: `tvs_` + parent + `_` + child (e.g., `tvs_account_subscription`)

@@ -1,43 +1,43 @@
 ---
 name: Azure CLI (az)
-description: This skill should be used when working with *.bicep files, infra/**, *.arm templates, rg-rosa-* resource groups, or az-* prefixed resources. It provides Azure CLI operations for infrastructure provisioning, Key Vault secrets management, Azure Functions deployment, Static Web App hosting, and monitoring across ROSA Holdings Azure tenancy.
+description: This skill should be used when working with *.bicep files, infra/**, *.arm templates, rg-tvs-* resource groups, or az-* prefixed resources. It provides Azure CLI operations for infrastructure provisioning, Key Vault secrets management, Azure Functions deployment, Static Web App hosting, and monitoring across TVS Holdings Azure tenancy.
 version: 1.0.0
 ---
 
 # Azure CLI (az) Operations
 
-Complete reference for Azure resource management across ROSA Holdings entities.
+Complete reference for Azure resource management across TVS Holdings entities.
 
 ## Resource Group Naming Convention
 
-Pattern: `rg-rosa-{entity}-{env}`
+Pattern: `rg-tvs-{entity}-{env}`
 
 | Entity | Dev | Test | Prod |
 |--------|-----|------|------|
-| TVS Motor | rg-rosa-tvs-dev | rg-rosa-tvs-test | rg-rosa-tvs-prod |
-| Consulting | rg-rosa-consulting-dev | rg-rosa-consulting-test | rg-rosa-consulting-prod |
-| Lobbi Platform | rg-rosa-lobbi-dev | rg-rosa-lobbi-test | rg-rosa-lobbi-prod |
-| Media | rg-rosa-media-dev | rg-rosa-media-test | rg-rosa-media-prod |
-| A3 Archive | rg-rosa-a3archive-dev | rg-rosa-a3archive-test | rg-rosa-a3archive-prod |
-| Consolidated | rg-rosa-consolidated-dev | rg-rosa-consolidated-test | rg-rosa-consolidated-prod |
+| TVS Motor | rg-tvs-tvs-dev | rg-tvs-tvs-test | rg-tvs-tvs-prod |
+| Consulting | rg-tvs-consulting-dev | rg-tvs-consulting-test | rg-tvs-consulting-prod |
+| Lobbi Platform | rg-tvs-lobbi-dev | rg-tvs-lobbi-test | rg-tvs-lobbi-prod |
+| Media | rg-tvs-media-dev | rg-tvs-media-test | rg-tvs-media-prod |
+| A3 Archive | rg-tvs-a3archive-dev | rg-tvs-a3archive-test | rg-tvs-a3archive-prod |
+| Consolidated | rg-tvs-consolidated-dev | rg-tvs-consolidated-test | rg-tvs-consolidated-prod |
 
 ## Resource Group Management
 
 ```bash
 # Create resource group
 az group create \
-  --name "rg-rosa-tvs-prod" \
+  --name "rg-tvs-tvs-prod" \
   --location "eastus2" \
   --tags "entity=tvs" "env=prod" "managed-by=claude-deploy"
 
 # List resource groups by entity
 az group list \
-  --query "[?starts_with(name, 'rg-rosa-tvs')]" \
+  --query "[?starts_with(name, 'rg-tvs-tvs')]" \
   --output table
 
 # Tag all resources in a group
 az group update \
-  --name "rg-rosa-tvs-prod" \
+  --name "rg-tvs-tvs-prod" \
   --set tags.costCenter="TVS-IT-001"
 ```
 
@@ -46,7 +46,7 @@ az group update \
 ```bash
 # Deploy Bicep template
 az deployment group create \
-  --resource-group "rg-rosa-tvs-prod" \
+  --resource-group "rg-tvs-tvs-prod" \
   --template-file "./infra/main.bicep" \
   --parameters "./infra/parameters/tvs-prod.json" \
   --name "deploy-$(date +%Y%m%d%H%M%S)" \
@@ -54,29 +54,29 @@ az deployment group create \
 
 # Validate before deploying
 az deployment group validate \
-  --resource-group "rg-rosa-tvs-prod" \
+  --resource-group "rg-tvs-tvs-prod" \
   --template-file "./infra/main.bicep" \
   --parameters "./infra/parameters/tvs-prod.json"
 
 # What-if analysis (dry run)
 az deployment group what-if \
-  --resource-group "rg-rosa-tvs-prod" \
+  --resource-group "rg-tvs-tvs-prod" \
   --template-file "./infra/main.bicep" \
   --parameters "./infra/parameters/tvs-prod.json"
 
 # Export ARM template from existing resources
 az group export \
-  --name "rg-rosa-tvs-prod" \
+  --name "rg-tvs-tvs-prod" \
   --output-folder "./infra/exported/"
 ```
 
-## Key Vault Operations (kv-rosa-holdings)
+## Key Vault Operations (kv-tvs-holdings)
 
 ```bash
 # Create Key Vault
 az keyvault create \
-  --name "kv-rosa-holdings" \
-  --resource-group "rg-rosa-consolidated-prod" \
+  --name "kv-tvs-holdings" \
+  --resource-group "rg-tvs-consolidated-prod" \
   --location "eastus2" \
   --sku standard \
   --enabled-for-deployment true \
@@ -84,56 +84,56 @@ az keyvault create \
 
 # Set secrets
 az keyvault secret set \
-  --vault-name "kv-rosa-holdings" \
+  --vault-name "kv-tvs-holdings" \
   --name "stripe-api-key-tvs" \
   --value "${STRIPE_SECRET_KEY}"
 
 az keyvault secret set \
-  --vault-name "kv-rosa-holdings" \
+  --vault-name "kv-tvs-holdings" \
   --name "fabric-client-secret" \
   --value "${FABRIC_CLIENT_SECRET}"
 
 az keyvault secret set \
-  --vault-name "kv-rosa-holdings" \
+  --vault-name "kv-tvs-holdings" \
   --name "firebase-service-account" \
   --file "./secrets/firebase-sa.json" \
   --encoding utf-8
 
 # Retrieve secrets
 az keyvault secret show \
-  --vault-name "kv-rosa-holdings" \
+  --vault-name "kv-tvs-holdings" \
   --name "stripe-api-key-tvs" \
   --query "value" \
   --output tsv
 
 # List all secrets (names only)
 az keyvault secret list \
-  --vault-name "kv-rosa-holdings" \
+  --vault-name "kv-tvs-holdings" \
   --query "[].name" \
   --output tsv
 
 # Set access policy for Function App managed identity
 az keyvault set-policy \
-  --name "kv-rosa-holdings" \
+  --name "kv-tvs-holdings" \
   --object-id "${FUNC_APP_IDENTITY_ID}" \
   --secret-permissions get list
 
 # Rotate secret and update version
 az keyvault secret set \
-  --vault-name "kv-rosa-holdings" \
+  --vault-name "kv-tvs-holdings" \
   --name "graph-api-client-secret" \
   --value "${NEW_CLIENT_SECRET}" \
   --tags "rotated=$(date -I)" "entity=consolidated"
 ```
 
-## Azure Functions Deployment (func-rosa-ingest)
+## Azure Functions Deployment (func-tvs-ingest)
 
 ```bash
 # Create Function App
 az functionapp create \
-  --name "func-rosa-ingest" \
-  --resource-group "rg-rosa-consolidated-prod" \
-  --storage-account "strosaconsolidated" \
+  --name "func-tvs-ingest" \
+  --resource-group "rg-tvs-consolidated-prod" \
+  --storage-account "sttvsconsolidated" \
   --consumption-plan-location "eastus2" \
   --runtime "node" \
   --runtime-version "20" \
@@ -143,33 +143,33 @@ az functionapp create \
 
 # Deploy function code
 az functionapp deployment source config-zip \
-  --name "func-rosa-ingest" \
-  --resource-group "rg-rosa-consolidated-prod" \
-  --src "./functions/func-rosa-ingest.zip"
+  --name "func-tvs-ingest" \
+  --resource-group "rg-tvs-consolidated-prod" \
+  --src "./functions/func-tvs-ingest.zip"
 
 # Configure app settings
 az functionapp config appsettings set \
-  --name "func-rosa-ingest" \
-  --resource-group "rg-rosa-consolidated-prod" \
+  --name "func-tvs-ingest" \
+  --resource-group "rg-tvs-consolidated-prod" \
   --settings \
     "FABRIC_WORKSPACE_ID=ws-consolidated-prod-id" \
-    "STRIPE_WEBHOOK_SECRET=@Microsoft.KeyVault(VaultName=kv-rosa-holdings;SecretName=stripe-webhook-secret)" \
+    "STRIPE_WEBHOOK_SECRET=@Microsoft.KeyVault(VaultName=kv-tvs-holdings;SecretName=stripe-webhook-secret)" \
     "FIREBASE_PROJECT_ID=a3-archive-legacy"
 
 # Enable Key Vault references
 az functionapp identity assign \
-  --name "func-rosa-ingest" \
-  --resource-group "rg-rosa-consolidated-prod"
+  --name "func-tvs-ingest" \
+  --resource-group "rg-tvs-consolidated-prod"
 
 # List function keys
 az functionapp keys list \
-  --name "func-rosa-ingest" \
-  --resource-group "rg-rosa-consolidated-prod"
+  --name "func-tvs-ingest" \
+  --resource-group "rg-tvs-consolidated-prod"
 
 # View function logs (live tail)
 az functionapp log tail \
-  --name "func-rosa-ingest" \
-  --resource-group "rg-rosa-consolidated-prod"
+  --name "func-tvs-ingest" \
+  --resource-group "rg-tvs-consolidated-prod"
 ```
 
 ## Static Web App (Broker Portal)
@@ -177,11 +177,11 @@ az functionapp log tail \
 ```bash
 # Create Static Web App
 az staticwebapp create \
-  --name "swa-rosa-broker-portal" \
-  --resource-group "rg-rosa-tvs-prod" \
+  --name "swa-tvs-broker-portal" \
+  --resource-group "rg-tvs-tvs-prod" \
   --location "eastus2" \
   --sku "Standard" \
-  --source "https://github.com/rosa-holdings/broker-portal" \
+  --source "https://github.com/tvs-holdings/broker-portal" \
   --branch "main" \
   --app-location "/app" \
   --output-location "/dist" \
@@ -189,29 +189,29 @@ az staticwebapp create \
 
 # Deploy from local build
 az staticwebapp deploy \
-  --name "swa-rosa-broker-portal" \
-  --resource-group "rg-rosa-tvs-prod" \
+  --name "swa-tvs-broker-portal" \
+  --resource-group "rg-tvs-tvs-prod" \
   --app-location "./dist" \
   --api-location "./api/dist"
 
 # Configure custom domain
 az staticwebapp hostname set \
-  --name "swa-rosa-broker-portal" \
-  --resource-group "rg-rosa-tvs-prod" \
-  --hostname "broker.tvs.rosah.com"
+  --name "swa-tvs-broker-portal" \
+  --resource-group "rg-tvs-tvs-prod" \
+  --hostname "broker.tvs.tvsh.com"
 
 # Set environment variables
 az staticwebapp appsettings set \
-  --name "swa-rosa-broker-portal" \
-  --resource-group "rg-rosa-tvs-prod" \
+  --name "swa-tvs-broker-portal" \
+  --resource-group "rg-tvs-tvs-prod" \
   --setting-names \
-    "VITE_API_URL=https://func-rosa-ingest.azurewebsites.net" \
+    "VITE_API_URL=https://func-tvs-ingest.azurewebsites.net" \
     "VITE_STRIPE_PK=pk_live_xxxx"
 
 # Create staging environment from PR
 az staticwebapp environment list \
-  --name "swa-rosa-broker-portal" \
-  --resource-group "rg-rosa-tvs-prod"
+  --name "swa-tvs-broker-portal" \
+  --resource-group "rg-tvs-tvs-prod"
 ```
 
 ## Application Insights & Monitoring
@@ -219,15 +219,15 @@ az staticwebapp environment list \
 ```bash
 # Create Application Insights
 az monitor app-insights component create \
-  --app "ai-rosa-consolidated" \
+  --app "ai-tvs-consolidated" \
   --location "eastus2" \
-  --resource-group "rg-rosa-consolidated-prod" \
+  --resource-group "rg-tvs-consolidated-prod" \
   --kind "web" \
   --application-type "web"
 
 # Query logs (KQL)
 az monitor app-insights query \
-  --app "ai-rosa-consolidated" \
+  --app "ai-tvs-consolidated" \
   --analytics-query "
     requests
     | where timestamp > ago(1h)
@@ -238,9 +238,9 @@ az monitor app-insights query \
 
 # Create alert rule
 az monitor metrics alert create \
-  --name "alert-func-rosa-ingest-errors" \
-  --resource-group "rg-rosa-consolidated-prod" \
-  --scopes "/subscriptions/{sub-id}/resourceGroups/rg-rosa-consolidated-prod/providers/Microsoft.Web/sites/func-rosa-ingest" \
+  --name "alert-func-tvs-ingest-errors" \
+  --resource-group "rg-tvs-consolidated-prod" \
+  --scopes "/subscriptions/{sub-id}/resourceGroups/rg-tvs-consolidated-prod/providers/Microsoft.Web/sites/func-tvs-ingest" \
   --condition "count requests/failed > 10" \
   --window-size "5m" \
   --evaluation-frequency "1m" \
@@ -248,8 +248,8 @@ az monitor metrics alert create \
 
 # Get live metrics stream connection string
 az monitor app-insights component show \
-  --app "ai-rosa-consolidated" \
-  --resource-group "rg-rosa-consolidated-prod" \
+  --app "ai-tvs-consolidated" \
+  --resource-group "rg-tvs-consolidated-prod" \
   --query "connectionString" \
   --output tsv
 ```
@@ -259,7 +259,7 @@ az monitor app-insights component show \
 ```bash
 # Create app registration for Fabric API access
 az ad app create \
-  --display-name "rosa-fabric-automation" \
+  --display-name "tvs-fabric-automation" \
   --sign-in-audience "AzureADMyOrg" \
   --required-resource-accesses '[{
     "resourceAppId": "00000003-0000-0000-c000-000000000000",
@@ -284,7 +284,7 @@ az ad sp create --id "${APP_ID}"
 az role assignment create \
   --assignee "${APP_ID}" \
   --role "Contributor" \
-  --scope "/subscriptions/{sub-id}/resourceGroups/rg-rosa-consolidated-prod"
+  --scope "/subscriptions/{sub-id}/resourceGroups/rg-tvs-consolidated-prod"
 ```
 
 ## Common Deployment Script
@@ -295,7 +295,7 @@ set -euo pipefail
 
 ENTITY="${1:?Usage: deploy.sh <entity> <env>}"
 ENV="${2:?Usage: deploy.sh <entity> <env>}"
-RG="rg-rosa-${ENTITY}-${ENV}"
+RG="rg-tvs-${ENTITY}-${ENV}"
 TIMESTAMP=$(date +%Y%m%d%H%M%S)
 
 echo "Deploying to ${RG}..."

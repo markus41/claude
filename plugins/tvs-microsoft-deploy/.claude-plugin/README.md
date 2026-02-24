@@ -58,7 +58,7 @@ az login --tenant $TVS_TENANT_ID
 | `/tvs:extract-a3` | A3 Firebase bulk extraction (Week 1 critical path) |
 | `/tvs:normalize-carriers` | Carrier normalization sprint for TAIA sale |
 | `/tvs:deploy-teams` | Teams VA workspace with HIPAA config |
-| `/tvs:cost-report` | Cost analysis across all Rosa entities |
+| `/tvs:cost-report` | Cost analysis across all TVS entities |
 | `/tvs:status-check` | Health check across all resources |
 | `/tvs:taia-readiness` | TAIA wind-down readiness from control-plane overlays |
 | `/tvs:browser-fallback` | Playwright fallback for portal operations |
@@ -85,7 +85,7 @@ az login --tenant $TVS_TENANT_ID
 | Skill | Auto-triggers |
 |-------|--------------|
 | pac-cli | `*.solution`, `dataverse/**`, `pages/**`, `copilot-studio/**` |
-| az-cli | `*.bicep`, `infra/**`, `*.arm`, `rg-rosa-*` |
+| az-cli | `*.bicep`, `infra/**`, `*.arm`, `rg-tvs-*` |
 | fabric-rest | `fabric/**`, `*.ipynb`, `onelake/**` |
 | graph-api | `identity/**`, `teams/**`, `entra/**` |
 | power-automate-rest | `flows/**`, `*.flow.json` |

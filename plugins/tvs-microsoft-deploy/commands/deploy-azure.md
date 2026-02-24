@@ -12,7 +12,7 @@ allowed-tools:
 
 # Azure Infrastructure Deployment
 
-Deploys Azure infrastructure for Rosa Holdings using Bicep templates. Provisions Key Vault (`kv-rosa-holdings`), Azure Functions (`func-rosa-ingest`), Static Web Apps (`stapp-broker-*`), and Application Insights for monitoring. All resources deployed to a single resource group with consistent tagging.
+Deploys Azure infrastructure for TVS Holdings using Bicep templates. Provisions Key Vault (`kv-tvs-holdings`), Azure Functions (`func-tvs-ingest`), Static Web Apps (`stapp-broker-*`), and Application Insights for monitoring. All resources deployed to a single resource group with consistent tagging.
 
 ## Usage
 
@@ -53,9 +53,9 @@ done
 ### Phase 1: EXPLORE (2 agents)
 
 **Agent 1 - Resource Inventory:**
-- List existing resource groups: `az group list --query "[?starts_with(name,'rg-rosa')]"`
+- List existing resource groups: `az group list --query "[?starts_with(name,'rg-tvs')]"`
 - Enumerate resources in target group: Key Vaults, Function Apps, Static Web Apps, App Insights
-- Check for name availability: `az keyvault check-name --name kv-rosa-holdings`
+- Check for name availability: `az keyvault check-name --name kv-tvs-holdings`
 - Verify quota availability for Function App plan and Static Web App SKU
 - Check for resource locks that would prevent deployment
 
@@ -70,12 +70,12 @@ done
 
 **Agent 3 - Infrastructure Planner:**
 - Design resource deployment manifest:
-  - Resource Group: `rg-rosa-holdings` (East US)
-  - Key Vault: `kv-rosa-holdings` (RBAC mode, soft-delete enabled)
-  - Function App: `func-rosa-ingest` (Consumption plan, Node.js 20, system-assigned identity)
+  - Resource Group: `rg-tvs-holdings` (East US)
+  - Key Vault: `kv-tvs-holdings` (RBAC mode, soft-delete enabled)
+  - Function App: `func-tvs-ingest` (Consumption plan, Node.js 20, system-assigned identity)
   - Static Web App: `stapp-broker-portal` (Standard tier, custom domain ready)
   - Static Web App: `stapp-broker-dashboard` (Standard tier)
-  - App Insights: `ai-rosa-holdings` (workspace-based, Log Analytics workspace)
+  - App Insights: `ai-tvs-holdings` (workspace-based, Log Analytics workspace)
 - Plan Bicep parameter files per environment (dev, staging, prod)
 - Design Key Vault secret structure:
   - `stripe-secret-key`, `stripe-webhook-secret`
@@ -89,11 +89,11 @@ done
 
 **Agent 4 - Bicep Deployer:**
 - Validate Bicep templates: `az bicep build --file infra/main.bicep`
-- Deploy resource group: `az group create --name rg-rosa-holdings --location eastus`
+- Deploy resource group: `az group create --name rg-tvs-holdings --location eastus`
 - Deploy infrastructure via Bicep:
   ```bash
   az deployment group create \
-    --resource-group rg-rosa-holdings \
+    --resource-group rg-tvs-holdings \
     --template-file plugins/tvs-microsoft-deploy/infra/main.bicep \
     --parameters plugins/tvs-microsoft-deploy/infra/parameters.prod.json
   ```
@@ -120,13 +120,13 @@ done
 **Agent 6 - Infrastructure Tester:**
 - Verify resource group exists with correct tags
 - Test Key Vault: create and retrieve a test secret
-- Verify Function App responds: `curl https://func-rosa-ingest.azurewebsites.net/api/health`
+- Verify Function App responds: `curl https://func-tvs-ingest.azurewebsites.net/api/health`
 - Confirm Static Web Apps return 200 on root URL
 - Verify App Insights is receiving telemetry from Function App
 - Check managed identity can read Key Vault secrets
 
 **Agent 7 - Integration Tester:**
-- Send test Stripe webhook to `func-rosa-ingest/api/stripe-webhook`
+- Send test Stripe webhook to `func-tvs-ingest/api/stripe-webhook`
 - Verify function processes event and logs to App Insights
 - Test Key Vault reference resolution in Function App settings
 - Confirm Static Web App serves portal assets correctly

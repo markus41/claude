@@ -1,6 +1,6 @@
 ---
 name: tvs:cost-report
-description: Cost analysis across all Rosa Holdings entities with tier projections
+description: Cost analysis across all TVS Holdings entities with tier projections
 allowed-tools:
   - Bash
   - Read
@@ -11,7 +11,7 @@ allowed-tools:
 
 # Cost Report
 
-Calculates current Microsoft 365 + Azure + Fabric costs across all Rosa Holdings entities. Projects costs by tier and generates markdown report.
+Calculates current Microsoft 365 + Azure + Fabric costs across all TVS Holdings entities. Projects costs by tier and generates markdown report.
 
 ## Usage
 
@@ -36,7 +36,7 @@ az consumption usage list --top 5 2>/dev/null && echo "Cost API accessible"
 
 **Agent 1: azure-agent** (sonnet)
 - Query Azure Cost Management API for current spend
-- List all resources by resource group (rg-rosa-*)
+- List all resources by resource group (rg-tvs-*)
 - Identify top cost drivers
 
 **Agent 2: analytics-agent** (opus)
@@ -121,7 +121,7 @@ Post-sale (est. June 2026):
 ## Output
 
 ```
-Rosa Holdings Cost Report — February 2026
+TVS Holdings Cost Report — February 2026
 
 Current Monthly: $1,349 (Tier 1)
 Projected Tier 2: $2,610 (+93%)

@@ -45,7 +45,7 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           az deployment group what-if \
-            --resource-group rg-rosa-holdings-${{ matrix.environment }} \
+            --resource-group rg-tvs-holdings-${{ matrix.environment }} \
             --template-file infra/main.bicep \
             --parameters environment=${{ matrix.environment }}
 
@@ -53,7 +53,7 @@ jobs:
         if: github.event_name != 'pull_request'
         run: |
           az deployment group create \
-            --resource-group rg-rosa-holdings-${{ matrix.environment }} \
+            --resource-group rg-tvs-holdings-${{ matrix.environment }} \
             --template-file infra/main.bicep \
             --parameters environment=${{ matrix.environment }} \
             --name "deploy-$(date +%Y%m%d-%H%M%S)"

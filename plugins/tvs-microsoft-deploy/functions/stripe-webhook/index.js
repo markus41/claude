@@ -83,9 +83,9 @@ class DataverseClient {
   async findSubscription(stripeSubscriptionId) {
     const result = await this.request(
       "GET",
-      "rosa_subscriptions",
+      "tvs_subscriptions",
       null,
-      `rosa_stripesubscriptionid eq '${stripeSubscriptionId}'`
+      `tvs_stripesubscriptionid eq '${stripeSubscriptionId}'`
     );
     return result?.value?.[0] || null;
   }
@@ -93,9 +93,9 @@ class DataverseClient {
   async findAccountByStripeCustomer(stripeCustomerId) {
     const result = await this.request(
       "GET",
-      "rosa_accounts",
+      "tvs_accounts",
       null,
-      `rosa_stripecustomerid eq '${stripeCustomerId}'`
+      `tvs_stripecustomerid eq '${stripeCustomerId}'`
     );
     return result?.value?.[0] || null;
   }
@@ -103,24 +103,24 @@ class DataverseClient {
   async updateSubscription(subscriptionId, data) {
     return this.request(
       "PATCH",
-      `rosa_subscriptions(${subscriptionId})`,
+      `tvs_subscriptions(${subscriptionId})`,
       data
     );
   }
 
   async createSubscription(data) {
-    return this.request("POST", "rosa_subscriptions", data);
+    return this.request("POST", "tvs_subscriptions", data);
   }
 
   async updateAccount(accountId, data) {
-    return this.request("PATCH", `rosa_accounts(${accountId})`, data);
+    return this.request("PATCH", `tvs_accounts(${accountId})`, data);
   }
 
   async logAutomation(data) {
-    return this.request("POST", "rosa_automationlogs", {
-      rosa_flowname: "stripe-webhook",
-      rosa_triggertype: 100000003, // Webhook
-      rosa_executedat: new Date().toISOString(),
+    return this.request("POST", "tvs_automationlogs", {
+      tvs_flowname: "stripe-webhook",
+      tvs_triggertype: 100000003, // Webhook
+      tvs_executedat: new Date().toISOString(),
       ...data,
     });
   }
@@ -150,30 +150,30 @@ async function handleCheckoutCompleted(session, dv, context) {
   const existing = await dv.findSubscription(subscriptionId);
   if (existing) {
     context.log(`Subscription ${subscriptionId} already exists, updating.`);
-    await dv.updateSubscription(existing.rosa_subscriptionid, {
-      rosa_status: STATUS_MAP.active,
-      rosa_tier: tierInfo.tier,
-      rosa_monthlyhours: tierInfo.hours,
+    await dv.updateSubscription(existing.tvs_subscriptionid, {
+      tvs_status: STATUS_MAP.active,
+      tvs_tier: tierInfo.tier,
+      tvs_monthlyhours: tierInfo.hours,
     });
     return { action: "updated", subscriptionId };
   }
 
   // Create new subscription record
   await dv.createSubscription({
-    rosa_name: `${account.rosa_name} - ${tierInfo.label} Subscription`,
-    "rosa_accountid@odata.bind": `/rosa_accounts(${account.rosa_accountid})`,
-    rosa_stripesubscriptionid: subscriptionId,
-    rosa_tier: tierInfo.tier,
-    rosa_monthlyhours: tierInfo.hours,
-    rosa_startdate: new Date().toISOString().split("T")[0],
-    rosa_status: STATUS_MAP.active,
+    tvs_name: `${account.tvs_name} - ${tierInfo.label} Subscription`,
+    "tvs_accountid@odata.bind": `/tvs_accounts(${account.tvs_accountid})`,
+    tvs_stripesubscriptionid: subscriptionId,
+    tvs_tier: tierInfo.tier,
+    tvs_monthlyhours: tierInfo.hours,
+    tvs_startdate: new Date().toISOString().split("T")[0],
+    tvs_status: STATUS_MAP.active,
   });
 
   // Update account tier
-  await dv.updateAccount(account.rosa_accountid, {
-    rosa_tier: tierInfo.tier,
-    rosa_monthlyhours: tierInfo.hours,
-    rosa_status: 100000002, // Active
+  await dv.updateAccount(account.tvs_accountid, {
+    tvs_tier: tierInfo.tier,
+    tvs_monthlyhours: tierInfo.hours,
+    tvs_status: 100000002, // Active
   });
 
   return { action: "created", subscriptionId, tier: tierInfo.label };
@@ -191,8 +191,8 @@ async function handleSubscriptionUpdated(subscription, dv, context) {
   const tierInfo = priceId ? TIER_MAP[priceId] : null;
 
   const updateData = {
-    rosa_status: status,
-    rosa_currentperiodend: new Date(
+    tvs_status: status,
+    tvs_currentperiodend: new Date(
       subscription.current_period_end * 1000
     )
       .toISOString()
@@ -200,19 +200,19 @@ async function handleSubscriptionUpdated(subscription, dv, context) {
   };
 
   if (tierInfo) {
-    updateData.rosa_tier = tierInfo.tier;
-    updateData.rosa_monthlyhours = tierInfo.hours;
+    updateData.tvs_tier = tierInfo.tier;
+    updateData.tvs_monthlyhours = tierInfo.hours;
   }
 
   if (subscription.cancel_at_period_end) {
-    updateData.rosa_enddate = new Date(
+    updateData.tvs_enddate = new Date(
       subscription.current_period_end * 1000
     )
       .toISOString()
       .split("T")[0];
   }
 
-  await dv.updateSubscription(existing.rosa_subscriptionid, updateData);
+  await dv.updateSubscription(existing.tvs_subscriptionid, updateData);
   return { action: "updated", status: subscription.status };
 }
 
@@ -222,15 +222,15 @@ async function handleSubscriptionDeleted(subscription, dv, context) {
     return { action: "skipped", reason: "subscription not found" };
   }
 
-  await dv.updateSubscription(existing.rosa_subscriptionid, {
-    rosa_status: STATUS_MAP.canceled,
-    rosa_enddate: new Date().toISOString().split("T")[0],
+  await dv.updateSubscription(existing.tvs_subscriptionid, {
+    tvs_status: STATUS_MAP.canceled,
+    tvs_enddate: new Date().toISOString().split("T")[0],
   });
 
   // Update account status to Paused
-  if (existing._rosa_accountid_value) {
-    await dv.updateAccount(existing._rosa_accountid_value, {
-      rosa_status: 100000003, // Paused
+  if (existing._tvs_accountid_value) {
+    await dv.updateAccount(existing._tvs_accountid_value, {
+      tvs_status: 100000003, // Paused
     });
   }
 
@@ -243,9 +243,9 @@ async function handleInvoicePaymentSucceeded(invoice, dv, context) {
   const existing = await dv.findSubscription(invoice.subscription);
   if (!existing) return { action: "skipped", reason: "subscription not found" };
 
-  await dv.updateSubscription(existing.rosa_subscriptionid, {
-    rosa_status: STATUS_MAP.active,
-    rosa_monthlyprice: invoice.amount_paid / 100,
+  await dv.updateSubscription(existing.tvs_subscriptionid, {
+    tvs_status: STATUS_MAP.active,
+    tvs_monthlyprice: invoice.amount_paid / 100,
   });
 
   return { action: "payment_recorded", amount: invoice.amount_paid / 100 };
@@ -257,8 +257,8 @@ async function handleInvoicePaymentFailed(invoice, dv, context) {
   const existing = await dv.findSubscription(invoice.subscription);
   if (!existing) return { action: "skipped", reason: "subscription not found" };
 
-  await dv.updateSubscription(existing.rosa_subscriptionid, {
-    rosa_status: STATUS_MAP.past_due,
+  await dv.updateSubscription(existing.tvs_subscriptionid, {
+    tvs_status: STATUS_MAP.past_due,
   });
 
   return {
@@ -334,14 +334,14 @@ module.exports = async function (context, req) {
     // Log automation result
     const duration = Date.now() - startTime;
     await dv.logAutomation({
-      rosa_status: 100000000, // Success
-      rosa_duration: duration,
-      rosa_inputpayload: JSON.stringify({
+      tvs_status: 100000000, // Success
+      tvs_duration: duration,
+      tvs_inputpayload: JSON.stringify({
         eventId: event.id,
         eventType: event.type,
       }),
-      rosa_outputpayload: JSON.stringify(result),
-      rosa_correlationid: event.id,
+      tvs_outputpayload: JSON.stringify(result),
+      tvs_correlationid: event.id,
     }).catch((err) => {
       context.log.warn(`Failed to log automation: ${err.message}`);
     });

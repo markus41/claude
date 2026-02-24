@@ -1,5 +1,5 @@
 {
-  "name": "rosa-stripe-webhook",
+  "name": "tvs-stripe-webhook",
   "version": "1.0.0",
   "description": "Azure Function for Stripe webhook handling and Dataverse subscription sync",
   "main": "index.js",

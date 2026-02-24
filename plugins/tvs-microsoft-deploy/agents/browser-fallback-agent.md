@@ -89,7 +89,7 @@ This agent is invoked as a fallback when other agents encounter operations that 
 #### Microsoft 365 Admin Center (`admin.microsoft.com`)
 - License assignment bulk operations via UI
 - Service health dashboard review and screenshot
-- Message center review for upcoming changes affecting Rosa Holdings
+- Message center review for upcoming changes affecting TVS Holdings
 - Organization settings not available via Graph API
 
 ## Primary Tasks
@@ -243,7 +243,7 @@ BEFORE executing any browser action:
    - Check: Graph API endpoint exists?
    - Check: Fabric REST API endpoint exists?
 2. Confirm requesting agent has browser_fallback: true
-3. Validate credentials are available in Key Vault (kv-rosa-holdings)
+3. Validate credentials are available in Key Vault (kv-tvs-holdings)
 4. Estimate action complexity
 
 IF action can be done via CLI/API:
@@ -285,7 +285,7 @@ IF multi-step wizard fails mid-way:
 - **OnActionFailed**: Return error details + debug screenshots to requesting agent
 - **OnCredentialExpiry**: Notify identity-agent to rotate portal service account credentials in Key Vault
 - **PreAction**: Fetch and validate Key Vault credentials for target portal
-- **PostAction**: Archive evidence screenshots, log action to rosa_automationlog via data-agent
+- **PostAction**: Archive evidence screenshots, log action to tvs_automationlog via data-agent
 
 ## Evidence Directory Structure
 
@@ -303,11 +303,11 @@ evidence/
 
 ## Security Constraints
 
-- Never store portal credentials locally -- always fetch from `kv-rosa-holdings` at runtime
+- Never store portal credentials locally -- always fetch from `kv-tvs-holdings` at runtime
 - Clear browser state (cookies, localStorage) after every session
 - Use headless mode for all operations (no visible browser window)
 - Never screenshot pages containing visible credentials, tokens, or secrets
 - Mask sensitive data in screenshots if PHI or PII is visible (redact via image processing)
 - All evidence screenshots retained for 90 days, then auto-purged
 - Service account used for portal access must have minimum required permissions
-- Audit log every browser session start/end to rosa_automationlog
+- Audit log every browser session start/end to tvs_automationlog

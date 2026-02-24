@@ -1,14 +1,14 @@
 {
   "$schema": "https://learn.microsoft.com/en-us/rest/api/fabric/core/workspaces",
   "metadata": {
-    "organization": "Rosa Holdings",
+    "organization": "TVS Holdings",
     "capacityId": "{FABRIC_CAPACITY_ID}",
     "region": "eastus2",
-    "description": "Microsoft Fabric OneLake workspace definitions for all Rosa Holdings entities"
+    "description": "Microsoft Fabric OneLake workspace definitions for all TVS Holdings entities"
   },
   "workspaces": {
     "tvs": {
-      "displayName": "Rosa Holdings - TVS",
+      "displayName": "TVS Holdings - TVS",
       "description": "Virtual staffing operational and curated data for TVS entity",
       "capacityId": "{FABRIC_CAPACITY_ID}",
       "lakehouses": {
@@ -21,7 +21,7 @@
               "type": "Dataverse",
               "source": {
                 "environmentUrl": "org-tvs-{env}.crm.dynamics.com",
-                "tableName": "rosa_account"
+                "tableName": "tvs_account"
               },
               "targetPath": "Tables/dv_accounts"
             },
@@ -30,7 +30,7 @@
               "type": "Dataverse",
               "source": {
                 "environmentUrl": "org-tvs-{env}.crm.dynamics.com",
-                "tableName": "rosa_contact"
+                "tableName": "tvs_contact"
               },
               "targetPath": "Tables/dv_contacts"
             },
@@ -39,7 +39,7 @@
               "type": "Dataverse",
               "source": {
                 "environmentUrl": "org-tvs-{env}.crm.dynamics.com",
-                "tableName": "rosa_subscription"
+                "tableName": "tvs_subscription"
               },
               "targetPath": "Tables/dv_subscriptions"
             },
@@ -48,7 +48,7 @@
               "type": "Dataverse",
               "source": {
                 "environmentUrl": "org-tvs-{env}.crm.dynamics.com",
-                "tableName": "rosa_task"
+                "tableName": "tvs_task"
               },
               "targetPath": "Tables/dv_tasks"
             },
@@ -57,7 +57,7 @@
               "type": "Dataverse",
               "source": {
                 "environmentUrl": "org-tvs-{env}.crm.dynamics.com",
-                "tableName": "rosa_timeentry"
+                "tableName": "tvs_timeentry"
               },
               "targetPath": "Tables/dv_timeentries"
             },
@@ -66,7 +66,7 @@
               "type": "Dataverse",
               "source": {
                 "environmentUrl": "org-tvs-{env}.crm.dynamics.com",
-                "tableName": "rosa_deliverable"
+                "tableName": "tvs_deliverable"
               },
               "targetPath": "Tables/dv_deliverables"
             },
@@ -75,7 +75,7 @@
               "type": "Dataverse",
               "source": {
                 "environmentUrl": "org-tvs-{env}.crm.dynamics.com",
-                "tableName": "rosa_automationlog"
+                "tableName": "tvs_automationlog"
               },
               "targetPath": "Tables/dv_automationlog"
             }
@@ -104,7 +104,7 @@
       }
     },
     "consulting": {
-      "displayName": "Rosa Holdings - Consulting",
+      "displayName": "TVS Holdings - Consulting",
       "description": "Consulting data for Lobbi Consulting and Medicare Consulting entities",
       "capacityId": "{FABRIC_CAPACITY_ID}",
       "lakehouses": {
@@ -117,7 +117,7 @@
               "type": "Dataverse",
               "source": {
                 "environmentUrl": "org-consulting-{env}.crm.dynamics.com",
-                "tableName": "rosa_consultingaccount"
+                "tableName": "tvs_consultingaccount"
               },
               "targetPath": "Tables/dv_accounts"
             },
@@ -126,7 +126,7 @@
               "type": "Dataverse",
               "source": {
                 "environmentUrl": "org-consulting-{env}.crm.dynamics.com",
-                "tableName": "rosa_consultingcontact"
+                "tableName": "tvs_consultingcontact"
               },
               "targetPath": "Tables/dv_contacts"
             },
@@ -135,7 +135,7 @@
               "type": "Dataverse",
               "source": {
                 "environmentUrl": "org-consulting-{env}.crm.dynamics.com",
-                "tableName": "rosa_engagement"
+                "tableName": "tvs_engagement"
               },
               "targetPath": "Tables/dv_engagements"
             },
@@ -144,7 +144,7 @@
               "type": "Dataverse",
               "source": {
                 "environmentUrl": "org-consulting-{env}.crm.dynamics.com",
-                "tableName": "rosa_activity"
+                "tableName": "tvs_activity"
               },
               "targetPath": "Tables/dv_activities"
             },
@@ -153,7 +153,7 @@
               "type": "Dataverse",
               "source": {
                 "environmentUrl": "org-consulting-{env}.crm.dynamics.com",
-                "tableName": "rosa_sharedprospect"
+                "tableName": "tvs_sharedprospect"
               },
               "targetPath": "Tables/dv_sharedprospects"
             },
@@ -162,7 +162,7 @@
               "type": "Dataverse",
               "source": {
                 "environmentUrl": "org-consulting-{env}.crm.dynamics.com",
-                "tableName": "rosa_implementation"
+                "tableName": "tvs_implementation"
               },
               "targetPath": "Tables/dv_implementations"
             }
@@ -178,7 +178,7 @@
       }
     },
     "lobbi_platform": {
-      "displayName": "Rosa Holdings - Lobbi Platform",
+      "displayName": "TVS Holdings - Lobbi Platform",
       "description": "Platform-level metrics, usage analytics, and operational data for the Lobbi platform",
       "capacityId": "{FABRIC_CAPACITY_ID}",
       "lakehouses": {
@@ -199,8 +199,8 @@
       }
     },
     "media": {
-      "displayName": "Rosa Holdings - Media Company",
-      "description": "Media and content analytics for the Rosa Holdings media entity",
+      "displayName": "TVS Holdings - Media Company",
+      "description": "Media and content analytics for the TVS Holdings media entity",
       "capacityId": "{FABRIC_CAPACITY_ID}",
       "lakehouses": {
         "lh-media-analytics": {
@@ -219,7 +219,7 @@
       }
     },
     "a3_archive": {
-      "displayName": "Rosa Holdings - A3 Archive",
+      "displayName": "TVS Holdings - A3 Archive",
       "description": "Archived data extracted from TAIA's legacy A3 Firebase system",
       "capacityId": "{FABRIC_CAPACITY_ID}",
       "lakehouses": {
@@ -244,7 +244,7 @@
       }
     },
     "consolidated": {
-      "displayName": "Rosa Holdings - Consolidated",
+      "displayName": "TVS Holdings - Consolidated",
       "description": "Cross-entity consolidated views for holdings-level reporting and analytics",
       "capacityId": "{FABRIC_CAPACITY_ID}",
       "lakehouses": {
@@ -256,7 +256,7 @@
               "name": "tvs_curated",
               "type": "OneLake",
               "source": {
-                "workspaceName": "Rosa Holdings - TVS",
+                "workspaceName": "TVS Holdings - TVS",
                 "lakehouseName": "TVS Curated",
                 "path": "Tables/"
               },
@@ -266,7 +266,7 @@
               "name": "consulting_data",
               "type": "OneLake",
               "source": {
-                "workspaceName": "Rosa Holdings - Consulting",
+                "workspaceName": "TVS Holdings - Consulting",
                 "lakehouseName": "Consulting Data",
                 "path": "Tables/"
               },
@@ -276,7 +276,7 @@
               "name": "platform_metrics",
               "type": "OneLake",
               "source": {
-                "workspaceName": "Rosa Holdings - Lobbi Platform",
+                "workspaceName": "TVS Holdings - Lobbi Platform",
                 "lakehouseName": "Platform Metrics",
                 "path": "Tables/"
               },
@@ -286,7 +286,7 @@
               "name": "media_analytics",
               "type": "OneLake",
               "source": {
-                "workspaceName": "Rosa Holdings - Media Company",
+                "workspaceName": "TVS Holdings - Media Company",
                 "lakehouseName": "Media Analytics",
                 "path": "Tables/"
               },
@@ -296,7 +296,7 @@
               "name": "a3_extract",
               "type": "OneLake",
               "source": {
-                "workspaceName": "Rosa Holdings - A3 Archive",
+                "workspaceName": "TVS Holdings - A3 Archive",
                 "lakehouseName": "A3 Extract",
                 "path": "Tables/"
               },

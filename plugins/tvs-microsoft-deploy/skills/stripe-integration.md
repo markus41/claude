@@ -4,7 +4,7 @@ description: This skill should be used when working with stripe/**, billing/**, 
 version: 1.0.0
 ---
 
-# Stripe Integration for ROSA Holdings
+# Stripe Integration for TVS Holdings
 
 Complete reference for Stripe API operations supporting TVS Motor broker subscription tiers and VA time-tracking billing.
 
@@ -20,7 +20,7 @@ Complete reference for Stripe API operations supporting TVS Motor broker subscri
 
 ```bash
 # All Stripe API calls use Bearer auth
-# Secret key stored in kv-rosa-holdings as "stripe-api-key-tvs"
+# Secret key stored in kv-tvs-holdings as "stripe-api-key-tvs"
 STRIPE_SK="sk_live_xxxx"  # Retrieved from Key Vault at runtime
 STRIPE="https://api.stripe.com/v1"
 AUTH="Authorization: Bearer ${STRIPE_SK}"
@@ -35,7 +35,7 @@ curl -s -X POST "${STRIPE}/products" \
   -d "name=TVS Motor Broker Services" \
   -d "description=Virtual assistant services for TVS Motor broker operations" \
   -d "metadata[entity]=tvs" \
-  -d "metadata[managed_by]=rosa-deploy"
+  -d "metadata[managed_by]=tvs-deploy"
 
 # Create Starter tier price ($360/mo)
 curl -s -X POST "${STRIPE}/prices" \
@@ -98,7 +98,7 @@ curl -s -X POST "${STRIPE}/customers" \
   -H "${AUTH}" \
   -d "name=Acme Brokerage LLC" \
   -d "email=billing@acmebrokerage.com" \
-  -d "metadata[broker_id]=rosa_broker_001" \
+  -d "metadata[broker_id]=tvs_broker_001" \
   -d "metadata[entity]=tvs" \
   -d "metadata[dataverse_id]=${DATAVERSE_BROKER_GUID}" \
   -d "tax_id_data[0][type]=us_ein" \
@@ -137,7 +137,7 @@ curl -s -X POST "${STRIPE}/subscriptions" \
   -d "expand[]=latest_invoice.payment_intent" \
   -d "metadata[entity]=tvs" \
   -d "metadata[tier]=starter" \
-  -d "metadata[broker_id]=rosa_broker_001"
+  -d "metadata[broker_id]=tvs_broker_001"
 ```
 
 ### Upgrade/Downgrade Tier
@@ -204,7 +204,7 @@ curl -s "${STRIPE}/subscription_items/${OVERAGE_ITEM_ID}/usage_record_summaries?
   | jq '.data[] | {period: .period, total_usage: .total_usage, invoice: .invoice}'
 
 # Batch report usage (multiple VAs, via Azure Function)
-# POST to func-rosa-ingest/api/report-time
+# POST to func-tvs-ingest/api/report-time
 # Body: [{"va_id": "juan.reyes.va", "hours": 3, "date": "2026-02-24", "task": "broker_onboarding"}]
 ```
 
@@ -260,14 +260,14 @@ export async function handleStripeWebhook(req: Request): Promise<Response> {
 # Create webhook endpoint
 curl -s -X POST "${STRIPE}/webhook_endpoints" \
   -H "${AUTH}" \
-  -d "url=https://func-rosa-ingest.azurewebsites.net/api/stripe-webhook" \
+  -d "url=https://func-tvs-ingest.azurewebsites.net/api/stripe-webhook" \
   -d "enabled_events[]=customer.subscription.created" \
   -d "enabled_events[]=customer.subscription.updated" \
   -d "enabled_events[]=customer.subscription.deleted" \
   -d "enabled_events[]=invoice.payment_succeeded" \
   -d "enabled_events[]=invoice.payment_failed" \
   -d "enabled_events[]=customer.created" \
-  -d "description=ROSA Holdings TVS ingest function" \
+  -d "description=TVS Holdings TVS ingest function" \
   -d "metadata[entity]=tvs"
 ```
 
@@ -278,8 +278,8 @@ curl -s -X POST "${STRIPE}/webhook_endpoints" \
 curl -s -X POST "${STRIPE}/billing_portal/configurations" \
   -H "${AUTH}" \
   -d "business_profile[headline]=TVS Motor Broker Services" \
-  -d "business_profile[privacy_policy_url]=https://broker.tvs.rosah.com/privacy" \
-  -d "business_profile[terms_of_service_url]=https://broker.tvs.rosah.com/terms" \
+  -d "business_profile[privacy_policy_url]=https://broker.tvs.tvsh.com/privacy" \
+  -d "business_profile[terms_of_service_url]=https://broker.tvs.tvsh.com/terms" \
   -d "features[subscription_update][enabled]=true" \
   -d "features[subscription_update][default_allowed_updates][]=price" \
   -d "features[subscription_update][proration_behavior]=create_prorations" \
@@ -296,7 +296,7 @@ curl -s -X POST "${STRIPE}/billing_portal/configurations" \
 curl -s -X POST "${STRIPE}/billing_portal/sessions" \
   -H "${AUTH}" \
   -d "customer=${CUSTOMER_ID}" \
-  -d "return_url=https://broker.tvs.rosah.com/dashboard"
+  -d "return_url=https://broker.tvs.tvsh.com/dashboard"
 # Returns: { "url": "https://billing.stripe.com/session/xxx" }
 ```
 

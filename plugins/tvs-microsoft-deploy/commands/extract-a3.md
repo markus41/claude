@@ -12,7 +12,7 @@ allowed-tools:
 
 # A3 Firebase Extraction
 
-CRITICAL PATH - WEEK 1 PRIORITY. Bulk extracts all data from the A3 Firebase database (brokers, commissions, carriers, contacts, activities) and loads it into the `rosa-a3-archive` OneLake lakehouse. This is the foundational data migration step for TAIA wind-down and carrier normalization.
+CRITICAL PATH - WEEK 1 PRIORITY. Bulk extracts all data from the A3 Firebase database (brokers, commissions, carriers, contacts, activities) and loads it into the `tvs-a3-archive` OneLake lakehouse. This is the foundational data migration step for TAIA wind-down and carrier normalization.
 
 ## Usage
 
@@ -32,7 +32,7 @@ CRITICAL PATH - WEEK 1 PRIORITY. Bulk extracts all data from the A3 Firebase dat
 [ -z "$FABRIC_TOKEN" ] && { echo "FAIL: FABRIC_TOKEN not set"; exit 1; }
 
 # 3. TVS workspace ID (for a3_archive lakehouse)
-[ -z "$TVS_WS_ID" ] && { echo "FAIL: TVS_WS_ID not set (rosa-a3-archive workspace ID)"; exit 1; }
+[ -z "$TVS_WS_ID" ] && { echo "FAIL: TVS_WS_ID not set (tvs-a3-archive workspace ID)"; exit 1; }
 
 # 4. Verify Firebase connectivity
 python3 -c "
@@ -64,7 +64,7 @@ python3 -c "import firebase_admin; import pandas" 2>/dev/null \
 - Check for Firestore security rules that may restrict service account access
 
 **Agent 2 - OneLake Target Validator:**
-- Verify `rosa-a3-archive` workspace and lakehouse exist in Fabric
+- Verify `tvs-a3-archive` workspace and lakehouse exist in Fabric
 - Check existing tables in lakehouse (from prior extraction runs)
 - Estimate storage requirements: document count x avg document size
 - Verify lakehouse Tables directory is writable via Spark or REST API
@@ -163,7 +163,7 @@ python3 -c "import firebase_admin; import pandas" 2>/dev/null \
 
 ## Orchestration Hook
 
-Governed by `orchestration-protocol-enforcer` hook. Minimum 6 sub-agents enforced. A3 extraction has no upstream Rosa deployment dependencies but must complete before `tvs:normalize-carriers` can execute.
+Governed by `orchestration-protocol-enforcer` hook. Minimum 6 sub-agents enforced. A3 extraction has no upstream TVS deployment dependencies but must complete before `tvs:normalize-carriers` can execute.
 
 ## A3 Firebase Schema Reference
 

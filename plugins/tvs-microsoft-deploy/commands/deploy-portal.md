@@ -12,7 +12,7 @@ allowed-tools:
 
 # Power Pages + Copilot Studio Deployment
 
-Deploys the Rosa broker portal on Power Pages with integrated Stripe billing widget for subscription management (Starter $360/20hrs, Basic $640/40hrs, Advanced $1200/80hrs). Deploys Copilot Studio conversational bots for broker self-service and VA task intake.
+Deploys the TVS broker portal on Power Pages with integrated Stripe billing widget for subscription management (Starter $360/20hrs, Basic $640/40hrs, Advanced $1200/80hrs). Deploys Copilot Studio conversational bots for broker self-service and VA task intake.
 
 ## Usage
 
@@ -33,7 +33,7 @@ pac auth list | grep -q "Active" || { echo "FAIL: pac auth required"; exit 1; }
 curl -sf -u "$STRIPE_SECRET_KEY:" "https://api.stripe.com/v1/products" > /dev/null \
   || { echo "FAIL: Stripe API key invalid"; exit 1; }
 
-# 4. Verify Stripe products exist for Rosa tiers
+# 4. Verify Stripe products exist for TVS tiers
 PRODUCTS=$(curl -s -u "$STRIPE_SECRET_KEY:" "https://api.stripe.com/v1/products?active=true" \
   | jq -r '.data[].name')
 for tier in "Starter" "Basic" "Advanced"; do
@@ -51,7 +51,7 @@ done
 **Agent 1 - Portal Auditor:**
 - Check for existing Power Pages sites via `pac pages list`
 - Enumerate existing portal web roles, entity permissions, web templates
-- Verify Dataverse tables required by portal (rosa_account, rosa_subscription, rosa_contact) exist
+- Verify Dataverse tables required by portal (tvs_account, tvs_subscription, tvs_contact) exist
 - Check for existing portal custom JavaScript and CSS assets
 - Identify any active portal that would conflict with new deployment
 
@@ -87,7 +87,7 @@ done
 **Agent 4 - Portal Deployer:**
 - Create Power Pages site via `pac pages create` or PAC CLI
 - Deploy web templates for each page (HTML/Liquid templates)
-- Configure entity permissions: rosa_account (read own), rosa_task (read/create own), rosa_subscription (read own)
+- Configure entity permissions: tvs_account (read own), tvs_task (read/create own), tvs_subscription (read own)
 - Set up web roles: Broker, BrokerAdmin
 - Deploy custom JavaScript for Stripe widget embed:
   ```javascript
@@ -98,18 +98,18 @@ done
   });
   ```
 - Configure site settings: authentication (Entra ID), theme, branding
-- Deploy CSS customizations for Rosa branding
+- Deploy CSS customizations for TVS branding
 
 **Agent 5 - Copilot + Stripe Deployer:**
 - Create Copilot Studio bot via Power Virtual Agents APIs
 - Configure bot authentication with Entra ID SSO
 - Build conversation topics:
-  - Task Status: queries rosa_task by logged-in contact, returns status summary
-  - Create Task: collects title, description, priority; creates rosa_task record
-  - Billing Inquiry: fetches rosa_subscription, reports hours used vs. allocated
+  - Task Status: queries tvs_task by logged-in contact, returns status summary
+  - Create Task: collects title, description, priority; creates tvs_task record
+  - Billing Inquiry: fetches tvs_subscription, reports hours used vs. allocated
   - Plan Upgrade: triggers Stripe checkout session for plan change
 - Create/verify Stripe products and prices if missing
-- Deploy Azure Function `func-rosa-ingest` endpoint for Stripe webhooks
+- Deploy Azure Function `func-tvs-ingest` endpoint for Stripe webhooks
 - Configure Stripe webhook to call function on `customer.subscription.updated` events
 - Embed Copilot bot iframe in portal Support page
 
@@ -119,7 +119,7 @@ done
 - Verify portal loads at configured URL without errors
 - Test authentication flow: Entra ID login redirects to portal dashboard
 - Confirm dashboard shows subscription data from Dataverse
-- Test task list page renders rosa_task records for logged-in broker
+- Test task list page renders tvs_task records for logged-in broker
 - Verify Stripe billing widget loads and displays current plan
 - Test entity permissions: Broker cannot see other brokers' data
 
@@ -127,7 +127,7 @@ done
 - Interact with Copilot Studio bot: send test messages for each topic
 - Verify bot retrieves correct task status from Dataverse
 - Test task creation via bot, confirm record appears in Dataverse
-- Send test Stripe webhook event, verify rosa_subscription updates in Dataverse
+- Send test Stripe webhook event, verify tvs_subscription updates in Dataverse
 - Test Stripe Customer Portal link generation and redirect
 - Confirm billing page shows correct tier pricing
 
@@ -158,6 +158,6 @@ Governed by `orchestration-protocol-enforcer` hook. Minimum 5 sub-agents enforce
 
 | Plan | Monthly | VA Hours | Stripe Product |
 |------|---------|----------|----------------|
-| Starter | $360 | 20 hrs | prod_rosa_starter |
-| Basic | $640 | 40 hrs | prod_rosa_basic |
-| Advanced | $1,200 | 80 hrs | prod_rosa_advanced |
+| Starter | $360 | 20 hrs | prod_tvs_starter |
+| Basic | $640 | 40 hrs | prod_tvs_basic |
+| Advanced | $1,200 | 80 hrs | prod_tvs_advanced |

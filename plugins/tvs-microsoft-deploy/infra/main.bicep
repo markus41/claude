@@ -1,7 +1,7 @@
 // ============================================================================
-// Rosa Holdings - Main Bicep Deployment
-// Deploys all Azure infrastructure for the Rosa Holdings multi-entity platform
-// Resource Group: rg-rosa-holdings-{env}
+// TVS Holdings - Main Bicep Deployment
+// Deploys all Azure infrastructure for the TVS Holdings multi-entity platform
+// Resource Group: rg-tvs-holdings-{env}
 // ============================================================================
 
 targetScope = 'resourceGroup'
@@ -16,14 +16,14 @@ param environment string
 param location string = resourceGroup().location
 
 @description('Base name prefix for all resources')
-param baseName string = 'rosa-holdings'
+param baseName string = 'tvs-holdings'
 
 @description('Tags applied to all resources')
 param tags object = {
-  'entity': 'rosa-holdings'
+  'entity': 'tvs-holdings'
   'managed-by': 'bicep'
   'environment': environment
-  'project': 'rosa-microsoft-deploy'
+  'project': 'tvs-microsoft-deploy'
 }
 
 @description('Broker portal custom domain (optional)')
@@ -35,16 +35,16 @@ param staticWebAppSku string = environment == 'prod' ? 'Standard' : 'Free'
 
 @description('Functions app allowed CORS origins')
 param corsOrigins array = environment == 'prod'
-  ? ['https://broker.rosaholdings.com']
+  ? ['https://broker.tvsholdings.com']
   : ['http://localhost:3000', 'https://stapp-broker-portal-${environment}.azurestaticapps.net']
 
 // ── Variables ───────────────────────────────────────────────────────────────
 
-var keyVaultName = 'kv-rosa-holdings-${environment}'
-var functionAppName = 'func-rosa-ingest-${environment}'
+var keyVaultName = 'kv-tvs-holdings-${environment}'
+var functionAppName = 'func-tvs-ingest-${environment}'
 var staticWebAppName = 'stapp-broker-portal-${environment}'
-var appInsightsName = 'appi-rosa-holdings-${environment}'
-var logAnalyticsName = 'log-rosa-holdings-${environment}'
+var appInsightsName = 'appi-tvs-holdings-${environment}'
+var logAnalyticsName = 'log-tvs-holdings-${environment}'
 
 // ── Modules ─────────────────────────────────────────────────────────────────
 

@@ -1,5 +1,5 @@
 // ============================================================================
-// Rosa Holdings - Static Web App Module
+// TVS Holdings - Static Web App Module
 // Creates stapp-broker-portal-{env} for the broker portal SPA
 // Free tier for dev, Standard for prod. API backend linked to Functions app.
 // ============================================================================
@@ -51,7 +51,7 @@ resource staticWebApp 'Microsoft.Web/staticSites@2023-01-01' = {
 
 resource apiBackend 'Microsoft.Web/staticSites/linkedBackends@2023-01-01' = {
   parent: staticWebApp
-  name: 'rosa-ingest-backend'
+  name: 'tvs-ingest-backend'
   properties: {
     backendResourceId: functionAppResourceId
     region: location

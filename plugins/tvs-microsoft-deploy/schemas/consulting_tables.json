@@ -2,8 +2,8 @@
   "$schema": "https://raw.githubusercontent.com/microsoft/PowerApps-Tooling/main/schemas/dataverse-table.schema.json",
   "metadata": {
     "entity": "Consulting",
-    "publisher": "rosa",
-    "prefix": "rosa_",
+    "publisher": "tvs",
+    "prefix": "tvs_",
     "environment": "org-consulting-{env}.crm.dynamics.com",
     "description": "Dataverse table definitions for Lobbi Consulting and Medicare Consulting entities",
     "entities": [
@@ -13,20 +13,20 @@
   },
   "tables": {
     "Accounts": {
-      "logicalName": "rosa_consultingaccount",
+      "logicalName": "tvs_consultingaccount",
       "displayName": "Consulting Account",
       "pluralName": "Consulting Accounts",
       "description": "Client accounts for consulting engagements across Lobbi and Medicare",
       "ownership": "UserOwned",
-      "primaryColumn": "rosa_name",
+      "primaryColumn": "tvs_name",
       "columns": {
-        "rosa_name": {
+        "tvs_name": {
           "type": "String",
           "maxLength": 200,
           "required": true,
           "displayName": "Account Name"
         },
-        "rosa_entity": {
+        "tvs_entity": {
           "type": "Choice",
           "required": true,
           "displayName": "Owning Entity",
@@ -42,7 +42,7 @@
             }
           ]
         },
-        "rosa_industry": {
+        "tvs_industry": {
           "type": "Choice",
           "required": false,
           "displayName": "Industry",
@@ -77,7 +77,7 @@
             }
           ]
         },
-        "rosa_status": {
+        "tvs_status": {
           "type": "Choice",
           "required": true,
           "displayName": "Status",
@@ -104,26 +104,26 @@
             }
           ]
         },
-        "rosa_revenue": {
+        "tvs_revenue": {
           "type": "Currency",
           "required": false,
           "displayName": "Annual Revenue",
           "precision": 2
         },
-        "rosa_website": {
+        "tvs_website": {
           "type": "String",
           "maxLength": 500,
           "required": false,
           "displayName": "Website",
           "format": "url"
         },
-        "rosa_address": {
+        "tvs_address": {
           "type": "Memo",
           "maxLength": 1000,
           "required": false,
           "displayName": "Address"
         },
-        "rosa_accountmanager": {
+        "tvs_accountmanager": {
           "type": "Lookup",
           "required": false,
           "displayName": "Account Manager",
@@ -133,73 +133,73 @@
       "relationships": [
         {
           "type": "OneToMany",
-          "relatedTable": "rosa_consultingcontact",
-          "lookupColumn": "rosa_accountid",
+          "relatedTable": "tvs_consultingcontact",
+          "lookupColumn": "tvs_accountid",
           "displayName": "Account Contacts"
         },
         {
           "type": "OneToMany",
-          "relatedTable": "rosa_engagement",
-          "lookupColumn": "rosa_accountid",
+          "relatedTable": "tvs_engagement",
+          "lookupColumn": "tvs_accountid",
           "displayName": "Account Engagements"
         }
       ]
     },
     "Contacts": {
-      "logicalName": "rosa_consultingcontact",
+      "logicalName": "tvs_consultingcontact",
       "displayName": "Consulting Contact",
       "pluralName": "Consulting Contacts",
       "description": "Contacts at consulting client organizations",
       "ownership": "UserOwned",
-      "primaryColumn": "rosa_fullname",
+      "primaryColumn": "tvs_fullname",
       "columns": {
-        "rosa_firstname": {
+        "tvs_firstname": {
           "type": "String",
           "maxLength": 100,
           "required": true,
           "displayName": "First Name"
         },
-        "rosa_lastname": {
+        "tvs_lastname": {
           "type": "String",
           "maxLength": 100,
           "required": true,
           "displayName": "Last Name"
         },
-        "rosa_fullname": {
+        "tvs_fullname": {
           "type": "String",
           "maxLength": 200,
           "required": false,
           "displayName": "Full Name",
           "computed": true,
-          "formula": "rosa_firstname + ' ' + rosa_lastname"
+          "formula": "tvs_firstname + ' ' + tvs_lastname"
         },
-        "rosa_email": {
+        "tvs_email": {
           "type": "String",
           "maxLength": 320,
           "required": true,
           "displayName": "Email",
           "format": "email"
         },
-        "rosa_phone": {
+        "tvs_phone": {
           "type": "String",
           "maxLength": 50,
           "required": false,
           "displayName": "Phone",
           "format": "phone"
         },
-        "rosa_accountid": {
+        "tvs_accountid": {
           "type": "Lookup",
           "required": true,
           "displayName": "Account",
-          "relatedTable": "rosa_consultingaccount"
+          "relatedTable": "tvs_consultingaccount"
         },
-        "rosa_title": {
+        "tvs_title": {
           "type": "String",
           "maxLength": 200,
           "required": false,
           "displayName": "Job Title"
         },
-        "rosa_role": {
+        "tvs_role": {
           "type": "Choice",
           "required": false,
           "displayName": "Role",
@@ -230,7 +230,7 @@
             }
           ]
         },
-        "rosa_isactive": {
+        "tvs_isactive": {
           "type": "Boolean",
           "required": false,
           "displayName": "Active",
@@ -239,26 +239,26 @@
       }
     },
     "Engagements": {
-      "logicalName": "rosa_engagement",
+      "logicalName": "tvs_engagement",
       "displayName": "Consulting Engagement",
       "pluralName": "Consulting Engagements",
       "description": "Consulting projects and engagement contracts",
       "ownership": "UserOwned",
-      "primaryColumn": "rosa_name",
+      "primaryColumn": "tvs_name",
       "columns": {
-        "rosa_name": {
+        "tvs_name": {
           "type": "String",
           "maxLength": 300,
           "required": true,
           "displayName": "Engagement Name"
         },
-        "rosa_accountid": {
+        "tvs_accountid": {
           "type": "Lookup",
           "required": true,
           "displayName": "Account",
-          "relatedTable": "rosa_consultingaccount"
+          "relatedTable": "tvs_consultingaccount"
         },
-        "rosa_type": {
+        "tvs_type": {
           "type": "Choice",
           "required": true,
           "displayName": "Engagement Type",
@@ -289,7 +289,7 @@
             }
           ]
         },
-        "rosa_status": {
+        "tvs_status": {
           "type": "Choice",
           "required": true,
           "displayName": "Status",
@@ -320,38 +320,38 @@
             }
           ]
         },
-        "rosa_startdate": {
+        "tvs_startdate": {
           "type": "DateTime",
           "required": false,
           "displayName": "Start Date",
           "format": "DateOnly"
         },
-        "rosa_enddate": {
+        "tvs_enddate": {
           "type": "DateTime",
           "required": false,
           "displayName": "End Date",
           "format": "DateOnly"
         },
-        "rosa_value": {
+        "tvs_value": {
           "type": "Currency",
           "required": false,
           "displayName": "Engagement Value",
           "precision": 2,
           "description": "Total contract value"
         },
-        "rosa_invoicedamount": {
+        "tvs_invoicedamount": {
           "type": "Currency",
           "required": false,
           "displayName": "Invoiced Amount",
           "precision": 2
         },
-        "rosa_projectmanager": {
+        "tvs_projectmanager": {
           "type": "Lookup",
           "required": false,
           "displayName": "Project Manager",
           "relatedTable": "systemuser"
         },
-        "rosa_description": {
+        "tvs_description": {
           "type": "Memo",
           "maxLength": 10000,
           "required": false,
@@ -361,33 +361,33 @@
       "relationships": [
         {
           "type": "OneToMany",
-          "relatedTable": "rosa_activity",
-          "lookupColumn": "rosa_regardingid",
+          "relatedTable": "tvs_activity",
+          "lookupColumn": "tvs_regardingid",
           "displayName": "Engagement Activities"
         },
         {
           "type": "OneToMany",
-          "relatedTable": "rosa_implementation",
-          "lookupColumn": "rosa_engagementid",
+          "relatedTable": "tvs_implementation",
+          "lookupColumn": "tvs_engagementid",
           "displayName": "Engagement Implementations"
         }
       ]
     },
     "Activities": {
-      "logicalName": "rosa_activity",
+      "logicalName": "tvs_activity",
       "displayName": "Consulting Activity",
       "pluralName": "Consulting Activities",
       "description": "Meetings, calls, emails, and tasks related to consulting work",
       "ownership": "UserOwned",
-      "primaryColumn": "rosa_subject",
+      "primaryColumn": "tvs_subject",
       "columns": {
-        "rosa_subject": {
+        "tvs_subject": {
           "type": "String",
           "maxLength": 500,
           "required": true,
           "displayName": "Subject"
         },
-        "rosa_type": {
+        "tvs_type": {
           "type": "Choice",
           "required": true,
           "displayName": "Activity Type",
@@ -422,32 +422,32 @@
             }
           ]
         },
-        "rosa_regardingid": {
+        "tvs_regardingid": {
           "type": "Lookup",
           "required": false,
           "displayName": "Regarding",
-          "relatedTable": "rosa_engagement",
+          "relatedTable": "tvs_engagement",
           "description": "Related engagement"
         },
-        "rosa_scheduleddate": {
+        "tvs_scheduleddate": {
           "type": "DateTime",
           "required": false,
           "displayName": "Scheduled Date",
           "format": "DateAndTime"
         },
-        "rosa_completeddate": {
+        "tvs_completeddate": {
           "type": "DateTime",
           "required": false,
           "displayName": "Completed Date",
           "format": "DateAndTime"
         },
-        "rosa_description": {
+        "tvs_description": {
           "type": "Memo",
           "maxLength": 10000,
           "required": false,
           "displayName": "Description"
         },
-        "rosa_status": {
+        "tvs_status": {
           "type": "Choice",
           "required": true,
           "displayName": "Status",
@@ -470,13 +470,13 @@
             }
           ]
         },
-        "rosa_owner": {
+        "tvs_owner": {
           "type": "Lookup",
           "required": false,
           "displayName": "Owner",
           "relatedTable": "systemuser"
         },
-        "rosa_duration": {
+        "tvs_duration": {
           "type": "WholeNumber",
           "required": false,
           "displayName": "Duration (minutes)",
@@ -486,20 +486,20 @@
       }
     },
     "SharedProspects": {
-      "logicalName": "rosa_sharedprospect",
+      "logicalName": "tvs_sharedprospect",
       "displayName": "Shared Prospect",
       "pluralName": "Shared Prospects",
-      "description": "Cross-entity prospect referrals between Rosa Holdings entities",
+      "description": "Cross-entity prospect referrals between TVS Holdings entities",
       "ownership": "OrganizationOwned",
-      "primaryColumn": "rosa_name",
+      "primaryColumn": "tvs_name",
       "columns": {
-        "rosa_name": {
+        "tvs_name": {
           "type": "String",
           "maxLength": 300,
           "required": true,
           "displayName": "Prospect Name"
         },
-        "rosa_sourceentity": {
+        "tvs_sourceentity": {
           "type": "Choice",
           "required": true,
           "displayName": "Source Entity",
@@ -527,7 +527,7 @@
             }
           ]
         },
-        "rosa_targetentity": {
+        "tvs_targetentity": {
           "type": "Choice",
           "required": true,
           "displayName": "Target Entity",
@@ -555,27 +555,27 @@
             }
           ]
         },
-        "rosa_contactname": {
+        "tvs_contactname": {
           "type": "String",
           "maxLength": 200,
           "required": true,
           "displayName": "Contact Name"
         },
-        "rosa_contactemail": {
+        "tvs_contactemail": {
           "type": "String",
           "maxLength": 320,
           "required": false,
           "displayName": "Contact Email",
           "format": "email"
         },
-        "rosa_contactphone": {
+        "tvs_contactphone": {
           "type": "String",
           "maxLength": 50,
           "required": false,
           "displayName": "Contact Phone",
           "format": "phone"
         },
-        "rosa_status": {
+        "tvs_status": {
           "type": "Choice",
           "required": true,
           "displayName": "Status",
@@ -606,25 +606,25 @@
             }
           ]
         },
-        "rosa_assignedto": {
+        "tvs_assignedto": {
           "type": "Lookup",
           "required": false,
           "displayName": "Assigned To",
           "relatedTable": "systemuser"
         },
-        "rosa_notes": {
+        "tvs_notes": {
           "type": "Memo",
           "maxLength": 5000,
           "required": false,
           "displayName": "Notes"
         },
-        "rosa_referraldate": {
+        "tvs_referraldate": {
           "type": "DateTime",
           "required": true,
           "displayName": "Referral Date",
           "format": "DateOnly"
         },
-        "rosa_converteddate": {
+        "tvs_converteddate": {
           "type": "DateTime",
           "required": false,
           "displayName": "Converted Date",
@@ -633,26 +633,26 @@
       }
     },
     "Implementations": {
-      "logicalName": "rosa_implementation",
+      "logicalName": "tvs_implementation",
       "displayName": "Implementation",
       "pluralName": "Implementations",
       "description": "Implementation phases within consulting engagements",
       "ownership": "UserOwned",
-      "primaryColumn": "rosa_name",
+      "primaryColumn": "tvs_name",
       "columns": {
-        "rosa_name": {
+        "tvs_name": {
           "type": "String",
           "maxLength": 300,
           "required": true,
           "displayName": "Implementation Name"
         },
-        "rosa_engagementid": {
+        "tvs_engagementid": {
           "type": "Lookup",
           "required": true,
           "displayName": "Engagement",
-          "relatedTable": "rosa_engagement"
+          "relatedTable": "tvs_engagement"
         },
-        "rosa_phase": {
+        "tvs_phase": {
           "type": "Choice",
           "required": true,
           "displayName": "Phase",
@@ -687,7 +687,7 @@
             }
           ]
         },
-        "rosa_status": {
+        "tvs_status": {
           "type": "Choice",
           "required": true,
           "displayName": "Status",
@@ -714,38 +714,38 @@
             }
           ]
         },
-        "rosa_golivedate": {
+        "tvs_golivedate": {
           "type": "DateTime",
           "required": false,
           "displayName": "Go-Live Date",
           "format": "DateOnly"
         },
-        "rosa_actualgolivedate": {
+        "tvs_actualgolivedate": {
           "type": "DateTime",
           "required": false,
           "displayName": "Actual Go-Live Date",
           "format": "DateOnly"
         },
-        "rosa_notes": {
+        "tvs_notes": {
           "type": "Memo",
           "maxLength": 10000,
           "required": false,
           "displayName": "Notes"
         },
-        "rosa_completionpercent": {
+        "tvs_completionpercent": {
           "type": "WholeNumber",
           "required": false,
           "displayName": "Completion %",
           "minValue": 0,
           "maxValue": 100
         },
-        "rosa_risksandissues": {
+        "tvs_risksandissues": {
           "type": "Memo",
           "maxLength": 10000,
           "required": false,
           "displayName": "Risks & Issues"
         },
-        "rosa_lead": {
+        "tvs_lead": {
           "type": "Lookup",
           "required": false,
           "displayName": "Implementation Lead",
