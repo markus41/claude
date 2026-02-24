@@ -1,0 +1,22 @@
+{
+  "name": "rosa-stripe-webhook",
+  "version": "1.0.0",
+  "description": "Azure Function for Stripe webhook handling and Dataverse subscription sync",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --coverage",
+    "lint": "eslint index.js"
+  },
+  "dependencies": {
+    "stripe": "^14.0.0",
+    "@azure/identity": "^4.0.0",
+    "node-fetch": "^2.7.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "eslint": "^8.56.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

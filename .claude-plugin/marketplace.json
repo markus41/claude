@@ -154,7 +154,16 @@
       },
       "source": "./.claude/plugins/agent-review-council",
       "category": "orchestration",
-      "tags": ["multi-agent", "deliberation", "code-review", "debate", "consensus", "adversarial", "security", "automation"]
+      "tags": [
+        "multi-agent",
+        "deliberation",
+        "code-review",
+        "debate",
+        "consensus",
+        "adversarial",
+        "security",
+        "automation"
+      ]
     },
     {
       "name": "aws-eks-helm-keycloak",
@@ -166,7 +175,17 @@
       },
       "source": "./plugins/aws-eks-helm-keycloak",
       "category": "infrastructure",
-      "tags": ["aws", "eks", "kubernetes", "helm", "keycloak", "harness", "oidc", "ci-cd", "gitops"]
+      "tags": [
+        "aws",
+        "eks",
+        "kubernetes",
+        "helm",
+        "keycloak",
+        "harness",
+        "oidc",
+        "ci-cd",
+        "gitops"
+      ]
     },
     {
       "name": "claude-code-templating",
@@ -178,7 +197,19 @@
       },
       "source": "./plugins/claude-code-templating-plugin",
       "category": "templating",
-      "tags": ["templating", "scaffolding", "harness", "cookiecutter", "copier", "maven", "handlebars", "mcp", "ci-cd", "pipelines", "code-generation"]
+      "tags": [
+        "templating",
+        "scaffolding",
+        "harness",
+        "cookiecutter",
+        "copier",
+        "maven",
+        "handlebars",
+        "mcp",
+        "ci-cd",
+        "pipelines",
+        "code-generation"
+      ]
     },
     {
       "name": "langgraph-architect",
@@ -190,7 +221,22 @@
       },
       "source": "./.claude/plugins/langgraph-architect",
       "category": "agents",
-      "tags": ["langgraph", "langchain", "agent-builder", "workflow-orchestration", "state-machine", "multi-agent", "mcp", "model-context-protocol", "supervisor", "swarm", "checkpointing", "memory", "cli", "tool-integration"]
+      "tags": [
+        "langgraph",
+        "langchain",
+        "agent-builder",
+        "workflow-orchestration",
+        "state-machine",
+        "multi-agent",
+        "mcp",
+        "model-context-protocol",
+        "supervisor",
+        "swarm",
+        "checkpointing",
+        "memory",
+        "cli",
+        "tool-integration"
+      ]
     },
     {
       "name": "analytics-dashboard",
@@ -402,7 +448,50 @@
       },
       "source": "./plugins/jira-orchestrator",
       "category": "orchestration",
-      "tags": ["jira", "confluence", "atlassian", "orchestration", "harness", "neon", "redis", "temporal", "enterprise"]
+      "tags": [
+        "jira",
+        "confluence",
+        "atlassian",
+        "orchestration",
+        "harness",
+        "neon",
+        "redis",
+        "temporal",
+        "enterprise"
+      ]
+    },
+    {
+      "name": "tvs-microsoft-deploy",
+      "description": "Consul (Forerunner) - Enterprise Microsoft ecosystem orchestrator for TVS (Trusted Virtual Solutions) multi-entity multi-tenant deployment. 12 specialized agents across Entra ID, Dataverse, Power Platform, Fabric, Azure IaC, and A3 Firebase extraction. CLI-first dual control plane with Playwright browser fallback achieving 95-98% automated coverage via pac CLI, az CLI, Graph API, and Fabric REST. Covers TVS VA platform (Power Pages + Copilot Studio + Stripe billing), broker portal, Lobbi Consulting CRM, Medicare Consulting, TAIA FMO carrier normalization sprint, and multi-entity Fabric analytics. 12 agents, 12 commands, 7 skills, 5 hooks, 5 workflows.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Markus Ahling",
+        "email": "markus@lobbi.io"
+      },
+      "source": "./plugins/tvs-microsoft-deploy",
+      "category": "orchestration",
+      "tags": [
+        "microsoft",
+        "power-platform",
+        "dataverse",
+        "fabric",
+        "azure",
+        "entra",
+        "multi-tenant",
+        "tvs",
+        "rosa-holdings",
+        "fmo-sale",
+        "stripe",
+        "firebase",
+        "pac-cli",
+        "playwright",
+        "office-scripts",
+        "power-pages",
+        "copilot-studio",
+        "onelake",
+        "bicep",
+        "graph-api"
+      ]
     }
   ]
 }

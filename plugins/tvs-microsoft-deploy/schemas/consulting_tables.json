@@ -1,0 +1,757 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/PowerApps-Tooling/main/schemas/dataverse-table.schema.json",
+  "metadata": {
+    "entity": "Consulting",
+    "publisher": "rosa",
+    "prefix": "rosa_",
+    "environment": "org-consulting-{env}.crm.dynamics.com",
+    "description": "Dataverse table definitions for Lobbi Consulting and Medicare Consulting entities",
+    "entities": [
+      "Lobbi Consulting",
+      "Medicare Consulting"
+    ]
+  },
+  "tables": {
+    "Accounts": {
+      "logicalName": "rosa_consultingaccount",
+      "displayName": "Consulting Account",
+      "pluralName": "Consulting Accounts",
+      "description": "Client accounts for consulting engagements across Lobbi and Medicare",
+      "ownership": "UserOwned",
+      "primaryColumn": "rosa_name",
+      "columns": {
+        "rosa_name": {
+          "type": "String",
+          "maxLength": 200,
+          "required": true,
+          "displayName": "Account Name"
+        },
+        "rosa_entity": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Owning Entity",
+          "description": "Which consulting entity owns this account",
+          "options": [
+            {
+              "label": "Lobbi Consulting",
+              "value": 100000000
+            },
+            {
+              "label": "Medicare Consulting",
+              "value": 100000001
+            }
+          ]
+        },
+        "rosa_industry": {
+          "type": "Choice",
+          "required": false,
+          "displayName": "Industry",
+          "options": [
+            {
+              "label": "Insurance",
+              "value": 100000000
+            },
+            {
+              "label": "Healthcare",
+              "value": 100000001
+            },
+            {
+              "label": "Financial Services",
+              "value": 100000002
+            },
+            {
+              "label": "Government",
+              "value": 100000003
+            },
+            {
+              "label": "Education",
+              "value": 100000004
+            },
+            {
+              "label": "Technology",
+              "value": 100000005
+            },
+            {
+              "label": "Other",
+              "value": 100000006
+            }
+          ]
+        },
+        "rosa_status": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Status",
+          "options": [
+            {
+              "label": "Prospect",
+              "value": 100000000
+            },
+            {
+              "label": "Qualified Lead",
+              "value": 100000001
+            },
+            {
+              "label": "Active Client",
+              "value": 100000002
+            },
+            {
+              "label": "Inactive",
+              "value": 100000003
+            },
+            {
+              "label": "Archived",
+              "value": 100000004
+            }
+          ]
+        },
+        "rosa_revenue": {
+          "type": "Currency",
+          "required": false,
+          "displayName": "Annual Revenue",
+          "precision": 2
+        },
+        "rosa_website": {
+          "type": "String",
+          "maxLength": 500,
+          "required": false,
+          "displayName": "Website",
+          "format": "url"
+        },
+        "rosa_address": {
+          "type": "Memo",
+          "maxLength": 1000,
+          "required": false,
+          "displayName": "Address"
+        },
+        "rosa_accountmanager": {
+          "type": "Lookup",
+          "required": false,
+          "displayName": "Account Manager",
+          "relatedTable": "systemuser"
+        }
+      },
+      "relationships": [
+        {
+          "type": "OneToMany",
+          "relatedTable": "rosa_consultingcontact",
+          "lookupColumn": "rosa_accountid",
+          "displayName": "Account Contacts"
+        },
+        {
+          "type": "OneToMany",
+          "relatedTable": "rosa_engagement",
+          "lookupColumn": "rosa_accountid",
+          "displayName": "Account Engagements"
+        }
+      ]
+    },
+    "Contacts": {
+      "logicalName": "rosa_consultingcontact",
+      "displayName": "Consulting Contact",
+      "pluralName": "Consulting Contacts",
+      "description": "Contacts at consulting client organizations",
+      "ownership": "UserOwned",
+      "primaryColumn": "rosa_fullname",
+      "columns": {
+        "rosa_firstname": {
+          "type": "String",
+          "maxLength": 100,
+          "required": true,
+          "displayName": "First Name"
+        },
+        "rosa_lastname": {
+          "type": "String",
+          "maxLength": 100,
+          "required": true,
+          "displayName": "Last Name"
+        },
+        "rosa_fullname": {
+          "type": "String",
+          "maxLength": 200,
+          "required": false,
+          "displayName": "Full Name",
+          "computed": true,
+          "formula": "rosa_firstname + ' ' + rosa_lastname"
+        },
+        "rosa_email": {
+          "type": "String",
+          "maxLength": 320,
+          "required": true,
+          "displayName": "Email",
+          "format": "email"
+        },
+        "rosa_phone": {
+          "type": "String",
+          "maxLength": 50,
+          "required": false,
+          "displayName": "Phone",
+          "format": "phone"
+        },
+        "rosa_accountid": {
+          "type": "Lookup",
+          "required": true,
+          "displayName": "Account",
+          "relatedTable": "rosa_consultingaccount"
+        },
+        "rosa_title": {
+          "type": "String",
+          "maxLength": 200,
+          "required": false,
+          "displayName": "Job Title"
+        },
+        "rosa_role": {
+          "type": "Choice",
+          "required": false,
+          "displayName": "Role",
+          "options": [
+            {
+              "label": "Executive Sponsor",
+              "value": 100000000
+            },
+            {
+              "label": "Project Lead",
+              "value": 100000001
+            },
+            {
+              "label": "Technical Lead",
+              "value": 100000002
+            },
+            {
+              "label": "Subject Matter Expert",
+              "value": 100000003
+            },
+            {
+              "label": "Stakeholder",
+              "value": 100000004
+            },
+            {
+              "label": "End User",
+              "value": 100000005
+            }
+          ]
+        },
+        "rosa_isactive": {
+          "type": "Boolean",
+          "required": false,
+          "displayName": "Active",
+          "defaultValue": true
+        }
+      }
+    },
+    "Engagements": {
+      "logicalName": "rosa_engagement",
+      "displayName": "Consulting Engagement",
+      "pluralName": "Consulting Engagements",
+      "description": "Consulting projects and engagement contracts",
+      "ownership": "UserOwned",
+      "primaryColumn": "rosa_name",
+      "columns": {
+        "rosa_name": {
+          "type": "String",
+          "maxLength": 300,
+          "required": true,
+          "displayName": "Engagement Name"
+        },
+        "rosa_accountid": {
+          "type": "Lookup",
+          "required": true,
+          "displayName": "Account",
+          "relatedTable": "rosa_consultingaccount"
+        },
+        "rosa_type": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Engagement Type",
+          "options": [
+            {
+              "label": "Strategy",
+              "value": 100000000
+            },
+            {
+              "label": "Implementation",
+              "value": 100000001
+            },
+            {
+              "label": "Assessment",
+              "value": 100000002
+            },
+            {
+              "label": "Training",
+              "value": 100000003
+            },
+            {
+              "label": "Managed Services",
+              "value": 100000004
+            },
+            {
+              "label": "Staff Augmentation",
+              "value": 100000005
+            }
+          ]
+        },
+        "rosa_status": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Status",
+          "options": [
+            {
+              "label": "Proposed",
+              "value": 100000000
+            },
+            {
+              "label": "Negotiation",
+              "value": 100000001
+            },
+            {
+              "label": "Active",
+              "value": 100000002
+            },
+            {
+              "label": "On Hold",
+              "value": 100000003
+            },
+            {
+              "label": "Completed",
+              "value": 100000004
+            },
+            {
+              "label": "Canceled",
+              "value": 100000005
+            }
+          ]
+        },
+        "rosa_startdate": {
+          "type": "DateTime",
+          "required": false,
+          "displayName": "Start Date",
+          "format": "DateOnly"
+        },
+        "rosa_enddate": {
+          "type": "DateTime",
+          "required": false,
+          "displayName": "End Date",
+          "format": "DateOnly"
+        },
+        "rosa_value": {
+          "type": "Currency",
+          "required": false,
+          "displayName": "Engagement Value",
+          "precision": 2,
+          "description": "Total contract value"
+        },
+        "rosa_invoicedamount": {
+          "type": "Currency",
+          "required": false,
+          "displayName": "Invoiced Amount",
+          "precision": 2
+        },
+        "rosa_projectmanager": {
+          "type": "Lookup",
+          "required": false,
+          "displayName": "Project Manager",
+          "relatedTable": "systemuser"
+        },
+        "rosa_description": {
+          "type": "Memo",
+          "maxLength": 10000,
+          "required": false,
+          "displayName": "Description"
+        }
+      },
+      "relationships": [
+        {
+          "type": "OneToMany",
+          "relatedTable": "rosa_activity",
+          "lookupColumn": "rosa_regardingid",
+          "displayName": "Engagement Activities"
+        },
+        {
+          "type": "OneToMany",
+          "relatedTable": "rosa_implementation",
+          "lookupColumn": "rosa_engagementid",
+          "displayName": "Engagement Implementations"
+        }
+      ]
+    },
+    "Activities": {
+      "logicalName": "rosa_activity",
+      "displayName": "Consulting Activity",
+      "pluralName": "Consulting Activities",
+      "description": "Meetings, calls, emails, and tasks related to consulting work",
+      "ownership": "UserOwned",
+      "primaryColumn": "rosa_subject",
+      "columns": {
+        "rosa_subject": {
+          "type": "String",
+          "maxLength": 500,
+          "required": true,
+          "displayName": "Subject"
+        },
+        "rosa_type": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Activity Type",
+          "options": [
+            {
+              "label": "Meeting",
+              "value": 100000000
+            },
+            {
+              "label": "Phone Call",
+              "value": 100000001
+            },
+            {
+              "label": "Email",
+              "value": 100000002
+            },
+            {
+              "label": "Task",
+              "value": 100000003
+            },
+            {
+              "label": "Workshop",
+              "value": 100000004
+            },
+            {
+              "label": "Presentation",
+              "value": 100000005
+            },
+            {
+              "label": "Site Visit",
+              "value": 100000006
+            }
+          ]
+        },
+        "rosa_regardingid": {
+          "type": "Lookup",
+          "required": false,
+          "displayName": "Regarding",
+          "relatedTable": "rosa_engagement",
+          "description": "Related engagement"
+        },
+        "rosa_scheduleddate": {
+          "type": "DateTime",
+          "required": false,
+          "displayName": "Scheduled Date",
+          "format": "DateAndTime"
+        },
+        "rosa_completeddate": {
+          "type": "DateTime",
+          "required": false,
+          "displayName": "Completed Date",
+          "format": "DateAndTime"
+        },
+        "rosa_description": {
+          "type": "Memo",
+          "maxLength": 10000,
+          "required": false,
+          "displayName": "Description"
+        },
+        "rosa_status": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Status",
+          "options": [
+            {
+              "label": "Scheduled",
+              "value": 100000000
+            },
+            {
+              "label": "In Progress",
+              "value": 100000001
+            },
+            {
+              "label": "Completed",
+              "value": 100000002
+            },
+            {
+              "label": "Canceled",
+              "value": 100000003
+            }
+          ]
+        },
+        "rosa_owner": {
+          "type": "Lookup",
+          "required": false,
+          "displayName": "Owner",
+          "relatedTable": "systemuser"
+        },
+        "rosa_duration": {
+          "type": "WholeNumber",
+          "required": false,
+          "displayName": "Duration (minutes)",
+          "minValue": 0,
+          "maxValue": 1440
+        }
+      }
+    },
+    "SharedProspects": {
+      "logicalName": "rosa_sharedprospect",
+      "displayName": "Shared Prospect",
+      "pluralName": "Shared Prospects",
+      "description": "Cross-entity prospect referrals between Rosa Holdings entities",
+      "ownership": "OrganizationOwned",
+      "primaryColumn": "rosa_name",
+      "columns": {
+        "rosa_name": {
+          "type": "String",
+          "maxLength": 300,
+          "required": true,
+          "displayName": "Prospect Name"
+        },
+        "rosa_sourceentity": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Source Entity",
+          "description": "Entity that originated the referral",
+          "options": [
+            {
+              "label": "TAIA",
+              "value": 100000000
+            },
+            {
+              "label": "TVS",
+              "value": 100000001
+            },
+            {
+              "label": "Lobbi Consulting",
+              "value": 100000002
+            },
+            {
+              "label": "Medicare Consulting",
+              "value": 100000003
+            },
+            {
+              "label": "Media Company",
+              "value": 100000004
+            }
+          ]
+        },
+        "rosa_targetentity": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Target Entity",
+          "description": "Entity the prospect is being referred to",
+          "options": [
+            {
+              "label": "TAIA",
+              "value": 100000000
+            },
+            {
+              "label": "TVS",
+              "value": 100000001
+            },
+            {
+              "label": "Lobbi Consulting",
+              "value": 100000002
+            },
+            {
+              "label": "Medicare Consulting",
+              "value": 100000003
+            },
+            {
+              "label": "Media Company",
+              "value": 100000004
+            }
+          ]
+        },
+        "rosa_contactname": {
+          "type": "String",
+          "maxLength": 200,
+          "required": true,
+          "displayName": "Contact Name"
+        },
+        "rosa_contactemail": {
+          "type": "String",
+          "maxLength": 320,
+          "required": false,
+          "displayName": "Contact Email",
+          "format": "email"
+        },
+        "rosa_contactphone": {
+          "type": "String",
+          "maxLength": 50,
+          "required": false,
+          "displayName": "Contact Phone",
+          "format": "phone"
+        },
+        "rosa_status": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Status",
+          "options": [
+            {
+              "label": "New",
+              "value": 100000000
+            },
+            {
+              "label": "Contacted",
+              "value": 100000001
+            },
+            {
+              "label": "Qualified",
+              "value": 100000002
+            },
+            {
+              "label": "Converted",
+              "value": 100000003
+            },
+            {
+              "label": "Disqualified",
+              "value": 100000004
+            },
+            {
+              "label": "Stale",
+              "value": 100000005
+            }
+          ]
+        },
+        "rosa_assignedto": {
+          "type": "Lookup",
+          "required": false,
+          "displayName": "Assigned To",
+          "relatedTable": "systemuser"
+        },
+        "rosa_notes": {
+          "type": "Memo",
+          "maxLength": 5000,
+          "required": false,
+          "displayName": "Notes"
+        },
+        "rosa_referraldate": {
+          "type": "DateTime",
+          "required": true,
+          "displayName": "Referral Date",
+          "format": "DateOnly"
+        },
+        "rosa_converteddate": {
+          "type": "DateTime",
+          "required": false,
+          "displayName": "Converted Date",
+          "format": "DateOnly"
+        }
+      }
+    },
+    "Implementations": {
+      "logicalName": "rosa_implementation",
+      "displayName": "Implementation",
+      "pluralName": "Implementations",
+      "description": "Implementation phases within consulting engagements",
+      "ownership": "UserOwned",
+      "primaryColumn": "rosa_name",
+      "columns": {
+        "rosa_name": {
+          "type": "String",
+          "maxLength": 300,
+          "required": true,
+          "displayName": "Implementation Name"
+        },
+        "rosa_engagementid": {
+          "type": "Lookup",
+          "required": true,
+          "displayName": "Engagement",
+          "relatedTable": "rosa_engagement"
+        },
+        "rosa_phase": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Phase",
+          "options": [
+            {
+              "label": "Discovery",
+              "value": 100000000
+            },
+            {
+              "label": "Design",
+              "value": 100000001
+            },
+            {
+              "label": "Build",
+              "value": 100000002
+            },
+            {
+              "label": "Test",
+              "value": 100000003
+            },
+            {
+              "label": "Deploy",
+              "value": 100000004
+            },
+            {
+              "label": "Hypercare",
+              "value": 100000005
+            },
+            {
+              "label": "Closed",
+              "value": 100000006
+            }
+          ]
+        },
+        "rosa_status": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Status",
+          "options": [
+            {
+              "label": "Not Started",
+              "value": 100000000
+            },
+            {
+              "label": "In Progress",
+              "value": 100000001
+            },
+            {
+              "label": "At Risk",
+              "value": 100000002
+            },
+            {
+              "label": "Completed",
+              "value": 100000003
+            },
+            {
+              "label": "Deferred",
+              "value": 100000004
+            }
+          ]
+        },
+        "rosa_golivedate": {
+          "type": "DateTime",
+          "required": false,
+          "displayName": "Go-Live Date",
+          "format": "DateOnly"
+        },
+        "rosa_actualgolivedate": {
+          "type": "DateTime",
+          "required": false,
+          "displayName": "Actual Go-Live Date",
+          "format": "DateOnly"
+        },
+        "rosa_notes": {
+          "type": "Memo",
+          "maxLength": 10000,
+          "required": false,
+          "displayName": "Notes"
+        },
+        "rosa_completionpercent": {
+          "type": "WholeNumber",
+          "required": false,
+          "displayName": "Completion %",
+          "minValue": 0,
+          "maxValue": 100
+        },
+        "rosa_risksandissues": {
+          "type": "Memo",
+          "maxLength": 10000,
+          "required": false,
+          "displayName": "Risks & Issues"
+        },
+        "rosa_lead": {
+          "type": "Lookup",
+          "required": false,
+          "displayName": "Implementation Lead",
+          "relatedTable": "systemuser"
+        }
+      }
+    }
+  }
+}

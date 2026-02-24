@@ -1,0 +1,22 @@
+{
+  "name": "rosa-paylocity-sync",
+  "version": "1.0.0",
+  "description": "Azure Function for daily Paylocity time entry reconciliation with Dataverse",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --coverage",
+    "lint": "eslint index.js"
+  },
+  "dependencies": {
+    "node-fetch": "^2.7.0",
+    "@azure/identity": "^4.0.0",
+    "@azure/keyvault-secrets": "^4.8.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "eslint": "^8.56.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

@@ -1,0 +1,769 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/PowerApps-Tooling/main/schemas/dataverse-table.schema.json",
+  "metadata": {
+    "entity": "TVS",
+    "publisher": "rosa",
+    "prefix": "rosa_",
+    "environment": "org-tvs-{env}.crm.dynamics.com",
+    "description": "Dataverse table definitions for TVS (Technology & Virtual Staffing) entity"
+  },
+  "tables": {
+    "Accounts": {
+      "logicalName": "rosa_account",
+      "displayName": "TVS Account",
+      "pluralName": "TVS Accounts",
+      "description": "Client accounts for TVS virtual staffing services",
+      "ownership": "UserOwned",
+      "primaryColumn": "rosa_name",
+      "columns": {
+        "rosa_name": {
+          "type": "String",
+          "maxLength": 200,
+          "required": true,
+          "displayName": "Account Name",
+          "description": "Legal or DBA name of the client company"
+        },
+        "rosa_industry": {
+          "type": "Choice",
+          "required": false,
+          "displayName": "Industry",
+          "description": "Primary industry vertical",
+          "options": [
+            {
+              "label": "Insurance",
+              "value": 100000000
+            },
+            {
+              "label": "Financial Services",
+              "value": 100000001
+            },
+            {
+              "label": "Healthcare",
+              "value": 100000002
+            },
+            {
+              "label": "Technology",
+              "value": 100000003
+            },
+            {
+              "label": "Real Estate",
+              "value": 100000004
+            },
+            {
+              "label": "Legal",
+              "value": 100000005
+            },
+            {
+              "label": "Other",
+              "value": 100000006
+            }
+          ]
+        },
+        "rosa_tier": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Service Tier",
+          "description": "Stripe subscription tier determining monthly hours",
+          "options": [
+            {
+              "label": "Starter",
+              "value": 100000000
+            },
+            {
+              "label": "Basic",
+              "value": 100000001
+            },
+            {
+              "label": "Advanced",
+              "value": 100000002
+            },
+            {
+              "label": "Enterprise",
+              "value": 100000003
+            }
+          ]
+        },
+        "rosa_status": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Account Status",
+          "description": "Current lifecycle status of the account",
+          "options": [
+            {
+              "label": "Prospect",
+              "value": 100000000
+            },
+            {
+              "label": "Onboarding",
+              "value": 100000001
+            },
+            {
+              "label": "Active",
+              "value": 100000002
+            },
+            {
+              "label": "Paused",
+              "value": 100000003
+            },
+            {
+              "label": "Churned",
+              "value": 100000004
+            }
+          ]
+        },
+        "rosa_stripecustomerid": {
+          "type": "String",
+          "maxLength": 255,
+          "required": false,
+          "displayName": "Stripe Customer ID",
+          "description": "Stripe customer identifier (cus_*)",
+          "format": "text"
+        },
+        "rosa_email": {
+          "type": "String",
+          "maxLength": 320,
+          "required": false,
+          "displayName": "Primary Email",
+          "format": "email"
+        },
+        "rosa_phone": {
+          "type": "String",
+          "maxLength": 50,
+          "required": false,
+          "displayName": "Primary Phone",
+          "format": "phone"
+        },
+        "rosa_monthlyhours": {
+          "type": "WholeNumber",
+          "required": false,
+          "displayName": "Monthly Hours Allotment",
+          "description": "Contracted monthly hours based on tier",
+          "minValue": 0,
+          "maxValue": 1000
+        },
+        "rosa_onboarddate": {
+          "type": "DateTime",
+          "required": false,
+          "displayName": "Onboard Date",
+          "format": "DateOnly"
+        }
+      },
+      "relationships": [
+        {
+          "type": "OneToMany",
+          "relatedTable": "rosa_contact",
+          "lookupColumn": "rosa_accountid",
+          "displayName": "Account Contacts"
+        },
+        {
+          "type": "OneToMany",
+          "relatedTable": "rosa_subscription",
+          "lookupColumn": "rosa_accountid",
+          "displayName": "Account Subscriptions"
+        },
+        {
+          "type": "OneToMany",
+          "relatedTable": "rosa_task",
+          "lookupColumn": "rosa_accountid",
+          "displayName": "Account Tasks"
+        },
+        {
+          "type": "OneToMany",
+          "relatedTable": "rosa_deliverable",
+          "lookupColumn": "rosa_accountid",
+          "displayName": "Account Deliverables"
+        }
+      ]
+    },
+    "Contacts": {
+      "logicalName": "rosa_contact",
+      "displayName": "TVS Contact",
+      "pluralName": "TVS Contacts",
+      "description": "Individual contacts associated with TVS accounts",
+      "ownership": "UserOwned",
+      "primaryColumn": "rosa_fullname",
+      "columns": {
+        "rosa_firstname": {
+          "type": "String",
+          "maxLength": 100,
+          "required": true,
+          "displayName": "First Name"
+        },
+        "rosa_lastname": {
+          "type": "String",
+          "maxLength": 100,
+          "required": true,
+          "displayName": "Last Name"
+        },
+        "rosa_fullname": {
+          "type": "String",
+          "maxLength": 200,
+          "required": false,
+          "displayName": "Full Name",
+          "computed": true,
+          "formula": "rosa_firstname + ' ' + rosa_lastname"
+        },
+        "rosa_email": {
+          "type": "String",
+          "maxLength": 320,
+          "required": true,
+          "displayName": "Email Address",
+          "format": "email"
+        },
+        "rosa_phone": {
+          "type": "String",
+          "maxLength": 50,
+          "required": false,
+          "displayName": "Phone Number",
+          "format": "phone"
+        },
+        "rosa_accountid": {
+          "type": "Lookup",
+          "required": true,
+          "displayName": "Account",
+          "relatedTable": "rosa_account",
+          "description": "Parent TVS account"
+        },
+        "rosa_role": {
+          "type": "Choice",
+          "required": false,
+          "displayName": "Role",
+          "description": "Contact's role at the client organization",
+          "options": [
+            {
+              "label": "Primary Contact",
+              "value": 100000000
+            },
+            {
+              "label": "Billing Contact",
+              "value": 100000001
+            },
+            {
+              "label": "Technical Contact",
+              "value": 100000002
+            },
+            {
+              "label": "Decision Maker",
+              "value": 100000003
+            },
+            {
+              "label": "End User",
+              "value": 100000004
+            }
+          ]
+        },
+        "rosa_isactive": {
+          "type": "Boolean",
+          "required": false,
+          "displayName": "Active",
+          "defaultValue": true
+        }
+      }
+    },
+    "Subscriptions": {
+      "logicalName": "rosa_subscription",
+      "displayName": "TVS Subscription",
+      "pluralName": "TVS Subscriptions",
+      "description": "Stripe-backed subscription records for TVS clients",
+      "ownership": "OrganizationOwned",
+      "primaryColumn": "rosa_name",
+      "columns": {
+        "rosa_name": {
+          "type": "String",
+          "maxLength": 200,
+          "required": true,
+          "displayName": "Subscription Name",
+          "description": "Auto-generated: {Account} - {Tier} Subscription"
+        },
+        "rosa_accountid": {
+          "type": "Lookup",
+          "required": true,
+          "displayName": "Account",
+          "relatedTable": "rosa_account"
+        },
+        "rosa_tier": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Tier",
+          "options": [
+            {
+              "label": "Starter",
+              "value": 100000000,
+              "monthlyPrice": 360,
+              "monthlyHours": 20
+            },
+            {
+              "label": "Basic",
+              "value": 100000001,
+              "monthlyPrice": 640,
+              "monthlyHours": 40
+            },
+            {
+              "label": "Advanced",
+              "value": 100000002,
+              "monthlyPrice": 1200,
+              "monthlyHours": 80
+            }
+          ]
+        },
+        "rosa_monthlyhours": {
+          "type": "WholeNumber",
+          "required": true,
+          "displayName": "Monthly Hours",
+          "description": "Contracted hours per month",
+          "minValue": 0,
+          "maxValue": 500
+        },
+        "rosa_startdate": {
+          "type": "DateTime",
+          "required": true,
+          "displayName": "Start Date",
+          "format": "DateOnly"
+        },
+        "rosa_enddate": {
+          "type": "DateTime",
+          "required": false,
+          "displayName": "End Date",
+          "format": "DateOnly"
+        },
+        "rosa_status": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Status",
+          "options": [
+            {
+              "label": "Trialing",
+              "value": 100000000
+            },
+            {
+              "label": "Active",
+              "value": 100000001
+            },
+            {
+              "label": "Past Due",
+              "value": 100000002
+            },
+            {
+              "label": "Canceled",
+              "value": 100000003
+            },
+            {
+              "label": "Paused",
+              "value": 100000004
+            }
+          ]
+        },
+        "rosa_stripesubscriptionid": {
+          "type": "String",
+          "maxLength": 255,
+          "required": false,
+          "displayName": "Stripe Subscription ID",
+          "description": "Stripe subscription identifier (sub_*)"
+        },
+        "rosa_currentperiodend": {
+          "type": "DateTime",
+          "required": false,
+          "displayName": "Current Period End",
+          "format": "DateOnly"
+        },
+        "rosa_monthlyprice": {
+          "type": "Currency",
+          "required": false,
+          "displayName": "Monthly Price",
+          "precision": 2
+        }
+      }
+    },
+    "Tasks": {
+      "logicalName": "rosa_task",
+      "displayName": "TVS Task",
+      "pluralName": "TVS Tasks",
+      "description": "Work tasks assigned to virtual assistants for TVS clients",
+      "ownership": "UserOwned",
+      "primaryColumn": "rosa_title",
+      "columns": {
+        "rosa_title": {
+          "type": "String",
+          "maxLength": 500,
+          "required": true,
+          "displayName": "Task Title"
+        },
+        "rosa_description": {
+          "type": "Memo",
+          "maxLength": 10000,
+          "required": false,
+          "displayName": "Description"
+        },
+        "rosa_assignedto": {
+          "type": "Lookup",
+          "required": false,
+          "displayName": "Assigned To",
+          "relatedTable": "systemuser",
+          "description": "VA user assigned to this task"
+        },
+        "rosa_accountid": {
+          "type": "Lookup",
+          "required": true,
+          "displayName": "Account",
+          "relatedTable": "rosa_account"
+        },
+        "rosa_status": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Status",
+          "options": [
+            {
+              "label": "Not Started",
+              "value": 100000000
+            },
+            {
+              "label": "In Progress",
+              "value": 100000001
+            },
+            {
+              "label": "Blocked",
+              "value": 100000002
+            },
+            {
+              "label": "In Review",
+              "value": 100000003
+            },
+            {
+              "label": "Completed",
+              "value": 100000004
+            },
+            {
+              "label": "Canceled",
+              "value": 100000005
+            }
+          ]
+        },
+        "rosa_priority": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Priority",
+          "options": [
+            {
+              "label": "Low",
+              "value": 100000000
+            },
+            {
+              "label": "Medium",
+              "value": 100000001
+            },
+            {
+              "label": "High",
+              "value": 100000002
+            },
+            {
+              "label": "Urgent",
+              "value": 100000003
+            }
+          ]
+        },
+        "rosa_duedate": {
+          "type": "DateTime",
+          "required": false,
+          "displayName": "Due Date",
+          "format": "DateOnly"
+        },
+        "rosa_estimatedhours": {
+          "type": "Decimal",
+          "required": false,
+          "displayName": "Estimated Hours",
+          "precision": 2,
+          "minValue": 0
+        },
+        "rosa_actualhours": {
+          "type": "Decimal",
+          "required": false,
+          "displayName": "Actual Hours",
+          "precision": 2,
+          "minValue": 0,
+          "computed": true
+        },
+        "rosa_completeddate": {
+          "type": "DateTime",
+          "required": false,
+          "displayName": "Completed Date",
+          "format": "DateOnly"
+        }
+      },
+      "relationships": [
+        {
+          "type": "OneToMany",
+          "relatedTable": "rosa_timeentry",
+          "lookupColumn": "rosa_taskid",
+          "displayName": "Task Time Entries"
+        },
+        {
+          "type": "OneToMany",
+          "relatedTable": "rosa_deliverable",
+          "lookupColumn": "rosa_taskid",
+          "displayName": "Task Deliverables"
+        }
+      ]
+    },
+    "TimeEntries": {
+      "logicalName": "rosa_timeentry",
+      "displayName": "TVS Time Entry",
+      "pluralName": "TVS Time Entries",
+      "description": "Time tracking records for VA work, reconciled with Paylocity",
+      "ownership": "UserOwned",
+      "primaryColumn": "rosa_name",
+      "columns": {
+        "rosa_name": {
+          "type": "String",
+          "maxLength": 200,
+          "required": false,
+          "displayName": "Entry Name",
+          "computed": true,
+          "formula": "rosa_userid.fullname + ' - ' + rosa_date"
+        },
+        "rosa_taskid": {
+          "type": "Lookup",
+          "required": true,
+          "displayName": "Task",
+          "relatedTable": "rosa_task"
+        },
+        "rosa_userid": {
+          "type": "Lookup",
+          "required": true,
+          "displayName": "User",
+          "relatedTable": "systemuser"
+        },
+        "rosa_hours": {
+          "type": "Decimal",
+          "required": true,
+          "displayName": "Hours",
+          "precision": 2,
+          "minValue": 0.25,
+          "maxValue": 24.00
+        },
+        "rosa_date": {
+          "type": "DateTime",
+          "required": true,
+          "displayName": "Date",
+          "format": "DateOnly"
+        },
+        "rosa_description": {
+          "type": "Memo",
+          "maxLength": 2000,
+          "required": false,
+          "displayName": "Work Description"
+        },
+        "rosa_billable": {
+          "type": "Boolean",
+          "required": true,
+          "displayName": "Billable",
+          "defaultValue": true,
+          "description": "Whether this time counts against client allotment"
+        },
+        "rosa_paylocitysynced": {
+          "type": "Boolean",
+          "required": false,
+          "displayName": "Paylocity Synced",
+          "defaultValue": false
+        },
+        "rosa_paylocitydiscrepancy": {
+          "type": "Boolean",
+          "required": false,
+          "displayName": "Has Discrepancy",
+          "defaultValue": false
+        }
+      }
+    },
+    "Deliverables": {
+      "logicalName": "rosa_deliverable",
+      "displayName": "TVS Deliverable",
+      "pluralName": "TVS Deliverables",
+      "description": "Client deliverables produced by VAs",
+      "ownership": "UserOwned",
+      "primaryColumn": "rosa_title",
+      "columns": {
+        "rosa_title": {
+          "type": "String",
+          "maxLength": 500,
+          "required": true,
+          "displayName": "Deliverable Title"
+        },
+        "rosa_accountid": {
+          "type": "Lookup",
+          "required": true,
+          "displayName": "Account",
+          "relatedTable": "rosa_account"
+        },
+        "rosa_taskid": {
+          "type": "Lookup",
+          "required": false,
+          "displayName": "Related Task",
+          "relatedTable": "rosa_task"
+        },
+        "rosa_status": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Status",
+          "options": [
+            {
+              "label": "Draft",
+              "value": 100000000
+            },
+            {
+              "label": "In Progress",
+              "value": 100000001
+            },
+            {
+              "label": "In Review",
+              "value": 100000002
+            },
+            {
+              "label": "Approved",
+              "value": 100000003
+            },
+            {
+              "label": "Delivered",
+              "value": 100000004
+            },
+            {
+              "label": "Rejected",
+              "value": 100000005
+            }
+          ]
+        },
+        "rosa_completeddate": {
+          "type": "DateTime",
+          "required": false,
+          "displayName": "Completed Date",
+          "format": "DateOnly"
+        },
+        "rosa_approvedby": {
+          "type": "Lookup",
+          "required": false,
+          "displayName": "Approved By",
+          "relatedTable": "systemuser"
+        },
+        "rosa_description": {
+          "type": "Memo",
+          "maxLength": 5000,
+          "required": false,
+          "displayName": "Description"
+        },
+        "rosa_fileurl": {
+          "type": "String",
+          "maxLength": 2000,
+          "required": false,
+          "displayName": "File URL",
+          "format": "url"
+        }
+      }
+    },
+    "AutomationLog": {
+      "logicalName": "rosa_automationlog",
+      "displayName": "TVS Automation Log",
+      "pluralName": "TVS Automation Logs",
+      "description": "Audit trail for Power Automate flows and automated processes",
+      "ownership": "OrganizationOwned",
+      "primaryColumn": "rosa_flowname",
+      "columns": {
+        "rosa_flowname": {
+          "type": "String",
+          "maxLength": 500,
+          "required": true,
+          "displayName": "Flow Name"
+        },
+        "rosa_triggertype": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Trigger Type",
+          "options": [
+            {
+              "label": "Scheduled",
+              "value": 100000000
+            },
+            {
+              "label": "Event Driven",
+              "value": 100000001
+            },
+            {
+              "label": "Manual",
+              "value": 100000002
+            },
+            {
+              "label": "Webhook",
+              "value": 100000003
+            },
+            {
+              "label": "Dataverse Trigger",
+              "value": 100000004
+            }
+          ]
+        },
+        "rosa_status": {
+          "type": "Choice",
+          "required": true,
+          "displayName": "Status",
+          "options": [
+            {
+              "label": "Success",
+              "value": 100000000
+            },
+            {
+              "label": "Failed",
+              "value": 100000001
+            },
+            {
+              "label": "Partial",
+              "value": 100000002
+            },
+            {
+              "label": "Timeout",
+              "value": 100000003
+            },
+            {
+              "label": "Skipped",
+              "value": 100000004
+            }
+          ]
+        },
+        "rosa_executedat": {
+          "type": "DateTime",
+          "required": true,
+          "displayName": "Executed At",
+          "format": "DateAndTime"
+        },
+        "rosa_duration": {
+          "type": "WholeNumber",
+          "required": false,
+          "displayName": "Duration (ms)",
+          "description": "Execution time in milliseconds",
+          "minValue": 0
+        },
+        "rosa_error": {
+          "type": "Memo",
+          "maxLength": 10000,
+          "required": false,
+          "displayName": "Error Details"
+        },
+        "rosa_inputpayload": {
+          "type": "Memo",
+          "maxLength": 50000,
+          "required": false,
+          "displayName": "Input Payload"
+        },
+        "rosa_outputpayload": {
+          "type": "Memo",
+          "maxLength": 50000,
+          "required": false,
+          "displayName": "Output Payload"
+        },
+        "rosa_correlationid": {
+          "type": "String",
+          "maxLength": 100,
+          "required": false,
+          "displayName": "Correlation ID",
+          "description": "Distributed tracing correlation identifier"
+        }
+      }
+    }
+  }
+}

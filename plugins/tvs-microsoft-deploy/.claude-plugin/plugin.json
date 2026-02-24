@@ -1,0 +1,122 @@
+{
+  "name": "tvs-microsoft-deploy",
+  "version": "1.0.0",
+  "description": "Consul (Forerunner) - Enterprise Microsoft ecosystem orchestrator for TVS (Trusted Virtual Solutions) multi-entity multi-tenant deployment. 12 agents, 12 commands, 7 skills, 5 hooks, 5 workflows.",
+  "author": {
+    "name": "Markus Ahling",
+    "email": "markus@lobbi.io"
+  },
+  "keywords": [
+    "microsoft",
+    "power-platform",
+    "dataverse",
+    "fabric",
+    "azure",
+    "entra",
+    "multi-tenant",
+    "tvs",
+    "rosa-holdings",
+    "fmo-sale",
+    "stripe",
+    "firebase",
+    "pac-cli",
+    "playwright",
+    "office-scripts",
+    "power-pages",
+    "copilot-studio",
+    "onelake",
+    "bicep",
+    "graph-api"
+  ],
+  "repository": "https://github.com/Lobbi-Docs/claude",
+  "license": "MIT",
+  "agents": [
+    "agents/identity-agent.md",
+    "agents/platform-agent.md",
+    "agents/data-agent.md",
+    "agents/ingest-agent.md",
+    "agents/azure-agent.md",
+    "agents/github-agent.md",
+    "agents/comms-agent.md",
+    "agents/analytics-agent.md",
+    "agents/carrier-normalization-agent.md",
+    "agents/michelle-scripts-agent.md",
+    "agents/consulting-crm-agent.md",
+    "agents/browser-fallback-agent.md"
+  ],
+  "skills": [
+    "skills/pac-cli.md",
+    "skills/az-cli.md",
+    "skills/fabric-rest.md",
+    "skills/graph-api.md",
+    "skills/power-automate-rest.md",
+    "skills/stripe-integration.md",
+    "skills/firebase-extract.md"
+  ],
+  "commands": [
+    "commands/deploy-all.md",
+    "commands/deploy-identity.md",
+    "commands/deploy-dataverse.md",
+    "commands/deploy-fabric.md",
+    "commands/deploy-portal.md",
+    "commands/deploy-azure.md",
+    "commands/extract-a3.md",
+    "commands/normalize-carriers.md",
+    "commands/deploy-teams.md",
+    "commands/cost-report.md",
+    "commands/status-check.md",
+    "commands/browser-fallback.md"
+  ],
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "command": "hooks/keyvault-secrets-enforcer.sh"
+      },
+      {
+        "matcher": "Bash",
+        "command": "hooks/tenant-isolation-validator.sh"
+      },
+      {
+        "matcher": "Bash",
+        "command": "hooks/pac-auth-check.sh"
+      },
+      {
+        "matcher": "Bash",
+        "command": "hooks/stripe-webhook-security.sh"
+      },
+      {
+        "matcher": "Bash",
+        "command": "hooks/hipaa-config-guard.sh"
+      }
+    ]
+  },
+  "workflows": [
+    "workflows/week1-critical-path.md",
+    "workflows/taia-sale-prep.md",
+    "workflows/tvs-foundation.md",
+    "workflows/full-platform.md",
+    "workflows/scale-polish.md"
+  ],
+  "dependencies": {
+    "cli": [
+      "pac",
+      "az",
+      "gh"
+    ],
+    "optional": [
+      "playwright"
+    ],
+    "plugins": [
+      "jira-orchestrator"
+    ]
+  },
+  "configuration": {
+    "envFile": ".env.template",
+    "schemas": [
+      "schemas/tvs_tables.json",
+      "schemas/consulting_tables.json",
+      "schemas/fabric_workspaces.json"
+    ]
+  }
+}

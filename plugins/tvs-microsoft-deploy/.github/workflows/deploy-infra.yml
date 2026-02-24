@@ -1,0 +1,59 @@
+name: Deploy Infrastructure (Bicep)
+
+on:
+  push:
+    paths:
+      - 'infra/**'
+    branches: [main]
+  pull_request:
+    paths:
+      - 'infra/**'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        default: 'dev'
+        type: choice
+        options: [dev, staging, prod]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        environment: ${{ github.event_name == 'workflow_dispatch' && fromJSON(format('["{0}"]', github.event.inputs.environment)) || fromJSON('["dev"]') }}
+    environment: ${{ matrix.environment }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Azure Login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Validate Bicep
+        run: az bicep build --file infra/main.bicep
+
+      - name: What-If (Preview Changes)
+        if: github.event_name == 'pull_request'
+        run: |
+          az deployment group what-if \
+            --resource-group rg-rosa-holdings-${{ matrix.environment }} \
+            --template-file infra/main.bicep \
+            --parameters environment=${{ matrix.environment }}
+
+      - name: Deploy Infrastructure
+        if: github.event_name != 'pull_request'
+        run: |
+          az deployment group create \
+            --resource-group rg-rosa-holdings-${{ matrix.environment }} \
+            --template-file infra/main.bicep \
+            --parameters environment=${{ matrix.environment }} \
+            --name "deploy-$(date +%Y%m%d-%H%M%S)"
