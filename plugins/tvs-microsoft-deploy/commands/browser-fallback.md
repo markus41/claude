@@ -8,6 +8,8 @@ allowed-tools:
   - Task
 ---
 
+> Docs Hub: [CLI Hub](../docs/cli/README.md#command-index)
+
 # Browser Fallback
 
 Uses Playwright to perform Microsoft portal operations that lack CLI or API coverage. Captures screenshots for audit trail and verification.

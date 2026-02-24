@@ -10,6 +10,8 @@ allowed-tools:
   - Glob
 ---
 
+> Docs Hub: [CLI Hub](../docs/cli/README.md#command-index)
+
 # Azure Infrastructure Deployment
 
 Deploys Azure infrastructure for TVS Holdings using Bicep templates. Provisions Key Vault (`kv-tvs-holdings`), Azure Functions (`func-tvs-ingest`), Static Web Apps (`stapp-broker-*`), and Application Insights for monitoring. All resources deployed to a single resource group with consistent tagging.

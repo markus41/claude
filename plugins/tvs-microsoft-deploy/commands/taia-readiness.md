@@ -7,6 +7,8 @@ allowed-tools:
   - Grep
 ---
 
+> Docs Hub: [CLI Hub](../docs/cli/README.md#command-index)
+
 # TAIA Readiness
 
 Assesses TAIA wind-down and target-state readiness using the same control-plane manifest model.

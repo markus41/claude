@@ -4,6 +4,8 @@ description: This skill should be used when working with *.solution files, datav
 version: 1.0.0
 ---
 
+> Docs Hub: [Skills Hub](../docs/skills/README.md#skill-index)
+
 # Power Platform CLI (pac) Operations
 
 Complete reference for Power Platform CLI operations across TVS Holdings environments.

@@ -10,6 +10,8 @@ allowed-tools:
   - Glob
 ---
 
+> Docs Hub: [CLI Hub](../docs/cli/README.md#command-index)
+
 # Full Platform Deployment
 
 Deploy all tenant-scoped resources through the control-plane planner (no manual phase sequencing).

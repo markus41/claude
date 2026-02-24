@@ -9,6 +9,8 @@ allowed-tools:
   - Task
 ---
 
+> Docs Hub: [CLI Hub](../docs/cli/README.md#command-index)
+
 # Deploy Teams
 
 Provisions Microsoft Teams workspaces for TVS Holdings VAs with entity-specific channels, shared mailboxes, and HIPAA-compliant configuration for TVS tenant.

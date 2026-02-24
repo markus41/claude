@@ -4,6 +4,8 @@ description: This skill should be used when working with functions/firebase-**, 
 version: 1.0.0
 ---
 
+> Docs Hub: [Skills Hub](../docs/skills/README.md#skill-index)
+
 # Firebase Bulk Extraction (A3 Legacy System)
 
 Complete reference for extracting data from the A3 Archive Firebase/Firestore system and migrating to Microsoft Fabric OneLake.

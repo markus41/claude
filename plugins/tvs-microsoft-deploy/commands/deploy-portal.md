@@ -10,6 +10,8 @@ allowed-tools:
   - Glob
 ---
 
+> Docs Hub: [CLI Hub](../docs/cli/README.md#command-index)
+
 # Power Pages + Copilot Studio Deployment
 
 Deploys the TVS broker portal on Power Pages with integrated Stripe billing widget for subscription management (Starter $360/20hrs, Basic $640/40hrs, Advanced $1200/80hrs). Deploys Copilot Studio conversational bots for broker self-service and VA task intake.
