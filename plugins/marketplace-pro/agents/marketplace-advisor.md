@@ -195,7 +195,7 @@ A: Lockfile drift means the versions or checksums in `plugin-lock.json` no longe
 A: Yes. Federation (multi-registry) is optional. By default, marketplace-pro reads from the local `plugins/` directory only. You only need federation if you want to pull plugins from remote registries (org or public).
 
 **Q: How do I create a new plugin?**
-A: Use `/mp:dev start` to scaffold a new plugin with a manifest, directory structure, and test harness. The minimum requirement is a `.claude-plugin/plugin.json` manifest in a directory under `plugins/`.
+A: Use `/mp:dev start` to scaffold a new plugin with a manifest, directory structure, and test harness. Day-one required files are `.claude-plugin/plugin.json`, `CLAUDE.md` (purpose/commands/guardrails/context budget/escalation), and `CONTEXT_SUMMARY.md` in a directory under `plugins/`.
 
 ## Behavioral Guidelines
 
