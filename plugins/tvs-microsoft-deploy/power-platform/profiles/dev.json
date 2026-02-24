@@ -1,0 +1,23 @@
+{
+  "environment": "dev",
+  "solutionMode": "unmanaged",
+  "dataverseUrl": "https://org-dev.crm.dynamics.com",
+  "flowEnvironmentId": "Default-dev",
+  "packagePath": "artifacts/dev",
+  "connectionReferences": {
+    "shared_commondataserviceforapps": {"connectionId": "dev-cds", "auth": "servicePrincipal"},
+    "shared_office365": {"connectionId": "dev-o365", "auth": "servicePrincipal"},
+    "shared_azuread": {"connectionId": "dev-aad", "auth": "servicePrincipal"}
+  },
+  "capacityLimits": {
+    "databasePct": 85,
+    "filePct": 90,
+    "logPct": 90
+  },
+  "smokeChecks": [
+    "commission-processing",
+    "identity-offboarding",
+    "taia-archival",
+    "copilot:commission-assistant"
+  ]
+}

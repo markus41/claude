@@ -11,7 +11,7 @@ allowed-tools:
 
 # Entra ID Identity Deployment
 
-Provisions and configures Microsoft Entra ID (Azure AD) for Rosa Holdings entities. Creates users, assigns Microsoft 365 licenses, configures conditional access policies, registers service principal applications, and sets up FIDO2 passwordless authentication.
+Provisions and configures Microsoft Entra ID (Azure AD) for TVS Holdings entities. Creates users, assigns Microsoft 365 licenses, configures conditional access policies, registers service principal applications, and sets up FIDO2 passwordless authentication.
 
 ## Usage
 
@@ -74,13 +74,13 @@ The centralized `hooks/identity-policy-engine.sh` also enforces these checks and
 
 **Agent 3 - Identity Planner:**
 - Build user provisioning manifest from entity roster CSVs
-- Plan app registrations: `app-rosa-dataverse`, `app-rosa-fabric`, `app-rosa-ingest`, `app-rosa-portal`
+- Plan app registrations: `app-tvs-dataverse`, `app-tvs-fabric`, `app-tvs-ingest`, `app-tvs-portal`
 - Design conditional access policies:
   - MFA required for all users
   - Block legacy authentication
   - Require compliant device for Dataverse access
   - FIDO2 preferred for admin accounts
-- Map group structure: `sg-tvs-users`, `sg-consulting-users`, `sg-media-users`, `sg-rosa-admins`
+- Map group structure: `sg-tvs-users`, `sg-consulting-users`, `sg-media-users`, `sg-tvs-admins`
 - Generate deployment sequence: groups, users, licenses, apps, CA policies, FIDO2
 
 ### Phase 3: CODE (2 agents)
@@ -97,7 +97,7 @@ The centralized `hooks/identity-policy-engine.sh` also enforces these checks and
 - Register applications via `POST /applications` with required API permissions
 - Create service principals via `POST /servicePrincipals`
 - Grant admin consent for Dataverse and Graph API permissions
-- Create client secrets, store in Key Vault `kv-rosa-holdings`
+- Create client secrets, store in Key Vault `kv-tvs-holdings`
 - Deploy conditional access policies via `POST /identity/conditionalAccess/policies`
 - Configure FIDO2 authentication method policy via `PATCH /policies/authenticationMethodsPolicy`
 - Register FIDO2 keys for admin accounts

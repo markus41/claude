@@ -185,7 +185,7 @@ Jira issue.
 | Buyer wants A3 access | Yes -- include in sale | No -- archive only |
 | A3 has ongoing operational value | Increases sale price | Firebase costs saved |
 | Data migration complete to Fabric | Not required pre-sale | Required before shutdown |
-| Technical debt / maintenance burden | Buyer assumes liability | Rosa avoids future cost |
+| Technical debt / maintenance burden | Buyer assumes liability | TVS avoids future cost |
 | Timeline risk | No migration needed | Must archive before close |
 
 ### Execution Sequence

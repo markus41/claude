@@ -60,7 +60,7 @@ notebooks cannot proceed.
 
 ### Prerequisites
 - Firebase admin service account key for project `taia-a3-firebase`
-- Azure Storage account `strosadata` provisioned (or use temporary Blob container)
+- Azure Storage account `sttvsdata` provisioned (or use temporary Blob container)
 - `firebase-admin` SDK installed in functions/firebase-extract environment
 
 ### Execution Sequence
@@ -79,7 +79,7 @@ notebooks cannot proceed.
 - All 5 collections exported with zero missing documents
 - SHA-256 checksums recorded in `extraction-manifest.json`
 - Source vs. export row count delta = 0 for each collection
-- Export files accessible in `strosadata/a3-extract/` container
+- Export files accessible in `sttvsdata/a3-extract/` container
 
 ### Rollback Plan
 - Firebase is read-only during extraction; no rollback needed for source
@@ -97,22 +97,22 @@ notebooks cannot proceed.
 
 ### Prerequisites
 - Azure subscription with Owner or Contributor role
-- Resource group `rg-rosa-holdings` created (or include in this step)
+- Resource group `rg-tvs-holdings` created (or include in this step)
 
 ### Execution Sequence
-1. Create resource group `rg-rosa-holdings` in East US 2 (if not exists)
-2. Deploy Key Vault `kv-rosa-holdings` via Bicep module:
+1. Create resource group `rg-tvs-holdings` in East US 2 (if not exists)
+2. Deploy Key Vault `kv-tvs-holdings` via Bicep module:
    ```bash
    az keyvault create \
-     --name kv-rosa-holdings \
-     --resource-group rg-rosa-holdings \
+     --name kv-tvs-holdings \
+     --resource-group rg-tvs-holdings \
      --location eastus2 \
      --sku standard \
      --enable-rbac-authorization true
    ```
 3. Assign RBAC roles:
    - Markus: Key Vault Administrator
-   - `app-rosa-ingest` service principal: Key Vault Secrets User
+   - `app-tvs-ingest` service principal: Key Vault Secrets User
    - `app-fabric-pipeline` service principal: Key Vault Secrets User
 4. Seed initial secrets:
    - `breakglass-taia-1`, `breakglass-taia-2` (emergency access credentials)
@@ -121,13 +121,13 @@ notebooks cannot proceed.
 5. Enable diagnostic logging to Log Analytics workspace
 
 ### Success Criteria
-- `az keyvault show --name kv-rosa-holdings` returns 200
-- RBAC assignments verified: `az role assignment list --scope /subscriptions/.../kv-rosa-holdings`
+- `az keyvault show --name kv-tvs-holdings` returns 200
+- RBAC assignments verified: `az role assignment list --scope /subscriptions/.../kv-tvs-holdings`
 - All 5 initial secrets stored and retrievable by authorized principals
 - Soft-delete and purge protection enabled
 
 ### Rollback Plan
-- `az keyvault delete --name kv-rosa-holdings` (soft-delete retains 90 days)
+- `az keyvault delete --name kv-tvs-holdings` (soft-delete retains 90 days)
 - If RBAC misconfigured: re-run role assignments; Key Vault remains intact
 - Secrets can be rotated post-provisioning without redeployment
 
@@ -139,11 +139,11 @@ notebooks cannot proceed.
 **Duration estimate:** 1-2 hours
 
 ### Prerequisites
-- GitHub organization `rosa-holdings` created
+- GitHub organization `tvs-holdings` created
 - Markus has org Owner role
 
 ### Execution Sequence
-1. Create repository `rosa-holdings/platform` (private)
+1. Create repository `tvs-holdings/platform` (private)
 2. Initialize monorepo structure:
    ```
    platform/
@@ -175,7 +175,7 @@ notebooks cannot proceed.
 6. Add `CODEOWNERS` file mapping paths to responsible team members
 
 ### Success Criteria
-- Repository accessible at `github.com/rosa-holdings/platform`
+- Repository accessible at `github.com/tvs-holdings/platform`
 - Branch protection rules active on `main`
 - `develop` branch exists and is set as default
 - CI workflow stub runs successfully on push to `develop`
@@ -194,9 +194,9 @@ notebooks cannot proceed.
 **Depends on:** Step 2 (Key Vault must exist for secret storage)
 
 ### Prerequisites
-- Key Vault `kv-rosa-holdings` provisioned (Step 2)
+- Key Vault `kv-tvs-holdings` provisioned (Step 2)
 - Markus Global Admin credentials verified
-- Tenant: `rosa-holdings.onmicrosoft.com`
+- Tenant: `tvs-holdings.onmicrosoft.com`
 
 ### Execution Sequence
 1. **Global Admin verification**
@@ -204,10 +204,10 @@ notebooks cannot proceed.
    - Activate role with 1-hour window for setup tasks
    - Verify break-glass accounts exist and are excluded from CA policies
 2. **App registrations** (3 applications):
-   - `app-rosa-ingest`: Application permissions for Dataverse + Graph API
+   - `app-tvs-ingest`: Application permissions for Dataverse + Graph API
    - `app-broker-portal`: SPA registration for Static Web Apps
    - `app-fabric-pipeline`: Service principal for Fabric workspace
-   - Store all client secrets in `kv-rosa-holdings`
+   - Store all client secrets in `kv-tvs-holdings`
 3. **Base conditional access policies**:
    - `CA001-RequireMFA-AllUsers`: MFA for all users, all cloud apps
    - `CA002-BlockLegacyAuth`: Block legacy authentication protocols
@@ -294,7 +294,7 @@ notebooks cannot proceed.
 - Carrier master list from TAIA operations team (if available)
 
 ### Execution Sequence
-1. **Load raw carrier data** from `strosadata/a3-extract/carriers.ndjson`
+1. **Load raw carrier data** from `sttvsdata/a3-extract/carriers.ndjson`
 2. **Deduplicate carriers**:
    - Normalize names (trim, case-fold, remove punctuation variants)
    - Match on NAIC codes where available

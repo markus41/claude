@@ -11,7 +11,7 @@ allowed-tools:
 
 # Deploy Teams
 
-Provisions Microsoft Teams workspaces for Rosa Holdings VAs with entity-specific channels, shared mailboxes, and HIPAA-compliant configuration for TVS tenant.
+Provisions Microsoft Teams workspaces for TVS Holdings VAs with entity-specific channels, shared mailboxes, and HIPAA-compliant configuration for TVS tenant.
 
 ## Usage
 
@@ -99,7 +99,7 @@ echo "CONSULTING_TENANT_ID=$CONSULTING_TENANT_ID"
 ## Teams Structure
 
 ```
-Rosa Holdings VA Workspace
+TVS Holdings VA Workspace
 ├── General          — Announcements, company-wide
 ├── TVS-Operations   — TVS task discussions, time tracking
 ├── Consulting       — Lobbi + Medicare consulting work

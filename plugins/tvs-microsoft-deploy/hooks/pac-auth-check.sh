@@ -68,10 +68,10 @@ if [ -n "$TARGET_ENV" ] && [ -n "$ACTIVE_ENV" ]; then
   fi
 fi
 
-# Validate active profile matches known Rosa environments
+# Validate active profile matches known TVS environments
 if [ -n "$ACTIVE_ENV" ]; then
   if ! echo "$ACTIVE_ENV" | grep -qE '(tvs-(prod|dev|test)|consulting-(prod|dev))\.crm[0-9]*\.dynamics\.com'; then
-    echo "WARNING: Active pac profile environment ($ACTIVE_ENV) is not a known Rosa environment." >&2
+    echo "WARNING: Active pac profile environment ($ACTIVE_ENV) is not a known TVS environment." >&2
     echo "  Known environments: tvs-{prod|dev|test}.crm8.dynamics.com, consulting-{prod|dev}.crm.dynamics.com" >&2
   fi
 fi

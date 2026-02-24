@@ -22,22 +22,22 @@ import requests
 FABRIC_API = "https://api.fabric.microsoft.com/v1"
 
 TVS_TABLES = [
-    {"name": "dv_accounts", "table": "rosa_account", "path": "Tables/dv_accounts"},
-    {"name": "dv_contacts", "table": "rosa_contact", "path": "Tables/dv_contacts"},
-    {"name": "dv_subscriptions", "table": "rosa_subscription", "path": "Tables/dv_subscriptions"},
-    {"name": "dv_tasks", "table": "rosa_task", "path": "Tables/dv_tasks"},
-    {"name": "dv_timeentries", "table": "rosa_timeentry", "path": "Tables/dv_timeentries"},
-    {"name": "dv_deliverables", "table": "rosa_deliverable", "path": "Tables/dv_deliverables"},
-    {"name": "dv_automationlog", "table": "rosa_automationlog", "path": "Tables/dv_automationlog"},
+    {"name": "dv_accounts", "table": "tvs_account", "path": "Tables/dv_accounts"},
+    {"name": "dv_contacts", "table": "tvs_contact", "path": "Tables/dv_contacts"},
+    {"name": "dv_subscriptions", "table": "tvs_subscription", "path": "Tables/dv_subscriptions"},
+    {"name": "dv_tasks", "table": "tvs_task", "path": "Tables/dv_tasks"},
+    {"name": "dv_timeentries", "table": "tvs_timeentry", "path": "Tables/dv_timeentries"},
+    {"name": "dv_deliverables", "table": "tvs_deliverable", "path": "Tables/dv_deliverables"},
+    {"name": "dv_automationlog", "table": "tvs_automationlog", "path": "Tables/dv_automationlog"},
 ]
 
 CONSULTING_TABLES = [
-    {"name": "dv_accounts", "table": "rosa_consultingaccount", "path": "Tables/dv_accounts"},
-    {"name": "dv_contacts", "table": "rosa_consultingcontact", "path": "Tables/dv_contacts"},
-    {"name": "dv_engagements", "table": "rosa_engagement", "path": "Tables/dv_engagements"},
-    {"name": "dv_activities", "table": "rosa_activity", "path": "Tables/dv_activities"},
-    {"name": "dv_sharedprospects", "table": "rosa_sharedprospect", "path": "Tables/dv_sharedprospects"},
-    {"name": "dv_implementations", "table": "rosa_implementation", "path": "Tables/dv_implementations"},
+    {"name": "dv_accounts", "table": "tvs_consultingaccount", "path": "Tables/dv_accounts"},
+    {"name": "dv_contacts", "table": "tvs_consultingcontact", "path": "Tables/dv_contacts"},
+    {"name": "dv_engagements", "table": "tvs_engagement", "path": "Tables/dv_engagements"},
+    {"name": "dv_activities", "table": "tvs_activity", "path": "Tables/dv_activities"},
+    {"name": "dv_sharedprospects", "table": "tvs_sharedprospect", "path": "Tables/dv_sharedprospects"},
+    {"name": "dv_implementations", "table": "tvs_implementation", "path": "Tables/dv_implementations"},
 ]
 
 

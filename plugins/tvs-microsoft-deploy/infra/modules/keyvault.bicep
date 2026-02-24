@@ -1,5 +1,5 @@
 // ============================================================================
-// Rosa Holdings - Key Vault Module
+// TVS Holdings - Key Vault Module
 // Creates Azure Key Vault with RBAC authorization, soft delete, purge protection
 // Stores secrets for Stripe, Firebase, Paylocity, Graph API, Fabric
 // ============================================================================

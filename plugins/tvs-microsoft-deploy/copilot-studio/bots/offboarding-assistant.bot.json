@@ -1,0 +1,6 @@
+{
+  "name": "offboarding-assistant",
+  "version": "1.0.0",
+  "topics": ["offboarding-checklist", "access-revocation"],
+  "fallbackFlow": "identity-offboarding"
+}

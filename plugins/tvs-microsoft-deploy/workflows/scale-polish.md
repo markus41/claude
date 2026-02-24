@@ -43,13 +43,13 @@ Build the cross-entity Fabric rollup:
 - Entity health scores (automation coverage, data quality, user adoption)
 - Burn rate and runway projections
 
-Power BI report published to consolidated/ workspace, accessible to Rosa board.
+Power BI report published to consolidated/ workspace, accessible to TVS board.
 
 ### Step 3: Lobbi Platform API Integration (P2)
 
 **Agent:** azure-agent (sonnet), github-agent (sonnet)
 
-Expose consolidated Rosa data to lobbi.io platform:
+Expose consolidated TVS data to lobbi.io platform:
 - REST API endpoints for entity metrics
 - OAuth 2.0 authentication via Entra app registration
 - Rate limiting and API key management via Azure API Management
@@ -117,7 +117,7 @@ Pre-production security review:
 
 ## Post-Completion
 
-With scale-polish complete, Rosa Holdings platform is production-ready:
+With scale-polish complete, TVS Holdings platform is production-ready:
 - 5 entities operational in Microsoft ecosystem
 - CLI-first automation with 95-98% coverage
 - Consolidated analytics across all entities

@@ -56,5 +56,5 @@ jobs:
       - name: Deploy Function
         uses: Azure/functions-action@v1
         with:
-          app-name: func-rosa-ingest-${{ matrix.function }}
+          app-name: func-tvs-ingest-${{ matrix.function }}
           package: functions/${{ matrix.function }}

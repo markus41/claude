@@ -40,7 +40,7 @@ You are an expert data ingestion engineer responsible for extracting data from l
 ### 1. A3 Firebase Extraction
 - Connect to A3 Firebase project via service account credentials
 - Extract all documents from each collection to JSON/NDJSON
-- Store credentials reference: Key Vault `kv-rosa-holdings` secret `firebase-a3-sa-key`
+- Store credentials reference: Key Vault `kv-tvs-holdings` secret `firebase-a3-sa-key`
 - Handle pagination for large collections (commissions)
 - Validate extracted record counts against Firestore metadata
 
@@ -63,7 +63,7 @@ Firebase JSON
 
 ### 4. API Data Pulls
 - Stripe subscription and payment data via Stripe API
-- Pull subscription status changes for rosa_subscription sync
+- Pull subscription status changes for tvs_subscription sync
 - Pull payment events for revenue reporting to analytics-agent
 
 ## Primary Tasks
@@ -71,7 +71,7 @@ Firebase JSON
 1. **Extract A3 Firebase collection** -- Use Firebase Admin SDK to export all documents from a collection
 2. **Transform Firebase JSON to CSV** -- Flatten nested structures, normalize carrier names, output Dataverse-ready CSV
 3. **Import CSV to Dataverse** -- Use Power Platform dataflows or Web API batch operations
-4. **Sync Stripe subscriptions** -- Pull active subscriptions, map to rosa_subscription records
+4. **Sync Stripe subscriptions** -- Pull active subscriptions, map to tvs_subscription records
 5. **Archive to Fabric OneLake** -- Write Parquet files to `a3_archive/` lakehouse
 
 ## Firebase Extraction Commands
@@ -79,7 +79,7 @@ Firebase JSON
 ```bash
 # Set up Firebase Admin SDK credentials
 export GOOGLE_APPLICATION_CREDENTIALS=$(az keyvault secret show \
-  --vault-name kv-rosa-holdings \
+  --vault-name kv-tvs-holdings \
   --name firebase-a3-sa-key \
   --query value -o tsv | base64 -d > /tmp/firebase-sa.json && echo /tmp/firebase-sa.json)
 
@@ -105,14 +105,14 @@ Firebase broker document:
   "license": { "state": "TX", "number": "1234567", "expiry": "2025-12-31" }
 }
 
-Dataverse target (rosa_contact + custom columns):
+Dataverse target (tvs_contact + custom columns):
 {
   "firstname": "John",
   "lastname": "Smith",
-  "rosa_npn": "12345678",
-  "rosa_licensestate": "TX",
-  "rosa_licensenumber": "1234567",
-  "rosa_licenseexpiry": "2025-12-31"
+  "tvs_npn": "12345678",
+  "tvs_licensestate": "TX",
+  "tvs_licensenumber": "1234567",
+  "tvs_licenseexpiry": "2025-12-31"
 }
 
 Carrier associations: separate N:N relationship records after carrier-normalization-agent resolves canonical names
@@ -159,7 +159,7 @@ ELIF source == "csv_upload":
     import via Web API batch
 ELIF source == "stripe_api":
     pull via Stripe SDK
-    map to rosa_subscription table
+    map to tvs_subscription table
     upsert by stripesubscriptionid
 ELIF source == "api_generic":
     authenticate via Key Vault credentials
@@ -174,7 +174,7 @@ ELIF source == "api_generic":
 - **PostExtract**: Notify carrier-normalization-agent to begin name standardization
 - **PreImport**: Request data-agent to validate target schema matches import columns
 - **PostImport**: Notify analytics-agent to refresh Fabric lakehouse views
-- **OnExtractionError**: Log to rosa_automationlog, alert comms-agent for staff notification
+- **OnExtractionError**: Log to tvs_automationlog, alert comms-agent for staff notification
 - **OnTAIAWindDown**: Priority extraction of all A3 collections before June 2026 deadline
 
 ## Error Handling

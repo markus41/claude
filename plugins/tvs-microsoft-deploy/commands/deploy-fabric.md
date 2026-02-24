@@ -12,7 +12,7 @@ allowed-tools:
 
 # Fabric Workspace Provisioning
 
-Provisions Microsoft Fabric workspaces and OneLake lakehouses for all Rosa entities. Creates the six core workspaces (tvs, consulting, lobbi_platform, media, a3_archive, consolidated), deploys Spark notebooks, and establishes Dataverse shortcuts for real-time data access.
+Provisions Microsoft Fabric workspaces and OneLake lakehouses for all TVS entities. Creates the six core workspaces (tvs, consulting, lobbi_platform, media, a3_archive, consolidated), deploys Spark notebooks, and establishes Dataverse shortcuts for real-time data access.
 
 ## Usage
 
@@ -48,7 +48,7 @@ curl -sf -H "Authorization: Bearer $FABRIC_TOKEN" \
 
 **Agent 1 - Capacity Scanner:**
 - Query Fabric capacities: `GET /v1/capacities` to verify F-SKU size and region
-- List existing workspaces: `GET /v1/workspaces` filtered by `rosa-` prefix
+- List existing workspaces: `GET /v1/workspaces` filtered by `tvs-` prefix
 - For each workspace, enumerate items: lakehouses, notebooks, dataflows, semantic models
 - Check capacity utilization and CU consumption for the current billing period
 - Verify capacity is in Active state (not paused/suspended)
@@ -64,12 +64,12 @@ curl -sf -H "Authorization: Bearer $FABRIC_TOKEN" \
 
 **Agent 3 - Workspace Planner:**
 - Design workspace topology:
-  - `rosa-tvs` - TVS operational data lakehouse (Accounts, Contacts, Subscriptions, Tasks, TimeEntries, Deliverables)
-  - `rosa-consulting` - Consulting data lakehouse (Engagements, Activities, SharedProspects, Implementations)
-  - `rosa-lobbi-platform` - Lobbi platform analytics and broker data
-  - `rosa-media` - Media company content and campaign analytics
-  - `rosa-a3-archive` - A3 Firebase extracted data (brokers, commissions, carriers, contacts, activities)
-  - `rosa-consolidated` - Cross-entity unified lakehouse with medallion architecture (bronze/silver/gold)
+  - `tvs-tvs` - TVS operational data lakehouse (Accounts, Contacts, Subscriptions, Tasks, TimeEntries, Deliverables)
+  - `tvs-consulting` - Consulting data lakehouse (Engagements, Activities, SharedProspects, Implementations)
+  - `tvs-lobbi-platform` - Lobbi platform analytics and broker data
+  - `tvs-media` - Media company content and campaign analytics
+  - `tvs-a3-archive` - A3 Firebase extracted data (brokers, commissions, carriers, contacts, activities)
+  - `tvs-consolidated` - Cross-entity unified lakehouse with medallion architecture (bronze/silver/gold)
 - Plan notebook deployments per workspace (ingestion, transformation, reporting)
 - Design Dataverse shortcut mapping: table-to-lakehouse-table correspondence
 - Calculate storage estimates per workspace
@@ -96,7 +96,7 @@ curl -sf -H "Authorization: Bearer $FABRIC_TOKEN" \
 **Agent 6 - Shortcut + Pipeline Builder:**
 - Create Dataverse shortcuts in tvs/ lakehouse for all TVS tables:
   - `POST /v1/workspaces/{id}/lakehouses/{id}/shortcuts` with Dataverse connection
-  - Tables: rosa_account, rosa_contact, rosa_subscription, rosa_task, rosa_timeentry, rosa_deliverable, rosa_automationlog
+  - Tables: tvs_account, tvs_contact, tvs_subscription, tvs_task, tvs_timeentry, tvs_deliverable, tvs_automationlog
 - Create Dataverse shortcuts in consulting/ lakehouse for all Consulting tables
 - Create cross-workspace shortcuts in consolidated/ pointing to silver layer of each entity
 - Build data pipelines for scheduled refresh (daily bronze, hourly silver for active data)
@@ -109,7 +109,7 @@ curl -sf -H "Authorization: Bearer $FABRIC_TOKEN" \
 - Confirm lakehouses are created with Tables and Files directories
 - Test each Dataverse shortcut returns data: query first 10 rows via Spark SQL
 - Verify notebooks are present and can be opened without import errors
-- Check workspace RBAC: test user in sg-tvs-users can access rosa-tvs but not rosa-consulting
+- Check workspace RBAC: test user in sg-tvs-users can access tvs-tvs but not tvs-consulting
 
 **Agent 8 - Pipeline Tester:**
 - Trigger test run of ingestion pipeline for TVS workspace
@@ -145,22 +145,22 @@ Governed by `orchestration-protocol-enforcer` hook. Minimum 6 sub-agents enforce
 
 ```
 OneLake/
-  rosa-tvs/              -- TVS operational lakehouse
+  tvs-tvs/              -- TVS operational lakehouse
     Tables/              -- Dataverse shortcuts + transformed tables
     Files/               -- Uploaded CSVs, exports
-  rosa-consulting/       -- Consulting lakehouse
+  tvs-consulting/       -- Consulting lakehouse
     Tables/
     Files/
-  rosa-lobbi-platform/   -- Lobbi broker analytics
+  tvs-lobbi-platform/   -- Lobbi broker analytics
     Tables/
     Files/
-  rosa-media/            -- Media content analytics
+  tvs-media/            -- Media content analytics
     Tables/
     Files/
-  rosa-a3-archive/       -- A3 Firebase extracted data
+  tvs-a3-archive/       -- A3 Firebase extracted data
     Tables/              -- brokers, commissions, carriers, contacts, activities
     Files/               -- Raw JSON exports from Firebase
-  rosa-consolidated/     -- Cross-entity unified view
+  tvs-consolidated/     -- Cross-entity unified view
     bronze/              -- Raw data from all entities
     silver/              -- Cleaned, deduplicated, typed
     gold/                -- KPI rollups, executive dashboards

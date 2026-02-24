@@ -107,8 +107,8 @@ class DataverseClient {
 
   async getTimeEntries(startDate, endDate) {
     const token = await this.getToken();
-    const filter = `rosa_date ge ${startDate} and rosa_date le ${endDate}`;
-    const url = `${this.baseUrl}/rosa_timeentries?$filter=${encodeURIComponent(filter)}&$expand=rosa_userid($select=internalemailaddress,fullname)&$orderby=rosa_date asc`;
+    const filter = `tvs_date ge ${startDate} and tvs_date le ${endDate}`;
+    const url = `${this.baseUrl}/tvs_timeentries?$filter=${encodeURIComponent(filter)}&$expand=tvs_userid($select=internalemailaddress,fullname)&$orderby=tvs_date asc`;
 
     const response = await fetch(url, {
       headers: {
@@ -131,7 +131,7 @@ class DataverseClient {
     const token = await this.getToken();
 
     const response = await fetch(
-      `${this.baseUrl}/rosa_timeentries(${entryId})`,
+      `${this.baseUrl}/tvs_timeentries(${entryId})`,
       {
         method: "PATCH",
         headers: {
@@ -152,7 +152,7 @@ class DataverseClient {
   async logAutomation(data) {
     const token = await this.getToken();
 
-    const response = await fetch(`${this.baseUrl}/rosa_automationlogs`, {
+    const response = await fetch(`${this.baseUrl}/tvs_automationlogs`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -161,9 +161,9 @@ class DataverseClient {
         "OData-Version": "4.0",
       },
       body: JSON.stringify({
-        rosa_flowname: "paylocity-sync",
-        rosa_triggertype: 100000000, // Scheduled
-        rosa_executedat: new Date().toISOString(),
+        tvs_flowname: "paylocity-sync",
+        tvs_triggertype: 100000000, // Scheduled
+        tvs_executedat: new Date().toISOString(),
         ...data,
       }),
     });
@@ -196,11 +196,11 @@ function reconcileEntries(dvEntries, paylocityEntries, employeeMap) {
   // Build Dataverse lookup: email + date -> { hours, entryId }
   const dvLookup = new Map();
   for (const entry of dvEntries) {
-    const email = entry.rosa_userid?.internalemailaddress || "unknown";
-    const dateStr = entry.rosa_date?.split("T")[0] || "";
+    const email = entry.tvs_userid?.internalemailaddress || "unknown";
+    const dateStr = entry.tvs_date?.split("T")[0] || "";
     const key = `${email}_${dateStr}`;
     const existing = dvLookup.get(key) || { hours: 0, entries: [] };
-    existing.hours += entry.rosa_hours || 0;
+    existing.hours += entry.tvs_hours || 0;
     existing.entries.push(entry);
     dvLookup.set(key, existing);
   }
@@ -238,7 +238,7 @@ function reconcileEntries(dvEntries, paylocityEntries, employeeMap) {
         dataverseHours: dvData.hours,
         paylocityHours: payHours,
         differenceHours: Math.round(diff * 100) / 100,
-        dvEntryIds: dvData.entries.map((e) => e.rosa_timeentryid),
+        dvEntryIds: dvData.entries.map((e) => e.tvs_timeentryid),
       });
     }
   }
@@ -251,7 +251,7 @@ function reconcileEntries(dvEntries, paylocityEntries, employeeMap) {
         email,
         date,
         dataverseHours: dvData.hours,
-        entryIds: dvData.entries.map((e) => e.rosa_timeentryid),
+        entryIds: dvData.entries.map((e) => e.tvs_timeentryid),
       });
     }
   }
@@ -274,12 +274,12 @@ module.exports = async function (context, myTimer) {
   try {
     // Initialize clients
     const credential = new DefaultAzureCredential();
-    const kvName = process.env.KEY_VAULT_NAME || "kv-rosa-holdings-dev";
+    const kvName = process.env.KEY_VAULT_NAME || "kv-tvs-holdings-dev";
     const kvUrl = `https://${kvName}.vault.azure.net`;
     const kvClient = new SecretClient(kvUrl, credential);
 
     const paylocityApiKey = await kvClient.getSecret("PAYLOCITY-API-KEY");
-    const companyId = process.env.PAYLOCITY_COMPANY_ID || "ROSA001";
+    const companyId = process.env.PAYLOCITY_COMPANY_ID || "TVS001";
 
     const paylocity = new PaylocityClient(paylocityApiKey.value, companyId);
     const dataverseUrl =
@@ -323,8 +323,8 @@ module.exports = async function (context, myTimer) {
       for (const entryId of discrepancy.dvEntryIds) {
         try {
           await dv.updateTimeEntry(entryId, {
-            rosa_paylocitysynced: true,
-            rosa_paylocitydiscrepancy: true,
+            tvs_paylocitysynced: true,
+            tvs_paylocitydiscrepancy: true,
           });
           flaggedCount++;
         } catch (err) {
@@ -335,21 +335,21 @@ module.exports = async function (context, myTimer) {
 
     // Mark matched entries as synced
     for (const dvEntry of dvEntries) {
-      const email = dvEntry.rosa_userid?.internalemailaddress;
-      const date = dvEntry.rosa_date?.split("T")[0];
+      const email = dvEntry.tvs_userid?.internalemailaddress;
+      const date = dvEntry.tvs_date?.split("T")[0];
       const isDiscrepancy = results.discrepancies.some(
-        (d) => d.dvEntryIds.includes(dvEntry.rosa_timeentryid)
+        (d) => d.dvEntryIds.includes(dvEntry.tvs_timeentryid)
       );
 
       if (!isDiscrepancy) {
         try {
-          await dv.updateTimeEntry(dvEntry.rosa_timeentryid, {
-            rosa_paylocitysynced: true,
-            rosa_paylocitydiscrepancy: false,
+          await dv.updateTimeEntry(dvEntry.tvs_timeentryid, {
+            tvs_paylocitysynced: true,
+            tvs_paylocitydiscrepancy: false,
           });
         } catch (err) {
           context.log.warn(
-            `Failed to mark entry ${dvEntry.rosa_timeentryid} as synced: ${err.message}`
+            `Failed to mark entry ${dvEntry.tvs_timeentryid} as synced: ${err.message}`
           );
         }
       }
@@ -375,15 +375,15 @@ module.exports = async function (context, myTimer) {
       results.dataverseOnly.length > 0;
 
     await dv.logAutomation({
-      rosa_status: hasIssues ? 100000002 : 100000000, // Partial or Success
-      rosa_duration: duration,
-      rosa_outputpayload: JSON.stringify({
+      tvs_status: hasIssues ? 100000002 : 100000000, // Partial or Success
+      tvs_duration: duration,
+      tvs_outputpayload: JSON.stringify({
         summary: summaryPayload,
         discrepancies: results.discrepancies,
         paylocityOnly: results.paylocityOnly,
         dataverseOnly: results.dataverseOnly,
       }),
-      rosa_correlationid: `paylocity-sync-${startDate}`,
+      tvs_correlationid: `paylocity-sync-${startDate}`,
     });
 
     context.log(`Paylocity sync completed in ${duration}ms`);
@@ -398,9 +398,9 @@ module.exports = async function (context, myTimer) {
         process.env.DATAVERSE_TVS_URL || "https://org-tvs-dev.crm.dynamics.com";
       const dv = new DataverseClient(dataverseUrl);
       await dv.logAutomation({
-        rosa_status: 100000001, // Failed
-        rosa_duration: Date.now() - startTime,
-        rosa_error: error.message,
+        tvs_status: 100000001, // Failed
+        tvs_duration: Date.now() - startTime,
+        tvs_error: error.message,
       });
     } catch (logError) {
       context.log.error(`Failed to log automation error: ${logError.message}`);

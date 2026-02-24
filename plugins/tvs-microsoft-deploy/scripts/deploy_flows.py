@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
-"""Deploy Power Automate flows for Rosa Holdings.
+"""Deploy Power Automate flows for TVS Holdings.
 
 Imports flow packages from the flows/ directory, configures connection
 references, and activates each flow via the Power Automate Management REST API.
 
+Optional env vars:
+    PP_DEPLOY_PROFILE      - dev|test|prod profile under power-platform/profiles
+    FLOW_OWNER_OBJECT_IDS  - comma-separated object ids for owner policy validation
+
 Required env vars:
-    GRAPH_TOKEN          - Bearer token with Flows.Manage.All permissions
-    TVS_DATAVERSE_ENV_URL - Dataverse environment URL for connection references
-    FLOW_ENVIRONMENT_ID  - Power Platform environment ID
+    GRAPH_TOKEN            - Bearer token with Flows.Manage.All permissions
+    FLOW_ENVIRONMENT_ID    - Power Platform environment ID (or supplied by profile)
 """
 
 import json
@@ -18,6 +21,22 @@ from pathlib import Path
 import requests
 
 PA_API = "https://api.flow.microsoft.com"
+ROOT = Path(__file__).parent.parent
+
+
+def load_profile():
+    name = os.environ.get("PP_DEPLOY_PROFILE", "dev")
+    profile_path = ROOT / "power-platform" / "profiles" / f"{name}.json"
+    if not profile_path.exists():
+        return {}
+    with profile_path.open() as handle:
+        return json.load(handle)
+
+
+def load_release_gates():
+    path = ROOT / "power-platform" / "validation" / "release-gates.json"
+    with path.open() as handle:
+        return json.load(handle)
 
 
 def get_headers():
@@ -28,8 +47,8 @@ def get_headers():
     return {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
 
 
-def get_env_id():
-    env_id = os.environ.get("FLOW_ENVIRONMENT_ID")
+def get_env_id(profile):
+    env_id = os.environ.get("FLOW_ENVIRONMENT_ID") or profile.get("flowEnvironmentId")
     if not env_id:
         print("ERROR: FLOW_ENVIRONMENT_ID is not set", file=sys.stderr)
         sys.exit(1)
@@ -37,7 +56,7 @@ def get_env_id():
 
 
 def discover_flow_packages():
-    flows_dir = Path(__file__).parent.parent / "flows"
+    flows_dir = ROOT / "flows"
     if not flows_dir.exists():
         print(f"WARNING: flows directory not found at {flows_dir}", file=sys.stderr)
         return []
@@ -48,17 +67,34 @@ def discover_flow_packages():
     return packages
 
 
-def import_flow(headers, env_id, package_path):
+def validate_owner_policy():
+    manifest_path = ROOT / "power-platform" / "manifests" / "tvs-automations.solution.json"
+    with manifest_path.open() as handle:
+        policy = json.load(handle).get("flowOwnerPolicy", {})
+
+    approved = set(policy.get("servicePrincipalIds", []))
+    actual = set(filter(None, os.environ.get("FLOW_OWNER_OBJECT_IDS", "").split(",")))
+    if policy.get("requireServicePrincipal") and not approved.issubset(actual):
+        print("ERROR: Flow owner/service principal policy failed", file=sys.stderr)
+        sys.exit(1)
+
+
+def import_flow(headers, env_id, package_path, profile):
     name = package_path.stem
     print(f"\n  Importing flow: {name}")
 
     with open(package_path) as f:
         flow_def = json.load(f)
 
-    dv_env_url = os.environ.get("TVS_DATAVERSE_ENV_URL", "")
     flow_json = json.dumps(flow_def)
-    flow_json = flow_json.replace("{DATAVERSE_ENV_URL}", dv_env_url)
+    flow_json = flow_json.replace("{DATAVERSE_ENV_URL}", profile.get("dataverseUrl", ""))
     flow_def = json.loads(flow_json)
+
+    refs = profile.get("connectionReferences", {})
+    flow_refs = flow_def.get("connectionReferences", {})
+    for ref_name, ref_value in refs.items():
+        if ref_name in flow_refs:
+            flow_refs[ref_name].update(ref_value)
 
     resp = requests.post(
         f"{PA_API}/providers/Microsoft.ProcessSimple/environments/{env_id}/flows",
@@ -68,7 +104,7 @@ def import_flow(headers, env_id, package_path):
                 "displayName": flow_def.get("displayName", name),
                 "definition": flow_def.get("definition", flow_def),
                 "state": "Stopped",
-                "connectionReferences": flow_def.get("connectionReferences", {}),
+                "connectionReferences": flow_refs,
             }
         },
     )
@@ -77,9 +113,9 @@ def import_flow(headers, env_id, package_path):
         flow_id = flow.get("name", flow.get("id", "unknown"))
         print(f"    Imported: {flow_id}")
         return flow_id
-    else:
-        print(f"    FAIL: {resp.status_code} - {resp.text}", file=sys.stderr)
-        return None
+
+    print(f"    FAIL: {resp.status_code} - {resp.text}", file=sys.stderr)
+    return None
 
 
 def activate_flow(headers, env_id, flow_id):
@@ -94,9 +130,21 @@ def activate_flow(headers, env_id, flow_id):
         print(f"    Activation FAIL: {resp.status_code}", file=sys.stderr)
 
 
+def run_post_deploy_gates(deployed_names):
+    gates = load_release_gates()
+    critical = {gate["name"] for gate in gates.get("criticalAutomations", [])}
+    missing = sorted(critical - deployed_names)
+    if missing:
+        print(f"ERROR: Missing critical automations in deployment: {', '.join(missing)}", file=sys.stderr)
+        sys.exit(1)
+    print("Release gates passed for critical automations")
+
+
 def main():
     headers = get_headers()
-    env_id = get_env_id()
+    profile = load_profile()
+    env_id = get_env_id(profile)
+    validate_owner_policy()
     packages = discover_flow_packages()
 
     if not packages:
@@ -105,12 +153,15 @@ def main():
 
     print("=== Deploying Power Automate Flows ===")
     deployed = []
+    deployed_names = set()
     for pkg in packages:
-        flow_id = import_flow(headers, env_id, pkg)
+        flow_id = import_flow(headers, env_id, pkg, profile)
         if flow_id:
             activate_flow(headers, env_id, flow_id)
             deployed.append(flow_id)
+            deployed_names.add(pkg.stem)
 
+    run_post_deploy_gates(deployed_names)
     print(f"\n=== Summary: {len(deployed)}/{len(packages)} flows deployed ===")
 
 

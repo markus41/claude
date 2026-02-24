@@ -1,12 +1,12 @@
 ---
 name: Microsoft Fabric REST API
-description: This skill should be used when working with fabric/**, *.ipynb notebooks, onelake/**, or notebooks/** paths. It provides Microsoft Fabric REST API patterns for workspace management, lakehouse operations, notebook deployment, OneLake shortcut creation, and capacity management across ROSA Holdings Fabric tenancy.
+description: This skill should be used when working with fabric/**, *.ipynb notebooks, onelake/**, or notebooks/** paths. It provides Microsoft Fabric REST API patterns for workspace management, lakehouse operations, notebook deployment, OneLake shortcut creation, and capacity management across TVS Holdings Fabric tenancy.
 version: 1.0.0
 ---
 
 # Microsoft Fabric REST API Operations
 
-Complete reference for Fabric REST API operations across ROSA Holdings workspaces.
+Complete reference for Fabric REST API operations across TVS Holdings workspaces.
 
 ## Workspace IDs
 
@@ -186,7 +186,7 @@ curl -s -X POST -H "${AUTH_HEADER}" \
       "type": "Dataverse",
       "dataverse": {
         "environmentDomain": "tvs-prod.crm8.dynamics.com",
-        "tableName": "rosa_broker",
+        "tableName": "tvs_broker",
         "connectionId": "'"${DATAVERSE_CONNECTION_ID}"'"
       }
     }
@@ -202,7 +202,7 @@ curl -s -X POST -H "${AUTH_HEADER}" \
     "target": {
       "type": "AzureDataLakeStorageGen2",
       "azureDataLakeStorageGen2": {
-        "location": "https://strosaconsolidated.dfs.core.windows.net",
+        "location": "https://sttvsconsolidated.dfs.core.windows.net",
         "subpath": "/a3-archive/exports/",
         "connectionId": "'"${ADLS_CONNECTION_ID}"'"
       }
@@ -242,16 +242,16 @@ curl -s -H "${AUTH_HEADER}" \
 
 # Resume capacity (start from paused)
 curl -s -X POST -H "${AUTH_HEADER}" \
-  "https://management.azure.com/subscriptions/${SUB_ID}/resourceGroups/rg-rosa-consolidated-prod/providers/Microsoft.Fabric/capacities/${CAPACITY_NAME}/resume?api-version=2023-11-01"
+  "https://management.azure.com/subscriptions/${SUB_ID}/resourceGroups/rg-tvs-consolidated-prod/providers/Microsoft.Fabric/capacities/${CAPACITY_NAME}/resume?api-version=2023-11-01"
 
 # Suspend capacity (auto-pause for cost savings)
 curl -s -X POST -H "${AUTH_HEADER}" \
-  "https://management.azure.com/subscriptions/${SUB_ID}/resourceGroups/rg-rosa-consolidated-prod/providers/Microsoft.Fabric/capacities/${CAPACITY_NAME}/suspend?api-version=2023-11-01"
+  "https://management.azure.com/subscriptions/${SUB_ID}/resourceGroups/rg-tvs-consolidated-prod/providers/Microsoft.Fabric/capacities/${CAPACITY_NAME}/suspend?api-version=2023-11-01"
 
 # Scale capacity
 curl -s -X PATCH -H "${AUTH_HEADER}" \
   -H "Content-Type: application/json" \
-  "https://management.azure.com/subscriptions/${SUB_ID}/resourceGroups/rg-rosa-consolidated-prod/providers/Microsoft.Fabric/capacities/${CAPACITY_NAME}?api-version=2023-11-01" \
+  "https://management.azure.com/subscriptions/${SUB_ID}/resourceGroups/rg-tvs-consolidated-prod/providers/Microsoft.Fabric/capacities/${CAPACITY_NAME}?api-version=2023-11-01" \
   -d '{"sku": {"name": "F64", "tier": "Fabric"}}'
 ```
 

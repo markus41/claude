@@ -43,57 +43,57 @@ You are an expert CRM engineer specializing in the Lobbi Consulting and Medicare
 
 ## Dataverse Tables (Consulting Environment)
 
-### rosa_cengagement (Engagement)
+### tvs_cengagement (Engagement)
 | Column | Type | Values/Notes |
 |--------|------|-------------|
-| `rosa_name` | Text (200) | Engagement title |
-| `rosa_accountid` | Lookup (Account) | Client account |
-| `rosa_primarycontactid` | Lookup (Contact) | Main client contact |
-| `rosa_entity` | Choice | Lobbi (100000000) / Medicare (100000001) |
-| `rosa_stage` | Choice | Prospect / Proposal / Active / On Hold / Closed Won / Closed Lost |
-| `rosa_engagementtype` | Choice | Advisory / Implementation / Managed Services / Enrollment / Compliance |
-| `rosa_value` | Currency | Estimated engagement value |
-| `rosa_startdate` | Date Only | Engagement start |
-| `rosa_enddate` | Date Only | Engagement end (or expected end) |
-| `rosa_ownerid` | Lookup (User) | Assigned consultant |
-| `rosa_source` | Choice | Referral / Website / SharedProspect / Direct / Event |
-| `rosa_notes` | Multiline Text | Engagement notes |
+| `tvs_name` | Text (200) | Engagement title |
+| `tvs_accountid` | Lookup (Account) | Client account |
+| `tvs_primarycontactid` | Lookup (Contact) | Main client contact |
+| `tvs_entity` | Choice | Lobbi (100000000) / Medicare (100000001) |
+| `tvs_stage` | Choice | Prospect / Proposal / Active / On Hold / Closed Won / Closed Lost |
+| `tvs_engagementtype` | Choice | Advisory / Implementation / Managed Services / Enrollment / Compliance |
+| `tvs_value` | Currency | Estimated engagement value |
+| `tvs_startdate` | Date Only | Engagement start |
+| `tvs_enddate` | Date Only | Engagement end (or expected end) |
+| `tvs_ownerid` | Lookup (User) | Assigned consultant |
+| `tvs_source` | Choice | Referral / Website / SharedProspect / Direct / Event |
+| `tvs_notes` | Multiline Text | Engagement notes |
 
-### rosa_cactivity (Activity)
+### tvs_cactivity (Activity)
 | Column | Type | Values/Notes |
 |--------|------|-------------|
-| `rosa_engagementid` | Lookup (rosa_cengagement) | Parent engagement |
-| `rosa_type` | Choice | Call / Email / Meeting / Task / Note |
-| `rosa_subject` | Text (200) | Activity subject |
-| `rosa_description` | Multiline Text | Activity details |
-| `rosa_date` | Date/Time | Activity timestamp |
-| `rosa_contactid` | Lookup (Contact) | Related contact |
-| `rosa_duration` | Whole Number | Duration in minutes |
+| `tvs_engagementid` | Lookup (tvs_cengagement) | Parent engagement |
+| `tvs_type` | Choice | Call / Email / Meeting / Task / Note |
+| `tvs_subject` | Text (200) | Activity subject |
+| `tvs_description` | Multiline Text | Activity details |
+| `tvs_date` | Date/Time | Activity timestamp |
+| `tvs_contactid` | Lookup (Contact) | Related contact |
+| `tvs_duration` | Whole Number | Duration in minutes |
 
-### rosa_csharedprospect (Shared Prospect)
+### tvs_csharedprospect (Shared Prospect)
 | Column | Type | Values/Notes |
 |--------|------|-------------|
-| `rosa_accountid` | Lookup (Account) | Prospect account |
-| `rosa_contactid` | Lookup (Contact) | Prospect primary contact |
-| `rosa_sourceentity` | Choice | Lobbi / Medicare (originating entity) |
-| `rosa_targetentity` | Choice | Lobbi / Medicare (receiving entity) |
-| `rosa_reason` | Text (500) | Why this prospect is being shared |
-| `rosa_status` | Choice | Pending / Accepted / Declined / Converted |
-| `rosa_sourceengagementid` | Lookup (rosa_cengagement) | Original engagement (if any) |
-| `rosa_targetengagementid` | Lookup (rosa_cengagement) | Created engagement (if converted) |
-| `rosa_shareddate` | Date Only | Date shared |
+| `tvs_accountid` | Lookup (Account) | Prospect account |
+| `tvs_contactid` | Lookup (Contact) | Prospect primary contact |
+| `tvs_sourceentity` | Choice | Lobbi / Medicare (originating entity) |
+| `tvs_targetentity` | Choice | Lobbi / Medicare (receiving entity) |
+| `tvs_reason` | Text (500) | Why this prospect is being shared |
+| `tvs_status` | Choice | Pending / Accepted / Declined / Converted |
+| `tvs_sourceengagementid` | Lookup (tvs_cengagement) | Original engagement (if any) |
+| `tvs_targetengagementid` | Lookup (tvs_cengagement) | Created engagement (if converted) |
+| `tvs_shareddate` | Date Only | Date shared |
 
-### rosa_cimplementation (Implementation)
+### tvs_cimplementation (Implementation)
 | Column | Type | Values/Notes |
 |--------|------|-------------|
-| `rosa_engagementid` | Lookup (rosa_cengagement) | Parent engagement |
-| `rosa_name` | Text (200) | Implementation name |
-| `rosa_phase` | Choice | Discovery / Design / Build / Test / Deploy / Hypercare |
-| `rosa_startdate` | Date Only | Phase start |
-| `rosa_targetdate` | Date Only | Phase target completion |
-| `rosa_actualdate` | Date Only | Phase actual completion |
-| `rosa_status` | Choice | Not Started / In Progress / Complete / Blocked |
-| `rosa_notes` | Multiline Text | Phase notes and blockers |
+| `tvs_engagementid` | Lookup (tvs_cengagement) | Parent engagement |
+| `tvs_name` | Text (200) | Implementation name |
+| `tvs_phase` | Choice | Discovery / Design / Build / Test / Deploy / Hypercare |
+| `tvs_startdate` | Date Only | Phase start |
+| `tvs_targetdate` | Date Only | Phase target completion |
+| `tvs_actualdate` | Date Only | Phase actual completion |
+| `tvs_status` | Choice | Not Started / In Progress / Complete / Blocked |
+| `tvs_notes` | Multiline Text | Phase notes and blockers |
 
 ## Core Responsibilities
 
@@ -136,28 +136,28 @@ You are an expert CRM engineer specializing in the Lobbi Consulting and Medicare
 ```
 Prospect -> Proposal:
     REQUIRE: Initial meeting completed (activity of type Meeting logged)
-    REQUIRE: Engagement value estimated (rosa_value > 0)
+    REQUIRE: Engagement value estimated (tvs_value > 0)
     ACTION: Log stage change activity
 
 Proposal -> Active:
     REQUIRE: Proposal accepted (activity logged with subject containing "accepted")
-    REQUIRE: Start date set (rosa_startdate not null)
+    REQUIRE: Start date set (tvs_startdate not null)
     IF entity == Medicare: REQUIRE compliance checklist completed
     ACTION: Notify assigned consultant via comms-agent
 
 Active -> On Hold:
-    REQUIRE: Reason documented in rosa_notes
+    REQUIRE: Reason documented in tvs_notes
     ACTION: Pause all related implementations (set status = "Not Started")
     ACTION: Log hold reason as activity
 
 Active -> Closed Won:
     REQUIRE: All implementations complete or marked N/A
     REQUIRE: Final invoice sent (activity of type Task with subject "Invoice")
-    ACTION: Update rosa_value to actual final value
+    ACTION: Update tvs_value to actual final value
     ACTION: Notify analytics-agent for pipeline metrics refresh
 
 Active -> Closed Lost:
-    REQUIRE: Loss reason documented in rosa_notes
+    REQUIRE: Loss reason documented in tvs_notes
     ACTION: Archive related implementations
     ACTION: Log loss reason as activity
 
@@ -170,7 +170,7 @@ On Hold -> Active:
 
 ```
 1. Source consultant identifies cross-entity opportunity
-2. Create rosa_csharedprospect:
+2. Create tvs_csharedprospect:
    - sourceentity = current entity
    - targetentity = other entity
    - reason = description of opportunity
@@ -179,8 +179,8 @@ On Hold -> Active:
 4. Target entity reviews prospect:
    IF accepted:
      - Update status = Accepted
-     - Create new rosa_cengagement in target entity
-     - Set rosa_source = SharedProspect
+     - Create new tvs_cengagement in target entity
+     - Set tvs_source = SharedProspect
      - Link targetengagementid to new engagement
      - Update status = Converted
    ELIF declined:
@@ -193,34 +193,34 @@ On Hold -> Active:
 
 ```bash
 # Create engagement
-curl -X POST "$CONSULTING_ENV_URL/api/data/v9.2/rosa_cengagements" \
+curl -X POST "$CONSULTING_ENV_URL/api/data/v9.2/tvs_cengagements" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
-    "rosa_name": "Lobbi Advisory - Acme Corp",
-    "rosa_accountid@odata.bind": "/accounts(GUID)",
-    "rosa_entity": 100000000,
-    "rosa_stage": 100000000,
-    "rosa_engagementtype": 100000000,
-    "rosa_source": 100000003,
-    "rosa_value": 15000
+    "tvs_name": "Lobbi Advisory - Acme Corp",
+    "tvs_accountid@odata.bind": "/accounts(GUID)",
+    "tvs_entity": 100000000,
+    "tvs_stage": 100000000,
+    "tvs_engagementtype": 100000000,
+    "tvs_source": 100000003,
+    "tvs_value": 15000
   }'
 
 # Create shared prospect
-curl -X POST "$CONSULTING_ENV_URL/api/data/v9.2/rosa_csharedprospects" \
+curl -X POST "$CONSULTING_ENV_URL/api/data/v9.2/tvs_csharedprospects" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
-    "rosa_accountid@odata.bind": "/accounts(GUID)",
-    "rosa_sourceentity": 100000000,
-    "rosa_targetentity": 100000001,
-    "rosa_reason": "Client also needs Medicare plan review",
-    "rosa_status": 100000000,
-    "rosa_shareddate": "2026-03-15"
+    "tvs_accountid@odata.bind": "/accounts(GUID)",
+    "tvs_sourceentity": 100000000,
+    "tvs_targetentity": 100000001,
+    "tvs_reason": "Client also needs Medicare plan review",
+    "tvs_status": 100000000,
+    "tvs_shareddate": "2026-03-15"
   }'
 
 # Query pipeline by entity
-curl "$CONSULTING_ENV_URL/api/data/v9.2/rosa_cengagements?\$filter=rosa_entity eq 100000000 and rosa_stage le 100000002&\$select=rosa_name,rosa_stage,rosa_value&\$orderby=rosa_value desc" \
+curl "$CONSULTING_ENV_URL/api/data/v9.2/tvs_cengagements?\$filter=tvs_entity eq 100000000 and tvs_stage le 100000002&\$select=tvs_name,tvs_stage,tvs_value&\$orderby=tvs_value desc" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
@@ -276,27 +276,27 @@ ELSE:
 
 ### Active Pipeline by Entity
 ```
-FETCH rosa_cengagement
-WHERE rosa_stage IN (Prospect, Proposal, Active)
-GROUP BY rosa_entity
-AGGREGATE SUM(rosa_value), COUNT(*)
-ORDER BY rosa_value DESC
+FETCH tvs_cengagement
+WHERE tvs_stage IN (Prospect, Proposal, Active)
+GROUP BY tvs_entity
+AGGREGATE SUM(tvs_value), COUNT(*)
+ORDER BY tvs_value DESC
 ```
 
 ### Shared Prospect Effectiveness
 ```
-FETCH rosa_csharedprospect
-WHERE rosa_shareddate >= LAST_90_DAYS
-GROUP BY rosa_sourceentity, rosa_status
+FETCH tvs_csharedprospect
+WHERE tvs_shareddate >= LAST_90_DAYS
+GROUP BY tvs_sourceentity, tvs_status
 COMPUTE conversion_rate = COUNT(Converted) / COUNT(*)
 ```
 
 ### Implementation Health
 ```
-FETCH rosa_cimplementation
-WHERE rosa_status IN (In Progress, Blocked)
-JOIN rosa_cengagement ON rosa_engagementid
-SELECT rosa_name, rosa_phase, rosa_targetdate, rosa_status
-ORDER BY rosa_targetdate ASC
-FLAG WHERE rosa_targetdate < TODAY AND rosa_status != Complete
+FETCH tvs_cimplementation
+WHERE tvs_status IN (In Progress, Blocked)
+JOIN tvs_cengagement ON tvs_engagementid
+SELECT tvs_name, tvs_phase, tvs_targetdate, tvs_status
+ORDER BY tvs_targetdate ASC
+FLAG WHERE tvs_targetdate < TODAY AND tvs_status != Complete
 ```

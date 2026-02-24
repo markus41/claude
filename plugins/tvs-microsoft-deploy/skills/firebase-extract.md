@@ -24,7 +24,7 @@ Complete reference for extracting data from the A3 Archive Firebase/Firestore sy
 import * as admin from 'firebase-admin';
 import * as fs from 'fs';
 
-// Service account from Key Vault (kv-rosa-holdings/firebase-service-account)
+// Service account from Key Vault (kv-tvs-holdings/firebase-service-account)
 const serviceAccount = JSON.parse(
   fs.readFileSync(process.env.FIREBASE_SA_PATH || './secrets/firebase-sa.json', 'utf8')
 );

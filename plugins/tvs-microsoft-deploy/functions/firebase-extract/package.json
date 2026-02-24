@@ -1,5 +1,5 @@
 {
-  "name": "rosa-firebase-extract",
+  "name": "tvs-firebase-extract",
   "version": "1.0.0",
   "description": "Azure Function to extract Firebase collections and upload to OneLake",
   "main": "index.js",

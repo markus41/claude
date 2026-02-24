@@ -1,5 +1,5 @@
 {
-  "name": "rosa-paylocity-sync",
+  "name": "tvs-paylocity-sync",
   "version": "1.0.0",
   "description": "Azure Function for daily Paylocity time entry reconciliation with Dataverse",
   "main": "index.js",

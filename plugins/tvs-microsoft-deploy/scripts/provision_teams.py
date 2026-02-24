@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Provision Microsoft Teams workspace for Rosa Holdings Virtual Assistants.
+"""Provision Microsoft Teams workspace for TVS Holdings Virtual Assistants.
 
 Creates a team with dedicated channels and adds VA members via Graph API.
 
@@ -16,8 +16,8 @@ import requests
 
 GRAPH_API = "https://graph.microsoft.com/v1.0"
 
-TEAM_NAME = "Rosa Holdings VA Workspace"
-TEAM_DESCRIPTION = "Central workspace for Rosa Holdings virtual assistants across all entities"
+TEAM_NAME = "TVS Holdings VA Workspace"
+TEAM_DESCRIPTION = "Central workspace for TVS Holdings virtual assistants across all entities"
 
 CHANNELS = [
     {"displayName": "General", "description": "General VA announcements and updates"},
@@ -29,17 +29,17 @@ CHANNELS = [
 ]
 
 VA_MEMBERS = [
-    "va-lead@rosaholdings.com",
-    "va-ops-01@rosaholdings.com",
-    "va-ops-02@rosaholdings.com",
-    "va-ops-03@rosaholdings.com",
-    "va-consulting-01@rosaholdings.com",
-    "va-consulting-02@rosaholdings.com",
-    "va-admin-01@rosaholdings.com",
-    "va-admin-02@rosaholdings.com",
-    "va-media-01@rosaholdings.com",
-    "va-training-01@rosaholdings.com",
-    "va-it-support-01@rosaholdings.com",
+    "va-lead@tvsholdings.com",
+    "va-ops-01@tvsholdings.com",
+    "va-ops-02@tvsholdings.com",
+    "va-ops-03@tvsholdings.com",
+    "va-consulting-01@tvsholdings.com",
+    "va-consulting-02@tvsholdings.com",
+    "va-admin-01@tvsholdings.com",
+    "va-admin-02@tvsholdings.com",
+    "va-media-01@tvsholdings.com",
+    "va-training-01@tvsholdings.com",
+    "va-it-support-01@tvsholdings.com",
 ]
 
 
@@ -81,11 +81,11 @@ def create_channel(headers, team_id, channel):
 def add_member(headers, team_id, email):
     resp = requests.post(f"{GRAPH_API}/teams/{team_id}/members", headers=headers, json={
         "@odata.type": "#microsoft.graph.aadUserConversationMember",
-        "roles": ["owner"] if email == "va-lead@rosaholdings.com" else ["member"],
+        "roles": ["owner"] if email == "va-lead@tvsholdings.com" else ["member"],
         "user@odata.bind": f"https://graph.microsoft.com/v1.0/users('{email}')",
     })
     if resp.status_code in (200, 201):
-        role = "owner" if email == "va-lead@rosaholdings.com" else "member"
+        role = "owner" if email == "va-lead@tvsholdings.com" else "member"
         print(f"  Added {role}: {email}")
     else:
         print(f"  WARNING: Could not add {email}: {resp.status_code} {resp.text}", file=sys.stderr)

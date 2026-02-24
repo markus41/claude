@@ -1,0 +1,23 @@
+{
+  "environment": "prod",
+  "solutionMode": "managed",
+  "dataverseUrl": "https://org-prod.crm.dynamics.com",
+  "flowEnvironmentId": "Default-prod",
+  "packagePath": "artifacts/prod",
+  "connectionReferences": {
+    "shared_commondataserviceforapps": {"connectionId": "prod-cds", "auth": "servicePrincipal"},
+    "shared_office365": {"connectionId": "prod-o365", "auth": "servicePrincipal"},
+    "shared_azuread": {"connectionId": "prod-aad", "auth": "servicePrincipal"}
+  },
+  "capacityLimits": {
+    "databasePct": 75,
+    "filePct": 80,
+    "logPct": 80
+  },
+  "smokeChecks": [
+    "commission-processing",
+    "identity-offboarding",
+    "taia-archival",
+    "copilot:taia-archive-assistant"
+  ]
+}

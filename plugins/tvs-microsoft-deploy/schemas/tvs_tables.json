@@ -2,28 +2,28 @@
   "$schema": "https://raw.githubusercontent.com/microsoft/PowerApps-Tooling/main/schemas/dataverse-table.schema.json",
   "metadata": {
     "entity": "TVS",
-    "publisher": "rosa",
-    "prefix": "rosa_",
+    "publisher": "tvs",
+    "prefix": "tvs_",
     "environment": "org-tvs-{env}.crm.dynamics.com",
     "description": "Dataverse table definitions for TVS (Technology & Virtual Staffing) entity"
   },
   "tables": {
     "Accounts": {
-      "logicalName": "rosa_account",
+      "logicalName": "tvs_account",
       "displayName": "TVS Account",
       "pluralName": "TVS Accounts",
       "description": "Client accounts for TVS virtual staffing services",
       "ownership": "UserOwned",
-      "primaryColumn": "rosa_name",
+      "primaryColumn": "tvs_name",
       "columns": {
-        "rosa_name": {
+        "tvs_name": {
           "type": "String",
           "maxLength": 200,
           "required": true,
           "displayName": "Account Name",
           "description": "Legal or DBA name of the client company"
         },
-        "rosa_industry": {
+        "tvs_industry": {
           "type": "Choice",
           "required": false,
           "displayName": "Industry",
@@ -59,7 +59,7 @@
             }
           ]
         },
-        "rosa_tier": {
+        "tvs_tier": {
           "type": "Choice",
           "required": true,
           "displayName": "Service Tier",
@@ -83,7 +83,7 @@
             }
           ]
         },
-        "rosa_status": {
+        "tvs_status": {
           "type": "Choice",
           "required": true,
           "displayName": "Account Status",
@@ -111,7 +111,7 @@
             }
           ]
         },
-        "rosa_stripecustomerid": {
+        "tvs_stripecustomerid": {
           "type": "String",
           "maxLength": 255,
           "required": false,
@@ -119,21 +119,21 @@
           "description": "Stripe customer identifier (cus_*)",
           "format": "text"
         },
-        "rosa_email": {
+        "tvs_email": {
           "type": "String",
           "maxLength": 320,
           "required": false,
           "displayName": "Primary Email",
           "format": "email"
         },
-        "rosa_phone": {
+        "tvs_phone": {
           "type": "String",
           "maxLength": 50,
           "required": false,
           "displayName": "Primary Phone",
           "format": "phone"
         },
-        "rosa_monthlyhours": {
+        "tvs_monthlyhours": {
           "type": "WholeNumber",
           "required": false,
           "displayName": "Monthly Hours Allotment",
@@ -141,7 +141,7 @@
           "minValue": 0,
           "maxValue": 1000
         },
-        "rosa_onboarddate": {
+        "tvs_onboarddate": {
           "type": "DateTime",
           "required": false,
           "displayName": "Onboard Date",
@@ -151,80 +151,80 @@
       "relationships": [
         {
           "type": "OneToMany",
-          "relatedTable": "rosa_contact",
-          "lookupColumn": "rosa_accountid",
+          "relatedTable": "tvs_contact",
+          "lookupColumn": "tvs_accountid",
           "displayName": "Account Contacts"
         },
         {
           "type": "OneToMany",
-          "relatedTable": "rosa_subscription",
-          "lookupColumn": "rosa_accountid",
+          "relatedTable": "tvs_subscription",
+          "lookupColumn": "tvs_accountid",
           "displayName": "Account Subscriptions"
         },
         {
           "type": "OneToMany",
-          "relatedTable": "rosa_task",
-          "lookupColumn": "rosa_accountid",
+          "relatedTable": "tvs_task",
+          "lookupColumn": "tvs_accountid",
           "displayName": "Account Tasks"
         },
         {
           "type": "OneToMany",
-          "relatedTable": "rosa_deliverable",
-          "lookupColumn": "rosa_accountid",
+          "relatedTable": "tvs_deliverable",
+          "lookupColumn": "tvs_accountid",
           "displayName": "Account Deliverables"
         }
       ]
     },
     "Contacts": {
-      "logicalName": "rosa_contact",
+      "logicalName": "tvs_contact",
       "displayName": "TVS Contact",
       "pluralName": "TVS Contacts",
       "description": "Individual contacts associated with TVS accounts",
       "ownership": "UserOwned",
-      "primaryColumn": "rosa_fullname",
+      "primaryColumn": "tvs_fullname",
       "columns": {
-        "rosa_firstname": {
+        "tvs_firstname": {
           "type": "String",
           "maxLength": 100,
           "required": true,
           "displayName": "First Name"
         },
-        "rosa_lastname": {
+        "tvs_lastname": {
           "type": "String",
           "maxLength": 100,
           "required": true,
           "displayName": "Last Name"
         },
-        "rosa_fullname": {
+        "tvs_fullname": {
           "type": "String",
           "maxLength": 200,
           "required": false,
           "displayName": "Full Name",
           "computed": true,
-          "formula": "rosa_firstname + ' ' + rosa_lastname"
+          "formula": "tvs_firstname + ' ' + tvs_lastname"
         },
-        "rosa_email": {
+        "tvs_email": {
           "type": "String",
           "maxLength": 320,
           "required": true,
           "displayName": "Email Address",
           "format": "email"
         },
-        "rosa_phone": {
+        "tvs_phone": {
           "type": "String",
           "maxLength": 50,
           "required": false,
           "displayName": "Phone Number",
           "format": "phone"
         },
-        "rosa_accountid": {
+        "tvs_accountid": {
           "type": "Lookup",
           "required": true,
           "displayName": "Account",
-          "relatedTable": "rosa_account",
+          "relatedTable": "tvs_account",
           "description": "Parent TVS account"
         },
-        "rosa_role": {
+        "tvs_role": {
           "type": "Choice",
           "required": false,
           "displayName": "Role",
@@ -252,7 +252,7 @@
             }
           ]
         },
-        "rosa_isactive": {
+        "tvs_isactive": {
           "type": "Boolean",
           "required": false,
           "displayName": "Active",
@@ -261,27 +261,27 @@
       }
     },
     "Subscriptions": {
-      "logicalName": "rosa_subscription",
+      "logicalName": "tvs_subscription",
       "displayName": "TVS Subscription",
       "pluralName": "TVS Subscriptions",
       "description": "Stripe-backed subscription records for TVS clients",
       "ownership": "OrganizationOwned",
-      "primaryColumn": "rosa_name",
+      "primaryColumn": "tvs_name",
       "columns": {
-        "rosa_name": {
+        "tvs_name": {
           "type": "String",
           "maxLength": 200,
           "required": true,
           "displayName": "Subscription Name",
           "description": "Auto-generated: {Account} - {Tier} Subscription"
         },
-        "rosa_accountid": {
+        "tvs_accountid": {
           "type": "Lookup",
           "required": true,
           "displayName": "Account",
-          "relatedTable": "rosa_account"
+          "relatedTable": "tvs_account"
         },
-        "rosa_tier": {
+        "tvs_tier": {
           "type": "Choice",
           "required": true,
           "displayName": "Tier",
@@ -306,7 +306,7 @@
             }
           ]
         },
-        "rosa_monthlyhours": {
+        "tvs_monthlyhours": {
           "type": "WholeNumber",
           "required": true,
           "displayName": "Monthly Hours",
@@ -314,19 +314,19 @@
           "minValue": 0,
           "maxValue": 500
         },
-        "rosa_startdate": {
+        "tvs_startdate": {
           "type": "DateTime",
           "required": true,
           "displayName": "Start Date",
           "format": "DateOnly"
         },
-        "rosa_enddate": {
+        "tvs_enddate": {
           "type": "DateTime",
           "required": false,
           "displayName": "End Date",
           "format": "DateOnly"
         },
-        "rosa_status": {
+        "tvs_status": {
           "type": "Choice",
           "required": true,
           "displayName": "Status",
@@ -353,20 +353,20 @@
             }
           ]
         },
-        "rosa_stripesubscriptionid": {
+        "tvs_stripesubscriptionid": {
           "type": "String",
           "maxLength": 255,
           "required": false,
           "displayName": "Stripe Subscription ID",
           "description": "Stripe subscription identifier (sub_*)"
         },
-        "rosa_currentperiodend": {
+        "tvs_currentperiodend": {
           "type": "DateTime",
           "required": false,
           "displayName": "Current Period End",
           "format": "DateOnly"
         },
-        "rosa_monthlyprice": {
+        "tvs_monthlyprice": {
           "type": "Currency",
           "required": false,
           "displayName": "Monthly Price",
@@ -375,39 +375,39 @@
       }
     },
     "Tasks": {
-      "logicalName": "rosa_task",
+      "logicalName": "tvs_task",
       "displayName": "TVS Task",
       "pluralName": "TVS Tasks",
       "description": "Work tasks assigned to virtual assistants for TVS clients",
       "ownership": "UserOwned",
-      "primaryColumn": "rosa_title",
+      "primaryColumn": "tvs_title",
       "columns": {
-        "rosa_title": {
+        "tvs_title": {
           "type": "String",
           "maxLength": 500,
           "required": true,
           "displayName": "Task Title"
         },
-        "rosa_description": {
+        "tvs_description": {
           "type": "Memo",
           "maxLength": 10000,
           "required": false,
           "displayName": "Description"
         },
-        "rosa_assignedto": {
+        "tvs_assignedto": {
           "type": "Lookup",
           "required": false,
           "displayName": "Assigned To",
           "relatedTable": "systemuser",
           "description": "VA user assigned to this task"
         },
-        "rosa_accountid": {
+        "tvs_accountid": {
           "type": "Lookup",
           "required": true,
           "displayName": "Account",
-          "relatedTable": "rosa_account"
+          "relatedTable": "tvs_account"
         },
-        "rosa_status": {
+        "tvs_status": {
           "type": "Choice",
           "required": true,
           "displayName": "Status",
@@ -438,7 +438,7 @@
             }
           ]
         },
-        "rosa_priority": {
+        "tvs_priority": {
           "type": "Choice",
           "required": true,
           "displayName": "Priority",
@@ -461,20 +461,20 @@
             }
           ]
         },
-        "rosa_duedate": {
+        "tvs_duedate": {
           "type": "DateTime",
           "required": false,
           "displayName": "Due Date",
           "format": "DateOnly"
         },
-        "rosa_estimatedhours": {
+        "tvs_estimatedhours": {
           "type": "Decimal",
           "required": false,
           "displayName": "Estimated Hours",
           "precision": 2,
           "minValue": 0
         },
-        "rosa_actualhours": {
+        "tvs_actualhours": {
           "type": "Decimal",
           "required": false,
           "displayName": "Actual Hours",
@@ -482,7 +482,7 @@
           "minValue": 0,
           "computed": true
         },
-        "rosa_completeddate": {
+        "tvs_completeddate": {
           "type": "DateTime",
           "required": false,
           "displayName": "Completed Date",
@@ -492,47 +492,47 @@
       "relationships": [
         {
           "type": "OneToMany",
-          "relatedTable": "rosa_timeentry",
-          "lookupColumn": "rosa_taskid",
+          "relatedTable": "tvs_timeentry",
+          "lookupColumn": "tvs_taskid",
           "displayName": "Task Time Entries"
         },
         {
           "type": "OneToMany",
-          "relatedTable": "rosa_deliverable",
-          "lookupColumn": "rosa_taskid",
+          "relatedTable": "tvs_deliverable",
+          "lookupColumn": "tvs_taskid",
           "displayName": "Task Deliverables"
         }
       ]
     },
     "TimeEntries": {
-      "logicalName": "rosa_timeentry",
+      "logicalName": "tvs_timeentry",
       "displayName": "TVS Time Entry",
       "pluralName": "TVS Time Entries",
       "description": "Time tracking records for VA work, reconciled with Paylocity",
       "ownership": "UserOwned",
-      "primaryColumn": "rosa_name",
+      "primaryColumn": "tvs_name",
       "columns": {
-        "rosa_name": {
+        "tvs_name": {
           "type": "String",
           "maxLength": 200,
           "required": false,
           "displayName": "Entry Name",
           "computed": true,
-          "formula": "rosa_userid.fullname + ' - ' + rosa_date"
+          "formula": "tvs_userid.fullname + ' - ' + tvs_date"
         },
-        "rosa_taskid": {
+        "tvs_taskid": {
           "type": "Lookup",
           "required": true,
           "displayName": "Task",
-          "relatedTable": "rosa_task"
+          "relatedTable": "tvs_task"
         },
-        "rosa_userid": {
+        "tvs_userid": {
           "type": "Lookup",
           "required": true,
           "displayName": "User",
           "relatedTable": "systemuser"
         },
-        "rosa_hours": {
+        "tvs_hours": {
           "type": "Decimal",
           "required": true,
           "displayName": "Hours",
@@ -540,32 +540,32 @@
           "minValue": 0.25,
           "maxValue": 24.00
         },
-        "rosa_date": {
+        "tvs_date": {
           "type": "DateTime",
           "required": true,
           "displayName": "Date",
           "format": "DateOnly"
         },
-        "rosa_description": {
+        "tvs_description": {
           "type": "Memo",
           "maxLength": 2000,
           "required": false,
           "displayName": "Work Description"
         },
-        "rosa_billable": {
+        "tvs_billable": {
           "type": "Boolean",
           "required": true,
           "displayName": "Billable",
           "defaultValue": true,
           "description": "Whether this time counts against client allotment"
         },
-        "rosa_paylocitysynced": {
+        "tvs_paylocitysynced": {
           "type": "Boolean",
           "required": false,
           "displayName": "Paylocity Synced",
           "defaultValue": false
         },
-        "rosa_paylocitydiscrepancy": {
+        "tvs_paylocitydiscrepancy": {
           "type": "Boolean",
           "required": false,
           "displayName": "Has Discrepancy",
@@ -574,32 +574,32 @@
       }
     },
     "Deliverables": {
-      "logicalName": "rosa_deliverable",
+      "logicalName": "tvs_deliverable",
       "displayName": "TVS Deliverable",
       "pluralName": "TVS Deliverables",
       "description": "Client deliverables produced by VAs",
       "ownership": "UserOwned",
-      "primaryColumn": "rosa_title",
+      "primaryColumn": "tvs_title",
       "columns": {
-        "rosa_title": {
+        "tvs_title": {
           "type": "String",
           "maxLength": 500,
           "required": true,
           "displayName": "Deliverable Title"
         },
-        "rosa_accountid": {
+        "tvs_accountid": {
           "type": "Lookup",
           "required": true,
           "displayName": "Account",
-          "relatedTable": "rosa_account"
+          "relatedTable": "tvs_account"
         },
-        "rosa_taskid": {
+        "tvs_taskid": {
           "type": "Lookup",
           "required": false,
           "displayName": "Related Task",
-          "relatedTable": "rosa_task"
+          "relatedTable": "tvs_task"
         },
-        "rosa_status": {
+        "tvs_status": {
           "type": "Choice",
           "required": true,
           "displayName": "Status",
@@ -630,25 +630,25 @@
             }
           ]
         },
-        "rosa_completeddate": {
+        "tvs_completeddate": {
           "type": "DateTime",
           "required": false,
           "displayName": "Completed Date",
           "format": "DateOnly"
         },
-        "rosa_approvedby": {
+        "tvs_approvedby": {
           "type": "Lookup",
           "required": false,
           "displayName": "Approved By",
           "relatedTable": "systemuser"
         },
-        "rosa_description": {
+        "tvs_description": {
           "type": "Memo",
           "maxLength": 5000,
           "required": false,
           "displayName": "Description"
         },
-        "rosa_fileurl": {
+        "tvs_fileurl": {
           "type": "String",
           "maxLength": 2000,
           "required": false,
@@ -658,20 +658,20 @@
       }
     },
     "AutomationLog": {
-      "logicalName": "rosa_automationlog",
+      "logicalName": "tvs_automationlog",
       "displayName": "TVS Automation Log",
       "pluralName": "TVS Automation Logs",
       "description": "Audit trail for Power Automate flows and automated processes",
       "ownership": "OrganizationOwned",
-      "primaryColumn": "rosa_flowname",
+      "primaryColumn": "tvs_flowname",
       "columns": {
-        "rosa_flowname": {
+        "tvs_flowname": {
           "type": "String",
           "maxLength": 500,
           "required": true,
           "displayName": "Flow Name"
         },
-        "rosa_triggertype": {
+        "tvs_triggertype": {
           "type": "Choice",
           "required": true,
           "displayName": "Trigger Type",
@@ -698,7 +698,7 @@
             }
           ]
         },
-        "rosa_status": {
+        "tvs_status": {
           "type": "Choice",
           "required": true,
           "displayName": "Status",
@@ -725,38 +725,38 @@
             }
           ]
         },
-        "rosa_executedat": {
+        "tvs_executedat": {
           "type": "DateTime",
           "required": true,
           "displayName": "Executed At",
           "format": "DateAndTime"
         },
-        "rosa_duration": {
+        "tvs_duration": {
           "type": "WholeNumber",
           "required": false,
           "displayName": "Duration (ms)",
           "description": "Execution time in milliseconds",
           "minValue": 0
         },
-        "rosa_error": {
+        "tvs_error": {
           "type": "Memo",
           "maxLength": 10000,
           "required": false,
           "displayName": "Error Details"
         },
-        "rosa_inputpayload": {
+        "tvs_inputpayload": {
           "type": "Memo",
           "maxLength": 50000,
           "required": false,
           "displayName": "Input Payload"
         },
-        "rosa_outputpayload": {
+        "tvs_outputpayload": {
           "type": "Memo",
           "maxLength": 50000,
           "required": false,
           "displayName": "Output Payload"
         },
-        "rosa_correlationid": {
+        "tvs_correlationid": {
           "type": "String",
           "maxLength": 100,
           "required": false,

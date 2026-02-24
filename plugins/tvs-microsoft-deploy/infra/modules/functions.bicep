@@ -1,6 +1,6 @@
 // ============================================================================
-// Rosa Holdings - Azure Functions Module
-// Creates func-rosa-ingest-{env} on Linux Consumption plan with Node.js 20
+// TVS Holdings - Azure Functions Module
+// Creates func-tvs-ingest-{env} on Linux Consumption plan with Node.js 20
 // System-assigned managed identity for Key Vault access
 // ============================================================================
 
@@ -31,8 +31,8 @@ param corsOrigins array
 
 // ── Variables ───────────────────────────────────────────────────────────────
 
-var hostingPlanName = 'asp-rosa-ingest-${environment}'
-var storageAccountName = replace('strosa${environment}${take(uniqueString(resourceGroup().id), 4)}', '-', '')
+var hostingPlanName = 'asp-tvs-ingest-${environment}'
+var storageAccountName = replace('sttvs${environment}${take(uniqueString(resourceGroup().id), 4)}', '-', '')
 
 // ── Storage Account (required for Functions) ────────────────────────────────
 
@@ -74,7 +74,7 @@ resource functionApp 'Microsoft.Web/sites@2023-01-01' = {
   name: functionAppName
   location: location
   tags: union(tags, {
-    'azd-service-name': 'rosa-ingest'
+    'azd-service-name': 'tvs-ingest'
   })
   kind: 'functionapp,linux'
   identity: {
@@ -179,11 +179,11 @@ resource functionApp 'Microsoft.Web/sites@2023-01-01' = {
         }
         {
           name: 'FABRIC_WORKSPACE_TVS'
-          value: 'Rosa Holdings - TVS'
+          value: 'TVS Holdings - TVS'
         }
         {
           name: 'FABRIC_WORKSPACE_A3'
-          value: 'Rosa Holdings - A3 Archive'
+          value: 'TVS Holdings - A3 Archive'
         }
       ]
     }

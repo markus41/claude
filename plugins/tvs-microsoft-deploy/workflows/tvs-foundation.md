@@ -57,7 +57,7 @@ week1-critical-path.md ──┐
 **Depends on:** week1-critical-path.md Step 4 (Entra app registrations exist)
 
 ### Prerequisites
-- Entra app registration `app-rosa-ingest` with Dataverse permissions
+- Entra app registration `app-tvs-ingest` with Dataverse permissions
 - PAC CLI authenticated to `tvs-prod` environment
 - Dataverse environment `tvs-prod` provisioned (1 GB initial capacity)
 
@@ -66,21 +66,21 @@ week1-critical-path.md ──┐
    ```bash
    pac auth create --name "tvs-prod" \
      --environment "https://tvs-prod.crm.dynamics.com" \
-     --tenant "rosa-holdings.onmicrosoft.com" --kind Admin
+     --tenant "tvs-holdings.onmicrosoft.com" --kind Admin
    ```
 2. **Deploy TVSCore solution** with tables:
    | Table | Display Name | Purpose |
    |-------|-------------|---------|
-   | `rosa_broker` | Broker | Agent/broker records from A3 migration |
-   | `rosa_carrier` | Carrier | Canonical carrier table from normalization |
-   | `rosa_commission` | Commission | Commission transaction records |
-   | `rosa_subscription` | Subscription | TVS client subscriptions (Stripe-linked) |
-   | `rosa_task` | Task | VA task assignments and tracking |
-   | `rosa_timeentry` | Time Entry | VA time tracking per task |
-   | `rosa_deliverable` | Deliverable | Client deliverable tracking |
-   | `rosa_automationlog` | Automation Log | Power Automate execution log |
-   | `rosa_contact` | Contact | Extended contact records |
-   | `rosa_activity` | Activity | CRM activities and notes |
+   | `tvs_broker` | Broker | Agent/broker records from A3 migration |
+   | `tvs_carrier` | Carrier | Canonical carrier table from normalization |
+   | `tvs_commission` | Commission | Commission transaction records |
+   | `tvs_subscription` | Subscription | TVS client subscriptions (Stripe-linked) |
+   | `tvs_task` | Task | VA task assignments and tracking |
+   | `tvs_timeentry` | Time Entry | VA time tracking per task |
+   | `tvs_deliverable` | Deliverable | Client deliverable tracking |
+   | `tvs_automationlog` | Automation Log | Power Automate execution log |
+   | `tvs_contact` | Contact | Extended contact records |
+   | `tvs_activity` | Activity | CRM activities and notes |
 3. **Deploy TVS solution stack**:
    ```bash
    pac solution import --path ./solutions/TVSCore_managed.zip \
@@ -95,8 +95,8 @@ week1-critical-path.md ──┐
    - TVS Broker: Read on broker/carrier/commission; Create on activity
    - TVS VA: CRUD on task/timeentry/deliverable; Read on subscription
 5. **Set environment variables** referencing Key Vault:
-   - `rosa_keyvault_url` = `https://kv-rosa-holdings.vault.azure.net/`
-   - `rosa_ingest_func_url` = `https://func-rosa-ingest.azurewebsites.net/api/`
+   - `tvs_keyvault_url` = `https://kv-tvs-holdings.vault.azure.net/`
+   - `tvs_ingest_func_url` = `https://func-tvs-ingest.azurewebsites.net/api/`
    - `stripe_webhook_secret` = Key Vault reference
 
 ### Success Criteria
@@ -143,7 +143,7 @@ week1-critical-path.md ──┐
    - Markus: Admin
    - `app-fabric-pipeline`: Contributor
    - Analytics team: Viewer
-6. **Copy A3 extracts** from `strosadata/a3-extract/` to lakehouse Files/a3-extract/
+6. **Copy A3 extracts** from `sttvsdata/a3-extract/` to lakehouse Files/a3-extract/
 
 ### Success Criteria
 - Workspace `ws-tvs` visible in Fabric portal
@@ -188,10 +188,10 @@ week1-critical-path.md ──┐
    - **Profile**: Broker profile editor (limited fields)
    - **Support**: Contact form linked to Dataverse activity
 4. **Table permissions**:
-   - `rosa_broker`: Read own record (self-scope)
-   - `rosa_carrier`: Read all (global scope, filtered by broker relationship)
-   - `rosa_commission`: Read own commissions (account scope)
-   - `rosa_activity`: Create (self-scope), Read own (account scope)
+   - `tvs_broker`: Read own record (self-scope)
+   - `tvs_carrier`: Read all (global scope, filtered by broker relationship)
+   - `tvs_commission`: Read own commissions (account scope)
+   - `tvs_activity`: Create (self-scope), Read own (account scope)
 5. **Web roles**:
    - `Broker`: Standard access to own data
    - `BrokerAdmin`: Access to all brokers in downline
@@ -228,14 +228,14 @@ week1-critical-path.md ──┐
 ### Execution Sequence
 1. **Create bot**: `TVS VA Assistant` in Copilot Studio
 2. **Core topics**:
-   - **Task lookup**: "What tasks are assigned to me?" -- queries `rosa_task`
-   - **Time entry**: "Log 2 hours on task X" -- creates `rosa_timeentry` row
-   - **Deliverable status**: "What deliverables are due this week?" -- queries `rosa_deliverable`
-   - **Client info**: "Show me client X details" -- queries `rosa_subscription`
+   - **Task lookup**: "What tasks are assigned to me?" -- queries `tvs_task`
+   - **Time entry**: "Log 2 hours on task X" -- creates `tvs_timeentry` row
+   - **Deliverable status**: "What deliverables are due this week?" -- queries `tvs_deliverable`
+   - **Client info**: "Show me client X details" -- queries `tvs_subscription`
    - **Escalation**: "I need help with..." -- creates activity + notifies supervisor
 3. **Entities**:
-   - `TaskName`: Populated from `rosa_task` active tasks
-   - `ClientName`: Populated from `rosa_subscription` active subscriptions
+   - `TaskName`: Populated from `tvs_task` active tasks
+   - `ClientName`: Populated from `tvs_subscription` active subscriptions
    - `TimeAmount`: Number extraction (hours/minutes)
 4. **Power Automate connectors**:
    - Create time entry flow (triggered from bot)
@@ -244,7 +244,7 @@ week1-critical-path.md ──┐
 
 ### Success Criteria
 - Bot responds correctly to all 5 core topics
-- Time entry topic creates valid `rosa_timeentry` records
+- Time entry topic creates valid `tvs_timeentry` records
 - Task lookup returns correct data scoped to requesting VA
 - Bot deployed and accessible in Teams VA channels
 
@@ -269,43 +269,43 @@ week1-critical-path.md ──┐
 ### The 5 Core Flows
 
 #### Flow 1: New Subscription
-**Trigger:** Stripe webhook (via Azure Function) creates `rosa_subscription` row
+**Trigger:** Stripe webhook (via Azure Function) creates `tvs_subscription` row
 **Actions:**
 1. Receive webhook payload from `func-stripe-webhook`
-2. Create `rosa_subscription` record in Dataverse
-3. Create initial `rosa_task` records from subscription template
+2. Create `tvs_subscription` record in Dataverse
+3. Create initial `tvs_task` records from subscription template
 4. Notify assigned VA team via Teams adaptive card
-5. Log to `rosa_automationlog`
+5. Log to `tvs_automationlog`
 
 #### Flow 2: Task Assignment
-**Trigger:** `rosa_task` row created or `assignedto` field modified
+**Trigger:** `tvs_task` row created or `assignedto` field modified
 **Actions:**
 1. Notify assigned VA via Teams (adaptive card with accept/decline)
 2. If declined: Reassign to supervisor queue
 3. Update task status to "Assigned" or "Pending Reassignment"
-4. Log to `rosa_automationlog`
+4. Log to `tvs_automationlog`
 
 #### Flow 3: Time Entry
-**Trigger:** `rosa_timeentry` row created (from bot or manual)
+**Trigger:** `tvs_timeentry` row created (from bot or manual)
 **Actions:**
 1. Validate time entry (non-negative, within business hours, task exists)
-2. Update `rosa_task` total hours
+2. Update `tvs_task` total hours
 3. Check if task hours exceed subscription allocation
 4. If over allocation: notify supervisor with hours summary
-5. Log to `rosa_automationlog`
+5. Log to `tvs_automationlog`
 
 #### Flow 4: Deliverable Completion
-**Trigger:** `rosa_deliverable` status changed to "Complete"
+**Trigger:** `tvs_deliverable` status changed to "Complete"
 **Actions:**
 1. Notify client via email (template with deliverable summary)
-2. Update related `rosa_task` status to "Delivered"
+2. Update related `tvs_task` status to "Delivered"
 3. Create satisfaction survey activity
-4. Log to `rosa_automationlog`
+4. Log to `tvs_automationlog`
 
 #### Flow 5: Automation Log
 **Trigger:** Scheduled (daily 6:00 AM EST)
 **Actions:**
-1. Aggregate previous day `rosa_automationlog` entries
+1. Aggregate previous day `tvs_automationlog` entries
 2. Generate daily digest: flows run, errors, processing time
 3. Post digest to Teams `#ops-automation` channel
 4. If error count > 5: notify Markus directly
@@ -354,7 +354,7 @@ week1-critical-path.md ──┐
    - Events: `checkout.session.completed`, `invoice.paid`, `customer.subscription.updated`, `customer.subscription.deleted`
    - Verify webhook signature using secret from Key Vault
    - On `checkout.session.completed`: trigger Flow 1 (new subscription)
-   - On `invoice.paid`: update `rosa_subscription` payment status
+   - On `invoice.paid`: update `tvs_subscription` payment status
    - On subscription change: update tier and hours allocation
 3. **Broker portal integration**:
    - Add Stripe Checkout session creation to Power Pages subscription page
@@ -363,7 +363,7 @@ week1-critical-path.md ──┐
 4. **Test end-to-end** (Stripe test mode):
    - Create test subscription via portal
    - Verify webhook fires and Flow 1 executes
-   - Verify Dataverse `rosa_subscription` row created with correct tier
+   - Verify Dataverse `tvs_subscription` row created with correct tier
 
 ### Success Criteria
 - 3 Stripe products/prices created matching tier table

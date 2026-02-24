@@ -1,6 +1,6 @@
 // ============================================================================
-// Rosa Holdings - Application Insights Module
-// Creates appi-rosa-holdings-{env} with Log Analytics workspace
+// TVS Holdings - Application Insights Module
+// Creates appi-tvs-holdings-{env} with Log Analytics workspace
 // Alert rules for function failures, 5xx responses, and high latency
 // ============================================================================
 
@@ -23,8 +23,8 @@ param environment string
 // ── Variables ───────────────────────────────────────────────────────────────
 
 var retentionDays = environment == 'prod' ? 90 : 30
-var actionGroupName = 'ag-rosa-${environment}'
-var alertEmail = environment == 'prod' ? 'ops@rosaholdings.com' : 'dev@rosaholdings.com'
+var actionGroupName = 'ag-tvs-${environment}'
+var alertEmail = environment == 'prod' ? 'ops@tvsholdings.com' : 'dev@tvsholdings.com'
 
 // ── Log Analytics Workspace ─────────────────────────────────────────────────
 
@@ -71,7 +71,7 @@ resource actionGroup 'Microsoft.Insights/actionGroups@2023-01-01' = {
   location: 'global'
   tags: tags
   properties: {
-    groupShortName: 'RosaOps'
+    groupShortName: 'TVSOps'
     enabled: true
     emailReceivers: [
       {
@@ -103,7 +103,7 @@ resource functionFailureAlert 'Microsoft.Insights/scheduledQueryRules@2023-03-15
           query: '''
             requests
             | where success == false
-            | where cloud_RoleName startswith "func-rosa-ingest"
+            | where cloud_RoleName startswith "func-tvs-ingest"
             | summarize failureCount = count() by bin(timestamp, 15m), operation_Name
             | where failureCount > 5
           '''
@@ -143,7 +143,7 @@ resource serverErrorAlert 'Microsoft.Insights/scheduledQueryRules@2023-03-15-pre
           query: '''
             requests
             | where resultCode startswith "5"
-            | where cloud_RoleName startswith "func-rosa-ingest"
+            | where cloud_RoleName startswith "func-tvs-ingest"
             | summarize errorCount = count() by bin(timestamp, 10m)
             | where errorCount > 10
           '''
@@ -182,7 +182,7 @@ resource highLatencyAlert 'Microsoft.Insights/scheduledQueryRules@2023-03-15-pre
         {
           query: '''
             requests
-            | where cloud_RoleName startswith "func-rosa-ingest"
+            | where cloud_RoleName startswith "func-tvs-ingest"
             | summarize avgDuration = avg(duration) by bin(timestamp, 15m)
             | where avgDuration > 10000
           '''

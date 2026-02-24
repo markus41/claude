@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Provision Microsoft Fabric workspaces, lakehouses, and shortcuts for Rosa Holdings.
+"""Provision Microsoft Fabric workspaces, lakehouses, and shortcuts for TVS Holdings.
 
 Reads workspace definitions from schemas/fabric_workspaces.json and creates
 6 workspaces (tvs, consulting, lobbi_platform, media, a3_archive, consolidated)

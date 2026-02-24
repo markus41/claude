@@ -1,6 +1,6 @@
 ---
 name: comms-agent
-description: Teams and Exchange specialist provisioning workspaces, channels, shared mailboxes, and HIPAA-aware communications for Rosa Holdings
+description: Teams and Exchange specialist provisioning workspaces, channels, shared mailboxes, and HIPAA-aware communications for TVS Holdings
 model: sonnet
 codename: SIGNAL
 role: Communications Infrastructure Engineer
@@ -48,7 +48,7 @@ You are an expert Microsoft Teams and Exchange Online communications engineer re
 ### Cross-Entity
 | Team | Channels | Members |
 |------|----------|---------|
-| Rosa Holdings Leadership | General, #finance, #strategy, #it-infrastructure | Markus + entity leads |
+| TVS Holdings Leadership | General, #finance, #strategy, #it-infrastructure | Markus + entity leads |
 | TAIA Wind-Down | General, #data-migration, #timeline, #buyer-communications | Wind-down team |
 
 ## Core Responsibilities

@@ -34,7 +34,7 @@ async function initializeFirebase() {
   if (firebaseInitialized) return;
 
   const credential = new DefaultAzureCredential();
-  const kvName = process.env.KEY_VAULT_NAME || "kv-rosa-holdings-dev";
+  const kvName = process.env.KEY_VAULT_NAME || "kv-tvs-holdings-dev";
   const kvUrl = `https://${kvName}.vault.azure.net`;
   kvClient = new SecretClient(kvUrl, credential);
 
@@ -97,7 +97,7 @@ async function getOneLakeToken() {
 
 async function uploadToOneLake(collection, batchIndex, records, context) {
   const token = await getOneLakeToken();
-  const workspace = process.env.FABRIC_WORKSPACE_A3 || "Rosa Holdings - A3 Archive";
+  const workspace = process.env.FABRIC_WORKSPACE_A3 || "TVS Holdings - A3 Archive";
   const lakehouse = "lh-a3-extract";
   const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
   const filePath = `Files/raw-json/${collection}/${collection}_batch${batchIndex}_${timestamp}.json`;

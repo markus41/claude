@@ -8,7 +8,7 @@ settings:
 resources:
   - id: sub-platform
     type: azure.subscription
-    name: rg-rosa-platform
+    name: rg-tvs-platform
     properties:
       subscriptionId: 00000000-0000-0000-0000-000000000001
   - id: entra-platform-admins

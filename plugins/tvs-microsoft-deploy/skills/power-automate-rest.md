@@ -1,12 +1,12 @@
 ---
 name: Power Automate REST API
-description: This skill should be used when working with flows/**, or *.flow.json files. It provides Power Automate Management API operations for flow deployment across environments, connection reference management, run monitoring, error handling, and scheduled data sync patterns for ROSA Holdings automation.
+description: This skill should be used when working with flows/**, or *.flow.json files. It provides Power Automate Management API operations for flow deployment across environments, connection reference management, run monitoring, error handling, and scheduled data sync patterns for TVS Holdings automation.
 version: 1.0.0
 ---
 
 # Power Automate REST API Operations
 
-Complete reference for Power Automate flow management across ROSA Holdings environments.
+Complete reference for Power Automate flow management across TVS Holdings environments.
 
 ## Authentication
 
@@ -60,7 +60,7 @@ curl -s -X POST -H "${AUTH}" \
     "details": {
       "displayName": "TVS Broker Sync Flow Export",
       "description": "Nightly broker data sync from Dataverse to OneLake",
-      "creator": "automation@rosah.com",
+      "creator": "automation@tvsh.com",
       "sourceEnvironment": "'"${ENV_ID}"'"
     }
   }' | jq '{packageLink: .packageLink, status}'
@@ -244,9 +244,9 @@ curl -s -X DELETE -H "${AUTH}" \
           "host": {"connectionName": "shared_commondataserviceforapps"},
           "operationId": "ListRecordsWithOrganization",
           "parameters": {
-            "entityName": "rosa_brokers",
+            "entityName": "tvs_brokers",
             "$filter": "modifiedon ge @{addDays(utcNow(), -1)}",
-            "$select": "rosa_brokerid,rosa_name,rosa_status,rosa_tier,modifiedon"
+            "$select": "tvs_brokerid,tvs_name,tvs_status,tvs_tier,modifiedon"
           }
         },
         "runAfter": {}
@@ -310,7 +310,7 @@ curl -s -X DELETE -H "${AUTH}" \
             "host": {"connectionName": "shared_office365"},
             "operationId": "SendEmailV2",
             "parameters": {
-              "emailMessage/To": "alerts@rosah.com",
+              "emailMessage/To": "alerts@tvsh.com",
               "emailMessage/Subject": "Flow Failed: @{workflow().name}",
               "emailMessage/Body": "Run ID: @{workflow().run.name}\nError: @{result('Try_Scope')[0]?['error']?['message']}"
             }
@@ -320,7 +320,7 @@ curl -s -X DELETE -H "${AUTH}" \
           "type": "Http",
           "inputs": {
             "method": "POST",
-            "uri": "https://func-rosa-ingest.azurewebsites.net/api/log-flow-error",
+            "uri": "https://func-tvs-ingest.azurewebsites.net/api/log-flow-error",
             "body": {
               "flowName": "@{workflow().name}",
               "runId": "@{workflow().run.name}",

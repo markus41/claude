@@ -1,12 +1,12 @@
 ---
 name: Microsoft Graph API
-description: This skill should be used when working with identity/**, teams/**, entra/**, or graph-* prefixed files. It provides Microsoft Graph API operations for user lifecycle management, license assignment, YubiKey FIDO2 registration, conditional access policies, Teams workspace provisioning, and SharePoint/Exchange configuration across ROSA Holdings tenancy.
+description: This skill should be used when working with identity/**, teams/**, entra/**, or graph-* prefixed files. It provides Microsoft Graph API operations for user lifecycle management, license assignment, YubiKey FIDO2 registration, conditional access policies, Teams workspace provisioning, and SharePoint/Exchange configuration across TVS Holdings tenancy.
 version: 1.0.0
 ---
 
 # Microsoft Graph API Operations
 
-Complete reference for Microsoft Graph API operations across ROSA Holdings Entra ID tenancy.
+Complete reference for Microsoft Graph API operations across TVS Holdings Entra ID tenancy.
 
 ## Authentication
 
@@ -44,7 +44,7 @@ curl -s -X POST -H "${AUTH}" \
     "accountEnabled": true,
     "displayName": "Maria Santos",
     "mailNickname": "maria.santos",
-    "userPrincipalName": "maria.santos@rosah.com",
+    "userPrincipalName": "maria.santos@tvsh.com",
     "passwordProfile": {
       "forceChangePasswordNextSignIn": true,
       "password": "'"${TEMP_PASSWORD}"'"
@@ -52,13 +52,13 @@ curl -s -X POST -H "${AUTH}" \
     "usageLocation": "US",
     "department": "TVS Motor",
     "jobTitle": "Broker Relations Manager",
-    "companyName": "ROSA Holdings"
+    "companyName": "TVS Holdings"
   }'
 
 # Assign Business Premium license
 curl -s -X POST -H "${AUTH}" \
   -H "Content-Type: application/json" \
-  "${GRAPH}/users/maria.santos@rosah.com/assignLicense" \
+  "${GRAPH}/users/maria.santos@tvsh.com/assignLicense" \
   -d '{
     "addLicenses": [
       {
@@ -77,7 +77,7 @@ curl -s -X POST -H "${AUTH}" \
     "accountEnabled": true,
     "displayName": "Juan Reyes (VA)",
     "mailNickname": "juan.reyes.va",
-    "userPrincipalName": "juan.reyes.va@rosah.com",
+    "userPrincipalName": "juan.reyes.va@tvsh.com",
     "passwordProfile": {
       "forceChangePasswordNextSignIn": true,
       "password": "'"${TEMP_PASSWORD}"'"
@@ -89,7 +89,7 @@ curl -s -X POST -H "${AUTH}" \
 
 curl -s -X POST -H "${AUTH}" \
   -H "Content-Type: application/json" \
-  "${GRAPH}/users/juan.reyes.va@rosah.com/assignLicense" \
+  "${GRAPH}/users/juan.reyes.va@tvsh.com/assignLicense" \
   -d '{
     "addLicenses": [{"skuId": "3b555118-da6a-4418-894f-7df1e2096870"}],
     "removeLicenses": []
@@ -106,18 +106,18 @@ curl -s -H "${AUTH}" \
 
 # Get user details
 curl -s -H "${AUTH}" \
-  "${GRAPH}/users/maria.santos@rosah.com?\$select=displayName,department,assignedLicenses,signInActivity"
+  "${GRAPH}/users/maria.santos@tvsh.com?\$select=displayName,department,assignedLicenses,signInActivity"
 
 # Disable user account (offboarding)
 curl -s -X PATCH -H "${AUTH}" \
   -H "Content-Type: application/json" \
-  "${GRAPH}/users/departed.user@rosah.com" \
+  "${GRAPH}/users/departed.user@tvsh.com" \
   -d '{"accountEnabled": false}'
 
 # Remove all licenses from user
 curl -s -X POST -H "${AUTH}" \
   -H "Content-Type: application/json" \
-  "${GRAPH}/users/departed.user@rosah.com/assignLicense" \
+  "${GRAPH}/users/departed.user@tvsh.com/assignLicense" \
   -d '{
     "addLicenses": [],
     "removeLicenses": ["cbdc14ab-d96c-4c30-b9f4-6ada7cdc1d46"]
@@ -159,7 +159,7 @@ curl -s -X POST -H "${AUTH}" \
   -H "Content-Type: application/json" \
   "${GRAPH_BETA}/identity/conditionalAccess/policies" \
   -d '{
-    "displayName": "ROSA - Require MFA for all users",
+    "displayName": "TVS - Require MFA for all users",
     "state": "enabledForReportingButNotEnforced",
     "conditions": {
       "users": {"includeUsers": ["All"]},
@@ -180,7 +180,7 @@ curl -s -X POST -H "${AUTH}" \
   -H "Content-Type: application/json" \
   "${GRAPH_BETA}/identity/conditionalAccess/policies" \
   -d '{
-    "displayName": "ROSA - Block high-risk locations for VAs",
+    "displayName": "TVS - Block high-risk locations for VAs",
     "state": "enabled",
     "conditions": {
       "users": {
@@ -200,7 +200,7 @@ curl -s -X POST -H "${AUTH}" \
   -H "Content-Type: application/json" \
   "${GRAPH_BETA}/identity/conditionalAccess/policies" \
   -d '{
-    "displayName": "ROSA - FIDO2 required for admins",
+    "displayName": "TVS - FIDO2 required for admins",
     "state": "enabled",
     "conditions": {
       "users": {
@@ -299,9 +299,9 @@ curl -s -X POST -H "${AUTH}" \
   -H "Content-Type: application/json" \
   "${GRAPH}/groups" \
   -d '{
-    "displayName": "SG-ROSA-TVS-Staff",
+    "displayName": "SG-TVS-TVS-Staff",
     "mailEnabled": false,
-    "mailNickname": "sg-rosa-tvs-staff",
+    "mailNickname": "sg-tvs-tvs-staff",
     "securityEnabled": true,
     "description": "Security group for TVS Motor full-time staff"
   }'
