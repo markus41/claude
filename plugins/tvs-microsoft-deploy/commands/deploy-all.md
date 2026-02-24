@@ -43,6 +43,14 @@ node plugins/tvs-microsoft-deploy/control-plane/planner.mjs \
   --out plugins/tvs-microsoft-deploy/control-plane/out/deploy.execute.json
 ```
 
+## Identity guardrails (required before phase execution)
+
+```bash
+python3 plugins/tvs-microsoft-deploy/scripts/identity_policy_checks.py --json
+```
+
+If any deny findings are returned, deployment is blocked by `hooks/identity-policy-engine.sh`.
+
 ## Execution contract
 
 Execute strictly in planner phase order:

@@ -42,6 +42,16 @@ echo "$ROLES" | grep -q "Global Administrator" \
   || echo "WARN: Global Admin role recommended for full provisioning"
 ```
 
+## Mandatory Pre-Deploy Identity Policy Checks
+
+Run policy validation before starting any deploy phase:
+
+```bash
+python3 plugins/tvs-microsoft-deploy/scripts/identity_policy_checks.py --json
+```
+
+The centralized `hooks/identity-policy-engine.sh` also enforces these checks and blocks unsafe operations with machine-readable denial reasons.
+
 ## 6-Phase Protocol
 
 ### Phase 1: EXPLORE (2 agents)

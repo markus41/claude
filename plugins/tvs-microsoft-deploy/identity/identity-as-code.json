@@ -1,0 +1,131 @@
+{
+  "version": 1,
+  "updated": "2026-02-24",
+  "defaults": {
+    "breakglass_max_accounts": 2,
+    "stale_secret_days": 180,
+    "stale_cert_days": 365,
+    "high_privilege_graph_scopes": [
+      "Directory.ReadWrite.All",
+      "Directory.AccessAsUser.All",
+      "RoleManagement.ReadWrite.Directory",
+      "Policy.ReadWrite.ConditionalAccess",
+      "AppRoleAssignment.ReadWrite.All",
+      "User.ReadWrite.All"
+    ]
+  },
+  "entities": {
+    "tvs": {
+      "tenantId": "${TVS_TENANT_ID}",
+      "displayName": "Trusted Virtual Solutions",
+      "users": [
+        {
+          "upn": "breakglass-tvs@trustedvirtual.solutions",
+          "displayName": "TVS Breakglass Account",
+          "accountType": "breakglass",
+          "enabled": true,
+          "groups": ["sg-tvs-breakglass"]
+        },
+        {
+          "upn": "svc-fabric@trustedvirtual.solutions",
+          "displayName": "TVS Fabric Service Identity",
+          "accountType": "workload",
+          "enabled": true,
+          "groups": ["sg-tvs-workloads"]
+        }
+      ],
+      "groups": [
+        {"name": "sg-tvs-breakglass", "type": "security"},
+        {"name": "sg-tvs-workloads", "type": "security"},
+        {"name": "sg-tvs-admins", "type": "security"}
+      ],
+      "appRegistrations": [
+        {"name": "app-tvs-fabric", "signInAudience": "AzureADMyOrg", "owners": ["sg-tvs-admins"]},
+        {"name": "app-tvs-dataverse", "signInAudience": "AzureADMyOrg", "owners": ["sg-tvs-admins"]}
+      ],
+      "servicePrincipals": [
+        {"app": "app-tvs-fabric", "name": "sp-tvs-fabric", "managedByEntity": "tvs"},
+        {"app": "app-tvs-dataverse", "name": "sp-tvs-dataverse", "managedByEntity": "tvs"}
+      ],
+      "permissions": {
+        "delegated": [
+          {"principal": "app-tvs-dataverse", "resourceAppId": "00000003-0000-0000-c000-000000000000", "scopes": ["User.Read", "Group.Read.All"]}
+        ],
+        "application": [
+          {"principal": "app-tvs-fabric", "resourceAppId": "00000003-0000-0000-c000-000000000000", "scopes": ["User.Read.All", "Group.Read.All"]}
+        ]
+      },
+      "roleAssignments": [
+        {"principal": "sg-tvs-admins", "role": "Privileged Role Administrator", "scope": "/"},
+        {"principal": "sp-tvs-fabric", "role": "Reader", "scope": "/subscriptions/${TVS_SUBSCRIPTION_ID}"}
+      ],
+      "conditionalAccess": {
+        "requiredPolicies": ["ca-require-mfa-all-users", "ca-block-legacy-auth", "ca-require-compliant-device-admins"],
+        "breakglassExclusions": ["breakglass-tvs@trustedvirtual.solutions"]
+      }
+    },
+    "consulting": {
+      "tenantId": "${CONSULTING_TENANT_ID}",
+      "displayName": "Lobbi Consulting",
+      "users": [
+        {
+          "upn": "breakglass-consulting@lobbiconsulting.com",
+          "displayName": "Consulting Breakglass Account",
+          "accountType": "breakglass",
+          "enabled": true,
+          "groups": ["sg-consulting-breakglass"]
+        }
+      ],
+      "groups": [
+        {"name": "sg-consulting-breakglass", "type": "security"},
+        {"name": "sg-consulting-admins", "type": "security"}
+      ],
+      "appRegistrations": [
+        {"name": "app-consulting-portal", "signInAudience": "AzureADMyOrg", "owners": ["sg-consulting-admins"]}
+      ],
+      "servicePrincipals": [
+        {"app": "app-consulting-portal", "name": "sp-consulting-portal", "managedByEntity": "consulting"}
+      ],
+      "permissions": {
+        "delegated": [
+          {"principal": "app-consulting-portal", "resourceAppId": "00000003-0000-0000-c000-000000000000", "scopes": ["User.Read"]}
+        ],
+        "application": []
+      },
+      "roleAssignments": [
+        {"principal": "sg-consulting-admins", "role": "User Administrator", "scope": "/"}
+      ],
+      "conditionalAccess": {
+        "requiredPolicies": ["ca-require-mfa-all-users", "ca-block-legacy-auth"],
+        "breakglassExclusions": ["breakglass-consulting@lobbiconsulting.com"]
+      }
+    },
+    "taia": {
+      "tenantId": "${TAIA_TENANT_ID}",
+      "displayName": "TAIA Transition",
+      "users": [],
+      "groups": [
+        {"name": "sg-taia-transition-readers", "type": "security"}
+      ],
+      "appRegistrations": [
+        {"name": "app-taia-transition-export", "signInAudience": "AzureADMyOrg", "owners": ["sg-taia-transition-readers"]}
+      ],
+      "servicePrincipals": [
+        {"app": "app-taia-transition-export", "name": "sp-taia-transition-export", "managedByEntity": "taia"}
+      ],
+      "permissions": {
+        "delegated": [],
+        "application": [
+          {"principal": "app-taia-transition-export", "resourceAppId": "00000003-0000-0000-c000-000000000000", "scopes": ["AuditLog.Read.All", "Reports.Read.All"]}
+        ]
+      },
+      "roleAssignments": [
+        {"principal": "sp-taia-transition-export", "role": "Reader", "scope": "/subscriptions/${TAIA_SUBSCRIPTION_ID}"}
+      ],
+      "conditionalAccess": {
+        "requiredPolicies": ["ca-require-mfa-all-users", "ca-block-legacy-auth"],
+        "breakglassExclusions": []
+      }
+    }
+  }
+}
