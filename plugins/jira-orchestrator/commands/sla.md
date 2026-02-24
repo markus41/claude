@@ -31,6 +31,7 @@ Monitor, configure, report on, and analyze SLA compliance across issues.
 3. Format output: summary (table), detailed (all metrics), json, or csv
 4. Add recommendations if at-risk or breached
 5. Show breach predictions with confidence levels
+6. Consume Harness execution events via `lib/harness-transition-engine.ts` to keep SLA status transitions aligned with release orchestration and idempotent across webhook retries.
 
 ### Configure
 1. Display current SLA rules

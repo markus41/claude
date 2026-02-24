@@ -1,6 +1,7 @@
 import { mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { HarnessTransitionEngine, loadHarnessTransitionMap } from '../lib/harness-transition-engine';
 
 export type Severity = 'info' | 'warning' | 'error';
 
@@ -33,6 +34,13 @@ export interface IntegrationFixture {
   harness: {
     requiredTransitions: string[];
     transitionMap: Record<string, string>;
+    executionEvents?: Array<{
+      executionId: string;
+      eventId?: string;
+      state: string;
+      failureStrategyOutcome?: string;
+      occurredAt: string;
+    }>;
   };
 }
 
@@ -127,6 +135,9 @@ export function validateFixture(fixture: IntegrationFixture): IntegrationIssue[]
     }
   }
 
+  const harnessMap = loadHarnessTransitionMap();
+  const mappedTransitions = new Set(harnessMap.mappings.map((mapping) => mapping.transition));
+
   for (const transition of fixture.harness.requiredTransitions) {
     if (!fixture.harness.transitionMap[transition]) {
       issues.push({
@@ -134,8 +145,25 @@ export function validateFixture(fixture: IntegrationFixture): IntegrationIssue[]
         area: 'harness',
         severity: 'error',
         message: `Harness transition map missing coverage for transition: ${transition}`,
-        remediation: `Map transition \"${transition}\" to a Harness pipeline stage or rollback workflow.`,
+        remediation: `Map transition "${transition}" to a Harness pipeline stage or rollback workflow.`,
       });
+    }
+
+    if (!mappedTransitions.has(transition)) {
+      issues.push({
+        scenario: fixture.scenario,
+        area: 'harness',
+        severity: 'error',
+        message: `Runtime transition engine map is missing Jira transition: ${transition}`,
+        remediation: `Add transition "${transition}" to config/harness-transition-map.yaml for runtime parity.`,
+      });
+    }
+  }
+
+  if (fixture.harness.executionEvents && fixture.harness.executionEvents.length > 0) {
+    const engine = new HarnessTransitionEngine(harnessMap);
+    for (const event of fixture.harness.executionEvents) {
+      engine.decide(event);
     }
   }
 
