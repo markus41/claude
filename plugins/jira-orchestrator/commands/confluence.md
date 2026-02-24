@@ -30,8 +30,9 @@ description: Read, write, sync, create, or link Confluence pages to Jira issues
 1. **Validate** issue key format & fetch from Jira
 2. **Determine** Confluence space (use ${space_key} or project key)
 3. **Execute** action (read/write/sync/create/link)
-4. **Comment** on Jira with results
+4. **Comment** on Jira with canonical indexed page URLs + Operations Index URL
 5. **Create/Update** bi-directional links
+6. **Generate**/refresh `Operations Index - {project-key} - {quarter}` using CQL-discovered child pages
 
 ## Action: READ
 
@@ -79,7 +80,7 @@ description: Read, write, sync, create, or link Confluence pages to Jira issues
 2. Select template (pre-built HTML)
 3. Populate with Jira data
 4. Create via Confluence API
-5. Add labels (issue_key, type, page_type)
+5. Add labels (issue-key, release, incident, env, service) and write the same keys as page properties
 6. Link to Jira (remote + macro)
 
 ## Action: LINK
