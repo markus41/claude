@@ -156,6 +156,44 @@ Search for project space by key or name. Ask user if not found.
 - Add Confluence page links to Jira issue (comment)
 - Add Confluence page links to GitHub PR (comment)
 - Include Jira/PR links in Confluence pages
+- Use canonical Confluence URLs for indexed pages from the Operations Index parent page (avoid ad-hoc editor URLs)
+
+### 3a. Write Standardized Page Properties + Labels on Create/Update
+
+For every new or updated page, always write/update page properties with these required keys:
+
+- `issue-key`
+- `release`
+- `incident`
+- `env`
+- `service`
+
+Also apply labels (when values are available):
+
+- `issue-key`
+- `release`
+- `incident`
+- `env`
+- `service`
+
+Do this on both create and update operations to keep index queries accurate.
+
+### 3b. Generator Step: Operations Index Parent Page (Per Project/Quarter)
+
+After page create/update, run an index generator step:
+
+1. Resolve `project-key` and quarter value (for example `2026-Q1`).
+2. Find or create parent page titled: `Operations Index - {project-key} - {quarter}`.
+3. Use CQL (`searchConfluenceUsingCql`) to discover child pages by:
+   - required page property keys (`issue-key`, `release`, `incident`, `env`, `service`)
+   - labels and `project-key`/quarter metadata.
+4. Rebuild parent page sections with canonical links to all discovered child pages:
+   - Release Status
+   - Incident Timeline
+   - Rollback Log
+   - SLA Breach Reports
+5. Persist a deterministic ordering (updated date desc, then title asc).
+6. Save canonical parent/child URLs for downstream Jira comments.
 
 ### 4. Content Discovery
 
@@ -182,6 +220,7 @@ Auto-populate documentation by analyzing codebase:
 - **Error Resilience:** Retry failed requests and handle missing data
 - **Page Management:** Create, update, organize documentation pages
 - **Cross-linking:** Connect related pages, issues, and PRs
+- **Operations Index Generation:** Build and refresh project/quarter index pages from CQL-discovered children
 
 ## Best Practices
 
@@ -192,6 +231,8 @@ Auto-populate documentation by analyzing codebase:
 5. Handle errors gracefully with retries
 6. Update existing pages instead of duplicating
 7. Include actual code snippets and metrics
+8. Write required page property keys + labels on every create/update
+9. Jira comments must include canonical links from the Operations Index (not ad-hoc URLs)
 
 ## Success Output
 

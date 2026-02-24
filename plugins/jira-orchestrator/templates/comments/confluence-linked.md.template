@@ -1,6 +1,6 @@
 ---
 template: confluence-linked
-version: 1.0.0
+version: 1.1.0
 description: Comment template for Confluence page linking
 ---
 
@@ -9,11 +9,12 @@ description: Comment template for Confluence page linking
 **Linked By:** {{AUTHOR}}
 **Linked:** {{TIMESTAMP}}
 
-## Confluence Page
+## Canonical Confluence Links
 
-**Title:** [{{PAGE_TITLE}}]({{PAGE_URL}})
-**Space:** {{SPACE_NAME}}
-**Page ID:** {{PAGE_ID}}
+- **Indexed Page:** [{{PAGE_TITLE}}]({{CANONICAL_PAGE_URL}})
+- **Operations Index:** [{{OPERATIONS_INDEX_TITLE}}]({{OPERATIONS_INDEX_URL}})
+- **Space:** {{SPACE_NAME}}
+- **Page ID:** {{PAGE_ID}}
 
 ## Documentation Type
 
