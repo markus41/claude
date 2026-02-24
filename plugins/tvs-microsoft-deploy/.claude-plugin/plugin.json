@@ -1,7 +1,7 @@
 {
   "name": "tvs-microsoft-deploy",
   "version": "1.0.0",
-  "description": "Consul (Forerunner) - Enterprise Microsoft ecosystem orchestrator for TVS (Trusted Virtual Solutions) multi-entity multi-tenant deployment. 12 agents, 13 commands, 7 skills, 9 hooks, 5 workflows.",
+  "description": "Consul (Forerunner) - Enterprise Microsoft ecosystem orchestrator for TVS (Trusted Virtual Solutions) multi-entity multi-tenant deployment. 12 agents, 14 commands, 7 skills, 9 hooks, 5 workflows.",
   "author": {
     "name": "Markus Ahling",
     "email": "markus@lobbi.io"
@@ -64,6 +64,7 @@
     "commands/normalize-carriers.md",
     "commands/deploy-teams.md",
     "commands/cost-report.md",
+    "commands/quick-start.md",
     "commands/status-check.md",
     "commands/taia-readiness.md",
     "commands/browser-fallback.md"

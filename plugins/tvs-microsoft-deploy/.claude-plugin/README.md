@@ -45,7 +45,7 @@ az login --tenant $TVS_TENANT_ID
 /tvs:status-check
 ```
 
-## Commands (13)
+## Commands (14)
 
 | Command | Description |
 |---------|-------------|
@@ -59,6 +59,7 @@ az login --tenant $TVS_TENANT_ID
 | `/tvs:normalize-carriers` | Carrier normalization sprint for TAIA sale |
 | `/tvs:deploy-teams` | Teams VA workspace with HIPAA config |
 | `/tvs:cost-report` | Cost analysis across all TVS entities |
+| `/tvs:quick-start` | End-to-end bootstrap for fresh or existing repositories |
 | `/tvs:status-check` | Health check across all resources |
 | `/tvs:taia-readiness` | TAIA wind-down readiness from control-plane overlays |
 | `/tvs:browser-fallback` | Playwright fallback for portal operations |

@@ -28,6 +28,7 @@ Generated from `commands/*.md`.
 | `tvs:identity-attestation` | Generate periodic access attestation packets for TAIA transition governance and due diligence | `/tvs:identity-attestation --input exports/role-assignments.json --period 2026-Q1` |
 | `tvs:identity-drift` | Detect Entra identity drift and produce remediation recommendations | `/tvs:identity-drift --inventory identity-inventory.json --output reports/identity-drift.json` |
 | `tvs:normalize-carriers` | Carrier normalization sprint for TAIA FMO sale preparation | `/tvs:normalize-carriers [--dry-run] [--collection=carriers|commissions|all]` |
+| `tvs:quick-start` | End-to-end bootstrap for TVS Microsoft Deploy that can initialize a fresh repo or configure an existing repo to the required baseline | `/tvs:quick-start [--repo <path>] [--create-repo <path>] [--env dev|test|prod] [--tenant <tenant-id>] [--entity tvs|consulting|taia|all] [--dry-run]` |
 | `tvs:status-check` | Health check using control-plane dry-run outputs as the verification source of truth | `/tvs:status-check [--env dev|test|prod] [--taia-wind-down]` |
 | `tvs:taia-readiness` | TAIA transition readiness check driven by control-plane wind-down overlay | `/tvs:taia-readiness [--env dev|test|prod]` |
 
