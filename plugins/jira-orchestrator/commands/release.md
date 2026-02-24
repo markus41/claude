@@ -66,6 +66,7 @@ Execute Jira Release Management actions: **${action}** | **Version:** ${version}
 4. Frontend applications
 5. Smoke tests + health checks
 6. Enable monitoring
+7. Route Harness execution events through `lib/harness-transition-engine.ts` using `config/harness-transition-map.yaml` so Jira transitions/comments/properties are applied consistently and idempotently.
 
 ### Rollback
 1. Confirm decision (safety check)
