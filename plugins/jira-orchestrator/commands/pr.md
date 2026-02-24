@@ -74,6 +74,16 @@ mode:
 
 **Validate → Fetch Issue → Branch → Analyze Changes → Discover Confluence Docs → Generate PR (with Doc Links) → Push → Create PR → Update Jira**
 
+### Auto Draft Scaffolding Contract
+
+`/jira:work` transitioning an issue to **In Progress** should invoke this command in draft scaffolding mode.
+
+- Pre-fill draft PR body using Jira context (summary, description, acceptance criteria)
+- Create initial checklist from acceptance criteria
+- Keep checklist synced when key Jira fields update (summary/description/acceptance criteria/status)
+- Subsequent commits MUST append progress notes instead of replacing PR body
+- Respect per-issue opt-out label: `no-draft-pr`
+
 ## Quick Start
 
 ```bash

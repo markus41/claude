@@ -49,6 +49,11 @@
           "description": "Track time from commit timestamps",
           "enabled": false,
           "configurable": true
+        },
+        {
+          "name": "append-pr-progress-note",
+          "description": "If a draft PR scaffold exists, append commit progress notes to PR body progress section (never replace full body)",
+          "body_update_mode": "append"
         }
       ],
       "replaces_commands": [
@@ -136,6 +141,14 @@
         {
           "name": "fetch-context",
           "description": "Load related docs, PRs, commits"
+        },
+        {
+          "name": "create-draft-pr-scaffold",
+          "description": "When Jira status moves to In Progress, invoke commands/work.md + commands/pr.md draft scaffolding unless issue has no-draft-pr label",
+          "conditions": [
+            "status_transitioned_to_in_progress",
+            "label_not_present:no-draft-pr"
+          ]
         }
       ],
       "replaces_commands": [
@@ -243,6 +256,19 @@
       "replaces_commands": [
         "jira:transition",
         "jira:comment"
+      ]
+    },
+    "on-jira-update": {
+      "trigger": "When Jira issue summary/description/acceptance criteria/status changes",
+      "actions": [
+        {
+          "name": "sync-draft-pr-checklist",
+          "description": "Keep draft PR checklist in sync with Jira context for active draft PRs",
+          "conditions": [
+            "draft_pr_exists",
+            "label_not_present:no-draft-pr"
+          ]
+        }
       ]
     }
   },
