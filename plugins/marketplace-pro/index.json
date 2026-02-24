@@ -1,0 +1,323 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "marketplace-pro",
+    "root": "plugins/marketplace-pro"
+  },
+  "capabilities": {
+    "commands": [
+      {
+        "id": "marketplace-pro:command:commands.compose",
+        "name": "/mp:compose",
+        "path": "commands/compose.md",
+        "summary": "Plugin Composition Engine",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "compose",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "marketplace-pro:command:commands.dev",
+        "name": "/mp:dev",
+        "path": "commands/dev.md",
+        "summary": "Plugin Dev Studio",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "dev",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "marketplace-pro:command:commands.help",
+        "name": "/mp:help",
+        "path": "commands/help.md",
+        "summary": "Marketplace Pro Help",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "help",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "marketplace-pro:command:commands.lock",
+        "name": "/mp:lock",
+        "path": "commands/lock.md",
+        "summary": "/mp:lock — Plugin Lockfile Management",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "lock",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "marketplace-pro:command:commands.policy",
+        "name": "/mp:policy",
+        "path": "commands/policy.md",
+        "summary": "/mp:policy — Plugin Policy Enforcement",
+        "tags": {
+          "domain": "security",
+          "triggerTerms": [
+            "policy",
+            "commands"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "marketplace-pro:command:commands.quick",
+        "name": "/mp:quick",
+        "path": "commands/quick.md",
+        "summary": "Marketplace Pro Quick Commands",
+        "tags": {
+          "domain": "frontend",
+          "triggerTerms": [
+            "quick",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "marketplace-pro:command:commands.recommend",
+        "name": "/mp:recommend",
+        "path": "commands/recommend.md",
+        "summary": "Plugin Recommendation Engine",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "recommend",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "marketplace-pro:command:commands.registry",
+        "name": "/mp:registry",
+        "path": "commands/registry.md",
+        "summary": "/mp:registry — Federated Registry Management",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "registry",
+            "commands"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "marketplace-pro:command:commands.setup",
+        "name": "/mp:setup",
+        "path": "commands/setup.md",
+        "summary": "Marketplace Pro Setup Wizard",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "setup",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "marketplace-pro:command:commands.status",
+        "name": "/mp:status",
+        "path": "commands/status.md",
+        "summary": "Marketplace Pro Status Dashboard",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "status",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "marketplace-pro:command:commands.trust",
+        "name": "/mp:trust",
+        "path": "commands/trust.md",
+        "summary": "Plugin Trust Score & Security Audit",
+        "tags": {
+          "domain": "security",
+          "triggerTerms": [
+            "trust",
+            "commands"
+          ],
+          "riskLevel": "high",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "marketplace-pro:command:commands.verify",
+        "name": "/mp:verify",
+        "path": "commands/verify.md",
+        "summary": "Verify Plugin Bundle Signature",
+        "tags": {
+          "domain": "security",
+          "triggerTerms": [
+            "verify",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "agents": [
+      {
+        "id": "marketplace-pro:agent:agents.marketplace-advisor",
+        "name": "marketplace-advisor",
+        "path": "agents/marketplace-advisor.md",
+        "summary": "Marketplace Advisor",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "marketplace-advisor"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "skills": [
+      {
+        "id": "marketplace-pro:skill:skills.composition.skill",
+        "name": "composition",
+        "path": "skills/composition/SKILL.md",
+        "summary": "Intent-Based Composition Skill",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "composition"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "marketplace-pro:skill:skills.devstudio.skill",
+        "name": "devstudio",
+        "path": "skills/devstudio/SKILL.md",
+        "summary": "Plugin Dev Studio Workflow",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "devstudio"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "marketplace-pro:skill:skills.federation.skill",
+        "name": "federation",
+        "path": "skills/federation/SKILL.md",
+        "summary": "Federated Registry Protocol",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "federation"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "marketplace-pro:skill:skills.intelligence.skill",
+        "name": "intelligence",
+        "path": "skills/intelligence/SKILL.md",
+        "summary": "Contextual Plugin Intelligence",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "intelligence"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "marketplace-pro:skill:skills.security.skill",
+        "name": "security",
+        "path": "skills/security/SKILL.md",
+        "summary": "Supply Chain Security & Trust Scoring",
+        "tags": {
+          "domain": "security",
+          "triggerTerms": [
+            "security"
+          ],
+          "riskLevel": "high",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "hooks": []
+  },
+  "keyDocs": [
+    {
+      "id": "marketplace-pro:doc:readme",
+      "path": "README.md",
+      "summary": "Marketplace Pro"
+    }
+  ]
+}

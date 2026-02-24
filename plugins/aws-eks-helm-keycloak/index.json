@@ -1,0 +1,335 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "aws-eks-helm-keycloak",
+    "root": "plugins/aws-eks-helm-keycloak"
+  },
+  "capabilities": {
+    "commands": [
+      {
+        "id": "aws-eks-helm-keycloak:command:commands.debug",
+        "name": "/mp:debug",
+        "path": "commands/debug.md",
+        "summary": "Debug",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "debug",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "aws-eks-helm-keycloak:command:commands.dev-up",
+        "name": "/mp:dev-up",
+        "path": "commands/dev-up.md",
+        "summary": "Dev Up",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "dev-up",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "aws-eks-helm-keycloak:command:commands.pipeline-scaffold",
+        "name": "/mp:pipeline-scaffold",
+        "path": "commands/pipeline-scaffold.md",
+        "summary": "Pipeline Scaffold",
+        "tags": {
+          "domain": "deployment",
+          "triggerTerms": [
+            "pipeline-scaffold",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "aws-eks-helm-keycloak:command:commands.preview",
+        "name": "/mp:preview",
+        "path": "commands/preview.md",
+        "summary": "Preview",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "preview",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "aws-eks-helm-keycloak:command:commands.service-onboard",
+        "name": "/mp:service-onboard",
+        "path": "commands/service-onboard.md",
+        "summary": "Service Onboard",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "service-onboard",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "aws-eks-helm-keycloak:command:commands.setup",
+        "name": "/mp:setup",
+        "path": "commands/setup.md",
+        "summary": "Setup Wizard",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "setup",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "aws-eks-helm-keycloak:command:commands.ship",
+        "name": "/mp:ship",
+        "path": "commands/ship.md",
+        "summary": "Ship",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "ship",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "agents": [
+      {
+        "id": "aws-eks-helm-keycloak:agent:agents.deployment-strategist",
+        "name": "deployment-strategist",
+        "path": "agents/deployment-strategist.md",
+        "summary": "Deployment Strategist Agent",
+        "tags": {
+          "domain": "deployment",
+          "triggerTerms": [
+            "deployment-strategist"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "aws-eks-helm-keycloak:agent:agents.dev-assistant",
+        "name": "dev-assistant",
+        "path": "agents/dev-assistant.md",
+        "summary": "Dev Assistant Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "dev-assistant"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "aws-eks-helm-keycloak:agent:agents.pipeline-architect",
+        "name": "pipeline-architect",
+        "path": "agents/pipeline-architect.md",
+        "summary": "Pipeline Architect Agent",
+        "tags": {
+          "domain": "deployment",
+          "triggerTerms": [
+            "pipeline-architect"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "aws-eks-helm-keycloak:agent:agents.setup-orchestrator",
+        "name": "setup-orchestrator",
+        "path": "agents/setup-orchestrator.md",
+        "summary": "Setup Orchestrator Agent",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "setup-orchestrator"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "skills": [
+      {
+        "id": "aws-eks-helm-keycloak:skill:skills.harness-code-integration.skill",
+        "name": "harness-code-integration",
+        "path": "skills/harness-code-integration/SKILL.md",
+        "summary": "Harness Code Integration Skill",
+        "tags": {
+          "domain": "testing",
+          "triggerTerms": [
+            "harness code integration"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "aws-eks-helm-keycloak:skill:skills.harness-eks-deployments.skill",
+        "name": "harness-eks-deployments",
+        "path": "skills/harness-eks-deployments/SKILL.md",
+        "summary": "Harness EKS Deployments Skill",
+        "tags": {
+          "domain": "deployment",
+          "triggerTerms": [
+            "harness eks deployments"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "kubernetes"
+          ]
+        }
+      },
+      {
+        "id": "aws-eks-helm-keycloak:skill:skills.harness-keycloak-auth.skill",
+        "name": "harness-keycloak-auth",
+        "path": "skills/harness-keycloak-auth/SKILL.md",
+        "summary": "Harness Keycloak Auth Skill",
+        "tags": {
+          "domain": "testing",
+          "triggerTerms": [
+            "harness keycloak auth"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "aws-eks-helm-keycloak:skill:skills.helm-development.skill",
+        "name": "helm-development",
+        "path": "skills/helm-development/SKILL.md",
+        "summary": "Helm Development Skill",
+        "tags": {
+          "domain": "deployment",
+          "triggerTerms": [
+            "helm development"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "kubernetes"
+          ]
+        }
+      },
+      {
+        "id": "aws-eks-helm-keycloak:skill:skills.local-eks-development.skill",
+        "name": "local-eks-development",
+        "path": "skills/local-eks-development/SKILL.md",
+        "summary": "Local EKS Development Skill",
+        "tags": {
+          "domain": "deployment",
+          "triggerTerms": [
+            "local eks development"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "kubernetes"
+          ]
+        }
+      },
+      {
+        "id": "aws-eks-helm-keycloak:skill:skills.setup-wizard.skill",
+        "name": "setup-wizard",
+        "path": "skills/setup-wizard/SKILL.md",
+        "summary": "Setup Wizard Skill",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "setup wizard"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "hooks": [
+      {
+        "id": "aws-eks-helm-keycloak:hook:hooks.scripts.keycloak-sync",
+        "name": "keycloak-sync.sh",
+        "path": "hooks/scripts/keycloak-sync.sh",
+        "summary": "Hook script keycloak-sync.sh",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "keycloak-sync"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "aws-eks-helm-keycloak:hook:hooks.scripts.pre-deploy-validation",
+        "name": "pre-deploy-validation.sh",
+        "path": "hooks/scripts/pre-deploy-validation.sh",
+        "summary": "Hook script pre-deploy-validation.sh",
+        "tags": {
+          "domain": "deployment",
+          "triggerTerms": [
+            "pre-deploy-validation"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      }
+    ]
+  },
+  "keyDocs": [
+    {
+      "id": "aws-eks-helm-keycloak:doc:readme",
+      "path": "README.md",
+      "summary": "AWS EKS Helm Keycloak Plugin (The Conduit-Artisan)"
+    }
+  ]
+}

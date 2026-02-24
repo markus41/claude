@@ -1,0 +1,532 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "react-animation-studio",
+    "root": "plugins/react-animation-studio"
+  },
+  "capabilities": {
+    "commands": [
+      {
+        "id": "react-animation-studio:command:commands.animate-3d",
+        "name": "/mp:animate-3d",
+        "path": "commands/animate-3d.md",
+        "summary": "/animate-3d Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "animate-3d",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "react-animation-studio:command:commands.animate-audit",
+        "name": "/mp:animate-audit",
+        "path": "commands/animate-audit.md",
+        "summary": "/animate-audit",
+        "tags": {
+          "domain": "security",
+          "triggerTerms": [
+            "animate-audit",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "react-animation-studio:command:commands.animate-background",
+        "name": "/mp:animate-background",
+        "path": "commands/animate-background.md",
+        "summary": "/animate-background Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "animate-background",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "react-animation-studio:command:commands.animate-component",
+        "name": "/mp:animate-component",
+        "path": "commands/animate-component.md",
+        "summary": "/animate-component",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "animate-component",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "react-animation-studio:command:commands.animate-effects",
+        "name": "/mp:animate-effects",
+        "path": "commands/animate-effects.md",
+        "summary": "/animate-effects Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "animate-effects",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "react-animation-studio:command:commands.animate-export",
+        "name": "/mp:animate-export",
+        "path": "commands/animate-export.md",
+        "summary": "/animate-export",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "animate-export",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "react-animation-studio:command:commands.animate-preset",
+        "name": "/mp:animate-preset",
+        "path": "commands/animate-preset.md",
+        "summary": "/animate-preset",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "animate-preset",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "react-animation-studio:command:commands.animate-scroll",
+        "name": "/mp:animate-scroll",
+        "path": "commands/animate-scroll.md",
+        "summary": "/animate-scroll",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "animate-scroll",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "react-animation-studio:command:commands.animate-sequence",
+        "name": "/mp:animate-sequence",
+        "path": "commands/animate-sequence.md",
+        "summary": "/animate-sequence",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "animate-sequence",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "react-animation-studio:command:commands.animate-text",
+        "name": "/mp:animate-text",
+        "path": "commands/animate-text.md",
+        "summary": "/animate-text Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "animate-text",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "react-animation-studio:command:commands.animate-transition",
+        "name": "/mp:animate-transition",
+        "path": "commands/animate-transition.md",
+        "summary": "/animate-transition",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "animate-transition",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "react-animation-studio:command:commands.animate",
+        "name": "/mp:animate",
+        "path": "commands/animate.md",
+        "summary": "/animate",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "animate",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "agents": [
+      {
+        "id": "react-animation-studio:agent:agents.animation-architect",
+        "name": "animation-architect",
+        "path": "agents/animation-architect.md",
+        "summary": "Animation Architect",
+        "tags": {
+          "domain": "frontend",
+          "triggerTerms": [
+            "animation-architect"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "react-animation-studio:agent:agents.creative-effects-artist",
+        "name": "creative-effects-artist",
+        "path": "agents/creative-effects-artist.md",
+        "summary": "Creative Effects Artist Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "creative-effects-artist"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "react-animation-studio:agent:agents.interaction-specialist",
+        "name": "interaction-specialist",
+        "path": "agents/interaction-specialist.md",
+        "summary": "Interaction Specialist",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "interaction-specialist"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "react-animation-studio:agent:agents.motion-designer",
+        "name": "motion-designer",
+        "path": "agents/motion-designer.md",
+        "summary": "Motion Designer",
+        "tags": {
+          "domain": "frontend",
+          "triggerTerms": [
+            "motion-designer"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "react-animation-studio:agent:agents.performance-optimizer",
+        "name": "performance-optimizer",
+        "path": "agents/performance-optimizer.md",
+        "summary": "Performance Optimizer",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "performance-optimizer"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "react-animation-studio:agent:agents.transition-engineer",
+        "name": "transition-engineer",
+        "path": "agents/transition-engineer.md",
+        "summary": "Transition Engineer",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "transition-engineer"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "skills": [
+      {
+        "id": "react-animation-studio:skill:skills.3d-animations.skill",
+        "name": "3d-animations",
+        "path": "skills/3d-animations/SKILL.md",
+        "summary": "3D Animations Skill",
+        "tags": {
+          "domain": "frontend",
+          "triggerTerms": [
+            "3d animations"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "react-animation-studio:skill:skills.accent-animations.skill",
+        "name": "accent-animations",
+        "path": "skills/accent-animations/SKILL.md",
+        "summary": "Accent Animations Skill",
+        "tags": {
+          "domain": "frontend",
+          "triggerTerms": [
+            "accent animations"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "react-animation-studio:skill:skills.background-animations.skill",
+        "name": "background-animations",
+        "path": "skills/background-animations/SKILL.md",
+        "summary": "Background Animations Skill",
+        "tags": {
+          "domain": "frontend",
+          "triggerTerms": [
+            "background animations"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "react-animation-studio:skill:skills.creative-effects.skill",
+        "name": "creative-effects",
+        "path": "skills/creative-effects/SKILL.md",
+        "summary": "Creative Effects Skill",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "creative effects"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "react-animation-studio:skill:skills.css-animations.skill",
+        "name": "css-animations",
+        "path": "skills/css-animations/SKILL.md",
+        "summary": "CSS Animations Skill",
+        "tags": {
+          "domain": "frontend",
+          "triggerTerms": [
+            "css animations"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "react-animation-studio:skill:skills.framer-motion.skill",
+        "name": "framer-motion",
+        "path": "skills/framer-motion/SKILL.md",
+        "summary": "Framer Motion Skill",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "framer motion"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "react-animation-studio:skill:skills.gsap.skill",
+        "name": "gsap",
+        "path": "skills/gsap/SKILL.md",
+        "summary": "GSAP Skill",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "gsap"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "react-animation-studio:skill:skills.scroll-animations.skill",
+        "name": "scroll-animations",
+        "path": "skills/scroll-animations/SKILL.md",
+        "summary": "Scroll Animations Skill",
+        "tags": {
+          "domain": "frontend",
+          "triggerTerms": [
+            "scroll animations"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "react-animation-studio:skill:skills.spring-physics.skill",
+        "name": "spring-physics",
+        "path": "skills/spring-physics/SKILL.md",
+        "summary": "Spring Physics Skill",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "spring physics"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "react-animation-studio:skill:skills.svg-animations.skill",
+        "name": "svg-animations",
+        "path": "skills/svg-animations/SKILL.md",
+        "summary": "SVG Animations Skill",
+        "tags": {
+          "domain": "frontend",
+          "triggerTerms": [
+            "svg animations"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "react-animation-studio:skill:skills.text-animations.skill",
+        "name": "text-animations",
+        "path": "skills/text-animations/SKILL.md",
+        "summary": "Text Animations Skill",
+        "tags": {
+          "domain": "frontend",
+          "triggerTerms": [
+            "text animations"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "hooks": [
+      {
+        "id": "react-animation-studio:hook:hooks.scripts.animation-lint",
+        "name": "animation-lint.sh",
+        "path": "hooks/scripts/animation-lint.sh",
+        "summary": "Hook script animation-lint.sh",
+        "tags": {
+          "domain": "frontend",
+          "triggerTerms": [
+            "animation-lint"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "react-animation-studio:hook:hooks.scripts.performance-check",
+        "name": "performance-check.sh",
+        "path": "hooks/scripts/performance-check.sh",
+        "summary": "Hook script performance-check.sh",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "performance-check"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      }
+    ]
+  },
+  "keyDocs": [
+    {
+      "id": "react-animation-studio:doc:readme",
+      "path": "README.md",
+      "summary": "React Animation Studio"
+    }
+  ]
+}

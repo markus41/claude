@@ -1,0 +1,35 @@
+name: plugin-index-check
+
+on:
+  pull_request:
+    paths:
+      - 'plugins/**'
+      - 'scripts/generate-plugin-indexes.mjs'
+      - 'scripts/validate-plugin-indexes.mjs'
+      - '.github/workflows/plugin-index-check.yml'
+      - 'package.json'
+  push:
+    branches:
+      - main
+    paths:
+      - 'plugins/**'
+      - 'scripts/generate-plugin-indexes.mjs'
+      - 'scripts/validate-plugin-indexes.mjs'
+      - '.github/workflows/plugin-index-check.yml'
+      - 'package.json'
+
+jobs:
+  check-plugin-indexes:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Validate plugin indexes are synchronized and complete
+        run: npm run plugin:index:check

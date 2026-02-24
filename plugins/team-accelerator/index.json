@@ -1,0 +1,384 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "team-accelerator",
+    "root": "plugins/team-accelerator"
+  },
+  "capabilities": {
+    "commands": [
+      {
+        "id": "team-accelerator:command:commands.deploy",
+        "name": "/mp:deploy",
+        "path": "commands/deploy.md",
+        "summary": "Deploy Command",
+        "tags": {
+          "domain": "deployment",
+          "triggerTerms": [
+            "deploy",
+            "commands"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "team-accelerator:command:commands.docs",
+        "name": "/mp:docs",
+        "path": "commands/docs.md",
+        "summary": "Docs Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "docs",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "team-accelerator:command:commands.integrate",
+        "name": "/mp:integrate",
+        "path": "commands/integrate.md",
+        "summary": "Integrate Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "integrate",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "team-accelerator:command:commands.perf",
+        "name": "/mp:perf",
+        "path": "commands/perf.md",
+        "summary": "Perf Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "perf",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "team-accelerator:command:commands.quality",
+        "name": "/mp:quality",
+        "path": "commands/quality.md",
+        "summary": "Quality Command",
+        "tags": {
+          "domain": "testing",
+          "triggerTerms": [
+            "quality",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "team-accelerator:command:commands.status",
+        "name": "/mp:status",
+        "path": "commands/status.md",
+        "summary": "Status Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "status",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "team-accelerator:command:commands.test",
+        "name": "/mp:test",
+        "path": "commands/test.md",
+        "summary": "Test Command",
+        "tags": {
+          "domain": "testing",
+          "triggerTerms": [
+            "test",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "team-accelerator:command:commands.workflow",
+        "name": "/mp:workflow",
+        "path": "commands/workflow.md",
+        "summary": "Workflow Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "workflow",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "agents": [
+      {
+        "id": "team-accelerator:agent:agents.code-reviewer",
+        "name": "code-reviewer",
+        "path": "agents/code-reviewer.md",
+        "summary": "Code Reviewer",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "code-reviewer"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "team-accelerator:agent:agents.devops-engineer",
+        "name": "devops-engineer",
+        "path": "agents/devops-engineer.md",
+        "summary": "DevOps Engineer",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "devops-engineer"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "team-accelerator:agent:agents.documentation-writer",
+        "name": "documentation-writer",
+        "path": "agents/documentation-writer.md",
+        "summary": "Documentation Writer",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "documentation-writer"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "team-accelerator:agent:agents.integration-specialist",
+        "name": "integration-specialist",
+        "path": "agents/integration-specialist.md",
+        "summary": "Integration Specialist",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "integration-specialist"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "team-accelerator:agent:agents.performance-engineer",
+        "name": "performance-engineer",
+        "path": "agents/performance-engineer.md",
+        "summary": "Performance Engineer",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "performance-engineer"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "team-accelerator:agent:agents.workflow-automator",
+        "name": "workflow-automator",
+        "path": "agents/workflow-automator.md",
+        "summary": "Workflow Automator",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "workflow-automator"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "skills": [
+      {
+        "id": "team-accelerator:skill:skills.code-quality.skill",
+        "name": "code-quality",
+        "path": "skills/code-quality/SKILL.md",
+        "summary": "Code Quality Skill",
+        "tags": {
+          "domain": "testing",
+          "triggerTerms": [
+            "code quality"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "team-accelerator:skill:skills.devops-practices.skill",
+        "name": "devops-practices",
+        "path": "skills/devops-practices/SKILL.md",
+        "summary": "DevOps Practices Skill",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "devops practices"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "team-accelerator:skill:skills.integration-patterns.skill",
+        "name": "integration-patterns",
+        "path": "skills/integration-patterns/SKILL.md",
+        "summary": "Integration Patterns Skill",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "integration patterns"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "team-accelerator:skill:skills.workflow-automation.skill",
+        "name": "workflow-automation",
+        "path": "skills/workflow-automation/SKILL.md",
+        "summary": "Workflow Automation Skill",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "workflow automation"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "hooks": [
+      {
+        "id": "team-accelerator:hook:hooks.scripts.analyze-tests",
+        "name": "analyze-tests.sh",
+        "path": "hooks/scripts/analyze-tests.sh",
+        "summary": "Hook script analyze-tests.sh",
+        "tags": {
+          "domain": "testing",
+          "triggerTerms": [
+            "analyze-tests"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "team-accelerator:hook:hooks.scripts.docs-sync",
+        "name": "docs-sync.sh",
+        "path": "hooks/scripts/docs-sync.sh",
+        "summary": "Hook script docs-sync.sh",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "docs-sync"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "team-accelerator:hook:hooks.scripts.notify-deploy",
+        "name": "notify-deploy.sh",
+        "path": "hooks/scripts/notify-deploy.sh",
+        "summary": "Hook script notify-deploy.sh",
+        "tags": {
+          "domain": "deployment",
+          "triggerTerms": [
+            "notify-deploy"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "team-accelerator:hook:hooks.scripts.validate-code",
+        "name": "validate-code.sh",
+        "path": "hooks/scripts/validate-code.sh",
+        "summary": "Hook script validate-code.sh",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "validate-code"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      }
+    ]
+  },
+  "keyDocs": [
+    {
+      "id": "team-accelerator:doc:readme",
+      "path": "README.md",
+      "summary": "Team Accelerator"
+    }
+  ]
+}

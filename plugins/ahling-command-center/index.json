@@ -1,0 +1,560 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "ahling-command-center",
+    "root": "plugins/ahling-command-center"
+  },
+  "capabilities": {
+    "commands": [
+      {
+        "id": "ahling-command-center:command:commands.acc-agent",
+        "name": "/mp:acc-agent",
+        "path": "commands/acc-agent.md",
+        "summary": "Manage Microsoft Agent Framework including AutoGen and Semantic Kernel agents, multi-agent workflows, tool registration,",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "acc-agent",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "ahling-command-center:command:commands.acc-compose",
+        "name": "/mp:acc-compose",
+        "path": "commands/acc-compose.md",
+        "summary": "Generate optimized Docker Compose files for ACC services with automatic resource allocation, dependency management, netw",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "acc-compose",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "docker"
+          ]
+        }
+      },
+      {
+        "id": "ahling-command-center:command:commands.acc-config",
+        "name": "/mp:acc-config",
+        "path": "commands/acc-config.md",
+        "summary": "Generate service configuration files with automatic Vault secret injection, environment variable templating, and validat",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "acc-config",
+            "commands"
+          ],
+          "riskLevel": "high",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "ahling-command-center:command:commands.acc-deploy",
+        "name": "/mp:acc-deploy",
+        "path": "commands/acc-deploy.md",
+        "summary": "Deploy Ahling Command Center services by phase or individually with automatic dependency validation, pre-deployment chec",
+        "tags": {
+          "domain": "deployment",
+          "triggerTerms": [
+            "acc-deploy",
+            "commands"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "ahling-command-center:command:commands.acc-ha",
+        "name": "/mp:acc-ha",
+        "path": "commands/acc-ha.md",
+        "summary": "Manage Home Assistant including entities, automations, voice pipeline, scenes, scripts, and integration with Ollama for ",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "acc-ha",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "ahling-command-center:command:commands.acc-init",
+        "name": "/mp:acc-init",
+        "path": "commands/acc-init.md",
+        "summary": "Initialize the complete Ahling Command Center project structure with directories, configuration templates, and base file",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "acc-init",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "ahling-command-center:command:commands.acc-knowledge",
+        "name": "/mp:acc-knowledge",
+        "path": "commands/acc-knowledge.md",
+        "summary": "Manage ACC knowledge graph using Neo4j for structured data and Qdrant for vector embeddings with semantic search capabil",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "acc-knowledge",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "ahling-command-center:command:commands.acc-logs",
+        "name": "/mp:acc-logs",
+        "path": "commands/acc-logs.md",
+        "summary": "View, filter, and analyze ACC service logs with real-time tailing, pattern matching, time-based filtering, and multi-ser",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "acc-logs",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "ahling-command-center:command:commands.acc-ollama",
+        "name": "/mp:acc-ollama",
+        "path": "commands/acc-ollama.md",
+        "summary": "Manage Ollama models including pulling, listing, running, GPU optimization for AMD RX 7900 XTX, model creation, and perf",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "acc-ollama",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "ahling-command-center:command:commands.acc-orchestrate",
+        "name": "/mp:acc-orchestrate",
+        "path": "commands/acc-orchestrate.md",
+        "summary": "Execute complex multi-agent workflows that orchestrate multiple ACC services including Ollama for reasoning, knowledge g",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "acc-orchestrate",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "ahling-command-center:command:commands.acc-repo",
+        "name": "/mp:acc-repo",
+        "path": "commands/acc-repo.md",
+        "summary": "Scaffold a complete service repository with Docker configuration, environment templates, health checks, Vault integratio",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "acc-repo",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "docker"
+          ]
+        }
+      },
+      {
+        "id": "ahling-command-center:command:commands.acc-resource",
+        "name": "/mp:acc-resource",
+        "path": "commands/acc-resource.md",
+        "summary": "Monitor and optimize resource allocation across ACC infrastructure with focus on 24-core CPU, 61GB RAM, and RX 7900 XTX ",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "acc-resource",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "ahling-command-center:command:commands.acc-status",
+        "name": "/mp:acc-status",
+        "path": "commands/acc-status.md",
+        "summary": "Comprehensive health check of ACC infrastructure including service availability, resource usage, dependency validation, ",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "acc-status",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "ahling-command-center:command:commands.acc-vault",
+        "name": "/mp:acc-vault",
+        "path": "commands/acc-vault.md",
+        "summary": "Manage HashiCorp Vault secrets for ACC services including setting secrets, retrieving values, listing paths, rotating cr",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "acc-vault",
+            "commands"
+          ],
+          "riskLevel": "high",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "ahling-command-center:command:commands.acc-voice",
+        "name": "/mp:acc-voice",
+        "path": "commands/acc-voice.md",
+        "summary": "Test and configure the ACC voice assistant pipeline including Whisper speech-to-text, Piper text-to-speech, Wyoming prot",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "acc-voice",
+            "commands"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "agents": [
+      {
+        "id": "ahling-command-center:agent:agents.agent-architect",
+        "name": "agent-architect",
+        "path": "agents/agent-architect.md",
+        "summary": "Agent Architect Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "agent-architect"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "ahling-command-center:agent:agents.compose-builder",
+        "name": "compose-builder",
+        "path": "agents/compose-builder.md",
+        "summary": "Docker Compose Builder Agent",
+        "tags": {
+          "domain": "frontend",
+          "triggerTerms": [
+            "compose-builder"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "docker"
+          ]
+        }
+      },
+      {
+        "id": "ahling-command-center:agent:agents.config-generator",
+        "name": "config-generator",
+        "path": "agents/config-generator.md",
+        "summary": "Configuration Generator Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "config-generator"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "ahling-command-center:agent:agents.ha-coordinator",
+        "name": "ha-coordinator",
+        "path": "agents/ha-coordinator.md",
+        "summary": "Home Assistant Coordinator Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "ha-coordinator"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "ahling-command-center:agent:agents.health-monitor",
+        "name": "health-monitor",
+        "path": "agents/health-monitor.md",
+        "summary": "Health Monitor Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "health-monitor"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "ahling-command-center:agent:agents.infrastructure-architect",
+        "name": "infrastructure-architect",
+        "path": "agents/infrastructure-architect.md",
+        "summary": "Infrastructure Architect Agent",
+        "tags": {
+          "domain": "deployment",
+          "triggerTerms": [
+            "infrastructure-architect"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "ahling-command-center:agent:agents.ollama-orchestrator",
+        "name": "ollama-orchestrator",
+        "path": "agents/ollama-orchestrator.md",
+        "summary": "Ollama Orchestrator Agent",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "ollama-orchestrator"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "ahling-command-center:agent:agents.resource-optimizer",
+        "name": "resource-optimizer",
+        "path": "agents/resource-optimizer.md",
+        "summary": "Resource Optimizer Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "resource-optimizer"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "ahling-command-center:agent:agents.troubleshooter",
+        "name": "troubleshooter",
+        "path": "agents/troubleshooter.md",
+        "summary": "Troubleshooter Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "troubleshooter"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "ahling-command-center:agent:agents.vault-manager",
+        "name": "vault-manager",
+        "path": "agents/vault-manager.md",
+        "summary": "Vault Manager Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "vault-manager"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "skills": [
+      {
+        "id": "ahling-command-center:skill:skills.ai-core.skill",
+        "name": "ai-core",
+        "path": "skills/ai-core/SKILL.md",
+        "summary": "AI Core Skill",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "ai core"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "ahling-command-center:skill:skills.home-assistant-brain.skill",
+        "name": "home-assistant-brain",
+        "path": "skills/home-assistant-brain/SKILL.md",
+        "summary": "Home Assistant Brain Skill",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "home assistant brain"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "ahling-command-center:skill:skills.home-automation.skill",
+        "name": "home-automation",
+        "path": "skills/home-automation/SKILL.md",
+        "summary": "Home Automation Skill",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "home automation"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "ahling-command-center:skill:skills.infrastructure-foundation.skill",
+        "name": "infrastructure-foundation",
+        "path": "skills/infrastructure-foundation/SKILL.md",
+        "summary": "Infrastructure Foundation Skill",
+        "tags": {
+          "domain": "deployment",
+          "triggerTerms": [
+            "infrastructure foundation"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "ahling-command-center:skill:skills.intelligence-layer.skill",
+        "name": "intelligence-layer",
+        "path": "skills/intelligence-layer/SKILL.md",
+        "summary": "Intelligence Layer Skill",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "intelligence layer"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "ahling-command-center:skill:skills.microsoft-agents.skill",
+        "name": "microsoft-agents",
+        "path": "skills/microsoft-agents/SKILL.md",
+        "summary": "Microsoft Agents Skill",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "microsoft agents"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "ahling-command-center:skill:skills.ollama-mastery.skill",
+        "name": "ollama-mastery",
+        "path": "skills/ollama-mastery/SKILL.md",
+        "summary": "Ollama Mastery Skill",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "ollama mastery"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "ahling-command-center:skill:skills.perception-pipeline.skill",
+        "name": "perception-pipeline",
+        "path": "skills/perception-pipeline/SKILL.md",
+        "summary": "Perception Pipeline Skill",
+        "tags": {
+          "domain": "deployment",
+          "triggerTerms": [
+            "perception pipeline"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "hooks": []
+  },
+  "keyDocs": []
+}

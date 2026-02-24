@@ -1,0 +1,484 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "exec-automator",
+    "root": "plugins/exec-automator"
+  },
+  "capabilities": {
+    "commands": [
+      {
+        "id": "exec-automator:command:commands.analyze",
+        "name": "/mp:analyze",
+        "path": "commands/analyze.md",
+        "summary": "Executive Document Analysis - Extract Responsibilities & Automation Opportunities",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "analyze",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "exec-automator:command:commands.customize",
+        "name": "/mp:customize",
+        "path": "commands/customize.md",
+        "summary": "Executive Automation Customization",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "customize",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "exec-automator:command:commands.dashboard",
+        "name": "/mp:dashboard",
+        "path": "commands/dashboard.md",
+        "summary": "Executive Automation Dashboard",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "dashboard",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "exec-automator:command:commands.deploy",
+        "name": "/mp:deploy",
+        "path": "commands/deploy.md",
+        "summary": "Executive Workflow Deployment Command",
+        "tags": {
+          "domain": "deployment",
+          "triggerTerms": [
+            "deploy",
+            "commands"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "exec-automator:command:commands.export",
+        "name": "/mp:export",
+        "path": "commands/export.md",
+        "summary": "Executive Automation Export - Configuration & Data Backup",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "export",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "exec-automator:command:commands.generate",
+        "name": "/mp:generate",
+        "path": "commands/generate.md",
+        "summary": "LangGraph Workflow Code Generator",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "generate",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "exec-automator:command:commands.integrate",
+        "name": "/mp:integrate",
+        "path": "commands/integrate.md",
+        "summary": "Executive Integration Manager",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "integrate",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "exec-automator:command:commands.map",
+        "name": "/mp:map",
+        "path": "commands/map.md",
+        "summary": "LangGraph Workflow Mapping Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "map",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "exec-automator:command:commands.orchestrate",
+        "name": "/mp:orchestrate",
+        "path": "commands/orchestrate.md",
+        "summary": "Executive Director Automation Orchestrator",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "orchestrate",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "exec-automator:command:commands.report",
+        "name": "/mp:report",
+        "path": "commands/report.md",
+        "summary": "Executive Automation Report Generator",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "report",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "exec-automator:command:commands.score",
+        "name": "/mp:score",
+        "path": "commands/score.md",
+        "summary": "Automation Potential Scoring Engine",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "score",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "exec-automator:command:commands.simulate",
+        "name": "/mp:simulate",
+        "path": "commands/simulate.md",
+        "summary": "Workflow Simulation Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "simulate",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "exec-automator:command:commands.template",
+        "name": "/mp:template",
+        "path": "commands/template.md",
+        "summary": "Template Manager - Executive Automation Templates",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "template",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "agents": [
+      {
+        "id": "exec-automator:agent:agents.admin-coordinator",
+        "name": "admin-coordinator",
+        "path": "agents/admin-coordinator.md",
+        "summary": "Admin Coordinator Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "admin-coordinator"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "exec-automator:agent:agents.communications-director",
+        "name": "communications-director",
+        "path": "agents/communications-director.md",
+        "summary": "Communications Director Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "communications-director"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "exec-automator:agent:agents.compliance-monitor",
+        "name": "compliance-monitor",
+        "path": "agents/compliance-monitor.md",
+        "summary": "Compliance Monitor Agent",
+        "tags": {
+          "domain": "security",
+          "triggerTerms": [
+            "compliance-monitor"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "exec-automator:agent:agents.event-orchestrator",
+        "name": "event-orchestrator",
+        "path": "agents/event-orchestrator.md",
+        "summary": "Event Orchestrator Agent",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "event-orchestrator"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "exec-automator:agent:agents.finance-manager",
+        "name": "finance-manager",
+        "path": "agents/finance-manager.md",
+        "summary": "Finance Manager Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "finance-manager"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "exec-automator:agent:agents.meeting-facilitator",
+        "name": "meeting-facilitator",
+        "path": "agents/meeting-facilitator.md",
+        "summary": "Meeting Facilitator Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "meeting-facilitator"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "exec-automator:agent:agents.membership-steward",
+        "name": "membership-steward",
+        "path": "agents/membership-steward.md",
+        "summary": "Membership Steward Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "membership-steward"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "exec-automator:agent:agents.org-analyzer",
+        "name": "org-analyzer",
+        "path": "agents/org-analyzer.md",
+        "summary": "Organizational Analyzer Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "org-analyzer"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "exec-automator:agent:agents.social-media-manager",
+        "name": "social-media-manager",
+        "path": "agents/social-media-manager.md",
+        "summary": "Social Media Manager Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "social-media-manager"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "exec-automator:agent:agents.sponsor-relations",
+        "name": "sponsor-relations",
+        "path": "agents/sponsor-relations.md",
+        "summary": "Sponsor Relations Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "sponsor-relations"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "exec-automator:agent:agents.workflow-designer",
+        "name": "workflow-designer",
+        "path": "agents/workflow-designer.md",
+        "summary": "Workflow Designer Agent",
+        "tags": {
+          "domain": "frontend",
+          "triggerTerms": [
+            "workflow-designer"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "skills": [],
+    "hooks": [
+      {
+        "id": "exec-automator:hook:hooks.scripts.document-detect",
+        "name": "document-detect.sh",
+        "path": "hooks/scripts/document-detect.sh",
+        "summary": "Hook script document-detect.sh",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "document-detect"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "exec-automator:hook:hooks.scripts.execution-tracker",
+        "name": "execution-tracker.sh",
+        "path": "hooks/scripts/execution-tracker.sh",
+        "summary": "Hook script execution-tracker.sh",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "execution-tracker"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "exec-automator:hook:hooks.scripts.workflow-cleanup",
+        "name": "workflow-cleanup.sh",
+        "path": "hooks/scripts/workflow-cleanup.sh",
+        "summary": "Hook script workflow-cleanup.sh",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "workflow-cleanup"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "exec-automator:hook:hooks.scripts.workflow-init",
+        "name": "workflow-init.sh",
+        "path": "hooks/scripts/workflow-init.sh",
+        "summary": "Hook script workflow-init.sh",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "workflow-init"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      }
+    ]
+  },
+  "keyDocs": [
+    {
+      "id": "exec-automator:doc:readme",
+      "path": "README.md",
+      "summary": "exec-automator"
+    }
+  ]
+}

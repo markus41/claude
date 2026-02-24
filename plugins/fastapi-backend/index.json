@@ -1,0 +1,435 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "fastapi-backend",
+    "root": "plugins/fastapi-backend"
+  },
+  "capabilities": {
+    "commands": [
+      {
+        "id": "fastapi-backend:command:commands.deploy",
+        "name": "/mp:deploy",
+        "path": "commands/deploy.md",
+        "summary": "Deploy FastAPI to Kubernetes",
+        "tags": {
+          "domain": "deployment",
+          "triggerTerms": [
+            "deploy",
+            "commands"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "kubernetes"
+          ]
+        }
+      },
+      {
+        "id": "fastapi-backend:command:commands.dev",
+        "name": "/mp:dev",
+        "path": "commands/dev.md",
+        "summary": "Start FastAPI Development Server",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "dev",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "fastapi-backend:command:commands.docker",
+        "name": "/mp:docker",
+        "path": "commands/docker.md",
+        "summary": "Docker Operations for FastAPI",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "docker",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "docker"
+          ]
+        }
+      },
+      {
+        "id": "fastapi-backend:command:commands.endpoint",
+        "name": "/mp:endpoint",
+        "path": "commands/endpoint.md",
+        "summary": "Generate FastAPI Endpoint",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "endpoint",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "fastapi-backend:command:commands.migrate",
+        "name": "/mp:migrate",
+        "path": "commands/migrate.md",
+        "summary": "Beanie/MongoDB Migrations",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "migrate",
+            "commands"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "fastapi-backend:command:commands.model",
+        "name": "/mp:model",
+        "path": "commands/model.md",
+        "summary": "Generate Beanie Document Model",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "model",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "fastapi-backend:command:commands.scaffold",
+        "name": "/mp:scaffold",
+        "path": "commands/scaffold.md",
+        "summary": "Scaffold FastAPI Project",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "scaffold",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "fastapi-backend:command:commands.task",
+        "name": "/mp:task",
+        "path": "commands/task.md",
+        "summary": "Generate Background Task",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "task",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "fastapi-backend:command:commands.test",
+        "name": "/mp:test",
+        "path": "commands/test.md",
+        "summary": "Generate FastAPI Test Suite",
+        "tags": {
+          "domain": "testing",
+          "triggerTerms": [
+            "test",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "fastapi-backend:command:commands.ws",
+        "name": "/mp:ws",
+        "path": "commands/ws.md",
+        "summary": "Generate WebSocket Endpoint",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "ws",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "agents": [
+      {
+        "id": "fastapi-backend:agent:agents.api-architect",
+        "name": "api-architect",
+        "path": "agents/api-architect.md",
+        "summary": "API Architect Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "api-architect"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "fastapi-backend:agent:agents.performance-optimizer",
+        "name": "performance-optimizer",
+        "path": "agents/performance-optimizer.md",
+        "summary": "Performance Optimizer Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "performance-optimizer"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "fastapi-backend:agent:agents.security-reviewer",
+        "name": "security-reviewer",
+        "path": "agents/security-reviewer.md",
+        "summary": "Security Reviewer Agent",
+        "tags": {
+          "domain": "security",
+          "triggerTerms": [
+            "security-reviewer"
+          ],
+          "riskLevel": "high",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "fastapi-backend:agent:agents.test-generator",
+        "name": "test-generator",
+        "path": "agents/test-generator.md",
+        "summary": "Test Generator Agent",
+        "tags": {
+          "domain": "testing",
+          "triggerTerms": [
+            "test-generator"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "skills": [
+      {
+        "id": "fastapi-backend:skill:skills.beanie-odm.skill",
+        "name": "beanie-odm",
+        "path": "skills/beanie-odm/SKILL.md",
+        "summary": "Beanie ODM for MongoDB",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "beanie odm"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "fastapi-backend:skill:skills.fastapi-background.skill",
+        "name": "fastapi-background",
+        "path": "skills/fastapi-background/SKILL.md",
+        "summary": "FastAPI Background Task Processing",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "fastapi background"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "fastapi-backend:skill:skills.fastapi-caching.skill",
+        "name": "fastapi-caching",
+        "path": "skills/fastapi-caching/SKILL.md",
+        "summary": "FastAPI Caching with Redis",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "fastapi caching"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "database"
+          ]
+        }
+      },
+      {
+        "id": "fastapi-backend:skill:skills.fastapi-k8s.skill",
+        "name": "fastapi-k8s",
+        "path": "skills/fastapi-k8s/SKILL.md",
+        "summary": "FastAPI Docker & Kubernetes Deployment",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "fastapi k8s"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "docker",
+            "kubernetes"
+          ]
+        }
+      },
+      {
+        "id": "fastapi-backend:skill:skills.fastapi-observability.skill",
+        "name": "fastapi-observability",
+        "path": "skills/fastapi-observability/SKILL.md",
+        "summary": "FastAPI Observability",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "fastapi observability"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "fastapi-backend:skill:skills.fastapi-patterns.skill",
+        "name": "fastapi-patterns",
+        "path": "skills/fastapi-patterns/SKILL.md",
+        "summary": "FastAPI Development Patterns",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "fastapi patterns"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "fastapi-backend:skill:skills.fastapi-realtime.skill",
+        "name": "fastapi-realtime",
+        "path": "skills/fastapi-realtime/SKILL.md",
+        "summary": "FastAPI Real-Time & Integration Features",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "fastapi realtime"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "fastapi-backend:skill:skills.keycloak-fastapi.skill",
+        "name": "keycloak-fastapi",
+        "path": "skills/keycloak-fastapi/SKILL.md",
+        "summary": "Keycloak Integration for FastAPI",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "keycloak fastapi"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "hooks": [
+      {
+        "id": "fastapi-backend:hook:hooks.scripts.post-endpoint",
+        "name": "post-endpoint.sh",
+        "path": "hooks/scripts/post-endpoint.sh",
+        "summary": "Hook script post-endpoint.sh",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "post-endpoint"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "fastapi-backend:hook:hooks.scripts.pre-commit",
+        "name": "pre-commit.sh",
+        "path": "hooks/scripts/pre-commit.sh",
+        "summary": "Hook script pre-commit.sh",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "pre-commit"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "fastapi-backend:hook:hooks.scripts.pre-deploy",
+        "name": "pre-deploy.sh",
+        "path": "hooks/scripts/pre-deploy.sh",
+        "summary": "Hook script pre-deploy.sh",
+        "tags": {
+          "domain": "deployment",
+          "triggerTerms": [
+            "pre-deploy"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      }
+    ]
+  },
+  "keyDocs": [
+    {
+      "id": "fastapi-backend:doc:readme",
+      "path": "README.md",
+      "summary": "FastAPI Backend Plugin for Claude Code"
+    }
+  ]
+}

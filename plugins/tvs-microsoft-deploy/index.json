@@ -1,0 +1,914 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "tvs-microsoft-deploy",
+    "root": "plugins/tvs-microsoft-deploy"
+  },
+  "capabilities": {
+    "commands": [
+      {
+        "id": "tvs-microsoft-deploy:command:commands.browser-fallback",
+        "name": "/mp:browser-fallback",
+        "path": "commands/browser-fallback.md",
+        "summary": "> Docs Hub: [CLI Hub](../docs/cli/README.md#command-index)",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "browser-fallback",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:command:commands.cost-report",
+        "name": "/mp:cost-report",
+        "path": "commands/cost-report.md",
+        "summary": "> Docs Hub: [CLI Hub](../docs/cli/README.md#command-index)",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "cost-report",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:command:commands.deploy-all",
+        "name": "/mp:deploy-all",
+        "path": "commands/deploy-all.md",
+        "summary": "> Docs Hub: [CLI Hub](../docs/cli/README.md#command-index)",
+        "tags": {
+          "domain": "deployment",
+          "triggerTerms": [
+            "deploy-all",
+            "commands"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:command:commands.deploy-azure",
+        "name": "/mp:deploy-azure",
+        "path": "commands/deploy-azure.md",
+        "summary": "> Docs Hub: [CLI Hub](../docs/cli/README.md#command-index)",
+        "tags": {
+          "domain": "deployment",
+          "triggerTerms": [
+            "deploy-azure",
+            "commands"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:command:commands.deploy-dataverse",
+        "name": "/mp:deploy-dataverse",
+        "path": "commands/deploy-dataverse.md",
+        "summary": "> Docs Hub: [CLI Hub](../docs/cli/README.md#command-index)",
+        "tags": {
+          "domain": "deployment",
+          "triggerTerms": [
+            "deploy-dataverse",
+            "commands"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:command:commands.deploy-fabric",
+        "name": "/mp:deploy-fabric",
+        "path": "commands/deploy-fabric.md",
+        "summary": "> Docs Hub: [CLI Hub](../docs/cli/README.md#command-index)",
+        "tags": {
+          "domain": "deployment",
+          "triggerTerms": [
+            "deploy-fabric",
+            "commands"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:command:commands.deploy-identity",
+        "name": "/mp:deploy-identity",
+        "path": "commands/deploy-identity.md",
+        "summary": "> Docs Hub: [CLI Hub](../docs/cli/README.md#command-index)",
+        "tags": {
+          "domain": "deployment",
+          "triggerTerms": [
+            "deploy-identity",
+            "commands"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:command:commands.deploy-portal",
+        "name": "/mp:deploy-portal",
+        "path": "commands/deploy-portal.md",
+        "summary": "> Docs Hub: [CLI Hub](../docs/cli/README.md#command-index)",
+        "tags": {
+          "domain": "deployment",
+          "triggerTerms": [
+            "deploy-portal",
+            "commands"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:command:commands.deploy-teams",
+        "name": "/mp:deploy-teams",
+        "path": "commands/deploy-teams.md",
+        "summary": "> Docs Hub: [CLI Hub](../docs/cli/README.md#command-index)",
+        "tags": {
+          "domain": "deployment",
+          "triggerTerms": [
+            "deploy-teams",
+            "commands"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:command:commands.extract-a3",
+        "name": "/mp:extract-a3",
+        "path": "commands/extract-a3.md",
+        "summary": "> Docs Hub: [CLI Hub](../docs/cli/README.md#command-index)",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "extract-a3",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:command:commands.health",
+        "name": "/mp:health",
+        "path": "commands/health.md",
+        "summary": "> Docs Hub: [CLI Hub](../docs/cli/README.md#command-index)",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "health",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:command:commands.identity-attestation",
+        "name": "/mp:identity-attestation",
+        "path": "commands/identity-attestation.md",
+        "summary": "> Docs Hub: [CLI Hub](../docs/cli/README.md#command-index)",
+        "tags": {
+          "domain": "testing",
+          "triggerTerms": [
+            "identity-attestation",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:command:commands.identity-drift",
+        "name": "/mp:identity-drift",
+        "path": "commands/identity-drift.md",
+        "summary": "> Docs Hub: [CLI Hub](../docs/cli/README.md#command-index)",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "identity-drift",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:command:commands.normalize-carriers",
+        "name": "/mp:normalize-carriers",
+        "path": "commands/normalize-carriers.md",
+        "summary": "> Docs Hub: [CLI Hub](../docs/cli/README.md#command-index)",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "normalize-carriers",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:command:commands.orchestrate-planner",
+        "name": "/mp:orchestrate-planner",
+        "path": "commands/orchestrate-planner.md",
+        "summary": "> Docs Hub: [CLI Hub](../docs/cli/README.md#command-index)",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "orchestrate-planner",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:command:commands.quick-start",
+        "name": "/mp:quick-start",
+        "path": "commands/quick-start.md",
+        "summary": "> Docs Hub: [CLI Hub](../docs/cli/README.md#command-index)",
+        "tags": {
+          "domain": "frontend",
+          "triggerTerms": [
+            "quick-start",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:command:commands.status-check",
+        "name": "/mp:status-check",
+        "path": "commands/status-check.md",
+        "summary": "> Docs Hub: [CLI Hub](../docs/cli/README.md#command-index)",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "status-check",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:command:commands.taia-readiness",
+        "name": "/mp:taia-readiness",
+        "path": "commands/taia-readiness.md",
+        "summary": "> Docs Hub: [CLI Hub](../docs/cli/README.md#command-index)",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "taia-readiness",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "agents": [
+      {
+        "id": "tvs-microsoft-deploy:agent:agents.analytics-agent",
+        "name": "analytics-agent",
+        "path": "agents/analytics-agent.md",
+        "summary": "> Docs Hub: [Architecture Hub](../docs/architecture/README.md#agent-topology)",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "analytics-agent"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:agent:agents.azure-agent",
+        "name": "azure-agent",
+        "path": "agents/azure-agent.md",
+        "summary": "> Docs Hub: [Architecture Hub](../docs/architecture/README.md#agent-topology)",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "azure-agent"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:agent:agents.browser-fallback-agent",
+        "name": "browser-fallback-agent",
+        "path": "agents/browser-fallback-agent.md",
+        "summary": "> Docs Hub: [Architecture Hub](../docs/architecture/README.md#agent-topology)",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "browser-fallback-agent"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:agent:agents.carrier-normalization-agent",
+        "name": "carrier-normalization-agent",
+        "path": "agents/carrier-normalization-agent.md",
+        "summary": "> Docs Hub: [Architecture Hub](../docs/architecture/README.md#agent-topology)",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "carrier-normalization-agent"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:agent:agents.client-solution-architect-agent",
+        "name": "client-solution-architect-agent",
+        "path": "agents/client-solution-architect-agent.md",
+        "summary": "Client Solution Architect Agent (NORTHSTAR)",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "client-solution-architect-agent"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:agent:agents.comms-agent",
+        "name": "comms-agent",
+        "path": "agents/comms-agent.md",
+        "summary": "> Docs Hub: [Architecture Hub](../docs/architecture/README.md#agent-topology)",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "comms-agent"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:agent:agents.consulting-crm-agent",
+        "name": "consulting-crm-agent",
+        "path": "agents/consulting-crm-agent.md",
+        "summary": "> Docs Hub: [Architecture Hub](../docs/architecture/README.md#agent-topology)",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "consulting-crm-agent"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:agent:agents.data-agent",
+        "name": "data-agent",
+        "path": "agents/data-agent.md",
+        "summary": "> Docs Hub: [Architecture Hub](../docs/architecture/README.md#agent-topology)",
+        "tags": {
+          "domain": "data",
+          "triggerTerms": [
+            "data-agent"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:agent:agents.embedded-analytics-agent",
+        "name": "embedded-analytics-agent",
+        "path": "agents/embedded-analytics-agent.md",
+        "summary": "Embedded Analytics Agent (BEACON)",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "embedded-analytics-agent"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:agent:agents.excel-automation-agent",
+        "name": "excel-automation-agent",
+        "path": "agents/excel-automation-agent.md",
+        "summary": "Excel Automation Agent (GRIDLINE)",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "excel-automation-agent"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:agent:agents.fabric-pipeline-agent",
+        "name": "fabric-pipeline-agent",
+        "path": "agents/fabric-pipeline-agent.md",
+        "summary": "Fabric Pipeline Agent (FLOWGRID)",
+        "tags": {
+          "domain": "deployment",
+          "triggerTerms": [
+            "fabric-pipeline-agent"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:agent:agents.github-agent",
+        "name": "github-agent",
+        "path": "agents/github-agent.md",
+        "summary": "> Docs Hub: [Architecture Hub](../docs/architecture/README.md#agent-topology)",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "github-agent"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:agent:agents.identity-agent",
+        "name": "identity-agent",
+        "path": "agents/identity-agent.md",
+        "summary": "> Docs Hub: [Architecture Hub](../docs/architecture/README.md#agent-topology)",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "identity-agent"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:agent:agents.ingest-agent",
+        "name": "ingest-agent",
+        "path": "agents/ingest-agent.md",
+        "summary": "> Docs Hub: [Architecture Hub](../docs/architecture/README.md#agent-topology)",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "ingest-agent"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:agent:agents.m365-governance-agent",
+        "name": "m365-governance-agent",
+        "path": "agents/m365-governance-agent.md",
+        "summary": "M365 Governance Agent (SENTINEL)",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "m365-governance-agent"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:agent:agents.michelle-scripts-agent",
+        "name": "michelle-scripts-agent",
+        "path": "agents/michelle-scripts-agent.md",
+        "summary": "> Docs Hub: [Architecture Hub](../docs/architecture/README.md#agent-topology)",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "michelle-scripts-agent"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:agent:agents.planner-orchestrator-agent",
+        "name": "planner-orchestrator-agent",
+        "path": "agents/planner-orchestrator-agent.md",
+        "summary": "Planner Orchestrator Agent (CONDUCTOR)",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "planner-orchestrator-agent"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:agent:agents.platform-agent",
+        "name": "platform-agent",
+        "path": "agents/platform-agent.md",
+        "summary": "> Docs Hub: [Architecture Hub](../docs/architecture/README.md#agent-topology)",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "platform-agent"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:agent:agents.power-pages-agent",
+        "name": "power-pages-agent",
+        "path": "agents/power-pages-agent.md",
+        "summary": "Power Pages Agent (PORTALSMITH)",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "power-pages-agent"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "skills": [],
+    "hooks": [
+      {
+        "id": "tvs-microsoft-deploy:hook:hooks.audit-azure-provisioning",
+        "name": "audit-azure-provisioning.sh",
+        "path": "hooks/audit-azure-provisioning.sh",
+        "summary": "Hook script audit-azure-provisioning.sh",
+        "tags": {
+          "domain": "security",
+          "triggerTerms": [
+            "audit-azure-provisioning"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:hook:hooks.audit-dataverse-changes",
+        "name": "audit-dataverse-changes.sh",
+        "path": "hooks/audit-dataverse-changes.sh",
+        "summary": "Hook script audit-dataverse-changes.sh",
+        "tags": {
+          "domain": "security",
+          "triggerTerms": [
+            "audit-dataverse-changes"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:hook:hooks.audit-fabric-operations",
+        "name": "audit-fabric-operations.sh",
+        "path": "hooks/audit-fabric-operations.sh",
+        "summary": "Hook script audit-fabric-operations.sh",
+        "tags": {
+          "domain": "security",
+          "triggerTerms": [
+            "audit-fabric-operations"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:hook:hooks.audit-graph-api-calls",
+        "name": "audit-graph-api-calls.sh",
+        "path": "hooks/audit-graph-api-calls.sh",
+        "summary": "Hook script audit-graph-api-calls.sh",
+        "tags": {
+          "domain": "security",
+          "triggerTerms": [
+            "audit-graph-api-calls"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:hook:hooks.audit-metadata-check",
+        "name": "audit-metadata-check.sh",
+        "path": "hooks/audit-metadata-check.sh",
+        "summary": "Hook script audit-metadata-check.sh",
+        "tags": {
+          "domain": "security",
+          "triggerTerms": [
+            "audit-metadata-check"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:hook:hooks.audit-pac-operations",
+        "name": "audit-pac-operations.sh",
+        "path": "hooks/audit-pac-operations.sh",
+        "summary": "Hook script audit-pac-operations.sh",
+        "tags": {
+          "domain": "security",
+          "triggerTerms": [
+            "audit-pac-operations"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:hook:hooks.hipaa-config-guard",
+        "name": "hipaa-config-guard.sh",
+        "path": "hooks/hipaa-config-guard.sh",
+        "summary": "Hook script hipaa-config-guard.sh",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "hipaa-config-guard"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:hook:hooks.identity-policy-engine",
+        "name": "identity-policy-engine.sh",
+        "path": "hooks/identity-policy-engine.sh",
+        "summary": "Hook script identity-policy-engine.sh",
+        "tags": {
+          "domain": "security",
+          "triggerTerms": [
+            "identity-policy-engine"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:hook:hooks.keyvault-secrets-enforcer",
+        "name": "keyvault-secrets-enforcer.sh",
+        "path": "hooks/keyvault-secrets-enforcer.sh",
+        "summary": "Hook script keyvault-secrets-enforcer.sh",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "keyvault-secrets-enforcer"
+          ],
+          "riskLevel": "high",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:hook:hooks.pac-auth-check",
+        "name": "pac-auth-check.sh",
+        "path": "hooks/pac-auth-check.sh",
+        "summary": "Hook script pac-auth-check.sh",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "pac-auth-check"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:hook:hooks.scope-permission-misuse-check",
+        "name": "scope-permission-misuse-check.sh",
+        "path": "hooks/scope-permission-misuse-check.sh",
+        "summary": "Hook script scope-permission-misuse-check.sh",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "scope-permission-misuse-check"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:hook:hooks.stripe-webhook-security",
+        "name": "stripe-webhook-security.sh",
+        "path": "hooks/stripe-webhook-security.sh",
+        "summary": "Hook script stripe-webhook-security.sh",
+        "tags": {
+          "domain": "security",
+          "triggerTerms": [
+            "stripe-webhook-security"
+          ],
+          "riskLevel": "high",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:hook:hooks.taia-winddown-guard",
+        "name": "taia-winddown-guard.sh",
+        "path": "hooks/taia-winddown-guard.sh",
+        "summary": "Hook script taia-winddown-guard.sh",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "taia-winddown-guard"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:hook:hooks.tenant-drift-check",
+        "name": "tenant-drift-check.sh",
+        "path": "hooks/tenant-drift-check.sh",
+        "summary": "Hook script tenant-drift-check.sh",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "tenant-drift-check"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:hook:hooks.tenant-isolation-validator",
+        "name": "tenant-isolation-validator.sh",
+        "path": "hooks/tenant-isolation-validator.sh",
+        "summary": "Hook script tenant-isolation-validator.sh",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "tenant-isolation-validator"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "tvs-microsoft-deploy:hook:hooks.unsafe-destructive-call-check",
+        "name": "unsafe-destructive-call-check.sh",
+        "path": "hooks/unsafe-destructive-call-check.sh",
+        "summary": "Hook script unsafe-destructive-call-check.sh",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "unsafe-destructive-call-check"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      }
+    ]
+  },
+  "keyDocs": [
+    {
+      "id": "tvs-microsoft-deploy:doc:docs.readme",
+      "path": "docs/README.md",
+      "summary": "TVS Microsoft Deploy Documentation Hub"
+    },
+    {
+      "id": "tvs-microsoft-deploy:doc:docs.apis.readme",
+      "path": "docs/apis/README.md",
+      "summary": "API Guides"
+    },
+    {
+      "id": "tvs-microsoft-deploy:doc:docs.architecture.readme",
+      "path": "docs/architecture/README.md",
+      "summary": "Architecture Hub"
+    },
+    {
+      "id": "tvs-microsoft-deploy:doc:docs.cli.readme",
+      "path": "docs/cli/README.md",
+      "summary": "CLI Hub"
+    },
+    {
+      "id": "tvs-microsoft-deploy:doc:docs.sales.embedded-analytics-playbook",
+      "path": "docs/sales/embedded-analytics-playbook.md",
+      "summary": "Embedded Analytics Playbook"
+    },
+    {
+      "id": "tvs-microsoft-deploy:doc:docs.skills.readme",
+      "path": "docs/skills/README.md",
+      "summary": "Skills Hub"
+    }
+  ]
+}

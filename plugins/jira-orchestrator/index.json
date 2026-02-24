@@ -1,0 +1,2488 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "jira-orchestrator",
+    "root": "plugins/jira-orchestrator"
+  },
+  "capabilities": {
+    "commands": [
+      {
+        "id": "jira-orchestrator:command:commands.approve",
+        "name": "/mp:approve",
+        "path": "commands/approve.md",
+        "summary": "Jira Approval Workflows",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "approve",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.batch",
+        "name": "/mp:batch",
+        "path": "commands/batch.md",
+        "summary": "Jira Batch Operations",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "batch",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.branch",
+        "name": "/mp:branch",
+        "path": "commands/branch.md",
+        "summary": "Jira Branch Creation",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "branch",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.bulk-commit",
+        "name": "/mp:bulk-commit",
+        "path": "commands/bulk-commit.md",
+        "summary": "Bulk Commit Processing",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "bulk-commit",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.cancel",
+        "name": "/mp:cancel",
+        "path": "commands/cancel.md",
+        "summary": "Cancel active orchestration, stop sub-agents, save checkpoint, update Jira, and enable resume.",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "cancel",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.commit-template",
+        "name": "/mp:commit-template",
+        "path": "commands/commit-template.md",
+        "summary": "Commit Template Generator",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "commit-template",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.commit",
+        "name": "/mp:commit",
+        "path": "commands/commit.md",
+        "summary": "Jira Smart Commit Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "commit",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.compliance",
+        "name": "/mp:compliance",
+        "path": "commands/compliance.md",
+        "summary": "Compliance Management Command",
+        "tags": {
+          "domain": "security",
+          "triggerTerms": [
+            "compliance",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.confluence",
+        "name": "/mp:confluence",
+        "path": "commands/confluence.md",
+        "summary": "Jira-Confluence Integration",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "confluence",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.council",
+        "name": "/mp:council",
+        "path": "commands/council.md",
+        "summary": "Council Review - Blackboard Pattern",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "council",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.create-repo",
+        "name": "/mp:create-repo",
+        "path": "commands/create-repo.md",
+        "summary": "/jira:create-repo",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "create-repo",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.deploy",
+        "name": "/mp:deploy",
+        "path": "commands/deploy.md",
+        "summary": "Deployment Tracking",
+        "tags": {
+          "domain": "deployment",
+          "triggerTerms": [
+            "deploy",
+            "commands"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.docs-external",
+        "name": "/mp:docs-external",
+        "path": "commands/docs-external.md",
+        "summary": "/jira:docs-external",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "docs-external",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.docs",
+        "name": "/mp:docs",
+        "path": "commands/docs.md",
+        "summary": "Jira Documentation Generator",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "docs",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.enterprise",
+        "name": "/mp:enterprise",
+        "path": "commands/enterprise.md",
+        "summary": "/jira:enterprise",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "enterprise",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.events",
+        "name": "/mp:events",
+        "path": "commands/events.md",
+        "summary": "Event Sourcing Operations",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "events",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.export",
+        "name": "/mp:export",
+        "path": "commands/export.md",
+        "summary": "Jira Export & Reporting",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "export",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.harness-review",
+        "name": "/mp:harness-review",
+        "path": "commands/harness-review.md",
+        "summary": "Harness PR Review Command",
+        "tags": {
+          "domain": "testing",
+          "triggerTerms": [
+            "harness-review",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.infra",
+        "name": "/mp:infra",
+        "path": "commands/infra.md",
+        "summary": "/jira:infra",
+        "tags": {
+          "domain": "deployment",
+          "triggerTerms": [
+            "infra",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.install-hooks",
+        "name": "/mp:install-hooks",
+        "path": "commands/install-hooks.md",
+        "summary": "/jira:install-hooks",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "install-hooks",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.intelligence",
+        "name": "/mp:intelligence",
+        "path": "commands/intelligence.md",
+        "summary": "Intelligence Analytics",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "intelligence",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.iterate",
+        "name": "/mp:iterate",
+        "path": "commands/iterate.md",
+        "summary": "DEPRECATED: Use `/jira:pr --iterate`",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "iterate",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.metrics",
+        "name": "/mp:metrics",
+        "path": "commands/metrics.md",
+        "summary": "Jira Orchestrator Metrics Dashboard",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "metrics",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.notify",
+        "name": "/mp:notify",
+        "path": "commands/notify.md",
+        "summary": "/jira:notify",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "notify",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.orchestrate-advanced",
+        "name": "/mp:orchestrate-advanced",
+        "path": "commands/orchestrate-advanced.md",
+        "summary": "Advanced Orchestration Patterns",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "orchestrate-advanced",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.plan-prs",
+        "name": "/mp:plan-prs",
+        "path": "commands/plan-prs.md",
+        "summary": "Plan PRs Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "plan-prs",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.portfolio",
+        "name": "/mp:portfolio",
+        "path": "commands/portfolio.md",
+        "summary": "Portfolio Management",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "portfolio",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.pr-fix",
+        "name": "/mp:pr-fix",
+        "path": "commands/pr-fix.md",
+        "summary": "DEPRECATED: Use `/jira:pr --fix`",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "pr-fix",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.pr",
+        "name": "/mp:pr",
+        "path": "commands/pr.md",
+        "summary": "> ⚠️ **Migration Notice:** This command now consolidates `/pr-fix` and `/jira:iterate`.",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "pr",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.prepare",
+        "name": "/mp:prepare",
+        "path": "commands/prepare.md",
+        "summary": "Prepare Task for Work",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "prepare",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.process-worklogs",
+        "name": "/mp:process-worklogs",
+        "path": "commands/process-worklogs.md",
+        "summary": "Process Pending Worklogs",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "process-worklogs",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.qa-review",
+        "name": "/mp:qa-review",
+        "path": "commands/qa-review.md",
+        "summary": "QA Review Workflow",
+        "tags": {
+          "domain": "testing",
+          "triggerTerms": [
+            "qa-review",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.quality",
+        "name": "/mp:quality",
+        "path": "commands/quality.md",
+        "summary": "Quality Intelligence Report",
+        "tags": {
+          "domain": "testing",
+          "triggerTerms": [
+            "quality",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.reason",
+        "name": "/mp:reason",
+        "path": "commands/reason.md",
+        "summary": "Reasoning Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "reason",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.release",
+        "name": "/mp:release",
+        "path": "commands/release.md",
+        "summary": "Release Management Command",
+        "tags": {
+          "domain": "deployment",
+          "triggerTerms": [
+            "release",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.review",
+        "name": "/mp:review",
+        "path": "commands/review.md",
+        "summary": "Code Review Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "review",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.setup",
+        "name": "/mp:setup",
+        "path": "commands/setup.md",
+        "summary": "Jira Orchestrator v7.5.0 - Interactive Setup Wizard",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "setup",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.ship",
+        "name": "/mp:ship",
+        "path": "commands/ship.md",
+        "summary": "Ship Command v2.0 - Intelligent Orchestration",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "ship",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.sla",
+        "name": "/mp:sla",
+        "path": "commands/sla.md",
+        "summary": "Jira SLA Management Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "sla",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.sprint-plan",
+        "name": "/mp:sprint-plan",
+        "path": "commands/sprint-plan.md",
+        "summary": "Sprint Planning Automation",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "sprint-plan",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.sprint",
+        "name": "/mp:sprint",
+        "path": "commands/sprint.md",
+        "summary": "/jira:sprint",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "sprint",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.status",
+        "name": "/mp:status",
+        "path": "commands/status.md",
+        "summary": "/jira:status",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "status",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.sync",
+        "name": "/mp:sync",
+        "path": "commands/sync.md",
+        "summary": "Jira Sync Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "sync",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.team",
+        "name": "/mp:team",
+        "path": "commands/team.md",
+        "summary": "Team & Resource Management",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "team",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.triage",
+        "name": "/mp:triage",
+        "path": "commands/triage.md",
+        "summary": "Jira Issue Triage",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "triage",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:command:commands.work",
+        "name": "/mp:work",
+        "path": "commands/work.md",
+        "summary": "Jira Issue Orchestration",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "work",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "agents": [
+      {
+        "id": "jira-orchestrator:agent:agents.advanced-orchestration-patterns",
+        "name": "advanced-orchestration-patterns",
+        "path": "agents/advanced-orchestration-patterns.md",
+        "summary": "Advanced Orchestration Patterns Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "advanced-orchestration-patterns"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.agent-router",
+        "name": "agent-router",
+        "path": "agents/agent-router.md",
+        "summary": "Agent Router",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "agent-router"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.approval-orchestrator",
+        "name": "approval-orchestrator",
+        "path": "agents/approval-orchestrator.md",
+        "summary": "Approval Orchestrator Agent",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "approval-orchestrator"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.batch-commit-processor",
+        "name": "batch-commit-processor",
+        "path": "agents/batch-commit-processor.md",
+        "summary": "Batch Commit Processor Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "batch-commit-processor"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.batch-processor",
+        "name": "batch-processor",
+        "path": "agents/batch-processor.md",
+        "summary": "Batch Processor Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "batch-processor"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.bulk-importer",
+        "name": "bulk-importer",
+        "path": "agents/bulk-importer.md",
+        "summary": "Bulk Importer Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "bulk-importer"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.chain-of-thought-reasoner",
+        "name": "chain-of-thought-reasoner",
+        "path": "agents/chain-of-thought-reasoner.md",
+        "summary": "Chain-of-Thought Reasoner Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "chain-of-thought-reasoner"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.checkpoint-pr-manager",
+        "name": "checkpoint-pr-manager",
+        "path": "agents/checkpoint-pr-manager.md",
+        "summary": "Checkpoint PR Manager Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "checkpoint-pr-manager"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.code-quality-enforcer",
+        "name": "code-quality-enforcer",
+        "path": "agents/code-quality-enforcer.md",
+        "summary": "Code Quality Enforcer Agent",
+        "tags": {
+          "domain": "testing",
+          "triggerTerms": [
+            "code-quality-enforcer"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.code-reviewer",
+        "name": "code-reviewer",
+        "path": "agents/code-reviewer.md",
+        "summary": "Code Reviewer Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "code-reviewer"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.commit-message-generator",
+        "name": "commit-message-generator",
+        "path": "agents/commit-message-generator.md",
+        "summary": "Commit Message Generator Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "commit-message-generator"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.commit-orchestrator",
+        "name": "commit-orchestrator",
+        "path": "agents/commit-orchestrator.md",
+        "summary": "Commit Orchestrator Agent",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "commit-orchestrator"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.commit-tracker",
+        "name": "commit-tracker",
+        "path": "agents/commit-tracker.md",
+        "summary": "Commit Tracker Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "commit-tracker"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.completion-flow-orchestrator",
+        "name": "completion-flow-orchestrator",
+        "path": "agents/completion-flow-orchestrator.md",
+        "summary": "Completion Flow Orchestrator",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "completion-flow-orchestrator"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.completion-orchestrator",
+        "name": "completion-orchestrator",
+        "path": "agents/completion-orchestrator.md",
+        "summary": "Completion Orchestrator Agent",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "completion-orchestrator"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.compliance-reporter",
+        "name": "compliance-reporter",
+        "path": "agents/compliance-reporter.md",
+        "summary": "Compliance Reporter Agent",
+        "tags": {
+          "domain": "security",
+          "triggerTerms": [
+            "compliance-reporter"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.confluence-documentation-creator",
+        "name": "confluence-documentation-creator",
+        "path": "agents/confluence-documentation-creator.md",
+        "summary": "Confluence Documentation Creator",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "confluence-documentation-creator"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.confluence-manager",
+        "name": "confluence-manager",
+        "path": "agents/confluence-manager.md",
+        "summary": "Confluence Manager Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "confluence-manager"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.council-coordinator",
+        "name": "council-coordinator",
+        "path": "agents/council-coordinator.md",
+        "summary": "Council Coordinator Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "council-coordinator"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.dependency-mapper",
+        "name": "dependency-mapper",
+        "path": "agents/dependency-mapper.md",
+        "summary": "Dependency Mapper Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "dependency-mapper"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.discord-notifier",
+        "name": "discord-notifier",
+        "path": "agents/discord-notifier.md",
+        "summary": "Discord Notifier Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "discord-notifier"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.documentation-hub",
+        "name": "documentation-hub",
+        "path": "agents/documentation-hub.md",
+        "summary": "Documentation Hub Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "documentation-hub"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.documentation-sync-agent",
+        "name": "documentation-sync-agent",
+        "path": "agents/documentation-sync-agent.md",
+        "summary": "Documentation Sync Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "documentation-sync-agent"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.documentation-writer",
+        "name": "documentation-writer",
+        "path": "agents/documentation-writer.md",
+        "summary": "Documentation Writer Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "documentation-writer"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.draft-pr-manager",
+        "name": "draft-pr-manager",
+        "path": "agents/draft-pr-manager.md",
+        "summary": "Draft PR Manager Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "draft-pr-manager"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.epic-decomposer",
+        "name": "epic-decomposer",
+        "path": "agents/epic-decomposer.md",
+        "summary": "Epic Decomposer Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "epic-decomposer"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.escalation-manager",
+        "name": "escalation-manager",
+        "path": "agents/escalation-manager.md",
+        "summary": "Escalation Manager Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "escalation-manager"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.event-sourcing-orchestrator",
+        "name": "event-sourcing-orchestrator",
+        "path": "agents/event-sourcing-orchestrator.md",
+        "summary": "Event Sourcing Orchestrator",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "event-sourcing-orchestrator"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.expert-agent-matcher",
+        "name": "expert-agent-matcher",
+        "path": "agents/expert-agent-matcher.md",
+        "summary": "Expert Agent Matcher",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "expert-agent-matcher"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.export-generator",
+        "name": "export-generator",
+        "path": "agents/export-generator.md",
+        "summary": "Export Generator Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "export-generator"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.external-documentation-publisher",
+        "name": "external-documentation-publisher",
+        "path": "agents/external-documentation-publisher.md",
+        "summary": "External Documentation Publisher Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "external-documentation-publisher"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.governance-auditor",
+        "name": "governance-auditor",
+        "path": "agents/governance-auditor.md",
+        "summary": "Governance Auditor Agent",
+        "tags": {
+          "domain": "security",
+          "triggerTerms": [
+            "governance-auditor"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.harness-api-expert",
+        "name": "harness-api-expert",
+        "path": "agents/harness-api-expert.md",
+        "summary": "Harness API Expert Agent",
+        "tags": {
+          "domain": "testing",
+          "triggerTerms": [
+            "harness-api-expert"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.harness-jira-sync",
+        "name": "harness-jira-sync",
+        "path": "agents/harness-jira-sync.md",
+        "summary": "Harness-Jira Synchronization Agent",
+        "tags": {
+          "domain": "testing",
+          "triggerTerms": [
+            "harness-jira-sync"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.hypothesis-debugger",
+        "name": "hypothesis-debugger",
+        "path": "agents/hypothesis-debugger.md",
+        "summary": "Hypothesis-Driven Debugger Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "hypothesis-debugger"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.infrastructure-orchestrator",
+        "name": "infrastructure-orchestrator",
+        "path": "agents/infrastructure-orchestrator.md",
+        "summary": "Infrastructure Orchestrator Agent",
+        "tags": {
+          "domain": "deployment",
+          "triggerTerms": [
+            "infrastructure-orchestrator"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.intelligence-analyzer",
+        "name": "intelligence-analyzer",
+        "path": "agents/intelligence-analyzer.md",
+        "summary": "Intelligence Analyzer Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "intelligence-analyzer"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.issue-validator",
+        "name": "issue-validator",
+        "path": "agents/issue-validator.md",
+        "summary": "Issue Validator Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "issue-validator"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.learning-coordinator",
+        "name": "learning-coordinator",
+        "path": "agents/learning-coordinator.md",
+        "summary": "Learning Coordinator Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "learning-coordinator"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.metrics-dashboard",
+        "name": "metrics-dashboard",
+        "path": "agents/metrics-dashboard.md",
+        "summary": "Metrics Dashboard Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "metrics-dashboard"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.notification-analytics",
+        "name": "notification-analytics",
+        "path": "agents/notification-analytics.md",
+        "summary": "Notification Analytics Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "notification-analytics"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.notification-router",
+        "name": "notification-router",
+        "path": "agents/notification-router.md",
+        "summary": "Notification Router",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "notification-router"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.pagerduty-notifier",
+        "name": "pagerduty-notifier",
+        "path": "agents/pagerduty-notifier.md",
+        "summary": "PagerDuty Notifier Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "pagerduty-notifier"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.parallel-sub-issue-worker",
+        "name": "parallel-sub-issue-worker",
+        "path": "agents/parallel-sub-issue-worker.md",
+        "summary": "Parallel Sub-Issue Worker Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "parallel-sub-issue-worker"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.pattern-analyzer",
+        "name": "pattern-analyzer",
+        "path": "agents/pattern-analyzer.md",
+        "summary": "Pattern Analyzer Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "pattern-analyzer"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.performance-tracker",
+        "name": "performance-tracker",
+        "path": "agents/performance-tracker.md",
+        "summary": "Performance Tracker Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "performance-tracker"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.policy-enforcer",
+        "name": "policy-enforcer",
+        "path": "agents/policy-enforcer.md",
+        "summary": "Policy Enforcer Agent",
+        "tags": {
+          "domain": "security",
+          "triggerTerms": [
+            "policy-enforcer"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.portfolio-manager",
+        "name": "portfolio-manager",
+        "path": "agents/portfolio-manager.md",
+        "summary": "Portfolio Manager Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "portfolio-manager"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.pr-creator",
+        "name": "pr-creator",
+        "path": "agents/pr-creator.md",
+        "summary": "PR Creator Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "pr-creator"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.pr-documentation-logger",
+        "name": "pr-documentation-logger",
+        "path": "agents/pr-documentation-logger.md",
+        "summary": "PR Documentation Logger Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "pr-documentation-logger"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.pr-size-estimator",
+        "name": "pr-size-estimator",
+        "path": "agents/pr-size-estimator.md",
+        "summary": "PR Size Estimator Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "pr-size-estimator"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.qa-comment-responder",
+        "name": "qa-comment-responder",
+        "path": "agents/qa-comment-responder.md",
+        "summary": "QA Comment Responder Agent",
+        "tags": {
+          "domain": "testing",
+          "triggerTerms": [
+            "qa-comment-responder"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.qa-confluence-documenter",
+        "name": "qa-confluence-documenter",
+        "path": "agents/qa-confluence-documenter.md",
+        "summary": "QA Confluence Documenter Agent",
+        "tags": {
+          "domain": "testing",
+          "triggerTerms": [
+            "qa-confluence-documenter"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.qa-ticket-reviewer",
+        "name": "qa-ticket-reviewer",
+        "path": "agents/qa-ticket-reviewer.md",
+        "summary": "QA Ticket Reviewer Agent",
+        "tags": {
+          "domain": "testing",
+          "triggerTerms": [
+            "qa-ticket-reviewer"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.qa-transition",
+        "name": "qa-transition",
+        "path": "agents/qa-transition.md",
+        "summary": "QA Transition Agent",
+        "tags": {
+          "domain": "testing",
+          "triggerTerms": [
+            "qa-transition"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.quality-enhancer",
+        "name": "quality-enhancer",
+        "path": "agents/quality-enhancer.md",
+        "summary": "Quality Enhancer Agent",
+        "tags": {
+          "domain": "testing",
+          "triggerTerms": [
+            "quality-enhancer"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.quality-intelligence",
+        "name": "quality-intelligence",
+        "path": "agents/quality-intelligence.md",
+        "summary": "Quality Intelligence Agent",
+        "tags": {
+          "domain": "testing",
+          "triggerTerms": [
+            "quality-intelligence"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.release-coordinator",
+        "name": "release-coordinator",
+        "path": "agents/release-coordinator.md",
+        "summary": "Release Coordinator Agent",
+        "tags": {
+          "domain": "deployment",
+          "triggerTerms": [
+            "release-coordinator"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.requirements-analyzer",
+        "name": "requirements-analyzer",
+        "path": "agents/requirements-analyzer.md",
+        "summary": "Requirements Analyzer Agent",
+        "tags": {
+          "domain": "frontend",
+          "triggerTerms": [
+            "requirements-analyzer"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.review-facilitator",
+        "name": "review-facilitator",
+        "path": "agents/review-facilitator.md",
+        "summary": "Review Facilitator Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "review-facilitator"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.review-orchestrator",
+        "name": "review-orchestrator",
+        "path": "agents/review-orchestrator.md",
+        "summary": "Review Orchestrator Agent",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "review-orchestrator"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.review-progress-tracker",
+        "name": "review-progress-tracker",
+        "path": "agents/review-progress-tracker.md",
+        "summary": "Review Progress Tracker Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "review-progress-tracker"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.roadmap-planner",
+        "name": "roadmap-planner",
+        "path": "agents/roadmap-planner.md",
+        "summary": "Roadmap Planner Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "roadmap-planner"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.root-cause-analyzer",
+        "name": "root-cause-analyzer",
+        "path": "agents/root-cause-analyzer.md",
+        "summary": "Root Cause Analyzer Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "root-cause-analyzer"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.skill-mapper",
+        "name": "skill-mapper",
+        "path": "agents/skill-mapper.md",
+        "summary": "Skill Mapper Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "skill-mapper"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.sla-monitor",
+        "name": "sla-monitor",
+        "path": "agents/sla-monitor.md",
+        "summary": "SLA Monitor Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "sla-monitor"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.slack-notifier",
+        "name": "slack-notifier",
+        "path": "agents/slack-notifier.md",
+        "summary": "Slack Notifier",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "slack-notifier"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.smart-commit-validator",
+        "name": "smart-commit-validator",
+        "path": "agents/smart-commit-validator.md",
+        "summary": "Smart Commit Validator Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "smart-commit-validator"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.sprint-planner",
+        "name": "sprint-planner",
+        "path": "agents/sprint-planner.md",
+        "summary": "Sprint Planner Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "sprint-planner"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.sub-item-documenter",
+        "name": "sub-item-documenter",
+        "path": "agents/sub-item-documenter.md",
+        "summary": "Sub-Item Documenter Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "sub-item-documenter"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.tag-manager",
+        "name": "tag-manager",
+        "path": "agents/tag-manager.md",
+        "summary": "Tag Manager Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "tag-manager"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.task-enricher",
+        "name": "task-enricher",
+        "path": "agents/task-enricher.md",
+        "summary": "Task Enricher Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "task-enricher"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.team-capacity-planner",
+        "name": "team-capacity-planner",
+        "path": "agents/team-capacity-planner.md",
+        "summary": "Team Capacity Planner Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "team-capacity-planner"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.test-strategist",
+        "name": "test-strategist",
+        "path": "agents/test-strategist.md",
+        "summary": "Test Strategist",
+        "tags": {
+          "domain": "testing",
+          "triggerTerms": [
+            "test-strategist"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.transition-manager",
+        "name": "transition-manager",
+        "path": "agents/transition-manager.md",
+        "summary": "Transition Manager Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "transition-manager"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.tree-of-thought-reasoner",
+        "name": "tree-of-thought-reasoner",
+        "path": "agents/tree-of-thought-reasoner.md",
+        "summary": "Tree-of-Thought Reasoner Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "tree-of-thought-reasoner"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.triage-agent",
+        "name": "triage-agent",
+        "path": "agents/triage-agent.md",
+        "summary": "Jira Issue Triage Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "triage-agent"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.webhook-publisher",
+        "name": "webhook-publisher",
+        "path": "agents/webhook-publisher.md",
+        "summary": "Webhook Publisher",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "webhook-publisher"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.workload-balancer",
+        "name": "workload-balancer",
+        "path": "agents/workload-balancer.md",
+        "summary": "Workload Balancer Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "workload-balancer"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.worklog-manager",
+        "name": "worklog-manager",
+        "path": "agents/worklog-manager.md",
+        "summary": "Worklog Manager Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "worklog-manager"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:agent:agents.worktree-orchestrator",
+        "name": "worktree-orchestrator",
+        "path": "agents/worktree-orchestrator.md",
+        "summary": "Worktree Orchestrator Agent",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "worktree-orchestrator"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "skills": [
+      {
+        "id": "jira-orchestrator:skill:skills.clean-architecture.skill",
+        "name": "clean-architecture",
+        "path": "skills/clean-architecture/SKILL.md",
+        "summary": "Clean Architecture Skill",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "clean architecture"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:skill:skills.code-review.skill",
+        "name": "code-review",
+        "path": "skills/code-review/SKILL.md",
+        "summary": "Code Review Skill",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "code review"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:skill:skills.confluence.skill",
+        "name": "confluence",
+        "path": "skills/confluence/SKILL.md",
+        "summary": "Confluence Documentation Patterns",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "confluence"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:skill:skills.harness-cd.skill",
+        "name": "harness-cd",
+        "path": "skills/harness-cd/SKILL.md",
+        "summary": "Harness CD Skill",
+        "tags": {
+          "domain": "testing",
+          "triggerTerms": [
+            "harness cd"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:skill:skills.harness-ci.skill",
+        "name": "harness-ci",
+        "path": "skills/harness-ci/SKILL.md",
+        "summary": "Harness CI Skill",
+        "tags": {
+          "domain": "testing",
+          "triggerTerms": [
+            "harness ci"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:skill:skills.harness-mcp.skill",
+        "name": "harness-mcp",
+        "path": "skills/harness-mcp/SKILL.md",
+        "summary": "Harness MCP Skill",
+        "tags": {
+          "domain": "testing",
+          "triggerTerms": [
+            "harness mcp"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:skill:skills.harness-platform.skill",
+        "name": "harness-platform",
+        "path": "skills/harness-platform/SKILL.md",
+        "summary": "Harness Platform Administration Skill",
+        "tags": {
+          "domain": "testing",
+          "triggerTerms": [
+            "harness platform"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:skill:skills.jira-orchestration.skill",
+        "name": "jira-orchestration",
+        "path": "skills/jira-orchestration/SKILL.md",
+        "summary": "Jira Orchestration Workflow",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "jira orchestration"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:skill:skills.pr-workflow.skill",
+        "name": "pr-workflow",
+        "path": "skills/pr-workflow/SKILL.md",
+        "summary": "PR Workflow Skill",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "pr workflow"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:skill:skills.task-details.skill",
+        "name": "task-details",
+        "path": "skills/task-details/SKILL.md",
+        "summary": "Task Details Enrichment Skill",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "task details"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:skill:skills.triage.skill",
+        "name": "triage",
+        "path": "skills/triage/SKILL.md",
+        "summary": "Jira Issue Triage and Routing Skill",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "triage"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "hooks": [
+      {
+        "id": "jira-orchestrator:hook:hooks.scripts.detect-jira-key",
+        "name": "detect-jira-key.sh",
+        "path": "hooks/scripts/detect-jira-key.sh",
+        "summary": "Hook script detect-jira-key.sh",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "detect-jira-key"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:hook:hooks.scripts.docs-reminder",
+        "name": "docs-reminder.sh",
+        "path": "hooks/scripts/docs-reminder.sh",
+        "summary": "Hook script docs-reminder.sh",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "docs-reminder"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:hook:hooks.scripts.lib.platform-utils",
+        "name": "platform-utils.sh",
+        "path": "hooks/scripts/lib/platform-utils.sh",
+        "summary": "Hook script platform-utils.sh",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "platform-utils"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:hook:hooks.scripts.post-task-learning",
+        "name": "post-task-learning.sh",
+        "path": "hooks/scripts/post-task-learning.sh",
+        "summary": "Hook script post-task-learning.sh",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "post-task-learning"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:hook:hooks.scripts.pr-size-guard",
+        "name": "pr-size-guard.sh",
+        "path": "hooks/scripts/pr-size-guard.sh",
+        "summary": "Hook script pr-size-guard.sh",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "pr-size-guard"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:hook:hooks.scripts.process-pending-worklogs",
+        "name": "process-pending-worklogs.sh",
+        "path": "hooks/scripts/process-pending-worklogs.sh",
+        "summary": "Hook script process-pending-worklogs.sh",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "process-pending-worklogs"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:hook:hooks.scripts.review-gate",
+        "name": "review-gate.sh",
+        "path": "hooks/scripts/review-gate.sh",
+        "summary": "Hook script review-gate.sh",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "review-gate"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:hook:hooks.scripts.session-resume",
+        "name": "session-resume.sh",
+        "path": "hooks/scripts/session-resume.sh",
+        "summary": "Hook script session-resume.sh",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "session-resume"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:hook:hooks.scripts.test-hook",
+        "name": "test-hook.sh",
+        "path": "hooks/scripts/test-hook.sh",
+        "summary": "Hook script test-hook.sh",
+        "tags": {
+          "domain": "testing",
+          "triggerTerms": [
+            "test-hook"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "jira-orchestrator:hook:hooks.scripts.triage-check",
+        "name": "triage-check.sh",
+        "path": "hooks/scripts/triage-check.sh",
+        "summary": "Hook script triage-check.sh",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "triage-check"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      }
+    ]
+  },
+  "keyDocs": [
+    {
+      "id": "jira-orchestrator:doc:readme",
+      "path": "README.md",
+      "summary": "Golden Armada - Lobbi Autonomous DevOps Orchestration"
+    },
+    {
+      "id": "jira-orchestrator:doc:docs.architecture-summary",
+      "path": "docs/ARCHITECTURE-SUMMARY.md",
+      "summary": "Plugin Ecosystem Architecture - Executive Summary"
+    },
+    {
+      "id": "jira-orchestrator:doc:docs.budget-prediction-usage",
+      "path": "docs/BUDGET-PREDICTION-USAGE.md",
+      "summary": "Predictive Token Budget Management - Usage Guide"
+    },
+    {
+      "id": "jira-orchestrator:doc:docs.compaction-report",
+      "path": "docs/COMPACTION-REPORT.md",
+      "summary": "Agent Files Compaction Report"
+    },
+    {
+      "id": "jira-orchestrator:doc:docs.confluence-documentation",
+      "path": "docs/CONFLUENCE-DOCUMENTATION.md",
+      "summary": "Jira Orchestrator - Complete Documentation"
+    },
+    {
+      "id": "jira-orchestrator:doc:docs.database-integration-analysis",
+      "path": "docs/DATABASE-INTEGRATION-ANALYSIS.md",
+      "summary": "Database & Workflow Orchestration Integration Analysis for Jira Orchestrator"
+    },
+    {
+      "id": "jira-orchestrator:doc:docs.database-setup",
+      "path": "docs/DATABASE-SETUP.md",
+      "summary": "Database Setup Guide - Jira Orchestrator"
+    },
+    {
+      "id": "jira-orchestrator:doc:docs.development-standards",
+      "path": "docs/DEVELOPMENT-STANDARDS.md",
+      "summary": "Development Standards & Best Practices"
+    },
+    {
+      "id": "jira-orchestrator:doc:docs.flags",
+      "path": "docs/FLAGS.md",
+      "summary": "Jira Orchestrator Flag System"
+    },
+    {
+      "id": "jira-orchestrator:doc:docs.github-jira-integration-guide",
+      "path": "docs/GITHUB-JIRA-INTEGRATION-GUIDE.md",
+      "summary": "GitHub-Jira Integration Guide v1.4.0"
+    },
+    {
+      "id": "jira-orchestrator:doc:docs.harness-jira-connector-setup",
+      "path": "docs/HARNESS-JIRA-CONNECTOR-SETUP.md",
+      "summary": "Harness Jira Connector Setup Guide"
+    }
+  ]
+}

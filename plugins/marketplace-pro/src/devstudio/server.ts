@@ -1251,6 +1251,11 @@ export class DependencyGraphRenderer {
   private scanResources(): ResourceNode[] {
     const resources: ResourceNode[] = [];
 
+    const indexedResources = this.readResourcesFromIndex();
+    if (indexedResources.length > 0) {
+      return indexedResources;
+    }
+
     // Scan commands
     const commandsDir = path.join(this.pluginPath, 'commands');
     if (fs.existsSync(commandsDir)) {
@@ -1290,6 +1295,56 @@ export class DependencyGraphRenderer {
         resources.push({ type: 'agent', name, dependsOn: deps });
       }
     }
+
+    return resources;
+  }
+
+  /**
+   * Prefer plugin-level index.json for resource routing so we avoid scanning
+   * the entire markdown tree on every render. Returns empty when unavailable.
+   */
+  private readResourcesFromIndex(): ResourceNode[] {
+    const indexPath = path.join(this.pluginPath, 'index.json');
+    if (!fs.existsSync(indexPath)) return [];
+
+    type IndexedEntry = { name?: string; path?: string };
+    type IndexedPlugin = {
+      capabilities?: {
+        commands?: IndexedEntry[];
+        agents?: IndexedEntry[];
+        skills?: IndexedEntry[];
+      };
+    };
+
+    let parsed: IndexedPlugin;
+    try {
+      parsed = JSON.parse(fs.readFileSync(indexPath, 'utf-8')) as IndexedPlugin;
+    } catch {
+      return [];
+    }
+
+    const resources: ResourceNode[] = [];
+
+    const loadEntry = (type: ResourceType, entry: IndexedEntry): void => {
+      if (!entry.path) return;
+
+      const fullPath = path.join(this.pluginPath, entry.path);
+      if (!fs.existsSync(fullPath)) return;
+
+      const content = fs.readFileSync(fullPath, 'utf-8');
+      const deps = this.extractDependencies(content);
+      const fallbackName = type === 'command'
+        ? '/mp:' + path.basename(entry.path, '.md')
+        : type === 'skill'
+          ? path.basename(path.dirname(entry.path))
+          : path.basename(entry.path, '.md');
+
+      resources.push({ type, name: entry.name || fallbackName, dependsOn: deps });
+    };
+
+    for (const entry of parsed.capabilities?.commands ?? []) loadEntry('command', entry);
+    for (const entry of parsed.capabilities?.skills ?? []) loadEntry('skill', entry);
+    for (const entry of parsed.capabilities?.agents ?? []) loadEntry('agent', entry);
 
     return resources;
   }

@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "deployment-pipeline",
+    "root": "plugins/deployment-pipeline"
+  },
+  "capabilities": {
+    "commands": [
+      {
+        "id": "deployment-pipeline:command:commands.approve",
+        "name": "/mp:approve",
+        "path": "commands/approve.md",
+        "summary": "Deploy Approve",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "approve",
+            "commands"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "deployment-pipeline:command:commands.history",
+        "name": "/mp:history",
+        "path": "commands/history.md",
+        "summary": "Deploy History",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "history",
+            "commands"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "deployment-pipeline:command:commands.rollback",
+        "name": "/mp:rollback",
+        "path": "commands/rollback.md",
+        "summary": "Deploy Rollback",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "rollback",
+            "commands"
+          ],
+          "riskLevel": "high",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "deployment-pipeline:command:commands.start",
+        "name": "/mp:start",
+        "path": "commands/start.md",
+        "summary": "Deploy Start",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "start",
+            "commands"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "deployment-pipeline:command:commands.status",
+        "name": "/mp:status",
+        "path": "commands/status.md",
+        "summary": "Deploy Status",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "status",
+            "commands"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "agents": [
+      {
+        "id": "deployment-pipeline:agent:agents.orchestrator",
+        "name": "orchestrator",
+        "path": "agents/orchestrator.md",
+        "summary": "Deployment Orchestrator Agent",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "orchestrator"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "deployment-pipeline:agent:agents.rollback",
+        "name": "rollback",
+        "path": "agents/rollback.md",
+        "summary": "Rollback Specialist Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "rollback"
+          ],
+          "riskLevel": "high",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "deployment-pipeline:agent:agents.validator",
+        "name": "validator",
+        "path": "agents/validator.md",
+        "summary": "Deployment Validator Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "validator"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "skills": [],
+    "hooks": []
+  },
+  "keyDocs": [
+    {
+      "id": "deployment-pipeline:doc:readme",
+      "path": "README.md",
+      "summary": "Deployment Pipeline Plugin"
+    }
+  ]
+}

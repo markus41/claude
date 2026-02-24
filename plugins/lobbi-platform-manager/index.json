@@ -1,0 +1,320 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "lobbi-platform-manager",
+    "root": "plugins/lobbi-platform-manager"
+  },
+  "capabilities": {
+    "commands": [
+      {
+        "id": "lobbi-platform-manager:command:commands.env-generate",
+        "name": "/mp:env-generate",
+        "path": "commands/env-generate.md",
+        "summary": "Generate complete .env configuration files for different environments (development, staging, production) with sensible d",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "env-generate",
+            "commands"
+          ],
+          "riskLevel": "high",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "lobbi-platform-manager:command:commands.env-validate",
+        "name": "/mp:env-validate",
+        "path": "commands/env-validate.md",
+        "summary": "Validate the .env file configuration for the keycloak-alpha platform, checking for required variables, format validation",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "env-validate",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "lobbi-platform-manager:command:commands.health",
+        "name": "/mp:health",
+        "path": "commands/health.md",
+        "summary": "Check the health status of all services in the keycloak-alpha platform including service availability, response times, p",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "health",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "lobbi-platform-manager:command:commands.keycloak-setup",
+        "name": "/mp:keycloak-setup",
+        "path": "commands/keycloak-setup.md",
+        "summary": "Initialize Keycloak realm and client configuration for the-lobbi/keycloak-alpha platform with proper OAuth settings, mul",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "keycloak-setup",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "lobbi-platform-manager:command:commands.keycloak-theme",
+        "name": "/mp:keycloak-theme",
+        "path": "commands/keycloak-theme.md",
+        "summary": "Generate and deploy tenant-specific Keycloak themes with custom branding (colors, logos, CSS) for multi-tenant organizat",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "keycloak-theme",
+            "commands"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "lobbi-platform-manager:command:commands.keycloak-user",
+        "name": "/mp:keycloak-user",
+        "path": "commands/keycloak-user.md",
+        "summary": "Create Keycloak users for testing and development, supporting both single user creation with specific credentials and bu",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "keycloak-user",
+            "commands"
+          ],
+          "riskLevel": "high",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "lobbi-platform-manager:command:commands.service",
+        "name": "/mp:service",
+        "path": "commands/service.md",
+        "summary": "Manage individual services in the keycloak-alpha platform using docker-compose, including start, stop, restart operation",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "service",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "docker"
+          ]
+        }
+      },
+      {
+        "id": "lobbi-platform-manager:command:commands.test-gen",
+        "name": "/mp:test-gen",
+        "path": "commands/test-gen.md",
+        "summary": "Generate comprehensive Jest test files from Express.js API routes, including unit tests, integration tests, and end-to-e",
+        "tags": {
+          "domain": "testing",
+          "triggerTerms": [
+            "test-gen",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "agents": [
+      {
+        "id": "lobbi-platform-manager:agent:agents.env-manager",
+        "name": "env-manager",
+        "path": "agents/env-manager.md",
+        "summary": "Environment Manager Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "env-manager"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "lobbi-platform-manager:agent:agents.keycloak-admin",
+        "name": "keycloak-admin",
+        "path": "agents/keycloak-admin.md",
+        "summary": "Keycloak Administration Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "keycloak-admin"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "lobbi-platform-manager:agent:agents.service-orchestrator",
+        "name": "service-orchestrator",
+        "path": "agents/service-orchestrator.md",
+        "summary": "Service Orchestration Agent",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "service-orchestrator"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "lobbi-platform-manager:agent:agents.test-generator",
+        "name": "test-generator",
+        "path": "agents/test-generator.md",
+        "summary": "Test Generator Agent",
+        "tags": {
+          "domain": "testing",
+          "triggerTerms": [
+            "test-generator"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "skills": [
+      {
+        "id": "lobbi-platform-manager:skill:skills.keycloak-admin.skill",
+        "name": "keycloak-admin",
+        "path": "skills/keycloak-admin/SKILL.md",
+        "summary": "Keycloak Admin Skill",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "keycloak admin"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "lobbi-platform-manager:skill:skills.mern-patterns.skill",
+        "name": "mern-patterns",
+        "path": "skills/mern-patterns/SKILL.md",
+        "summary": "MERN Stack Patterns Skill",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "mern patterns"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "lobbi-platform-manager:skill:skills.multi-tenant.skill",
+        "name": "multi-tenant",
+        "path": "skills/multi-tenant/SKILL.md",
+        "summary": "Multi-Tenant Architecture Skill",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "multi tenant"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "hooks": [
+      {
+        "id": "lobbi-platform-manager:hook:hooks.scripts.check-health",
+        "name": "check-health.sh",
+        "path": "hooks/scripts/check-health.sh",
+        "summary": "Hook script check-health.sh",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "check-health"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "lobbi-platform-manager:hook:hooks.scripts.check-keycloak",
+        "name": "check-keycloak.sh",
+        "path": "hooks/scripts/check-keycloak.sh",
+        "summary": "Hook script check-keycloak.sh",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "check-keycloak"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "lobbi-platform-manager:hook:hooks.scripts.check-security",
+        "name": "check-security.sh",
+        "path": "hooks/scripts/check-security.sh",
+        "summary": "Hook script check-security.sh",
+        "tags": {
+          "domain": "security",
+          "triggerTerms": [
+            "check-security"
+          ],
+          "riskLevel": "high",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      }
+    ]
+  },
+  "keyDocs": [
+    {
+      "id": "lobbi-platform-manager:doc:readme",
+      "path": "README.md",
+      "summary": "Lobbi Platform Manager"
+    }
+  ]
+}

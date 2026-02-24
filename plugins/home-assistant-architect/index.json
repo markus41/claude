@@ -1,0 +1,609 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "home-assistant-architect",
+    "root": "plugins/home-assistant-architect"
+  },
+  "capabilities": {
+    "commands": [
+      {
+        "id": "home-assistant-architect:command:commands.ha-automation",
+        "name": "/mp:ha-automation",
+        "path": "commands/ha-automation.md",
+        "summary": "Home Assistant Automation Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "ha-automation",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "home-assistant-architect:command:commands.ha-camera",
+        "name": "/mp:ha-camera",
+        "path": "commands/ha-camera.md",
+        "summary": "/ha-camera Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "ha-camera",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "home-assistant-architect:command:commands.ha-control",
+        "name": "/mp:ha-control",
+        "path": "commands/ha-control.md",
+        "summary": "Home Assistant Control Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "ha-control",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "home-assistant-architect:command:commands.ha-dashboard",
+        "name": "/mp:ha-dashboard",
+        "path": "commands/ha-dashboard.md",
+        "summary": "/ha-dashboard Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "ha-dashboard",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "home-assistant-architect:command:commands.ha-deploy",
+        "name": "/mp:ha-deploy",
+        "path": "commands/ha-deploy.md",
+        "summary": "Home Assistant Deploy Command",
+        "tags": {
+          "domain": "deployment",
+          "triggerTerms": [
+            "ha-deploy",
+            "commands"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "home-assistant-architect:command:commands.ha-energy",
+        "name": "/mp:ha-energy",
+        "path": "commands/ha-energy.md",
+        "summary": "/ha-energy Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "ha-energy",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "home-assistant-architect:command:commands.ha-mcp",
+        "name": "/mp:ha-mcp",
+        "path": "commands/ha-mcp.md",
+        "summary": "Home Assistant MCP Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "ha-mcp",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "home-assistant-architect:command:commands.ha-sensor",
+        "name": "/mp:ha-sensor",
+        "path": "commands/ha-sensor.md",
+        "summary": "/ha-sensor Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "ha-sensor",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "home-assistant-architect:command:commands.ollama-setup",
+        "name": "/mp:ollama-setup",
+        "path": "commands/ollama-setup.md",
+        "summary": "Ollama Setup Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "ollama-setup",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "agents": [
+      {
+        "id": "home-assistant-architect:agent:agents.ha-automation-architect",
+        "name": "ha-automation-architect",
+        "path": "agents/ha-automation-architect.md",
+        "summary": "Home Assistant Automation Architect Agent",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "ha-automation-architect"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "home-assistant-architect:agent:agents.ha-camera-nvr",
+        "name": "ha-camera-nvr",
+        "path": "agents/ha-camera-nvr.md",
+        "summary": "Home Assistant Camera and NVR Integration Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "ha-camera-nvr"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "home-assistant-architect:agent:agents.ha-customization-expert",
+        "name": "ha-customization-expert",
+        "path": "agents/ha-customization-expert.md",
+        "summary": "Home Assistant Customization Expert Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "ha-customization-expert"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "home-assistant-architect:agent:agents.ha-dashboard-designer",
+        "name": "ha-dashboard-designer",
+        "path": "agents/ha-dashboard-designer.md",
+        "summary": "Home Assistant Advanced Dashboard Designer Agent",
+        "tags": {
+          "domain": "frontend",
+          "triggerTerms": [
+            "ha-dashboard-designer"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "home-assistant-architect:agent:agents.ha-data-writer",
+        "name": "ha-data-writer",
+        "path": "agents/ha-data-writer.md",
+        "summary": "Home Assistant Data Writer Agent",
+        "tags": {
+          "domain": "data",
+          "triggerTerms": [
+            "ha-data-writer"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "home-assistant-architect:agent:agents.ha-device-controller",
+        "name": "ha-device-controller",
+        "path": "agents/ha-device-controller.md",
+        "summary": "Home Assistant Device Controller Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "ha-device-controller"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "home-assistant-architect:agent:agents.ha-diagnostics",
+        "name": "ha-diagnostics",
+        "path": "agents/ha-diagnostics.md",
+        "summary": "Home Assistant Diagnostics Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "ha-diagnostics"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "home-assistant-architect:agent:agents.ha-energy-management",
+        "name": "ha-energy-management",
+        "path": "agents/ha-energy-management.md",
+        "summary": "Home Assistant Energy Management System Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "ha-energy-management"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "home-assistant-architect:agent:agents.ha-energy-optimizer",
+        "name": "ha-energy-optimizer",
+        "path": "agents/ha-energy-optimizer.md",
+        "summary": "Home Assistant Energy Optimizer Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "ha-energy-optimizer"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "home-assistant-architect:agent:agents.ha-frontend-builder",
+        "name": "ha-frontend-builder",
+        "path": "agents/ha-frontend-builder.md",
+        "summary": "Home Assistant Frontend Builder Agent",
+        "tags": {
+          "domain": "frontend",
+          "triggerTerms": [
+            "ha-frontend-builder"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "home-assistant-architect:agent:agents.ha-security-auditor",
+        "name": "ha-security-auditor",
+        "path": "agents/ha-security-auditor.md",
+        "summary": "Home Assistant Security Auditor Agent",
+        "tags": {
+          "domain": "security",
+          "triggerTerms": [
+            "ha-security-auditor"
+          ],
+          "riskLevel": "high",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "home-assistant-architect:agent:agents.ha-sensor-manager",
+        "name": "ha-sensor-manager",
+        "path": "agents/ha-sensor-manager.md",
+        "summary": "Home Assistant Sensor Manager Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "ha-sensor-manager"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "home-assistant-architect:agent:agents.ha-voice-assistant",
+        "name": "ha-voice-assistant",
+        "path": "agents/ha-voice-assistant.md",
+        "summary": "Home Assistant Voice Assistant Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "ha-voice-assistant"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "home-assistant-architect:agent:agents.local-llm-manager",
+        "name": "local-llm-manager",
+        "path": "agents/local-llm-manager.md",
+        "summary": "Local LLM Manager Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "local-llm-manager"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "home-assistant-architect:agent:agents.ubuntu-ha-deployer",
+        "name": "ubuntu-ha-deployer",
+        "path": "agents/ubuntu-ha-deployer.md",
+        "summary": "Ubuntu Home Assistant Deployer Agent",
+        "tags": {
+          "domain": "deployment",
+          "triggerTerms": [
+            "ubuntu-ha-deployer"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "skills": [
+      {
+        "id": "home-assistant-architect:skill:skills.camera-nvr.skill",
+        "name": "camera-nvr",
+        "path": "skills/camera-nvr/SKILL.md",
+        "summary": "Camera and NVR Skill",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "camera nvr"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "home-assistant-architect:skill:skills.energy-management.skill",
+        "name": "energy-management",
+        "path": "skills/energy-management/SKILL.md",
+        "summary": "Energy Management Skill",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "energy management"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "home-assistant-architect:skill:skills.ha-automation.skill",
+        "name": "ha-automation",
+        "path": "skills/ha-automation/SKILL.md",
+        "summary": "Home Assistant Automation Skill",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "ha automation"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "home-assistant-architect:skill:skills.ha-core.skill",
+        "name": "ha-core",
+        "path": "skills/ha-core/SKILL.md",
+        "summary": "Home Assistant Core Skill",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "ha core"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "home-assistant-architect:skill:skills.local-llm.skill",
+        "name": "local-llm",
+        "path": "skills/local-llm/SKILL.md",
+        "summary": "Local LLM Integration Skill",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "local llm"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "home-assistant-architect:skill:skills.lovelace-design.skill",
+        "name": "lovelace-design",
+        "path": "skills/lovelace-design/SKILL.md",
+        "summary": "Lovelace Dashboard Design Skill",
+        "tags": {
+          "domain": "frontend",
+          "triggerTerms": [
+            "lovelace design"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "home-assistant-architect:skill:skills.sensor-management.skill",
+        "name": "sensor-management",
+        "path": "skills/sensor-management/SKILL.md",
+        "summary": "Sensor Management Skill",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "sensor management"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "home-assistant-architect:skill:skills.ubuntu-deployment.skill",
+        "name": "ubuntu-deployment",
+        "path": "skills/ubuntu-deployment/SKILL.md",
+        "summary": "Ubuntu Deployment Skill",
+        "tags": {
+          "domain": "deployment",
+          "triggerTerms": [
+            "ubuntu deployment"
+          ],
+          "riskLevel": "medium",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "hooks": [
+      {
+        "id": "home-assistant-architect:hook:hooks.scripts.ha-health-check",
+        "name": "ha-health-check.sh",
+        "path": "hooks/scripts/ha-health-check.sh",
+        "summary": "Hook script ha-health-check.sh",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "ha-health-check"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "home-assistant-architect:hook:hooks.scripts.ollama-status",
+        "name": "ollama-status.sh",
+        "path": "hooks/scripts/ollama-status.sh",
+        "summary": "Hook script ollama-status.sh",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "ollama-status"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "home-assistant-architect:hook:hooks.scripts.security-scan",
+        "name": "security-scan.sh",
+        "path": "hooks/scripts/security-scan.sh",
+        "summary": "Hook script security-scan.sh",
+        "tags": {
+          "domain": "security",
+          "triggerTerms": [
+            "security-scan"
+          ],
+          "riskLevel": "high",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "home-assistant-architect:hook:hooks.scripts.validate-yaml",
+        "name": "validate-yaml.sh",
+        "path": "hooks/scripts/validate-yaml.sh",
+        "summary": "Hook script validate-yaml.sh",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "validate-yaml"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      }
+    ]
+  },
+  "keyDocs": [
+    {
+      "id": "home-assistant-architect:doc:readme",
+      "path": "README.md",
+      "summary": "Home Assistant Architect Plugin"
+    }
+  ]
+}

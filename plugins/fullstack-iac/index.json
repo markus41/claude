@@ -1,0 +1,223 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "fullstack-iac",
+    "root": "plugins/fullstack-iac"
+  },
+  "capabilities": {
+    "commands": [
+      {
+        "id": "fullstack-iac:command:commands.ansible",
+        "name": "/mp:ansible",
+        "path": "commands/ansible.md",
+        "summary": "Zenith Ansible",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "ansible",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "fullstack-iac:command:commands.api",
+        "name": "/mp:api",
+        "path": "commands/api.md",
+        "summary": "Zenith API Scaffold",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "api",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "fullstack-iac:command:commands.docker",
+        "name": "/mp:docker",
+        "path": "commands/docker.md",
+        "summary": "Zenith Docker",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "docker",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "docker"
+          ]
+        }
+      },
+      {
+        "id": "fullstack-iac:command:commands.frontend",
+        "name": "/mp:frontend",
+        "path": "commands/frontend.md",
+        "summary": "Zenith Frontend Scaffold",
+        "tags": {
+          "domain": "frontend",
+          "triggerTerms": [
+            "frontend",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "fullstack-iac:command:commands.infra",
+        "name": "/mp:infra",
+        "path": "commands/infra.md",
+        "summary": "Zenith Infrastructure",
+        "tags": {
+          "domain": "deployment",
+          "triggerTerms": [
+            "infra",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "fullstack-iac:command:commands.k8s",
+        "name": "/mp:k8s",
+        "path": "commands/k8s.md",
+        "summary": "Zenith Kubernetes",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "k8s",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "kubernetes"
+          ]
+        }
+      },
+      {
+        "id": "fullstack-iac:command:commands.monorepo",
+        "name": "/mp:monorepo",
+        "path": "commands/monorepo.md",
+        "summary": "Zenith Monorepo",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "monorepo",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "fullstack-iac:command:commands.new",
+        "name": "/mp:new",
+        "path": "commands/new.md",
+        "summary": "Zenith New Project",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "new",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "agents": [
+      {
+        "id": "fullstack-iac:agent:agents.api-architect",
+        "name": "api-architect",
+        "path": "agents/api-architect.md",
+        "summary": "FastAPI Architect",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "api-architect"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "fullstack-iac:agent:agents.frontend-builder",
+        "name": "frontend-builder",
+        "path": "agents/frontend-builder.md",
+        "summary": "Frontend Builder (React Specialist)",
+        "tags": {
+          "domain": "frontend",
+          "triggerTerms": [
+            "frontend-builder"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "skills": [
+      {
+        "id": "fullstack-iac:skill:skills.fastapi-patterns.skill",
+        "name": "fastapi-patterns",
+        "path": "skills/fastapi-patterns/SKILL.md",
+        "summary": "FastAPI Patterns Skill",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "fastapi patterns"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "fullstack-iac:skill:skills.react-vite.skill",
+        "name": "react-vite",
+        "path": "skills/react-vite/SKILL.md",
+        "summary": "React Vite Skill",
+        "tags": {
+          "domain": "frontend",
+          "triggerTerms": [
+            "react vite"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "hooks": []
+  },
+  "keyDocs": [
+    {
+      "id": "fullstack-iac:doc:readme",
+      "path": "README.md",
+      "summary": "Zenith - Full-Stack Development & Infrastructure Automation"
+    }
+  ]
+}

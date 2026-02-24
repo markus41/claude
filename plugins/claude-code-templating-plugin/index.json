@@ -1,0 +1,288 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "claude-code-templating-plugin",
+    "root": "plugins/claude-code-templating-plugin"
+  },
+  "capabilities": {
+    "commands": [
+      {
+        "id": "claude-code-templating-plugin:command:commands.archetype",
+        "name": "/mp:archetype",
+        "path": "commands/archetype.md",
+        "summary": "Archetype Command - Complete Lifecycle",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "archetype",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "claude-code-templating-plugin:command:commands.generate",
+        "name": "/mp:generate",
+        "path": "commands/generate.md",
+        "summary": "Code Generation Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "generate",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "claude-code-templating-plugin:command:commands.harness",
+        "name": "/mp:harness",
+        "path": "commands/harness.md",
+        "summary": "Harness CI/CD Command",
+        "tags": {
+          "domain": "testing",
+          "triggerTerms": [
+            "harness",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "claude-code-templating-plugin:command:commands.scaffold",
+        "name": "/mp:scaffold",
+        "path": "commands/scaffold.md",
+        "summary": "Project Scaffolding Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "scaffold",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "claude-code-templating-plugin:command:commands.template",
+        "name": "/mp:template",
+        "path": "commands/template.md",
+        "summary": "Template Management Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "template",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "agents": [
+      {
+        "id": "claude-code-templating-plugin:agent:agents.readme",
+        "name": "README",
+        "path": "agents/README.md",
+        "summary": "Harness Expert Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "readme"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "claude-code-templating-plugin:agent:agents.archetype-creator",
+        "name": "archetype-creator",
+        "path": "agents/archetype-creator.md",
+        "summary": "Archetype Creator Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "archetype-creator"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "claude-code-templating-plugin:agent:agents.codegen-agent",
+        "name": "codegen-agent",
+        "path": "agents/codegen-agent.md",
+        "summary": "Codegen Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "codegen-agent"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "claude-code-templating-plugin:agent:agents.database-agent",
+        "name": "database-agent",
+        "path": "agents/database-agent.md",
+        "summary": "Database Agent",
+        "tags": {
+          "domain": "data",
+          "triggerTerms": [
+            "database-agent"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "database"
+          ]
+        }
+      },
+      {
+        "id": "claude-code-templating-plugin:agent:agents.harness-expert",
+        "name": "harness-expert",
+        "path": "agents/harness-expert.md",
+        "summary": "Harness Expert Agent",
+        "tags": {
+          "domain": "testing",
+          "triggerTerms": [
+            "harness-expert"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "claude-code-templating-plugin:agent:agents.scaffold-agent",
+        "name": "scaffold-agent",
+        "path": "agents/scaffold-agent.md",
+        "summary": "Scaffold Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "scaffold-agent"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "claude-code-templating-plugin:agent:agents.testing-agent",
+        "name": "testing-agent",
+        "path": "agents/testing-agent.md",
+        "summary": "Testing Agent",
+        "tags": {
+          "domain": "testing",
+          "triggerTerms": [
+            "testing-agent"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "skills": [
+      {
+        "id": "claude-code-templating-plugin:skill:skills.harness-expert.skill",
+        "name": "harness-expert",
+        "path": "skills/harness-expert/SKILL.md",
+        "summary": "Harness Expert Skill",
+        "tags": {
+          "domain": "testing",
+          "triggerTerms": [
+            "harness expert"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "claude-code-templating-plugin:skill:skills.project-scaffolding.skill",
+        "name": "project-scaffolding",
+        "path": "skills/project-scaffolding/SKILL.md",
+        "summary": "Project Scaffolding Skill",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "project scaffolding"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "claude-code-templating-plugin:skill:skills.universal-templating.skill",
+        "name": "universal-templating",
+        "path": "skills/universal-templating/SKILL.md",
+        "summary": "Universal Templating Skill",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "universal templating"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "hooks": []
+  },
+  "keyDocs": [
+    {
+      "id": "claude-code-templating-plugin:doc:readme",
+      "path": "README.md",
+      "summary": "Claude Code Templating Plugin"
+    },
+    {
+      "id": "claude-code-templating-plugin:doc:claude",
+      "path": "CLAUDE.md",
+      "summary": "Claude Code Templating Plugin"
+    },
+    {
+      "id": "claude-code-templating-plugin:doc:docs.changelog",
+      "path": "docs/CHANGELOG.md",
+      "summary": "Changelog"
+    },
+    {
+      "id": "claude-code-templating-plugin:doc:docs.mcp-client-manager",
+      "path": "docs/MCP-CLIENT-MANAGER.md",
+      "summary": "MCP Client Manager - Implementation Summary"
+    },
+    {
+      "id": "claude-code-templating-plugin:doc:docs.upgrade-plan-v2",
+      "path": "docs/UPGRADE-PLAN-v2.md",
+      "summary": "Claude Code Templating Plugin - v2.0.0 Upgrade Plan"
+    }
+  ]
+}

@@ -1,0 +1,384 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "frontend-design-system",
+    "root": "plugins/frontend-design-system"
+  },
+  "capabilities": {
+    "commands": [
+      {
+        "id": "frontend-design-system:command:commands.audit",
+        "name": "/mp:audit",
+        "path": "commands/audit.md",
+        "summary": "Design System Audit Command",
+        "tags": {
+          "domain": "security",
+          "triggerTerms": [
+            "audit",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "frontend-design-system:command:commands.component",
+        "name": "/mp:component",
+        "path": "commands/component.md",
+        "summary": "Styled Component Generation Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "component",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "frontend-design-system:command:commands.convert",
+        "name": "/mp:convert",
+        "path": "commands/convert.md",
+        "summary": "CSS Format Conversion Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "convert",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "frontend-design-system:command:commands.keycloak",
+        "name": "/mp:keycloak",
+        "path": "commands/keycloak.md",
+        "summary": "Keycloak Theme Generation Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "keycloak",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "frontend-design-system:command:commands.palette",
+        "name": "/mp:palette",
+        "path": "commands/palette.md",
+        "summary": "Color Palette Generation Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "palette",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "frontend-design-system:command:commands.style",
+        "name": "/mp:style",
+        "path": "commands/style.md",
+        "summary": "Style Application Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "style",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "frontend-design-system:command:commands.theme",
+        "name": "/mp:theme",
+        "path": "commands/theme.md",
+        "summary": "Multi-Tenant Theme Management Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "theme",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "frontend-design-system:command:commands.tokens",
+        "name": "/mp:tokens",
+        "path": "commands/tokens.md",
+        "summary": "Design Tokens Generation Command",
+        "tags": {
+          "domain": "automation",
+          "triggerTerms": [
+            "tokens",
+            "commands"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "agents": [
+      {
+        "id": "frontend-design-system:agent:agents.accessibility-auditor",
+        "name": "accessibility-auditor",
+        "path": "agents/accessibility-auditor.md",
+        "summary": "Accessibility Auditor Agent",
+        "tags": {
+          "domain": "security",
+          "triggerTerms": [
+            "accessibility-auditor"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "frontend-design-system:agent:agents.component-designer",
+        "name": "component-designer",
+        "path": "agents/component-designer.md",
+        "summary": "Component Designer Agent",
+        "tags": {
+          "domain": "frontend",
+          "triggerTerms": [
+            "component-designer"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "frontend-design-system:agent:agents.design-architect",
+        "name": "design-architect",
+        "path": "agents/design-architect.md",
+        "summary": "Design Architect Agent",
+        "tags": {
+          "domain": "frontend",
+          "triggerTerms": [
+            "design-architect"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "frontend-design-system:agent:agents.responsive-specialist",
+        "name": "responsive-specialist",
+        "path": "agents/responsive-specialist.md",
+        "summary": "Responsive Specialist Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "responsive-specialist"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "frontend-design-system:agent:agents.style-implementer",
+        "name": "style-implementer",
+        "path": "agents/style-implementer.md",
+        "summary": "Style Implementer Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "style-implementer"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "frontend-design-system:agent:agents.theme-engineer",
+        "name": "theme-engineer",
+        "path": "agents/theme-engineer.md",
+        "summary": "Theme Engineer Agent",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "theme-engineer"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "skills": [
+      {
+        "id": "frontend-design-system:skill:skills.component-patterns.skill",
+        "name": "component-patterns",
+        "path": "skills/component-patterns/SKILL.md",
+        "summary": "Component Patterns Skill",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "component patterns"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "frontend-design-system:skill:skills.css-generation.skill",
+        "name": "css-generation",
+        "path": "skills/css-generation/SKILL.md",
+        "summary": "CSS Generation Skill",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "css generation"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "frontend-design-system:skill:skills.design-styles.skill",
+        "name": "design-styles",
+        "path": "skills/design-styles/SKILL.md",
+        "summary": "Design Styles Skill",
+        "tags": {
+          "domain": "frontend",
+          "triggerTerms": [
+            "design styles"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      },
+      {
+        "id": "frontend-design-system:skill:skills.keycloak-theming.skill",
+        "name": "keycloak-theming",
+        "path": "skills/keycloak-theming/SKILL.md",
+        "summary": "Keycloak Theming Skill",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "keycloak theming"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "markdown"
+          ]
+        }
+      }
+    ],
+    "hooks": [
+      {
+        "id": "frontend-design-system:hook:hooks.scripts.check-style-consistency",
+        "name": "check-style-consistency.sh",
+        "path": "hooks/scripts/check-style-consistency.sh",
+        "summary": "Hook script check-style-consistency.sh",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "check-style-consistency"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "frontend-design-system:hook:hooks.scripts.sync-themes",
+        "name": "sync-themes.sh",
+        "path": "hooks/scripts/sync-themes.sh",
+        "summary": "Hook script sync-themes.sh",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "sync-themes"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "frontend-design-system:hook:hooks.scripts.update-tokens",
+        "name": "update-tokens.sh",
+        "path": "hooks/scripts/update-tokens.sh",
+        "summary": "Hook script update-tokens.sh",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "update-tokens"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      },
+      {
+        "id": "frontend-design-system:hook:hooks.scripts.validate-accessibility",
+        "name": "validate-accessibility.sh",
+        "path": "hooks/scripts/validate-accessibility.sh",
+        "summary": "Hook script validate-accessibility.sh",
+        "tags": {
+          "domain": "general",
+          "triggerTerms": [
+            "validate-accessibility"
+          ],
+          "riskLevel": "low",
+          "expectedTools": [
+            "bash"
+          ]
+        }
+      }
+    ]
+  },
+  "keyDocs": [
+    {
+      "id": "frontend-design-system:doc:readme",
+      "path": "README.md",
+      "summary": "Frontend Design System Plugin"
+    }
+  ]
+}
