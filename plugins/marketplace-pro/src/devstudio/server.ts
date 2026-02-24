@@ -412,6 +412,13 @@ export class FileWatcher {
  * "loaded" in the dev server — analogous to what would be registered in the
  * real plugin system at runtime.
  */
+interface InitialContextPolicy {
+  contextBudget: number;
+  loadPriority: 'high' | 'medium' | 'low';
+  lazyPaths: string[];
+  excludeFromInitialContext: boolean;
+}
+
 export class HotReloader {
   private readonly pluginPath: string;
 
@@ -505,14 +512,26 @@ export class HotReloader {
       this.readManifest();
     }
 
-    // Scan and validate all resource files
-    const resourceDirs = ['commands', 'skills', 'agents'];
-    for (const dir of resourceDirs) {
-      const dirPath = path.join(this.pluginPath, dir);
-      if (!fs.existsSync(dirPath)) continue;
+    const policy = this.getInitialContextPolicy();
 
-      const files = this.walkDirectory(dirPath);
-      for (const filePath of files) {
+    if (!policy.excludeFromInitialContext) {
+      // Scan and validate resource files using startup context policy
+      const resourceDirs = ['commands', 'skills', 'agents'];
+      const scannedFiles: string[] = [];
+
+      for (const dir of resourceDirs) {
+        const dirPath = path.join(this.pluginPath, dir);
+        if (!fs.existsSync(dirPath)) continue;
+
+        const files = this.walkDirectory(dirPath)
+          .filter((filePath) => !this.shouldLazyLoad(path.relative(this.pluginPath, filePath), policy.lazyPaths));
+        scannedFiles.push(...files);
+      }
+
+      const prioritizedFiles = this.prioritizeFiles(scannedFiles, policy.loadPriority);
+      const filesToLoad = prioritizedFiles.slice(0, policy.contextBudget);
+
+      for (const filePath of filesToLoad) {
         const relativePath = path.relative(this.pluginPath, filePath);
         const content = fs.readFileSync(filePath);
         const hash = fnv1aHash(content);
@@ -675,6 +694,38 @@ export class HotReloader {
         line: 1,
         message: 'No "capabilities" declared — plugin won\'t participate in composition',
         severity: 'warning',
+      });
+    }
+
+    if (parsed['contextBudget'] !== undefined && (!Number.isInteger(parsed['contextBudget']) || (parsed['contextBudget'] as number) <= 0)) {
+      errors.push({
+        line: this.findFieldLine(lines, 'contextBudget'),
+        message: '"contextBudget" must be a positive integer',
+        severity: 'error',
+      });
+    }
+
+    if (parsed['loadPriority'] !== undefined && !['high', 'medium', 'low'].includes(parsed['loadPriority'] as string)) {
+      errors.push({
+        line: this.findFieldLine(lines, 'loadPriority'),
+        message: '"loadPriority" must be one of: high, medium, low',
+        severity: 'error',
+      });
+    }
+
+    if (parsed['lazyPaths'] !== undefined && !Array.isArray(parsed['lazyPaths'])) {
+      errors.push({
+        line: this.findFieldLine(lines, 'lazyPaths'),
+        message: '"lazyPaths" must be an array of paths',
+        severity: 'error',
+      });
+    }
+
+    if (parsed['excludeFromInitialContext'] !== undefined && typeof parsed['excludeFromInitialContext'] !== 'boolean') {
+      errors.push({
+        line: this.findFieldLine(lines, 'excludeFromInitialContext'),
+        message: '"excludeFromInitialContext" must be a boolean',
+        severity: 'error',
       });
     }
 
@@ -881,6 +932,55 @@ export class HotReloader {
       }
     }
     return frontmatterEnd + 1; // Insert point (after frontmatter)
+  }
+
+  private getInitialContextPolicy(): InitialContextPolicy {
+    const manifest = this.manifest ?? {};
+
+    const contextBudgetRaw = manifest['contextBudget'];
+    const contextBudget =
+      typeof contextBudgetRaw === 'number' && Number.isFinite(contextBudgetRaw) && contextBudgetRaw > 0
+        ? Math.floor(contextBudgetRaw)
+        : Number.MAX_SAFE_INTEGER;
+
+    const loadPriorityRaw = manifest['loadPriority'];
+    const loadPriority: 'high' | 'medium' | 'low' =
+      loadPriorityRaw === 'high' || loadPriorityRaw === 'medium' || loadPriorityRaw === 'low'
+        ? loadPriorityRaw
+        : 'medium';
+
+    const lazyPathsRaw = manifest['lazyPaths'];
+    const lazyPaths = Array.isArray(lazyPathsRaw)
+      ? lazyPathsRaw.filter((value): value is string => typeof value === 'string')
+      : [];
+
+    const excludeFromInitialContext = manifest['excludeFromInitialContext'] === true;
+
+    return { contextBudget, loadPriority, lazyPaths, excludeFromInitialContext };
+  }
+
+  private shouldLazyLoad(relativePath: string, lazyPaths: string[]): boolean {
+    const normalizedPath = relativePath.replace(/\\/g, '/');
+    return lazyPaths.some((lazyPath) => {
+      const normalizedLazyPath = lazyPath.replace(/\\/g, '/').replace(/\/$/, '');
+      return normalizedPath === normalizedLazyPath || normalizedPath.startsWith(`${normalizedLazyPath}/`);
+    });
+  }
+
+  private prioritizeFiles(files: string[], loadPriority: 'high' | 'medium' | 'low'): string[] {
+    const sorted = [...files].sort((a, b) => a.localeCompare(b));
+
+    if (loadPriority === 'low') {
+      return sorted.filter((filePath) => filePath.includes(`${path.sep}commands${path.sep}`));
+    }
+
+    if (loadPriority === 'high') {
+      return sorted;
+    }
+
+    const commandFiles = sorted.filter((filePath) => filePath.includes(`${path.sep}commands${path.sep}`));
+    const otherFiles = sorted.filter((filePath) => !filePath.includes(`${path.sep}commands${path.sep}`));
+    return [...commandFiles, ...otherFiles];
   }
 
   /** Recursively list all files in a directory. */

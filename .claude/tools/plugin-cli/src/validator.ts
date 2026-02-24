@@ -529,7 +529,14 @@ export class PluginValidator {
         skills: { type: 'object' },
         commands: { type: 'object' },
         hooks: { type: 'object' },
-        configuration: { type: 'object' }
+        configuration: { type: 'object' },
+        contextBudget: { type: 'integer', minimum: 1 },
+        loadPriority: { type: 'string', enum: ['high', 'medium', 'low'] },
+        lazyPaths: {
+          type: 'array',
+          items: { type: 'string' }
+        },
+        excludeFromInitialContext: { type: 'boolean' }
       }
     };
   }

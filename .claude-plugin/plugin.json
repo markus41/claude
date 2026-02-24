@@ -20,5 +20,13 @@
     "docker",
     "ci-cd",
     "testing"
-  ]
+  ],
+  "contextBudget": 12,
+  "loadPriority": "medium",
+  "lazyPaths": [
+    "docs",
+    "examples",
+    "plugins"
+  ],
+  "excludeFromInitialContext": false
 }

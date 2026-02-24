@@ -301,6 +301,24 @@ Pinned plugin versions with integrity checksums.
 
 Plugin manifest (one per plugin). See `plugins/marketplace-pro/.claude-plugin/plugin.json` for a complete example.
 
+Recommended startup-context defaults for plugin authors:
+
+- `contextBudget`: start small (`10-30`) and increase only when startup quality requires it.
+- `loadPriority`: use `medium` by default (`high` only for critical orchestration plugins).
+- `lazyPaths`: explicitly list heavy directories (`docs`, `tests`, `examples`, generated outputs).
+- `excludeFromInitialContext`: set to `true` only for plugins that should stay fully on-demand.
+
+Example:
+
+```json
+{
+  "contextBudget": 20,
+  "loadPriority": "medium",
+  "lazyPaths": ["docs", "tests", "examples"],
+  "excludeFromInitialContext": false
+}
+```
+
 Required fields: `name`, `version`, `description`.
 Optional fields: `author`, `keywords`, `license`, `repository`, `capabilities`, `modules`.
 

@@ -31,6 +31,14 @@ export interface PluginManifest {
   capabilities?: PluginCapabilities;
   /** Optional module map for multi-module plugins. */
   modules?: Record<string, { description: string; entry: string }>;
+  /** Maximum number of resources to preload into initial context. */
+  contextBudget?: number;
+  /** Startup loading priority for plugin orchestration. */
+  loadPriority?: 'high' | 'medium' | 'low';
+  /** Paths that should be lazily loaded only when requested. */
+  lazyPaths?: string[];
+  /** Skip loading plugin resources during initial context hydration. */
+  excludeFromInitialContext?: boolean;
 }
 
 // ---------------------------------------------------------------------------

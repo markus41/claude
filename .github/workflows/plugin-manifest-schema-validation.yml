@@ -1,0 +1,35 @@
+name: Plugin Manifest Schema Validation
+
+on:
+  pull_request:
+    paths:
+      - '**/.claude-plugin/plugin.json'
+      - '.claude/core/schemas/plugin.schema.json'
+      - 'scripts/validate-plugin-manifests.mjs'
+      - '.github/workflows/plugin-manifest-schema-validation.yml'
+  push:
+    branches: [main]
+    paths:
+      - '**/.claude-plugin/plugin.json'
+      - '.claude/core/schemas/plugin.schema.json'
+      - 'scripts/validate-plugin-manifests.mjs'
+      - '.github/workflows/plugin-manifest-schema-validation.yml'
+
+jobs:
+  validate-plugin-manifests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate plugin manifests against schema
+        run: node scripts/validate-plugin-manifests.mjs

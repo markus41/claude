@@ -39,6 +39,10 @@ export interface PluginManifest {
     tools?: string;
   };
   minimumClaudeCodeVersion?: string;
+  contextBudget?: number;
+  loadPriority?: 'high' | 'medium' | 'low';
+  lazyPaths?: string[];
+  excludeFromInitialContext?: boolean;
 }
 
 /**
