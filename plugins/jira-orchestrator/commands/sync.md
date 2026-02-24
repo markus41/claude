@@ -119,6 +119,28 @@ PR Status: {linked-pr-status}
 - Documenting/Done → In Review
 - Ask Claude if ambiguous
 
+## PR → Jira Transition Engine (Mandatory Routing)
+
+All pull request state updates MUST flow through `lib/pr-jira-transition-engine.ts`.
+
+- Supported PR events: `opened`, `ready-for-review`, `approved`, `merged`, `closed`
+- Engine output: deterministic Jira transition + comment + issue property updates
+- Idempotency: engine calculates a normalized PR event hash and stores it in Jira issue properties
+- Duplicate webhook protection: if incoming event hash matches last-applied hash, skip transition/comment
+- Out-of-order protection: compare incoming `occurredAt` against stored last-applied timestamp and skip stale events
+
+### Jira Issue Properties Used
+
+- `jiraOrchestrator.pr.lastAppliedEventHash`
+- `jiraOrchestrator.pr.lastAppliedOccurredAt`
+- `jiraOrchestrator.pr.lastAppliedAction`
+
+### Compensation + Reopen Logic
+
+- `closed` with `merged=false`: compensation transition to `In Progress` with explanatory comment
+- `opened` or `ready-for-review` after prior `closed` (without merge): treat as reopen and resume review flow
+- `closed` with `merged=true`: resolve to `Done`
+
 ## Time Tracking (Auto)
 
 If duration >= 60s AND issue key detected:
