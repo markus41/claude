@@ -1,0 +1,7 @@
+settings:
+  taiaWindDown: false
+resources:
+  - id: dv-tvs
+    environment: dev
+  - id: pps-broker-solution
+    operation: update
