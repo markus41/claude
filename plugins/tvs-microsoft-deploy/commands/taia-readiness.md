@@ -39,3 +39,15 @@ node plugins/tvs-microsoft-deploy/control-plane/planner.mjs \
 - No dependency cycles or cross-phase violations.
 
 Use `taia-readiness.json` as the readiness artifact for sale-prep reviews.
+
+## Data quality gates
+
+Run TAIA metric reconciliation checks before declaring readiness:
+
+```bash
+python plugins/tvs-microsoft-deploy/scripts/taia_readiness_checks.py \
+  --metrics plugins/tvs-microsoft-deploy/fabric/quality/current_metrics.json \
+  --thresholds plugins/tvs-microsoft-deploy/fabric/quality/taia_thresholds.json
+```
+
+The command fails readiness when carrier counts, commission variance, or agent hierarchy consistency breach policy thresholds.
