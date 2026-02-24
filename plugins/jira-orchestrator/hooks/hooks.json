@@ -86,6 +86,25 @@
       ]
     },
     {
+      "id": "posttooluse-pr-jira-transition-routing",
+      "event": "PostToolUse",
+      "severity": "advisory",
+      "description": "Route PR state updates through the PR->Jira transition engine for idempotent transitions.",
+      "trigger": {
+        "scope": "tool",
+        "command_patterns": [
+          "gh_pr_create|gh_pr_update|gh_pr_review|gh_pr_merge|mcp__github__create_pull_request|mcp__github__update_pull_request|mcp__github__merge_pull_request|mcp__github__submit_pull_request_review"
+        ]
+      },
+      "handlers": [
+        {
+          "type": "command",
+          "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/pr-jira-transition.sh",
+          "timeout": 10000
+        }
+      ]
+    },
+    {
       "id": "stop-5",
       "event": "Stop",
       "severity": "advisory",

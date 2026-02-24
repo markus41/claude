@@ -1,7 +1,6 @@
 {
   "version": "7.1.0",
   "description": "Hook-based automation for Jira Orchestrator with AutoGen-style team coordination",
-
   "git_hooks": {
     "pre-commit": {
       "enabled": true,
@@ -16,7 +15,10 @@
         {
           "name": "link-jira-issue",
           "description": "Extract and validate Jira issue from branch/message",
-          "extract_from": ["branch", "message"],
+          "extract_from": [
+            "branch",
+            "message"
+          ],
           "update_jira": true
         },
         {
@@ -25,9 +27,11 @@
           "configurable": true
         }
       ],
-      "replaces_commands": ["commit", "commit-template"]
+      "replaces_commands": [
+        "commit",
+        "commit-template"
+      ]
     },
-
     "post-commit": {
       "enabled": true,
       "script": "hooks/scripts/post-commit.sh",
@@ -36,7 +40,9 @@
           "name": "sync-to-jira",
           "description": "Update Jira with commit info",
           "add_comment": true,
-          "update_fields": ["customfield_10200"]
+          "update_fields": [
+            "customfield_10200"
+          ]
         },
         {
           "name": "track-worklog",
@@ -45,9 +51,11 @@
           "configurable": true
         }
       ],
-      "replaces_commands": ["sync", "process-worklogs"]
+      "replaces_commands": [
+        "sync",
+        "process-worklogs"
+      ]
     },
-
     "pre-push": {
       "enabled": true,
       "script": "hooks/scripts/pre-push.sh",
@@ -63,7 +71,6 @@
         }
       ]
     },
-
     "post-merge": {
       "enabled": true,
       "script": "hooks/scripts/post-merge.sh",
@@ -77,19 +84,27 @@
         {
           "name": "generate-docs",
           "description": "Update documentation",
-          "targets": ["confluence", "readme"]
+          "targets": [
+            "confluence",
+            "readme"
+          ]
         },
         {
           "name": "notify-team",
           "description": "Send merge notification",
-          "channels": ["slack", "email"],
+          "channels": [
+            "slack",
+            "email"
+          ],
           "configurable": true
         }
       ],
-      "replaces_commands": ["docs", "notify"]
+      "replaces_commands": [
+        "docs",
+        "notify"
+      ]
     }
   },
-
   "orchestration_hooks": {
     "on-work-start": {
       "trigger": "When /jira:work is invoked",
@@ -103,21 +118,32 @@
         {
           "name": "triage-if-needed",
           "description": "Run triage if issue lacks classification",
-          "conditions": ["no_labels", "no_story_points", "no_priority"]
+          "conditions": [
+            "no_labels",
+            "no_story_points",
+            "no_priority"
+          ]
         },
         {
           "name": "prepare-subtasks",
           "description": "Create subtasks if epic/story",
-          "conditions": ["is_epic", "is_story", "no_subtasks"]
+          "conditions": [
+            "is_epic",
+            "is_story",
+            "no_subtasks"
+          ]
         },
         {
           "name": "fetch-context",
           "description": "Load related docs, PRs, commits"
         }
       ],
-      "replaces_commands": ["branch", "triage", "prepare"]
+      "replaces_commands": [
+        "branch",
+        "triage",
+        "prepare"
+      ]
     },
-
     "on-phase-complete": {
       "trigger": "When orchestration phase completes",
       "actions": [
@@ -135,7 +161,6 @@
         }
       ]
     },
-
     "on-pr-create": {
       "trigger": "When PR is created via /jira:pr",
       "actions": [
@@ -157,9 +182,11 @@
           "description": "Add size/type labels"
         }
       ],
-      "replaces_commands": ["review", "confluence"]
+      "replaces_commands": [
+        "review",
+        "confluence"
+      ]
     },
-
     "on-pr-merge": {
       "trigger": "When PR is merged",
       "actions": [
@@ -175,12 +202,17 @@
           "name": "trigger-deploy",
           "description": "Start deployment pipeline",
           "configurable": true,
-          "environments": ["dev", "staging"]
+          "environments": [
+            "dev",
+            "staging"
+          ]
         }
       ],
-      "replaces_commands": ["release", "deploy"]
+      "replaces_commands": [
+        "release",
+        "deploy"
+      ]
     },
-
     "on-review-requested": {
       "trigger": "When review is requested",
       "actions": [
@@ -191,9 +223,29 @@
           "configurable": true
         }
       ]
+    },
+    "on-pr-state-update": {
+      "trigger": "When PR webhook events arrive (opened, ready-for-review, approved, merged, closed)",
+      "actions": [
+        {
+          "name": "route-pr-jira-transition",
+          "description": "Route through hooks/scripts/pr-jira-transition.sh and lib/pr-jira-transition-engine.ts for deterministic transitions"
+        },
+        {
+          "name": "persist-idempotency-hash",
+          "description": "Store last applied PR event hash/timestamp/action in Jira issue properties"
+        },
+        {
+          "name": "apply-compensation",
+          "description": "If PR closes without merge, transition Jira back to In Progress; support reopen flow"
+        }
+      ],
+      "replaces_commands": [
+        "jira:transition",
+        "jira:comment"
+      ]
     }
   },
-
   "scheduled_hooks": {
     "daily": {
       "time": "09:00",
@@ -228,7 +280,6 @@
       ]
     }
   },
-
   "configuration": {
     "config_file": ".jira/hooks.yml",
     "example": {
@@ -243,7 +294,9 @@
         },
         "on-pr-merge": {
           "trigger-deploy": true,
-          "deploy-environments": ["dev"]
+          "deploy-environments": [
+            "dev"
+          ]
         }
       }
     }
