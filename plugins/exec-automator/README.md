@@ -2,16 +2,38 @@
 
 `exec-automator` provides executive-director automation workflows for associations and nonprofits.
 
-## Quick Operator View
+## Quickstart
 
-- **Purpose:** analyze responsibilities, score automation potential, and generate/deploy LangGraph workflows.
-- **Primary entrypoint:** `CONTEXT.md` (fast operational summary).
-- **Core resources:** `commands/`, `agents/`, `skills/`, `templates/`, `mcp-server/`.
+1. Run `./scripts/install.sh` to install dependencies.
+2. Set `ANTHROPIC_API_KEY` (and optional model provider keys).
+3. Start the MCP service with `./scripts/start-mcp.sh`.
+4. Run `./scripts/health-check.sh`.
+5. Use `/orchestrate` or `/analyze` with organization docs to begin the pipeline.
 
-## Where to Go Next
+## Architecture Snapshot
 
-- Start with `CONTEXT.md` for day-to-day usage.
-- Use `docs/README_DEEP_DIVE.md` for full narrative, architecture details, ROI model, and end-to-end platform documentation.
+The plugin follows a 6-phase automation pipeline:
+
+`ANALYZE -> MAP -> SCORE -> GENERATE -> SIMULATE -> DEPLOY`
+
+Core components:
+- `commands/`: operator slash commands for each pipeline phase.
+- `agents/`: specialist agents (finance, membership, events, governance, comms).
+- `skills/`: reusable domain knowledge packs.
+- `workflows/`: deployment-ready workflow templates.
+- `mcp-server/`: LangGraph/LangChain execution engine.
+- `hooks/`: lifecycle and workflow execution automation hooks.
+
+## Docs Navigation
+
+Load `docs/context-map.md` first to route by user intent.
+
+Deep docs:
+- `docs/commands.md`
+- `docs/agents.md`
+- `docs/skills.md`
+- `docs/operations.md`
+- `docs/README_DEEP_DIVE.md` (full platform narrative)
 
 ## Plugin Manifest & Hook Schemas
 

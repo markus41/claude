@@ -576,6 +576,7 @@ export class HotReloader {
     const manifestPath = path.join(this.pluginPath, '.claude-plugin', 'plugin.json');
     const relativePath = '.claude-plugin/plugin.json';
     const errors: ValidationIssue[] = [];
+    const ROOT_README_WARNING_LINE_THRESHOLD = 220;
 
     // Check file existence
     if (!fs.existsSync(manifestPath)) {
@@ -695,6 +696,23 @@ export class HotReloader {
         message: 'No "capabilities" declared — plugin won\'t participate in composition',
         severity: 'warning',
       });
+    }
+
+    // Warn when root README is too long for fast operator/bootstrap context loading.
+    const readmePath = path.join(this.pluginPath, 'README.md');
+    if (fs.existsSync(readmePath)) {
+      try {
+        const readmeLines = fs.readFileSync(readmePath, 'utf-8').split('\n').length;
+        if (readmeLines > ROOT_README_WARNING_LINE_THRESHOLD) {
+          errors.push({
+            line: 1,
+            message: `Root README.md is ${readmeLines} lines (recommended <= ${ROOT_README_WARNING_LINE_THRESHOLD}). Move deep content to docs/*.md and keep README focused on quickstart + architecture snapshot.`,
+            severity: 'warning',
+          });
+        }
+      } catch {
+        // Ignore README read failures; manifest validation should not hard-fail on doc lint checks.
+      }
     }
 
     const hasErrors = errors.some((e) => e.severity === 'error');
