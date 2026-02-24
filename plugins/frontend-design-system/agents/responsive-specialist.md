@@ -1,23 +1,21 @@
 ---
-description: "Implement responsive layouts and mobile-first design patterns"
-when_to_use: "creating responsive components, defining breakpoints, implementing fluid typography, mobile-first design"
+name: frontend-design-system:responsive-specialist
+intent: Implement responsive layouts and mobile-first design patterns
+tags:
+  - frontend-design-system
+  - agent
+  - responsive-specialist
+inputs: []
+risk: medium
+cost: medium
+description: Implement responsive layouts and mobile-first design patterns
+model: sonnet
 tools:
   - Read
   - Write
   - Glob
   - Grep
   - Edit
-model: sonnet
-color: teal
-category: frontend
-expertise:
-  - Mobile-first design patterns
-  - Responsive breakpoints and queries
-  - Fluid typography scaling
-  - Container queries
-  - Responsive image optimization
-  - Touch-friendly design
-  - Performance optimization for mobile
 ---
 
 # Responsive Specialist Agent

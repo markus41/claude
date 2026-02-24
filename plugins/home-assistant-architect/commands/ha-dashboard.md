@@ -1,3 +1,15 @@
+---
+name: home-assistant-architect:ha-dashboard
+intent: /ha-dashboard Command
+tags:
+  - home-assistant-architect
+  - command
+  - ha-dashboard
+inputs: []
+risk: medium
+cost: medium
+---
+
 # /ha-dashboard Command
 
 Create, customize, and manage Home Assistant Lovelace dashboards.

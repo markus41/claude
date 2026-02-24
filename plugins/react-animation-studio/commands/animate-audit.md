@@ -1,3 +1,15 @@
+---
+name: react-animation-studio:animate-audit
+intent: /animate-audit
+tags:
+  - react-animation-studio
+  - command
+  - animate-audit
+inputs: []
+risk: medium
+cost: medium
+---
+
 # /animate-audit
 
 Audit animations for performance, accessibility, and best practices compliance.

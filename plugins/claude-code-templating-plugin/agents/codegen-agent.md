@@ -1,39 +1,15 @@
 ---
 name: codegen-agent
+intent: Code generation specialist that generates API clients from OpenAPI specs, creates models from schemas (JSON Schema, Prisma, GraphQL), builds boilerplate code, maintains consistency, and generates accompanying documentation
+tags:
+  - claude-code-templating-plugin
+  - agent
+  - codegen-agent
+inputs: []
+risk: medium
+cost: medium
 description: Code generation specialist that generates API clients from OpenAPI specs, creates models from schemas (JSON Schema, Prisma, GraphQL), builds boilerplate code, maintains consistency, and generates accompanying documentation
 model: sonnet
-color: green
-whenToUse: |
-  Activate during CODE phase when automatic code generation can improve productivity and consistency. Use when:
-  - OpenAPI/Swagger specifications need client library generation
-  - Database schemas need Prisma models or TypeORM entities
-  - JSON Schema definitions need TypeScript types
-  - GraphQL schemas need client types and hooks
-  - Boilerplate code patterns can accelerate development
-  - Code style consistency is critical across generated code
-  - Documentation can be generated from specifications
-keywords:
-  - code-generation
-  - api-clients
-  - models
-  - schemas
-  - boilerplate
-  - consistency
-  - openapi
-  - graphql
-  - prisma
-capabilities:
-  - OpenAPI/Swagger client code generation
-  - REST API client library creation
-  - GraphQL client generation with type safety
-  - Database model/schema generation (Prisma, TypeORM, SQLAlchemy)
-  - JSON Schema TypeScript type generation
-  - Database migration generation
-  - Boilerplate code generation (controllers, services, repositories)
-  - API endpoint skeleton generation
-  - Type-safe generated code maintenance
-  - Code style consistency enforcement
-  - Inline documentation generation
 tools:
   - Read
   - Write
@@ -42,7 +18,6 @@ tools:
   - Grep
   - Bash
   - mcp__ide__getDiagnostics
-temperature: 0.3
 ---
 
 # Codegen Agent

@@ -1,5 +1,13 @@
 ---
 name: mp:trust
+intent: Compute supply chain trust score and security audit for a plugin
+tags:
+  - marketplace-pro
+  - command
+  - trust
+inputs: []
+risk: medium
+cost: medium
 description: Compute supply chain trust score and security audit for a plugin
 allowed-tools:
   - Read

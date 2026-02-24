@@ -1,5 +1,13 @@
 ---
 name: tvs:deploy-azure
+intent: Azure infrastructure deployment - Bicep templates for Key Vault, Functions, Static Web Apps, App Insights
+tags:
+  - tvs-microsoft-deploy
+  - command
+  - deploy-azure
+inputs: []
+risk: medium
+cost: medium
 description: Azure infrastructure deployment - Bicep templates for Key Vault, Functions, Static Web Apps, App Insights
 allowed-tools:
   - Bash

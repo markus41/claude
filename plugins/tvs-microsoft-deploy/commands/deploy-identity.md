@@ -1,5 +1,13 @@
 ---
 name: tvs:deploy-identity
+intent: Entra ID deployment - users, licenses, conditional access, app registrations, FIDO2 configuration
+tags:
+  - tvs-microsoft-deploy
+  - command
+  - deploy-identity
+inputs: []
+risk: medium
+cost: medium
 description: Entra ID deployment - users, licenses, conditional access, app registrations, FIDO2 configuration
 allowed-tools:
   - Bash

@@ -1,25 +1,17 @@
 ---
 name: exec:integrate
-description: Configure and manage external system integrations (CRM, AMS, Calendar, etc.)
-color: teal
-icon: plug
+intent: Configure and manage external system integrations (CRM, AMS, Calendar, etc.)
 tags:
   - integration
   - api
   - connections
   - oauth
   - sync
+inputs: []
+risk: medium
+cost: medium
+description: Configure and manage external system integrations (CRM, AMS, Calendar, etc.)
 model: claude-sonnet-4-5
-arguments:
-  - name: action
-    description: Action to perform (list, add, configure, test, remove, sync, status)
-    required: true
-  - name: system
-    description: System to integrate (crm, ams, calendar, email, accounting, communication, documents)
-    required: false
-  - name: provider
-    description: Specific provider (salesforce, hubspot, google, outlook, etc.)
-    required: false
 ---
 
 # Executive Integration Manager

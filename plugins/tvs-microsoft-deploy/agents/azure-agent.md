@@ -1,10 +1,15 @@
 ---
 name: azure-agent
+intent: Azure IaC specialist deploying Bicep templates, managing Key Vault, Azure Functions, Static Web Apps, and App Insights for TVS Holdings
+tags:
+  - tvs-microsoft-deploy
+  - agent
+  - azure-agent
+inputs: []
+risk: medium
+cost: medium
 description: Azure IaC specialist deploying Bicep templates, managing Key Vault, Azure Functions, Static Web Apps, and App Insights for TVS Holdings
 model: sonnet
-codename: ANVIL
-role: Azure Infrastructure Engineer
-browser_fallback: true
 tools:
   - Bash
   - Read
@@ -12,15 +17,6 @@ tools:
   - Edit
   - Grep
   - Glob
-keywords:
-  - azure
-  - bicep
-  - key-vault
-  - azure-functions
-  - static-web-apps
-  - app-insights
-  - infrastructure-as-code
-  - arm
 ---
 
 > Docs Hub: [Architecture Hub](../docs/architecture/README.md#agent-topology)

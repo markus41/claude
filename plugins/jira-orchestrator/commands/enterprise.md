@@ -1,13 +1,14 @@
 ---
 name: jira:enterprise
+intent: Enterprise features - notifications, approvals, portfolio, compliance, exports
+tags:
+  - jira-orchestrator
+  - command
+  - enterprise
+inputs: []
+risk: medium
+cost: medium
 description: Enterprise features - notifications, approvals, portfolio, compliance, exports
-arguments:
-  - name: action
-    description: Action (notify, approve, portfolio, release, batch, export, sla, compliance)
-    required: true
-  - name: options
-    description: Action-specific options
-    required: false
 ---
 
 # /jira:enterprise

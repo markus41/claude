@@ -1,3 +1,15 @@
+---
+name: home-assistant-architect:ha-energy
+intent: /ha-energy Command
+tags:
+  - home-assistant-architect
+  - command
+  - ha-energy
+inputs: []
+risk: medium
+cost: medium
+---
+
 # /ha-energy Command
 
 Configure and manage Home Assistant energy monitoring system.

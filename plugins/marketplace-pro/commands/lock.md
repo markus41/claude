@@ -1,10 +1,14 @@
 ---
 name: mp:lock
+intent: Manage deterministic lockfiles for reproducible plugin installations across environments
+tags:
+  - marketplace-pro
+  - command
+  - lock
+inputs: []
+risk: medium
+cost: medium
 description: Manage deterministic lockfiles for reproducible plugin installations across environments
-arguments:
-  - name: action
-    description: "Action: generate, check, diff, or install"
-    required: true
 allowed-tools:
   - Bash
   - Read

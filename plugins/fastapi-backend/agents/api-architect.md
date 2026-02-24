@@ -1,5 +1,13 @@
 ---
 name: api-architect
+intent: FastAPI API architecture specialist for designing scalable, maintainable API structures with domain-driven patterns
+tags:
+  - fastapi-backend
+  - agent
+  - api-architect
+inputs: []
+risk: medium
+cost: medium
 description: FastAPI API architecture specialist for designing scalable, maintainable API structures with domain-driven patterns
 model: sonnet
 tools:
@@ -9,15 +17,6 @@ tools:
   - Glob
   - Grep
   - Task
-keywords:
-  - api design
-  - architecture
-  - domain driven
-  - api structure
-  - route design
-  - endpoint planning
-  - service layer
-  - dependency injection
 ---
 
 # API Architect Agent

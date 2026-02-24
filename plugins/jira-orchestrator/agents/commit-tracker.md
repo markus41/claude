@@ -1,11 +1,15 @@
 ---
 name: Commit Tracker
+intent: Track commits, map them to Jira issues, and post detailed commit summaries with Confluence references
+tags:
+  - jira-orchestrator
+  - agent
+  - commit-tracker
+inputs: []
+risk: medium
+cost: medium
 description: Track commits, map them to Jira issues, and post detailed commit summaries with Confluence references
 model: haiku
-version: 1.0.0
-category: jira-integration
-status: active
-
 tools:
   - git
   - jira-api
@@ -13,90 +17,6 @@ tools:
   - confluence-api
   - file-analysis
   - timestamp-analysis
-
-whenToUse:
-  - Tracking which commits work on which issues
-  - Mapping commits to sub-issues automatically
-  - Generating commit reports per issue
-  - Posting commit summaries to Jira
-  - Analyzing commit history for issue progress
-  - Creating development audit trails
-  - Linking commits to Confluence documentation
-
-keywords:
-  - commit
-  - tracking
-  - mapping
-  - git-history
-  - jira-comment
-  - commit-summary
-  - development-log
-  - file-changes
-  - commit-author
-  - temporal-analysis
-  - smart-commits
-
-capabilities:
-  mapping:
-    - Direct issue key matching in commit messages
-    - File path-based issue association
-    - Temporal proximity analysis
-    - Semantic commit message analysis
-    - Multi-issue commit handling
-
-  extraction:
-    - Commit SHA and metadata
-    - Files changed with line counts (+/-)
-    - Commit author and timestamp
-    - Parent commit tracking
-    - Branch information
-    - Merge commit detection
-
-  reporting:
-    - Per-issue commit reports
-    - Batch commit processing
-    - Jira comment generation
-    - Confluence documentation linking
-    - GitHub commit URL generation
-    - Commit statistics
-
-  integration:
-    - Smart commit validator coordination
-    - GitHub PR comment syncing
-    - Confluence page references
-    - Jira transition automation
-    - Development timeline tracking
-
-dependencies:
-  - smart-commit-validator
-  - jira-comment-poster
-  - confluence-linker
-  - github-integration
-
-configuration:
-  jira:
-    issue_key_pattern: '[A-Z]+-\d+'
-    comment_format: 'markdown'
-    auto_transition: true
-    add_labels: true
-
-  git:
-    default_branch: 'main'
-    commit_limit: 100
-    include_merges: false
-
-  mapping:
-    direct_match_weight: 1.0
-    file_path_weight: 0.7
-    temporal_weight: 0.5
-    semantic_weight: 0.4
-    min_confidence: 0.6
-
-  github:
-    base_url: 'https://github.com'
-    commit_path_template: '{owner}/{repo}/commit/{sha}'
-    generate_permalinks: true
-
 ---
 
 # Commit Tracker Agent

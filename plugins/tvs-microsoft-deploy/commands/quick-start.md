@@ -1,5 +1,13 @@
 ---
 name: tvs:quick-start
+intent: End-to-end bootstrap for TVS Microsoft Deploy that can initialize a fresh repo or configure an existing repo to the required baseline
+tags:
+  - tvs-microsoft-deploy
+  - command
+  - quick-start
+inputs: []
+risk: medium
+cost: medium
 description: End-to-end bootstrap for TVS Microsoft Deploy that can initialize a fresh repo or configure an existing repo to the required baseline
 allowed-tools:
   - Bash

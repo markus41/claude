@@ -1,5 +1,13 @@
 ---
 name: tvs:identity-drift
+intent: Detect Entra identity drift and produce remediation recommendations
+tags:
+  - tvs-microsoft-deploy
+  - command
+  - identity-drift
+inputs: []
+risk: medium
+cost: medium
 description: Detect Entra identity drift and produce remediation recommendations
 allowed-tools:
   - Bash

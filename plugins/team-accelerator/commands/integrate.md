@@ -1,12 +1,14 @@
 ---
+name: team-accelerator:integrate
+intent: Generate and manage API integrations including REST clients, GraphQL schemas, database connections, and webhook handlers
+tags:
+  - team-accelerator
+  - command
+  - integrate
+inputs: []
+risk: medium
+cost: medium
 description: Generate and manage API integrations including REST clients, GraphQL schemas, database connections, and webhook handlers
-arguments:
-  - name: type
-    description: "Integration type: rest, graphql, database, webhook, or oauth"
-    required: true
-  - name: action
-    description: "Action: generate, test, or validate"
-    required: false
 ---
 
 # Integrate Command

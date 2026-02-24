@@ -1,3 +1,15 @@
+---
+name: home-assistant-architect:ha-diagnostics
+intent: Home Assistant Diagnostics Agent
+tags:
+  - home-assistant-architect
+  - agent
+  - ha-diagnostics
+inputs: []
+risk: medium
+cost: medium
+---
+
 # Home Assistant Diagnostics Agent
 
 Troubleshoot, diagnose, and resolve Home Assistant issues including entity problems, automation failures, integration errors, and performance issues.

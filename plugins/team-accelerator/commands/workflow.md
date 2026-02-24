@@ -1,15 +1,14 @@
 ---
+name: team-accelerator:workflow
+intent: Manage CI/CD workflows with GitHub Actions and Harness pipelines - create, validate, trigger, and monitor workflows
+tags:
+  - team-accelerator
+  - command
+  - workflow
+inputs: []
+risk: medium
+cost: medium
 description: Manage CI/CD workflows with GitHub Actions and Harness pipelines - create, validate, trigger, and monitor workflows
-arguments:
-  - name: action
-    description: "Action: create, validate, trigger, status, or list"
-    required: true
-  - name: platform
-    description: "Platform: github or harness (default: github)"
-    required: false
-  - name: workflow
-    description: "Workflow name or ID"
-    required: false
 ---
 
 # Workflow Command

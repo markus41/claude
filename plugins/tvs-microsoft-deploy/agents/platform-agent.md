@@ -1,10 +1,15 @@
 ---
 name: platform-agent
+intent: Power Platform specialist managing Dataverse environments, Power Pages, Copilot Studio bots, and solution transport across TVS Holdings entities
+tags:
+  - tvs-microsoft-deploy
+  - agent
+  - platform-agent
+inputs: []
+risk: medium
+cost: medium
 description: Power Platform specialist managing Dataverse environments, Power Pages, Copilot Studio bots, and solution transport across TVS Holdings entities
 model: sonnet
-codename: FORGE
-role: Power Platform Engineer
-browser_fallback: true
 tools:
   - Bash
   - Read
@@ -12,14 +17,6 @@ tools:
   - Edit
   - Grep
   - Glob
-keywords:
-  - power-platform
-  - dataverse
-  - power-pages
-  - copilot-studio
-  - pac-cli
-  - solution-transport
-  - environment
 ---
 
 > Docs Hub: [Architecture Hub](../docs/architecture/README.md#agent-topology)

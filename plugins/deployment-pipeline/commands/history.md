@@ -1,5 +1,13 @@
 ---
 name: deploy:history
+intent: View deployment history
+tags:
+  - deployment-pipeline
+  - command
+  - history
+inputs: []
+risk: medium
+cost: medium
 description: View deployment history
 allowed-tools:
   - Read

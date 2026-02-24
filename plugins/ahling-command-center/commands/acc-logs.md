@@ -1,7 +1,16 @@
 ---
+name: ahling-command-center:acc-logs
+intent: View and filter service logs with advanced search and tail capabilities
+tags:
+  - ahling-command-center
+  - command
+  - acc-logs
+inputs: []
+risk: medium
+cost: medium
 description: View and filter service logs with advanced search and tail capabilities
-argument-hint: "<service-name> [--follow] [--since TIME] [--filter PATTERN]"
-allowed-tools: ["Bash"]
+allowed-tools:
+  - Bash
 ---
 
 View, filter, and analyze ACC service logs with real-time tailing, pattern matching, time-based filtering, and multi-service aggregation.

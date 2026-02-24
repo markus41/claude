@@ -1,7 +1,19 @@
 ---
+name: ahling-command-center:acc-config
+intent: Generate service configuration with Vault secret integration
+tags:
+  - ahling-command-center
+  - command
+  - acc-config
+inputs: []
+risk: medium
+cost: medium
 description: Generate service configuration with Vault secret integration
-argument-hint: "<service-name> [--output PATH] [--vault-path PATH]"
-allowed-tools: ["Bash", "Read", "Write", "Grep"]
+allowed-tools:
+  - Bash
+  - Read
+  - Write
+  - Grep
 ---
 
 Generate service configuration files with automatic Vault secret injection, environment variable templating, and validation for ACC services.

@@ -1,3 +1,15 @@
+---
+name: home-assistant-architect:ha-dashboard-designer
+intent: Home Assistant Advanced Dashboard Designer Agent
+tags:
+  - home-assistant-architect
+  - agent
+  - ha-dashboard-designer
+inputs: []
+risk: medium
+cost: medium
+---
+
 # Home Assistant Advanced Dashboard Designer Agent
 
 Create stunning, highly customized Home Assistant dashboards with advanced layouts, animations, custom styling, and mobile-optimized designs.

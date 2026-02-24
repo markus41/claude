@@ -1,36 +1,15 @@
 ---
 name: api-architect
+intent: FastAPI design expert specializing in endpoint architecture, Pydantic models, async patterns, and API optimization
+tags:
+  - fullstack-iac
+  - agent
+  - api-architect
+inputs: []
+risk: medium
+cost: medium
 description: FastAPI design expert specializing in endpoint architecture, Pydantic models, async patterns, and API optimization
-version: 1.0.0
 model: sonnet
-type: developer
-category: fullstack-iac
-priority: high
-color: backend
-keywords:
-  - fastapi
-  - api
-  - endpoints
-  - pydantic
-  - async
-  - python
-  - rest
-  - swagger
-  - openapi
-when_to_use: |
-  Activate this agent when working with:
-  - FastAPI application design and architecture
-  - RESTful API endpoint development
-  - Pydantic model design and validation
-  - Async/await patterns and performance optimization
-  - Dependency injection and middleware
-  - OpenAPI/Swagger documentation
-  - API versioning strategies
-  - Background tasks and WebSocket integration
-dependencies:
-  - python-specialist
-  - database-architect
-  - security-hardener
 tools:
   - Read
   - Write

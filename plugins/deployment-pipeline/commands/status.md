@@ -1,5 +1,13 @@
 ---
 name: deploy:status
+intent: Check deployment pipeline status
+tags:
+  - deployment-pipeline
+  - command
+  - status
+inputs: []
+risk: medium
+cost: medium
 description: Check deployment pipeline status
 allowed-tools:
   - Read

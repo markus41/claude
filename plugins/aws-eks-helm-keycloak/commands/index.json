@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "plugin": "aws-eks-helm-keycloak",
+  "type": "commands",
+  "generatedBy": "scripts/generate-plugin-indexes.mjs",
+  "entries": [
+    {
+      "name": "aws-eks-helm-keycloak:debug",
+      "intent": "Smart debugging for EKS deployment issues with AI-powered analysis and fix suggestions",
+      "tags": [
+        "aws-eks-helm-keycloak",
+        "command",
+        "debug"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/debug.md"
+    },
+    {
+      "name": "aws-eks-helm-keycloak:dev-up",
+      "intent": "Start local development environment with EKS parity, Keycloak, and hot-reload",
+      "tags": [
+        "aws-eks-helm-keycloak",
+        "command",
+        "dev-up"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/dev-up.md"
+    },
+    {
+      "name": "aws-eks-helm-keycloak:pipeline-scaffold",
+      "intent": "Generate Harness pipeline for EKS Helm deployments with Keycloak integration",
+      "tags": [
+        "aws-eks-helm-keycloak",
+        "command",
+        "pipeline-scaffold"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/pipeline-scaffold.md"
+    },
+    {
+      "name": "aws-eks-helm-keycloak:preview",
+      "intent": "Create ephemeral preview environment for feature branch testing with unique URL and Keycloak client",
+      "tags": [
+        "aws-eks-helm-keycloak",
+        "command",
+        "preview"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/preview.md"
+    },
+    {
+      "name": "aws-eks-helm-keycloak:service-onboard",
+      "intent": "Onboard a new microservice to Harness for EKS deployment with Keycloak authentication",
+      "tags": [
+        "aws-eks-helm-keycloak",
+        "command",
+        "service-onboard"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/service-onboard.md"
+    },
+    {
+      "name": "aws-eks-helm-keycloak:setup",
+      "intent": "Interactive setup wizard for AWS EKS + Helm + Keycloak + Harness ecosystem",
+      "tags": [
+        "aws-eks-helm-keycloak",
+        "command",
+        "setup"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/setup.md"
+    },
+    {
+      "name": "aws-eks-helm-keycloak:ship",
+      "intent": "One-command deploy to any environment with automatic validation and Harness pipeline execution",
+      "tags": [
+        "aws-eks-helm-keycloak",
+        "command",
+        "ship"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/ship.md"
+    }
+  ]
+}

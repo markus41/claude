@@ -1,7 +1,18 @@
 ---
+name: ahling-command-center:acc-deploy
+intent: Deploy ACC services by phase with dependency checks and health validation
+tags:
+  - ahling-command-center
+  - command
+  - acc-deploy
+inputs: []
+risk: medium
+cost: medium
 description: Deploy ACC services by phase with dependency checks and health validation
-argument-hint: "<phase> [--service SERVICE] [--skip-health]"
-allowed-tools: ["Bash", "Read", "Grep"]
+allowed-tools:
+  - Bash
+  - Read
+  - Grep
 ---
 
 Deploy Ahling Command Center services by phase or individually with automatic dependency validation, pre-deployment checks, health monitoring, and rollback capabilities.

@@ -1,10 +1,14 @@
 ---
 name: mp:registry
+intent: Manage federated plugin registries with priority-based resolution and policy enforcement
+tags:
+  - marketplace-pro
+  - command
+  - registry
+inputs: []
+risk: medium
+cost: medium
 description: Manage federated plugin registries with priority-based resolution and policy enforcement
-arguments:
-  - name: action
-    description: "Action: add <name> <url>, remove <name>, list, or sync"
-    required: true
 allowed-tools:
   - Bash
   - Read

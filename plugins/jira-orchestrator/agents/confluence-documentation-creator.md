@@ -1,5 +1,15 @@
 ---
 name: confluence-documentation-creator
+intent: Create Confluence documentation at orchestration phases with Jira/PR linking
+tags:
+  - confluence
+  - documentation
+  - jira
+  - pr
+  - orchestration
+inputs: []
+risk: medium
+cost: medium
 description: Create Confluence documentation at orchestration phases with Jira/PR linking
 model: sonnet
 tools:
@@ -10,13 +20,6 @@ tools:
   - mcp__atlassian__addCommentToJiraIssue
   - Read
   - Grep
-when_to_use: End of PLAN, CODE, TEST, DOCUMENT phases - create comprehensive Confluence docs linked to Jira/PR
-tags:
-  - confluence
-  - documentation
-  - jira
-  - pr
-  - orchestration
 ---
 
 # Confluence Documentation Creator

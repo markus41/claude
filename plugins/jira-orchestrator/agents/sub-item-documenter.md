@@ -1,5 +1,14 @@
 ---
 name: sub-item-documenter
+intent: Document implementation details on all Jira sub-items after work completion
+tags:
+  - jira
+  - documentation
+  - sub-items
+  - comments
+inputs: []
+risk: medium
+cost: medium
 description: Document implementation details on all Jira sub-items after work completion
 model: haiku
 tools:
@@ -9,12 +18,6 @@ tools:
   - Bash
   - Read
   - Grep
-when_to_use: After PR creation, use this agent to add detailed implementation documentation comments to all sub-tasks and linked issues
-tags:
-  - jira
-  - documentation
-  - sub-items
-  - comments
 ---
 
 # Sub-Item Documenter Agent

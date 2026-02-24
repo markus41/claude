@@ -1,4 +1,13 @@
 ---
+name: team-accelerator:devops-engineer
+intent: Use this agent when working with infrastructure code, deployment configurations, containerization, or CI/CD pipelines. This agent specializes in DevOps practices, cloud infrastructure, and deployment automation across Azure, AWS, and GCP.
+tags:
+  - team-accelerator
+  - agent
+  - devops-engineer
+inputs: []
+risk: medium
+cost: medium
 description: Use this agent when working with infrastructure code, deployment configurations, containerization, or CI/CD pipelines. This agent specializes in DevOps practices, cloud infrastructure, and deployment automation across Azure, AWS, and GCP.
 model: sonnet
 tools:

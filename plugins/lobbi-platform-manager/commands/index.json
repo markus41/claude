@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "plugin": "lobbi-platform-manager",
+  "type": "commands",
+  "generatedBy": "scripts/generate-plugin-indexes.mjs",
+  "entries": [
+    {
+      "name": "lobbi-platform-manager:env-generate",
+      "intent": "Generate .env files for dev/staging/prod environments",
+      "tags": [
+        "lobbi-platform-manager",
+        "command",
+        "env-generate"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/env-generate.md"
+    },
+    {
+      "name": "lobbi-platform-manager:env-validate",
+      "intent": "Validate .env configuration against platform requirements",
+      "tags": [
+        "lobbi-platform-manager",
+        "command",
+        "env-validate"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/env-validate.md"
+    },
+    {
+      "name": "lobbi-platform-manager:health",
+      "intent": "Check health status of all 8 platform services",
+      "tags": [
+        "lobbi-platform-manager",
+        "command",
+        "health"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/health.md"
+    },
+    {
+      "name": "lobbi-platform-manager:keycloak-setup",
+      "intent": "Initialize Keycloak realm, client, and base configuration for multi-tenant setup",
+      "tags": [
+        "lobbi-platform-manager",
+        "command",
+        "keycloak-setup"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/keycloak-setup.md"
+    },
+    {
+      "name": "lobbi-platform-manager:keycloak-theme",
+      "intent": "Generate and deploy tenant-specific Keycloak themes",
+      "tags": [
+        "lobbi-platform-manager",
+        "command",
+        "keycloak-theme"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/keycloak-theme.md"
+    },
+    {
+      "name": "lobbi-platform-manager:keycloak-user",
+      "intent": "Create Keycloak users (single or bulk dummy users with org_id)",
+      "tags": [
+        "lobbi-platform-manager",
+        "command",
+        "keycloak-user"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/keycloak-user.md"
+    },
+    {
+      "name": "lobbi-platform-manager:service",
+      "intent": "Start, stop, restart, or check individual platform services",
+      "tags": [
+        "lobbi-platform-manager",
+        "command",
+        "service"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/service.md"
+    },
+    {
+      "name": "lobbi-platform-manager:test-gen",
+      "intent": "Generate Jest tests from API routes and service endpoints",
+      "tags": [
+        "lobbi-platform-manager",
+        "command",
+        "test-gen"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/test-gen.md"
+    }
+  ]
+}

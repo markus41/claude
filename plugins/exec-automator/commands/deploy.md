@@ -1,7 +1,15 @@
 ---
 name: exec:deploy
+intent: Deploy generated LangGraph workflows to execution environment with validation, monitoring, and rollback capabilities
+tags:
+  - exec-automator
+  - command
+  - deploy
+inputs: []
+risk: medium
+cost: medium
 description: Deploy generated LangGraph workflows to execution environment with validation, monitoring, and rollback capabilities
-argument-hint: "[workflow|all] [--environment=dev|staging|production] [--dry-run] [--validate-only] [--skip-tests]"
+model: sonnet
 allowed-tools:
   - Read
   - Write
@@ -15,7 +23,6 @@ allowed-tools:
   - mcp__exec-automator__simulate_workflow
   - mcp__obsidian__obsidian_append_content
   - mcp__obsidian__obsidian_get_file_contents
-model: sonnet
 ---
 
 # Executive Workflow Deployment Command

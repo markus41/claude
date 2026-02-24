@@ -1,3 +1,15 @@
+---
+name: home-assistant-architect:ha-sensor
+intent: /ha-sensor Command
+tags:
+  - home-assistant-architect
+  - command
+  - ha-sensor
+inputs: []
+risk: medium
+cost: medium
+---
+
 # /ha-sensor Command
 
 Configure and manage sensors, presence detection, and monitoring.

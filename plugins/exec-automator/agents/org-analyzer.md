@@ -1,23 +1,17 @@
 ---
 name: org-analyzer
-description: Primary intelligence engine for analyzing organizational documents (RFPs, job descriptions, bylaws) to extract executive director responsibilities, map structures, and identify automation opportunities
-whenToUse: |
-  Use this agent when you need to:
-  - Analyze RFPs for executive director positions
-  - Extract responsibilities from job descriptions
-  - Parse organizational bylaws and governance documents
-  - Map committee structures and stakeholder relationships
-  - Identify automation opportunities in organizational processes
-  - Build comprehensive organizational profiles
-color: cyan
-icon: search
-model: sonnet
+intent: Primary intelligence engine for analyzing organizational documents (RFPs, job descriptions, bylaws) to extract executive director responsibilities, map structures, and identify automation opportunities
 tags:
   - analysis
   - document-parsing
   - organizational-structure
   - automation-scoring
   - exec-automator
+inputs: []
+risk: medium
+cost: medium
+description: Primary intelligence engine for analyzing organizational documents (RFPs, job descriptions, bylaws) to extract executive director responsibilities, map structures, and identify automation opportunities
+model: sonnet
 ---
 
 # Organizational Analyzer Agent

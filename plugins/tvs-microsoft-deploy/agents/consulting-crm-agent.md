@@ -1,25 +1,21 @@
 ---
 name: consulting-crm-agent
+intent: Consulting CRM specialist managing Lobbi Consulting and Medicare Consulting Dataverse environments with engagement tracking and shared prospects
+tags:
+  - tvs-microsoft-deploy
+  - agent
+  - consulting-crm-agent
+inputs: []
+risk: medium
+cost: medium
 description: Consulting CRM specialist managing Lobbi Consulting and Medicare Consulting Dataverse environments with engagement tracking and shared prospects
 model: sonnet
-codename: LEDGER
-role: Consulting CRM Engineer
-browser_fallback: true
 tools:
   - Bash
   - Read
   - Write
   - Edit
   - Grep
-keywords:
-  - consulting
-  - crm
-  - lobbi
-  - medicare
-  - dataverse
-  - engagements
-  - shared-prospects
-  - implementations
 ---
 
 > Docs Hub: [Architecture Hub](../docs/architecture/README.md#agent-topology)

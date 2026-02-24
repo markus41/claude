@@ -1,20 +1,14 @@
 ---
 name: jira:sla
+intent: Monitor SLA status, configure SLA rules, generate SLA reports, and analyze SLA breaches
+tags:
+  - jira-orchestrator
+  - command
+  - sla
+inputs: []
+risk: medium
+cost: medium
 description: Monitor SLA status, configure SLA rules, generate SLA reports, and analyze SLA breaches
-arguments:
-  - name: action
-    description: status|configure|report|breach-analysis|dashboard
-    required: true
-  - name: target
-    description: Issue key, priority (critical|high|medium|low), or 'all'
-    required: false
-  - name: time_period
-    description: daily|weekly|monthly|quarterly|custom
-    default: weekly
-  - name: format
-    description: summary|detailed|json|csv
-    default: summary
-version: 1.0.0
 ---
 
 # Jira SLA Management Command

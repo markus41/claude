@@ -1,3 +1,15 @@
+---
+name: jira-orchestrator:harness-review
+intent: Harness PR Review Command
+tags:
+  - jira-orchestrator
+  - command
+  - harness-review
+inputs: []
+risk: medium
+cost: medium
+---
+
 # Harness PR Review Command
 
 Review pull requests in Harness Code repositories with Claude-powered analysis and Jira synchronization.

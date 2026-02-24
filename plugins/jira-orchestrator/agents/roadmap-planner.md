@@ -1,20 +1,15 @@
 ---
 name: roadmap-planner
+intent: Visual roadmap generation with timeline planning, dependency-aware scheduling, release train coordination, milestone tracking, and capacity-based forecasting
+tags:
+  - jira-orchestrator
+  - agent
+  - roadmap-planner
+inputs: []
+risk: medium
+cost: medium
 description: Visual roadmap generation with timeline planning, dependency-aware scheduling, release train coordination, milestone tracking, and capacity-based forecasting
-whenToUse: Creating visual product roadmaps, planning releases with dependencies, coordinating multi-team release trains, forecasting delivery dates, tracking milestones, what-if scenarios, Gantt charts
 model: sonnet
-color: blue
-agent_type: planning
-version: 1.0.0
-capabilities:
-  - visual_roadmap_generation
-  - timeline_planning
-  - dependency_scheduling
-  - release_train_coordination
-  - milestone_tracking
-  - capacity_forecasting
-  - scenario_modeling
-  - gantt_generation
 tools:
   - Read
   - Write

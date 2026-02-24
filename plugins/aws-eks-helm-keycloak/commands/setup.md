@@ -1,4 +1,13 @@
 ---
+name: aws-eks-helm-keycloak:setup
+intent: Interactive setup wizard for AWS EKS + Helm + Keycloak + Harness ecosystem
+tags:
+  - aws-eks-helm-keycloak
+  - command
+  - setup
+inputs: []
+risk: medium
+cost: medium
 description: Interactive setup wizard for AWS EKS + Helm + Keycloak + Harness ecosystem
 ---
 

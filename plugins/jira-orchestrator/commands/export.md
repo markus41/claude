@@ -1,28 +1,14 @@
 ---
 name: jira:export
+intent: Export Jira issues and generate reports in multiple formats with templates and scheduling
+tags:
+  - jira-orchestrator
+  - command
+  - export
+inputs: []
+risk: medium
+cost: medium
 description: Export Jira issues and generate reports in multiple formats with templates and scheduling
-arguments:
-  - name: type
-    description: Export type (issues, report, schedule)
-    required: true
-  - name: target
-    description: Target issues (JQL query or issue keys)
-    required: false
-  - name: --format
-    description: Output format (pdf, excel, csv, json)
-    required: false
-  - name: --template
-    description: Template name to use
-    required: false
-  - name: --output
-    description: Output file path
-    required: false
-  - name: --schedule
-    description: Cron expression for recurring export
-    required: false
-  - name: --email
-    description: Email recipients (comma-separated)
-    required: false
 ---
 
 # Jira Export & Reporting

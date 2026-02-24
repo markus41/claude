@@ -1,16 +1,17 @@
 ---
 name: exec:generate
-description: Generate production-ready LangGraph workflow code from scored automation designs
-color: orange
-icon: code
+intent: Generate production-ready LangGraph workflow code from scored automation designs
 tags:
   - generation
   - langgraph
   - langchain
   - code
   - automation
+inputs: []
+risk: medium
+cost: medium
+description: Generate production-ready LangGraph workflow code from scored automation designs
 model: claude-sonnet-4-5
-argument-hint: "[input-file] [--tier=full|partial|assisted|all] [--output=./generated-workflows] [--include-tests] [--include-docs]"
 allowed-tools:
   - Read
   - Write

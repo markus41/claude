@@ -1,10 +1,14 @@
 ---
 name: mp:setup
+intent: Interactive setup wizard for marketplace-pro — configures federation, security policies, and project intelligence in one command
+tags:
+  - marketplace-pro
+  - command
+  - setup
+inputs: []
+risk: medium
+cost: medium
 description: Interactive setup wizard for marketplace-pro — configures federation, security policies, and project intelligence in one command
-arguments:
-  - name: mode
-    description: "Setup mode: full, quick, security-only, federation-only (default: full)"
-    required: false
 allowed-tools:
   - Bash
   - Read

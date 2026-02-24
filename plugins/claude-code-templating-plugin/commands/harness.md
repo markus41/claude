@@ -1,14 +1,16 @@
 ---
 name: harness
-description: Harness CI/CD operations - create and validate pipelines, manage templates (step/stage/pipeline), list templates, and trigger deployments
-color: orange
-icon: zap
+intent: Harness CI/CD operations - create and validate pipelines, manage templates (step/stage/pipeline), list templates, and trigger deployments
 tags:
   - harness
   - cicd
   - pipeline
   - deployment
   - template
+inputs: []
+risk: medium
+cost: medium
+description: Harness CI/CD operations - create and validate pipelines, manage templates (step/stage/pipeline), list templates, and trigger deployments
 model: claude-sonnet-4-5
 ---
 

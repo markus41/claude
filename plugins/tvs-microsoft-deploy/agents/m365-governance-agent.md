@@ -1,10 +1,15 @@
 ---
 name: m365-governance-agent
+intent: Microsoft 365 governance lead for tenant controls, DLP, retention, and compliance across delivery workstreams
+tags:
+  - tvs-microsoft-deploy
+  - agent
+  - m365-governance-agent
+inputs: []
+risk: medium
+cost: medium
 description: Microsoft 365 governance lead for tenant controls, DLP, retention, and compliance across delivery workstreams
 model: opus
-codename: SENTINEL
-role: M365 Governance Lead
-browser_fallback: true
 tools:
   - Bash
   - Read
@@ -12,12 +17,6 @@ tools:
   - Edit
   - Grep
   - Glob
-keywords:
-  - m365
-  - governance
-  - compliance
-  - dlp
-  - retention
 ---
 
 # M365 Governance Agent (SENTINEL)

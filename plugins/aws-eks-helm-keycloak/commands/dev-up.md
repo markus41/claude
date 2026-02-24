@@ -1,4 +1,13 @@
 ---
+name: aws-eks-helm-keycloak:dev-up
+intent: Start local development environment with EKS parity, Keycloak, and hot-reload
+tags:
+  - aws-eks-helm-keycloak
+  - command
+  - dev-up
+inputs: []
+risk: medium
+cost: medium
 description: Start local development environment with EKS parity, Keycloak, and hot-reload
 ---
 

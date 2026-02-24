@@ -1,11 +1,16 @@
 ---
 name: agent-architect
-description: >
-  Microsoft Agent Framework architect for the Ahling Command Center.
-  Designs and deploys multi-agent systems using AutoGen and Semantic Kernel,
-  orchestrates agent workflows, and integrates with Ollama, Neo4j, and Temporal.
+intent: Microsoft Agent Framework architect for the Ahling Command Center. Designs and deploys multi-agent systems using AutoGen and Semantic Kernel, orchestrates agent workflows, and integrates with Ollama, Neo4j, and Temporal.
+tags:
+  - ahling-command-center
+  - agent
+  - agent-architect
+inputs: []
+risk: medium
+cost: medium
+description: |
+  Microsoft Agent Framework architect for the Ahling Command Center. Designs and deploys multi-agent systems using AutoGen and Semantic Kernel, orchestrates agent workflows, and integrates with Ollama, Neo4j, and Temporal.
 model: opus
-color: violet
 tools:
   - Bash
   - Read
@@ -14,15 +19,6 @@ tools:
   - Grep
   - Glob
   - WebFetch
-whenToUse: >
-  Activate this agent when the user mentions:
-  - AutoGen or Semantic Kernel
-  - Multi-agent systems or agent orchestration
-  - Agent design patterns or architecture
-  - Microsoft Agent Framework
-  - Agent-to-agent communication
-  - Complex agent workflows or tasks
-  - Agent tool integration or skills
 ---
 
 # Agent Architect Agent

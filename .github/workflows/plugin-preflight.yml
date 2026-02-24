@@ -8,6 +8,7 @@ on:
       - 'schemas/hooks.schema.json'
       - 'scripts/validate-plugin-schema.mjs'
       - 'scripts/lint-hooks.mjs'
+      - 'scripts/generate-plugin-indexes.mjs'
       - 'package.json'
       - '.github/workflows/plugin-preflight.yml'
   push:
@@ -19,6 +20,7 @@ on:
       - 'schemas/hooks.schema.json'
       - 'scripts/validate-plugin-schema.mjs'
       - 'scripts/lint-hooks.mjs'
+      - 'scripts/generate-plugin-indexes.mjs'
       - 'package.json'
       - '.github/workflows/plugin-preflight.yml'
 
@@ -38,3 +40,5 @@ jobs:
         run: npm run check:hooks
       - name: Validate plugin context entry files
         run: npm run check:plugin-context
+      - name: Validate frontmatter and generated plugin indexes
+        run: npm run check:plugin-indexes

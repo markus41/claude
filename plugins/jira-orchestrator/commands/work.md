@@ -1,16 +1,14 @@
 ---
 name: jira:work
+intent: Orchestrate Jira issue work - parallelize sub-issues, assign experts, execute 6-phase protocol, document via Harness
+tags:
+  - jira-orchestrator
+  - command
+  - work
+inputs: []
+risk: medium
+cost: medium
 description: Orchestrate Jira issue work - parallelize sub-issues, assign experts, execute 6-phase protocol, document via Harness
-arguments:
-  - name: issue_key
-    description: Jira issue key (e.g., ABC-123)
-    required: true
-flags:
-  global: [--verbose, --quiet, --json, --dry-run, --preset, --debug]
-  orchestration: [--agents, --model, --parallel, --phases, --checkpoint, --resume]
-  documentation: [--report, --report-to-confluence, --report-to-obsidian]
-presets: [speed-run, thorough, enterprise, hotfix]
-version: 2.2.0
 ---
 
 # Jira Issue Orchestration

@@ -1,7 +1,19 @@
 ---
+name: fullstack-iac:api
+intent: Scaffold FastAPI backend with production features - auth, database, API docs, Docker
+tags:
+  - fullstack-iac
+  - command
+  - api
+inputs: []
+risk: medium
+cost: medium
 description: Scaffold FastAPI backend with production features - auth, database, API docs, Docker
-argument-hint: "[name] --auth [jwt|oauth] --db [postgres|mongo]"
-allowed-tools: ["Write", "Bash", "Read", "Edit"]
+allowed-tools:
+  - Write
+  - Bash
+  - Read
+  - Edit
 ---
 
 # Zenith API Scaffold

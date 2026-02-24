@@ -1,7 +1,18 @@
 ---
+name: lobbi-platform-manager:keycloak-user
+intent: Create Keycloak users (single or bulk dummy users with org_id)
+tags:
+  - lobbi-platform-manager
+  - command
+  - keycloak-user
+inputs: []
+risk: medium
+cost: medium
 description: Create Keycloak users (single or bulk dummy users with org_id)
-argument-hint: "[--email EMAIL] [--password PASS] [--org-id ORG] [--count N]"
-allowed-tools: ["Bash", "Read", "Write"]
+allowed-tools:
+  - Bash
+  - Read
+  - Write
 ---
 
 Create Keycloak users for testing and development, supporting both single user creation with specific credentials and bulk dummy user generation for multi-tenant testing.

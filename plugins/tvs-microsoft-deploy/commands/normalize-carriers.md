@@ -1,5 +1,13 @@
 ---
 name: tvs:normalize-carriers
+intent: Carrier normalization sprint for TAIA FMO sale preparation
+tags:
+  - tvs-microsoft-deploy
+  - command
+  - normalize-carriers
+inputs: []
+risk: medium
+cost: medium
 description: Carrier normalization sprint for TAIA FMO sale preparation
 allowed-tools:
   - Bash

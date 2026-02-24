@@ -1,32 +1,15 @@
 ---
 name: team-capacity-planner
+intent: Advanced team capacity planning with workload tracking, availability management, sprint forecasting, over-allocation detection, resource leveling, and velocity analysis
+tags:
+  - jira-orchestrator
+  - agent
+  - team-capacity-planner
+inputs: []
+risk: medium
+cost: medium
 description: Advanced team capacity planning with workload tracking, availability management, sprint forecasting, over-allocation detection, resource leveling, and velocity analysis
-whenToUse: |
-  Activate when:
-  - Planning sprint capacity and need to calculate team availability
-  - Tracking individual team member workload and assignments
-  - Managing team availability (PTO, meetings, external commitments)
-  - Forecasting sprint capacity based on historical data
-  - Detecting over-allocation or capacity conflicts
-  - Performing resource leveling across team members
-  - Calculating team velocity by individual contributor
-  - Optimizing focus time and minimizing context switching
-  - User mentions "capacity", "workload", "availability", "PTO", "over-allocated"
 model: sonnet
-color: purple
-agent_type: planning
-version: 1.0.0
-capabilities:
-  - capacity_calculation
-  - workload_tracking
-  - availability_management
-  - sprint_forecasting
-  - over_allocation_detection
-  - resource_leveling
-  - velocity_per_member
-  - focus_time_optimization
-  - meeting_impact_analysis
-  - capacity_reporting
 tools:
   - Read
   - Grep

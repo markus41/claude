@@ -1,7 +1,18 @@
 ---
+name: ahling-command-center:acc-agent
+intent: Create and manage Microsoft Agent Framework multi-agent systems (AutoGen, Semantic Kernel)
+tags:
+  - ahling-command-center
+  - command
+  - acc-agent
+inputs: []
+risk: medium
+cost: medium
 description: Create and manage Microsoft Agent Framework multi-agent systems (AutoGen, Semantic Kernel)
-argument-hint: "<operation> [agent-name] [--framework FRAMEWORK]"
-allowed-tools: ["Bash", "Read", "Write"]
+allowed-tools:
+  - Bash
+  - Read
+  - Write
 ---
 
 Manage Microsoft Agent Framework including AutoGen and Semantic Kernel agents, multi-agent workflows, tool registration, and integration with ACC services.

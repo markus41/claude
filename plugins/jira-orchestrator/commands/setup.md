@@ -1,8 +1,6 @@
 ---
 name: jira:setup
-description: Interactive setup wizard v7.5.0 - OAuth auth, Neon PostgreSQL, Redis, Temporal workflows
-color: blue
-icon: settings
+intent: Interactive setup wizard v7.5.0 - OAuth auth, Neon PostgreSQL, Redis, Temporal workflows
 tags:
   - jira
   - setup
@@ -12,6 +10,10 @@ tags:
   - neon
   - redis
   - temporal
+inputs: []
+risk: medium
+cost: medium
+description: Interactive setup wizard v7.5.0 - OAuth auth, Neon PostgreSQL, Redis, Temporal workflows
 model: claude-sonnet-4-5
 ---
 

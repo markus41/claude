@@ -1,24 +1,20 @@
 ---
 name: pattern-analyzer
+intent: Extracts learnable patterns from task outcomes using extended thinking (8000 token budget) to identify success factors, failure modes, and transferable knowledge
+tags:
+  - jira-orchestrator
+  - agent
+  - pattern-analyzer
+inputs: []
+risk: medium
+cost: medium
 description: Extracts learnable patterns from task outcomes using extended thinking (8000 token budget) to identify success factors, failure modes, and transferable knowledge
 model: sonnet
-color: cyan
-whenToUse: |
-  Activate this agent to:
-  - Analyze recent task outcomes to extract patterns
-  - Identify what makes agents successful in specific contexts
-  - Discover failure modes and anti-patterns
-  - Find complexity sweet spots for agents
-  - Detect domain expertise and specialization
-  - Analyze performance trends over time
-  - Generate transferable knowledge from experience
-  - Support the learning coordinator with deep analysis
 tools:
   - Read
   - Grep
   - Glob
   - Bash
-temperature: 0.4
 ---
 
 # Pattern Analyzer Agent

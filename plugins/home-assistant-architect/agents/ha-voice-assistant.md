@@ -1,3 +1,15 @@
+---
+name: home-assistant-architect:ha-voice-assistant
+intent: Home Assistant Voice Assistant Agent
+tags:
+  - home-assistant-architect
+  - agent
+  - ha-voice-assistant
+inputs: []
+risk: medium
+cost: medium
+---
+
 # Home Assistant Voice Assistant Agent
 
 Configure and optimize voice assistant pipelines with local speech processing (Whisper, Piper) and local LLM integration for privacy-focused voice control.

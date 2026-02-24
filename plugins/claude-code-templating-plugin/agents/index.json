@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "plugin": "claude-code-templating-plugin",
+  "type": "agents",
+  "generatedBy": "scripts/generate-plugin-indexes.mjs",
+  "entries": [
+    {
+      "name": "claude-code-templating-plugin:README",
+      "intent": "Harness Expert Agent",
+      "tags": [
+        "claude-code-templating-plugin",
+        "agent",
+        "README"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/README.md"
+    },
+    {
+      "name": "archetype-creator",
+      "intent": "Creates reusable project archetypes from existing projects, designs template variable schemas, generates archetype configurations (Maven, Cookiecutter, Copier), and integrates with Structurizr for automatic architecture registration",
+      "tags": [
+        "claude-code-templating-plugin",
+        "agent",
+        "archetype-creator"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/archetype-creator.md"
+    },
+    {
+      "name": "codegen-agent",
+      "intent": "Code generation specialist that generates API clients from OpenAPI specs, creates models from schemas (JSON Schema, Prisma, GraphQL), builds boilerplate code, maintains consistency, and generates accompanying documentation",
+      "tags": [
+        "claude-code-templating-plugin",
+        "agent",
+        "codegen-agent"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/codegen-agent.md"
+    },
+    {
+      "name": "database-agent",
+      "intent": "Database specialist that designs database schemas, generates migrations, creates seed data, analyzes existing schemas, and recommends indexes and optimizations for data layer efficiency and scalability",
+      "tags": [
+        "claude-code-templating-plugin",
+        "agent",
+        "database-agent"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/database-agent.md"
+    },
+    {
+      "name": "harness-expert",
+      "intent": "Expert agent for Harness CI/CD pipeline generation, template management, service/environment configuration, and intelligent pipeline suggestions based on project analysis",
+      "tags": [
+        "claude-code-templating-plugin",
+        "agent",
+        "harness-expert"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/harness-expert.md"
+    },
+    {
+      "name": "scaffold-agent",
+      "intent": "Project scaffolding specialist that analyzes requirements, selects optimal templates, orchestrates generation, creates CLAUDE.md configurations, and validates output structure for new projects",
+      "tags": [
+        "claude-code-templating-plugin",
+        "agent",
+        "scaffold-agent"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/scaffold-agent.md"
+    },
+    {
+      "name": "testing-agent",
+      "intent": "Testing specialist that generates unit tests, creates integration test suites, builds test fixtures, analyzes code coverage, and suggests tests for uncovered paths to ensure comprehensive quality and confidence",
+      "tags": [
+        "claude-code-templating-plugin",
+        "agent",
+        "testing-agent"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/testing-agent.md"
+    }
+  ]
+}

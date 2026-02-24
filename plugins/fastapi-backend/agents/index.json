@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "plugin": "fastapi-backend",
+  "type": "agents",
+  "generatedBy": "scripts/generate-plugin-indexes.mjs",
+  "entries": [
+    {
+      "name": "api-architect",
+      "intent": "FastAPI API architecture specialist for designing scalable, maintainable API structures with domain-driven patterns",
+      "tags": [
+        "fastapi-backend",
+        "agent",
+        "api-architect"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/api-architect.md"
+    },
+    {
+      "name": "performance-optimizer",
+      "intent": "Performance optimization specialist for FastAPI applications, analyzing bottlenecks, implementing caching, and optimizing database queries",
+      "tags": [
+        "fastapi-backend",
+        "agent",
+        "performance-optimizer"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/performance-optimizer.md"
+    },
+    {
+      "name": "security-reviewer",
+      "intent": "Security-focused code reviewer for FastAPI applications, identifying vulnerabilities, OWASP compliance, and authentication/authorization issues",
+      "tags": [
+        "fastapi-backend",
+        "agent",
+        "security-reviewer"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/security-reviewer.md"
+    },
+    {
+      "name": "test-generator",
+      "intent": "Automated pytest test suite generator for FastAPI applications with async support, fixtures, and comprehensive coverage",
+      "tags": [
+        "fastapi-backend",
+        "agent",
+        "test-generator"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/test-generator.md"
+    }
+  ]
+}

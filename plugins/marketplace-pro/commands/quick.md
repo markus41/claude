@@ -1,13 +1,14 @@
 ---
 name: mp:quick
+intent: Rapid single-purpose marketplace actions — scan, trust, check, graph
+tags:
+  - marketplace-pro
+  - command
+  - quick
+inputs: []
+risk: medium
+cost: medium
 description: Rapid single-purpose marketplace actions — scan, trust, check, graph
-arguments:
-  - name: action
-    description: "Action to run: scan, trust, check, graph"
-    required: true
-  - name: target
-    description: "Target plugin name (required for 'trust' action)"
-    required: false
 allowed-tools:
   - Bash
   - Read

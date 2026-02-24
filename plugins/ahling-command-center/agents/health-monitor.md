@@ -1,25 +1,21 @@
 ---
 name: health-monitor
-description: >
-  Health monitoring agent for the Ahling Command Center.
-  Monitors service health, detects issues, tracks resource usage, and reports status
-  for 70+ services with real-time alerting and dashboards.
+intent: Health monitoring agent for the Ahling Command Center. Monitors service health, detects issues, tracks resource usage, and reports status for 70+ services with real-time alerting and dashboards.
+tags:
+  - ahling-command-center
+  - agent
+  - health-monitor
+inputs: []
+risk: medium
+cost: medium
+description: |
+  Health monitoring agent for the Ahling Command Center. Monitors service health, detects issues, tracks resource usage, and reports status for 70+ services with real-time alerting and dashboards.
 model: haiku
-color: cyan
 tools:
   - Bash
   - Read
   - Grep
   - Glob
-whenToUse: >
-  Activate this agent when the user mentions:
-  - Service health checks or status monitoring
-  - System health or infrastructure monitoring
-  - Resource usage or performance metrics
-  - Service availability or uptime tracking
-  - Health check failures or degraded services
-  - Monitoring dashboards or alerts
-  - Diagnostic checks or system status
 ---
 
 # Health Monitor Agent

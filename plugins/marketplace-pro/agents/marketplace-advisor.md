@@ -1,5 +1,13 @@
 ---
 name: marketplace-advisor
+intent: Specialized agent for marketplace-pro guidance, plugin selection, and troubleshooting
+tags:
+  - marketplace-pro
+  - agent
+  - marketplace-advisor
+inputs: []
+risk: medium
+cost: medium
 description: Specialized agent for marketplace-pro guidance, plugin selection, and troubleshooting
 model: haiku
 tools:

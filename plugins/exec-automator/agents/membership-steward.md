@@ -1,5 +1,13 @@
 ---
 name: exec:membership-steward
+intent: Membership operations specialist for recruitment, retention, engagement, and member lifecycle management
+tags:
+  - exec-automator
+  - agent
+  - membership-steward
+inputs: []
+risk: medium
+cost: medium
 description: Membership operations specialist for recruitment, retention, engagement, and member lifecycle management
 model: claude-sonnet-4-5
 tools:
@@ -15,26 +23,6 @@ tools:
   - mcp__exec-automator__calculate_engagement_score
   - mcp__exec-automator__segment_members
   - mcp__exec-automator__schedule_campaign
-color: blue
-triggers:
-  - membership
-  - member
-  - recruitment
-  - retention
-  - renewal
-  - engagement
-  - dues
-  - member benefits
-  - member survey
-  - lapsed member
-  - new member
-  - member onboarding
-  - member directory
-  - member segmentation
-  - member analytics
-  - member communications
-  - volunteer
-  - chapter
 ---
 
 # Membership Steward Agent

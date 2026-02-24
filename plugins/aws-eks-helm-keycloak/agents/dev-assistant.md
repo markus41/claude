@@ -1,14 +1,15 @@
 ---
 name: dev-assistant
+intent: Assists with local development, troubleshooting, and debugging for EKS deployments with Keycloak
+tags:
+  - aws-eks-helm-keycloak
+  - agent
+  - dev-assistant
+inputs: []
+risk: medium
+cost: medium
 description: Assists with local development, troubleshooting, and debugging for EKS deployments with Keycloak
 model: haiku
-triggers:
-  - dev help
-  - local development
-  - debug
-  - troubleshoot
-  - fix error
-  - not working
 allowed-tools:
   - Read
   - Write

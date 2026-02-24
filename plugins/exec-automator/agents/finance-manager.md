@@ -1,5 +1,13 @@
 ---
 name: finance-manager
+intent: Financial operations specialist for nonprofit budget, accounting, grants, and audit preparation
+tags:
+  - exec-automator
+  - agent
+  - finance-manager
+inputs: []
+risk: medium
+cost: medium
 description: Financial operations specialist for nonprofit budget, accounting, grants, and audit preparation
 model: sonnet
 tools:
@@ -15,27 +23,6 @@ tools:
   - mcp__exec-automator__prepare_budget
   - mcp__exec-automator__calculate_variance
   - mcp__exec-automator__audit_transaction
-color: green
-triggers:
-  - budget
-  - financial
-  - accounting
-  - grant
-  - audit
-  - invoice
-  - treasurer
-  - revenue
-  - expense
-  - financial statement
-  - cash flow
-  - accounts payable
-  - accounts receivable
-  - 990
-  - tax form
-  - fiscal
-  - variance
-  - dues
-  - donation
 ---
 
 # Finance Manager Agent

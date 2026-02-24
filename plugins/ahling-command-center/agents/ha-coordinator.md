@@ -1,11 +1,16 @@
 ---
 name: ha-coordinator
-description: >
-  Home Assistant coordination agent for the Ahling Command Center.
-  Coordinates automations, manages presence detection, optimizes energy usage,
-  integrates voice pipeline (Whisper/Piper), and orchestrates smart home devices.
+intent: Home Assistant coordination agent for the Ahling Command Center. Coordinates automations, manages presence detection, optimizes energy usage, integrates voice pipeline (Whisper/Piper), and orchestrates smart home devices.
+tags:
+  - ahling-command-center
+  - agent
+  - ha-coordinator
+inputs: []
+risk: medium
+cost: medium
+description: |
+  Home Assistant coordination agent for the Ahling Command Center. Coordinates automations, manages presence detection, optimizes energy usage, integrates voice pipeline (Whisper/Piper), and orchestrates smart home devices.
 model: sonnet
-color: indigo
 tools:
   - Bash
   - Read
@@ -13,15 +18,6 @@ tools:
   - Edit
   - Grep
   - Glob
-whenToUse: >
-  Activate this agent when the user mentions:
-  - Home Assistant automations or scripts
-  - Smart home device control or management
-  - Presence detection or occupancy
-  - Energy optimization or monitoring
-  - Voice assistant or Wyoming protocol
-  - MQTT integration or device discovery
-  - Home Assistant configuration or YAML
 ---
 
 # Home Assistant Coordinator Agent

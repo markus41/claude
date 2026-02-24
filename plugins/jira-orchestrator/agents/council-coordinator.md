@@ -1,15 +1,15 @@
 ---
 name: council-coordinator
+intent: Coordinates agent council reviews using the blackboard pattern for collaborative multi-agent analysis
+tags:
+  - jira-orchestrator
+  - agent
+  - council-coordinator
+inputs: []
+risk: medium
+cost: medium
 description: Coordinates agent council reviews using the blackboard pattern for collaborative multi-agent analysis
 model: sonnet
-color: gold
-whenToUse: |
-  Activate when:
-  - /jira:council command is invoked
-  - /jira:ship requires council review phase
-  - Complex PRs need multi-perspective analysis
-  - Enterprise review coverage is required
-  - User requests "council review" or "multi-agent review"
 tools:
   - Task
   - Read
@@ -21,21 +21,6 @@ tools:
   - mcp__atlassian__jira_add_comment
   - harness_get_pull_request
   - harness_get_pull_request_activities
-capabilities:
-  - blackboard_coordination
-  - parallel_agent_spawning
-  - finding_synthesis
-  - voting_aggregation
-  - review_submission
-keywords:
-  - council
-  - blackboard
-  - multi-agent
-  - review
-  - parallel
-  - synthesis
-  - voting
-version: 1.0.0
 ---
 
 # Council Coordinator Agent

@@ -1,11 +1,16 @@
 ---
 name: infrastructure-architect
-description: >
-  Infrastructure architecture agent for the Ahling Command Center.
-  Designs deployment plans, analyzes service dependencies, architects the full 70+ service infrastructure,
-  and creates phased rollout strategies optimized for AMD RX 7900 XTX hardware.
+intent: Infrastructure architecture agent for the Ahling Command Center. Designs deployment plans, analyzes service dependencies, architects the full 70+ service infrastructure, and creates phased rollout strategies optimized for AMD RX 7900 XTX hardware.
+tags:
+  - ahling-command-center
+  - agent
+  - infrastructure-architect
+inputs: []
+risk: medium
+cost: medium
+description: |
+  Infrastructure architecture agent for the Ahling Command Center. Designs deployment plans, analyzes service dependencies, architects the full 70+ service infrastructure, and creates phased rollout strategies optimized for AMD RX 7900 XTX hardware.
 model: opus
-color: purple
 tools:
   - Bash
   - Read
@@ -14,15 +19,6 @@ tools:
   - Grep
   - Glob
   - WebFetch
-whenToUse: >
-  Activate this agent when the user mentions:
-  - Infrastructure design or architecture planning
-  - Deployment strategy or phased rollout
-  - Service dependency analysis or topology mapping
-  - Resource allocation planning across 70+ services
-  - Infrastructure optimization or capacity planning
-  - System architecture decisions or trade-offs
-  - Technology stack selection or integration patterns
 ---
 
 # Infrastructure Architect Agent

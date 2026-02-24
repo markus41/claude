@@ -1,5 +1,13 @@
 ---
 name: tvs:taia-readiness
+intent: TAIA transition readiness check driven by control-plane wind-down overlay
+tags:
+  - tvs-microsoft-deploy
+  - command
+  - taia-readiness
+inputs: []
+risk: medium
+cost: medium
 description: TAIA transition readiness check driven by control-plane wind-down overlay
 allowed-tools:
   - Bash

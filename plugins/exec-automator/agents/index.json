@@ -1,0 +1,153 @@
+{
+  "version": 1,
+  "plugin": "exec-automator",
+  "type": "agents",
+  "generatedBy": "scripts/generate-plugin-indexes.mjs",
+  "entries": [
+    {
+      "name": "admin-coordinator",
+      "intent": "Administrative operations coordinator for executive calendar management, communication routing, travel coordination, virtual office operations, staff coordination, and administrative systems integration",
+      "tags": [
+        "exec-automator",
+        "agent",
+        "admin-coordinator"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/admin-coordinator.md"
+    },
+    {
+      "name": "exec:communications-director",
+      "intent": "Communications specialist managing newsletters, media relations, member communications, brand voice, crisis response, and content strategy for associations",
+      "tags": [
+        "exec-automator",
+        "agent",
+        "communications-director"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/communications-director.md"
+    },
+    {
+      "name": "compliance-monitor",
+      "intent": "Regulatory compliance specialist for nonprofit organizations, managing legal requirements, filings, and governance compliance",
+      "tags": [
+        "exec-automator",
+        "agent",
+        "compliance-monitor"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/compliance-monitor.md"
+    },
+    {
+      "name": "event-orchestrator",
+      "intent": "Event planning and management specialist for conferences, webinars, and association gatherings",
+      "tags": [
+        "exec-automator",
+        "agent",
+        "event-orchestrator"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/event-orchestrator.md"
+    },
+    {
+      "name": "finance-manager",
+      "intent": "Financial operations specialist for nonprofit budget, accounting, grants, and audit preparation",
+      "tags": [
+        "exec-automator",
+        "agent",
+        "finance-manager"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/finance-manager.md"
+    },
+    {
+      "name": "meeting-facilitator",
+      "intent": "Board and committee meeting automation agent handling scheduling, agendas, minutes, and follow-up",
+      "tags": [
+        "exec-automator",
+        "agent",
+        "meeting-facilitator"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/meeting-facilitator.md"
+    },
+    {
+      "name": "exec:membership-steward",
+      "intent": "Membership operations specialist for recruitment, retention, engagement, and member lifecycle management",
+      "tags": [
+        "exec-automator",
+        "agent",
+        "membership-steward"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/membership-steward.md"
+    },
+    {
+      "name": "org-analyzer",
+      "intent": "Primary intelligence engine for analyzing organizational documents (RFPs, job descriptions, bylaws) to extract executive director responsibilities, map structures, and identify automation opportunities",
+      "tags": [
+        "analysis",
+        "document-parsing",
+        "organizational-structure",
+        "automation-scoring",
+        "exec-automator"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/org-analyzer.md"
+    },
+    {
+      "name": "social-media-manager",
+      "intent": "Autonomous social media management agent specializing in content strategy, multi-platform scheduling, engagement automation, and analytics-driven optimization across LinkedIn, Twitter/X, Facebook, and Instagram.",
+      "tags": [
+        "exec-automator",
+        "agent",
+        "social-media-manager"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/social-media-manager.md"
+    },
+    {
+      "name": "sponsor-relations",
+      "intent": "Sponsorship and partner management specialist for revenue generation, prospect development, fulfillment tracking, and relationship cultivation",
+      "tags": [
+        "exec-automator",
+        "agent",
+        "sponsor-relations"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/sponsor-relations.md"
+    },
+    {
+      "name": "workflow-designer",
+      "intent": "LangGraph workflow architect that designs optimal state machines for process automation",
+      "tags": [
+        "exec-automator",
+        "agent",
+        "workflow-designer"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/workflow-designer.md"
+    }
+  ]
+}

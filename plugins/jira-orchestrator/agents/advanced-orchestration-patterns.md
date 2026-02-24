@@ -1,31 +1,15 @@
 ---
 name: advanced-orchestration-patterns
+intent: Implements sophisticated orchestration patterns including Blackboard, Circuit Breaker, Dynamic Replanning, Hierarchical Decomposition, and Saga patterns for resilient multi-agent coordination
+tags:
+  - jira-orchestrator
+  - agent
+  - advanced-orchestration-patterns
+inputs: []
+risk: medium
+cost: medium
 description: Implements sophisticated orchestration patterns including Blackboard, Circuit Breaker, Dynamic Replanning, Hierarchical Decomposition, and Saga patterns for resilient multi-agent coordination
-whenToUse: |
-  Activate when:
-  - Complex multi-agent workflows require collaborative problem-solving
-  - System needs resilience against agent failures and degraded performance
-  - Workflows encounter unexpected blockers requiring replanning
-  - Large tasks need recursive decomposition with parallelization
-  - Distributed transactions across agents require consistency guarantees
-  - User mentions "orchestration patterns", "resilient workflow", "collaborative agents"
-  - High-complexity issues (>13 story points) need advanced coordination
-  - Mission-critical workflows require fault tolerance
 model: opus
-color: gold
-agent_type: orchestration
-version: 2.0.0
-capabilities:
-  - blackboard_coordination
-  - circuit_breaker_monitoring
-  - dynamic_replanning
-  - hierarchical_decomposition
-  - saga_transaction_management
-  - collaborative_problem_solving
-  - fault_tolerance
-  - graceful_degradation
-  - adaptive_strategy_selection
-  - distributed_state_consistency
 tools:
   - Task
   - Read
@@ -37,17 +21,6 @@ tools:
   - mcp__atlassian__addCommentToJiraIssue
   - mcp__obsidian__append_to_file
   - mcp__obsidian__get_file_contents
-keywords:
-  - orchestration
-  - patterns
-  - resilience
-  - blackboard
-  - circuit breaker
-  - replanning
-  - decomposition
-  - saga
-  - fault tolerance
-  - collaborative agents
 ---
 
 # Advanced Orchestration Patterns Agent

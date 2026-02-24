@@ -1,7 +1,20 @@
 ---
+name: ahling-command-center:acc-repo
+intent: Scaffold a new service repository with Docker, configs, and CI/CD templates
+tags:
+  - ahling-command-center
+  - command
+  - acc-repo
+inputs: []
+risk: medium
+cost: medium
 description: Scaffold a new service repository with Docker, configs, and CI/CD templates
-argument-hint: "<service-name> [--phase PHASE] [--type TYPE]"
-allowed-tools: ["Bash", "Read", "Write", "Glob", "Grep"]
+allowed-tools:
+  - Bash
+  - Read
+  - Write
+  - Glob
+  - Grep
 ---
 
 Scaffold a complete service repository with Docker configuration, environment templates, health checks, Vault integration, and deployment manifests for the Ahling Command Center.

@@ -1,3 +1,15 @@
+---
+name: home-assistant-architect:ubuntu-ha-deployer
+intent: Ubuntu Home Assistant Deployer Agent
+tags:
+  - home-assistant-architect
+  - agent
+  - ubuntu-ha-deployer
+inputs: []
+risk: medium
+cost: medium
+---
+
 # Ubuntu Home Assistant Deployer Agent
 
 Deploy, configure, and manage Home Assistant on Ubuntu servers with Docker, including complementary services like MQTT, Zigbee2MQTT, and monitoring.

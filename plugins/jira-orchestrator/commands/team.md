@@ -1,24 +1,14 @@
 ---
 name: jira:team
+intent: Team and resource management - capacity, skills, workload, burnout, and forecasting
+tags:
+  - jira-orchestrator
+  - command
+  - team
+inputs: []
+risk: medium
+cost: medium
 description: Team and resource management - capacity, skills, workload, burnout, and forecasting
-arguments:
-  - name: action
-    description: Action (capacity|skills|workload|balance|burnout|forecast|report)
-    required: true
-  - name: team_id
-    description: Team identifier
-    required: false
-    default: default
-  - name: sprint_name
-    description: Sprint name for analysis
-    required: false
-  - name: member_name
-    description: Specific team member
-    required: false
-  - name: skill_name
-    description: Specific skill
-    required: false
-version: 1.0.0
 ---
 
 # Team & Resource Management

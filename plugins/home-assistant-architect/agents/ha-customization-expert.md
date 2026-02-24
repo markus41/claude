@@ -1,3 +1,15 @@
+---
+name: home-assistant-architect:ha-customization-expert
+intent: Home Assistant Customization Expert Agent
+tags:
+  - home-assistant-architect
+  - agent
+  - ha-customization-expert
+inputs: []
+risk: medium
+cost: medium
+---
+
 # Home Assistant Customization Expert Agent
 
 Customize and extend Home Assistant with themes, custom components, entity configurations, blueprints, and HACS integrations.

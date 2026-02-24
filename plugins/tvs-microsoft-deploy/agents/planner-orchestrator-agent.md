@@ -1,10 +1,15 @@
 ---
 name: planner-orchestrator-agent
+intent: Engagement planning orchestrator that sequences specialized Microsoft delivery agents across sale prep and client delivery phases
+tags:
+  - tvs-microsoft-deploy
+  - agent
+  - planner-orchestrator-agent
+inputs: []
+risk: medium
+cost: medium
 description: Engagement planning orchestrator that sequences specialized Microsoft delivery agents across sale prep and client delivery phases
 model: sonnet
-codename: CONDUCTOR
-role: Delivery Orchestrator
-browser_fallback: true
 tools:
   - Read
   - Write
@@ -12,12 +17,6 @@ tools:
   - Grep
   - Glob
   - Task
-keywords:
-  - planning
-  - orchestration
-  - handoff
-  - escalation
-  - phase-gates
 ---
 
 # Planner Orchestrator Agent (CONDUCTOR)

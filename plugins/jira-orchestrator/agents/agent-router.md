@@ -1,9 +1,15 @@
 ---
 name: agent-router
+intent: Dynamic agent discovery and routing - queries main registry to select specialized code agents based on Jira context, file patterns, and task keywords
+tags:
+  - jira-orchestrator
+  - agent
+  - agent-router
+inputs: []
+risk: medium
+cost: medium
 description: Dynamic agent discovery and routing - queries main registry to select specialized code agents based on Jira context, file patterns, and task keywords
 model: haiku
-color: yellow
-whenToUse: When /jira:work, /jira:commit, or /jira:pr needs to select domain-specific agents based on Jira context, file patterns, and orchestration phase
 tools:
   - Read
   - Grep

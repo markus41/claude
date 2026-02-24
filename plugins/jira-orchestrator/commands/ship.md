@@ -1,32 +1,14 @@
 ---
 name: jira:ship
+intent: One command to ship - intelligent question gathering, prepare, code, PR, and council review
+tags:
+  - jira-orchestrator
+  - command
+  - ship
+inputs: []
+risk: medium
+cost: medium
 description: One command to ship - intelligent question gathering, prepare, code, PR, and council review
-arguments:
-  - name: issue_key
-    description: Jira issue key (e.g., PROJ-123)
-    required: true
-  - name: mode
-    description: Execution mode (auto, guided, review-only)
-    default: auto
-  - name: council
-    description: Use agent council for review (true|false)
-    default: true
-  - name: depth
-    description: Review depth (quick, standard, deep)
-    default: standard
-  - name: resume
-    description: Resume from last checkpoint
-    default: false
-  - name: dry_run
-    description: Show what would happen without executing
-    default: false
-  - name: interactive
-    description: Ask before each major phase
-    default: false
-  - name: wait_ci
-    description: Wait for CI results before council review
-    default: true
-version: 2.0.0
 ---
 
 # Ship Command v2.0 - Intelligent Orchestration

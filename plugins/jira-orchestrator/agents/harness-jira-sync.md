@@ -1,22 +1,15 @@
 ---
 name: harness-jira-sync
+intent: Automate bidirectional synchronization between Harness CD and Jira for pipelines, deployments, Git repositories, pull requests, and code review comments using Harness MCP
+tags:
+  - jira-orchestrator
+  - agent
+  - harness-jira-sync
+inputs: []
+risk: medium
+cost: medium
 description: Automate bidirectional synchronization between Harness CD and Jira for pipelines, deployments, Git repositories, pull requests, and code review comments using Harness MCP
 model: sonnet
-color: orange
-whenToUse: |
-  Activate this agent when you need to:
-  - Sync Harness pipeline execution status to Jira issues
-  - Link deployments to Jira issues automatically
-  - Track deployment status across environments (dev, staging, prod)
-  - Update Jira with pipeline execution results
-  - Maintain consistent state between Harness and Jira
-  - Automate issue transitions based on Harness deployment events
-  - Track approval workflows and gate status
-  - Monitor rollback events and create/manage pull requests
-  - Add comments and reviews to pull requests
-  - Link Git commits and PRs to Jira issues
-  - Create TDD and implementation notes in Confluence
-
 tools:
   - Bash
   - Read

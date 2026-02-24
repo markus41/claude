@@ -1,28 +1,23 @@
 ---
 name: checkpoint-pr-manager
-description: Manage incremental draft PRs during CODE phase when splitting strategy requires multiple PRs
-model: haiku
-color: blue
-whenToUse: |
-  Activate when:
-  - PR size estimator recommends splitting into multiple PRs
-  - Sub-item group is complete and ready for early PR
-  - Need to create checkpoint PRs during CODE phase
-
-  This agent handles multi-PR strategies with proper dependency tracking.
-
-tools:
-  - Bash
-  - Read
-  - Write
-  - mcp__atlassian__getJiraIssue
-  - mcp__atlassian__addCommentToJiraIssue
+intent: Manage incremental draft PRs during CODE phase when splitting strategy requires multiple PRs
 tags:
   - jira
   - pr
   - checkpoint
   - incremental
   - splitting
+inputs: []
+risk: medium
+cost: medium
+description: Manage incremental draft PRs during CODE phase when splitting strategy requires multiple PRs
+model: haiku
+tools:
+  - Bash
+  - Read
+  - Write
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__addCommentToJiraIssue
 ---
 
 # Checkpoint PR Manager Agent

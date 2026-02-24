@@ -1,5 +1,13 @@
 ---
 name: mp:verify
+intent: Verify signature integrity of a .cpkg plugin bundle
+tags:
+  - marketplace-pro
+  - command
+  - verify
+inputs: []
+risk: medium
+cost: medium
 description: Verify signature integrity of a .cpkg plugin bundle
 allowed-tools:
   - Read

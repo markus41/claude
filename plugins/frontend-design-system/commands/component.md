@@ -1,8 +1,20 @@
 ---
 name: component
+intent: Generate styled UI components with design system consistency
+tags:
+  - frontend-design-system
+  - command
+  - component
+inputs: []
+risk: medium
+cost: medium
 description: Generate styled UI components with design system consistency
-argument-hint: "<type> [style]"
-allowed-tools: ["Read", "Write", "Glob", "Grep", "Bash"]
+allowed-tools:
+  - Read
+  - Write
+  - Glob
+  - Grep
+  - Bash
 ---
 
 # Styled Component Generation Command

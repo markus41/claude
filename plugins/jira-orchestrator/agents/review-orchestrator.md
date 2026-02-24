@@ -1,5 +1,15 @@
 ---
 name: review-orchestrator
+intent: Orchestrate code review workflows from creation to completion with progress tracking
+tags:
+  - jira
+  - review
+  - pr
+  - orchestration
+  - progress
+inputs: []
+risk: medium
+cost: medium
 description: Orchestrate code review workflows from creation to completion with progress tracking
 model: sonnet
 tools:
@@ -10,19 +20,6 @@ tools:
   - mcp__atlassian__jira_transition_issue
   - Bash
   - Read
-whenToUse: |
-  Activate to:
-  - Create bite-sized review tasks from PR changes
-  - Track review progress across all chunks
-  - Coordinate reviewer assignments
-  - Update progress dashboards
-  - Manage review state transitions
-tags:
-  - jira
-  - review
-  - pr
-  - orchestration
-  - progress
 ---
 
 # Review Orchestrator Agent

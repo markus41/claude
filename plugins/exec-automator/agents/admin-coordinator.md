@@ -1,5 +1,13 @@
 ---
 name: admin-coordinator
+intent: Administrative operations coordinator for executive calendar management, communication routing, travel coordination, virtual office operations, staff coordination, and administrative systems integration
+tags:
+  - exec-automator
+  - agent
+  - admin-coordinator
+inputs: []
+risk: medium
+cost: medium
 description: Administrative operations coordinator for executive calendar management, communication routing, travel coordination, virtual office operations, staff coordination, and administrative systems integration
 model: sonnet
 tools:
@@ -19,52 +27,6 @@ tools:
   - mcp__exec-automator__route_communication
   - mcp__exec-automator__delegate_task
   - mcp__exec-automator__track_project
-color: orange
-icon: briefcase
-whenToUse: |
-  Activate this agent when you need to handle administrative operations including:
-  - Executive calendar management and meeting coordination
-  - Email triage, communication routing, and correspondence tracking
-  - Travel booking, itinerary planning, and expense management
-  - Virtual office operations and vendor coordination
-  - Staff task delegation and resource allocation
-  - Document lifecycle management and filing systems
-  - Administrative systems (CRM, project management, office software)
-  - Office management, supplies, and facility coordination
-  - Policy development, compliance tracking, and record keeping
-triggers:
-  - admin
-  - administration
-  - administrative
-  - office operations
-  - headquarters
-  - calendar
-  - schedule
-  - meeting
-  - appointment
-  - email
-  - communication
-  - correspondence
-  - travel
-  - booking
-  - itinerary
-  - expense
-  - reimbursement
-  - document management
-  - filing
-  - vendor
-  - contract
-  - policy
-  - compliance
-  - record keeping
-  - office management
-  - facility
-  - procurement
-  - staff coordination
-  - task delegation
-  - project tracking
-  - crm
-  - office software
 ---
 
 # Admin Coordinator Agent

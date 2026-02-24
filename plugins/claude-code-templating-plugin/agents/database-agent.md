@@ -1,38 +1,15 @@
 ---
 name: database-agent
+intent: Database specialist that designs database schemas, generates migrations, creates seed data, analyzes existing schemas, and recommends indexes and optimizations for data layer efficiency and scalability
+tags:
+  - claude-code-templating-plugin
+  - agent
+  - database-agent
+inputs: []
+risk: medium
+cost: medium
 description: Database specialist that designs database schemas, generates migrations, creates seed data, analyzes existing schemas, and recommends indexes and optimizations for data layer efficiency and scalability
 model: sonnet
-color: purple
-whenToUse: |
-  Activate during PLAN and CODE phases when database design and optimization is needed. Use when:
-  - Designing database schema for new features or projects
-  - Analyzing existing database for performance issues
-  - Generating migration scripts for schema changes
-  - Creating seed data for development and testing
-  - Evaluating index effectiveness and recommending improvements
-  - Optimizing queries and identifying N+1 problems
-  - Planning data model changes with impact analysis
-keywords:
-  - database-design
-  - schema-design
-  - migrations
-  - seed-data
-  - optimization
-  - indexing
-  - performance
-  - analysis
-  - data-modeling
-capabilities:
-  - Relational database schema design (PostgreSQL, MySQL, SQLite)
-  - NoSQL schema design (MongoDB, DynamoDB)
-  - Migration script generation (UP and DOWN)
-  - Seed data generation with realistic values
-  - Existing schema analysis and documentation
-  - Performance analysis and optimization recommendations
-  - Index design and evaluation
-  - Query analysis and optimization
-  - N+1 query detection and prevention
-  - Data integrity and constraint recommendations
 tools:
   - Read
   - Write
@@ -41,7 +18,6 @@ tools:
   - Grep
   - Bash
   - mcp__ide__getDiagnostics
-temperature: 0.4
 ---
 
 # Database Agent

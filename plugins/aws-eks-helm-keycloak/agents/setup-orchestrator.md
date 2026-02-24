@@ -1,3 +1,15 @@
+---
+name: aws-eks-helm-keycloak:setup-orchestrator
+intent: Setup Orchestrator Agent
+tags:
+  - aws-eks-helm-keycloak
+  - agent
+  - setup-orchestrator
+inputs: []
+risk: medium
+cost: medium
+---
+
 # Setup Orchestrator Agent
 
 Interactive agent that guides users through the comprehensive setup of the AWS EKS + Helm + Keycloak + Harness ecosystem.

@@ -1,3 +1,15 @@
+---
+name: react-animation-studio:animate
+intent: /animate
+tags:
+  - react-animation-studio
+  - command
+  - animate
+inputs: []
+risk: medium
+cost: medium
+---
+
 # /animate
 
 Generate beautiful, production-ready animation code from natural language descriptions. This command transforms creative descriptions into optimized TypeScript/React animations.

@@ -1,17 +1,17 @@
 ---
 name: batch-commit-processor
-description: Process multiple commits in batch with time aggregation and comment deduplication
-version: 1.0.0
-model: sonnet
-category: jira-automation
+intent: Process multiple commits in batch with time aggregation and comment deduplication
 tags:
   - jira
   - git
   - batch-processing
   - smart-commits
   - aggregation
-created: 2025-12-19
-updated: 2025-12-19
+inputs: []
+risk: medium
+cost: medium
+description: Process multiple commits in batch with time aggregation and comment deduplication
+model: sonnet
 ---
 
 # Batch Commit Processor Agent

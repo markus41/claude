@@ -1,25 +1,21 @@
 ---
 name: test-generator
-description: >
-  Automated test generation agent for the-lobbi/keycloak-alpha repository.
-  Generates Jest test suites from Express routes with Keycloak auth mocking,
-  MongoDB/PostgreSQL fixtures, and integration test patterns for microservices.
+intent: Automated test generation agent for the-lobbi/keycloak-alpha repository. Generates Jest test suites from Express routes with Keycloak auth mocking, MongoDB/PostgreSQL fixtures, and integration test patterns for microservices.
+tags:
+  - lobbi-platform-manager
+  - agent
+  - test-generator
+inputs: []
+risk: medium
+cost: medium
+description: |
+  Automated test generation agent for the-lobbi/keycloak-alpha repository. Generates Jest test suites from Express routes with Keycloak auth mocking, MongoDB/PostgreSQL fixtures, and integration test patterns for microservices.
 model: haiku
-color: green
 tools:
   - Read
   - Write
   - Grep
   - Glob
-whenToUse: >
-  Activate this agent when the user mentions:
-  - Generating tests, test files, or test suites
-  - Writing Jest tests for Express routes or controllers
-  - Creating test coverage for API endpoints
-  - Mocking Keycloak authentication in tests
-  - Setting up test fixtures for MongoDB or PostgreSQL
-  - Integration testing between microservices
-  - Test automation or test scaffolding
 ---
 
 # Test Generator Agent

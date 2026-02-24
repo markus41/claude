@@ -1,0 +1,255 @@
+{
+  "version": 1,
+  "plugin": "tvs-microsoft-deploy",
+  "type": "agents",
+  "generatedBy": "scripts/generate-plugin-indexes.mjs",
+  "entries": [
+    {
+      "name": "analytics-agent",
+      "intent": "Microsoft Fabric analytics architect designing OneLake lakehouses, workspaces, notebooks, and Power BI semantic models across all TVS Holdings entities",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "agent",
+        "analytics-agent"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/analytics-agent.md"
+    },
+    {
+      "name": "azure-agent",
+      "intent": "Azure IaC specialist deploying Bicep templates, managing Key Vault, Azure Functions, Static Web Apps, and App Insights for TVS Holdings",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "agent",
+        "azure-agent"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/azure-agent.md"
+    },
+    {
+      "name": "browser-fallback-agent",
+      "intent": "Playwright browser automation agent handling Microsoft portal operations that lack CLI or API coverage, with screenshot verification",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "agent",
+        "browser-fallback-agent"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/browser-fallback-agent.md"
+    },
+    {
+      "name": "carrier-normalization-agent",
+      "intent": "TAIA carrier data orchestrator normalizing carrier names, commission structures, and agent hierarchies for FMO sale preparation",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "agent",
+        "carrier-normalization-agent"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/carrier-normalization-agent.md"
+    },
+    {
+      "name": "client-solution-architect-agent",
+      "intent": "Client delivery architect translating business goals into phased Microsoft implementation plans and acceptance criteria",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "agent",
+        "client-solution-architect-agent"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/client-solution-architect-agent.md"
+    },
+    {
+      "name": "comms-agent",
+      "intent": "Teams and Exchange specialist provisioning workspaces, channels, shared mailboxes, and HIPAA-aware communications for TVS Holdings",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "agent",
+        "comms-agent"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/comms-agent.md"
+    },
+    {
+      "name": "consulting-crm-agent",
+      "intent": "Consulting CRM specialist managing Lobbi Consulting and Medicare Consulting Dataverse environments with engagement tracking and shared prospects",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "agent",
+        "consulting-crm-agent"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/consulting-crm-agent.md"
+    },
+    {
+      "name": "data-agent",
+      "intent": "Dataverse schema specialist managing tables, columns, relationships, solution packaging, and data migration for TVS and Consulting environments",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "agent",
+        "data-agent"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/data-agent.md"
+    },
+    {
+      "name": "embedded-analytics-agent",
+      "intent": "Embedded analytics specialist for Power BI embedding, tenant isolation, and application-facing semantic model access",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "agent",
+        "embedded-analytics-agent"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/embedded-analytics-agent.md"
+    },
+    {
+      "name": "excel-automation-agent",
+      "intent": "Office Scripts and Power Query automation specialist for financial reconciliation and operational workbook pipelines",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "agent",
+        "excel-automation-agent"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/excel-automation-agent.md"
+    },
+    {
+      "name": "fabric-pipeline-agent",
+      "intent": "Microsoft Fabric pipeline and notebook operator for ingestion, transformation, and refresh orchestration",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "agent",
+        "fabric-pipeline-agent"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/fabric-pipeline-agent.md"
+    },
+    {
+      "name": "github-agent",
+      "intent": "GitHub and CI/CD specialist managing monorepo structure, GitHub Actions workflows, branch policies, and PR automation for TVS Holdings",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "agent",
+        "github-agent"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/github-agent.md"
+    },
+    {
+      "name": "identity-agent",
+      "intent": "Entra ID specialist managing tenant configurations, conditional access, MFA, YubiKey FIDO2, and license assignments across all TVS Holdings entities",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "agent",
+        "identity-agent"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/identity-agent.md"
+    },
+    {
+      "name": "ingest-agent",
+      "intent": "Data ingestion specialist managing Firebase extraction from A3, CSV imports, API data pulls, and ETL pipeline coordination",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "agent",
+        "ingest-agent"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/ingest-agent.md"
+    },
+    {
+      "name": "m365-governance-agent",
+      "intent": "Microsoft 365 governance lead for tenant controls, DLP, retention, and compliance across delivery workstreams",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "agent",
+        "m365-governance-agent"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/m365-governance-agent.md"
+    },
+    {
+      "name": "michelle-scripts-agent",
+      "intent": "Office Scripts generator producing TypeScript automation for Excel, Power Automate desktop flows, and data transformation macros for staff",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "agent",
+        "michelle-scripts-agent"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/michelle-scripts-agent.md"
+    },
+    {
+      "name": "planner-orchestrator-agent",
+      "intent": "Engagement planning orchestrator that sequences specialized Microsoft delivery agents across sale prep and client delivery phases",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "agent",
+        "planner-orchestrator-agent"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/planner-orchestrator-agent.md"
+    },
+    {
+      "name": "platform-agent",
+      "intent": "Power Platform specialist managing Dataverse environments, Power Pages, Copilot Studio bots, and solution transport across TVS Holdings entities",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "agent",
+        "platform-agent"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/platform-agent.md"
+    },
+    {
+      "name": "power-pages-agent",
+      "intent": "Dedicated Power Pages engineer for portal buildouts, web roles, table permissions, and release governance",
+      "tags": [
+        "tvs-microsoft-deploy",
+        "agent",
+        "power-pages-agent"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/power-pages-agent.md"
+    }
+  ]
+}

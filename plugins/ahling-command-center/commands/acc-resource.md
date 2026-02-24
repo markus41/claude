@@ -1,7 +1,16 @@
 ---
+name: ahling-command-center:acc-resource
+intent: Check and optimize resource allocation across ACC infrastructure (CPU, RAM, GPU, VRAM)
+tags:
+  - ahling-command-center
+  - command
+  - acc-resource
+inputs: []
+risk: medium
+cost: medium
 description: Check and optimize resource allocation across ACC infrastructure (CPU, RAM, GPU, VRAM)
-argument-hint: "[--optimize] [--report]"
-allowed-tools: ["Bash"]
+allowed-tools:
+  - Bash
 ---
 
 Monitor and optimize resource allocation across ACC infrastructure with focus on 24-core CPU, 61GB RAM, and RX 7900 XTX GPU with 24GB VRAM.

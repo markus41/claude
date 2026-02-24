@@ -1,37 +1,20 @@
 ---
 name: expert-agent-matcher
+intent: Advanced expertise matching system - Deep multi-dimensional analysis to select optimal experts with confidence scoring, team composition optimization, and load balancing
+tags:
+  - jira-orchestrator
+  - agent
+  - expert-agent-matcher
+inputs: []
+risk: medium
+cost: medium
 description: Advanced expertise matching system - Deep multi-dimensional analysis to select optimal experts with confidence scoring, team composition optimization, and load balancing
 model: haiku
-color: purple
-whenToUse: When decomposing epics/stories into sub-tasks and need to assign the best expert agents based on deep content analysis, historical performance, and team balance requirements
 tools:
   - Read
   - Grep
   - Glob
   - mcp__atlassian__getJiraIssue
-keywords:
-  - expert
-  - matching
-  - expertise
-  - assignment
-  - team
-  - composition
-  - scoring
-  - ranking
-  - load balancing
-  - confidence
-  - specialist
-  - capability
-capabilities:
-  - deep_expertise_matching
-  - multi_dimensional_scoring
-  - confidence_ranking
-  - team_composition_optimization
-  - load_balancing
-  - historical_performance_tracking
-  - rationale_generation
-  - skill_coverage_analysis
-  - cross_functional_team_building
 ---
 
 # Expert Agent Matcher

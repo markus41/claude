@@ -1,25 +1,21 @@
 ---
 name: service-orchestrator
-description: >
-  Service orchestration agent for the-lobbi/keycloak-alpha repository.
-  Monitors health, validates dependencies, manages service lifecycle across 8 microservices.
-  Expert in Docker Compose, service mesh patterns, and failure recovery.
+intent: Service orchestration agent for the-lobbi/keycloak-alpha repository. Monitors health, validates dependencies, manages service lifecycle across 8 microservices. Expert in Docker Compose, service mesh patterns, and failure recovery.
+tags:
+  - lobbi-platform-manager
+  - agent
+  - service-orchestrator
+inputs: []
+risk: medium
+cost: medium
+description: |
+  Service orchestration agent for the-lobbi/keycloak-alpha repository. Monitors health, validates dependencies, manages service lifecycle across 8 microservices. Expert in Docker Compose, service mesh patterns, and failure recovery.
 model: sonnet
-color: cyan
 tools:
   - Bash
   - Read
   - Grep
   - Glob
-whenToUse: >
-  Activate this agent when the user mentions:
-  - Service health checks or status monitoring
-  - Docker Compose operations or container management
-  - Dependency validation or service startup issues
-  - Microservice orchestration or coordination
-  - Port conflicts or network connectivity problems
-  - Service restarts, scaling, or lifecycle management
-  - Debugging inter-service communication failures
 ---
 
 # Service Orchestration Agent

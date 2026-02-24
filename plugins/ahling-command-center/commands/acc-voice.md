@@ -1,7 +1,17 @@
 ---
+name: ahling-command-center:acc-voice
+intent: Test and configure the voice pipeline (Whisper STT, Piper TTS, Wyoming protocol)
+tags:
+  - ahling-command-center
+  - command
+  - acc-voice
+inputs: []
+risk: medium
+cost: medium
 description: Test and configure the voice pipeline (Whisper STT, Piper TTS, Wyoming protocol)
-argument-hint: "<operation> [--text TEXT] [--audio FILE]"
-allowed-tools: ["Bash", "Read"]
+allowed-tools:
+  - Bash
+  - Read
 ---
 
 Test and configure the ACC voice assistant pipeline including Whisper speech-to-text, Piper text-to-speech, Wyoming protocol integration, and voice command processing.

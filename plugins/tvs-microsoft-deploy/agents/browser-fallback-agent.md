@@ -1,23 +1,19 @@
 ---
 name: browser-fallback-agent
+intent: Playwright browser automation agent handling Microsoft portal operations that lack CLI or API coverage, with screenshot verification
+tags:
+  - tvs-microsoft-deploy
+  - agent
+  - browser-fallback-agent
+inputs: []
+risk: medium
+cost: medium
 description: Playwright browser automation agent handling Microsoft portal operations that lack CLI or API coverage, with screenshot verification
 model: haiku
-codename: PHANTOM
-role: Browser Automation Specialist
-browser_fallback: false
 tools:
   - Bash
   - Read
   - Write
-keywords:
-  - playwright
-  - browser-automation
-  - microsoft-portal
-  - power-platform-admin
-  - fabric-portal
-  - azure-portal
-  - screenshot
-  - ui-automation
 ---
 
 > Docs Hub: [Architecture Hub](../docs/architecture/README.md#agent-topology)

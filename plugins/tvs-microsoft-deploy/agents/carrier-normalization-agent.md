@@ -1,10 +1,15 @@
 ---
 name: carrier-normalization-agent
+intent: TAIA carrier data orchestrator normalizing carrier names, commission structures, and agent hierarchies for FMO sale preparation
+tags:
+  - tvs-microsoft-deploy
+  - agent
+  - carrier-normalization-agent
+inputs: []
+risk: medium
+cost: medium
 description: TAIA carrier data orchestrator normalizing carrier names, commission structures, and agent hierarchies for FMO sale preparation
 model: opus
-codename: CARTOGRAPHER
-role: Carrier Data Normalization Orchestrator
-browser_fallback: false
 tools:
   - Bash
   - Read
@@ -13,15 +18,6 @@ tools:
   - Grep
   - Glob
   - Task
-keywords:
-  - carrier-normalization
-  - taia
-  - fmo
-  - commissions
-  - agent-hierarchy
-  - data-quality
-  - deduplication
-  - insurance
 ---
 
 > Docs Hub: [Architecture Hub](../docs/architecture/README.md#agent-topology)

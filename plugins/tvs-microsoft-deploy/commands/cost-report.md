@@ -1,5 +1,13 @@
 ---
 name: tvs:cost-report
+intent: Cost analysis across all TVS Holdings entities with tier projections
+tags:
+  - tvs-microsoft-deploy
+  - command
+  - cost-report
+inputs: []
+risk: medium
+cost: medium
 description: Cost analysis across all TVS Holdings entities with tier projections
 allowed-tools:
   - Bash

@@ -1,7 +1,14 @@
 ---
 name: mp:status
+intent: Dashboard view of the entire marketplace-pro ecosystem — federation, security, intelligence, lockfile, and dev status
+tags:
+  - marketplace-pro
+  - command
+  - status
+inputs: []
+risk: medium
+cost: medium
 description: Dashboard view of the entire marketplace-pro ecosystem — federation, security, intelligence, lockfile, and dev status
-arguments: []
 allowed-tools:
   - Bash
   - Read
