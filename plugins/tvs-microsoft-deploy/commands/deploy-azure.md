@@ -168,3 +168,38 @@ Governed by `orchestration-protocol-enforcer` hook. Minimum 5 sub-agents enforce
 | App Insights | Pay-as-you-go | ~$10-30 |
 | Log Analytics | Pay-as-you-go | ~$5-15 |
 | **Total Azure** | | **~$38-88/mo** |
+
+## Unified Command Contract
+
+### Contract
+- **Schema:** `../cli/command.schema.json`
+- **Required shared arguments:** `--entity`, `--tenant`
+- **Optional shared safety arguments:** `--strict`, `--dry-run`, `--export-json`, `--plan-id`
+- **Error catalog:** `../cli/error-codes.json`
+- **Operator remediation format:** `../cli/operator-remediation.md`
+
+### Shared argument patterns
+```text
+--entity <tvs|consulting|taia|all>
+--tenant <tenant-id>
+--strict
+--dry-run
+--export-json <path>
+--plan-id <plan-id>
+```
+
+### Unified examples
+```bash
+# TVS
+/tvs:deploy-azure --entity tvs --tenant tvs-prod --plan-id PLAN-TVS-001
+
+# Consulting
+/tvs:deploy-azure --entity consulting --tenant consulting-prod --plan-id PLAN-CONSULTING-001
+
+# TAIA
+/tvs:deploy-azure --entity taia --tenant taia-prod --plan-id PLAN-TAIA-001
+
+# Cross-entity safe mode
+/tvs:deploy-azure --entity all --tenant shared-ops --strict --dry-run --export-json docs/cli/deploy-azure.json --plan-id PLAN-SAFE-001
+```
+

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TVS Microsoft Deploy CLI Shared Argument Patterns",
+  "type": "object",
+  "properties": {
+    "entity": {
+      "type": "string",
+      "enum": ["tvs", "consulting", "taia", "all"],
+      "description": "Business entity scope for command execution."
+    },
+    "tenant": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{1,62}$",
+      "description": "Tenant identifier, typically environment-qualified (example: tvs-prod)."
+    },
+    "strict": {
+      "type": "boolean",
+      "default": false,
+      "description": "Fail fast on warnings or policy drifts."
+    },
+    "dryRun": {
+      "type": "boolean",
+      "default": false,
+      "description": "Plan and validate without mutating infrastructure or data."
+    },
+    "exportJson": {
+      "type": "string",
+      "pattern": "^.+\\.json$",
+      "description": "Output path for machine-readable execution results."
+    },
+    "planId": {
+      "type": "string",
+      "pattern": "^[A-Z0-9][A-Z0-9_-]{2,63}$",
+      "description": "Traceable plan identifier propagated to logs and artifacts."
+    }
+  },
+  "required": ["entity", "tenant"],
+  "additionalProperties": false
+}

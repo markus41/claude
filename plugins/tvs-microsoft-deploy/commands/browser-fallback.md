@@ -107,3 +107,38 @@ screenshots/{portal}_{action}_{resource}_{YYYYMMDD_HHMMSS}.png
 
 - All other `/tvs:deploy-*` commands — Browser fallback is last resort
 - `agents/browser-fallback-agent.md` — Agent documentation
+
+## Unified Command Contract
+
+### Contract
+- **Schema:** `../cli/command.schema.json`
+- **Required shared arguments:** `--entity`, `--tenant`
+- **Optional shared safety arguments:** `--strict`, `--dry-run`, `--export-json`, `--plan-id`
+- **Error catalog:** `../cli/error-codes.json`
+- **Operator remediation format:** `../cli/operator-remediation.md`
+
+### Shared argument patterns
+```text
+--entity <tvs|consulting|taia|all>
+--tenant <tenant-id>
+--strict
+--dry-run
+--export-json <path>
+--plan-id <plan-id>
+```
+
+### Unified examples
+```bash
+# TVS
+/tvs:browser-fallback --entity tvs --tenant tvs-prod --plan-id PLAN-TVS-001
+
+# Consulting
+/tvs:browser-fallback --entity consulting --tenant consulting-prod --plan-id PLAN-CONSULTING-001
+
+# TAIA
+/tvs:browser-fallback --entity taia --tenant taia-prod --plan-id PLAN-TAIA-001
+
+# Cross-entity safe mode
+/tvs:browser-fallback --entity all --tenant shared-ops --strict --dry-run --export-json docs/cli/browser-fallback.json --plan-id PLAN-SAFE-001
+```
+
