@@ -1,0 +1,14 @@
+{
+  "kind": "mcpEntrypoints",
+  "entries": [
+    {
+      "id": "index",
+      "path": "mcp-server/src/index.ts"
+    },
+    {
+      "id": "index",
+      "path": "mcp-server/dist/index.js"
+    }
+  ],
+  "count": 2
+}

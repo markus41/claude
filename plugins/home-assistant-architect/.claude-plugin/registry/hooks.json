@@ -1,0 +1,46 @@
+{
+  "kind": "hooks",
+  "entries": [
+    {
+      "id": "hooks",
+      "path": "hooks/hooks.json"
+    },
+    {
+      "id": "ha-health-check",
+      "path": "hooks/scripts/ha-health-check.sh"
+    },
+    {
+      "id": "ollama-status",
+      "path": "hooks/scripts/ollama-status.sh"
+    },
+    {
+      "id": "security-scan",
+      "path": "hooks/scripts/security-scan.sh"
+    },
+    {
+      "id": "validate-yaml",
+      "path": "hooks/scripts/validate-yaml.sh"
+    },
+    {
+      "id": "event:PostToolUse",
+      "path": "hooks/hooks.json"
+    },
+    {
+      "id": "event:PreToolUse",
+      "path": "hooks/hooks.json"
+    },
+    {
+      "id": "event:SessionEnd",
+      "path": "hooks/hooks.json"
+    },
+    {
+      "id": "event:TaskCompleted",
+      "path": "hooks/hooks.json"
+    },
+    {
+      "id": "event:UserPromptSubmit",
+      "path": "hooks/hooks.json"
+    }
+  ],
+  "count": 10
+}
