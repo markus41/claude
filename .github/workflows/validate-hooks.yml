@@ -1,0 +1,25 @@
+name: Validate Hooks Schema
+
+on:
+  push:
+    paths:
+      - 'plugins/**/hooks/hooks.json'
+      - 'schemas/hooks.schema.json'
+      - 'scripts/validate-hooks-schema.mjs'
+      - 'package.json'
+  pull_request:
+    paths:
+      - 'plugins/**/hooks/hooks.json'
+      - 'schemas/hooks.schema.json'
+      - 'scripts/validate-hooks-schema.mjs'
+      - 'package.json'
+
+jobs:
+  validate-hooks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm run validate:hooks

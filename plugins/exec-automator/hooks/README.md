@@ -606,3 +606,37 @@ For issues, questions, or feature requests:
 **Version:** 1.0.0
 **Last Updated:** 2025-12-17
 **Maintained by:** Brookside BI Development Team
+
+## Migration Example (Unified Hook Schema)
+
+Use the shared schema at `schemas/hooks.schema.json` and keep every hook in the same flat format:
+
+```json
+{
+  "$schema": "../../schemas/hooks.schema.json",
+  "hooks": [
+    {
+      "name": "example-pre-check",
+      "event": "PreToolUse",
+      "matcher": "Write|Edit",
+      "type": "prompt",
+      "prompt": "Run plugin-specific pre-check guidance before writing files."
+    },
+    {
+      "name": "example-post-script",
+      "event": "PostToolUse",
+      "matcher": "Bash",
+      "type": "command",
+      "script": "scripts/example-post-check.sh",
+      "settings": {
+        "timeout": 5000
+      }
+    }
+  ],
+  "settings": {
+    "log_level": "info"
+  }
+}
+```
+
+Legacy nested event maps should be flattened into the `hooks` array above.

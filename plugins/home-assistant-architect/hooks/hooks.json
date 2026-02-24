@@ -1,155 +1,95 @@
 {
-  "$schema": "../../../.claude/schemas/hooks.schema.json",
-  "name": "home-assistant-hooks",
-  "version": "1.1.0",
-  "description": "Scoped event-driven hooks for Home Assistant and Ollama workflows",
-  "hooks": {
-    "UserPromptSubmit": [
-      {
-        "matcher": "(^|\\s)/(ha-control|ha-automation|ha-deploy|ha-diagnose|ha-voice|ha-backup|ha-mcp|ollama-setup)\\b|\\b(home assistant|hass|homeassistant|configuration\\.ya?ml|automations?\\.ya?ml|secrets\\.ya?ml|scenes\\.ya?ml|scripts\\.ya?ml|assist_pipeline)\\b|\\bmcp__home_assistant__",
-        "hooks": [
-          {
-            "type": "prompt",
-            "severity": "info",
-            "debounce_key": "ha-userprompt-context",
-            "debounce_scope": "session",
-            "debounce_window_seconds": 900,
-            "prompt": "Handle Home Assistant intent only when the user references HA-specific commands, HA config files, HA domains/entities, or Home Assistant MCP tools. Do not trigger on generic verbs (for example: set, adjust, turn on) without HA context."
-          }
-        ]
+  "$schema": "../../schemas/hooks.schema.json",
+  "hooks": [
+    {
+      "event": "UserPromptSubmit",
+      "matcher": "(^|\\s)/(ha-control|ha-automation|ha-deploy|ha-diagnose|ha-voice|ha-backup|ha-mcp|ollama-setup)\\b|\\b(home assistant|hass|homeassistant|configuration\\.ya?ml|automations?\\.ya?ml|secrets\\.ya?ml|scenes\\.ya?ml|scripts\\.ya?ml|assist_pipeline)\\b|\\bmcp__home_assistant__",
+      "type": "prompt",
+      "prompt": "Handle Home Assistant intent only when the user references HA-specific commands, HA config files, HA domains/entities, or Home Assistant MCP tools. Do not trigger on generic verbs (for example: set, adjust, turn on) without HA context.",
+      "settings": {
+        "severity": "info",
+        "debounce_key": "ha-userprompt-context",
+        "debounce_scope": "session",
+        "debounce_window_seconds": 900
       }
-    ],
-    "PreToolUse": [
-      {
-        "matcher": "Write|Edit|MultiEdit",
-        "conditions": {
-          "path_any": [
-            "**/configuration.yaml",
-            "**/secrets.yaml",
-            "**/automations.yaml",
-            "**/scripts.yaml",
-            "**/scenes.yaml",
-            "**/blueprints/**/*.yaml",
-            "**/packages/**/*.yaml",
-            "**/homeassistant/**/*.yaml"
-          ]
-        },
-        "hooks": [
-          {
-            "type": "prompt",
-            "severity": "high",
-            "debounce_key": "ha-yaml-prewrite",
-            "debounce_scope": "session",
-            "debounce_window_seconds": 300,
-            "prompt": "Before editing Home Assistant YAML, validate syntax and key HA structures (trigger/condition/action, service calls, entity_id, secrets references). Skip this reminder for non-HA files."
-          }
-        ]
-      },
-      {
-        "matcher": "Bash",
-        "conditions": {
-          "command_any": [
-            "*ha core*",
-            "*ha addons*",
-            "*ha supervisor*",
-            "*hass*",
-            "*homeassistant*",
-            "*docker*homeassistant*",
-            "*ollama*",
-            "*curl*api/states*",
-            "*curl*api/services*"
-          ]
-        },
-        "hooks": [
-          {
-            "type": "prompt",
-            "severity": "medium",
-            "debounce_key": "ha-bash-domain-safety",
-            "debounce_scope": "session",
-            "debounce_window_seconds": 300,
-            "prompt": "For HA/Ollama shell commands only: verify target host, auth token usage, and service impact before execution. Do not emit for unrelated Bash commands."
-          }
-        ]
+    },
+    {
+      "event": "PreToolUse",
+      "matcher": "Write|Edit|MultiEdit",
+      "type": "prompt",
+      "prompt": "Before editing Home Assistant YAML, validate syntax and key HA structures (trigger/condition/action, service calls, entity_id, secrets references). Skip this reminder for non-HA files.",
+      "settings": {
+        "severity": "high",
+        "debounce_key": "ha-yaml-prewrite",
+        "debounce_scope": "session",
+        "debounce_window_seconds": 300
       }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "Bash",
-        "conditions": {
-          "command_any": [
-            "*ollama*",
-            "*ha core*",
-            "*ha supervisor*",
-            "*homeassistant*"
-          ]
-        },
-        "hooks": [
-          {
-            "type": "prompt",
-            "severity": "medium",
-            "debounce_key": "ha-post-bash-health",
-            "debounce_scope": "session",
-            "debounce_window_seconds": 600,
-            "prompt": "After HA/Ollama commands, check service health/state once per debounce window (HA core status, API responsiveness, and Ollama model/service availability)."
-          }
-        ]
-      },
-      {
-        "matcher": "Write|Edit|MultiEdit",
-        "conditions": {
-          "path_any": [
-            "**/configuration.yaml",
-            "**/secrets.yaml",
-            "**/automations.yaml",
-            "**/scripts.yaml",
-            "**/scenes.yaml",
-            "**/blueprints/**/*.yaml",
-            "**/packages/**/*.yaml",
-            "**/homeassistant/**/*.yaml"
-          ]
-        },
-        "hooks": [
-          {
-            "type": "prompt",
-            "severity": "high",
-            "debounce_key": "ha-postwrite-security",
-            "debounce_scope": "session",
-            "debounce_window_seconds": 600,
-            "prompt": "Review Home Assistant config edits for security and reliability (secret leakage, unsafe external URLs/commands, privileged add-ons, and invalid entity/service references)."
-          }
-        ]
+    },
+    {
+      "event": "PreToolUse",
+      "matcher": "Bash",
+      "type": "prompt",
+      "prompt": "For HA/Ollama shell commands only: verify target host, auth token usage, and service impact before execution. Do not emit for unrelated Bash commands.",
+      "settings": {
+        "severity": "medium",
+        "debounce_key": "ha-bash-domain-safety",
+        "debounce_scope": "session",
+        "debounce_window_seconds": 300
       }
-    ],
-    "TaskCompleted": [
-      {
-        "matcher": "ha-deploy|ha-automation|ha-config|ollama-setup",
-        "hooks": [
-          {
-            "type": "prompt",
-            "severity": "info",
-            "debounce_key": "ha-task-healthcheck",
-            "debounce_scope": "session",
-            "debounce_window_seconds": 900,
-            "prompt": "Run focused health checks only after HA/Ollama task types (ha-deploy, ha-automation, ha-config, ollama-setup)."
-          }
-        ]
+    },
+    {
+      "event": "PostToolUse",
+      "matcher": "Bash",
+      "type": "prompt",
+      "prompt": "After HA/Ollama commands, check service health/state once per debounce window (HA core status, API responsiveness, and Ollama model/service availability).",
+      "settings": {
+        "severity": "medium",
+        "debounce_key": "ha-post-bash-health",
+        "debounce_scope": "session",
+        "debounce_window_seconds": 600
       }
-    ],
-    "SessionEnd": [
-      {
-        "hooks": [
-          {
-            "type": "prompt",
-            "severity": "info",
-            "debounce_key": "ha-session-backup-reminder",
-            "debounce_scope": "session",
-            "debounce_window_seconds": 3600,
-            "prompt": "If significant HA configuration changed this session, remind once to backup configuration.yaml, automations, and secrets securely."
-          }
-        ]
+    },
+    {
+      "event": "PostToolUse",
+      "matcher": "Write|Edit|MultiEdit",
+      "type": "prompt",
+      "prompt": "Review Home Assistant config edits for security and reliability (secret leakage, unsafe external URLs/commands, privileged add-ons, and invalid entity/service references).",
+      "settings": {
+        "severity": "high",
+        "debounce_key": "ha-postwrite-security",
+        "debounce_scope": "session",
+        "debounce_window_seconds": 600
       }
-    ]
-  },
-  "scripts_dir": "scripts",
-  "log_level": "info"
+    },
+    {
+      "event": "TaskCompleted",
+      "matcher": "ha-deploy|ha-automation|ha-config|ollama-setup",
+      "type": "prompt",
+      "prompt": "Run focused health checks only after HA/Ollama task types (ha-deploy, ha-automation, ha-config, ollama-setup).",
+      "settings": {
+        "severity": "info",
+        "debounce_key": "ha-task-healthcheck",
+        "debounce_scope": "session",
+        "debounce_window_seconds": 900
+      }
+    },
+    {
+      "event": "SessionEnd",
+      "type": "prompt",
+      "prompt": "If significant HA configuration changed this session, remind once to backup configuration.yaml, automations, and secrets securely.",
+      "settings": {
+        "severity": "info",
+        "debounce_key": "ha-session-backup-reminder",
+        "debounce_scope": "session",
+        "debounce_window_seconds": 3600
+      }
+    }
+  ],
+  "settings": {
+    "name": "home-assistant-hooks",
+    "version": "1.1.0",
+    "description": "Scoped event-driven hooks for Home Assistant and Ollama workflows",
+    "scripts_dir": "scripts",
+    "log_level": "info"
+  }
 }

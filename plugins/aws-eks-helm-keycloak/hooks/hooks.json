@@ -1,31 +1,24 @@
 {
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "prompt",
-            "prompt": "Validates Helm charts, security, and Keycloak configuration before deployment. If the Bash command matches 'helm install', 'helm upgrade', or 'kubectl apply', perform strict validation with security scanning and Keycloak checks. Block on errors."
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "prompt",
-            "prompt": "If the Bash command matched 'helm install' or 'helm upgrade' with Keycloak settings, sync Keycloak realm and client configuration after successful deployment."
-          }
-        ]
-      }
-    ]
-  },
+  "$schema": "../../schemas/hooks.schema.json",
+  "hooks": [
+    {
+      "event": "PreToolUse",
+      "matcher": "Bash",
+      "type": "prompt",
+      "prompt": "Validates Helm charts, security, and Keycloak configuration before deployment. If the Bash command matches 'helm install', 'helm upgrade', or 'kubectl apply', perform strict validation with security scanning and Keycloak checks. Block on errors."
+    },
+    {
+      "event": "PostToolUse",
+      "matcher": "Bash",
+      "type": "prompt",
+      "prompt": "If the Bash command matched 'helm install' or 'helm upgrade' with Keycloak settings, sync Keycloak realm and client configuration after successful deployment."
+    }
+  ],
   "settings": {
-    "parallel_execution": false,
-    "continue_on_failure": false,
-    "log_level": "info"
+    "settings": {
+      "parallel_execution": false,
+      "continue_on_failure": false,
+      "log_level": "info"
+    }
   }
 }

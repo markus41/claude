@@ -1,45 +1,28 @@
 {
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Write|Edit",
-        "hooks": [
-          {
-            "type": "prompt",
-            "prompt": "Before writing or editing files, ensure:\n\n1. **Code Quality Checks:**\n   - No hardcoded secrets (API keys, passwords, tokens)\n   - No console.log/print statements in production code\n   - Proper error handling for async operations\n   - No TODO/FIXME comments without associated issues\n\n2. **Security Validation:**\n   - No SQL injection vulnerabilities\n   - No XSS vulnerabilities in user inputs\n   - Proper input validation and sanitization\n   - No insecure dependencies\n\n3. **Best Practices:**\n   - Follow project coding standards\n   - Maintain consistent formatting\n   - Add appropriate comments for complex logic\n   - Ensure type safety (TypeScript/type hints)\n\n4. **File-Specific Rules:**\n   - Package files: Validate semver, check for vulnerable deps\n   - Config files: Validate JSON/YAML syntax\n   - Source files: Check for unused imports, variables\n   - Test files: Ensure proper assertions and coverage\n\nRespond with:\n- ✅ PASS: No issues found\n- ⚠️ WARN: Issues found (advisory mode)\n- ❌ BLOCK: Critical issues (strict mode)"
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "prompt",
-            "prompt": "Bash command executed. If this was a deployment-related action (deploy, kubectl, helm, docker push/build, npm publish, terraform apply), consider:\n\n1. **Notification**: Team should be notified of deployment actions\n2. **Verification**: Validate the operation completed successfully\n3. **Documentation**: Log significant changes\n\nWas this a deployment action that needs follow-up?"
-          }
-        ]
-      },
-      {
-        "matcher": "Write",
-        "hooks": [
-          {
-            "type": "prompt",
-            "prompt": "A source file has been modified. Consider:\n\n1. **Documentation Impact**: Does this change require documentation updates?\n2. **API Changes**: Are there breaking changes to document?\n3. **Obsidian Sync**: Should this be logged in the knowledge base?\n\nProvide a checklist of documentation tasks, or confirm no updates are needed."
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "prompt",
-            "prompt": "Task completion summary:\n\n**Review the session and provide:**\n\n1. **Test Execution Summary** (if tests were run):\n   - Total tests run, passed/failed/skipped counts\n   - Coverage percentage (if available)\n\n2. **Quality Metrics:**\n   - Code quality observations\n   - Issues resolved\n   - Technical debt changes\n\n3. **Recommendations:**\n   - Areas needing additional testing\n   - Documentation updates needed\n\nFormat as a concise summary suitable for team review."
-          }
-        ]
-      }
-    ]
-  }
+  "$schema": "../../schemas/hooks.schema.json",
+  "hooks": [
+    {
+      "event": "PreToolUse",
+      "matcher": "Write|Edit",
+      "type": "prompt",
+      "prompt": "Before writing or editing files, ensure:\n\n1. **Code Quality Checks:**\n   - No hardcoded secrets (API keys, passwords, tokens)\n   - No console.log/print statements in production code\n   - Proper error handling for async operations\n   - No TODO/FIXME comments without associated issues\n\n2. **Security Validation:**\n   - No SQL injection vulnerabilities\n   - No XSS vulnerabilities in user inputs\n   - Proper input validation and sanitization\n   - No insecure dependencies\n\n3. **Best Practices:**\n   - Follow project coding standards\n   - Maintain consistent formatting\n   - Add appropriate comments for complex logic\n   - Ensure type safety (TypeScript/type hints)\n\n4. **File-Specific Rules:**\n   - Package files: Validate semver, check for vulnerable deps\n   - Config files: Validate JSON/YAML syntax\n   - Source files: Check for unused imports, variables\n   - Test files: Ensure proper assertions and coverage\n\nRespond with:\n- \u2705 PASS: No issues found\n- \u26a0\ufe0f WARN: Issues found (advisory mode)\n- \u274c BLOCK: Critical issues (strict mode)"
+    },
+    {
+      "event": "PostToolUse",
+      "matcher": "Bash",
+      "type": "prompt",
+      "prompt": "Bash command executed. If this was a deployment-related action (deploy, kubectl, helm, docker push/build, npm publish, terraform apply), consider:\n\n1. **Notification**: Team should be notified of deployment actions\n2. **Verification**: Validate the operation completed successfully\n3. **Documentation**: Log significant changes\n\nWas this a deployment action that needs follow-up?"
+    },
+    {
+      "event": "PostToolUse",
+      "matcher": "Write",
+      "type": "prompt",
+      "prompt": "A source file has been modified. Consider:\n\n1. **Documentation Impact**: Does this change require documentation updates?\n2. **API Changes**: Are there breaking changes to document?\n3. **Obsidian Sync**: Should this be logged in the knowledge base?\n\nProvide a checklist of documentation tasks, or confirm no updates are needed."
+    },
+    {
+      "event": "Stop",
+      "type": "prompt",
+      "prompt": "Task completion summary:\n\n**Review the session and provide:**\n\n1. **Test Execution Summary** (if tests were run):\n   - Total tests run, passed/failed/skipped counts\n   - Coverage percentage (if available)\n\n2. **Quality Metrics:**\n   - Code quality observations\n   - Issues resolved\n   - Technical debt changes\n\n3. **Recommendations:**\n   - Areas needing additional testing\n   - Documentation updates needed\n\nFormat as a concise summary suitable for team review."
+    }
+  ]
 }

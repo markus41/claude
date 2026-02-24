@@ -1,61 +1,44 @@
 {
-  "version": "1.0.0",
-  "plugin": "exec-automator",
-  "description": "Hook definitions for executive director automation workflow tracking and state management",
-  "hooks": {
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "prompt",
-            "prompt": "Initialize workflow state and prepare session for executive analysis."
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "type": "prompt",
-            "prompt": "Detect organizational documents (RFPs, bylaws, job descriptions) and suggest analysis workflows. Look for keywords: rfp, job description, bylaws, executive director, ed responsibilities, association, nonprofit, trade association."
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "hooks": [
-          {
-            "type": "prompt",
-            "prompt": "Track workflow execution progress and update state for automation orchestration."
-          }
-        ]
-      }
-    ],
-    "SessionEnd": [
-      {
-        "hooks": [
-          {
-            "type": "prompt",
-            "prompt": "Checkpoint workflow state, archive analysis results, and clean up session data."
-          }
-        ]
-      }
-    ]
-  },
+  "$schema": "../../schemas/hooks.schema.json",
+  "hooks": [
+    {
+      "event": "SessionStart",
+      "type": "prompt",
+      "prompt": "Initialize workflow state and prepare session for executive analysis."
+    },
+    {
+      "event": "UserPromptSubmit",
+      "type": "prompt",
+      "prompt": "Detect organizational documents (RFPs, bylaws, job descriptions) and suggest analysis workflows. Look for keywords: rfp, job description, bylaws, executive director, ed responsibilities, association, nonprofit, trade association."
+    },
+    {
+      "event": "PostToolUse",
+      "type": "prompt",
+      "prompt": "Track workflow execution progress and update state for automation orchestration."
+    },
+    {
+      "event": "SessionEnd",
+      "type": "prompt",
+      "prompt": "Checkpoint workflow state, archive analysis results, and clean up session data."
+    }
+  ],
   "settings": {
-    "state_dir": "${CLAUDE_PLUGIN_ROOT}/state",
-    "checkpoint_dir": "${OBSIDIAN_VAULT_PATH}/Projects/exec-automator/checkpoints",
-    "analysis_archive_dir": "${OBSIDIAN_VAULT_PATH}/Projects/exec-automator/analyses",
-    "log_level": "INFO",
-    "max_session_duration_hours": 8,
-    "auto_checkpoint_interval_minutes": 30
-  },
-  "metadata": {
-    "author": "Brookside BI",
-    "license": "Proprietary",
-    "created": "2025-12-17",
-    "updated": "2025-12-17"
+    "version": "1.0.0",
+    "plugin": "exec-automator",
+    "description": "Hook definitions for executive director automation workflow tracking and state management",
+    "settings": {
+      "state_dir": "${CLAUDE_PLUGIN_ROOT}/state",
+      "checkpoint_dir": "${OBSIDIAN_VAULT_PATH}/Projects/exec-automator/checkpoints",
+      "analysis_archive_dir": "${OBSIDIAN_VAULT_PATH}/Projects/exec-automator/analyses",
+      "log_level": "INFO",
+      "max_session_duration_hours": 8,
+      "auto_checkpoint_interval_minutes": 30
+    },
+    "metadata": {
+      "author": "Brookside BI",
+      "license": "Proprietary",
+      "created": "2025-12-17",
+      "updated": "2025-12-17"
+    }
   }
 }

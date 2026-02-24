@@ -302,3 +302,37 @@ done
 - [Main Plugin README](../README.md) - Plugin overview and commands
 - [Plugin Development Guide](https://github.com/markus41/obsidian/blob/main/System/Claude-Instructions/plugin-development.md)
 - [Hook Development Guide](https://github.com/markus41/obsidian/blob/main/System/Claude-Instructions/hook-development.md)
+
+## Migration Example (Unified Hook Schema)
+
+Use the shared schema at `schemas/hooks.schema.json` and keep every hook in the same flat format:
+
+```json
+{
+  "$schema": "../../schemas/hooks.schema.json",
+  "hooks": [
+    {
+      "name": "example-pre-check",
+      "event": "PreToolUse",
+      "matcher": "Write|Edit",
+      "type": "prompt",
+      "prompt": "Run plugin-specific pre-check guidance before writing files."
+    },
+    {
+      "name": "example-post-script",
+      "event": "PostToolUse",
+      "matcher": "Bash",
+      "type": "command",
+      "script": "scripts/example-post-check.sh",
+      "settings": {
+        "timeout": 5000
+      }
+    }
+  ],
+  "settings": {
+    "log_level": "info"
+  }
+}
+```
+
+Legacy nested event maps should be flattened into the `hooks` array above.

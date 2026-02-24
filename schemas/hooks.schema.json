@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://claude.local/schemas/hooks.schema.json",
+  "title": "Claude Plugin Hooks",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["hooks"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "hooks": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/hook" }
+    },
+    "settings": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "hook": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event", "type"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "event": {
+          "type": "string",
+          "enum": ["SessionStart", "UserPromptSubmit", "PreToolUse", "PostToolUse", "Stop", "TaskCompleted", "SessionEnd"]
+        },
+        "matcher": { "type": "string", "minLength": 1 },
+        "type": { "type": "string", "enum": ["command", "prompt"] },
+        "script": { "type": "string", "minLength": 1 },
+        "prompt": { "type": "string", "minLength": 1 },
+        "settings": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "type": { "const": "command" } } },
+          "then": {
+            "required": ["script"],
+            "not": { "required": ["prompt"] }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "prompt" } } },
+          "then": {
+            "required": ["prompt"],
+            "not": { "required": ["script"] }
+          }
+        }
+      ]
+    }
+  }
+}
