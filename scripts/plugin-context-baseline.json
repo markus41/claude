@@ -1,0 +1,94 @@
+{
+  "plugins": {
+    "ahling-command-center": {
+      "bootstrapFileCount": 1,
+      "lines": 58,
+      "estimatedTokens": 571,
+      "maxTokens": 1200
+    },
+    "aws-eks-helm-keycloak": {
+      "bootstrapFileCount": 1,
+      "lines": 44,
+      "estimatedTokens": 467,
+      "maxTokens": 1200
+    },
+    "claude-code-templating-plugin": {
+      "bootstrapFileCount": 1,
+      "lines": 42,
+      "estimatedTokens": 478,
+      "maxTokens": 1200
+    },
+    "deployment-pipeline": {
+      "bootstrapFileCount": 1,
+      "lines": 36,
+      "estimatedTokens": 363,
+      "maxTokens": 1200
+    },
+    "exec-automator": {
+      "bootstrapFileCount": 1,
+      "lines": 59,
+      "estimatedTokens": 647,
+      "maxTokens": 1200
+    },
+    "fastapi-backend": {
+      "bootstrapFileCount": 1,
+      "lines": 49,
+      "estimatedTokens": 491,
+      "maxTokens": 1200
+    },
+    "frontend-design-system": {
+      "bootstrapFileCount": 1,
+      "lines": 45,
+      "estimatedTokens": 445,
+      "maxTokens": 1200
+    },
+    "fullstack-iac": {
+      "bootstrapFileCount": 1,
+      "lines": 39,
+      "estimatedTokens": 411,
+      "maxTokens": 1200
+    },
+    "home-assistant-architect": {
+      "bootstrapFileCount": 1,
+      "lines": 57,
+      "estimatedTokens": 574,
+      "maxTokens": 1200
+    },
+    "jira-orchestrator": {
+      "bootstrapFileCount": 1,
+      "lines": 66,
+      "estimatedTokens": 686,
+      "maxTokens": 1200
+    },
+    "lobbi-platform-manager": {
+      "bootstrapFileCount": 1,
+      "lines": 42,
+      "estimatedTokens": 430,
+      "maxTokens": 1200
+    },
+    "marketplace-pro": {
+      "bootstrapFileCount": 1,
+      "lines": 45,
+      "estimatedTokens": 469,
+      "maxTokens": 1200
+    },
+    "react-animation-studio": {
+      "bootstrapFileCount": 1,
+      "lines": 56,
+      "estimatedTokens": 582,
+      "maxTokens": 1200
+    },
+    "team-accelerator": {
+      "bootstrapFileCount": 1,
+      "lines": 45,
+      "estimatedTokens": 468,
+      "maxTokens": 1200
+    },
+    "tvs-microsoft-deploy": {
+      "bootstrapFileCount": 1,
+      "lines": 66,
+      "estimatedTokens": 699,
+      "maxTokens": 1200
+    }
+  }
+}

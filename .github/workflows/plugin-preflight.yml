@@ -9,6 +9,8 @@ on:
       - 'scripts/validate-plugin-schema.mjs'
       - 'scripts/lint-hooks.mjs'
       - 'scripts/generate-plugin-indexes.mjs'
+      - 'scripts/profile-plugin-context.mjs'
+      - 'scripts/plugin-context-baseline.json'
       - 'package.json'
       - '.github/workflows/plugin-preflight.yml'
   push:
@@ -21,6 +23,8 @@ on:
       - 'scripts/validate-plugin-schema.mjs'
       - 'scripts/lint-hooks.mjs'
       - 'scripts/generate-plugin-indexes.mjs'
+      - 'scripts/profile-plugin-context.mjs'
+      - 'scripts/plugin-context-baseline.json'
       - 'package.json'
       - '.github/workflows/plugin-preflight.yml'
 
@@ -42,3 +46,5 @@ jobs:
         run: npm run check:plugin-context
       - name: Validate frontmatter and generated plugin indexes
         run: npm run check:plugin-indexes
+      - name: Profile plugin context footprint
+        run: npm run profile:plugin-context
