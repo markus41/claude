@@ -26,6 +26,10 @@ export interface PluginManifest {
   hooks?: Record<string, HookDefinition>;
   configuration?: PluginConfiguration;
   resources?: Record<string, any>;
+  contextBudget?: number;
+  loadPriority?: 'high' | 'medium' | 'low';
+  lazyPaths?: string[];
+  excludeFromInitialContext?: boolean;
 }
 
 export interface CommandDefinition {

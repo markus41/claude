@@ -77,6 +77,14 @@ export interface RegistryPluginEntry {
   trustScore?: number;
   /** Available versions. */
   versions?: string[];
+  /** Startup context budget hint from plugin manifest. */
+  contextBudget?: number;
+  /** Startup loading priority hint from plugin manifest. */
+  loadPriority?: 'high' | 'medium' | 'low';
+  /** Paths that should be loaded lazily rather than at startup. */
+  lazyPaths?: string[];
+  /** Whether plugin should be excluded from initial context loading. */
+  excludeFromInitialContext?: boolean;
 }
 
 /** The full registry index as fetched from a registry source. */

@@ -642,6 +642,27 @@
                 }
             }
         },
+        "contextBudget": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Maximum number of resources to load into initial context"
+        },
+        "loadPriority": {
+            "type": "string",
+            "enum": ["high", "medium", "low"],
+            "description": "Relative priority for initial plugin loading"
+        },
+        "lazyPaths": {
+            "type": "array",
+            "description": "Plugin paths to defer from initial context loading",
+            "items": {
+                "type": "string"
+            }
+        },
+        "excludeFromInitialContext": {
+            "type": "boolean",
+            "description": "Skip plugin resources during initial context hydration"
+        },
         "minimumClaudeCodeVersion": {
             "type": "string",
             "pattern": "^\\d+\\.\\d+\\.\\d+$",

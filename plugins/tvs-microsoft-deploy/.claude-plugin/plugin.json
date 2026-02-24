@@ -186,5 +186,14 @@
       "schemas/consulting_tables.json",
       "schemas/fabric_workspaces.json"
     ]
-  }
+  },
+  "contextBudget": 28,
+  "loadPriority": "high",
+  "lazyPaths": [
+    "docs",
+    "tests",
+    "schemas",
+    "workflows"
+  ],
+  "excludeFromInitialContext": false
 }

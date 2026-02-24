@@ -22,5 +22,14 @@
     "devops",
     "ci-cd",
     "infrastructure"
-  ]
+  ],
+  "contextBudget": 18,
+  "loadPriority": "medium",
+  "lazyPaths": [
+    "docs",
+    "tests",
+    "examples",
+    "templates"
+  ],
+  "excludeFromInitialContext": false
 }

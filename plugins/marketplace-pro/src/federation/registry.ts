@@ -460,6 +460,16 @@ export class RegistryClient {
       const manifestContent = fs.readFileSync(manifestPath, 'utf8');
       const integrity = 'sha256-' + sha256(manifestContent);
 
+      const contextBudget = typeof manifest.contextBudget === 'number' ? manifest.contextBudget : undefined;
+      const loadPriority =
+        manifest.loadPriority === 'high' || manifest.loadPriority === 'medium' || manifest.loadPriority === 'low'
+          ? manifest.loadPriority
+          : undefined;
+      const lazyPaths = Array.isArray(manifest.lazyPaths)
+        ? manifest.lazyPaths.filter((value): value is string => typeof value === 'string')
+        : undefined;
+      const excludeFromInitialContext = manifest.excludeFromInitialContext === true;
+
       plugins[name] = {
         name,
         version,
@@ -469,6 +479,10 @@ export class RegistryClient {
         dependencies: [],
         signed: false,
         trustScore: 50, // Local plugins get baseline trust
+        contextBudget,
+        loadPriority,
+        lazyPaths,
+        excludeFromInitialContext,
       };
 
       // Extract dependencies from capabilities.requires

@@ -19,5 +19,14 @@
     "process-automation"
   ],
   "license": "Proprietary",
-  "repository": "https://github.com/brooksidebi/exec-automator"
+  "repository": "https://github.com/brooksidebi/exec-automator",
+  "contextBudget": 20,
+  "loadPriority": "medium",
+  "lazyPaths": [
+    "docs",
+    "tests",
+    "examples",
+    "dist"
+  ],
+  "excludeFromInitialContext": false
 }
