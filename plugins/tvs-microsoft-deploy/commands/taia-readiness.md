@@ -50,7 +50,14 @@ python plugins/tvs-microsoft-deploy/scripts/taia_readiness_checks.py \
   --thresholds plugins/tvs-microsoft-deploy/fabric/quality/taia_thresholds.json
 ```
 
-The command fails readiness when carrier counts, commission variance, or agent hierarchy consistency breach policy thresholds.
+The command fails readiness when carrier counts, commission variance, agent hierarchy consistency, workbook quality score, or workbook gate pass-rate breach policy thresholds. The script emits an explicit 0-100 readiness score for review boards.
+
+Workbook gates should be generated first and summarized into metrics:
+
+```bash
+python scripts/excel/analyze_workbook.py --workbook data/carriers/commission_reconciliation.xlsx --profile commission_reconciliation --output plugins/tvs-microsoft-deploy/control-plane/out/commission_reconciliation.quality.json
+python scripts/excel/analyze_workbook.py --workbook data/carriers/carrier_mapping.xlsx --profile carrier_mapping --output plugins/tvs-microsoft-deploy/control-plane/out/carrier_mapping.quality.json
+```
 
 ## M365 operational output
 
