@@ -142,14 +142,18 @@ export class CapabilityMatcher {
   /**
    * Resolve the first bootstrap context file.
    * Preference order:
-   *  1. context.bootstrapFiles[0] (typically CONTEXT_SUMMARY.md)
-   *  2. context.entry/contextEntry
-   *  3. CONTEXT_SUMMARY.md
-   *  4. CONTEXT.md
+   *  1. context.bootstrapFiles[0] (if explicitly configured)
+   *  2. README.md
+   *  3. docs/context-map.md
+   *  4. context.entry/contextEntry
+   *  5. CONTEXT_SUMMARY.md
+   *  6. CONTEXT.md
    */
   private resolveBootstrapContextPath(pluginDirName: string, manifest: PluginManifest): string | null {
     const candidates = [
       manifest.context?.bootstrapFiles?.[0],
+      'README.md',
+      'docs/context-map.md',
       manifest.context?.entry,
       manifest.contextEntry,
       'CONTEXT_SUMMARY.md',

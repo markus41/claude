@@ -517,6 +517,8 @@ export class RegistryClient {
 
     const candidates = [
       bootstrapFiles[0],
+      'README.md',
+      'docs/context-map.md',
       typeof context?.entry === 'string' ? context.entry : undefined,
       typeof manifest.contextEntry === 'string' ? manifest.contextEntry : undefined,
       'CONTEXT_SUMMARY.md',
