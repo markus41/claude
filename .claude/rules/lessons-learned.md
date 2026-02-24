@@ -404,3 +404,15 @@ chmod: cannot access '/home/user/claude/plugins/rosa-microsoft-deploy/scripts/se
 - **Status:** RESOLVED
 - **Fix:** Background agent retained old path from initial prompt. Scripts already exist at tvs-microsoft-deploy/scripts/.
 - **Prevention:** Stop all background agents before renaming directories. Background agents cannot detect mid-flight path changes.
+
+### Error: Read failure (2026-02-24T16:51:12Z)
+- **Tool:** Read
+- **Input:** `/tmp/claude-0/-home-user-claude/tasks/aecb7c7.output`
+- **Error:** File content (43500 tokens) exceeds maximum allowed tokens (25000). Please use offset and limit parameters to read specific portions of the file, or use the GrepTool to search for specific content.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-02-24T16:51:16Z)
+- **Tool:** Read
+- **Input:** `/tmp/claude-0/-home-user-claude/tasks/aecb7c7.output`
+- **Error:** File content (43500 tokens) exceeds maximum allowed tokens (25000). Please use offset and limit parameters to read specific portions of the file, or use the GrepTool to search for specific content.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
