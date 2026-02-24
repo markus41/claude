@@ -42,3 +42,18 @@ node plugins/tvs-microsoft-deploy/control-plane/planner.mjs \
 4. Validate all `collaboration-services` resources.
 
 Report health by resource ID from the plan output so deploy/status use the same contract.
+
+## M365 operational output
+
+After generating `status.dry-run.json`, emit both machine-readable and collaboration-ready outputs for Teams/Planner/SharePoint automation:
+
+```bash
+python plugins/tvs-microsoft-deploy/scripts/m365_operational_update.py \
+  --event-type status-check \
+  --input plugins/tvs-microsoft-deploy/control-plane/out/status.dry-run.json \
+  --json-out plugins/tvs-microsoft-deploy/control-plane/out/status.m365.json \
+  --ops-out plugins/tvs-microsoft-deploy/control-plane/out/status.ops-update.md
+```
+
+Use `status.m365.json` for system integrations and post `status.ops-update.md` to TAIA transition channels.
+

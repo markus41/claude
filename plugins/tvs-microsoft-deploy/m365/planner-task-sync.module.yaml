@@ -1,0 +1,38 @@
+module:
+  id: planner-task-sync
+  version: 1.0.0
+  owner: platform-agent
+  purpose: Synchronize control-plane deployment/readiness status with Planner tasks.
+
+planner:
+  planName: TAIA Transition Execution
+  buckets:
+    - Planned
+    - In-Progress
+    - Blocked
+    - Waiting-Approval
+    - Completed
+
+syncRules:
+  source:
+    - control-plane/out/status.dry-run.json
+    - control-plane/out/taia-readiness.json
+  taskIdentity: resourceId
+  createWhen:
+    - operation in [create, update, pause, decommission]
+  updateWhen:
+    - statusChanged == true
+  completeWhen:
+    - readinessGate == pass
+  blockWhen:
+    - readinessGate == fail
+
+taskPayload:
+  include:
+    - resourceId
+    - resourceType
+    - currentState
+    - targetState
+    - owner
+    - slaHours
+    - evidenceLinks
