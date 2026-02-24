@@ -42,8 +42,7 @@ print(f'Project: {cred.get(\"project_id\", \"UNKNOWN\")}')
 " || { echo "FAIL: Cannot parse Firebase service account JSON"; exit 1; }
 
 # 5. Verify OneLake lakehouse is accessible
-curl -sf -H "Authorization: Bearer $FABRIC_TOKEN" \
-  "https://api.fabric.microsoft.com/v1/workspaces/$TVS_WS_ID/lakehouses" > /dev/null \
+python3 plugins/tvs-microsoft-deploy/scripts/api/fabric_request.py "/workspaces/$TVS_WS_ID/lakehouses" --entity "${TVS_ENTITY:-tvs}" > /dev/null \
   || { echo "FAIL: Cannot access a3-archive lakehouse"; exit 1; }
 
 # 6. Python dependencies
@@ -109,10 +108,11 @@ python3 -c "import firebase_admin; import pandas" 2>/dev/null \
 **Agent 5 - OneLake Loader:**
 - Upload Parquet files to OneLake lakehouse Files directory via REST API:
   ```bash
-  curl -X PUT -H "Authorization: Bearer $FABRIC_TOKEN" \
-    -H "Content-Type: application/octet-stream" \
-    --data-binary @brokers.parquet \
-    "https://onelake.dfs.fabric.microsoft.com/$TVS_WS_ID/a3_archive.Lakehouse/Files/raw/brokers.parquet"
+  python3 plugins/tvs-microsoft-deploy/scripts/api/fabric_request.py \
+    "/workspaces/$TVS_WS_ID/lakehouses/$A3_LAKEHOUSE_ID/files/raw/brokers.parquet" \
+    --method PUT \
+    --body '{"filePath":"brokers.parquet"}' \
+    --entity "${TVS_ENTITY:-tvs}"
   ```
 - Create Delta tables from Parquet files using Spark notebook or Lakehouse table load
 - Build table schemas matching extraction schema:

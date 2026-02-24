@@ -1,20 +1,12 @@
 #!/usr/bin/env python3
-"""Provision Microsoft Teams workspace for TVS Holdings Virtual Assistants.
+"""Provision Microsoft Teams workspace for TVS Holdings Virtual Assistants."""
 
-Creates a team with dedicated channels and adds VA members via Graph API.
-
-Required env vars:
-    GRAPH_TOKEN - Bearer token for Microsoft Graph API with Team.Create,
-                  Channel.Create, and TeamMember.ReadWrite.All permissions
-"""
-
-import os
 import sys
 import time
+from pathlib import Path
 
-import requests
-
-GRAPH_API = "https://graph.microsoft.com/v1.0"
+sys.path.append(str(Path(__file__).resolve().parent / "api"))
+from _core import ApiClient  # noqa: E402
 
 TEAM_NAME = "TVS Holdings VA Workspace"
 TEAM_DESCRIPTION = "Central workspace for TVS Holdings virtual assistants across all entities"
@@ -43,22 +35,14 @@ VA_MEMBERS = [
 ]
 
 
-def get_headers():
-    token = os.environ.get("GRAPH_TOKEN")
-    if not token:
-        print("ERROR: GRAPH_TOKEN environment variable is not set", file=sys.stderr)
-        sys.exit(1)
-    return {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
-
-
-def create_team(headers):
+def create_team(client: ApiClient):
     payload = {
         "template@odata.bind": "https://graph.microsoft.com/v1.0/teamsTemplates('standard')",
         "displayName": TEAM_NAME,
         "description": TEAM_DESCRIPTION,
         "visibility": "Private",
     }
-    resp = requests.post(f"{GRAPH_API}/teams", headers=headers, json=payload)
+    resp = client.request("POST", "/teams", json_body=payload)
     resp.raise_for_status()
     location = resp.headers.get("Location", "")
     team_id = location.split("'")[1] if "'" in location else resp.headers.get("Content-Location", "").split("/")[-1]
@@ -68,18 +52,18 @@ def create_team(headers):
     return team_id
 
 
-def create_channel(headers, team_id, channel):
+def create_channel(client: ApiClient, team_id, channel):
     if channel["displayName"] == "General":
-        print(f"  Channel: General (built-in, skipped)")
+        print("  Channel: General (built-in, skipped)")
         return
-    resp = requests.post(f"{GRAPH_API}/teams/{team_id}/channels", headers=headers, json=channel)
+    resp = client.request("POST", f"/teams/{team_id}/channels", json_body=channel)
     resp.raise_for_status()
     ch = resp.json()
     print(f"  Channel: {ch['displayName']} -> {ch['id']}")
 
 
-def add_member(headers, team_id, email):
-    resp = requests.post(f"{GRAPH_API}/teams/{team_id}/members", headers=headers, json={
+def add_member(client: ApiClient, team_id, email):
+    resp = client.request("POST", f"/teams/{team_id}/members", json_body={
         "@odata.type": "#microsoft.graph.aadUserConversationMember",
         "roles": ["owner"] if email == "va-lead@tvsholdings.com" else ["member"],
         "user@odata.bind": f"https://graph.microsoft.com/v1.0/users('{email}')",
@@ -92,18 +76,18 @@ def add_member(headers, team_id, email):
 
 
 def main():
-    headers = get_headers()
+    client = ApiClient("https://graph.microsoft.com/v1.0", token_env="GRAPH_TOKEN")
 
     print("=== Creating Teams Workspace ===")
-    team_id = create_team(headers)
+    team_id = create_team(client)
 
     print("\n=== Creating Channels ===")
     for channel in CHANNELS:
-        create_channel(headers, team_id, channel)
+        create_channel(client, team_id, channel)
 
     print("\n=== Adding VA Members ===")
     for email in VA_MEMBERS:
-        add_member(headers, team_id, email)
+        add_member(client, team_id, email)
 
     print(f"\nDone. Team ID: {team_id}")
 

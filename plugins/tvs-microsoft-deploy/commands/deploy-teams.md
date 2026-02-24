@@ -23,8 +23,7 @@ Provisions Microsoft Teams workspaces for TVS Holdings VAs with entity-specific 
 
 ```bash
 # Verify Graph API access
-curl -s -H "Authorization: Bearer $GRAPH_TOKEN" \
-  "https://graph.microsoft.com/v1.0/me" | jq .userPrincipalName
+python3 plugins/tvs-microsoft-deploy/scripts/api/graph_request.py "/me" --entity "${TVS_ENTITY:-tvs}" | jq .userPrincipalName
 
 # HIPAA confirmation required for TVS tenant
 [ "$HIPAA_CONFIRMED" = "true" ] || echo "ERROR: Set HIPAA_CONFIRMED=true for TVS comms config"

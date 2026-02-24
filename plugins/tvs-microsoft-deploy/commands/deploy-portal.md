@@ -30,12 +30,21 @@ pac auth list | grep -q "Active" || { echo "FAIL: pac auth required"; exit 1; }
 [ -z "$STRIPE_SECRET_KEY" ] && { echo "FAIL: STRIPE_SECRET_KEY not set"; exit 1; }
 
 # 3. Validate Stripe key works
-curl -sf -u "$STRIPE_SECRET_KEY:" "https://api.stripe.com/v1/products" > /dev/null \
-  || { echo "FAIL: Stripe API key invalid"; exit 1; }
+python3 - <<'PY'
+import os, requests
+resp=requests.get("https://api.stripe.com/v1/products", auth=(os.environ["STRIPE_SECRET_KEY"], ""), timeout=30)
+raise SystemExit(0 if resp.ok else "FAIL: Stripe API key invalid")
+PY
 
 # 4. Verify Stripe products exist for TVS tiers
-PRODUCTS=$(curl -s -u "$STRIPE_SECRET_KEY:" "https://api.stripe.com/v1/products?active=true" \
-  | jq -r '.data[].name')
+PRODUCTS=$(python3 - <<'PY'
+import os, requests
+resp=requests.get("https://api.stripe.com/v1/products", params={"active":"true"}, auth=(os.environ["STRIPE_SECRET_KEY"], ""), timeout=30)
+resp.raise_for_status()
+for item in resp.json().get("data", []):
+    print(item.get("name", ""))
+PY
+)
 for tier in "Starter" "Basic" "Advanced"; do
   echo "$PRODUCTS" | grep -q "$tier" || echo "WARN: Stripe product '$tier' not found - will create"
 done
