@@ -22,5 +22,6 @@
     "prometheus"
   ],
   "license": "MIT",
-  "repository": "https://github.com/Lobbi-Docs/claude"
+  "repository": "https://github.com/Lobbi-Docs/claude",
+  "contextEntry": "CONTEXT.md"
 }

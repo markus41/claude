@@ -21,5 +21,6 @@
     "ci-cd",
     "gitops",
     "developer-experience"
-  ]
+  ],
+  "contextEntry": "CONTEXT.md"
 }

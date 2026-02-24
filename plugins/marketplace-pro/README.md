@@ -301,21 +301,24 @@ Pinned plugin versions with integrity checksums.
 
 Plugin manifest (one per plugin). See `plugins/marketplace-pro/.claude-plugin/plugin.json` for a complete example.
 
-Required fields: `name`, `version`, `description`.
+Required fields: `name`, `version`, `description`, `contextEntry`.
 Optional fields: `author`, `keywords`, `license`, `repository`, `capabilities`, `modules`.
+
+`contextEntry` must point to a concise operator entry file in the plugin root (typically `CONTEXT.md` or `PLUGIN_CONTEXT.md`) covering purpose, key commands, key agents, and when to open deeper docs.
 
 ## Contributing
 
 ### Plugin Development
 
 1. Create a directory under `plugins/` with your plugin name.
-2. Add `.claude-plugin/plugin.json` with at minimum `name`, `version`, and `description`.
-3. Declare capabilities in `capabilities.provides` and `capabilities.requires`.
-4. Add commands in `commands/` using YAML frontmatter format.
-5. Add agents in `agents/` with YAML frontmatter.
-6. Use `/mp:dev start` for hot-reload development.
-7. Use `/mp:dev lint` to validate your manifest.
-8. Use `/mp:dev build` to create a distributable `.cpkg` bundle.
+2. Add `.claude-plugin/plugin.json` with at minimum `name`, `version`, `description`, and `contextEntry`.
+3. Create the `contextEntry` file (`CONTEXT.md` recommended) with a compact operator summary.
+4. Declare capabilities in `capabilities.provides` and `capabilities.requires`.
+5. Add commands in `commands/` using YAML frontmatter format.
+6. Add agents in `agents/` with YAML frontmatter.
+7. Use `/mp:dev start` for hot-reload development.
+8. Use `/mp:dev lint` to validate your manifest.
+9. Use `/mp:dev build` to create a distributable `.cpkg` bundle.
 
 ### Adding Commands
 

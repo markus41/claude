@@ -454,7 +454,10 @@ export class RegistryClient {
 
       const name = manifest.name as string;
       const version = (manifest.version as string) || '0.0.0';
-      const description = (manifest.description as string) || '';
+      const contextEntry = (manifest.contextEntry as string) || 'CONTEXT.md';
+      const description = this.readContextDescription(dirPath, entry.name, contextEntry)
+        || (manifest.description as string)
+        || '';
 
       // Compute integrity from manifest content
       const manifestContent = fs.readFileSync(manifestPath, 'utf8');
@@ -483,6 +486,26 @@ export class RegistryClient {
       updatedAt: new Date().toISOString(),
       plugins,
     };
+  }
+
+
+  /**
+   * Read the plugin context entry and return a short description line.
+   * Falls back to an empty string if the file is missing/unreadable.
+   */
+  private readContextDescription(dirPath: string, pluginDir: string, contextEntry: string): string {
+    const contextPath = path.join(dirPath, pluginDir, contextEntry);
+    if (!fs.existsSync(contextPath)) return '';
+
+    try {
+      const lines = fs.readFileSync(contextPath, 'utf8')
+        .split('\n')
+        .map((line) => line.trim())
+        .filter((line) => line.length > 0 && !line.startsWith('#'));
+      return lines[0] ?? '';
+    } catch {
+      return '';
+    }
   }
 
   /** Fetch from a remote URL. */

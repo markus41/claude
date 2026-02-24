@@ -17,5 +17,6 @@
     "ui-ux",
     "multi-tenant",
     "accessibility"
-  ]
+  ],
+  "contextEntry": "CONTEXT.md"
 }

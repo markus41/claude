@@ -101,11 +101,32 @@ cat > my-plugin/.claude-plugin/plugin.json << 'EOF'
   "name": "my-plugin",
   "version": "0.1.0",
   "description": "My new plugin",
+  "contextEntry": "CONTEXT.md",
   "capabilities": {
     "provides": ["my-capability"],
     "requires": []
   }
 }
+EOF
+```
+
+```bash
+
+# Create operator context entrypoint (keep concise)
+cat > my-plugin/CONTEXT.md << 'EOF'
+# my-plugin Context
+
+## Purpose
+One-paragraph operator summary.
+
+## Key Commands
+- /my:command
+
+## Agent Inventory
+- my-agent
+
+## Load Deeper Docs When
+- You need implementation details or architecture rationale.
 EOF
 ```
 
@@ -175,6 +196,7 @@ Fix all errors before publishing. Warnings are advisory but should be addressed.
 | `name` field | error | Must be a non-empty string |
 | `version` field | error | Must be a non-empty string |
 | `description` field | error | Must be a non-empty string |
+| `contextEntry` field | error | Must reference `CONTEXT.md` or `PLUGIN_CONTEXT.md` |
 | `capabilities` present | warning | Plugin should declare capabilities |
 | `capabilities.provides` is array | error | Must be an array of strings |
 | `capabilities.requires` is array | error | Must be an array of strings |
@@ -195,6 +217,7 @@ Fix all errors before publishing. Warnings are advisory but should be addressed.
 plugin-root/
   .claude-plugin/
     plugin.json          # Plugin manifest (validated by HotReloader)
+  CONTEXT.md             # Minimal operator context entrypoint
   commands/
     *.md                 # Slash commands (validated for frontmatter)
   skills/

@@ -60,5 +60,6 @@
       "description": "Multi-registry protocol with GitOps lockfile and policy enforcement",
       "entry": "./src/federation/registry.ts"
     }
-  }
+  },
+  "contextEntry": "CONTEXT.md"
 }

@@ -27,6 +27,10 @@ export interface PluginManifest {
   version: string;
   /** Human-readable description. */
   description: string;
+  /** Minimal plugin operator context entrypoint (relative to plugin root). */
+  contextEntry?: string;
+  /** Extracted short context text loaded from contextEntry. */
+  contextSummary?: string;
   /** Capability declarations. Absent means the plugin declares nothing. */
   capabilities?: PluginCapabilities;
   /** Optional module map for multi-module plugins. */
