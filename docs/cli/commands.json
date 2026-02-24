@@ -1,0 +1,107 @@
+[
+  {
+    "file": "browser-fallback.md",
+    "name": "tvs:browser-fallback",
+    "description": "Manual browser automation fallback using Playwright for portal operations lacking CLI/API coverage",
+    "usage": "/tvs:browser-fallback --portal=ppac|fabric|azure --action=<action> [--tenant=tvs|consulting]",
+    "path": "plugins/tvs-microsoft-deploy/commands/browser-fallback.md"
+  },
+  {
+    "file": "cost-report.md",
+    "name": "tvs:cost-report",
+    "description": "Cost analysis across all TVS Holdings entities with tier projections",
+    "usage": "/tvs:cost-report [--tier=1|2|3|all] [--format=markdown|json|csv]",
+    "path": "plugins/tvs-microsoft-deploy/commands/cost-report.md"
+  },
+  {
+    "file": "deploy-all.md",
+    "name": "tvs:deploy-all",
+    "description": "Full platform deployment orchestrated from control-plane manifests and overlays",
+    "usage": "/tvs:deploy-all [--env dev|test|prod] [--overlay <path>] [--dry-run] [--taia-wind-down]",
+    "path": "plugins/tvs-microsoft-deploy/commands/deploy-all.md"
+  },
+  {
+    "file": "deploy-azure.md",
+    "name": "tvs:deploy-azure",
+    "description": "Azure infrastructure deployment - Bicep templates for Key Vault, Functions, Static Web Apps, App Insights",
+    "usage": "/tvs:deploy-azure [--resource kv|func|stapp|insights|all] [--resource-group NAME] [--location eastus]",
+    "path": "plugins/tvs-microsoft-deploy/commands/deploy-azure.md"
+  },
+  {
+    "file": "deploy-dataverse.md",
+    "name": "tvs:deploy-dataverse",
+    "description": "Dataverse schema + Power Platform ALM deployment (pack/unpack, managed promotion, env vars, connection refs, release gates, Copilot Studio)",
+    "usage": "/tvs:deploy-dataverse [--env dev|test|prod] [--action precheck|unpack|pack|import|promote] [--mode managed|unmanaged]",
+    "path": "plugins/tvs-microsoft-deploy/commands/deploy-dataverse.md"
+  },
+  {
+    "file": "deploy-fabric.md",
+    "name": "tvs:deploy-fabric",
+    "description": "Fabric workspace provisioning - creates workspaces, lakehouses, deploys notebooks, creates Dataverse shortcuts",
+    "usage": "/tvs:deploy-fabric [--workspace NAME] [--notebooks-only] [--shortcuts-only] [--dry-run]",
+    "path": "plugins/tvs-microsoft-deploy/commands/deploy-fabric.md"
+  },
+  {
+    "file": "deploy-identity.md",
+    "name": "tvs:deploy-identity",
+    "description": "Entra ID deployment - users, licenses, conditional access, app registrations, FIDO2 configuration",
+    "usage": "/tvs:deploy-identity [--entity tvs|consulting|media|all] [--users-only] [--apps-only]",
+    "path": "plugins/tvs-microsoft-deploy/commands/deploy-identity.md"
+  },
+  {
+    "file": "deploy-portal.md",
+    "name": "tvs:deploy-portal",
+    "description": "Power Pages and Copilot Studio deployment - broker portal, Stripe billing widget, conversational bots",
+    "usage": "/tvs:deploy-portal [--component portal|copilot|stripe|all] [--env dev|staging|prod]",
+    "path": "plugins/tvs-microsoft-deploy/commands/deploy-portal.md"
+  },
+  {
+    "file": "deploy-teams.md",
+    "name": "tvs:deploy-teams",
+    "description": "Teams workspace provisioning for VAs with HIPAA-aware configuration",
+    "usage": "/tvs:deploy-teams [--entity=tvs|consulting|all] [--dry-run]",
+    "path": "plugins/tvs-microsoft-deploy/commands/deploy-teams.md"
+  },
+  {
+    "file": "extract-a3.md",
+    "name": "tvs:extract-a3",
+    "description": "A3 Firebase extraction - bulk extract brokers, commissions, carriers, contacts, activities to OneLake. CRITICAL PATH WEEK 1.",
+    "usage": "/tvs:extract-a3 [--collection brokers|commissions|carriers|contacts|activities|all] [--batch-size 500] [--since DATE]",
+    "path": "plugins/tvs-microsoft-deploy/commands/extract-a3.md"
+  },
+  {
+    "file": "identity-attestation.md",
+    "name": "tvs:identity-attestation",
+    "description": "Generate periodic access attestation packets for TAIA transition governance and due diligence",
+    "usage": "/tvs:identity-attestation --input exports/role-assignments.json --period 2026-Q1",
+    "path": "plugins/tvs-microsoft-deploy/commands/identity-attestation.md"
+  },
+  {
+    "file": "identity-drift.md",
+    "name": "tvs:identity-drift",
+    "description": "Detect Entra identity drift and produce remediation recommendations",
+    "usage": "/tvs:identity-drift --inventory identity-inventory.json --output reports/identity-drift.json",
+    "path": "plugins/tvs-microsoft-deploy/commands/identity-drift.md"
+  },
+  {
+    "file": "normalize-carriers.md",
+    "name": "tvs:normalize-carriers",
+    "description": "Carrier normalization sprint for TAIA FMO sale preparation",
+    "usage": "/tvs:normalize-carriers [--dry-run] [--collection=carriers|commissions|all]",
+    "path": "plugins/tvs-microsoft-deploy/commands/normalize-carriers.md"
+  },
+  {
+    "file": "status-check.md",
+    "name": "tvs:status-check",
+    "description": "Health check using control-plane dry-run outputs as the verification source of truth",
+    "usage": "/tvs:status-check [--env dev|test|prod] [--taia-wind-down]",
+    "path": "plugins/tvs-microsoft-deploy/commands/status-check.md"
+  },
+  {
+    "file": "taia-readiness.md",
+    "name": "tvs:taia-readiness",
+    "description": "TAIA transition readiness check driven by control-plane wind-down overlay",
+    "usage": "/tvs:taia-readiness [--env dev|test|prod]",
+    "path": "plugins/tvs-microsoft-deploy/commands/taia-readiness.md"
+  }
+]

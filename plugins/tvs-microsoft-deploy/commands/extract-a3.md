@@ -176,3 +176,38 @@ Governed by `orchestration-protocol-enforcer` hook. Minimum 6 sub-agents enforce
 | carriers | ~200 | name, carrier_code, products, commission_schedules | contacts |
 | contacts | ~10,000 | name, email, type, broker_ref, carrier_ref | none |
 | activities | ~100,000 | type, date, broker_id, subject, outcome | none |
+
+## Unified Command Contract
+
+### Contract
+- **Schema:** `../cli/command.schema.json`
+- **Required shared arguments:** `--entity`, `--tenant`
+- **Optional shared safety arguments:** `--strict`, `--dry-run`, `--export-json`, `--plan-id`
+- **Error catalog:** `../cli/error-codes.json`
+- **Operator remediation format:** `../cli/operator-remediation.md`
+
+### Shared argument patterns
+```text
+--entity <tvs|consulting|taia|all>
+--tenant <tenant-id>
+--strict
+--dry-run
+--export-json <path>
+--plan-id <plan-id>
+```
+
+### Unified examples
+```bash
+# TVS
+/tvs:extract-a3 --entity tvs --tenant tvs-prod --plan-id PLAN-TVS-001
+
+# Consulting
+/tvs:extract-a3 --entity consulting --tenant consulting-prod --plan-id PLAN-CONSULTING-001
+
+# TAIA
+/tvs:extract-a3 --entity taia --tenant taia-prod --plan-id PLAN-TAIA-001
+
+# Cross-entity safe mode
+/tvs:extract-a3 --entity all --tenant shared-ops --strict --dry-run --export-json docs/cli/extract-a3.json --plan-id PLAN-SAFE-001
+```
+
