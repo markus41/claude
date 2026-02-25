@@ -188,12 +188,12 @@ Verify all plugin components are in place:
 ls -la plugins/jira-orchestrator/
 
 # Expected (v7.5.0):
-# - agents/     (77 agents)
-# - commands/   (45 commands)
-# - skills/     (13 skills)
+# - agents/     (81 agents)
+# - commands/   (46 commands)
+# - skills/     (11 skills)
 # - config/     (configuration files)
 # - templates/  (document templates)
-# - db/         (database migrations - v7.5.0)
+# - prisma/     (database schema - v7.5.0)
 ```
 
 ### Phase 6b: Database Infrastructure Check (v7.5.0)
@@ -262,9 +262,9 @@ Database Infrastructure (v7.5.0):
   * Temporal: Running
 
 Plugin Components:
-  * Agents: 77/77
-  * Commands: 45/45
-  * Skills: 13/13
+  * Agents: 81/81
+  * Commands: 46/46
+  * Skills: 11/11
   * Teams: 16
   * Config: Loaded
 

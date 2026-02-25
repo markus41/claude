@@ -1,7 +1,7 @@
 {
   "name": "tvs-microsoft-deploy",
   "version": "1.1.0",
-  "description": "Consul (Forerunner) - Enterprise Microsoft ecosystem orchestrator for TVS (Trusted Virtual Solutions) multi-entity multi-tenant deployment. 19 agents, 18 commands, 17 skills, 14 hooks, 5 workflows. MCP server for Graph API, Dataverse, Fabric, and Planner.",
+  "description": "Consul - Enterprise Microsoft ecosystem orchestrator for TVS (Trusted Virtual Solutions) multi-entity multi-tenant deployment. 19 agents, 18 commands, 17 skills, 14 hooks, 5 workflows. MCP server for Graph API, Dataverse, Fabric, and Planner.",
   "author": {
     "name": "Markus Ahling",
     "email": "markus@lobbi.io"
@@ -200,7 +200,7 @@
   "context": {
     "entry": "CONTEXT_SUMMARY.md",
     "title": "tvs-microsoft-deploy",
-    "summary": "Consul (Forerunner) - Enterprise Microsoft ecosystem orchestrator for TVS (Trusted Virtual Solutions) multi-entity multi-tenant deployment. 19 agents, 18 commands, 17 skills, 14 hooks, 5 workflows. MCP server for Graph API, Dataverse, Fabric, and Planner.",
+    "summary": "Consul - Enterprise Microsoft ecosystem orchestrator for TVS (Trusted Virtual Solutions) multi-entity multi-tenant deployment. 19 agents, 18 commands, 17 skills, 14 hooks, 5 workflows. MCP server for Graph API, Dataverse, Fabric, and Planner.",
     "tags": [
       "microsoft",
       "power-platform",

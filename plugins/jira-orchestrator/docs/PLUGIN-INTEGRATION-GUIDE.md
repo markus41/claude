@@ -918,6 +918,6 @@ describe('FastAPIBackendPlugin', () => {
 
 ---
 
-**Version:** 1.0.0
-**Last Updated:** 2025-12-26
+**Version:** 7.5.0
+**Last Updated:** 2026-02-25
 **Author:** architect-supreme

@@ -16,19 +16,19 @@ platform without modifying core code.
 
 | Plugin | Version | Callsign | Agents | Commands | Description |
 |--------|---------|----------|--------|----------|-------------|
-| [aws-eks-helm-keycloak](./aws-eks-helm-keycloak/) | 1.0.0 | Conduit-Artisan | 5 | 8 | AWS EKS + Helm + Keycloak + Harness CI/CD |
-| [claude-code-templating-plugin](./claude-code-templating-plugin/) | 1.0.0 | - | 8 | 6 | Universal templating + Harness pipelines |
-| [deployment-pipeline](./deployment-pipeline/) | 1.0.0 | - | 4 | 6 | State-machine Harness CD pipeline |
+| [aws-eks-helm-keycloak](./aws-eks-helm-keycloak/) | 1.0.0 | Conduit-Artisan | 4 | 7 | AWS EKS + Helm + Keycloak + Harness CI/CD |
+| [claude-code-templating-plugin](./claude-code-templating-plugin/) | 1.0.0 | - | 6 | 5 | Universal templating + Harness pipelines |
+| [deployment-pipeline](./deployment-pipeline/) | 1.0.0 | - | 3 | 5 | State-machine Harness CD pipeline |
 | [exec-automator](./exec-automator/) | 1.0.0 | Genesis | 12 | 14 | Nonprofit/association executive automation |
 | [fastapi-backend](./fastapi-backend/) | 0.1.0 | - | 5 | 11 | FastAPI + MongoDB + Keycloak + K8s |
 | [frontend-design-system](./frontend-design-system/) | 1.0.0 | - | 7 | 9 | 263+ design styles + Keycloak theming |
 | [fullstack-iac](./fullstack-iac/) | 1.0.0 | Zenith | 3 | 9 | Full-stack + Terraform/Ansible/K8s IaC |
-| [home-assistant-architect](./home-assistant-architect/) | 2.0.0 | - | 16 | 10 | Smart home + Ollama local LLM |
+| [home-assistant-architect](./home-assistant-architect/) | 2.0.0 | - | 15 | 9 | Smart home + Ollama local LLM |
 | [jira-orchestrator](./jira-orchestrator/) | 7.5.0 | Arbiter | 82 | 47 | Enterprise Jira/Atlassian DevOps orchestration |
 | [lobbi-platform-manager](./lobbi-platform-manager/) | 1.0.0 | - | 5 | 9 | MERN platform + Keycloak management |
 | [marketplace-pro](./marketplace-pro/) | 1.0.0 | - | 2 | 13 | Plugin marketplace + supply chain security |
 | [react-animation-studio](./react-animation-studio/) | 1.1.0 | - | 7 | 13 | React animations (Framer, GSAP) |
-| [team-accelerator](./team-accelerator/) | 1.0.0 | - | 7 | 9 | Enterprise team DevOps toolkit |
+| [team-accelerator](./team-accelerator/) | 1.0.0 | - | 6 | 8 | Enterprise team DevOps toolkit |
 | [tvs-microsoft-deploy](./tvs-microsoft-deploy/) | 1.1.0 | Consul | 19 | 18 | Microsoft ecosystem orchestrator |
 
 ## Plugin Architecture

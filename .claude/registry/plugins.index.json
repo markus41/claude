@@ -94,6 +94,12 @@
       "source": "local",
       "installedAt": "2026-01-01T00:00:00.000Z",
       "dependencies": {}
+    },
+    "tvs-microsoft-deploy": {
+      "version": "1.1.0",
+      "installedAt": "2026-02-24T08:00:00.000Z",
+      "source": "local",
+      "path": "../plugins/tvs-microsoft-deploy"
     }
   },
   "registry": {
@@ -337,7 +343,7 @@
         "tier": "standard"
       },
       "infrastructure-template-generator": {
-        "path": "./.claude/tools/plugin-cli/infrastructure-template-generator/.claude-plugin/plugin.json",
+        "path": "./tools/plugin-cli/infrastructure-template-generator/.claude-plugin/plugin.json",
         "callsign": "Forgemaster",
         "version": "2.0.0",
         "status": "active",
@@ -449,7 +455,8 @@
     "Curator": "code-quality-orchestrator",
     "Bootstrap": "dev-environment-bootstrap",
     "Migrator": "migration-wizard",
-    "TestForge": "testforge"
+    "TestForge": "testforge",
+    "Consul": "tvs-microsoft-deploy"
   },
   "stats": {
     "totalInstalled": 14,

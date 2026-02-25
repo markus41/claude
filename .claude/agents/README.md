@@ -55,14 +55,14 @@ They are proactively invoked across all domains.
 |-------|-------|---------|
 | `code-reviewer` | sonnet | Post-write code review: security, type safety, error handling, N+1 queries |
 | `debugger` | sonnet | Systematic debugging: reproduce, isolate, fix, regression-test |
-| `doc-writer` | sonnet | Documentation for code, APIs, and architecture |
-| `docker-ops` | sonnet | Docker build, push, compose, multi-stage image management |
+| `doc-writer` | haiku | Documentation for code, APIs, and architecture |
+| `docker-ops` | haiku | Docker build, push, compose, multi-stage image management |
 | `k8s-image-auditor` | sonnet | Audits K8s deployments for stale images and pull policy misconfigurations |
 | `researcher` | haiku | Fast lookup and web research via MCP tools |
 | `security-reviewer` | sonnet | Security audit: injection, secrets exposure, auth flaws, dependency CVEs |
 | `test-writer` | sonnet | Test generation: unit, integration, edge cases, regression tests |
 
-## Subdirectory catalog (30 categories, 129 agents)
+## Subdirectory catalog (28 categories, 129 agents)
 
 | Directory | Count | Domain |
 |-----------|-------|--------|

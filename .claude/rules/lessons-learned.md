@@ -458,3 +458,248 @@ ls: cannot access '/home/user/claude/.claude/agents/member-management/': No such
 - **Input:** `/home/user/claude/plugins/tvs-microsoft-deploy/README.md`
 - **Error:** File does not exist. Note: your current working directory is /home/user/claude.
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-02-25T22:20:54Z)
+- **Tool:** Bash
+- **Input:** `echo "=== DEPLOY-PIPELINE AGENTS ===" && ls /home/user/claude/plugins/deployment-pipeline/agents/ 2>/dev/null && echo "=== DEPLOY-PIPELINE COMMANDS ===" && ls /home/user/claude/plugins/deployment-pipeline/commands/ 2>/dev/null && echo "=== DEPLOY-PIPELINE SKILLS ===" && ls /home/user/claude/plugins/deployment-pipeline/skills/ 2>/dev/null && echo "=== TEAM-ACCEL AGENTS ===" && ls /home/user/claude/plugins/team-accelerator/agents/ 2>/dev/null && echo "=== TEAM-ACCEL COMMANDS ===" && ls /home/user/claude/plugins/team-accelerator/commands/ 2>/dev/null && echo "=== TEAM-ACCEL SKILLS ===" && ls /home/user/claude/plugins/team-accelerator/skills/ 2>/dev/null`
+- **Error:** Exit code 2
+=== DEPLOY-PIPELINE AGENTS ===
+index.json
+orchestrator.md
+rollback.md
+validator.md
+=== DEPLOY-PIPELINE COMMANDS ===
+approve.md
+history.md
+index.json
+rollback.md
+start.md
+status.md
+=== DEPLOY-PIPELINE SKILLS ===
+
+=== DEPLOY-PIPELINE AGENTS ===
+index.json
+orchestrator.md
+rollback.md
+validator.md
+=== DEPLOY-PIPELINE COMMANDS ===
+approve.md
+history.md
+index.json
+rollback.md
+start.md
+status.md
+=== DEPLOY-PIPELINE SKILLS ===
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-02-25T22:21:17Z)
+- **Tool:** Bash
+- **Input:** `# Look at registry/commands-consolidated.json
+python3 -c "
+import json, os
+base = '/home/user/claude/plugins/jira-orchestrator'
+data = json.load(open(f'{base}/registry/commands-consolidated.json'))
+print('Keys:', list(data.keys()))
+print('Version:', data.get('version'))
+# check for command file paths
+if 'commands' in data:
+    for cmd in data['commands'][:5]:
+        print(cmd)
+"`
+- **Error:** Exit code 1
+Keys: ['version', 'description', 'prefix', 'total_commands', 'philosophy', 'commands', 'hooks', 'deprecated', 'migration']
+Version: 6.0.0
+Traceback (most recent call last):
+  File "<string>", line 9, in <module>
+TypeError: unhashable type: 'slice'
+
+Keys: ['version', 'description', 'prefix', 'total_commands', 'philosophy', 'commands', 'hooks', 'deprecated', 'migration']
+Version: 6.0.0
+Traceback (most recent call last):
+  File "<string>", line 9, in <module>
+TypeError: unhashable type: 'slice'
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-02-25T22:22:53Z)
+- **Tool:** Bash
+- **Input:** `echo "=== DEPLOY-PIPELINE agents ===" && ls /home/user/claude/plugins/deployment-pipeline/agents/ 2>/dev/null && echo "=== DEPLOY-PIPELINE commands ===" && ls /home/user/claude/plugins/deployment-pipeline/commands/ 2>/dev/null && echo "=== DEPLOY-PIPELINE skills ===" && ls /home/user/claude/plugins/deployment-pipeline/skills/ 2>/dev/null && echo "=== TEAM-ACCEL agents ===" && ls /home/user/claude/plugins/team-accelerator/agents/ 2>/dev/null && echo "=== TEAM-ACCEL commands ===" && ls /home/user/claude/plugins/team-accelerator/commands/ 2>/dev/null && echo "=== TEAM-ACCEL skills ===" && ls /home/user/claude/plugins/team-accelerator/skills/ 2>/dev/null`
+- **Error:** Exit code 2
+=== DEPLOY-PIPELINE agents ===
+index.json
+orchestrator.md
+rollback.md
+validator.md
+=== DEPLOY-PIPELINE commands ===
+approve.md
+history.md
+index.json
+rollback.md
+start.md
+status.md
+=== DEPLOY-PIPELINE skills ===
+
+=== DEPLOY-PIPELINE agents ===
+index.json
+orchestrator.md
+rollback.md
+validator.md
+=== DEPLOY-PIPELINE commands ===
+approve.md
+history.md
+index.json
+rollback.md
+start.md
+status.md
+=== DEPLOY-PIPELINE skills ===
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-02-25T22:23:52Z)
+- **Tool:** Bash
+- **Input:** `echo "=== HA hooks ===" && ls /home/user/claude/plugins/home-assistant-architect/hooks/ 2>/dev/null && ls /home/user/claude/plugins/home-assistant-architect/hooks/scripts/ 2>/dev/null && echo "=== HA mcp-server ===" && ls /home/user/claude/plugins/home-assistant-architect/mcp-server/src/ 2>/dev/null && ls /home/user/claude/plugins/home-assistant-architect/mcp-server/dist/ 2>/dev/null`
+- **Error:** Exit code 2
+=== HA hooks ===
+hooks.json
+scripts
+ha-health-check.sh
+ollama-status.sh
+security-scan.sh
+validate-yaml.sh
+=== HA mcp-server ===
+index.ts
+
+=== HA hooks ===
+hooks.json
+scripts
+ha-health-check.sh
+ollama-status.sh
+security-scan.sh
+validate-yaml.sh
+=== HA mcp-server ===
+index.ts
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Task failure (2026-02-25T22:24:47Z)
+- **Tool:** Task
+- **Input:** `N/A`
+- **Error:** Cannot resume agent a92e05248d6041d21: it is still running. Use TaskStop to stop it first, or wait for it to complete.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-02-25T22:25:14Z)
+- **Tool:** Bash
+- **Input:** `for f in a92e05248d6041d21 a460ff6ea30c223c7 a62089180cdd27350 ab7570306bfb89ae9 aea50d66ba45c0f46; do echo -n "$f: "; tail -c 500 /tmp/claude-0/-home-user-claude/tasks/$f.output 2>/dev/null | grep -c "end_turn\|stop_reason"; done`
+- **Error:** Exit code 1
+a92e05248d6041d21: 0
+a460ff6ea30c223c7: 0
+a62089180cdd27350: 0
+ab7570306bfb89ae9: 1
+aea50d66ba45c0f46: 0
+
+a92e05248d6041d21: 0
+a460ff6ea30c223c7: 0
+a62089180cdd27350: 0
+ab7570306bfb89ae9: 1
+aea50d66ba45c0f46: 0
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-02-25T22:25:30Z)
+- **Tool:** Bash
+- **Input:** `# Verify harness/API.md exists (it does, we already saw it)
+ls /home/user/claude/plugins/jira-orchestrator/docs/harness/API.md 2>/dev/null && echo "EXISTS" || echo "MISSING"
+
+# Check the duplicate agent-name issue: registry has "Commit Tracker" and "Test Strategist" as display names
+# while agents/index.json also has them with display names (capital). Let's check if they properly reference existing files
+python3 -c "
+import json
+data = json.load(open('/home/user/claude/plugins/jira-orchestrator/agents/index.json'))
+for e in data['entries']:
+    name = e['name']
+    path = e['path']
+    # report any that have capital letters or namespace prefix
+    if name[0].isupper() or ':' in name:
+        print(f'UNUSUAL name: {name!r} -> path: {path!r}')
+"`
+- **Error:** Exit code 1
+/home/user/claude/plugins/jira-orchestrator/docs/harness/API.md
+EXISTS
+  File "<string>", line 9
+    print(f'UNUSUAL name: {name\!r} -> path: {path\!r}')
+                                                       ^
+SyntaxError: f-string expression part cannot include a backslash
+
+/home/user/claude/plugins/jira-orchestrator/docs/harness/API.md
+EXISTS
+  File "<string>", line 9
+    print(f'UNUSUAL name: {name\!r} -> path: {path\!r}')
+                                                       ^
+SyntaxError: f-string expression part cannot include a backslash
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-02-25T22:28:47Z)
+- **Tool:** Bash
+- **Input:** `# Also check if tvs-microsoft-deploy is missing from the registry installed section
+grep -c "tvs-microsoft-deploy" /home/user/claude/.claude/registry/plugins.index.json`
+- **Error:** Exit code 1
+0
+
+0
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-02-25T22:29:26Z)
+- **Tool:** Bash
+- **Input:** `# Find the 2 extra hooks not in the manifest
+diff <(grep '"command"' /home/user/claude/plugins/tvs-microsoft-deploy/.claude-plugin/plugin.json | grep -o 'hooks/[^"]*') <(ls /home/user/claude/plugins/tvs-microsoft-deploy/hooks/ | sed 's/^/hooks\//')`
+- **Error:** Exit code 1
+0a1,8
+> hooks/audit-azure-provisioning.sh
+> hooks/audit-dataverse-changes.sh
+> hooks/audit-fabric-operations.sh
+> hooks/audit-graph-api-calls.sh
+> hooks/audit-metadata-check.sh
+> hooks/audit-pac-operations.sh
+> hooks/hipaa-config-guard.sh
+> hooks/identity-policy-engine.sh
+2d9
+< hooks/tenant-isolation-validator.sh
+4,5d10
+< hooks/stripe-webhook-security.sh
+< hooks/hipaa-config-guard.sh
+6a12,13
+> hooks/stripe-webhook-security.sh
+> hooks/taia-winddown-guard.sh
+7a15
+> hooks/tenant-isolation-validator.sh
+9,14d16
+< hooks/audit-metadata-check.sh
+< hooks/audit-pac-operations.sh
+< hooks/audit-graph-api-calls.sh
+< hooks/audit-fabric-operations.sh
+< hooks/audit-azure-provisioning.sh
+< hooks/audit-dataverse-changes.sh
+
+0a1,8
+> hooks/audit-azure-provisioning.sh
+> hooks/audit-dataverse-changes.sh
+> hooks/audit-fabric-operations.sh
+> hooks/audit-graph-api-calls.sh
+> hooks/audit-metadata-check.sh
+> hooks/audit-pac-operations.sh
+> hooks/hipaa-config-guard.sh
+> hooks/identity-policy-engine.sh
+2d9
+< hooks/tenant-isolation-validator.sh
+4,5d10
+< hooks/stripe-webhook-security.sh
+< hooks/hipaa-config-guard.sh
+6a12,13
+> hooks/stripe-webhook-security.sh
+> hooks/taia-winddown-guard.sh
+7a15
+> hooks/tenant-isolation-validator.sh
+9,14d16
+< hooks/audit-metadata-check.sh
+< hooks/audit-pac-operations.sh
+< hooks/audit-graph-api-calls.sh
+< hooks/audit-fabric-operations.sh
+< hooks/audit-azure-provisioning.sh
+< hooks/audit-dataverse-changes.sh
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving

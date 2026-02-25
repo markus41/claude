@@ -51,8 +51,8 @@ Use this table to decide when to move beyond this summary.
 
 | Signal | Open docs | Why |
 | --- | --- | --- |
-| You need setup, install, or execution details | `README.md`, `INSTALLATION.md`, or setup guides | Captures exact commands and prerequisites. |
+| You need setup, install, or execution details | `README.md`, `scripts/README.md`, or setup guides | Captures exact commands and prerequisites. |
 | You are changing implementation behavior | `CONTEXT.md` and relevant source folders | Contains architecture, conventions, and deeper implementation context. |
-| You are validating security, compliance, or rollout risk | `SECURITY*.md`, workstream/review docs | Provides controls, risk notes, and release constraints. |
+| You are validating security, compliance, or rollout risk | `docs/operations.md`, workstream/review docs | Provides controls, risk notes, and release constraints. |
 | The summary omits edge cases you need | Any referenced deep-dive docs linked above | Ensures decisions are based on complete plugin-specific details. |
 

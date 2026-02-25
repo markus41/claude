@@ -102,15 +102,15 @@
 └──────────────────────────────────┬──────────────────────────────────────────┘
                                    │
                     ┌──────────────┼──────────────┐
-                    │              │
-                    ▼              ▼
-         ┌──────────────┐ ┌───────────────┐
-         │   FastAPI    │ │    Lobbi      │
-         │   Backend    │ │   Platform    │
-         │              │ │   Manager     │
-         └──────┬───────┘ └───────┬───────┘
-                │                 │
-                └────────┬────────┘
+                    │              │              │
+                    ▼              ▼              ▼
+┌──────────────┐ ┌───────────────┐ ┌──────────────┐
+│   FastAPI    │ │    Lobbi      │ │     Jira     │
+│   Backend    │ │   Platform    │ │ Orchestrator │
+│              │ │   Manager     │ │              │
+└──────┬───────┘ └───────┬───────┘ └──────┬───────┘
+       │                 │                │
+       └────────┬────────┴────────────────┘
                          │
                          ▼
                  ┌──────────────┐  ┌──────────────┐
@@ -353,7 +353,7 @@ STEP 2: Query Unified Registry
 │  Searching across all plugins...                                            │
 │                                                                              │
 │  ┌─────────────────────────────────────────────────────────────────┐       │
-│  │ Plugin: frontend-powerhouse                                     │       │
+│  │ Plugin: frontend-design-system                                     │       │
 │  │                                                                  │       │
 │  │  Agent: react-component-specialist                              │       │
 │  │  ├─ Category: frontend                                         │       │
@@ -374,12 +374,12 @@ STEP 2: Query Unified Registry
 │  └─────────────────────────────────────────────────────────────────┘       │
 │                                                                              │
 │  ┌─────────────────────────────────────────────────────────────────┐       │
-│  │ Plugin: chakra-react-toolkit                                    │       │
+│  │ Plugin: react-animation-studio                                    │       │
 │  │                                                                  │       │
-│  │  Agent: chakra-component-generator                              │       │
+│  │  Agent: animation-component-builder                              │       │
 │  │  ├─ Category: frontend                                         │       │
-│  │  ├─ Capabilities: [react, chakra-ui, components]               │       │
-│  │  ├─ Keywords: [chakra, component, accessible]                  │       │
+│  │  ├─ Capabilities: [react, framer-motion, animations]           │       │
+│  │  ├─ Keywords: [animation, component, interactive]              │       │
 │  │  └─ Score: 70                                                  │       │
 │  └─────────────────────────────────────────────────────────────────┘       │
 │                                                                              │
@@ -420,14 +420,14 @@ STEP 3: Build Agent Team
 │  └────────────────────────────────────────────────────────┘    │
 │                                                                  │
 │  ┌────────────────────────────────────────────────────────┐    │
-│  │ Specialist 1: frontend-powerhouse::                    │    │
+│  │ Specialist 1: frontend-design-system::                    │    │
 │  │               react-component-specialist               │    │
 │  │  - Generate React component structure                  │    │
 │  │  - Implement hooks and state management                │    │
 │  └────────────────────────────────────────────────────────┘    │
 │                                                                  │
 │  ┌────────────────────────────────────────────────────────┐    │
-│  │ Specialist 2: frontend-powerhouse::                    │    │
+│  │ Specialist 2: frontend-design-system::                    │    │
 │  │               accessibility-auditor                    │    │
 │  │  - Add ARIA attributes                                 │    │
 │  │  - Ensure keyboard navigation                          │    │
@@ -602,7 +602,7 @@ t=5s  ┌──────────────────┐
                ▼
 
 t=12s ┌──────────────────┐
-      │ Ahling Command   │  Deploys infrastructure
+      │ AWS EKS Helm     │  Deploys infrastructure
       └────────┬─────────┘
                │ ✓ SUCCESS
                │ Namespace: acme-corp-prod created
@@ -646,7 +646,7 @@ t=8s  ┌──────────────────┐
                │ })
 
 t=15s ┌──────────────────┐
-      │ Ahling Command   │  Deploys infrastructure
+      │ AWS EKS Helm     │  Deploys infrastructure
       └────────┬─────────┘
                │ ✗ FAILURE
                │ Error: "K8s quota exceeded"
@@ -759,7 +759,7 @@ ORIGINAL PLAN:
 │   - Agent: database-expert (sonnet)      Cost: $0.10      │
 │   Duration: 35 min                       Total: $0.35      │
 ├────────────────────────────────────────────────────────────┤
-│ Phase 2: Frontend (frontend-powerhouse)                   │
+│ Phase 2: Frontend (frontend-design-system)                   │
 │   - Agent: react-architect (opus)        Cost: $0.15      │
 │   - Agent: component-builder (sonnet)    Cost: $0.10      │
 │   - Agent: state-manager (sonnet)        Cost: $0.10      │
@@ -784,7 +784,7 @@ OPTIMIZED PLAN:
 │   - Agent: database-expert (haiku)       Cost: $0.03      │
 │   Duration: 30 min                       Total: $0.13      │
 │                                                            │
-│ Frontend (frontend-powerhouse):                            │
+│ Frontend (frontend-design-system):                            │
 │   - Agent: component-builder (sonnet)    Cost: $0.10      │
 │   - Agent: state-manager (haiku)         Cost: $0.03      │
 │   Duration: 25 min                       Total: $0.13      │
@@ -822,5 +822,5 @@ COST BREAKDOWN BY MODEL:
 ---
 
 **Document Version:** 1.0.0
-**Last Updated:** 2025-12-26
+**Last Updated:** 2026-02-25
 **Author:** architect-supreme

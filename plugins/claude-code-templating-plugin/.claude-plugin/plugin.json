@@ -1,7 +1,7 @@
 {
   "name": "claude-code-templating",
   "version": "1.0.0",
-  "description": "Universal templating and Harness expert plugin for Claude Code - enables fully autonomous project generation, pipeline creation, and deployment automation through a unified template interface. Supports Handlebars, Cookiecutter, Copier, Maven archetypes, and Harness pipelines. 4 commands, 5 agents, 3 skills.",
+  "description": "Universal templating and Harness expert plugin for Claude Code - enables fully autonomous project generation, pipeline creation, and deployment automation through a unified template interface. Supports Handlebars, Cookiecutter, Copier, Maven archetypes, and Harness pipelines. 5 commands, 6 agents, 3 skills.",
   "author": {
     "name": "Markus Ahling",
     "url": "https://thelobbi.io"
@@ -36,7 +36,7 @@
   "context": {
     "entry": "CONTEXT_SUMMARY.md",
     "title": "claude-code-templating",
-    "summary": "Universal templating and Harness expert plugin for Claude Code - enables fully autonomous project generation, pipeline creation, and deployment automation through a unified template interface. Supports Handlebars, Cookiecutter, Copier, Maven archetypes, and Harness pipelines. 4 commands, 5 agents, 3 skills.",
+    "summary": "Universal templating and Harness expert plugin for Claude Code - enables fully autonomous project generation, pipeline creation, and deployment automation through a unified template interface. Supports Handlebars, Cookiecutter, Copier, Maven archetypes, and Harness pipelines. 5 commands, 6 agents, 3 skills.",
     "tags": [
       "templating",
       "scaffolding",

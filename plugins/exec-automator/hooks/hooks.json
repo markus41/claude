@@ -31,7 +31,7 @@
         {
           "type": "prompt",
           "prompt": "Detect organizational documents (RFPs, bylaws, job descriptions) and suggest analysis workflows. Look for keywords: rfp, job description, bylaws, executive director, ed responsibilities, association, nonprofit, trade association.",
-          "doc_ref": "docs/hooks/prompt-guidance.md"
+          "doc_ref": "hooks/README.md"
         }
       ]
     },
@@ -75,11 +75,9 @@
     "auto_checkpoint_interval_minutes": 30
   },
   "metadata": {
-    "metadata": {
-      "author": "Brookside BI",
-      "license": "Proprietary",
-      "created": "2025-12-17",
-      "updated": "2025-12-17"
-    }
+    "author": "Brookside BI",
+    "license": "Proprietary",
+    "created": "2025-12-17",
+    "updated": "2025-12-17"
   }
 }

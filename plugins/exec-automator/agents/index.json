@@ -18,7 +18,7 @@
       "path": "agents/admin-coordinator.md"
     },
     {
-      "name": "exec:communications-director",
+      "name": "communications-director",
       "intent": "Communications specialist managing newsletters, media relations, member communications, brand voice, crisis response, and content strategy for associations",
       "tags": [
         "exec-automator",
@@ -83,7 +83,7 @@
       "path": "agents/meeting-facilitator.md"
     },
     {
-      "name": "exec:membership-steward",
+      "name": "membership-steward",
       "intent": "Membership operations specialist for recruitment, retention, engagement, and member lifecycle management",
       "tags": [
         "exec-automator",

@@ -64,9 +64,9 @@ START: New Jira Issue
 │  └─ DECOMPOSITION: Epic (71+) → ANALYZE→DECOMPOSE→CREATE STORIES→TRIAGE EACH
 │
 ├─ Step 5: AGENT SELECTION
-│  ├─ By Type: Bug→debugger; Story→feature-architect; Epic→epic-decomposer; Spike→research-specialist
+│  ├─ By Type: Bug→triage-agent; Story→requirements-analyzer; Epic→epic-decomposer; Spike→requirements-analyzer
 │  ├─ By Tech: Frontend→react-specialist; Backend→nodejs/python/java-specialist; DevOps→k8s-specialist
-│  ├─ By Phase: EXPLORE→code-analyst; PLAN→architect; CODE→tech-specific; TEST→test-engineer; COMMIT→git-specialist
+│  ├─ By Phase: EXPLORE→requirements-analyzer; PLAN→architect; CODE→tech-specific; TEST→test-strategist; COMMIT→commit-orchestrator
 │  └─ By Complexity: SIMPLE→2-3 junior agents; COMPLEX→5-10 seniors + extended thinking
 │
 ├─ Step 6: RISK & ESCALATION
@@ -85,11 +85,11 @@ START: New Jira Issue
 
 | Type | Detection | Routing | Agents |
 |------|-----------|---------|--------|
-| **Bug** | Title: "bug", "broken", "error"; Stack trace present | Route by severity + "Can reproduce?" check | bug-fixer, debugger, root-cause-investigator |
-| **Story** | "Add", "implement", "create"; User story format | Check requirements, sprint scope, decompose if >13 pts | requirements-analyzer, feature-architect, tech-specialists |
+| **Bug** | Title: "bug", "broken", "error"; Stack trace present | Route by severity + "Can reproduce?" check | triage-agent, hypothesis-debugger, root-cause-analyzer |
+| **Story** | "Add", "implement", "create"; User story format | Check requirements, sprint scope, decompose if >13 pts | requirements-analyzer, requirements-analyzer, task-enricher |
 | **Epic** | Type=Epic; Multi-sprint scope | DECOMPOSE into 3-8 stories (Foundation→Core→Enhancement→Polish phases) | epic-decomposer, strategic-planner |
 | **Task** | No user-facing change | Tech Debt→code-quality; Config→devops; Docs→doc-writer | domain-specialists |
-| **Spike** | "Investigate", "research", "POC"; Unknown outcome | Time-box 1-2 days, document findings, create stories | research-specialist, poc-developer |
+| **Spike** | "Investigate", "research", "POC"; Unknown outcome | Time-box 1-2 days, document findings, create stories | requirements-analyzer, requirements-analyzer |
 
 ## Complexity Scoring Example
 
@@ -135,12 +135,12 @@ Total: 8 stories, 47 points, 4 sprints, 2-3 developers
 
 | Phase | SIMPLE | MODERATE | COMPLEX | VERY COMPLEX |
 |-------|--------|----------|---------|--------------|
-| EXPLORE | code-analyst (1) | code-analyst, requirements-analyzer (2) | code-analyst, dep-mapper, architect (3) | architect, senior-analyst (3) |
-| PLAN | — | feature-architect (1) | feature-architect, code-architect (2) | senior-architect (2) |
-| CODE | junior-dev (1-2) | tech-specialists (2-4) | tech-specialists (3-6) | senior-specialists (4-6) |
-| TEST | test-runner (1) | test-engineer (1-2) | test-engineer, qa-specialist (2-3) | comprehensive-tester (2-4) |
-| FIX | — | debugger (1) | debugger, refactoring-specialist (1-2) | senior-debugger (1-2) |
-| COMMIT | git-specialist (1) | git-specialist (1) | git-specialist, doc-writer (1-2) | git-specialist, doc-writer (1-2) |
+| EXPLORE | requirements-analyzer (1) | requirements-analyzer, requirements-analyzer (2) | requirements-analyzer, dep-mapper, architect (3) | architect, senior-analyst (3) |
+| PLAN | — | requirements-analyzer (1) | requirements-analyzer, code-architect (2) | senior-architect (2) |
+| CODE | junior-dev (1-2) | task-enricher (2-4) | task-enricher (3-6) | senior-specialists (4-6) |
+| TEST | test-runner (1) | test-strategist (1-2) | test-strategist, qa-ticket-reviewer (2-3) | comprehensive-tester (2-4) |
+| FIX | — | hypothesis-debugger (1) | hypothesis-debugger, code-quality-enforcer (1-2) | senior-debugger (1-2) |
+| COMMIT | commit-orchestrator (1) | commit-orchestrator (1) | commit-orchestrator, documentation-hub (1-2) | commit-orchestrator, documentation-hub (1-2) |
 
 ## Escalation Matrix
 
@@ -163,7 +163,7 @@ Bug Detected
 │  ├─ BLOCKER/CRITICAL → Extended workflow, root-cause analysis, human checkpoints
 │  ├─ MAJOR → Standard workflow, add regression tests
 │  └─ MINOR → Quick-Fix path, batch with similar fixes
-└─ Root cause known? NO → Extend EXPLORE phase with debugger/profiler
+└─ Root cause known? NO → Extend EXPLORE phase with hypothesis-debugger/profiler
 ```
 
 ## Feature Routing Decision
