@@ -1,132 +1,102 @@
-# Team Accelerator
+# team-accelerator
 
-Enterprise development toolkit for teams - streamline DevOps, code quality, integrations, workflow automation, documentation, and performance optimization across multi-cloud and full-stack platforms.
+**Version:** 1.0.0 | **License:** MIT
+**Author:** Markus Ahling
 
-## Features
+## Purpose
 
-### DevOps & Deployment
-- Multi-cloud deployments (Azure, AWS, GCP, Kubernetes)
-- CI/CD pipeline automation (GitHub Actions, Harness)
-- Infrastructure-as-code patterns (Terraform, Helm)
-- Container orchestration (Docker, K8s)
+This plugin provides an enterprise development toolkit for teams, covering DevOps,
+code quality, integrations, workflow automation, documentation, and performance
+optimization. It exists because development teams working across multi-cloud and
+full-stack platforms need a unified interface for recurring operational tasks --
+deployment pipelines, code reviews, integration setup, documentation generation,
+and performance analysis -- rather than context-switching between separate tools.
 
-### Code Quality
-- Automated code reviews
-- E2E testing with Playwright/Selenium
-- Quality standards enforcement
-- Coverage analysis and reporting
+Skills activate automatically based on context keywords, and hooks provide event-
+driven automation with configurable strictness (strict vs advisory).
 
-### Integration Patterns
-- API design and documentation
-- Database connectivity patterns
-- Webhook and event-driven architectures
-- Service mesh configurations
+## Directory Structure
 
-### Workflow Automation
-- Pipeline creation and management
-- Process automation templates
-- Team workflow standardization
-- CI/CD orchestration
-
-### Documentation
-- OpenAPI/Swagger generation
-- Mermaid architecture diagrams
-- Auto-generated README and guides
-- API specification management
-
-### Performance & Monitoring
-- Load testing and benchmarking
-- Prometheus/Grafana integration
-- Performance optimization recommendations
-- Observability patterns
-
-## Installation
-
-```bash
-# Option 1: Use as project plugin
-cp -r team-accelerator /path/to/your/project/.claude-plugin/
-
-# Option 2: Use with Claude Code CLI
-claude --plugin-dir ./team-accelerator
 ```
+team-accelerator/
+  .claude-plugin/plugin.json
+  CLAUDE.md / CONTEXT_SUMMARY.md
+  agents/                        # 6 agents
+  commands/                      # 8 commands
+  skills/                        # 4 skills (subdirectories with SKILL.md)
+  hooks/                         # Pre-commit, post-deploy, test, docs hooks
+```
+
+## Agents
+
+| Agent | Description |
+|-------|-------------|
+| devops-engineer | Infrastructure, deployment, container orchestration |
+| code-reviewer | Code quality analysis and review |
+| integration-specialist | API and service connection patterns |
+| workflow-automator | Pipeline automation and process templates |
+| documentation-writer | Technical documentation generation |
+| performance-engineer | Optimization, monitoring, benchmarking |
 
 ## Commands
 
 | Command | Description |
 |---------|-------------|
-| `/ta:deploy` | Execute deployment pipelines |
-| `/ta:quality` | Run code quality checks |
-| `/ta:test` | Execute test suites |
-| `/ta:integrate` | Configure integrations |
-| `/ta:workflow` | Execute/create workflows |
-| `/ta:status` | Team dashboard |
-| `/ta:docs` | Generate documentation |
-| `/ta:perf` | Performance analysis |
-
-## Agents
-
-| Agent | Role |
-|-------|------|
-| `devops-engineer` | Infrastructure & deployment |
-| `code-reviewer` | Quality analysis |
-| `integration-specialist` | API & service connections |
-| `workflow-automator` | Pipeline automation |
-| `documentation-writer` | Technical documentation |
-| `performance-engineer` | Optimization & monitoring |
+| `/ta:deploy` | Execute deployment pipelines (Azure, AWS, GCP, K8s) |
+| `/ta:quality` | Run code quality checks and analysis |
+| `/ta:test` | Execute test suites (Playwright, Selenium) |
+| `/ta:integrate` | Configure integrations (API, database, webhook) |
+| `/ta:workflow` | Execute or create workflow templates |
+| `/ta:status` | Team dashboard and progress overview |
+| `/ta:docs` | Generate documentation (OpenAPI, Mermaid, README) |
+| `/ta:perf` | Performance analysis and benchmarking |
 
 ## Skills
 
-Skills activate automatically based on context:
-
-- **devops-practices** - Triggers on: deploy, kubernetes, docker, terraform
-- **code-quality** - Triggers on: lint, test, review, coverage
-- **integration-patterns** - Triggers on: API, database, webhook
-- **workflow-automation** - Triggers on: automate, pipeline, CI/CD
-- **documentation-patterns** - Triggers on: document, API spec, diagram
-- **performance-optimization** - Triggers on: performance, metrics, benchmark
-
-## Hooks
-
-Event-driven automation with configurable strictness:
-
-| Hook | Event | Action |
-|------|-------|--------|
-| `pre-commit-validator` | PreToolUse | Validate code quality |
-| `post-deploy-notifier` | PostToolUse | Deployment notifications |
-| `test-analyzer` | Stop | Summarize test results |
-| `docs-sync` | PostToolUse | Auto-update documentation |
-
-## Configuration
-
-Create `.claude/team-accelerator.local.md` for team-specific settings:
-
-```yaml
----
-hook_strictness: advisory  # strict | advisory
-cloud_provider: azure      # azure | aws | gcp | k8s
-ci_platform: github-actions  # github-actions | harness
----
-
-# Team-specific configuration notes here
-```
+- **devops-practices** -- Triggers on: deploy, kubernetes, docker, terraform
+- **code-quality** -- Triggers on: lint, test, review, coverage
+- **integration-patterns** -- Triggers on: API, database, webhook
+- **workflow-automation** -- Triggers on: automate, pipeline, CI/CD
 
 ## Technology Support
 
-- **CI/CD**: GitHub Actions, Harness
-- **Cloud**: Azure, AWS, GCP, Kubernetes
-- **Testing**: Playwright, Selenium
-- **Docs**: OpenAPI, Mermaid, Markdown
-- **Monitoring**: Prometheus, Grafana
+| Area | Technologies |
+|------|-------------|
+| CI/CD | GitHub Actions, Harness |
+| Cloud | Azure, AWS, GCP, Kubernetes |
+| Testing | Playwright, Selenium |
+| Docs | OpenAPI, Mermaid, Markdown |
+| Monitoring | Prometheus, Grafana |
+| IaC | Terraform, Helm |
 
-## License
+## Hooks
 
-MIT
+| Hook | Event | Action |
+|------|-------|--------|
+| pre-commit-validator | PreToolUse | Validate code quality |
+| post-deploy-notifier | PostToolUse | Deployment notifications |
+| test-analyzer | Stop | Summarize test results |
+| docs-sync | PostToolUse | Auto-update documentation |
 
-## Plugin Manifest & Hook Schemas
+## Configuration
 
-Plugin authors should validate manifest and hooks files against the canonical repository schemas:
+Create `.claude/team-accelerator.local.md`:
 
-- Manifest: [`schemas/plugin.schema.json`](../../schemas/plugin.schema.json) for `.claude-plugin/plugin.json`
-- Hooks: [`schemas/hooks.schema.json`](../../schemas/hooks.schema.json) for `hooks/hooks.json`
+```yaml
+---
+hook_strictness: advisory        # strict | advisory
+cloud_provider: azure            # azure | aws | gcp | k8s
+ci_platform: github-actions      # github-actions | harness
+---
+```
 
-Run `npm run check:plugin-schema` from the repository root before submitting changes.
+## Quick Start
+
+```
+/ta:status                               # Team dashboard
+/ta:deploy --env staging --cloud azure
+/ta:quality --full                       # Code quality check
+/ta:test --suite e2e --browser chromium
+/ta:docs --format openapi               # Generate API docs
+/ta:perf --benchmark --report           # Performance analysis
+```
