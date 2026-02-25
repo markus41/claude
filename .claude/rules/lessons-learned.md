@@ -116,17 +116,6 @@ Traceback (most recent call last):
 FileNotFoundError: [Errno 2] No such file or directory: '.claude/registry/index.json'
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
 
-### Error: Read failure (2026-02-23T03:10:48Z)
-- **Tool:** Read
-- **Input:** `/home/user/claude/plugins/ahling-command-center/agents/acc-agent.md`
-- **Error:** File does not exist. Note: your current working directory is /home/user/claude.
-- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
-
-### Error: Read failure (2026-02-23T03:11:02Z)
-- **Tool:** Read
-- **Input:** `/home/user/claude/plugins/ahling-command-center/agents/acc-agent.md`
-- **Error:** File does not exist. Note: your current working directory is /home/user/claude.
-- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
 
 ### Error: Bash failure (2026-02-23T03:12:21Z)
 - **Tool:** Bash
@@ -415,4 +404,51 @@ chmod: cannot access '/home/user/claude/plugins/rosa-microsoft-deploy/scripts/se
 - **Tool:** Read
 - **Input:** `/tmp/claude-0/-home-user-claude/tasks/aecb7c7.output`
 - **Error:** File content (43500 tokens) exceeds maximum allowed tokens (25000). Please use offset and limit parameters to read specific portions of the file, or use the GrepTool to search for specific content.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-02-25T21:11:21Z)
+- **Tool:** Bash
+- **Input:** `ls -la /home/user/claude/.claude/agents/documentation/ && ls -la /home/user/claude/.claude/agents/frontend-theming/ && ls -la /home/user/claude/.claude/agents/member-management/ && ls -la /home/user/claude/.claude/agents/messaging/ && ls -la /home/user/claude/.claude/agents/migration/ && ls -la /home/user/claude/.claude/agents/mongodb-atlas/ && ls -la /home/user/claude/.claude/agents/product-management/ && ls -la /home/user/claude/.claude/agents/stripe-payment/ && ls -la /home/user/claude/.claude/agents/system-ops/ && ls -la /home/user/claude/.claude/agents/utility/`
+- **Error:** Exit code 2
+total 37
+drwxr-xr-x  2 root root 4096 Feb 25 21:09 .
+drwxr-xr-x 30 root root 4096 Feb 25 21:09 ..
+-rw-r--r--  1 root root 4813 Feb 25 21:09 analyze-codebase.md
+-rw-r--r--  1 root root 7619 Feb 25 21:09 context7-docs-fetcher.md
+-rw-r--r--  1 root root 8051 Feb 25 21:09 generate-api-docs.md
+-rw-r--r--  1 root root 8646 Feb 25 21:09 update-claudemd.md
+total 77
+drwxr-xr-x  2 root root  4096 Feb 25 21:09 .
+drwxr-xr-x 30 root root  4096 Feb 25 21:09 ..
+-rw-r--r--  1 root root 25906 Feb 25 21:09 theme-builder.md
+-rw-r--r--  1 root root 19734 Feb 25 21:09 theme-system-architect.md
+-rw-r--r--  1 root root 24099 Feb 25 21:09 white-label-specialist.md
+ls: cannot access '/home/user/claude/.claude/agents/member-management/': No such file or directory
+
+total 37
+drwxr-xr-x  2 root root 4096 Feb 25 21:09 .
+drwxr-xr-x 30 root root 4096 Feb 25 21:09 ..
+-rw-r--r--  1 root root 4813 Feb 25 21:09 analyze-codebase.md
+-rw-r--r--  1 root root 7619 Feb 25 21:09 context7-docs-fetcher.md
+-rw-r--r--  1 root root 8051 Feb 25 21:09 generate-api-docs.md
+-rw-r--r--  1 root root 8646 Feb 25 21:09 update-claudemd.md
+total 77
+drwxr-xr-x  2 root root  4096 Feb 25 21:09 .
+drwxr-xr-x 30 root root  4096 Feb 25 21:09 ..
+-rw-r--r--  1 root root 25906 Feb 25 21:09 theme-builder.md
+-rw-r--r--  1 root root 19734 Feb 25 21:09 theme-system-architect.md
+-rw-r--r--  1 root root 24099 Feb 25 21:09 white-label-specialist.md
+ls: cannot access '/home/user/claude/.claude/agents/member-management/': No such file or directory
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-02-25T21:18:07Z)
+- **Tool:** Bash
+- **Input:** `find /home/user/claude -maxdepth 2 -name "*.json" ! -path "*/node_modules/*" ! -path "*/plugins/ahling-command-center/*" 2>/dev/null | xargs grep -l "ahling\|command-center\|acc-agent" 2>/dev/null`
+- **Error:** Exit code 123
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-02-25T21:25:51Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/plugins/index.json`
+- **Error:** File does not exist. Note: your current working directory is /home/user/claude.
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving

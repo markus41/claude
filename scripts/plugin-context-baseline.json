@@ -1,11 +1,5 @@
 {
   "plugins": {
-    "ahling-command-center": {
-      "bootstrapFileCount": 1,
-      "lines": 58,
-      "estimatedTokens": 571,
-      "maxTokens": 1200
-    },
     "aws-eks-helm-keycloak": {
       "bootstrapFileCount": 1,
       "lines": 44,

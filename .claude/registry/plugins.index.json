@@ -4,13 +4,6 @@
   "lastUpdated": "2026-02-23",
   "description": "Plugin registry for Claude Code orchestration plugins - cleaned after Phase 1+2 consolidation",
   "installed": {
-    "ahling-command-center": {
-      "version": "1.0.0",
-      "path": "../plugins/ahling-command-center",
-      "source": "local",
-      "installedAt": "2026-01-01T00:00:00.000Z",
-      "dependencies": {}
-    },
     "aws-eks-helm-keycloak": {
       "version": "1.0.0",
       "path": "../plugins/aws-eks-helm-keycloak",
@@ -377,12 +370,6 @@
       },
       "lobbi-platform-manager": {
         "path": "../plugins/lobbi-platform-manager/.claude-plugin/plugin.json",
-        "version": "1.0.0",
-        "status": "active",
-        "tier": "standard"
-      },
-      "ahling-command-center": {
-        "path": "../plugins/ahling-command-center/.claude-plugin/plugin.json",
         "version": "1.0.0",
         "status": "active",
         "tier": "standard"
