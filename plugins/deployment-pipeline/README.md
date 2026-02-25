@@ -1,93 +1,70 @@
-# Deployment Pipeline Plugin
+# deployment-pipeline
 
-**Version:** 1.0.0 | **Commands:** 5 | **Agents:** 3 | **Workflow:** State Machine
+**Version:** 1.0.0 | **License:** MIT
+**Author:** Markus Ahling
 
-Harness CD integration pipeline with state-machine workflow orchestration, persistence, retry logic, and multi-channel notifications.
+## Purpose
 
-## Quick Start
+This plugin implements a state-machine workflow for Harness CD deployment pipelines.
+It exists because production deployments involve a series of stages -- validation,
+build, test, staging, approval, production -- that must proceed in a strict order
+with proper guard rails at each transition.
 
-```bash
-# Start a deployment
-/deploy:start my-service main
+The state-machine approach gives each deployment a well-defined lifecycle with
+persistence, retry logic (exponential backoff), and multi-channel notifications
+(Slack, Teams, Email). You can start a deployment, check its status, approve
+stage transitions, view deployment history, and trigger rollbacks.
 
-# Check status
-/deploy:status
-
-# Approve for production
-/deploy:approve <deployment-id>
-
-# Rollback if needed
-/deploy:rollback <deployment-id>
-```
-
-## Features
-
-### State Machine Workflow
-
-A robust state machine manages deployment progression:
+## Directory Structure
 
 ```
-pending → validating → building → testing → deploying-dev → deploying-staging → awaiting-approval → deploying-prod → completed
+deployment-pipeline/
+  .claude-plugin/plugin.json
+  CLAUDE.md / CONTEXT_SUMMARY.md
+  agents/                        # 3 agents
+  commands/                      # 5 commands
+  src/                           # State machine, persistence, notifications
+  config/                        # Default configuration
 ```
 
-### Persistence
-- File-based state storage with backup
-- Crash recovery support
-- Complete audit trail
+## Deployment States
 
-### Retry Logic
-- Automatic retry for transient failures
-- Exponential backoff (1s, 2s, 4s)
-- Configurable retry states
+```
+pending -> validating -> building -> testing -> deploying-dev -> deploying-staging
+    -> awaiting-approval -> deploying-prod -> completed
+                                |
+                                +-> rolling-back -> rolled-back
+```
 
-### Notifications
-- **Slack** - Rich message formatting with actions
-- **Teams** - Adaptive cards with buttons
-- **Email** - HTML formatted notifications
+## Agents
+
+| Agent | Description |
+|-------|-------------|
+| orchestrator | Manages deployment state transitions and stage coordination |
+| validator | Validates deployment readiness (configs, health, dependencies) |
+| rollback | Executes rollback operations with pre-checks and post-validation |
 
 ## Commands
 
 | Command | Description |
 |---------|-------------|
-| `/deploy:start` | Start a new deployment pipeline |
-| `/deploy:status` | Check deployment status |
-| `/deploy:approve` | Approve production deployment |
-| `/deploy:rollback` | Rollback a deployment |
-| `/deploy:history` | View deployment history |
-
-## Agents
-
-| Agent | Model | Purpose |
-|-------|-------|---------|
-| `deployment-orchestrator` | sonnet | Orchestrates state transitions |
-| `deployment-validator` | haiku | Validates prerequisites |
-| `rollback-specialist` | sonnet | Handles rollback procedures |
+| `/deploy:start` | Start a new deployment (enters validation stage) |
+| `/deploy:status` | Check the current state of an active deployment |
+| `/deploy:approve` | Approve a pending stage transition |
+| `/deploy:history` | View past deployment records and outcomes |
+| `/deploy:rollback` | Trigger rollback to a previous known-good state |
 
 ## Configuration
 
-### Notification Setup
-
-Create `.claude/deployment-config.json`:
+Notification channels and retry behavior are configured in
+`.claude/deployment-config.json`:
 
 ```json
 {
   "notifications": {
     "channels": ["slack", "teams"],
-    "slack": {
-      "webhookUrl": "https://hooks.slack.com/services/xxx",
-      "channel": "#deployments"
-    },
-    "teams": {
-      "webhookUrl": "https://outlook.office.com/webhook/xxx"
-    }
-  }
-}
-```
-
-### Retry Configuration
-
-```json
-{
+    "slack": { "webhookUrl": "https://hooks.slack.com/services/xxx" }
+  },
   "retry": {
     "maxAttempts": 3,
     "backoffMs": 1000,
@@ -97,132 +74,18 @@ Create `.claude/deployment-config.json`:
 }
 ```
 
-## State Machine
+## Prerequisites
 
-### States
+- Harness CD account with deployment pipelines configured
+- Service definitions and environment configurations in Harness
+- jira-orchestrator plugin (optional, for Jira issue linking)
 
-| State | Description |
-|-------|-------------|
-| `pending` | Initial state, awaiting start |
-| `validating` | Checking configurations |
-| `building` | Building artifacts |
-| `testing` | Running automated tests |
-| `deploying-dev` | Deploying to dev environment |
-| `deploying-staging` | Deploying to staging |
-| `awaiting-approval` | Waiting for prod approval |
-| `deploying-prod` | Deploying to production |
-| `completed` | Successfully deployed |
-| `failed` | Deployment failed |
-| `rolled-back` | Deployment rolled back |
-
-### Events
-
-| Event | Description |
-|-------|-------------|
-| `START` | Initiate pipeline |
-| `VALIDATION_COMPLETE` | Validation passed |
-| `BUILD_COMPLETE` | Build succeeded |
-| `TESTS_PASSED` | Tests passed |
-| `DEV_DEPLOYED` | Dev deployment complete |
-| `STAGING_DEPLOYED` | Staging deployment complete |
-| `APPROVED` | Production approved |
-| `REJECTED` | Production rejected |
-| `PROD_DEPLOYED` | Production deployment complete |
-| `FAILURE` | Stage failed |
-| `ROLLBACK` | Rollback initiated |
-
-## Harness Integration
-
-This plugin integrates with Harness CD for deployment execution:
-
-- Triggers Harness pipelines for each stage
-- Monitors execution status
-- Handles pipeline callbacks
-- Supports rollback workflows
-
-### Required Harness Pipelines
-
-- `build-and-push` - Build and push Docker images
-- `run-tests` - Execute test suites
-- `deploy-dev` - Deploy to dev environment
-- `deploy-staging` - Deploy to staging
-- `deploy-prod` - Deploy to production
-- `rollback-*` - Environment-specific rollback
-
-## Jira Integration
-
-Works with `jira-orchestrator` plugin:
-
-- Links deployments to Jira issues
-- Updates issue status on completion
-- Adds deployment comments
-
-## Directory Structure
+## Quick Start
 
 ```
-deployment-pipeline/
-├── .claude-plugin/
-│   └── plugin.json
-├── agents/
-│   ├── orchestrator.md
-│   ├── validator.md
-│   └── rollback.md
-├── commands/
-│   ├── start.md
-│   ├── status.md
-│   ├── approve.md
-│   ├── rollback.md
-│   └── history.md
-├── config/
-│   └── default.json
-├── src/
-│   ├── workflow/
-│   │   ├── state-machine.ts
-│   │   └── retry-handler.ts
-│   ├── persistence/
-│   │   └── workflow-store.ts
-│   └── notifications/
-│       └── notifier.ts
-└── README.md
+/deploy:start my-service main            # Begin deployment
+/deploy:status                           # Check progress
+/deploy:approve <deployment-id>          # Approve stage gate
+/deploy:history my-service               # View past deployments
+/deploy:rollback <deployment-id>         # Rollback if needed
 ```
-
-## Installation
-
-```bash
-/plugin-install deployment-pipeline
-```
-
-Or add to your `.claude/settings.local.json`:
-
-```json
-{
-  "plugins": {
-    "deployment-pipeline": {
-      "enabled": true
-    }
-  }
-}
-```
-
-## Requirements
-
-- Claude Code >= 1.0.0
-- jira-orchestrator >= 7.0.0 (optional, for Jira integration)
-- Harness account with configured pipelines
-
-## License
-
-MIT
-
-## Author
-
-Markus Ahling
-
-## Plugin Manifest & Hook Schemas
-
-Plugin authors should validate manifest and hooks files against the canonical repository schemas:
-
-- Manifest: [`schemas/plugin.schema.json`](../../schemas/plugin.schema.json) for `.claude-plugin/plugin.json`
-- Hooks: [`schemas/hooks.schema.json`](../../schemas/hooks.schema.json) for `hooks/hooks.json`
-
-Run `npm run check:plugin-schema` from the repository root before submitting changes.

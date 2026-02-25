@@ -48,9 +48,6 @@ npm run test -- jira-orchestrator
 # Exec Automator
 npm run test -- exec-automator
 
-# Ahling Command Center
-npm run test -- ahling-command-center
-
 # Container Workflow
 npm run test -- container-workflow
 

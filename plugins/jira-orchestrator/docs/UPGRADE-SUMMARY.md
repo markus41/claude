@@ -1,7 +1,7 @@
 # Jira Orchestrator Upgrade Summary
 
-**Version:** 7.4.0  
-**Date:** 2025-01-27  
+**Version:** 7.5.0
+**Date:** 2026-02-25
 **Focus:** Enhanced External Documentation & Notifications
 
 ---
@@ -40,7 +40,7 @@ Publish documentation to external platforms beyond Confluence:
 /jira:docs-external readme --update --create-pr
 
 # Generate blog post
-/jira:docs-external blog --type=release --version=7.4.0
+/jira:docs-external blog --type=release --version=7.5.0
 ```
 
 #### New Agent: `external-documentation-publisher`
@@ -216,10 +216,10 @@ channels:
 /jira:docs-external sync --all --auto
 
 # Update README with latest version
-/jira:docs-external readme --version=7.4.0 --create-pr
+/jira:docs-external readme --version=7.5.0 --create-pr
 
 # Generate and publish release blog post
-/jira:docs-external blog --type=release --version=7.4.0 --publish
+/jira:docs-external blog --type=release --version=7.5.0 --publish
 ```
 
 ### Enhanced Notifications

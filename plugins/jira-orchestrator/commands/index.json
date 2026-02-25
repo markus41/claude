@@ -18,7 +18,7 @@
       "path": "commands/approve.md"
     },
     {
-      "name": "jira-orchestrator:batch",
+      "name": "jira:batch",
       "intent": "Jira Batch Operations",
       "tags": [
         "jira-orchestrator",
@@ -229,7 +229,7 @@
       "path": "commands/export.md"
     },
     {
-      "name": "jira-orchestrator:harness-review",
+      "name": "jira:harness-review",
       "intent": "Harness PR Review Command",
       "tags": [
         "jira-orchestrator",
@@ -255,7 +255,7 @@
       "path": "commands/infra.md"
     },
     {
-      "name": "jira-orchestrator:install-hooks",
+      "name": "jira:install-hooks",
       "intent": "/jira:install-hooks",
       "tags": [
         "jira-orchestrator",
@@ -346,7 +346,7 @@
       "path": "commands/plan-prs.md"
     },
     {
-      "name": "jira-orchestrator:portfolio",
+      "name": "jira:portfolio",
       "intent": "Portfolio Management",
       "tags": [
         "jira-orchestrator",
@@ -359,7 +359,7 @@
       "path": "commands/portfolio.md"
     },
     {
-      "name": "pr-fix",
+      "name": "jira:pr-fix",
       "intent": "[DEPRECATED] Use /jira:pr --fix instead",
       "tags": [
         "jira-orchestrator",
@@ -438,7 +438,7 @@
       "path": "commands/quality.md"
     },
     {
-      "name": "jira-orchestrator:reason",
+      "name": "jira:reason",
       "intent": "Reasoning Command",
       "tags": [
         "jira-orchestrator",

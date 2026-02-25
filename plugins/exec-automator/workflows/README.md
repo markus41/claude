@@ -4,9 +4,9 @@ Production-ready LangGraph workflow templates for executive director automation 
 
 ## Overview
 
-This directory contains 11 comprehensive workflow templates covering the core operational processes typically managed by executive directors. Each template is designed to integrate with the exec-automator MCP server and can be deployed as standalone LangGraph workflows or combined into larger automation pipelines.
+This directory contains 18 comprehensive workflow templates covering the core operational processes typically managed by executive directors. Each template is designed to integrate with the exec-automator MCP server and can be deployed as standalone LangGraph workflows or combined into larger automation pipelines.
 
-**Total Lines of Code:** 2,820 lines across 11 YAML workflow definitions
+**Total Lines of Code:** 2,820 lines across 18 YAML workflow definitions
 
 ## Workflow Catalog
 
@@ -285,6 +285,48 @@ Editorial calendar management and multi-channel content distribution.
 
 ---
 
+### 12. Annual Conference (`annual-conference.yaml`)
+
+Annual conference planning and execution workflow covering full-cycle management from concept through post-conference wrap-up.
+
+---
+
+### 13. Budget Cycle (`budget-cycle.yaml`)
+
+Budget planning and approval cycle automation for annual and mid-year budget processes, including departmental submissions, review rounds, and board approval.
+
+---
+
+### 14. Grant Management (`grant-management.yaml`)
+
+Grant application and compliance tracking workflow covering prospecting, application preparation, reporting deadlines, and funder relationship management.
+
+---
+
+### 15. Legislative Action (`legislative-action.yaml`)
+
+Legislative advocacy and tracking workflow for monitoring bill progress, coordinating member action alerts, and managing direct legislative engagement.
+
+---
+
+### 16. Member Onboarding (`member-onboarding.yaml`)
+
+Individual member onboarding flow for processing new member applications, delivering welcome communications, and completing portal setup.
+
+---
+
+### 17. Newsletter Production (`newsletter-production.yaml`)
+
+Newsletter content pipeline covering story collection, editorial review, design handoff, and multi-channel distribution with engagement tracking.
+
+---
+
+### 18. Sponsor Acquisition (`sponsor-acquisition.yaml`)
+
+Sponsor outreach and acquisition workflow managing prospect research, pitch delivery, negotiation, and contract execution.
+
+---
+
 ## Aggregate ROI Analysis
 
 ### Total Time Savings
@@ -516,7 +558,7 @@ When adding new workflow templates to this directory:
 
 ## Version History
 
-- **v1.0.0** (2025-12-17): Initial release with 11 production-ready workflow templates
+- **v1.0.0** (2025-12-17): Initial release with 18 production-ready workflow templates
   - Board meeting lifecycle
   - Member renewal campaign
   - Event planning

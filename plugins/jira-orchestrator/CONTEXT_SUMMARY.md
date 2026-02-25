@@ -1,7 +1,7 @@
 # jira-orchestrator Context Summary
 
 ## Plugin purpose
-Enterprise Jira orchestration with 77 agents, 16 teams, 45 commands, 13 skills. Features Atlassian MCP OAuth, Harness integration, Neon PostgreSQL, Redis caching, Temporal workflows, and structured reasoning frameworks.
+Enterprise Jira orchestration with 81 agents, 16 teams, 46 commands, 11 skills. Features Atlassian MCP OAuth, Harness integration, Neon PostgreSQL, Redis caching, Temporal workflows, and structured reasoning frameworks.
 
 ## Command index
 - `commands/approve.md`

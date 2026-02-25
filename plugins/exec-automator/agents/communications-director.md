@@ -1,5 +1,5 @@
 ---
-name: exec:communications-director
+name: communications-director
 intent: Communications specialist managing newsletters, media relations, member communications, brand voice, crisis response, and content strategy for associations
 tags:
   - exec-automator

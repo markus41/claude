@@ -1,5 +1,5 @@
 ---
-name: exec:membership-steward
+name: membership-steward
 intent: Membership operations specialist for recruitment, retention, engagement, and member lifecycle management
 tags:
   - exec-automator

@@ -1,287 +1,128 @@
-# Golden Armada - Lobbi Autonomous DevOps Orchestration
+# jira-orchestrator
 
-**Version:** 7.5.0 | **Agents:** 77 | **Teams:** 16 | **Skills:** 13 | **Commands:** 45 | **Hooks:** 6
+**Version:** 7.5.0 | **License:** MIT | **Callsign:** Arbiter
+**Author:** Markus Ahling (markus@lobbi.io)
 
-**NEW in v7.3:** Official Atlassian MCP SSE with OAuth authentication, updated Confluence documentation integration, accurate component counts.
+## Purpose
 
-**v7.4 Features:** Enhanced external documentation publishing (GitHub Wiki, API docs, GitBook, Notion), expanded notification channels (Discord, PagerDuty), notification analytics, automated README sync, and database integration analysis (see `docs/DATABASE-INTEGRATION-ANALYSIS.md`).
+Arbiter is an enterprise Jira orchestration platform with 82 agents organized into
+16 teams, 46 commands, and 11+ skills. It exists because large-scale software delivery
+across multiple Jira projects requires coordination that exceeds what manual workflows
+can sustain -- sprint planning, code review, PR management, compliance reporting,
+notifications, and documentation must all flow together.
 
-**v7.2 Features:** Complete plugin manifest with all agents registered, 6 workflow hooks, fixed plugin location for proper loading.
+The plugin uses official Atlassian MCP SSE with OAuth authentication, integrates with
+Harness CI/CD pipelines, and supports Neon PostgreSQL, Redis caching, and Temporal
+workflows. A mandatory 6-phase protocol (EXPLORE, PLAN, CODE, TEST, FIX, DOCUMENT)
+governs all work, with dynamic agent routing based on Jira labels, file patterns, and
+task complexity.
 
-**v7.1 Features:** AutoGen-style agent teams for orchestrated collaboration, parent-child issue orchestration, and domain affinity routing.
-
----
-
-**⚓ Golden Armada** | *You ask - The Fleet Ships*
-
----
-
-## Quick Start
-
-```bash
-cd plugins/jira-orchestrator
-
-# Deterministic install from package-lock.json
-npm ci
-
-# Install plugin wiring (sets up hooks automatically)
-bash scripts/install.sh
-
-# Validate integration contracts and verify
-npm run validate:integrations
-claude /jira:setup
-```
-
-### Dependency + lockfile policy
-
-- Commit `package-lock.json` and use `npm ci` for local development and CI.
-- Use `npm install` only when intentionally changing dependencies, then commit the updated lockfile in the same PR.
-- Never commit `node_modules/`, `dist/`, or `build/` directories; publish generated bundles as release artifacts instead.
-
----
-
-
-## CI Validation Flow
-
-Run the plugin CI checks (including integration contract validation):
-
-```bash
-npm run ci
-```
-
-`npm run validate:integrations` writes a machine-readable report to `sessions/reports/integration-health.json` for CI ingestion and release gates.
-
----
-
-## 12 Primary Commands (v6.0 Consolidation)
-
-| Command | Purpose | Includes |
-|---------|---------|----------|
-| `/jira:work` | Start orchestrated work | branch, triage, prepare (auto) |
-| `/jira:ship` | One-click shipping | work → pr → review → merge |
-| `/jira:status` | Check progress, dashboard | metrics included |
-| `/jira:pr` | Create/manage PRs | review, council, harness (flags) |
-| `/jira:iterate` | Fix feedback, re-review | auto-update PR |
-| `/jira:cancel` | Cancel with checkpoint | resume later |
-| `/jira:sprint` | Sprint operations | plan, metrics, quality, team |
-| `/jira:enterprise` | Enterprise features | notify, approve, sla, compliance |
-| `/jira:infra` | Infrastructure | create-repo, deploy, pipeline |
-| `/jira:setup` | Configuration | hooks, verify, reset |
-| `/jira:sync` | Manual sync | usually auto via hooks |
-| `/jira:help` | Documentation | command help |
-
-**Philosophy:** Fewer commands, more automation via hooks.
-
-**Full command list:** `registry/commands.index.json`
-
----
-
-## 6-Phase Protocol (Mandatory)
+## Directory Structure
 
 ```
-EXPLORE (2+) → PLAN (1-2) → CODE (2-4) → TEST (2-3) → FIX (1-2) → DOCUMENT (1-2)
+jira-orchestrator/
+  .claude-plugin/plugin.json
+  CLAUDE.md / CONTEXT_SUMMARY.md
+  agents/                        # 82 agents
+  commands/                      # 46 commands
+  skills/                        # 11+ skills (subdirectories with SKILL.md)
+  config/                        # File-agent mapping, MCP configs
+  hooks/                         # 6 workflow hooks
+  registry/                      # Agent, command, workflow indexes
+  sessions/                      # Intelligence, patterns, velocity tracking
+  docs/                          # Deep-dive documentation, Harness knowledge base
 ```
 
-| Phase | Goal | Key Agents |
-|-------|------|------------|
-| EXPLORE | Context gathering | triage-agent, task-enricher |
-| PLAN | Execution planning | planner, architect |
-| CODE | Implementation | domain specialists (via agent-router) |
-| TEST | Validation | test-strategist, coverage-analyst |
-| FIX | Bug resolution | debugger, fixer |
-| DOCUMENT | Documentation | documentation-writer |
+## 12 Primary Commands
 
----
+| Command | Purpose |
+|---------|---------|
+| `/jira:work` | Start orchestrated work (auto: branch, triage, prepare) |
+| `/jira:ship` | One-click shipping (work, PR, review, merge) |
+| `/jira:status` | Progress dashboard with metrics |
+| `/jira:pr` | Create/manage PRs (with review, council, harness flags) |
+| `/jira:iterate` | Fix feedback, re-review, auto-update PR |
+| `/jira:cancel` | Cancel with checkpoint (resume later) |
+| `/jira:sprint` | Sprint operations (plan, metrics, quality, team) |
+| `/jira:enterprise` | Enterprise features (notify, approve, sla, compliance) |
+| `/jira:infra` | Infrastructure (create-repo, deploy, pipeline) |
+| `/jira:setup` | Configuration (hooks, verify, reset) |
+| `/jira:sync` | Manual sync (usually auto via hooks) |
+| `/jira:help` | Documentation |
 
-## Agent Categories (73 Total)
+**Full command list (46):** See `commands/` directory.
+
+## Agent Categories
 
 | Category | Count | Key Agents |
 |----------|-------|------------|
-| **core** | 6 | triage-agent, code-reviewer, pr-creator |
-| **intelligence** | 5 | intelligence-analyzer, agent-router |
-| **enterprise** | 8 | notification-router, sla-monitor, compliance-reporter |
-| **portfolio** | 4 | portfolio-manager, release-coordinator |
-| **sprint** | 5 | sprint-planner, team-capacity-planner |
-| **git** | 7 | commit-tracker, smart-commit-validator |
-| **confluence** | 3 | confluence-manager |
-| **teams** | 16 | autogen-style orchestration teams |
-| **harness** | 3 | harness-jira-sync, harness-api-expert |
-| **quality** | 1 | code-quality-enforcer |
-| **workflows** | 5 | completion-orchestrator, approval-orchestrator |
-| **+ more** | 6 | qa, batch, testing, documentation, management |
+| Core | 6 | triage-agent, code-reviewer, pr-creator |
+| Intelligence | 5 | intelligence-analyzer, agent-router |
+| Enterprise | 8 | notification-router, sla-monitor, compliance-reporter |
+| Portfolio | 4 | portfolio-manager, release-coordinator |
+| Sprint | 5 | sprint-planner, team-capacity-planner |
+| Git | 7 | commit-tracker, smart-commit-validator |
+| Confluence | 3 | confluence-manager |
+| Teams (AutoGen) | 16 | Orchestrated collaboration teams |
+| Harness | 3 | harness-jira-sync, harness-api-expert |
+| Quality | 1 | code-quality-enforcer |
+| Workflows | 5 | completion-orchestrator, approval-orchestrator |
+| Other | 19 | QA, batch, testing, documentation, management |
 
-**Full agent list:** `registry/agents.index.json`
+## Skills
 
----
-
-## Enterprise Features (v4.0)
-
-| Feature | Command | Description |
-|---------|---------|-------------|
-| **Notifications** | `/jira:notify` | Slack, Teams, Email, Discord, PagerDuty, Webhooks |
-| **Approvals** | `/jira:approve` | Multi-level workflows |
-| **Portfolio** | `/jira:portfolio` | Multi-project dashboards |
-| **SLA** | `/jira:sla` | Real-time monitoring |
-| **Compliance** | `/jira:compliance` | SOC2, GDPR, ISO27001 |
-| **Batch** | `/jira:batch` | Bulk operations |
-| **Export** | `/jira:export` | PDF, Excel, CSV |
-| **External Docs** | `/jira:docs-external` | GitHub Wiki, API docs, GitBook, Notion, README, Blog |
-
----
-
-## Quality Gates
-
-| Gate | Status | Enforcement |
-|------|--------|-------------|
-| Code Review | **BLOCKING** | PR creation blocked until passed |
-| Tests Passing | Required | 80% coverage threshold |
-| Documentation | Required | Synced to Obsidian vault |
-
----
+- **jira-orchestration** -- Core Jira workflow patterns
+- **clean-architecture** -- SOLID principles and clean code
+- **code-review** -- Code review best practices
+- **confluence** -- Confluence documentation integration
+- **harness-ci** -- Harness CI build pipelines
+- **harness-cd** -- Harness CD deployments
+- **harness-mcp** -- Harness MCP integration
+- **harness-platform** -- Harness delegates, RBAC, connectors
+- **pr-workflow** -- Pull request lifecycle management
+- **task-details** -- Task enrichment and detail tracking
+- **triage** -- Issue triage and prioritization
 
 ## Workflow Selection
 
-| Workflow | Trigger | Duration | Agents |
-|----------|---------|----------|--------|
-| quick-fix | complexity ≤ 10 | 1-4h | 3-5 |
-| standard-feature | complexity 11-40 | 4-16h | 5-8 |
-| complex-feature | complexity > 40 | 1-3 days | 8-13 |
-| epic-decomposition | type = Epic | 1-2 days | 4-6 |
-| critical-bug | priority = Highest | 2-8h | 3-5 |
-
----
-
-## Dynamic Agent Discovery
-
-The `agent-router` selects specialists based on:
-- **Jira labels/components**
-- **File patterns** (`.tsx` → frontend, `.prisma` → database)
-- **Keywords** in description
-- **Phase requirements**
-
-**Config:** `config/file-agent-mapping.yaml`
-
----
-
-## Registry Structure
-
-```
-registry/
-├── agents.index.json     # 69 agents with categories
-├── commands.index.json   # 43 commands with quick reference
-└── workflows.index.json  # Workflow definitions
-```
-
-**Load on-demand:** Read full agent/command docs from `agents/*.md` or `commands/*.md`
-
----
-
-## Environment Variables
-
-| Variable | Required | Purpose |
-|----------|----------|---------|
-| `ATLASSIAN_CLOUD_ID` | Yes* | Your Atlassian Cloud ID |
-| `JIRA_DEFAULT_PROJECT` | Yes* | Default Jira project key |
-| `HARNESS_ACCOUNT_ID` | No | Harness CI/CD integration |
-| `HARNESS_API_KEY` | No | Harness PAT token |
-| `HARNESS_ORG_ID` | No | Harness organization |
-| `HARNESS_PROJECT_ID` | No | Harness project |
-| `OBSIDIAN_VAULT_PATH` | No | Documentation sync |
-
-*OAuth handles authentication - no API tokens needed
-
----
+| Workflow | Trigger | Duration |
+|----------|---------|----------|
+| quick-fix | complexity <= 10 | 1-4h |
+| standard-feature | complexity 11-40 | 4-16h |
+| complex-feature | complexity > 40 | 1-3 days |
+| epic-decomposition | type = Epic | 1-2 days |
+| critical-bug | priority = Highest | 2-8h |
 
 ## MCP Integration
-
-Uses official Atlassian MCP SSE with OAuth authentication:
 
 ```bash
 claude mcp add --transport sse atlassian https://mcp.atlassian.com/v1/sse
 ```
 
-**Available tools:** `mcp__atlassian__getJiraIssue`, `mcp__atlassian__createJiraIssue`, `mcp__atlassian__getConfluencePage`, `mcp__atlassian__createConfluencePage`, etc.
+Tools: `mcp__atlassian__getJiraIssue`, `mcp__atlassian__createJiraIssue`,
+`mcp__atlassian__getConfluencePage`, `mcp__atlassian__createConfluencePage`, etc.
 
----
-
-## Harness Platform Knowledge (v7.0)
-
-Comprehensive Harness platform documentation and skills for CI/CD automation.
-
-| Module | Skill/Doc | Description |
-|--------|-----------|-------------|
-| **CI** | `skills/harness-ci/` | Build pipelines, test intelligence, caching |
-| **CD** | `skills/harness-mcp/` | Deployments, GitOps, Jira sync |
-| **Code** | `skills/harness-mcp/` | Repositories, PRs, code review |
-| **Platform** | `skills/harness-platform/` | Delegates, RBAC, connectors, secrets |
-| **All Modules** | `docs/HARNESS-KNOWLEDGE-BASE.md` | FF, STO, CCM, SRM, Chaos, IaCM |
-
-### Quick Reference
+## Prerequisites
 
 ```bash
-# Harness CI topics
-harness-ci, build-pipeline, test-intelligence, caching
-
-# Harness CD topics
-harness-cd, deployment, gitops, canary, blue-green
-
-# Harness Code topics
-harness-code, repository, pull-request, code-review
-
-# Platform topics
-delegate, rbac, connector, secret-manager, template, opa
+cd plugins/jira-orchestrator
+npm ci                                   # Install dependencies
+bash scripts/install.sh                  # Install plugin wiring
+npm run validate:integrations            # Verify contracts
 ```
 
-**Full documentation:** `docs/HARNESS-KNOWLEDGE-BASE.md`
+**Environment variables:**
+- `ATLASSIAN_CLOUD_ID` -- Your Atlassian Cloud ID
+- `JIRA_DEFAULT_PROJECT` -- Default Jira project key
+- `HARNESS_ACCOUNT_ID`, `HARNESS_API_KEY` (optional)
+- `OBSIDIAN_VAULT_PATH` (optional, for documentation sync)
 
----
+## Quick Start
 
-## External Documentation
-
-Full documentation stored externally for context efficiency:
-
-| Document | Location |
-|----------|----------|
-| Full README | `docs/archive/README-v4-full.md` |
-| Installation Guide | `INSTALLATION.md` |
-| Agent Details | `agents/*.md` |
-| Command Docs | `commands/*.md` |
-| Workflows | Obsidian: `System/Claude-Instructions/Jira-Orchestrator-Workflows.md` |
-
----
-
-## Context Efficiency Metrics
-
-| Metric | Before | After | Reduction |
-|--------|--------|-------|-----------|
-| README lines | 2,192 | ~150 | **93%** |
-| Token estimate | ~45,000 | ~3,000 | **93%** |
-| Load strategy | All inline | On-demand | Registry-based |
-
----
-
-## Quick Troubleshooting
-
-| Issue | Solution |
-|-------|----------|
-| Commands not showing | Restart Claude Code, check plugin path |
-| Jira connection fails | Verify env vars, test with curl |
-| PR blocked by review | Run `/jira:review`, address findings |
-| Hooks not triggering | `chmod +x hooks/scripts/*.sh` |
-
----
-
-**License:** MIT | **Support:** See `docs/` | **Full Docs:** `docs/archive/README-v4-full.md`
-
----
-
-**⚓ Golden Armada** | *You ask - The Fleet Ships*
-
-## Plugin Manifest & Hook Schemas
-
-Plugin authors should validate manifest and hooks files against the canonical repository schemas:
-
-- Manifest: [`schemas/plugin.schema.json`](../../schemas/plugin.schema.json) for `.claude-plugin/plugin.json`
-- Hooks: [`schemas/hooks.schema.json`](../../schemas/hooks.schema.json) for `hooks/hooks.json`
-
-Run `npm run check:plugin-schema` from the repository root before submitting changes.
+```
+/jira:setup                              # Configure and verify
+/jira:work PROJ-123                      # Start working on an issue
+/jira:ship                               # Ship it (PR, review, merge)
+/jira:status                             # Check dashboard
+/jira:sprint plan                        # Plan the next sprint
+```

@@ -171,7 +171,7 @@
       "path": "agents/commit-orchestrator.md"
     },
     {
-      "name": "Commit Tracker",
+      "name": "commit-tracker",
       "intent": "Track commits, map them to Jira issues, and post detailed commit summaries with Confluence references",
       "tags": [
         "jira-orchestrator",
@@ -962,7 +962,7 @@
       "path": "agents/sub-item-documenter.md"
     },
     {
-      "name": "jira-orchestrator:tag-manager",
+      "name": "tag-manager",
       "intent": "Tag Manager Agent",
       "tags": [
         "jira-orchestrator",
@@ -1001,7 +1001,7 @@
       "path": "agents/team-capacity-planner.md"
     },
     {
-      "name": "Test Strategist",
+      "name": "test-strategist",
       "intent": "Test Strategist",
       "tags": [
         "jira-orchestrator",
@@ -1096,7 +1096,7 @@
       "path": "agents/worklog-manager.md"
     },
     {
-      "name": "jira-orchestrator:worktree-orchestrator",
+      "name": "worktree-orchestrator",
       "intent": "Worktree Orchestrator Agent",
       "tags": [
         "jira-orchestrator",

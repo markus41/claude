@@ -1,7 +1,7 @@
 {
   "name": "jira-orchestrator",
   "version": "7.5.0",
-  "description": "Enterprise Jira orchestration with 77 agents, 16 teams, 45 commands, 13 skills. Features Atlassian MCP OAuth, Harness integration, Neon PostgreSQL, Redis caching, Temporal workflows, and structured reasoning frameworks.",
+  "description": "Enterprise Jira orchestration with 81 agents, 16 teams, 46 commands, 11 skills. Features Atlassian MCP OAuth, Harness integration, Neon PostgreSQL, Redis caching, Temporal workflows, and structured reasoning frameworks.",
   "author": {
     "name": "Markus Ahling",
     "email": "markus@lobbi.io"
@@ -41,7 +41,7 @@
   "context": {
     "entry": "CONTEXT_SUMMARY.md",
     "title": "jira-orchestrator",
-    "summary": "Enterprise Jira orchestration with 77 agents, 16 teams, 45 commands, 13 skills. Features Atlassian MCP OAuth, Harness integration, Neon PostgreSQL, Redis caching, Temporal workflows, and structured reasoning frameworks.",
+    "summary": "Enterprise Jira orchestration with 81 agents, 16 teams, 46 commands, 11 skills. Features Atlassian MCP OAuth, Harness integration, Neon PostgreSQL, Redis caching, Temporal workflows, and structured reasoning frameworks.",
     "tags": [
       "jira",
       "orchestration",

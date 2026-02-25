@@ -1,7 +1,7 @@
 # claude-code-templating-plugin Context Summary
 
 ## Plugin purpose
-Universal templating and Harness expert plugin for Claude Code - enables fully autonomous project generation, pipeline creation, and deployment automation through a unified template interface. Supports Handlebars, Cookiecutter, Copier, Maven archetypes, and Harness pipelines. 4 commands, 5 agents, 3 skills.
+Universal templating and Harness expert plugin for Claude Code - enables fully autonomous project generation, pipeline creation, and deployment automation through a unified template interface. Supports Handlebars, Cookiecutter, Copier, Maven archetypes, and Harness pipelines. 5 commands, 6 agents, 3 skills.
 
 ## Command index
 - `commands/archetype.md`

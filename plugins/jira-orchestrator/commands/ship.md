@@ -34,7 +34,7 @@ Validate all requirements before work begins:
 
 ## Phase 1: Intelligent Questions (CRITICAL)
 
-**Agents:** requirements-analyzer, codebase-scanner, decision-identifier
+**Agents:** requirements-analyzer, triage-agent, task-enricher
 
 Generates questions upfront for:
 - Technical decisions (auth method, database choice, state management)
@@ -67,9 +67,9 @@ Uses answers + constraints + technical decisions
 **CODE:** Domain specialists + code-reviewer (continuous) → implementation, tests + checkpoint (show diff, ask review)
 - Coding standards enforced: terraform (snake_case vars), python (PascalCase classes), TypeScript (camelCase functions), database (snake_case tables)
 
-**TEST:** test-strategist, test-runner → all tests passing, coverage threshold met
+**TEST:** test-strategist → all tests passing, coverage threshold met
 
-**FIX:** debugger, fixer (max 3 iterations) → resolve failures, checkpoint if still failing
+**FIX:** hypothesis-debugger, root-cause-analyzer (max 3 iterations) → resolve failures, checkpoint if still failing
 
 **DOCUMENT:** documentation-writer, confluence-manager → README, Confluence, API docs
 

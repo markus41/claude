@@ -1,12 +1,17 @@
 {
-  "version": "7.4.0",
+  "version": "7.5.0",
   "description": "Jira Orchestrator agent registry with official Atlassian MCP SSE, Harness platform integration, Confluence documentation, SOLID/clean architecture enforcement, and AutoGen-style agent teams",
-  "total_agents": 73,
+  "total_agents": 81,
   "total_skills": 11,
   "metadata": {
-    "version": "7.4.0",
-    "totalAgents": 73,
-    "preloadHints": ["triage-agent", "code-reviewer", "task-enricher", "documentation-writer"]
+    "version": "7.5.0",
+    "totalAgents": 81,
+    "preloadHints": [
+      "triage-agent",
+      "code-reviewer",
+      "task-enricher",
+      "documentation-writer"
+    ]
   },
   "agentPerformance": {
     "triage-agent": {
@@ -53,80 +58,174 @@
   "categories": {
     "council": {
       "description": "NEW v5.0 - Agent council for collaborative review",
-      "agents": ["council-coordinator"],
+      "agents": [
+        "council-coordinator"
+      ],
       "new": true
     },
     "infrastructure": {
       "description": "NEW v5.1 - Infrastructure, Helm, Terraform, K8s expertise with Harness repo creation",
-      "agents": ["infrastructure-orchestrator"],
+      "agents": [
+        "infrastructure-orchestrator"
+      ],
       "new": true
     },
     "core": {
       "description": "Primary orchestration agents",
-      "agents": ["triage-agent", "task-enricher", "requirements-analyzer", "code-reviewer", "pr-creator", "documentation-writer"]
+      "agents": [
+        "triage-agent",
+        "task-enricher",
+        "requirements-analyzer",
+        "code-reviewer",
+        "pr-creator",
+        "documentation-writer"
+      ]
     },
     "intelligence": {
       "description": "AI-powered analytics",
-      "agents": ["intelligence-analyzer", "pattern-analyzer", "quality-intelligence", "expert-agent-matcher", "agent-router"]
+      "agents": [
+        "intelligence-analyzer",
+        "pattern-analyzer",
+        "quality-intelligence",
+        "expert-agent-matcher",
+        "agent-router"
+      ]
     },
     "workflows": {
       "description": "Workflow orchestration",
-      "agents": ["completion-orchestrator", "completion-flow-orchestrator", "approval-orchestrator", "event-sourcing-orchestrator", "advanced-orchestration-patterns"]
+      "agents": [
+        "completion-orchestrator",
+        "completion-flow-orchestrator",
+        "approval-orchestrator",
+        "event-sourcing-orchestrator",
+        "advanced-orchestration-patterns"
+      ]
     },
     "confluence": {
       "description": "Confluence documentation",
-      "agents": ["confluence-manager", "confluence-documentation-creator", "qa-confluence-documenter"]
+      "agents": [
+        "confluence-manager",
+        "confluence-documentation-creator",
+        "qa-confluence-documenter"
+      ]
     },
     "git": {
       "description": "Git and PR operations",
-      "agents": ["commit-message-generator", "commit-tracker", "smart-commit-validator", "checkpoint-pr-manager", "draft-pr-manager", "batch-commit-processor", "pr-documentation-logger"]
+      "agents": [
+        "commit-message-generator",
+        "commit-tracker",
+        "smart-commit-validator",
+        "checkpoint-pr-manager",
+        "draft-pr-manager",
+        "batch-commit-processor",
+        "pr-documentation-logger"
+      ]
     },
     "sprint": {
       "description": "Sprint and capacity planning",
-      "agents": ["sprint-planner", "team-capacity-planner", "workload-balancer", "skill-mapper", "performance-tracker"]
+      "agents": [
+        "sprint-planner",
+        "team-capacity-planner",
+        "workload-balancer",
+        "skill-mapper",
+        "performance-tracker"
+      ]
     },
     "enterprise": {
       "description": "Enterprise features (v4.0)",
-      "agents": ["notification-router", "slack-notifier", "webhook-publisher", "escalation-manager", "governance-auditor", "policy-enforcer", "compliance-reporter", "sla-monitor"]
+      "agents": [
+        "notification-router",
+        "slack-notifier",
+        "webhook-publisher",
+        "escalation-manager",
+        "governance-auditor",
+        "policy-enforcer",
+        "compliance-reporter",
+        "sla-monitor"
+      ]
     },
     "portfolio": {
       "description": "Portfolio management",
-      "agents": ["portfolio-manager", "roadmap-planner", "release-coordinator", "dependency-mapper"]
+      "agents": [
+        "portfolio-manager",
+        "roadmap-planner",
+        "release-coordinator",
+        "dependency-mapper"
+      ]
     },
     "batch": {
       "description": "Batch operations",
-      "agents": ["batch-processor", "bulk-importer", "export-generator"]
+      "agents": [
+        "batch-processor",
+        "bulk-importer",
+        "export-generator"
+      ]
     },
     "qa": {
       "description": "QA and review",
-      "agents": ["qa-ticket-reviewer", "qa-comment-responder", "qa-transition", "review-facilitator", "review-progress-tracker"]
+      "agents": [
+        "qa-ticket-reviewer",
+        "qa-comment-responder",
+        "qa-transition",
+        "review-facilitator",
+        "review-progress-tracker"
+      ]
     },
     "testing": {
       "description": "Testing strategy",
-      "agents": ["test-strategist", "quality-enhancer"]
+      "agents": [
+        "test-strategist",
+        "quality-enhancer"
+      ]
     },
     "quality": {
       "description": "Code quality, SOLID principles, and clean architecture enforcement",
-      "agents": ["code-quality-enforcer"],
-      "skills": ["clean-architecture"],
+      "agents": [
+        "code-quality-enforcer"
+      ],
+      "skills": [
+        "clean-architecture"
+      ],
       "new": true
     },
     "documentation": {
       "description": "Documentation automation",
-      "agents": ["documentation-sync-agent", "sub-item-documenter", "learning-coordinator"]
+      "agents": [
+        "documentation-sync-agent",
+        "sub-item-documenter",
+        "learning-coordinator"
+      ]
     },
     "management": {
       "description": "Task management",
-      "agents": ["tag-manager", "transition-manager", "worklog-manager", "parallel-sub-issue-worker"]
+      "agents": [
+        "tag-manager",
+        "transition-manager",
+        "worklog-manager",
+        "parallel-sub-issue-worker"
+      ]
     },
     "analysis": {
       "description": "Analysis and estimation",
-      "agents": ["pr-size-estimator", "epic-decomposer", "metrics-dashboard"]
+      "agents": [
+        "pr-size-estimator",
+        "epic-decomposer",
+        "metrics-dashboard"
+      ]
     },
     "harness": {
       "description": "Harness platform integration - CI, CD, Code, Feature Flags, STO, CCM, SRM, Chaos, IaCM, API expertise, and platform administration",
-      "agents": ["harness-jira-sync", "harness-api-expert", "infrastructure-orchestrator"],
-      "skills": ["harness-mcp", "harness-ci", "harness-cd", "harness-platform"],
+      "agents": [
+        "harness-jira-sync",
+        "harness-api-expert",
+        "infrastructure-orchestrator"
+      ],
+      "skills": [
+        "harness-mcp",
+        "harness-ci",
+        "harness-cd",
+        "harness-platform"
+      ],
       "knowledge_base": "docs/harness/INDEX.md",
       "knowledge_files": {
         "index": "docs/harness/INDEX.md",
@@ -208,9 +307,34 @@
     "hexagonal": "skills/clean-architecture"
   },
   "model_assignments": {
-    "opus": ["code-reviewer", "advanced-orchestration-patterns", "governance-auditor", "infrastructure-orchestrator", "code-quality-enforcer"],
-    "sonnet": ["council-coordinator", "triage-agent", "task-enricher", "requirements-analyzer", "confluence-manager", "intelligence-analyzer", "quality-intelligence", "sprint-planner", "portfolio-manager", "harness-jira-sync", "harness-api-expert"],
-    "haiku": ["pr-creator", "documentation-writer", "notification-router", "tag-manager", "transition-manager", "batch-processor"]
+    "opus": [
+      "code-reviewer",
+      "advanced-orchestration-patterns",
+      "governance-auditor",
+      "infrastructure-orchestrator",
+      "code-quality-enforcer"
+    ],
+    "sonnet": [
+      "council-coordinator",
+      "triage-agent",
+      "task-enricher",
+      "requirements-analyzer",
+      "confluence-manager",
+      "intelligence-analyzer",
+      "quality-intelligence",
+      "sprint-planner",
+      "portfolio-manager",
+      "harness-jira-sync",
+      "harness-api-expert"
+    ],
+    "haiku": [
+      "pr-creator",
+      "documentation-writer",
+      "notification-router",
+      "tag-manager",
+      "transition-manager",
+      "batch-processor"
+    ]
   },
   "new_in_v5": {
     "council-coordinator": "Orchestrates multi-agent reviews using blackboard pattern"
@@ -238,17 +362,50 @@
     "plugin-location-fix": "Plugin moved to correct .claude/plugins/ directory"
   },
   "harness_modules": {
-    "ci": {"skill": "harness-ci", "description": "Continuous Integration - builds, tests, caching"},
-    "cd": {"skill": "harness-cd", "description": "Continuous Delivery - deployments, GitOps, rollback strategies"},
-    "code": {"skill": "harness-mcp", "description": "Git repository and pull requests"},
-    "api": {"agent": "harness-api-expert", "description": "REST API operations and programmatic integration"},
-    "ff": {"knowledge": "docs/harness/FEATURE-FLAGS.md", "description": "Feature Flags"},
-    "sto": {"knowledge": "docs/harness/STO.md", "description": "Security Testing Orchestration"},
-    "ccm": {"knowledge": "docs/harness/CCM.md", "description": "Cloud Cost Management"},
-    "srm": {"knowledge": "docs/harness/SRM.md", "description": "Service Reliability Management"},
-    "ce": {"knowledge": "docs/harness/CHAOS.md", "description": "Chaos Engineering"},
-    "iacm": {"knowledge": "docs/harness/IACM.md", "description": "Infrastructure as Code Management"},
-    "platform": {"skill": "harness-platform", "description": "Platform administration"}
+    "ci": {
+      "skill": "harness-ci",
+      "description": "Continuous Integration - builds, tests, caching"
+    },
+    "cd": {
+      "skill": "harness-cd",
+      "description": "Continuous Delivery - deployments, GitOps, rollback strategies"
+    },
+    "code": {
+      "skill": "harness-mcp",
+      "description": "Git repository and pull requests"
+    },
+    "api": {
+      "agent": "harness-api-expert",
+      "description": "REST API operations and programmatic integration"
+    },
+    "ff": {
+      "knowledge": "docs/harness/FEATURE-FLAGS.md",
+      "description": "Feature Flags"
+    },
+    "sto": {
+      "knowledge": "docs/harness/STO.md",
+      "description": "Security Testing Orchestration"
+    },
+    "ccm": {
+      "knowledge": "docs/harness/CCM.md",
+      "description": "Cloud Cost Management"
+    },
+    "srm": {
+      "knowledge": "docs/harness/SRM.md",
+      "description": "Service Reliability Management"
+    },
+    "ce": {
+      "knowledge": "docs/harness/CHAOS.md",
+      "description": "Chaos Engineering"
+    },
+    "iacm": {
+      "knowledge": "docs/harness/IACM.md",
+      "description": "Infrastructure as Code Management"
+    },
+    "platform": {
+      "skill": "harness-platform",
+      "description": "Platform administration"
+    }
   },
   "load_pattern": "agents/{agent-name}.md",
   "skill_pattern": "skills/{skill-name}/SKILL.md"
