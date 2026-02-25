@@ -21,7 +21,6 @@
 | **exec-automator** | 11 | 13 | Document analysis, LangGraph workflows |
 | **home-assistant** | 15 | 9 | Home automation, Ollama, IoT |
 | **frontend-powerhouse** | 13 | 12 | React/Next.js, Chakra UI, accessibility |
-| **ahling-command-center** | 10 | 15 | Docker, Vault, multi-cloud |
 | **lobbi-platform-manager** | 4 | 8 | Keycloak, multi-tenant, MERN |
 
 ## Architecture Layers

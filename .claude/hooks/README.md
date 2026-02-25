@@ -1,388 +1,160 @@
-# Claude Code Hooks
+# Hook System
 
-This directory contains hooks that integrate with Claude Code to enforce best practices, manage documentation, and maintain code quality.
+Hooks are shell scripts that Claude Code executes automatically at specific lifecycle
+events. They run outside of Claude's context — they cannot be overridden by prompts,
+and they execute whether or not Claude is aware of them. This makes hooks the right
+place for safety enforcement, automatic logging, and quality gates.
 
-## Overview
+## Why hooks instead of instructions
 
-Hooks are shell scripts that run automatically at specific points in your workflow:
-- **Pre-task hooks**: Run before starting a task
-- **Post-task hooks**: Run after completing a task
-- **File hooks**: Run when files are saved/edited
-- **Session hooks**: Run at session start/end
+Instructions in `CLAUDE.md` can be forgotten or overridden when context fills up.
+Hooks cannot. The `bash-safety-validator` hook will block a destructive `rm -rf`
+command even if Claude's context has been compacted and the rule file is no longer
+visible. Hooks are the last line of defense.
 
-## Core Generic Hooks
+## Hook inventory
 
-These hooks are designed to work across all projects:
+| Script | Event | Matcher | Purpose |
+|--------|-------|---------|---------|
+| `session-init.sh` | SessionStart | — | Injects project context (paths, MCP tools, reminder to check lessons-learned) |
+| `bash-safety-validator.sh` | PreToolUse | Bash | Blocks destructive commands (`rm -rf /`, fork bombs, `dd if=`) and credential exposure (`cat .env`, `echo $API_KEY`) |
+| `protect-critical-files.sh` | PreToolUse | Edit, Write | Blocks writes to `.env`, `secrets/`, `credentials`, SSH keys, lock files |
+| `helm-deploy-validator.sh` | PreToolUse | Bash | Warns on `helm install/upgrade` without `--set image.tag=`, `--atomic`, or `--wait` |
+| `post-edit-lint.sh` | PostToolUse | Edit, Write | Auto-runs ESLint (`--fix`) on TS/JS, Black on Python, `jq` format on JSON after edits |
+| `docker-build-tracker.sh` | PostToolUse | Bash | Appends a JSONL record to `.claude/logs/docker-builds.jsonl` for every `docker build`, `docker push`, `az acr build`, and `helm install/upgrade` |
+| `subagent-results-log.sh` | SubagentStop | — | Logs subagent completion events to `.claude/logs/subagent-events.jsonl` |
+| `teammate-idle-check.sh` | TeammateIdle | — | Blocks teammates from going idle if there are uncommitted changes containing TODO/FIXME comments |
+| `task-quality-gate.sh` | TaskCompleted | — | Blocks task completion if there are merge conflicts or TypeScript compilation errors in modified files |
+| `lessons-learned-capture.sh` | PostToolUseFailure | — | Appends every tool failure to `rules/lessons-learned.md` with tool name, input, error, and `NEEDS_FIX` status |
 
-### Documentation & Context Management
+Note: the hooks directory contains 11 scripts total (including this README).
 
-| Hook | Purpose | Trigger | Environment Variables |
-|------|---------|---------|----------------------|
-| `obsidian-documentation-sync.sh` | Auto-syncs documentation to Obsidian vault | task:complete, phase:complete | `OBSIDIAN_VAULT_PATH`, `PROJECT_NAME` |
-| `doc-logging.sh` | Logs documentation changes to orchestration DB | file:save (*.md) | `OBSIDIAN_VAULT_PATH`, `PROJECT_NAME`, `DB_PATH` |
-| `repo-cleanup-manager.sh` | Archives old .md files to Obsidian, declutters repo | manual, scheduled | `OBSIDIAN_VAULT_PATH`, `MAX_AGE_DAYS` |
-| `context-management-hook.sh` | Enforces token budget and checkpointing | pre/post operation | `OBSIDIAN_VAULT_PATH` |
+## Safety hooks in detail
 
-### Orchestration & Protocol Enforcement
+### bash-safety-validator.sh
 
-| Hook | Purpose | Trigger | Environment Variables |
-|------|---------|---------|----------------------|
-| `enforce-subagent-usage.sh` | Reminds to use sub-agents for complex tasks | task:start, user-prompt-submit | None |
-| `orchestration-protocol-enforcer.sh` | Enforces 6-phase protocol (EXPLORE→PLAN→CODE→TEST→FIX→DOCUMENT) | pre-task, post-task | None |
-| `orchestration-hooks.sh` | General orchestration coordination | various | None |
-
-### Session Management
-
-| Hook | Purpose | Trigger | Environment Variables |
-|------|---------|---------|----------------------|
-| `session-start.sh` | Initializes orchestration system | session:start | None |
-| `pre-task.sh` | Pre-task validation and setup | task:start | `CLAUDE_AGENT_COUNT`, `CLAUDE_STARTING_PHASE` |
-| `post-task.sh` | Post-task validation and cleanup | task:complete | None |
-| `post-edit.sh` | Generic post-edit hook | file:save | None |
-| `post-edit-documentation.sh` | Documentation-specific post-edit | file:save (*.md) | None |
-| `tool-hooks.sh` | Tool usage hooks | tool:use | None |
-
-## Platform-Specific Examples
-
-The `platform-examples/` directory contains hooks that were built for specific platforms (Lobbi multi-tenant SaaS). These serve as examples for creating your own project-specific hooks:
-
-| Hook | Purpose | Domain |
-|------|---------|--------|
-| `tenant-isolation-validator.sh` | Validates tenant isolation in multi-tenant apps | Multi-tenant SaaS |
-| `stripe-webhook-security.sh` | Validates Stripe webhook security | Payment integration |
-| `member-data-privacy.sh` | Validates PII handling | Data privacy |
-| `subscription-billing-audit.sh` | Audits subscription billing code | Subscription management |
-| `keycloak-config-validator.sh` | Validates Keycloak configuration | Authentication |
-| `e2e-test-data-cleanup.sh` | Cleans up E2E test data | Testing |
-| `atlassian-hooks.sh` | Jira/Confluence integration | Atlassian products |
-
-## Required Environment Variables
-
-### Essential Variables (All Projects)
+Runs before every Bash tool call. Reads the command from the tool input JSON and
+checks it against two regex patterns:
 
 ```bash
-# Obsidian vault location (defaults to ${HOME}/obsidian)
-export OBSIDIAN_VAULT_PATH="/path/to/your/obsidian/vault"
+# Blocks: rm -rf /, rm -rf ~, dd if=, mkfs., fork bomb
+if echo "$COMMAND" | grep -qE '(rm -rf /|rm -rf ~|> /dev/sd|mkfs\.|dd if=|:(){ :|fork bomb)'; then
+  echo "BLOCKED: Destructive system command detected" >&2
+  exit 2
+fi
 
-# Project identifier (defaults to "project")
-export PROJECT_NAME="my-awesome-app"
-
-# Project root directory
-export PROJECT_ROOT="/path/to/project"
+# Blocks: cat .env, echo $API_KEY, echo $SECRET, etc.
+if echo "$COMMAND" | grep -qE '(cat.*\.env|echo.*API_KEY|echo.*SECRET|echo.*PASSWORD|echo.*TOKEN)'; then
+  echo "BLOCKED: Potential credential exposure" >&2
+  exit 2
+fi
 ```
 
-### Optional Configuration Variables
+Exit code `2` causes Claude Code to abort the tool call and report the block message.
+
+### protect-critical-files.sh
+
+Runs before every Edit and Write tool call. Checks the `file_path` parameter against
+a list of protected path patterns:
 
 ```bash
-# Git branch (defaults to current branch)
-export GIT_BRANCH="main"
-
-# Database path for orchestration (defaults to .claude/orchestration/db/agents.db)
-export DB_PATH=".claude/orchestration/db/agents.db"
-
-# Max age for file archival in days (defaults to 30)
-export MAX_AGE_DAYS=30
-
-# Obsidian API URL for MCP sync (defaults to http://localhost:27123)
-export OBSIDIAN_API_URL="http://localhost:27123"
-
-# Agent count for protocol enforcement (defaults to 5)
-export CLAUDE_AGENT_COUNT=5
-
-# Starting phase for orchestration (defaults to "explore")
-export CLAUDE_STARTING_PHASE="explore"
+PROTECTED_PATTERNS=(".env" ".env." "secrets/" "credentials" "id_rsa" "id_ed25519" ".pem" "package-lock.json" "pnpm-lock.yaml")
 ```
 
-### LLM API Keys (For Sub-Agents)
+Any file path matching one of these patterns is blocked. This prevents accidental
+overwriting of lock files and secrets, even if Claude generates a write command for
+them.
+
+## Self-healing loop
+
+The `lessons-learned-capture.sh` hook is the entry point for the self-healing system:
+
+```
+Tool call fails (PostToolUseFailure event)
+      │
+      ▼
+lessons-learned-capture.sh reads: tool_name, error, tool_input
+      │
+      ▼
+Appends to .claude/rules/lessons-learned.md:
+  ### Error: <tool> failure (<timestamp>)
+  - Tool: <tool_name>
+  - Input: `<command_or_file_path>`
+  - Error: <error_message>
+  - Status: NEEDS_FIX
+      │
+      ▼
+Returns JSON context to Claude:
+  "Error captured in lessons-learned.md.
+   After fixing this issue, update the lesson entry with the solution."
+      │
+      ▼
+Claude fixes the issue and updates the entry to RESOLVED
+with a Fix and Prevention note.
+      │
+      ▼
+lessons-learned.md is loaded as a rule on the next session start.
+Claude does not repeat the mistake.
+```
+
+## Quality gate hooks
+
+**`task-quality-gate.sh`** (TaskCompleted): Prevents task completion if:
+- `git diff --check` finds merge conflict markers
+- Modified TypeScript files fail `npx tsc --noEmit`
+
+This ensures Claude does not mark a task done while leaving the codebase in a broken
+state.
+
+**`helm-deploy-validator.sh`** (PreToolUse on Bash): Does not block, but emits
+warnings to stderr for Claude to see when a `helm install/upgrade` command is
+missing recommended safety flags. Claude reads stderr and typically adds the missing
+flags before proceeding.
+
+## Build tracking
+
+**`docker-build-tracker.sh`** logs every Docker and Helm operation to a JSONL file
+at `.claude/logs/docker-builds.jsonl`. The `deploy-intelligence` MCP server reads
+this file to provide build history queries, detect stale images in Kubernetes, and
+generate deployment audit reports.
+
+## Hook configuration
+
+Hooks are registered in `.claude/settings.json` under the `hooks` key. Each entry
+specifies the event type, an optional tool matcher, and the script path. Scripts must
+be executable (`chmod +x`).
+
+To disable a hook temporarily, remove its execute permission:
 
 ```bash
-export ANTHROPIC_API_KEY="your-claude-api-key"
-export OPENAI_API_KEY="your-openai-api-key"
-export GOOGLE_API_KEY="your-gemini-api-key"
+chmod -x .claude/hooks/hook-name.sh
 ```
 
-### Integration Keys (Optional)
+To debug a hook, add `set -x` to the script to print each command as it runs.
 
-```bash
-export GITHUB_TOKEN="your-github-token"
-export JIRA_API_TOKEN="your-jira-token"
-export DOCKER_REGISTRY="ghcr.io/your-org"
-export HELM_RELEASE_NAME="${PROJECT_NAME}"
-export K8S_NAMESPACE="${PROJECT_NAME}-prod"
-```
-
-## Creating Custom Hooks
-
-### Basic Hook Structure
+## Creating a new hook
 
 ```bash
 #!/bin/bash
-# Hook Name
-# Purpose description
+# Brief description of what this hook does and why.
 #
-# Hook Configuration
-# Event: <event_type>
-# Pattern: <file_pattern>
-# Priority: <low|medium|high|critical>
+# Event: PreToolUse | PostToolUse | PostToolUseFailure | TaskCompleted | SessionStart
+# Matcher: Bash | Edit | Write | (blank for all)
 
-set -e
+INPUT=$(cat)
+# Parse fields from INPUT using jq:
+# COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // empty')
+# FILE_PATH=$(echo "$INPUT" | jq -r '.tool_input.file_path // empty')
 
-HOOK_NAME="my-custom-hook"
-PARAM1="${1:-default}"
-
-# Use environment variables for portability
-PROJECT_NAME="${PROJECT_NAME:-project}"
-OBSIDIAN_VAULT="${OBSIDIAN_VAULT_PATH:-${HOME}/obsidian}"
-
-# Colors for output
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-NC='\033[0m'
-
-log_info() {
-    echo -e "${GREEN}[${HOOK_NAME}]${NC} $1"
-}
-
-log_warn() {
-    echo -e "${YELLOW}[${HOOK_NAME}]${NC} $1"
-}
-
-log_error() {
-    echo -e "${RED}[${HOOK_NAME}]${NC} $1"
-}
-
-# Your hook logic here
-log_info "Hook executing..."
+# Your logic here.
+# Exit 0: allow/proceed
+# Exit 2: block with error message written to stderr
 
 exit 0
 ```
 
-### Hook Events
-
-Common events you can hook into:
-
-- `session:start` - Beginning of Claude session
-- `session:end` - End of Claude session
-- `task:start` - Before starting a task
-- `task:complete` - After completing a task
-- `phase:complete` - After completing a phase (EXPLORE, PLAN, CODE, TEST, FIX, DOCUMENT)
-- `file:save` - When a file is saved
-- `tool:use` - When a tool is used
-- `user-prompt-submit` - When user submits a prompt
-
-### File Patterns
-
-- `*` - All files
-- `**/*.ts` - All TypeScript files
-- `**/*.md` - All Markdown files
-- `**/test/**` - All files in test directories
-- `webhook*.ts` - Files starting with "webhook"
-
-### Priority Levels
-
-- `low` - Nice to have, won't block
-- `medium` - Important, may warn
-- `high` - Critical, should block on failure
-- `critical` - Must pass, blocks all operations
-
-## Best Practices
-
-### 1. Use Environment Variables
-
-**Always** use environment variables for paths and configuration:
-
-```bash
-# Good
-OBSIDIAN_VAULT="${OBSIDIAN_VAULT_PATH:-${HOME}/obsidian}"
-PROJECT_NAME="${PROJECT_NAME:-project}"
-
-# Bad
-OBSIDIAN_VAULT="/home/user/obsidian"
-PROJECT_NAME="Alpha-1.4"
-```
-
-### 2. Provide Defaults
-
-Always provide sensible defaults for environment variables:
-
-```bash
-# Uses OBSIDIAN_VAULT_PATH if set, otherwise ${HOME}/obsidian
-OBSIDIAN_VAULT="${OBSIDIAN_VAULT_PATH:-${HOME}/obsidian}"
-```
-
-### 3. Cross-Platform Compatibility
-
-Use POSIX-compliant commands when possible:
-
-```bash
-# Good (works on Linux, macOS, Windows with Git Bash)
-TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-
-# Bad (macOS-specific)
-TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ" -r "$FILE")
-```
-
-### 4. Error Handling
-
-Always include error handling:
-
-```bash
-set -e  # Exit on error
-
-# Check if file exists
-if [ ! -f "$FILE" ]; then
-    log_error "File not found: $FILE"
-    exit 1
-fi
-
-# Use || true for non-critical operations
-sqlite3 "$DB" "DELETE FROM old_data;" 2>/dev/null || true
-```
-
-### 5. Informative Output
-
-Use colored logging for clarity:
-
-```bash
-log_info "Processing file: $FILE"
-log_warn "File is large, may take time"
-log_error "Failed to process file"
-```
-
-### 6. Documentation
-
-Always include:
-- Purpose description
-- Event type
-- File pattern (if applicable)
-- Priority level
-- Environment variables used
-- Example usage
-
-## Hook Lifecycle
-
-### Session Start
-1. `session-start.sh` - Initialize orchestration DB, create session
-2. Environment setup
-
-### Task Execution
-1. `pre-task.sh` - Validate environment, check context health
-2. `context-management-hook.sh pre-operation` - Check token budget
-3. `orchestration-protocol-enforcer.sh pre-task` - Validate sub-agent count, starting phase
-4. `enforce-subagent-usage.sh` - Remind about sub-agent requirements
-5. **Task execution**
-6. `post-task.sh` - Validate completion, log activity
-7. `orchestration-protocol-enforcer.sh post-task` - Ensure all phases completed
-8. `context-management-hook.sh post-operation` - Checkpoint if needed
-
-### File Save
-1. `post-edit.sh` - Generic file handling
-2. `post-edit-documentation.sh` - If .md file
-3. `doc-logging.sh` - Log to orchestration DB
-4. `obsidian-documentation-sync.sh` - Sync to Obsidian vault
-5. Platform-specific hooks (if applicable)
-
-### Session End
-1. Final checkpoints
-2. Archive phase logs
-3. Update session status
-
-## Debugging Hooks
-
-### Enable Verbose Output
-
-```bash
-# Add to hook for debugging
-set -x  # Print commands as they execute
-```
-
-### Check Hook Execution
-
-```bash
-# View orchestration logs
-tail -f .claude/orchestration/logs/$(date +%Y-%m-%d).log
-
-# View database activity
-sqlite3 .claude/orchestration/db/agents.db "SELECT * FROM activity_log ORDER BY timestamp DESC LIMIT 10;"
-
-# Check for violations
-cat .claude/orchestration/state/protocol_violations.log
-```
-
-### Test Hooks Manually
-
-```bash
-# Test a hook manually
-.claude/hooks/my-hook.sh "test parameter"
-
-# Test pre-task hook
-.claude/hooks/pre-task.sh "Test task" "test-agent"
-
-# Test documentation sync
-.claude/hooks/obsidian-documentation-sync.sh
-```
-
-## Disabling Hooks
-
-To temporarily disable a hook:
-
-```bash
-# Rename to .disabled
-mv .claude/hooks/my-hook.sh .claude/hooks/my-hook.sh.disabled
-
-# Or remove execute permission
-chmod -x .claude/hooks/my-hook.sh
-```
-
-## Contributing Custom Hooks
-
-When creating hooks for your project:
-
-1. Start with generic hooks as templates
-2. Use environment variables for all configuration
-3. Provide clear documentation in the hook header
-4. Test on multiple platforms if possible
-5. Consider contributing back to platform-examples/ if useful for others
-
-## Troubleshooting
-
-### Hook Not Running
-
-- Check file has execute permission: `chmod +x .claude/hooks/my-hook.sh`
-- Verify hook pattern matches files: `echo **/*.ts` in your shell
-- Check event type is correct
-- Review logs: `.claude/orchestration/logs/*.log`
-
-### Environment Variables Not Set
-
-- Add to `.env` file in project root
-- Export in shell: `export OBSIDIAN_VAULT_PATH="/path/to/vault"`
-- Add to `.claude/orchestration/.session_env`
-- Check with: `echo $OBSIDIAN_VAULT_PATH`
-
-### Permission Errors
-
-- Ensure scripts have execute permission
-- Check database file permissions
-- Verify Obsidian vault directory is writable
-
-### Path Issues on Windows
-
-- Use Git Bash or WSL
-- Convert paths: `/c/Users/...` instead of `C:\Users\...`
-- Or use `cygpath` for conversion
-
-## Related Documentation
-
-- **Orchestration Protocol**: See CLAUDE.md for full protocol details
-- **Agent System**: `.claude/registry/agents.index.json`
-- **External Documentation**: See `${OBSIDIAN_VAULT_PATH}/System/Claude-Instructions/`
-
-## Version History
-
-- **v1.0.0** (2025-12-12): Initial portable version
-  - Removed hardcoded paths
-  - Added environment variable support
-  - Moved platform-specific hooks to examples
-  - Created comprehensive documentation
+## See also
+
+- [../README.md](../README.md) — Platform overview
+- [../rules/README.md](../rules/README.md) — Rules that hooks enforce at runtime
+- [../mcp-servers/README.md](../mcp-servers/README.md) — MCP servers that consume hook-generated logs

@@ -47,10 +47,6 @@
 │  │  ├─ Pattern: jwt-auth (15 pts)                                    │    │
 │  │  └─ Final: 75.0                                                   │    │
 │  │                                                                     │    │
-│  │  ahling-command-center (Score: 68)                                 │    │
-│  │  ├─ Domain: devops (30 pts)                                       │    │
-│  │  ├─ Context: kubernetes (20 pts)                                  │    │
-│  │  └─ Final: 68.0                                                   │    │
 │  └────────────────────────────────────────────────────────────────────┘    │
 │                                   │                                          │
 │                                   ▼                                          │
@@ -59,7 +55,7 @@
 │  │                                                                     │    │
 │  │  Decision:                                                         │    │
 │  │  ├─ Primary: fastapi-backend                                      │    │
-│  │  ├─ Fallbacks: [lobbi-platform, ahling-command, jira-orch]       │    │
+│  │  ├─ Fallbacks: [lobbi-platform, jira-orch]                       │    │
 │  │  └─ Collaboration: REQUIRED (multi-domain)                        │    │
 │  │                                                                     │    │
 │  │  Collaboration Plan:                                               │    │
@@ -81,7 +77,7 @@
 │  │  └──────────────────────────────────────────────────────────┘    │    │
 │  │                           │                                        │    │
 │  │  ┌────────────────────────▼──────────────────────────────────┐    │    │
-│  │  │ Phase 3: Deployment (ahling-command-center)              │    │    │
+│  │  │ Phase 3: Deployment (jira-orchestrator)                  │    │    │
 │  │  │  - Build Docker image                                    │    │    │
 │  │  │  - Deploy to Kubernetes                                  │    │    │
 │  │  │  - Configure ingress                                     │    │    │
@@ -106,17 +102,17 @@
 └──────────────────────────────────┬──────────────────────────────────────────┘
                                    │
                     ┌──────────────┼──────────────┐
-                    │              │              │
-                    ▼              ▼              ▼
-         ┌──────────────┐ ┌───────────────┐ ┌──────────────┐
-         │   FastAPI    │ │    Lobbi      │ │   Ahling     │
-         │   Backend    │ │   Platform    │ │   Command    │
-         │              │ │   Manager     │ │   Center     │
-         └──────┬───────┘ └───────┬───────┘ └──────┬───────┘
-                │                 │                 │
-                └────────┬────────┴────────┬────────┘
-                         │                 │
-                         ▼                 ▼
+                    │              │
+                    ▼              ▼
+         ┌──────────────┐ ┌───────────────┐
+         │   FastAPI    │ │    Lobbi      │
+         │   Backend    │ │   Platform    │
+         │              │ │   Manager     │
+         └──────┬───────┘ └───────┬───────┘
+                │                 │
+                └────────┬────────┘
+                         │
+                         ▼
                  ┌──────────────┐  ┌──────────────┐
                  │ Message Bus  │  │ State Store  │
                  │ - Events     │  │ - Context    │
@@ -148,15 +144,15 @@ TIME: t0
 │                            MESSAGE BUS                                       │
 │  ┌────────────────────────────────────────────────────────────────────┐    │
 │  │ Topic: routing/decision                                            │    │
-│  │ Subscribers: [fastapi-backend, lobbi-platform, ahling-command]    │    │
+│  │ Subscribers: [fastapi-backend, lobbi-platform]                     │    │
 │  └────────────────────────────────────────────────────────────────────┘    │
-└────┬──────────────────────┬──────────────────────┬────────────────────┬─────┘
-     │                      │                      │                    │
-     ▼                      ▼                      ▼                    ▼
-┌────────────┐      ┌──────────────┐      ┌──────────────┐    ┌──────────────┐
-│  FastAPI   │      │    Lobbi     │      │   Ahling     │    │ Telemetry    │
-│  Backend   │      │  Platform    │      │   Command    │    │  Service     │
-└────────────┘      └──────────────┘      └──────────────┘    └──────────────┘
+└────┬──────────────────────┬──────────────────────┬─────────────────────────┘
+     │                      │                      │
+     ▼                      ▼                      ▼
+┌────────────┐      ┌──────────────┐      ┌──────────────┐
+│  FastAPI   │      │    Lobbi     │      │ Telemetry    │
+│  Backend   │      │  Platform    │      │  Service     │
+└────────────┘      └──────────────┘      └──────────────┘
 
 
 TIME: t1 (Phase 1 starts)
@@ -259,21 +255,21 @@ TIME: t3 (State synchronization)
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                            MESSAGE BUS                                       │
 │  Topic: state/*/change                                                      │
-└────┬────────────────────────────────────────────────────────┬───────────────┘
-     │                                                         │
-     ▼                                                         ▼
-┌──────────────┐                                      ┌──────────────┐
-│    Lobbi     │  Imports state, uses for config     │   Ahling     │  Imports for deployment
-│  Platform    │                                      │   Command    │
-└──────────────┘                                      └──────────────┘
+└────────────────────────────────────────────────────────────────────────────┘
+     │
+     ▼
+┌──────────────┐
+│    Lobbi     │  Imports state, uses for config
+│  Platform    │
+└──────────────┘
 
 
 TIME: t4 (Error occurs)
                             ┌──────────────┐
-                            │   Ahling     │  Deployment fails
-                            │   Command    │
+                            │    Lobbi     │  Deployment fails
+                            │   Platform   │
                             └──────┬───────┘
-                                   │ Topic: plugin/ahling-command/response
+                                   │ Topic: plugin/lobbi-platform/response
                                    │ {
                                    │   "correlationId": "req_123",
                                    │   "status": "error",
@@ -291,7 +287,7 @@ TIME: t4 (Error occurs)
                             └──────┬───────┘
                                    │ Topic: routing/fallback
                                    │ {
-                                   │   "originalPlugin": "ahling-command",
+                                   │   "originalPlugin": "lobbi-platform",
                                    │   "fallbackPlugin": "jira-orchestrator",
                                    │   "reason": "circuit_breaker_open"
                                    │ }
@@ -505,7 +501,7 @@ STEP 3: Build Agent Team
 
 EXAMPLE TIMELINE:
 
-t=0s    Plugin "ahling-command-center" in CLOSED state
+t=0s    Plugin "lobbi-platform-manager" in CLOSED state
         ├─ Request 1: SUCCESS
         ├─ Request 2: SUCCESS
         └─ failures = 0
