@@ -17,48 +17,5 @@
     "ui-ux",
     "multi-tenant",
     "accessibility"
-  ],
-  "contextEntry": "CONTEXT_SUMMARY.md",
-  "$schema": "../../../schemas/plugin.schema.json",
-  "permissions": {
-    "requires": [],
-    "optional": []
-  },
-  "capabilities": {
-    "provides": [],
-    "requires": []
-  },
-  "context": {
-    "entry": "CONTEXT_SUMMARY.md",
-    "title": "frontend-design-system",
-    "summary": "263+ design styles with multi-tenant Keycloak theming for AI-powered frontend development",
-    "tags": [
-      "frontend",
-      "design-system",
-      "keycloak",
-      "theming",
-      "css",
-      "tailwind",
-      "ui-ux",
-      "multi-tenant",
-      "accessibility"
-    ],
-    "bootstrapFiles": [
-      "CONTEXT_SUMMARY.md"
-    ],
-    "maxTokens": 1200,
-    "excludeGlobs": [
-      "**/node_modules/**",
-      "**/.git/**",
-      "**/dist/**",
-      "**/build/**",
-      "**/coverage/**",
-      "**/*.zip",
-      "**/*.tar*"
-    ],
-    "lazyLoadSections": [
-      "skills/**",
-      "**/README.md"
-    ]
-  }
+  ]
 }

@@ -21,51 +21,5 @@
     "ci-cd",
     "gitops",
     "developer-experience"
-  ],
-  "contextEntry": "CONTEXT_SUMMARY.md",
-  "$schema": "../../../schemas/plugin.schema.json",
-  "permissions": {
-    "requires": [],
-    "optional": []
-  },
-  "capabilities": {
-    "provides": [],
-    "requires": []
-  },
-  "context": {
-    "entry": "CONTEXT_SUMMARY.md",
-    "title": "aws-eks-helm-keycloak",
-    "summary": "The Conduit-Artisan Hybrid - AWS EKS deployments with Helm, Keycloak authentication, and Harness CI/CD. Combines pipeline excellence with developer velocity.",
-    "tags": [
-      "aws",
-      "eks",
-      "kubernetes",
-      "helm",
-      "keycloak",
-      "harness",
-      "harness-code",
-      "oidc",
-      "authentication",
-      "ci-cd",
-      "gitops",
-      "developer-experience"
-    ],
-    "bootstrapFiles": [
-      "CONTEXT_SUMMARY.md"
-    ],
-    "maxTokens": 1200,
-    "excludeGlobs": [
-      "**/node_modules/**",
-      "**/.git/**",
-      "**/dist/**",
-      "**/build/**",
-      "**/coverage/**",
-      "**/*.zip",
-      "**/*.tar*"
-    ],
-    "lazyLoadSections": [
-      "skills/**",
-      "**/README.md"
-    ]
-  }
+  ]
 }
