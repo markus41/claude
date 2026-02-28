@@ -1,0 +1,21 @@
+{
+  "name": "cowork-marketplace",
+  "version": "1.0.0",
+  "description": "Browse, install, and manage cowork marketplace items backed by real plugin agents, skills, and commands",
+  "author": {
+    "name": "Markus Ahling",
+    "email": "markus@lobbi.co"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/markus41/claude",
+  "keywords": [
+    "cowork",
+    "marketplace",
+    "plugins",
+    "agents",
+    "skills",
+    "templates",
+    "workflows",
+    "session-blueprints"
+  ]
+}

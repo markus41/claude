@@ -1,0 +1,252 @@
+{
+  "version": 1,
+  "description": "Pre-packaged plugin bundles for Cowork distribution. Each bundle combines multiple Claude Code plugins into a single Cowork-compatible plugin ZIP.",
+  "bundles": [
+    {
+      "id": "devops-powerhouse",
+      "name": "DevOps Powerhouse",
+      "description": "Complete DevOps toolkit: AWS EKS deployments, Helm chart management, deployment pipelines, Keycloak auth, and team acceleration. Everything from infrastructure to delivery.",
+      "category": "devops",
+      "difficulty": "intermediate",
+      "plugins": [
+        "aws-eks-helm-keycloak",
+        "deployment-pipeline",
+        "team-accelerator"
+      ],
+      "totals": {
+        "commands": 20,
+        "agents": 13,
+        "skills": 10
+      },
+      "tags": [
+        "devops",
+        "kubernetes",
+        "eks",
+        "helm",
+        "deployment",
+        "ci-cd",
+        "keycloak"
+      ],
+      "highlights": [
+        "EKS cluster provisioning with Helm-based app deployment",
+        "State-machine deployment pipeline with rollback support",
+        "Team capacity planning and workflow automation"
+      ]
+    },
+    {
+      "id": "fullstack-builder",
+      "name": "Full Stack Builder",
+      "description": "End-to-end application development: FastAPI backends with MongoDB/Keycloak, React frontends with IaC, and universal project templating. Scaffold to production in one session.",
+      "category": "engineering",
+      "difficulty": "intermediate",
+      "plugins": [
+        "fastapi-backend",
+        "fullstack-iac",
+        "claude-code-templating-plugin"
+      ],
+      "totals": {
+        "commands": 23,
+        "agents": 13,
+        "skills": 13
+      },
+      "tags": [
+        "fastapi",
+        "react",
+        "fullstack",
+        "mongodb",
+        "terraform",
+        "ansible",
+        "templates"
+      ],
+      "highlights": [
+        "FastAPI REST APIs with async endpoints, Beanie ODM, and Keycloak auth",
+        "React/Vite frontends with Ansible/Terraform infrastructure",
+        "Universal templating: Handlebars, Cookiecutter, Copier, Maven archetypes"
+      ]
+    },
+    {
+      "id": "enterprise-workflow-engine",
+      "name": "Enterprise Workflow Engine",
+      "description": "The 140-agent Jira orchestration powerhouse combined with team tooling and deployment pipelines. Sprint planning, code review, PR automation, and release management at enterprise scale.",
+      "category": "operations",
+      "difficulty": "advanced",
+      "plugins": [
+        "jira-orchestrator",
+        "team-accelerator",
+        "deployment-pipeline"
+      ],
+      "totals": {
+        "commands": 59,
+        "agents": 90,
+        "skills": 17
+      },
+      "tags": [
+        "jira",
+        "enterprise",
+        "workflow",
+        "agile",
+        "sprint",
+        "deployment",
+        "pr-automation"
+      ],
+      "highlights": [
+        "81 specialized Jira agents across 16 teams",
+        "Full sprint lifecycle: planning, standup, review, retro",
+        "One-command ship: /jira:ship analyzes, codes, tests, and opens PR"
+      ]
+    },
+    {
+      "id": "creative-frontend",
+      "name": "Creative Frontend Studio",
+      "description": "263+ design styles meet 11 animation skills. Build stunning, accessible frontends with design tokens, component libraries, white-labeling, Framer Motion, GSAP, Three.js, and Lottie.",
+      "category": "design",
+      "difficulty": "intermediate",
+      "plugins": [
+        "react-animation-studio",
+        "frontend-design-system"
+      ],
+      "totals": {
+        "commands": 20,
+        "agents": 12,
+        "skills": 15
+      },
+      "tags": [
+        "react",
+        "animation",
+        "design-system",
+        "framer-motion",
+        "gsap",
+        "three-js",
+        "a11y",
+        "theming"
+      ],
+      "highlights": [
+        "263+ curated design styles with multi-tenant theming",
+        "11 animation skills: Framer Motion, GSAP, Three.js, Lottie, CSS",
+        "Accessibility specialist agent for WCAG compliance",
+        "White-label specialist for multi-tenant portals"
+      ]
+    },
+    {
+      "id": "smart-home-pro",
+      "name": "Smart Home Pro",
+      "description": "Complete Home Assistant platform with 15 specialized agents: core architecture, automation building, Zigbee networking, energy monitoring, security hardening, Ollama LLM integration, and Ubuntu server deployment.",
+      "category": "iot",
+      "difficulty": "intermediate",
+      "plugins": [
+        "home-assistant-architect"
+      ],
+      "totals": {
+        "commands": 9,
+        "agents": 15,
+        "skills": 8
+      },
+      "tags": [
+        "home-assistant",
+        "iot",
+        "smart-home",
+        "automation",
+        "zigbee",
+        "energy",
+        "ollama"
+      ],
+      "highlights": [
+        "15 specialist agents covering every HA domain",
+        "Zigbee/Z-Wave network management",
+        "Energy dashboard and solar optimization",
+        "Local LLM integration with Ollama"
+      ]
+    },
+    {
+      "id": "nonprofit-command-center",
+      "name": "Nonprofit Command Center",
+      "description": "AI-powered executive director suite with 11 automation agents for trade associations and nonprofits, plus Keycloak multi-tenant platform management. Grants, board governance, membership, and compliance.",
+      "category": "nonprofit",
+      "difficulty": "beginner",
+      "plugins": [
+        "exec-automator",
+        "lobbi-platform-manager"
+      ],
+      "totals": {
+        "commands": 21,
+        "agents": 15,
+        "skills": 3
+      },
+      "tags": [
+        "nonprofit",
+        "association",
+        "grants",
+        "governance",
+        "membership",
+        "keycloak",
+        "automation"
+      ],
+      "highlights": [
+        "11 executive automation agents (grants, board, compliance, HR, finance)",
+        "6-factor automation scoring algorithm",
+        "Keycloak multi-tenant management",
+        "LangGraph workflow generation"
+      ]
+    },
+    {
+      "id": "microsoft-enterprise",
+      "name": "Microsoft Enterprise Platform",
+      "description": "19-agent Microsoft ecosystem orchestrator: Azure, Dataverse, Fabric, Graph API, Power Automate, Planner, and Teams. Multi-entity multi-tenant deployment across the full Microsoft stack.",
+      "category": "microsoft",
+      "difficulty": "advanced",
+      "plugins": [
+        "tvs-microsoft-deploy"
+      ],
+      "totals": {
+        "commands": 18,
+        "agents": 19,
+        "skills": 0
+      },
+      "tags": [
+        "microsoft",
+        "azure",
+        "dataverse",
+        "fabric",
+        "graph-api",
+        "power-automate",
+        "teams"
+      ],
+      "highlights": [
+        "19 specialized agents across identity, data, platform, and comms",
+        "Multi-entity multi-tenant deployment orchestration",
+        "MCP server for Graph API, Dataverse, Fabric, and Planner",
+        "HIPAA-compliant configuration guards"
+      ]
+    },
+    {
+      "id": "marketplace-toolkit",
+      "name": "Plugin Marketplace Toolkit",
+      "description": "Meta-tools for building and managing plugin marketplaces: trust scoring, composition engine, federated registry, developer studio with hot-reload, and supply chain security.",
+      "category": "meta",
+      "difficulty": "advanced",
+      "plugins": [
+        "marketplace-pro",
+        "cowork-marketplace"
+      ],
+      "totals": {
+        "commands": 19,
+        "agents": 4,
+        "skills": 8
+      },
+      "tags": [
+        "marketplace",
+        "plugins",
+        "trust-scoring",
+        "federation",
+        "dev-studio",
+        "security"
+      ],
+      "highlights": [
+        "Intent-based composition engine for plugin orchestration",
+        "Supply chain security with cryptographic trust scoring",
+        "Federated registry protocol for cross-marketplace discovery",
+        "Developer studio with hot-reload for plugin authoring"
+      ]
+    }
+  ]
+}

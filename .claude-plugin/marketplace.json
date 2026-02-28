@@ -227,6 +227,78 @@
       ]
     },
     {
+      "name": "cowork-marketplace",
+      "description": "Browse, install, and export cowork marketplace items with 8 pre-packaged plugin bundles for Cowork Desktop distribution. 9 commands, 3 agents, 3 skills.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Markus Ahling",
+        "email": "markus@lobbi.io"
+      },
+      "source": "./plugins/cowork-marketplace",
+      "category": "marketplace",
+      "tags": [
+        "cowork",
+        "marketplace",
+        "bundles",
+        "distribution",
+        "plugins",
+        "export"
+      ]
+    },
+    {
+      "name": "react-animation-studio",
+      "description": "Create beautiful, performant web animations for React and TypeScript. 11 animation skills including Framer Motion, GSAP, Three.js, Lottie, and CSS. 12 commands, 6 agents.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Markus Ahling"
+      },
+      "source": "./plugins/react-animation-studio",
+      "category": "frontend",
+      "tags": [
+        "react",
+        "animation",
+        "framer-motion",
+        "gsap",
+        "three-js",
+        "lottie",
+        "css-animation"
+      ]
+    },
+    {
+      "name": "marketplace-pro",
+      "description": "Advanced plugin marketplace with intent-based composition, supply chain security, federated registry, and developer studio with hot-reload. 12 commands, 1 agent, 5 skills.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Markus Ahling"
+      },
+      "source": "./plugins/marketplace-pro",
+      "category": "marketplace",
+      "tags": [
+        "marketplace",
+        "trust-scoring",
+        "federation",
+        "composition",
+        "security"
+      ]
+    },
+    {
+      "name": "deployment-pipeline",
+      "description": "Harness CD integration pipeline with state-machine workflow orchestration. 5 commands, 3 agents.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Markus Ahling"
+      },
+      "source": "./plugins/deployment-pipeline",
+      "category": "devops",
+      "tags": [
+        "deployment",
+        "harness",
+        "ci-cd",
+        "pipeline",
+        "rollback"
+      ]
+    },
+    {
       "name": "tvs-microsoft-deploy",
       "description": "Consul (Forerunner) - Enterprise Microsoft ecosystem orchestrator for TVS (Trusted Virtual Solutions) multi-entity multi-tenant deployment. 19 specialized agents across Entra ID, Dataverse, Power Platform, Fabric, Azure IaC, Power Pages, Excel automation, embedded analytics, M365 governance, and A3 Firebase extraction. CLI-first dual control plane with Playwright browser fallback achieving 95-98% automated coverage via pac CLI, az CLI, Graph API, and Fabric REST. Covers TVS VA platform (Power Pages + Copilot Studio + Stripe billing), broker portal, Lobbi Consulting CRM, Medicare Consulting, TAIA FMO carrier normalization sprint, and multi-entity Fabric analytics. 19 agents, 17 commands, 17 skills, 9 hooks, 5 workflows.",
       "version": "1.1.0",
