@@ -727,3 +727,15 @@ diff <(grep '"command"' /home/user/claude/plugins/tvs-microsoft-deploy/.claude-p
 - **Input:** `/home/user/claude/.claude`
 - **Error:** EISDIR: illegal operation on a directory, read '/home/user/claude/.claude'
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: mcp__firecrawl__firecrawl_scrape failure (2026-02-28T01:18:10Z)
+- **Tool:** mcp__firecrawl__firecrawl_scrape
+- **Input:** `N/A`
+- **Error:** Tool 'firecrawl_scrape' execution failed: Maximum number of redirects exceeded
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: mcp__firecrawl__firecrawl_search failure (2026-02-28T01:18:22Z)
+- **Tool:** mcp__firecrawl__firecrawl_search
+- **Input:** `N/A`
+- **Error:** Tool 'firecrawl_search' execution failed: Maximum number of redirects exceeded
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
