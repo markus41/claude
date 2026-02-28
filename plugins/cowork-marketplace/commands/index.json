@@ -93,6 +93,32 @@
       "risk": "low",
       "cost": "medium",
       "path": "commands/export.md"
+    },
+    {
+      "name": "cowork-marketplace:bundles",
+      "intent": "Browse pre-packaged plugin bundles for Cowork distribution",
+      "tags": [
+        "cowork-marketplace",
+        "command",
+        "bundles"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "low",
+      "path": "commands/bundles.md"
+    },
+    {
+      "name": "cowork-marketplace:bundle-export",
+      "intent": "Export a plugin bundle as a single Cowork-compatible plugin ZIP",
+      "tags": [
+        "cowork-marketplace",
+        "command",
+        "bundle-export"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "medium",
+      "path": "commands/bundle-export.md"
     }
   ]
 }

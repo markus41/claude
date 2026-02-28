@@ -13,6 +13,8 @@ Browse, install, launch, and export cowork marketplace items backed by real plug
 | `/cowork-marketplace:collections` | Browse 9 curated collections by domain |
 | `/cowork-marketplace:stats` | Show marketplace and plugin ecosystem statistics |
 | `/cowork-marketplace:export` | Package an item as a Cowork plugin ZIP for distribution |
+| `/cowork-marketplace:bundles` | Browse 8 pre-packaged plugin bundles by category |
+| `/cowork-marketplace:bundle-export` | Merge plugins into a single Cowork plugin ZIP |
 
 ## Agents
 
@@ -34,6 +36,23 @@ Browse, install, launch, and export cowork marketplace items backed by real plug
 - 3 Agent Configs (Code Reviewer, Nonprofit Director, Design Architect)
 - 3 Skill Packs (DevOps, React Animation, Marketplace Intelligence)
 - 3 Blueprints (Enterprise Release, Keycloak Multi-Tenant, Project Scaffolder)
+
+## Plugin Bundles
+
+8 pre-packaged bundles that merge multiple plugins into single Cowork-distributable packages:
+
+| Bundle | Plugins | Commands | Agents | Skills |
+|--------|---------|----------|--------|--------|
+| DevOps Powerhouse | 3 | 20 | 13 | 10 |
+| Full Stack Builder | 3 | 23 | 13 | 13 |
+| Enterprise Workflow Engine | 3 | 59 | 90 | 17 |
+| Creative Frontend Studio | 2 | 20 | 12 | 15 |
+| Smart Home Pro | 1 | 9 | 15 | 8 |
+| Nonprofit Command Center | 2 | 21 | 15 | 3 |
+| Microsoft Enterprise Platform | 1 | 18 | 19 | 0 |
+| Plugin Marketplace Toolkit | 2 | 19 | 4 | 8 |
+
+Use `/cowork-marketplace:bundle-export <bundle-id>` to create a ZIP for Claude Desktop upload.
 
 ## Dual Compatibility
 
