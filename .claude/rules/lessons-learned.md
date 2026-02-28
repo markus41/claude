@@ -721,3 +721,9 @@ diff <(grep '"command"' /home/user/claude/plugins/tvs-microsoft-deploy/.claude-p
 - **Input:** `/home/user/claude/src/types/workflows.ts`
 - **Error:** File does not exist. Note: your current working directory is /home/user/claude.
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-02-28T00:18:29Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/.claude`
+- **Error:** EISDIR: illegal operation on a directory, read '/home/user/claude/.claude'
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
