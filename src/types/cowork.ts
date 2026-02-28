@@ -85,6 +85,26 @@ export interface CoworkCapability {
   tools: string[];
 }
 
+/** Maps a cowork item to the underlying plugin agents, skills, and commands */
+export interface PluginBinding {
+  pluginName: string;
+  pluginVersion: string;
+  agents: string[];
+  skills: string[];
+  commands: string[];
+  mcpServers?: string[];
+}
+
+/** A curated collection of cowork items grouped by use case */
+export interface CoworkCollection {
+  id: string;
+  name: string;
+  description: string;
+  iconEmoji: string;
+  items: CoworkItem[];
+  tags: string[];
+}
+
 export interface CoworkItem {
   id: string;
   name: string;
@@ -119,6 +139,9 @@ export interface CoworkItem {
   isVerified: boolean;
   isFeatured: boolean;
   isCurated: boolean;
+
+  // Plugin Integration
+  pluginBindings: PluginBinding[];
 
   // URLs
   repositoryUrl?: string;
