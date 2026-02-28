@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "plugin": "cowork-marketplace",
+  "type": "commands",
+  "entries": [
+    {
+      "name": "cowork-marketplace:browse",
+      "intent": "Browse and search the cowork marketplace catalog",
+      "tags": [
+        "cowork-marketplace",
+        "command",
+        "browse"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "low",
+      "path": "commands/browse.md"
+    },
+    {
+      "name": "cowork-marketplace:install",
+      "intent": "Install a marketplace item and configure its plugin bindings",
+      "tags": [
+        "cowork-marketplace",
+        "command",
+        "install"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "low",
+      "path": "commands/install.md"
+    },
+    {
+      "name": "cowork-marketplace:launch",
+      "intent": "Launch a cowork session using an installed marketplace item",
+      "tags": [
+        "cowork-marketplace",
+        "command",
+        "launch"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/launch.md"
+    },
+    {
+      "name": "cowork-marketplace:details",
+      "intent": "Show detailed information about a marketplace item",
+      "tags": [
+        "cowork-marketplace",
+        "command",
+        "details"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "low",
+      "path": "commands/details.md"
+    },
+    {
+      "name": "cowork-marketplace:collections",
+      "intent": "Browse curated collections of marketplace items",
+      "tags": [
+        "cowork-marketplace",
+        "command",
+        "collections"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "low",
+      "path": "commands/collections.md"
+    },
+    {
+      "name": "cowork-marketplace:stats",
+      "intent": "Show marketplace statistics",
+      "tags": [
+        "cowork-marketplace",
+        "command",
+        "stats"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "low",
+      "path": "commands/stats.md"
+    },
+    {
+      "name": "cowork-marketplace:export",
+      "intent": "Export a marketplace item as a Cowork plugin ZIP",
+      "tags": [
+        "cowork-marketplace",
+        "command",
+        "export"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "medium",
+      "path": "commands/export.md"
+    }
+  ]
+}
