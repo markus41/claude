@@ -703,3 +703,21 @@ diff <(grep '"command"' /home/user/claude/plugins/tvs-microsoft-deploy/.claude-p
 < hooks/audit-azure-provisioning.sh
 < hooks/audit-dataverse-changes.sh
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-02-28T00:02:18Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/.claude/agent-memory/researcher`
+- **Error:** EISDIR: illegal operation on a directory, read '/home/user/claude/.claude/agent-memory/researcher'
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-02-28T00:02:26Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/plugins/jira-orchestrator/.claude-plugin`
+- **Error:** EISDIR: illegal operation on a directory, read '/home/user/claude/plugins/jira-orchestrator/.claude-plugin'
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-02-28T00:02:52Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/src/types/workflows.ts`
+- **Error:** File does not exist. Note: your current working directory is /home/user/claude.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
