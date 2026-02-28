@@ -3,6 +3,10 @@
  *
  * React hooks for interacting with the Cowork marketplace API.
  * Built on TanStack React Query for server state management.
+ *
+ * When the remote API is unavailable, hooks automatically fall back
+ * to the local data provider which serves data from the seed catalog
+ * of real plugin-backed cowork items.
  */
 
 import { useState, useCallback } from 'react';
@@ -31,6 +35,22 @@ import {
   submitCoworkReview,
   getCoworkMetrics,
 } from '@/lib/api/cowork';
+import {
+  searchLocal,
+  getFeaturedLocal,
+  getTrendingLocal,
+  getRecommendedLocal,
+  getCollectionsLocal,
+  getItemByIdLocal,
+  getLocalInstallation,
+  getLocalInstallations,
+  installLocal,
+  uninstallLocal,
+  getLocalSessions,
+  startLocalSession,
+  getLocalMetrics,
+  getLocalReviews,
+} from '@/lib/cowork/provider';
 import type {
   CoworkItem,
   CoworkItemType,
@@ -73,7 +93,7 @@ const coworkKeys = {
 };
 
 // ---------------------------------------------------------------------------
-// Search & Discovery
+// Search & Discovery (with local fallback)
 // ---------------------------------------------------------------------------
 
 export function useCoworkSearch(initialFilters?: CoworkSearchFilters) {
@@ -83,7 +103,13 @@ export function useCoworkSearch(initialFilters?: CoworkSearchFilters) {
 
   const query = useQuery({
     queryKey: coworkKeys.search(filters),
-    queryFn: () => searchCoworkItems(filters),
+    queryFn: async () => {
+      try {
+        return await searchCoworkItems(filters);
+      } catch {
+        return searchLocal(filters);
+      }
+    },
   });
 
   const updateFilters = useCallback(
@@ -120,7 +146,13 @@ export function useCoworkSearch(initialFilters?: CoworkSearchFilters) {
 export function useFeaturedCowork() {
   const query = useQuery({
     queryKey: coworkKeys.featured,
-    queryFn: getFeaturedCoworkItems,
+    queryFn: async () => {
+      try {
+        return await getFeaturedCoworkItems();
+      } catch {
+        return { items: getFeaturedLocal() };
+      }
+    },
   });
 
   return {
@@ -134,7 +166,13 @@ export function useFeaturedCowork() {
 export function useTrendingCowork(limit = 10) {
   const query = useQuery({
     queryKey: coworkKeys.trending(limit),
-    queryFn: () => getTrendingCoworkItems(limit),
+    queryFn: async () => {
+      try {
+        return await getTrendingCoworkItems(limit);
+      } catch {
+        return { items: getTrendingLocal(limit) };
+      }
+    },
   });
 
   return {
@@ -148,7 +186,13 @@ export function useTrendingCowork(limit = 10) {
 export function useCuratedCollections() {
   const query = useQuery({
     queryKey: coworkKeys.collections,
-    queryFn: getCuratedCollections,
+    queryFn: async () => {
+      try {
+        return await getCuratedCollections();
+      } catch {
+        return { collections: getCollectionsLocal() };
+      }
+    },
   });
 
   return {
@@ -162,7 +206,13 @@ export function useCuratedCollections() {
 export function useRecommendedCowork() {
   const query = useQuery({
     queryKey: coworkKeys.recommended,
-    queryFn: getRecommendedItems,
+    queryFn: async () => {
+      try {
+        return await getRecommendedItems();
+      } catch {
+        return { items: getRecommendedLocal() };
+      }
+    },
   });
 
   return {
@@ -182,7 +232,13 @@ export function useCoworkItem(itemId: string | null) {
     queryKey: itemId
       ? coworkKeys.details(itemId)
       : [...coworkKeys.all, 'details', 'none'],
-    queryFn: () => getCoworkItem(itemId!),
+    queryFn: async () => {
+      try {
+        return await getCoworkItem(itemId!);
+      } catch {
+        return getItemByIdLocal(itemId!);
+      }
+    },
     enabled: !!itemId,
   });
 
@@ -206,8 +262,12 @@ export function useCoworkReviews(itemId: string | null) {
       ? coworkKeys.reviews(itemId)
       : [...coworkKeys.all, 'reviews', 'none'],
     queryFn: async () => {
-      const data = await getCoworkReviews(itemId!);
-      return data.reviews;
+      try {
+        const data = await getCoworkReviews(itemId!);
+        return data.reviews;
+      } catch {
+        return getLocalReviews(itemId!);
+      }
     },
     enabled: !!itemId,
   });
@@ -264,15 +324,23 @@ export function useCoworkReviews(itemId: string | null) {
 }
 
 // ---------------------------------------------------------------------------
-// Installation
+// Installation (with local fallback)
 // ---------------------------------------------------------------------------
 
 export function useInstalledCowork(type?: CoworkItemType) {
   const query = useQuery({
     queryKey: coworkKeys.installedByType(type),
     queryFn: async () => {
-      const data = await getInstalledCoworkItems(type);
-      return data.installations;
+      try {
+        const data = await getInstalledCoworkItems(type);
+        return data.installations;
+      } catch {
+        const all = getLocalInstallations();
+        if (type) {
+          return all.filter((inst) => inst.item.type === type);
+        }
+        return all;
+      }
     },
   });
 
@@ -298,7 +366,8 @@ export function useCoworkInstallation(itemId: string | null) {
         if (err instanceof ApiError && err.status === 404) {
           return null;
         }
-        throw err;
+        // Fallback to local
+        return getLocalInstallation(itemId!);
       }
     },
     enabled: !!itemId,
@@ -318,7 +387,11 @@ export function useCoworkInstallation(itemId: string | null) {
   const installMutation = useMutation({
     mutationFn: async (configuration?: Record<string, unknown>) => {
       if (!itemId) return;
-      await installCoworkItem(itemId, configuration);
+      try {
+        await installCoworkItem(itemId, configuration);
+      } catch {
+        installLocal(itemId, configuration);
+      }
     },
     onSuccess: invalidateRelated,
   });
@@ -326,7 +399,11 @@ export function useCoworkInstallation(itemId: string | null) {
   const uninstallMutation = useMutation({
     mutationFn: async () => {
       if (!itemId) return;
-      await uninstallCoworkItem(itemId);
+      try {
+        await uninstallCoworkItem(itemId);
+      } catch {
+        uninstallLocal(itemId);
+      }
     },
     onSuccess: invalidateRelated,
   });
@@ -381,7 +458,7 @@ export function useCoworkInstallation(itemId: string | null) {
 }
 
 // ---------------------------------------------------------------------------
-// Sessions
+// Sessions (with local fallback)
 // ---------------------------------------------------------------------------
 
 export function useCoworkSessions() {
@@ -390,8 +467,12 @@ export function useCoworkSessions() {
   const activeQuery = useQuery({
     queryKey: coworkKeys.sessions,
     queryFn: async () => {
-      const data = await getActiveSessions();
-      return data.sessions;
+      try {
+        const data = await getActiveSessions();
+        return data.sessions;
+      } catch {
+        return getLocalSessions();
+      }
     },
     refetchInterval: 5000,
   });
@@ -404,7 +485,11 @@ export function useCoworkSessions() {
       itemId: string;
       inputs?: Record<string, unknown>;
     }) => {
-      return startSession(itemId, inputs);
+      try {
+        return await startSession(itemId, inputs);
+      } catch {
+        return startLocalSession(itemId);
+      }
     },
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: coworkKeys.sessions });
@@ -503,8 +588,12 @@ export function useCoworkSessionHistory(limit = 20) {
   const query = useQuery({
     queryKey: coworkKeys.sessionHistory(limit),
     queryFn: async () => {
-      const data = await getSessionHistory(limit);
-      return data.sessions;
+      try {
+        const data = await getSessionHistory(limit);
+        return data.sessions;
+      } catch {
+        return getLocalSessions().slice(0, limit);
+      }
     },
   });
 
@@ -517,7 +606,7 @@ export function useCoworkSessionHistory(limit = 20) {
 }
 
 // ---------------------------------------------------------------------------
-// Metrics
+// Metrics (with local fallback)
 // ---------------------------------------------------------------------------
 
 export function useCoworkMetrics(
@@ -528,7 +617,13 @@ export function useCoworkMetrics(
     queryKey: itemId
       ? coworkKeys.metrics(itemId, period)
       : [...coworkKeys.all, 'metrics', 'none', period],
-    queryFn: () => getCoworkMetrics(itemId!, period),
+    queryFn: async () => {
+      try {
+        return await getCoworkMetrics(itemId!, period);
+      } catch {
+        return getLocalMetrics(itemId!, period);
+      }
+    },
     enabled: !!itemId,
   });
 

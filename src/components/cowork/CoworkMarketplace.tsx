@@ -7,16 +7,18 @@
  * category browsing, active session monitoring, and search.
  */
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { CoworkCard } from './CoworkCard';
 import { CoworkSearch } from './CoworkSearch';
 import { CoworkDetails } from './CoworkDetails';
 import { CoworkSessionPanel } from './CoworkSessionPanel';
+import { CoworkCollections } from './CoworkCollections';
 import {
   useCoworkSearch,
   useFeaturedCowork,
   useTrendingCowork,
   useRecommendedCowork,
+  useCuratedCollections,
   useCoworkInstallation,
   useCoworkReviews,
   useCoworkMetrics,
@@ -25,6 +27,7 @@ import {
 import type { CoworkItem, CoworkItemType } from '../../types/cowork';
 import { COWORK_ITEM_TYPE_INFO, COWORK_CATEGORIES } from '../../types/cowork';
 import type { CoworkCategory } from '../../types/cowork';
+import { getCatalogStats } from '../../lib/cowork/provider';
 
 interface CoworkMarketplaceProps {
   initialType?: CoworkItemType;
@@ -58,6 +61,10 @@ export function CoworkMarketplace({
     useTrendingCowork(6);
   const { items: recommendedItems, loading: recommendedLoading } =
     useRecommendedCowork();
+  const { collections, loading: collectionsLoading } =
+    useCuratedCollections();
+
+  const catalogStats = useMemo(() => getCatalogStats(), []);
 
   // Selected item hooks
   const {
@@ -192,10 +199,38 @@ export function CoworkMarketplace({
             </div>
           </div>
 
-          <p className="text-gray-600 mb-6">
+          <p className="text-gray-600 mb-4">
             Discover templates, workflows, and agent configurations for Claude
             Cowork sessions
           </p>
+
+          {/* Catalog Stats */}
+          <div className="flex flex-wrap gap-4 mb-6 text-sm text-gray-500">
+            <span className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-indigo-500" />
+              {catalogStats.totalItems} items
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-purple-500" />
+              {catalogStats.totalPlugins} plugins
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-emerald-500" />
+              {catalogStats.totalAgents} agents
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-amber-500" />
+              {catalogStats.totalSkills} skills
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-cyan-500" />
+              {catalogStats.totalCommands} commands
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-rose-500" />
+              {catalogStats.collections} collections
+            </span>
+          </div>
 
           {activeView === 'browse' && (
             <CoworkSearch
@@ -367,6 +402,21 @@ export function CoworkMarketplace({
                               />
                             ))}
                     </div>
+                  </section>
+                )}
+
+                {/* Curated Collections */}
+                {collections.length > 0 && (
+                  <section>
+                    <h2 className="text-xl font-semibold text-gray-900 mb-6">
+                      Curated Collections
+                    </h2>
+                    <CoworkCollections
+                      collections={collections}
+                      loading={collectionsLoading}
+                      onItemClick={handleItemClick}
+                      maxCollections={3}
+                    />
                   </section>
                 )}
 

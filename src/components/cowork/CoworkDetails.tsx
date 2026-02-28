@@ -17,6 +17,7 @@ import {
   COWORK_DIFFICULTY_INFO,
   TRUST_GRADE_INFO,
 } from '../../types/cowork';
+import { CoworkPluginBridge } from './CoworkPluginBridge';
 
 interface CoworkDetailsProps {
   item: CoworkItem;
@@ -30,7 +31,7 @@ interface CoworkDetailsProps {
   loading?: boolean;
 }
 
-type Tab = 'overview' | 'trust' | 'dependencies' | 'reviews' | 'metrics';
+type Tab = 'overview' | 'plugins' | 'trust' | 'dependencies' | 'reviews' | 'metrics';
 
 export function CoworkDetails({
   item,
@@ -677,7 +678,7 @@ export function CoworkDetails({
       <div className="border-b border-gray-200">
         <nav className="flex gap-6 px-6">
           {(
-            ['overview', 'trust', 'dependencies', 'reviews', 'metrics'] as Tab[]
+            ['overview', 'plugins', 'trust', 'dependencies', 'reviews', 'metrics'] as Tab[]
           ).map((tab) => (
             <button
               key={tab}
@@ -697,6 +698,9 @@ export function CoworkDetails({
       {/* Tab Content */}
       <div className="flex-1 overflow-y-auto p-6">
         {activeTab === 'overview' && renderOverviewTab()}
+        {activeTab === 'plugins' && (
+          <CoworkPluginBridge item={item} />
+        )}
         {activeTab === 'trust' && renderTrustTab()}
         {activeTab === 'dependencies' && renderDependenciesTab()}
         {activeTab === 'reviews' && renderReviewsTab()}
