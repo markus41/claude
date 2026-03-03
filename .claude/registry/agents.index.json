@@ -412,10 +412,342 @@
         "path": "agents/utility/registry-manager-agent.md",
         "model": "haiku"
       }
+    },
+    "tvs-microsoft-deploy": {
+      "platform-agent": {
+        "path": "plugins/tvs-microsoft-deploy/agents/platform-agent.md",
+        "model": "sonnet",
+        "domains": [
+          "power-platform",
+          "dataverse",
+          "power-pages",
+          "copilot-studio",
+          "microsoft"
+        ],
+        "routing": {
+          "priority": "high",
+          "complexityRange": [
+            30,
+            100
+          ]
+        }
+      },
+      "identity-agent": {
+        "path": "plugins/tvs-microsoft-deploy/agents/identity-agent.md",
+        "model": "sonnet",
+        "domains": [
+          "entra-id",
+          "identity",
+          "mfa",
+          "security",
+          "microsoft"
+        ],
+        "routing": {
+          "priority": "high",
+          "complexityRange": [
+            30,
+            100
+          ]
+        }
+      },
+      "data-agent": {
+        "path": "plugins/tvs-microsoft-deploy/agents/data-agent.md",
+        "model": "sonnet",
+        "domains": [
+          "dataverse",
+          "schema",
+          "data-migration",
+          "microsoft"
+        ],
+        "routing": {
+          "priority": "medium",
+          "complexityRange": [
+            20,
+            100
+          ]
+        }
+      },
+      "analytics-agent": {
+        "path": "plugins/tvs-microsoft-deploy/agents/analytics-agent.md",
+        "model": "sonnet",
+        "domains": [
+          "fabric",
+          "onelake",
+          "power-bi",
+          "analytics",
+          "microsoft"
+        ],
+        "routing": {
+          "priority": "medium",
+          "complexityRange": [
+            30,
+            100
+          ]
+        }
+      },
+      "azure-agent": {
+        "path": "plugins/tvs-microsoft-deploy/agents/azure-agent.md",
+        "model": "sonnet",
+        "domains": [
+          "azure",
+          "bicep",
+          "key-vault",
+          "functions",
+          "microsoft"
+        ],
+        "routing": {
+          "priority": "high",
+          "complexityRange": [
+            30,
+            100
+          ]
+        }
+      },
+      "github-agent": {
+        "path": "plugins/tvs-microsoft-deploy/agents/github-agent.md",
+        "model": "sonnet",
+        "domains": [
+          "github",
+          "ci-cd",
+          "actions",
+          "monorepo"
+        ],
+        "routing": {
+          "priority": "medium",
+          "complexityRange": [
+            20,
+            90
+          ]
+        }
+      },
+      "ingest-agent": {
+        "path": "plugins/tvs-microsoft-deploy/agents/ingest-agent.md",
+        "model": "sonnet",
+        "domains": [
+          "firebase",
+          "etl",
+          "data-ingestion",
+          "csv"
+        ],
+        "routing": {
+          "priority": "medium",
+          "complexityRange": [
+            20,
+            80
+          ]
+        }
+      },
+      "comms-agent": {
+        "path": "plugins/tvs-microsoft-deploy/agents/comms-agent.md",
+        "model": "sonnet",
+        "domains": [
+          "teams",
+          "exchange",
+          "m365",
+          "communications",
+          "microsoft"
+        ],
+        "routing": {
+          "priority": "medium",
+          "complexityRange": [
+            20,
+            80
+          ]
+        }
+      },
+      "carrier-normalization-agent": {
+        "path": "plugins/tvs-microsoft-deploy/agents/carrier-normalization-agent.md",
+        "model": "sonnet",
+        "domains": [
+          "carrier-data",
+          "normalization",
+          "fmo",
+          "taia"
+        ],
+        "routing": {
+          "priority": "medium",
+          "complexityRange": [
+            30,
+            90
+          ]
+        }
+      },
+      "browser-fallback-agent": {
+        "path": "plugins/tvs-microsoft-deploy/agents/browser-fallback-agent.md",
+        "model": "sonnet",
+        "domains": [
+          "playwright",
+          "browser-automation",
+          "portal",
+          "microsoft"
+        ],
+        "routing": {
+          "priority": "low",
+          "complexityRange": [
+            20,
+            80
+          ]
+        }
+      },
+      "consulting-crm-agent": {
+        "path": "plugins/tvs-microsoft-deploy/agents/consulting-crm-agent.md",
+        "model": "sonnet",
+        "domains": [
+          "crm",
+          "dataverse",
+          "consulting",
+          "lobbi",
+          "medicare"
+        ],
+        "routing": {
+          "priority": "medium",
+          "complexityRange": [
+            30,
+            90
+          ]
+        }
+      },
+      "michelle-scripts-agent": {
+        "path": "plugins/tvs-microsoft-deploy/agents/michelle-scripts-agent.md",
+        "model": "sonnet",
+        "domains": [
+          "office-scripts",
+          "excel",
+          "power-automate",
+          "typescript"
+        ],
+        "routing": {
+          "priority": "medium",
+          "complexityRange": [
+            20,
+            80
+          ]
+        }
+      },
+      "embedded-analytics-agent": {
+        "path": "plugins/tvs-microsoft-deploy/agents/embedded-analytics-agent.md",
+        "model": "sonnet",
+        "domains": [
+          "power-bi-embedded",
+          "analytics",
+          "tenant-isolation"
+        ],
+        "routing": {
+          "priority": "medium",
+          "complexityRange": [
+            30,
+            90
+          ]
+        }
+      },
+      "excel-automation-agent": {
+        "path": "plugins/tvs-microsoft-deploy/agents/excel-automation-agent.md",
+        "model": "sonnet",
+        "domains": [
+          "excel",
+          "office-scripts",
+          "power-query",
+          "automation"
+        ],
+        "routing": {
+          "priority": "medium",
+          "complexityRange": [
+            20,
+            80
+          ]
+        }
+      },
+      "fabric-pipeline-agent": {
+        "path": "plugins/tvs-microsoft-deploy/agents/fabric-pipeline-agent.md",
+        "model": "sonnet",
+        "domains": [
+          "fabric",
+          "pipeline",
+          "notebook",
+          "ingestion",
+          "microsoft"
+        ],
+        "routing": {
+          "priority": "medium",
+          "complexityRange": [
+            30,
+            90
+          ]
+        }
+      },
+      "m365-governance-agent": {
+        "path": "plugins/tvs-microsoft-deploy/agents/m365-governance-agent.md",
+        "model": "sonnet",
+        "domains": [
+          "m365",
+          "governance",
+          "dlp",
+          "compliance",
+          "microsoft"
+        ],
+        "routing": {
+          "priority": "high",
+          "complexityRange": [
+            40,
+            100
+          ]
+        }
+      },
+      "planner-orchestrator-agent": {
+        "path": "plugins/tvs-microsoft-deploy/agents/planner-orchestrator-agent.md",
+        "model": "sonnet",
+        "domains": [
+          "orchestration",
+          "planning",
+          "microsoft",
+          "delivery"
+        ],
+        "routing": {
+          "priority": "high",
+          "complexityRange": [
+            40,
+            100
+          ]
+        }
+      },
+      "power-pages-agent": {
+        "path": "plugins/tvs-microsoft-deploy/agents/power-pages-agent.md",
+        "model": "sonnet",
+        "domains": [
+          "power-pages",
+          "portal",
+          "web-roles",
+          "microsoft"
+        ],
+        "routing": {
+          "priority": "medium",
+          "complexityRange": [
+            30,
+            90
+          ]
+        }
+      },
+      "client-solution-architect-agent": {
+        "path": "plugins/tvs-microsoft-deploy/agents/client-solution-architect-agent.md",
+        "model": "sonnet",
+        "domains": [
+          "solution-architecture",
+          "microsoft",
+          "delivery",
+          "consulting"
+        ],
+        "routing": {
+          "priority": "high",
+          "complexityRange": [
+            50,
+            100
+          ]
+        }
+      }
     }
   },
   "counts": {
-    "total": 45,
+    "total": 64,
     "byCategory": {
       "core": 6,
       "devops": 4,
@@ -428,7 +760,8 @@
       "frontend-theming": 3,
       "selenium-testing": 3,
       "membership-domain": 4,
-      "utility": 4
+      "utility": 4,
+      "tvs-microsoft-deploy": 19
     }
   }
 }
