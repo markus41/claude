@@ -878,3 +878,11 @@ Exporting to: /home/user/claude/exports/creative-frontend
                   ^
 SyntaxError: unterminated string literal (detected at line 45)
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-03-03T08:27:23Z)
+- **Tool:** Bash
+- **Input:** `python3 -c "... agents.index.json entries ..."`
+- **Error:** Exit code 1 — `agents` field is a dict of categories, not a list. `len(entries)` returned 12 (number of categories); iterating dict keys as objects failed.
+- **Status:** RESOLVED
+- **Fix:** `agents.index.json` has `"agents"` as a dict keyed by category (`"core"`, `"devops"`, etc.), not a list. Use `for cat, members in agents.items(): for name in members:` to iterate all agents.
+- **Prevention:** Always inspect JSON structure before assuming list/dict shape. Print `type()` or first key before iterating.
