@@ -1,0 +1,22 @@
+{
+  "name": "upgrade-suggestion",
+  "version": "1.0.0",
+  "description": "GitHub Spark-style upgrade suggestions. Analyzes your project and suggests 3 high-quality improvements — new features, performance wins, UX polish, or architecture upgrades — presented as actionable next steps.",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/markus41/claude",
+  "keywords": [
+    "upgrades",
+    "suggestions",
+    "improvements",
+    "spark",
+    "ai-suggestions",
+    "code-quality",
+    "dx",
+    "ux",
+    "performance",
+    "architecture"
+  ]
+}

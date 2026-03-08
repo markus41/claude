@@ -1054,3 +1054,15 @@ cat /root/.config/gh/config.yml 2>/dev/null`
 - **Input:** `cat /home/user/claude/.claude/registry/commands.index.json | python3 -c "import sys, json; data = json.load(sys.stdin); council = [c for c in data.get('commands', []) if 'council' in c.get('name', '').lower()]; print(json.dumps(council, indent=2))" 2>/dev/null`
 - **Error:** Exit code 1
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Agent failure (2026-03-08T11:24:44Z)
+- **Tool:** Agent
+- **Input:** `N/A`
+- **Error:** Cannot resume agent afc1d1c7e31ad5053: it is still running. Use TaskStop to stop it first, or wait for it to complete.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-08T11:25:02Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/plugins/claude-code-expert/commands`
+- **Error:** EISDIR: illegal operation on a directory, read '/home/user/claude/plugins/claude-code-expert/commands'
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
