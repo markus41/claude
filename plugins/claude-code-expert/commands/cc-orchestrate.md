@@ -240,22 +240,22 @@ agents:
       - Find examples and documentation
       - Estimate complexity and risks
       - Write pros/cons summary
-    tools: [Read, Glob, Grep, WebSearch, WebFetch]
+    tools: [Read, Glob, Grep, mcp__firecrawl, mcp__perplexity]
 
   researcher-b:
     role: Approach B Investigator
     model: sonnet
     responsibilities:
       - Same as researcher-a but for approach B
-    tools: [Read, Glob, Grep, WebSearch, WebFetch]
+    tools: [Read, Glob, Grep, mcp__firecrawl, mcp__perplexity]
 
   researcher-c:
-    role: Approach C Investigator
+    role: Approach C Investigator (optional)
     model: haiku
     responsibilities:
       - Quick feasibility check on approach C
       - Focus on blockers and deal-breakers
-    tools: [Read, Glob, Grep, WebSearch]
+    tools: [Read, Glob, Grep, mcp__perplexity]
 ```
 
 ### Template 5: Refactor Pipeline (Subagent Pattern)
@@ -475,13 +475,18 @@ Agent Teams use these coordination primitives:
 | `TeamDelete` | Dissolve team | Clean up after work complete |
 
 Task files live on disk at `~/.claude/tasks/{team-name}/` as JSON. Teammates
-self-coordinate by polling the task list and claiming unclaimed work.
+self-coordinate by polling via `TaskList` and claiming work by calling
+`TaskUpdate` to set themselves as assignee.
 
 ---
 
 ## Dry Run Mode
 
-When `/cc-orchestrate --dry-run --template builder-validator` is used:
+When `/cc-orchestrate --dry-run` is used without `--template`, it lists all available
+templates with their type, agent count, and estimated cost. When used with
+`--template`, it shows the full deployment plan for that template:
+
+Example: `/cc-orchestrate --dry-run --template builder-validator`:
 
 ```
 === Orchestration Plan (Dry Run) ===
@@ -538,11 +543,16 @@ Configure agents to activate automatically based on context:
 #### auto-review-on-commit.sh
 ```bash
 #!/bin/bash
-INPUT=$(cat)
-CMD=$(echo "$INPUT" | jq -r '.tool_input.command // ""')
+INPUT=$(head -c 65536)
+if ! printf '%s' "$INPUT" | jq -e . >/dev/null 2>&1; then
+  echo '{"decision": "approve"}'
+  exit 0
+fi
 
-# Auto-spawn review agent after git commit
-if echo "$CMD" | grep -q "git commit"; then
+CMD=$(printf '%s' "$INPUT" | jq -r '.tool_input.command // ""')
+
+# Auto-spawn review agent after git commit (not amend, not stash)
+if printf '%s' "$CMD" | grep -q "^git commit "; then
   echo "Auto-triggering code review agent..." >&2
   # The review agent will be invoked by Claude in the next turn
 fi
@@ -554,16 +564,16 @@ echo '{"decision": "approve"}'
 
 ## Template Comparison
 
-| Template | Type | Agents | Cost | Time | Use Case |
-|----------|------|--------|------|------|----------|
-| builder-validator | Subagent | 2 | Low | 2-5 min | Standard feature work |
-| qa-swarm | Team | 4-6 | High | 3-8 min | Thorough testing |
-| feature-squad | Team | 3-4 | Medium | 5-15 min | Full-stack features |
-| research-council | Subagent | 2-3 | Low | 3-5 min | Design decisions |
-| refactor-pipeline | Subagent | 3 | Medium | 5-10 min | Large refactors |
-| pr-review-board | Team | 3 | Medium | 3-5 min | Critical PR reviews |
-| docs-sprint | Team | 3-4 | Medium | 5-15 min | Documentation updates |
-| continuous-monitor | Headless | 1-4 | Very Low | Scheduled | Ongoing automation |
+| Template | Type | Agents (lead + workers) | Cost | Time | Use Case |
+|----------|------|------------------------|------|------|----------|
+| builder-validator | Subagent | 3 (1 lead + 2 workers) | Low | 2-5 min | Standard feature work |
+| qa-swarm | Team | 6 (1 lead + 5 testers) | High | 3-8 min | Thorough testing |
+| feature-squad | Team | 4 (1 lead + 3 devs) | Medium | 5-15 min | Full-stack features |
+| research-council | Subagent | 3-4 (1 lead + 2-3 researchers) | Low | 3-5 min | Design decisions |
+| refactor-pipeline | Subagent | 4 (1 lead + 3 workers) | Medium | 5-10 min | Large refactors |
+| pr-review-board | Team | 4 (1 lead + 3 reviewers) | Medium | 3-5 min | Critical PR reviews |
+| docs-sprint | Team | 4 (1 lead + 3 writers) | Medium | 5-15 min | Documentation updates |
+| continuous-monitor | Headless | 1 per schedule | Very Low | Scheduled | Ongoing automation |
 
 ---
 

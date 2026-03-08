@@ -144,55 +144,47 @@ structured memory, keep `MEMORY.md` lean for organic observations:
 For projects with 100k+ LOC or multi-repo setups, add an MCP memory server
 for semantic search across sessions.
 
-#### Option A: claude-memory-mcp (Recommended)
-
-```bash
-# Install
-claude mcp add --scope project memory-server -- npx -y claude-memory-mcp
-
-# Or manually in .mcp.json:
-{
-  "mcpServers": {
-    "memory": {
-      "command": "npx",
-      "args": ["-y", "claude-memory-mcp"],
-      "disabled": false
-    }
-  }
-}
-```
-
-Features:
-- Auto-captures interactions and stores embeddings locally
-- Semantic search for relevant past context
-- No cloud dependency — runs locally with SQLite + embeddings
-- Lifecycle hooks for session-start retrieval and session-end summarization
-
-#### Option B: code-memory (Offline, Local)
-
-```bash
-claude mcp add --scope project code-memory -- npx -y code-memory-mcp
-```
-
-Features:
-- Offline-only, no external API calls
-- Reduces context bloat by storing and retrieving intelligently
-- Good for air-gapped environments
-
-#### Option C: Basic Memory Server (Official)
+#### Option A: Basic Memory Server (Official — Recommended Starting Point)
 
 ```bash
 claude mcp add --scope project memory -- npx -y @modelcontextprotocol/server-memory
 ```
 
 Features:
+- Official MCP server from the Model Context Protocol team
 - Simple key-value memory with file-based persistence
-- Lightweight but no semantic search
-- Good starting point
+- Lightweight, reliable, and well-maintained
+- Good starting point — upgrade to Option B for semantic search
+
+#### Option B: Community Memory Servers
+
+Several community MCP memory servers provide richer features. Verify the package
+name on npm before installing, as these may change:
+
+```bash
+# Example — check npm for current packages:
+# npm search mcp memory server
+# Then install with:
+claude mcp add --scope project memory-server -- npx -y <verified-package-name>
+```
+
+Look for servers that offer:
+- Semantic search via embeddings (vs simple key-value)
+- Auto-capture of interactions
+- Session summarization
+- Check the package README for actual feature set before relying on claims
+
+#### Option C: Custom Memory Server
+
+Build your own MCP memory server tailored to your project needs. The
+`@modelcontextprotocol/sdk` package provides the foundation. A custom server
+can integrate with your existing vector DB (Pinecone, Weaviate, Qdrant) or
+graph DB (Neo4j) for domain-specific memory retrieval.
 
 ### Memory MCP Lifecycle Hooks
 
-When using Tier 3 memory, set up these hooks for automatic memory management:
+When using Tier 3 memory, add these hooks to `.claude/settings.json` under the
+top-level `"hooks"` key for automatic memory management:
 
 ```json
 {
@@ -225,21 +217,27 @@ When using Tier 3 memory, set up these hooks for automatic memory management:
 #### memory-retrieve.sh
 ```bash
 #!/bin/bash
-# On session start, retrieve recent memories
-echo "Loading recent memories..." >&2
-# MCP memory server will be queried by Claude automatically
-# This hook just logs that memory is available
+# On session start, log that memory is available.
+# The MCP memory server is queried by Claude through tool calls, not this hook.
+# This hook provides a reminder that memory is configured.
+echo "Memory MCP server available — Claude can query past session context" >&2
 echo '{"decision": "approve"}'
 ```
 
 #### memory-observe.sh
 ```bash
 #!/bin/bash
-# After file edits, note what changed for memory
-INPUT=$(cat)
-FILE=$(echo "$INPUT" | jq -r '.tool_input.file_path // ""')
+# After file edits, log what changed (useful for session summaries)
+INPUT=$(head -c 65536)
+FILE=$(printf '%s' "$INPUT" | jq -r '.tool_input.file_path // ""')
+
+# Validate path is inside project
 if [ -n "$FILE" ] && [ "$FILE" != "null" ]; then
-  echo "Memory: noted change to $FILE" >&2
+  REAL=$(realpath "$FILE" 2>/dev/null)
+  WORKDIR=$(realpath "$PWD")
+  if [[ "$REAL" == "$WORKDIR"/* ]]; then
+    echo "Memory: noted change to $FILE" >&2
+  fi
 fi
 echo '{"decision": "approve"}'
 ```
@@ -256,15 +254,12 @@ echo '{"decision": "approve"}'
 
 ## Memory Rotation
 
-Over time, `memory-sessions.md` grows. Rotate it:
+Over time, `memory-sessions.md` grows. Rotate it with `/cc-memory --rotate`:
 
-```bash
-# When /cc-memory --rotate is invoked:
-# 1. Keep last 10 session entries in memory-sessions.md
-# 2. Archive older entries to .claude/memory-archive/{year}-{month}.md
-# 3. Update memory-patterns.md with any recurring patterns from archived sessions
-# 4. Prune memory-decisions.md of superseded ADRs
-```
+1. Keep last 10 session entries in `memory-sessions.md`
+2. Archive older entries to `.claude/memory-archive/{year}-{month}.md`
+3. Update `memory-patterns.md` with any recurring patterns from archived sessions
+4. Prune `memory-decisions.md` of superseded ADRs
 
 Archive structure:
 ```
@@ -322,7 +317,7 @@ Score: 75/100
 | Small (<10k LOC) | Tier 1 only | Split rules give enough persistent context |
 | Medium (10k-100k) | Tier 1 + Tier 2 | Auto-memory captures organic patterns |
 | Large (100k+) | Tier 1 + Tier 2 + Tier 3 | Need semantic search across sessions |
-| Multi-repo | Tier 1 + Tier 3 | MCP memory spans repos |
+| Multi-repo | Tier 1 + Tier 3 | MEMORY.md is repo-scoped; MCP memory spans repos. Tier 2 skipped because auto-memory is per-repo |
 | Team project | Tier 1 (shared) + Tier 2 (personal) | Rules are committed; MEMORY.md is gitignored |
 
 ---

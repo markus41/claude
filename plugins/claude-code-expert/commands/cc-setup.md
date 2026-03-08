@@ -379,6 +379,7 @@ into CLAUDE.md.
 |-------|------|-------|--------|
 | `PreToolUse` | Before any tool runs | `{tool_name, tool_input}` | `{decision: "approve"/"block", reason?}` |
 | `PostToolUse` | After tool succeeds | `{tool_name, tool_input, tool_output}` | `{decision: "approve"/"block", reason?}` |
+| `PostToolUseFailure` | After tool fails | `{tool_name, tool_input, error}` | `{decision: "approve"}` |
 | `Notification` | Claude needs input | `{message}` | `{decision: "approve"}` |
 | `Stop` | Agent finishes response | `{stop_reason}` | `{decision: "approve"}` |
 | `UserPromptSubmit` | Prompt submitted | `{prompt}` | `{decision: "approve"/"block"}` + optional modified prompt |
@@ -407,7 +408,9 @@ into CLAUDE.md.
           "type": "command",
           "command": "bash .claude/hooks/auto-format.sh"
         }]
-      },
+      }
+    ],
+    "PostToolUseFailure": [
       {
         "matcher": "*",
         "hooks": [{
@@ -464,10 +467,18 @@ into CLAUDE.md.
 #### security-guard.sh
 ```bash
 #!/bin/bash
-INPUT=$(cat)
-TOOL_INPUT=$(echo "$INPUT" | jq -r '.tool_input.command // ""')
+# Defense-in-depth guard — supplement to settings.json deny list.
+# NOTE: This blocklist is NOT a security boundary. Use settings.json
+# permissions as the primary control. This catches obvious mistakes.
+INPUT=$(head -c 65536)
+if ! printf '%s' "$INPUT" | jq -e . >/dev/null 2>&1; then
+  echo '{"decision": "approve"}'
+  exit 0
+fi
 
-# Block destructive commands
+TOOL_INPUT=$(printf '%s' "$INPUT" | jq -r '.tool_input.command // ""')
+
+# Block destructive commands (hardcoded only — do not source from files)
 BLOCKED_PATTERNS=(
   "rm -rf /"
   "sudo rm"
@@ -480,8 +491,8 @@ BLOCKED_PATTERNS=(
 )
 
 for pattern in "${BLOCKED_PATTERNS[@]}"; do
-  if echo "$TOOL_INPUT" | grep -qF "$pattern"; then
-    echo "{\"decision\": \"block\", \"reason\": \"Blocked dangerous command: $pattern\"}"
+  if printf '%s' "$TOOL_INPUT" | grep -qF "$pattern"; then
+    jq -n --arg p "$pattern" '{"decision":"block","reason":("Blocked dangerous command: "+$p)}'
     exit 0
   fi
 done
@@ -492,24 +503,39 @@ echo '{"decision": "approve"}'
 #### auto-format.sh
 ```bash
 #!/bin/bash
-INPUT=$(cat)
-FILE=$(echo "$INPUT" | jq -r '.tool_input.file_path // .tool_input.path // ""')
+INPUT=$(head -c 65536)
+FILE=$(printf '%s' "$INPUT" | jq -r '.tool_input.file_path // .tool_input.path // ""')
 
+# Validate file path — must exist, be a regular file, and be inside project
 if [ -z "$FILE" ] || [ ! -f "$FILE" ]; then
   echo '{"decision": "approve"}'
   exit 0
 fi
 
+REAL=$(realpath "$FILE" 2>/dev/null) || { echo '{"decision": "approve"}'; exit 0; }
+WORKDIR=$(realpath "$PWD")
+if [[ "$REAL" != "$WORKDIR"/* ]]; then
+  echo '{"decision": "approve"}'
+  exit 0
+fi
+
+# Reject filenames starting with dash (flag injection)
+BASENAME=$(basename "$REAL")
+if [[ "$BASENAME" == -* ]]; then
+  echo '{"decision": "approve"}'
+  exit 0
+fi
+
 # Format based on file type
-case "$FILE" in
+case "$REAL" in
   *.ts|*.tsx|*.js|*.jsx|*.json|*.css|*.scss|*.md)
-    npx prettier --write "$FILE" 2>/dev/null ;;
+    npx prettier --write "$REAL" 2>/dev/null ;;
   *.py)
-    black "$FILE" 2>/dev/null || ruff format "$FILE" 2>/dev/null ;;
+    black "$REAL" 2>/dev/null || ruff format "$REAL" 2>/dev/null ;;
   *.rs)
-    rustfmt "$FILE" 2>/dev/null ;;
+    rustfmt "$REAL" 2>/dev/null ;;
   *.go)
-    gofmt -w "$FILE" 2>/dev/null ;;
+    gofmt -w "$REAL" 2>/dev/null ;;
 esac
 
 echo '{"decision": "approve"}'
@@ -519,14 +545,16 @@ echo '{"decision": "approve"}'
 ```bash
 #!/bin/bash
 # Inject dynamic context on every prompt submission
-INPUT=$(cat)
+INPUT=$(head -c 65536)
 
-CONTEXT=""
-CONTEXT+="Date: $(date '+%Y-%m-%d %H:%M')\n"
-CONTEXT+="Branch: $(git branch --show-current 2>/dev/null)\n"
-CONTEXT+="Uncommitted: $(git status --porcelain 2>/dev/null | wc -l | tr -d ' ') files\n"
+CONTEXT="[Context] "
+CONTEXT+="Date: $(date '+%Y-%m-%d %H:%M') | "
+CONTEXT+="Branch: $(git branch --show-current 2>/dev/null) | "
+CONTEXT+="Uncommitted: $(git status --porcelain 2>/dev/null | wc -l | tr -d ' ') files"
 
-echo "{\"decision\": \"approve\"}"
+# Output context as stderr (shown to Claude as additional info)
+echo "$CONTEXT" >&2
+echo '{"decision": "approve"}'
 ```
 
 #### session-init.sh
@@ -548,26 +576,52 @@ fi
 echo '{"decision": "approve"}'
 ```
 
+#### on-stop.sh
+```bash
+#!/bin/bash
+# Runs when Claude finishes a response
+# Use for notifications, memory updates, or cleanup
+echo "Session turn completed at $(date '+%Y-%m-%d %H:%M')" >&2
+
+# Remind about uncommitted changes
+UNCOMMITTED=$(git status --porcelain 2>/dev/null | wc -l | tr -d ' ')
+if [ "$UNCOMMITTED" -gt 0 ]; then
+  echo "Reminder: $UNCOMMITTED uncommitted files" >&2
+fi
+
+echo '{"decision": "approve"}'
+```
+
 #### lessons-learned-capture.sh
 ```bash
 #!/bin/bash
-INPUT=$(cat)
-TOOL=$(echo "$INPUT" | jq -r '.tool_name // ""')
-ERROR=$(echo "$INPUT" | jq -r '.tool_output.stderr // .error // ""')
+# Registered on PostToolUseFailure — only fires on tool errors
+INPUT=$(head -c 65536)
+if ! printf '%s' "$INPUT" | jq -e . >/dev/null 2>&1; then
+  echo '{"decision": "approve"}'
+  exit 0
+fi
+
+TOOL=$(printf '%s' "$INPUT" | jq -r '.tool_name // ""')
+ERROR=$(printf '%s' "$INPUT" | jq -r '.error // ""')
 
 if [ -z "$ERROR" ] || [ "$ERROR" = "null" ]; then
   echo '{"decision": "approve"}'
   exit 0
 fi
 
+# Sanitize inputs — strip shell metacharacters to prevent injection
+SAFE_TOOL=$(printf '%s' "$TOOL" | head -c 50 | tr -d '`$()\\!"'\''')
+SAFE_ERROR=$(printf '%s' "$ERROR" | head -c 200 | tr -d '`$()\\!"'\''')
 TIMESTAMP=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
-cat >> .claude/rules/lessons-learned.md << EOF
 
-### Error: $(echo "$TOOL" | head -c 50) failure ($TIMESTAMP)
-- **Tool:** $TOOL
-- **Error:** $(echo "$ERROR" | head -c 200)
-- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
-EOF
+# Use flock for atomic append (prevents interleaved writes)
+(
+  flock -x 200
+  printf '\n### Error: %s failure (%s)\n- **Tool:** %s\n- **Error:** %s\n- **Status:** NEEDS_FIX - Claude should document the fix here after resolving\n' \
+    "$SAFE_TOOL" "$TIMESTAMP" "$SAFE_TOOL" "$SAFE_ERROR" \
+    >> .claude/rules/lessons-learned.md
+) 200>/tmp/lessons-learned.lock
 
 echo '{"decision": "approve"}'
 ```
@@ -646,13 +700,13 @@ Use expensive models for reasoning, cheap models for execution:
 | Sentry DSN | `sentry` | `@modelcontextprotocol/server-sentry` | stdio |
 | Slack token | `slack` | `@modelcontextprotocol/server-slack` | stdio |
 | Docker/K8s | `docker` | `@modelcontextprotocol/server-docker` | stdio |
-| MongoDB connection | `mongodb` | `mongodb-mcp` | stdio |
-| Redis connection | `redis` | `redis-mcp` | stdio |
-| Supabase project | `supabase` | `supabase-mcp` | stdio |
-| Linear issues | `linear` | `linear-mcp` | stdio |
+| MongoDB connection | `mongodb` | `@modelcontextprotocol/server-mongodb` | stdio |
+| Redis connection | `redis` | `@modelcontextprotocol/server-redis` | stdio |
+| Supabase project | `supabase` | `@supabase/mcp-server-supabase` | stdio |
+| Linear issues | `linear` | `@linear/mcp-server` | stdio |
 | Notion workspace | `notion` | `@notionhq/mcp-server` | stdio |
-| Vercel config | `vercel` | `vercel-mcp` | stdio |
-| Cloudflare config | `cloudflare` | `cloudflare-mcp` | stdio |
+| Vercel config | `vercel` | `@vercel/mcp-server` | stdio |
+| Cloudflare config | `cloudflare` | `@cloudflare/mcp-server-cloudflare` | stdio |
 
 ### 6.2 Always-Recommended (Tier 1) — Install for Any Project
 
@@ -747,12 +801,13 @@ Claude Code doesn't use LSP directly, but LSP can power hooks:
 ```bash
 # PostToolUse hook for TypeScript diagnostics
 #!/bin/bash
-INPUT=$(cat)
-FILE=$(echo "$INPUT" | jq -r '.tool_input.file_path // ""')
+INPUT=$(head -c 65536)
+FILE=$(printf '%s' "$INPUT" | jq -r '.tool_input.file_path // ""')
 if [[ "$FILE" == *.ts ]] || [[ "$FILE" == *.tsx ]]; then
-  ERRORS=$(npx tsc --noEmit "$FILE" 2>&1 | head -5)
+  # Run whole-project check — single-file tsc ignores tsconfig.json
+  ERRORS=$(npx tsc --noEmit 2>&1 | grep -F "$FILE" | head -5)
   if [ -n "$ERRORS" ]; then
-    echo "TypeScript errors in $FILE:" >&2
+    echo "TypeScript errors related to $FILE:" >&2
     echo "$ERRORS" >&2
   fi
 fi
