@@ -1,0 +1,19 @@
+{
+  "name": "@claude-code-expert/mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server providing Claude Code documentation as queryable tools",
+  "type": "module",
+  "main": "src/index.js",
+  "bin": {
+    "claude-code-docs-server": "src/index.js"
+  },
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

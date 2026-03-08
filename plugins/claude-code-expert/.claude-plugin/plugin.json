@@ -1,0 +1,76 @@
+{
+  "name": "claude-code-expert",
+  "version": "1.0.0",
+  "description": "Comprehensive Claude Code knowledge base with custom MCP documentation server. Covers every feature, configuration option, CLI command, hook, MCP server, SDK pattern, permission model, IDE integration, and best practice. Includes a debugger for diagnosing and fixing Claude Code setup issues.",
+  "author": "Neural Orchestration Platform",
+  "license": "MIT",
+  "type": "full",
+  "keywords": [
+    "claude-code",
+    "documentation",
+    "configuration",
+    "hooks",
+    "mcp",
+    "sdk",
+    "cli",
+    "ide",
+    "best-practices",
+    "debugger",
+    "troubleshooting",
+    "teams",
+    "settings",
+    "permissions",
+    "security"
+  ],
+  "category": "developer-tools",
+  "resources": {
+    "agents": [
+      "agents/claude-code-architect.md",
+      "agents/hooks-specialist.md",
+      "agents/mcp-configurator.md",
+      "agents/sdk-guide.md",
+      "agents/ide-integration-specialist.md",
+      "agents/permissions-security-advisor.md",
+      "agents/claude-code-debugger.md"
+    ],
+    "skills": [
+      "skills/cli-reference/SKILL.md",
+      "skills/configuration/SKILL.md",
+      "skills/hooks-system/SKILL.md",
+      "skills/mcp-servers/SKILL.md",
+      "skills/agent-sdk/SKILL.md",
+      "skills/ide-integrations/SKILL.md",
+      "skills/permissions-security/SKILL.md",
+      "skills/slash-commands/SKILL.md",
+      "skills/context-management/SKILL.md",
+      "skills/memory-instructions/SKILL.md",
+      "skills/tools-reference/SKILL.md",
+      "skills/extended-thinking/SKILL.md",
+      "skills/git-integration/SKILL.md",
+      "skills/testing-workflows/SKILL.md",
+      "skills/cost-optimization/SKILL.md",
+      "skills/troubleshooting/SKILL.md",
+      "skills/teams-collaboration/SKILL.md",
+      "skills/settings-deep-dive/SKILL.md"
+    ],
+    "commands": [
+      "commands/cc-help.md",
+      "commands/cc-config.md",
+      "commands/cc-hooks.md",
+      "commands/cc-mcp.md",
+      "commands/cc-agent.md",
+      "commands/cc-troubleshoot.md",
+      "commands/cc-debug.md"
+    ],
+    "mcp-server": {
+      "command": "node",
+      "args": [
+        "plugins/claude-code-expert/mcp-server/src/index.js"
+      ],
+      "description": "MCP server providing Claude Code documentation as queryable tools (cc_docs_search, cc_docs_list_topics, cc_docs_full_reference, cc_docs_env_vars, cc_docs_settings_schema, cc_docs_troubleshoot)"
+    }
+  },
+  "compatibility": {
+    "claude-code": ">=1.0.0"
+  }
+}
