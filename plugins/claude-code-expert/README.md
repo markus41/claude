@@ -1,6 +1,19 @@
-# Claude Code Expert Plugin
+# Claude Code Expert Plugin v2.0
 
-A comprehensive knowledge base plugin covering **every feature, configuration option, CLI command, hook, MCP server, SDK pattern, and best practice** from the official Claude Code documentation. Includes a **custom MCP server** for querying documentation programmatically and a **dedicated debugger** for diagnosing setup issues.
+A comprehensive Claude Code knowledge base with **4-layer extension stack deployment**. Auto-detects your repo's tech stack and deploys a complete Claude Code configuration: CLAUDE.md (routing OS), Skills (capability packs), Hooks (guardrails & automation), Agents (specialized workers), MCP servers, hybrid memory architecture, and agent team orchestration templates.
+
+Includes a **custom MCP server** for querying documentation programmatically and a **dedicated debugger** for diagnosing setup issues.
+
+## The 4-Layer Extension Stack
+
+Power users use all four layers together for transformative productivity gains:
+
+| Layer | What | Impact |
+|-------|------|--------|
+| **CLAUDE.md** | Routing OS — project rules, decision trees, build commands | Agent navigates your codebase correctly |
+| **Skills** | Capability packs — domain playbooks loaded on demand | 82% token savings vs loading everything |
+| **Hooks** | Guardrails — auto-format, security, error capture | Compliance without asking |
+| **Agents** | Specialized workers — code review, security, testing | Parallel expert analysis |
 
 ## What's Included
 
@@ -37,10 +50,12 @@ A comprehensive knowledge base plugin covering **every feature, configuration op
 | `teams-collaboration` | Team plans, enterprise settings, multi-user workflows, onboarding |
 | `settings-deep-dive` | Complete settings.json schema, every permission pattern, feature flags |
 
-### Commands (8)
+### Commands (10)
 | Command | Purpose |
 |---------|---------|
-| `/cc-setup` | **Full repo analysis & deployment** — detect stack, install MCP, configure hooks/rules/LSP |
+| `/cc-setup` | **Full repo analysis & 4-layer deployment** — detect stack, deploy all layers, install MCP, configure memory |
+| `/cc-memory` | **Hybrid memory architecture** — split rule files, MCP-backed long-term memory, rotation, audit |
+| `/cc-orchestrate` | **Agent team templates** — builder-validator, QA swarm, feature squad, research council, and more |
 | `/cc-help` | Interactive Claude Code documentation lookup |
 | `/cc-config` | Generate or audit Claude Code configuration |
 | `/cc-hooks` | Design and implement Claude Code hooks |
@@ -85,16 +100,42 @@ Then install MCP server dependencies:
 cd plugins/claude-code-expert/mcp-server && npm install
 ```
 
-## Usage
+## Quick Start
 
-### Commands
+### Full Setup (Recommended)
 ```bash
-/cc-setup                              # Full repo analysis + deploy all configs
-/cc-setup --auto                       # Non-interactive best-guess setup
-/cc-setup --mcp-only                   # Just detect and install MCP servers
+/cc-setup                              # Interactive 10-phase setup
+/cc-setup --auto                       # Non-interactive best-guess
+/cc-setup --preset power-user          # Maximum configuration
+/cc-setup --dry-run                    # Preview without writing files
+```
+
+### Memory Architecture
+```bash
+/cc-memory --init                      # Set up split memory files
+/cc-memory --mcp                       # Add MCP-backed persistent memory
+/cc-memory --status                    # Check memory usage & token estimates
+/cc-memory --audit                     # Find bloat, duplicates, stale entries
+/cc-memory --rotate                    # Archive old session summaries
+/cc-memory --dry-run                   # Preview without writing files
+```
+
+### Agent Orchestration
+```bash
+/cc-orchestrate --list                 # See all templates
+/cc-orchestrate --template builder-validator    # Standard build + review
+/cc-orchestrate --template qa-swarm            # Multi-perspective testing
+/cc-orchestrate --template feature-squad       # Full-stack feature team
+/cc-orchestrate --template research-council    # Evaluate multiple approaches
+/cc-orchestrate --template pr-review-board     # Critical PR multi-review
+/cc-orchestrate --worktree                     # Git worktrees for parallel agents
+/cc-orchestrate --dry-run --template qa-swarm  # Preview without deploying
+```
+
+### Other Commands
+```bash
 /cc-help "How do I configure hooks?"
 /cc-config --audit
-/cc-config generate --preset developer
 /cc-hooks create security-guard
 /cc-mcp add postgres
 /cc-agent create my-custom-agent
@@ -110,11 +151,29 @@ mcp__claude-code-docs__cc_docs_full_reference("settings-deep-dive")
 mcp__claude-code-docs__cc_docs_troubleshoot("MCP server not starting")
 ```
 
-### Agents
-Agents activate automatically based on context, or can be invoked directly:
-```
-Agent(subagent_type="general-purpose", prompt="Use the claude-code-debugger agent to diagnose my setup")
-```
+## Setup Presets
+
+| Preset | Layers | MCP | Memory | Cost | Best For |
+|--------|--------|-----|--------|------|----------|
+| `minimal` | CLAUDE.md only | None | Default | Lowest | Small/personal projects |
+| `developer` | All 4 | 2-3 detected | Split files | Low | Standard development |
+| `power-user` | All 4 + full | All detected | Split + MCP memory | Medium | Maximum productivity |
+| `ci-cd` | CLAUDE.md + hooks | GitHub only | None | Very low | CI/CD pipelines |
+| `secure` | CLAUDE.md + hooks | None | None | Low | Security-first environments |
+| `team` | All 4 (shared) | Project-scoped | Shared rules | Medium | Team projects |
+
+## Orchestration Templates
+
+| Template | Type | Agents | Use Case |
+|----------|------|--------|----------|
+| `builder-validator` | Subagent | 2 | Standard feature work with quality review |
+| `qa-swarm` | Agent Team | 4-6 | Thorough multi-perspective testing |
+| `feature-squad` | Agent Team | 3-4 | Full-stack features (FE + BE + infra) |
+| `research-council` | Subagent | 2-3 | Evaluate design approaches |
+| `refactor-pipeline` | Subagent | 3 | Large-scale code migrations |
+| `pr-review-board` | Agent Team | 3 | Critical PR review (correctness + security + quality) |
+| `docs-sprint` | Agent Team | 3-4 | Parallel documentation updates |
+| `continuous-monitor` | Headless | 1-4 | Scheduled automated checks |
 
 ## Documentation Coverage
 
@@ -123,18 +182,19 @@ This plugin provides deep knowledge across these areas:
 - **CLI**: Every flag, argument, pipe mode, output format
 - **Configuration**: CLAUDE.md, settings.json, .mcp.json, rules, .claude/ directory
 - **Settings**: Complete schema, permission patterns, hook config, env vars, feature flags
-- **Hooks**: All 5 hook types, matchers, input/output schemas, example scripts
-- **MCP**: Server configuration, 15+ known servers, custom server development
+- **Hooks**: All 6 hook events, matchers, input/output schemas, example scripts
+- **MCP**: Server configuration, 20+ known servers, custom server development, MCP prompts
 - **Agent SDK**: Programmatic usage, streaming, multi-agent patterns, CI/CD
 - **IDE**: VS Code, JetBrains, terminal, remote dev, Codespaces
 - **Permissions**: Modes, allow/deny lists, patterns, enterprise controls
 - **Commands**: All built-in slash commands, keyboard shortcuts, custom commands
 - **Context**: Window management, /compact, /clear, token reduction strategies
-- **Memory**: Auto-memory, CLAUDE.md hierarchy, rules system, self-healing
+- **Memory**: 3-tier hybrid architecture, split files, MCP-backed persistence, rotation
+- **Orchestration**: Subagents, Agent Teams, 8 templates, worktrees, headless/cron
 - **Tools**: Every built-in tool with parameters and best practices
 - **Thinking**: Extended thinking, budget config, API usage
-- **Git**: Commit workflow, PR creation, safety rules, conflict resolution
-- **Testing**: TDD, test frameworks, test-writer agent, coverage
-- **Cost**: Model routing, token optimization, caching, batch processing
+- **Git**: Commit workflow, PR creation, worktrees, parallel development
+- **Testing**: TDD, test frameworks, QA swarms, coverage
+- **Cost**: Model cascading, progressive skill loading, context budgeting
 - **Teams**: Team plans, enterprise settings, shared config, onboarding
 - **Debugging**: Systematic diagnostics, common fixes, self-healing protocol
