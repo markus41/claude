@@ -1048,3 +1048,9 @@ find /root /home -name ".gh_token" -o -name "gh_token" -o -name ".github_token" 
 cat /root/.config/gh/config.yml 2>/dev/null`
 - **Error:** Exit code 1
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-03-08T09:49:25Z)
+- **Tool:** Bash
+- **Input:** `cat /home/user/claude/.claude/registry/commands.index.json | python3 -c "import sys, json; data = json.load(sys.stdin); council = [c for c in data.get('commands', []) if 'council' in c.get('name', '').lower()]; print(json.dumps(council, indent=2))" 2>/dev/null`
+- **Error:** Exit code 1
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
