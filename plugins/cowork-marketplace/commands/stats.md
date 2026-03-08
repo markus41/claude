@@ -38,9 +38,9 @@ Catalog:
 
 Plugin Ecosystem:
   Bound Plugins:     16
-  Total Agents:     136+
-  Total Skills:      71+
-  Total Commands:   152+
+  Total Agents:     137+
+  Total Skills:      72+
+  Total Commands:   153+
 
 Collections:         10
 

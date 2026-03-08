@@ -63,7 +63,7 @@ Bundles of domain expertise and workflows.
 
 | Item | Plugin | Skills | Key Capabilities |
 |------|--------|--------|-----------------|
-| claude-code-mastery | claude-code-expert | 18 skills including cli-reference, hooks-system, mcp-servers, agent-sdk, cost-optimization, troubleshooting | Complete Claude Code knowledge base with 7 agents, 10 commands, and MCP server |
+| claude-code-mastery | claude-code-expert | 19 skills including cli-reference, hooks-system, mcp-servers, agent-sdk, council-review, cost-optimization | Complete Claude Code knowledge base with 8 agents, 11 commands, multi-agent council review (6 protocols, 10 specialists, scoped scoring), and MCP server |
 | devops-essentials | aws-eks-helm-keycloak, deployment-pipeline, home-assistant-architect, jira-orchestrator | eks-management, helm-operations, ci-cd-pipeline, monitoring | Cross-platform DevOps toolkit |
 | react-animation-toolkit | react-animation-studio | 11 skills including framer-motion, gsap, three-js, lottie | Full animation development suite |
 | marketplace-intelligence | marketplace-pro | trust-scoring, composition-engine, federation, developer-studio | Plugin marketplace analytics and management |

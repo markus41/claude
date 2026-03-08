@@ -1,7 +1,7 @@
 {
   "name": "claude-code-expert",
-  "version": "2.0.0",
-  "description": "Comprehensive Claude Code knowledge base with 4-layer extension stack deployment. Auto-detects repo stack and deploys CLAUDE.md (routing OS), Skills (capability packs), Hooks (guardrails), Agents (specialized workers), MCP servers, hybrid memory, and agent team orchestration templates.",
+  "version": "3.0.0",
+  "description": "Comprehensive Claude Code knowledge base with 4-layer extension stack deployment and multi-agent council review. Auto-detects repo stack and deploys CLAUDE.md (routing OS), Skills (capability packs), Hooks (guardrails), Agents (specialized workers), MCP servers, hybrid memory, agent team orchestration templates, and configurable council reviews with 6 protocols and 10 specialist agents.",
   "author": "Neural Orchestration Platform",
   "license": "MIT",
   "type": "full",
@@ -25,7 +25,11 @@
     "orchestration",
     "agent-teams",
     "subagents",
-    "cost-optimization"
+    "cost-optimization",
+    "council",
+    "multi-agent-review",
+    "deliberation",
+    "scoring"
   ],
   "category": "developer-tools",
   "resources": {
@@ -36,7 +40,8 @@
       "agents/sdk-guide.md",
       "agents/ide-integration-specialist.md",
       "agents/permissions-security-advisor.md",
-      "agents/claude-code-debugger.md"
+      "agents/claude-code-debugger.md",
+      "agents/council-coordinator.md"
     ],
     "skills": [
       "skills/cli-reference/SKILL.md",
@@ -56,7 +61,8 @@
       "skills/cost-optimization/SKILL.md",
       "skills/troubleshooting/SKILL.md",
       "skills/teams-collaboration/SKILL.md",
-      "skills/settings-deep-dive/SKILL.md"
+      "skills/settings-deep-dive/SKILL.md",
+      "skills/council-review/SKILL.md"
     ],
     "commands": [
       "commands/cc-help.md",
@@ -68,7 +74,8 @@
       "commands/cc-debug.md",
       "commands/cc-setup.md",
       "commands/cc-memory.md",
-      "commands/cc-orchestrate.md"
+      "commands/cc-orchestrate.md",
+      "commands/cc-council.md"
     ],
     "mcp-server": {
       "command": "node",

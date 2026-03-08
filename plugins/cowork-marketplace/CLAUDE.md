@@ -50,7 +50,7 @@ Browse, install, launch, and export cowork marketplace items backed by real plug
 | Smart Home Pro | 1 | 9 | 15 | 8 |
 | Nonprofit Command Center | 2 | 21 | 15 | 3 |
 | Microsoft Enterprise Platform | 1 | 18 | 19 | 0 |
-| Claude Code Expert Suite | 1 | 10 | 7 | 18 |
+| Claude Code Expert Suite | 1 | 11 | 8 | 19 |
 | Plugin Marketplace Toolkit | 2 | 19 | 4 | 8 |
 
 Use `/cowork-marketplace:bundle-export <bundle-id>` to create a ZIP for Claude Desktop upload.

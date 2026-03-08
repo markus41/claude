@@ -54,12 +54,12 @@ Shows DevOps-related bundles.
 | **Smart Home Pro** | 1 | 9 | 15 | 8 | Complete Home Assistant platform (15 agents) |
 | **Nonprofit Command Center** | 2 | 21 | 15 | 3 | Executive director automation + platform mgmt |
 | **Microsoft Enterprise Platform** | 1 | 18 | 19 | 0 | Azure + Dataverse + Fabric + Graph (19 agents) |
-| **Claude Code Expert Suite** | 1 | 10 | 7 | 18 | Claude Code mastery: CLI, hooks, MCP, SDK, orchestration |
+| **Claude Code Expert Suite** | 1 | 11 | 8 | 19 | Claude Code mastery + council review: 6 protocols, 50+ flags |
 | **Plugin Marketplace Toolkit** | 2 | 19 | 4 | 8 | Trust scoring + federation + dev studio |
 
 ### Total Across All Bundles
 - **15 unique plugins** (some appear in multiple bundles)
-- **199 commands**, **188 agents**, **92 skills**
+- **200 commands**, **189 agents**, **93 skills**
 
 ## How Bundles Work
 
