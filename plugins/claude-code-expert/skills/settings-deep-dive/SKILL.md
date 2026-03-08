@@ -71,11 +71,23 @@ Complete reference for every settings option, configuration key, and customizati
 
   // === SANDBOX ===
   "sandbox": {
-    "enabled": true
+    "enabled": true,
+    "filesystem": {
+      "allowWrite": ["//tmp/build"],
+      "denyRead": ["~/.aws/credentials"]
+    },
+    "network": {
+      "allowedDomains": ["github.com", "*.npmjs.org"]
+    }
   },
 
   // === HOOKS ===
-  "disableAllHooks": false
+  "disableAllHooks": false,
+
+  // === ATTRIBUTION ===
+  "attribution": {
+    "commit": "Generated with Claude Code"
+  }
 }
 ```
 

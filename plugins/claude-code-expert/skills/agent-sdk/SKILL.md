@@ -4,20 +4,33 @@ Complete guide to the Claude Agent SDK for building custom AI agents.
 
 ## Overview
 
-The Claude Agent SDK (`@anthropic-ai/claude-code-sdk`) allows you to programmatically spawn and control Claude Code sessions from Node.js/TypeScript applications.
+The Claude Agent SDK allows you to programmatically spawn and control Claude Code sessions from TypeScript/JavaScript or Python applications.
 
 ## Installation
 
+### TypeScript/JavaScript
 ```bash
-npm install @anthropic-ai/claude-code-sdk
+npm install @anthropic-ai/claude-agent-sdk
 # or
-pnpm add @anthropic-ai/claude-code-sdk
+pnpm add @anthropic-ai/claude-agent-sdk
 ```
 
-**Prerequisite:** Claude Code CLI must be installed globally:
+### Python
 ```bash
-npm install -g @anthropic-ai/claude-code
+# Using uv (recommended)
+uv init && uv add claude-agent-sdk
+
+# Using pip
+python3 -m venv .venv && source .venv/bin/activate
+pip3 install claude-agent-sdk
 ```
+
+**Prerequisite:** Claude Code CLI must be installed:
+```bash
+curl -fsSL https://claude.ai/install.sh | bash
+```
+
+**Required env var:** `ANTHROPIC_API_KEY`
 
 ## Basic Usage
 
@@ -37,20 +50,54 @@ const response = await claude("Refactor this function", {
 });
 ```
 
-## Streaming
+## Python SDK
+
+```python
+import asyncio
+from claude_agent_sdk import query, ClaudeAgentOptions
+
+async def main():
+    async for message in query(
+        prompt="Find and fix the bug in auth.py",
+        options=ClaudeAgentOptions(
+            allowed_tools=["Read", "Edit", "Bash"],
+            permission_mode="acceptEdits",
+        ),
+    ):
+        print(message)
+
+asyncio.run(main())
+```
+
+### Python Options
+
+```python
+ClaudeAgentOptions(
+    allowed_tools=["Read", "Edit", "Bash"],
+    permission_mode="acceptEdits",    # default, acceptEdits, dontAsk, bypassPermissions, plan
+    system_prompt="Custom prompt",
+    agents={"reviewer": AgentDefinition(
+        description="Expert code reviewer",
+        prompt="Analyze code quality.",
+        tools=["Read", "Glob", "Grep"],
+    )},
+    mcp_servers={"playwright": {...}},
+)
+```
+
+## TypeScript Streaming
 
 ```typescript
-import { claude } from "@anthropic-ai/claude-code-sdk";
+import { query } from "@anthropic-ai/claude-agent-sdk";
 
 // Stream responses
-for await (const event of claude.stream("Explain this codebase")) {
-  if (event.type === "text") {
-    process.stdout.write(event.text);
-  } else if (event.type === "tool_use") {
-    console.log(`Using tool: ${event.name}`);
-  } else if (event.type === "tool_result") {
-    console.log(`Tool result: ${event.content}`);
+for await (const message of query({
+  prompt: "Explain this codebase",
+  options: {
+    allowedTools: ["Read", "Glob", "Grep"],
   }
+})) {
+  console.log(message);
 }
 ```
 

@@ -49,12 +49,28 @@ Complete reference for all built-in and custom slash commands.
 | `/agents` | View, create, edit, delete subagents |
 | `/agents list` | List all available agents |
 | `/skills` | Browse available skills |
+| `/plugin` | Manage plugins (install, enable, disable) |
 
 ### Tools & Servers
 | Command | Description |
 |---------|-------------|
 | `/mcp` | Check MCP server status, authenticate |
 | `/hooks` | Configure lifecycle hooks |
+| `/add-dir <path>` | Add additional working directory |
+
+### Code & Navigation
+| Command | Description |
+|---------|-------------|
+| `/diff` | View git diff interactively |
+| `/review` | Review pull request |
+| `/fork [name]` | Fork current conversation |
+
+### Display & Preferences
+| Command | Description |
+|---------|-------------|
+| `/theme` | Change color theme |
+| `/vim` | Toggle Vim editing mode |
+| `/terminal-setup` | Configure keybindings |
 
 ### Built-in Skills
 | Command | Description |
@@ -69,6 +85,14 @@ Complete reference for all built-in and custom slash commands.
 | Command | Description |
 |---------|-------------|
 | `/bug` | Report a bug (can be disabled via env var) |
+
+### Input Prefixes
+| Prefix | Action |
+|--------|--------|
+| `/` | Invoke command or skill |
+| `!` | Bash mode (execute shell command) |
+| `@` | File mention (add file to context) |
+| `?` | Show shortcuts |
 
 ## Keyboard Shortcuts
 
@@ -85,17 +109,24 @@ Complete reference for all built-in and custom slash commands.
 | `Up/Down` | Navigate command history |
 | `?` | Show shortcuts |
 
-### Mode Controls
+### Mode & Toggle Controls
 | Shortcut | Action |
 |----------|--------|
 | `Shift+Tab` | Cycle permission modes |
 | `Ctrl+O` | Toggle verbose output |
 | `Ctrl+B` | Send task to background |
+| `Ctrl+T` | Toggle task list |
+| `Option+P` | Switch model |
+| `Option+T` | Toggle extended thinking |
+| `Ctrl+G` | Open input in text editor |
+| `Ctrl+V` | Paste image |
 
-### Display Controls
+### Display & Navigation
 | Shortcut | Action |
 |----------|--------|
 | `Ctrl+L` | Clear screen |
+| `Ctrl+R` | Reverse search history |
+| `Ctrl+F` | Kill background agents |
 
 ### Permission Prompts
 | Shortcut | Action |

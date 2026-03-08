@@ -10,14 +10,19 @@ CLAUDE.md files contain natural-language instructions that Claude Code loads as 
 ### Hierarchy (All Additive)
 
 ```
-Enterprise CLAUDE.md        (highest priority, cannot be overridden)
-  └── User ~/.claude/CLAUDE.md     (personal preferences)
-      └── Project ./CLAUDE.md          (project conventions)
-          └── Project ./.claude/CLAUDE.md   (additional project instructions)
-              └── Directory path/CLAUDE.md    (scoped to that directory)
+Enterprise/Managed CLAUDE.md     (highest priority, cannot be overridden)
+  └── User ~/.claude/CLAUDE.md         (personal preferences, all projects)
+      └── Project ./CLAUDE.md              (project conventions)
+          └── Project ./.claude/CLAUDE.md       (additional project instructions)
+              └── Local ./CLAUDE.local.md         (personal, gitignored)
+                  └── Directory path/CLAUDE.md      (scoped to that directory)
 ```
 
 All levels are loaded and combined. Lower levels cannot override enterprise settings.
+
+### Additional Syntax
+- `@path/file.md` — Import additional files into CLAUDE.md context
+- Keep under 200 lines for optimal context cost
 
 ### What to Include
 

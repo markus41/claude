@@ -22,6 +22,8 @@ Hooks are user-defined shell commands that execute at specific points in the Cla
 | `SubagentStop` | Sub-agent finishes | Yes (continue) |
 | `TaskCompleted` | Task marked complete | No |
 | `ConfigChange` | Config file changed | No |
+| `TeammateIdle` | Agent team teammate going idle | No |
+| `PreCompact` | Before conversation history compacted | No |
 | `SessionEnd` | Session terminates | No |
 | `Stop` | Claude about to stop | Yes (continue) |
 

@@ -8,19 +8,33 @@ Extended thinking (also called "ultrathink") allows Claude to perform deeper rea
 
 ## Thinking Modes
 
+### Trigger Phrases (CLI)
+Use these phrases in your prompts to activate thinking levels:
+
+| Phrase | Thinking Tokens | Approx Cost |
+|--------|----------------|-------------|
+| `think` | ~4,000 tokens | ~$0.06 |
+| `think hard` / `megathink` | ~10,000 tokens | ~$0.15 |
+| `ultrathink` | ~32,000 tokens | ~$0.48 |
+
+Example: `"ultrathink about how to refactor the auth module"`
+
+### Toggle Shortcut
+- `Option+T` — Toggle extended thinking on/off in interactive mode
+
+### Environment Variable
+```bash
+CLAUDE_CODE_EFFORT_LEVEL=high   # low, medium, high
+```
+
 ### Default Thinking
 Standard reasoning — Claude thinks internally as needed.
 
 ### Extended Thinking
 More deliberate reasoning with configurable thinking budget.
 
-```bash
-# Enable via environment or settings
-# The model automatically uses extended thinking when beneficial
-```
-
 ### Ultrathink
-Maximum reasoning depth for the most complex problems.
+Maximum reasoning depth for the most complex problems. Best for architecture decisions, debugging complex issues, and novel problem-solving.
 
 ## Configuration
 

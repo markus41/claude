@@ -4,16 +4,62 @@ Complete guide to Model Context Protocol server configuration and usage.
 
 ## Overview
 
-MCP (Model Context Protocol) allows Claude Code to connect to external servers that provide additional tools, resources, and capabilities. Servers run as separate processes and communicate via stdio or SSE.
+MCP (Model Context Protocol) allows Claude Code to connect to external servers that provide additional tools, resources, and capabilities. Supports 300+ external tools and services.
+
+## Transport Types
+
+| Transport | Description | Recommended |
+|-----------|-------------|-------------|
+| `http` | HTTP-based (streamable) | Yes (recommended) |
+| `sse` | Server-Sent Events | Deprecated |
+| `stdio` | Local process via stdin/stdout | For local servers |
+
+## Adding MCP Servers via CLI
+
+```bash
+# HTTP server (recommended)
+claude mcp add --transport http github https://api.githubcopilot.com/mcp/
+
+# SSE server (deprecated)
+claude mcp add --transport sse asana https://mcp.asana.com/sse
+
+# Local stdio server
+claude mcp add --transport stdio my-db -- npx -y @some/package
+
+# With environment variables
+claude mcp add --transport stdio -e AIRTABLE_API_KEY=YOUR_KEY airtable -- npx -y airtable-mcp-server
+
+# With scope
+claude mcp add --scope project server-name -- command args
+
+# List configured servers
+claude mcp list
+
+# Get server details
+claude mcp get server-name
+
+# Remove server
+claude mcp remove server-name
+```
+
+## Installation Scopes
+
+| Scope | Storage | Shared |
+|-------|---------|--------|
+| `local` (default) | `~/.claude.json` | No (personal, this project) |
+| `project` | `.mcp.json` | Yes (version controlled) |
+| `user` | `~/.claude.json` with scope flag | No (personal, all projects) |
 
 ## Configuration File
 
 MCP servers are configured in `.mcp.json` at the project root.
 
+### Stdio Server
 ```json
 {
   "mcpServers": {
     "server-name": {
+      "type": "stdio",
       "command": "executable",
       "args": ["arg1", "arg2"],
       "env": {
@@ -25,16 +71,49 @@ MCP servers are configured in `.mcp.json` at the project root.
 }
 ```
 
+### HTTP Server
+```json
+{
+  "mcpServers": {
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/"
+    }
+  }
+}
+```
+
+### Environment Variable Expansion
+```json
+{
+  "mcpServers": {
+    "my-server": {
+      "command": "${CLAUDE_PLUGIN_ROOT}/servers/api",
+      "args": ["--config", "${CLAUDE_PLUGIN_ROOT}/config.json"],
+      "env": {
+        "API_KEY": "${MY_API_KEY}",
+        "PORT": "${PORT:-3000}"
+      }
+    }
+  }
+}
+```
+`${VAR}` expands to env var value. `${VAR:-default}` provides fallback.
+
 ### Configuration Locations
+- **Local**: `~/.claude.json` (personal, one project)
 - **Project**: `.mcp.json` in project root (checked into git)
-- **User**: `~/.claude/mcp.json` (global, all projects)
+- **User**: `~/.claude.json` with user scope (personal, all projects)
 
 ### Fields
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `command` | string | The executable to run |
-| `args` | string[] | Arguments to pass |
+| `type` | string | Transport: `stdio`, `http`, `sse` |
+| `command` | string | Executable to run (stdio) |
+| `args` | string[] | Arguments to pass (stdio) |
+| `url` | string | Server URL (http/sse) |
+| `headers` | object | HTTP headers (http/sse) |
 | `env` | object | Environment variables |
 | `disabled` | boolean | Temporarily disable server |
 | `cwd` | string | Working directory for the server |
