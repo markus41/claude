@@ -37,9 +37,10 @@ A comprehensive knowledge base plugin covering **every feature, configuration op
 | `teams-collaboration` | Team plans, enterprise settings, multi-user workflows, onboarding |
 | `settings-deep-dive` | Complete settings.json schema, every permission pattern, feature flags |
 
-### Commands (7)
+### Commands (8)
 | Command | Purpose |
 |---------|---------|
+| `/cc-setup` | **Full repo analysis & deployment** — detect stack, install MCP, configure hooks/rules/LSP |
 | `/cc-help` | Interactive Claude Code documentation lookup |
 | `/cc-config` | Generate or audit Claude Code configuration |
 | `/cc-hooks` | Design and implement Claude Code hooks |
@@ -88,6 +89,9 @@ cd plugins/claude-code-expert/mcp-server && npm install
 
 ### Commands
 ```bash
+/cc-setup                              # Full repo analysis + deploy all configs
+/cc-setup --auto                       # Non-interactive best-guess setup
+/cc-setup --mcp-only                   # Just detect and install MCP servers
 /cc-help "How do I configure hooks?"
 /cc-config --audit
 /cc-config generate --preset developer

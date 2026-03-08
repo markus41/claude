@@ -1,7 +1,7 @@
 {
   "name": "claude-code-expert",
-  "version": "1.0.0",
-  "description": "Comprehensive Claude Code knowledge base with custom MCP documentation server. Covers every feature, configuration option, CLI command, hook, MCP server, SDK pattern, permission model, IDE integration, and best practice. Includes a debugger for diagnosing and fixing Claude Code setup issues.",
+  "version": "1.1.0",
+  "description": "Comprehensive Claude Code knowledge base with custom MCP documentation server. Covers every feature, configuration option, CLI command, hook, MCP server, SDK pattern, permission model, IDE integration, and best practice. Includes a debugger for diagnosing setup issues and a full repo setup wizard that auto-detects stack, installs MCP servers, and configures hooks/rules/LSP.",
   "author": "Neural Orchestration Platform",
   "license": "MIT",
   "type": "full",
@@ -60,7 +60,8 @@
       "commands/cc-mcp.md",
       "commands/cc-agent.md",
       "commands/cc-troubleshoot.md",
-      "commands/cc-debug.md"
+      "commands/cc-debug.md",
+      "commands/cc-setup.md"
     ],
     "mcp-server": {
       "command": "node",
