@@ -219,6 +219,39 @@
       ]
     },
     {
+      "id": "claude-code-expert-suite",
+      "name": "Claude Code Expert Suite",
+      "description": "Complete Claude Code knowledge base and tooling: 19 skills covering CLI, hooks, MCP, SDK, permissions, memory, orchestration, council review, and cost optimization. 8 specialist agents (including council coordinator), 11 commands with multi-agent council review featuring 6 protocols, 10 specialists, scoped scoring, and 50+ configuration flags.",
+      "category": "developer-tools",
+      "difficulty": "beginner",
+      "plugins": [
+        "claude-code-expert"
+      ],
+      "totals": {
+        "commands": 11,
+        "agents": 8,
+        "skills": 19
+      },
+      "tags": [
+        "claude-code",
+        "sdk",
+        "mcp",
+        "hooks",
+        "agents",
+        "debugging",
+        "best-practices",
+        "configuration",
+        "orchestration"
+      ],
+      "highlights": [
+        "19 deep-dive skills covering every Claude Code subsystem",
+        "8 specialist agents: architect, debugger, hooks, MCP, SDK, IDE, security, council-coordinator",
+        "Multi-agent council review with 6 protocols (expert-panel, red-blue-team, six-thinking-hats, rapid-fire, delphi, blackboard)",
+        "50+ configurable flags: scoped scoring, weighted voting, veto power, auto-fix, state machine resume",
+        "MCP server for queryable Claude Code documentation"
+      ]
+    },
+    {
       "id": "marketplace-toolkit",
       "name": "Plugin Marketplace Toolkit",
       "description": "Meta-tools for building and managing plugin marketplaces: trust scoring, composition engine, federated registry, developer studio with hot-reload, and supply chain security.",

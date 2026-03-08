@@ -10,10 +10,10 @@ Browse, install, launch, and export cowork marketplace items backed by real plug
 | `/cowork-marketplace:install` | Install an item and activate its plugin bindings |
 | `/cowork-marketplace:launch` | Start a cowork session with an installed item |
 | `/cowork-marketplace:details` | View full item details, trust score, and plugin bindings |
-| `/cowork-marketplace:collections` | Browse 9 curated collections by domain |
+| `/cowork-marketplace:collections` | Browse 10 curated collections by domain |
 | `/cowork-marketplace:stats` | Show marketplace and plugin ecosystem statistics |
 | `/cowork-marketplace:export` | Package an item as a Cowork plugin ZIP for distribution |
-| `/cowork-marketplace:bundles` | Browse 8 pre-packaged plugin bundles by category |
+| `/cowork-marketplace:bundles` | Browse 9 pre-packaged plugin bundles by category |
 | `/cowork-marketplace:bundle-export` | Merge plugins into a single Cowork plugin ZIP |
 
 ## Agents
@@ -24,22 +24,22 @@ Browse, install, launch, and export cowork marketplace items backed by real plug
 
 ## Skills
 
-- **plugin-catalog** - Catalog knowledge (16 items, 15 plugins, 129+ agents)
+- **plugin-catalog** - Catalog knowledge (17 items, 16 plugins, 136+ agents)
 - **cowork-sessions** - Session lifecycle and agent coordination
 - **plugin-packaging** - Cowork plugin format and distribution
 
 ## Catalog
 
-16 items across 5 types, backed by 15 installed plugins:
+17 items across 5 types, backed by 16 installed plugins:
 - 3 Templates (FastAPI, Fullstack, Home Assistant)
 - 4 Workflows (Jira-to-PR, EKS Deploy, Microsoft Platform, Sprint Planning)
 - 3 Agent Configs (Code Reviewer, Nonprofit Director, Design Architect)
-- 3 Skill Packs (DevOps, React Animation, Marketplace Intelligence)
+- 4 Skill Packs (Claude Code Mastery, DevOps, React Animation, Marketplace Intelligence)
 - 3 Blueprints (Enterprise Release, Keycloak Multi-Tenant, Project Scaffolder)
 
 ## Plugin Bundles
 
-8 pre-packaged bundles that merge multiple plugins into single Cowork-distributable packages:
+9 pre-packaged bundles that merge multiple plugins into single Cowork-distributable packages:
 
 | Bundle | Plugins | Commands | Agents | Skills |
 |--------|---------|----------|--------|--------|
@@ -50,6 +50,7 @@ Browse, install, launch, and export cowork marketplace items backed by real plug
 | Smart Home Pro | 1 | 9 | 15 | 8 |
 | Nonprofit Command Center | 2 | 21 | 15 | 3 |
 | Microsoft Enterprise Platform | 1 | 18 | 19 | 0 |
+| Claude Code Expert Suite | 1 | 11 | 8 | 19 |
 | Plugin Marketplace Toolkit | 2 | 19 | 4 | 8 |
 
 Use `/cowork-marketplace:bundle-export <bundle-id>` to create a ZIP for Claude Desktop upload.

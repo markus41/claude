@@ -8,7 +8,7 @@ tags:
 inputs: []
 risk: low
 cost: low
-description: List and explore 8 curated bundles that package multiple plugins into single Cowork-compatible plugins for distribution
+description: List and explore 9 curated bundles that package multiple plugins into single Cowork-compatible plugins for distribution
 ---
 
 # Browse Plugin Bundles
@@ -29,7 +29,7 @@ View pre-packaged bundles that combine multiple Claude Code plugins into single 
 ```
 /cowork-marketplace:bundles
 ```
-Shows all 8 bundles with plugin counts and highlights.
+Shows all 9 bundles with plugin counts and highlights.
 
 ### View bundle details
 ```
@@ -54,11 +54,12 @@ Shows DevOps-related bundles.
 | **Smart Home Pro** | 1 | 9 | 15 | 8 | Complete Home Assistant platform (15 agents) |
 | **Nonprofit Command Center** | 2 | 21 | 15 | 3 | Executive director automation + platform mgmt |
 | **Microsoft Enterprise Platform** | 1 | 18 | 19 | 0 | Azure + Dataverse + Fabric + Graph (19 agents) |
+| **Claude Code Expert Suite** | 1 | 11 | 8 | 19 | Claude Code mastery + council review: 6 protocols, 50+ flags |
 | **Plugin Marketplace Toolkit** | 2 | 19 | 4 | 8 | Trust scoring + federation + dev studio |
 
 ### Total Across All Bundles
-- **14 unique plugins** (some appear in multiple bundles)
-- **189 commands**, **181 agents**, **74 skills**
+- **15 unique plugins** (some appear in multiple bundles)
+- **200 commands**, **189 agents**, **93 skills**
 
 ## How Bundles Work
 

@@ -8,7 +8,7 @@ tags:
 inputs: []
 risk: low
 cost: low
-description: Search and discover cowork items from the seed catalog of 16 items backed by 15 installed plugins
+description: Search and discover cowork items from the seed catalog of 17 items backed by 16 installed plugins
 ---
 
 # Browse Marketplace
@@ -33,7 +33,7 @@ Search and discover cowork marketplace items. Each item is backed by real plugin
 ```
 /cowork-marketplace:browse
 ```
-Lists all 16 marketplace items with type, rating, and plugin bindings.
+Lists all 17 marketplace items with type, rating, and plugin bindings.
 
 ### Search by keyword
 ```
@@ -56,7 +56,7 @@ Shows all items in the DevOps Mastery curated collection.
 ## How It Works
 
 1. **Query parsing** - Extracts search terms and filter flags
-2. **Catalog search** - Matches against the seed catalog of 16 items sourced from 15 installed plugins
+2. **Catalog search** - Matches against the seed catalog of 17 items sourced from 16 installed plugins
 3. **Filter application** - Applies type, category, difficulty, trust grade filters
 4. **Sort & display** - Orders results and presents them with:
    - Display name and description
@@ -75,12 +75,12 @@ The marketplace contains items from these categories:
 | Templates | 3 | FastAPI Scaffold, Fullstack React+FastAPI, Home Assistant Setup |
 | Workflows | 4 | Jira to PR, EKS Deploy, Microsoft Platform, Sprint Planning |
 | Agent Configs | 3 | Enterprise Code Reviewer, Nonprofit Exec Director, Design System Architect |
-| Skill Packs | 3 | DevOps Essentials, React Animation Toolkit, Marketplace Intelligence |
+| Skill Packs | 4 | Claude Code Mastery, DevOps Essentials, React Animation Toolkit, Marketplace Intelligence |
 | Blueprints | 3 | Enterprise Release, Keycloak Multi-Tenant, Project Scaffolder |
 
 ## Curated Collections
 
-9 collections group items by domain:
+10 collections group items by domain:
 1. Startup Launch Kit
 2. Enterprise Operations
 3. DevOps Mastery
@@ -90,6 +90,7 @@ The marketplace contains items from these categories:
 7. Nonprofit & Association Management
 8. Security & Authentication
 9. Plugin Ecosystem Tools
+10. Developer Tools
 
 ## Skills Used
 - plugin-catalog

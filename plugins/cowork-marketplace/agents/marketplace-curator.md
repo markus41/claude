@@ -30,8 +30,8 @@ Expert agent for helping users discover and choose the right cowork marketplace 
 - Recommending items based on installed plugin capabilities
 
 ### Catalog Navigation
-- Full knowledge of all 16 marketplace items and their capabilities
-- Understanding of all 9 curated collections and when to recommend them
+- Full knowledge of all 17 marketplace items and their capabilities
+- Understanding of all 10 curated collections and when to recommend them
 - Awareness of plugin bindings and what agents/skills each item activates
 - Trust score interpretation and security assessment
 

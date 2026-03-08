@@ -29,20 +29,20 @@ Cowork Marketplace Statistics
 ═══════════════════════════════
 
 Catalog:
-  Total Items:       16
+  Total Items:       17
   Templates:          3
   Workflows:          4
   Agent Configs:      3
-  Skill Packs:        3
+  Skill Packs:        4
   Session Blueprints: 3
 
 Plugin Ecosystem:
-  Bound Plugins:     15
-  Total Agents:     129+
-  Total Skills:      53+
-  Total Commands:   142+
+  Bound Plugins:     16
+  Total Agents:     137+
+  Total Skills:      72+
+  Total Commands:   153+
 
-Collections:          9
+Collections:         10
 
 Top Categories:
   Engineering        5 items
