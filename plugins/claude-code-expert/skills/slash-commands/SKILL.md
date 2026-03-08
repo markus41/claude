@@ -7,55 +7,68 @@ Complete reference for all built-in and custom slash commands.
 ### Session Management
 | Command | Description |
 |---------|-------------|
-| `/clear` | Clear conversation history and start fresh |
+| `/clear` | Clear conversation and start fresh (same session) |
 | `/compact` | Compress conversation to reduce context usage |
 | `/compact [instructions]` | Compact with custom focus instructions |
+| `/resume` | Resume a previous session |
+| `/continue` | Continue current session |
+| `/status` | Current session info |
+| `/context` | View context window usage |
 
 ### Help & Info
 | Command | Description |
 |---------|-------------|
-| `/help` | Show help information |
+| `/help` | Show available commands |
 | `/doctor` | Run diagnostics and health checks |
-| `/cost` | Show token usage and cost for current session |
-| `/status` | Show current session status |
 | `/version` | Show Claude Code version |
+| `/settings` | View active settings |
 
 ### Model & Configuration
 | Command | Description |
 |---------|-------------|
-| `/model` | Change the current model |
-| `/model <model-id>` | Switch to specific model |
-| `/config` | Open configuration |
-| `/permissions` | View/edit permissions |
+| `/model` | View or change the current model |
+| `/model <name>` | Switch to specific model (sonnet, opus, haiku) |
+| `/permissions` | Manage permission rules |
 
 ### Conversation Modes
 | Command | Description |
 |---------|-------------|
-| `/plan` | Enter plan mode (creates plan before executing) |
+| `/plan` | Enter plan mode (read-only analysis) |
 | `/fast` | Toggle fast mode (faster output, same model) |
 
-### Memory
+### Memory & Instructions
 | Command | Description |
 |---------|-------------|
-| `/memory` | View and manage auto-memory |
-| `/memory add <text>` | Add memory entry |
-| `/memory clear` | Clear all memories |
+| `/memory` | Edit CLAUDE.md and auto-memory |
+| `/init` | Generate project CLAUDE.md |
+| `/init-only` | Generate CLAUDE.md and exit |
 
-### Code & Files
+### Agents & Skills
 | Command | Description |
 |---------|-------------|
-| `/review` | Review recent code changes |
-| `/pr-comments` | View PR comments |
+| `/agents` | View, create, edit, delete subagents |
+| `/agents list` | List all available agents |
+| `/skills` | Browse available skills |
+
+### Tools & Servers
+| Command | Description |
+|---------|-------------|
+| `/mcp` | Check MCP server status, authenticate |
+| `/hooks` | Configure lifecycle hooks |
+
+### Built-in Skills
+| Command | Description |
+|---------|-------------|
+| `/simplify` | Review code quality and refactor |
+| `/batch <instruction>` | Parallel codebase changes |
+| `/debug [description]` | Debug session issues |
+| `/loop <interval>` | Recurring prompts |
+| `/claude-api` | Load Claude API reference docs |
 
 ### Bug Reporting
 | Command | Description |
 |---------|-------------|
 | `/bug` | Report a bug (can be disabled via env var) |
-
-### Session History
-| Command | Description |
-|---------|-------------|
-| `/history` | View conversation history |
 
 ## Keyboard Shortcuts
 
@@ -63,12 +76,21 @@ Complete reference for all built-in and custom slash commands.
 | Shortcut | Action |
 |----------|--------|
 | `Enter` | Send message |
-| `Shift+Enter` | New line in input |
-| `Ctrl+C` | Cancel current operation / clear input |
+| `Shift+Enter` | Multi-line input |
+| `Ctrl+C` | Interrupt current operation |
 | `Ctrl+D` | Exit Claude Code |
-| `Escape` | Cancel current tool / interrupt |
-| `Tab` | Accept autocomplete suggestion |
-| `Up/Down` | Navigate input history |
+| `Escape` | Rewind to last checkpoint |
+| `Escape` (2x) | Full rewind |
+| `Tab` | Auto-complete |
+| `Up/Down` | Navigate command history |
+| `?` | Show shortcuts |
+
+### Mode Controls
+| Shortcut | Action |
+|----------|--------|
+| `Shift+Tab` | Cycle permission modes |
+| `Ctrl+O` | Toggle verbose output |
+| `Ctrl+B` | Send task to background |
 
 ### Display Controls
 | Shortcut | Action |

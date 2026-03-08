@@ -8,6 +8,38 @@ Hooks are user-defined shell commands that execute at specific points in the Cla
 
 ## Hook Types
 
+### All Lifecycle Events
+| Event | When | Can Block? |
+|-------|------|-----------|
+| `SessionStart` | Session begins/resumes | No |
+| `UserPromptSubmit` | Before processing user prompt | Yes (exit 2) |
+| `PreToolUse` | Before tool execution | Yes (exit 2) |
+| `PostToolUse` | After tool succeeds | No |
+| `PostToolUseFailure` | After tool fails | No |
+| `PermissionRequest` | Permission prompt appears | No |
+| `Notification` | User needs attention | No |
+| `SubagentStart` | Sub-agent starts | No |
+| `SubagentStop` | Sub-agent finishes | Yes (continue) |
+| `TaskCompleted` | Task marked complete | No |
+| `ConfigChange` | Config file changed | No |
+| `SessionEnd` | Session terminates | No |
+| `Stop` | Claude about to stop | Yes (continue) |
+
+### Hook Types (4 types)
+| Type | Description |
+|------|-------------|
+| `command` | Shell script execution |
+| `http` | POST to a URL endpoint |
+| `prompt` | Single-turn LLM evaluation |
+| `agent` | Multi-turn verification with tools |
+
+### Hook Exit Codes
+| Exit Code | Meaning |
+|-----------|---------|
+| `0` | Proceed (approve). For UserPromptSubmit/SessionStart, stdout added to context |
+| `2` | Block action (deny). stderr becomes feedback to Claude |
+| Other | Log only (hook failure, tool proceeds normally) |
+
 ### PreToolUse
 Fires **before** a tool is executed. Can approve, deny, or modify the tool call.
 

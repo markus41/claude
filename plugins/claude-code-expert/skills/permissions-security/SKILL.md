@@ -6,27 +6,36 @@ Complete reference for the permission model and security features.
 
 Claude Code operates in one of several permission modes:
 
-### Default Mode
-- Claude asks permission for potentially dangerous operations
+### Default Mode (`default`)
+- Prompts on first use of each tool type
 - User approves/denies each tool call
 - Safest mode for general use
 
-### Plan Mode
-- Claude creates a plan before executing
-- User approves the plan, then Claude executes
-- Good for complex multi-step tasks
-- Invoke with `--permission-mode plan` or `/plan` slash command
+### Accept Edits Mode (`acceptEdits`)
+- Auto-approves file edits (Read, Write, Edit)
+- Still asks for Bash commands and other tools
+- Good balance for code-focused work
 
-### Bypass Permissions (Dangerous)
+### Plan Mode (`plan`)
+- Read-only analysis mode
+- Claude can read but not modify anything
+- Good for exploration and planning
+- Invoke with `Shift+Tab` or `--permission-mode plan`
+
+### Don't Ask Mode (`dontAsk`)
+- Auto-denies unless pre-approved in allow list
+- Good for locked-down environments
+- Must configure allow list in settings.json
+
+### Bypass Permissions (`bypassPermissions`)
 - Skips ALL permission prompts
 - Use only in trusted, sandboxed environments
 - `--dangerously-skip-permissions` flag
 - **Never use in production or with untrusted code**
 
-### Accept Edits Mode
-- Auto-approves file edits (Read, Write, Edit)
-- Still asks for Bash commands and other tools
-- Good balance for code-focused work
+### Switching Modes at Runtime
+- `Shift+Tab` — Cycle through permission modes interactively
+- `--permission-mode <mode>` — Set mode at startup
 
 ## Permission Configuration
 

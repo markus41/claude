@@ -4,8 +4,26 @@ Complete reference for the Claude Code command-line interface.
 
 ## Installation
 
+### System Requirements
+- macOS 13.0+, Windows 10 1809+, Ubuntu 20.04+, Debian 10+, Alpine 3.19+
+- 4GB+ RAM
+- Internet connection required
+- Shell: Bash, Zsh, PowerShell, CMD
+- Windows: Git for Windows required
+
+### Methods
+
 ```bash
-# npm (global)
+# Native (Recommended)
+curl -fsSL https://claude.ai/install.sh | bash
+
+# Homebrew (macOS)
+brew install --cask claude-code
+
+# WinGet (Windows)
+winget install Anthropic.ClaudeCode
+
+# npm (legacy)
 npm install -g @anthropic-ai/claude-code
 
 # Direct invocation
@@ -14,6 +32,13 @@ npx @anthropic-ai/claude-code
 # Update to latest
 npm update -g @anthropic-ai/claude-code
 ```
+
+### Initial Login
+```bash
+claude     # First run opens browser for login
+```
+Supports: Claude Pro, Teams, Enterprise, Console, Bedrock, Vertex AI, Foundry.
+Credentials stored at `~/.claude.json`.
 
 ## Basic Usage
 
@@ -39,24 +64,31 @@ claude --resume <session-id>
 
 ## CLI Flags
 
-### Core Flags
+### Session Management Flags
 | Flag | Short | Description |
 |------|-------|-------------|
 | `--help` | `-h` | Show help message |
 | `--version` | `-v` | Show version number |
 | `--print` | `-p` | Non-interactive mode: print response and exit |
 | `--verbose` | | Enable verbose/debug logging |
-| `--model` | `-m` | Override model (e.g., `claude-sonnet-4-6`) |
+| `--debug [category]` | | Debug logging for specific category |
+| `--model` | `-m` | Override model (e.g., `sonnet`, `opus`, `haiku`) |
 | `--continue` | `-c` | Resume most recent conversation |
 | `--resume` | `-r` | Resume specific conversation by ID |
+| `--fork-session` | | Create new session from current context |
+| `--teleport` | | Resume a web session locally |
+| `--remote "task"` | | Create cloud session |
+| `--worktree` | `-w` | Run in isolated git worktree |
 
 ### Output & Format Flags
 | Flag | Description |
 |------|-------------|
 | `--output-format` | Output format: `text` (default), `json`, `stream-json` |
 | `--max-turns` | Maximum conversation turns in non-interactive mode |
+| `--max-budget-usd` | Spending limit per session |
 | `--no-input` | Skip initial user input (for piped content) |
 | `--input-format` | Input format: `text` (default), `stream-json` |
+| `--json-schema` | Structured output with JSON schema (print mode) |
 
 ### Permission & Security Flags
 | Flag | Description |
@@ -64,18 +96,25 @@ claude --resume <session-id>
 | `--dangerously-skip-permissions` | Skip all permission prompts (use with caution) |
 | `--allowedTools` | Comma-separated list of allowed tools |
 | `--disallowedTools` | Comma-separated list of disallowed tools |
-| `--permission-mode` | Permission mode: `default`, `plan`, `bypassPermissions` |
+| `--permission-mode` | Permission mode: `default`, `plan`, `acceptEdits`, `dontAsk`, `bypassPermissions` |
 | `--permission-prompt-tool` | MCP tool for handling permission prompts |
 
 ### Configuration Flags
 | Flag | Description |
 |------|-------------|
-| `--append-system-prompt` | Append text to system prompt |
 | `--system-prompt` | Override entire system prompt (use with `-p`) |
+| `--append-system-prompt` | Append text to system prompt |
+| `--system-prompt-file` | Load system prompt from file |
+| `--append-system-prompt-file` | Append system prompt from file |
 | `--mcp-config` | Path to MCP config JSON file |
-| `--add-dir` | Add additional directories to context |
+| `--settings` | Load settings from file or JSON string |
+| `--agents` | Define custom agents as JSON |
+| `--plugin-dir` | Load plugin from directory (repeatable) |
+| `--add-dir` | Add additional working directories to context |
+| `--init` | Run initialization hooks |
+| `--maintenance` | Run maintenance hooks |
 
-### Session Management Flags
+### Session ID Flags
 | Flag | Description |
 |------|-------------|
 | `--session-id` | Set specific session ID |
@@ -115,14 +154,42 @@ claude --resume <session-id>
 | `CLOUD_ML_REGION` | GCP region |
 | `ANTHROPIC_VERTEX_BASE_URL` | Custom Vertex endpoint |
 
+### Model Overrides
+| Variable | Description |
+|----------|-------------|
+| `ANTHROPIC_MODEL` | Override default model ID |
+| `ANTHROPIC_DEFAULT_SONNET_MODEL` | Override Sonnet model ID |
+| `ANTHROPIC_DEFAULT_OPUS_MODEL` | Override Opus model ID |
+| `CLAUDE_CODE_EFFORT_LEVEL` | Reasoning effort: `low`, `medium`, `high` |
+
 ### Behavior Configuration
 | Variable | Description |
 |----------|-------------|
 | `DISABLE_AUTOMEMORY` | `1` to disable auto-memory |
+| `DISABLE_AUTOUPDATER` | `1` to disable auto-updates |
 | `DISABLE_BUG_COMMAND` | `1` to disable /bug command |
 | `CLAUDE_CODE_MAX_OUTPUT_TOKENS` | Override max output tokens |
 | `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC` | `1` to disable telemetry |
+| `CLAUDE_CODE_ENABLE_TELEMETRY` | Enable OpenTelemetry |
 | `CLAUDE_CODE_SKIP_DOCTOR` | `1` to skip doctor checks |
+| `CLAUDE_CODE_DISABLE_FAST_MODE` | Disable fast Opus mode |
+| `CLAUDE_CODE_SIMPLE` | Use minimal system prompt |
+| `CLAUDE_CODE_DISABLE_1M_CONTEXT` | Disable large context window |
+| `CLAUDE_CODE_SHELL` | Override shell detection |
+| `BASH_DEFAULT_TIMEOUT_MS` | Bash command timeout in ms |
+| `MAX_MCP_OUTPUT_TOKENS` | MCP tool output token limit |
+| `SLASH_COMMAND_TOOL_CHAR_BUDGET` | Skill character budget |
+
+### Directory Overrides
+| Variable | Description |
+|----------|-------------|
+| `CLAUDE_CONFIG_DIR` | Custom config directory location |
+| `CLAUDE_CODE_TMPDIR` | Override temporary directory |
+
+### Cloud Provider: Microsoft Foundry
+| Variable | Description |
+|----------|-------------|
+| `CLAUDE_CODE_USE_FOUNDRY` | `1` to use Microsoft Foundry |
 
 ### Proxy & Network
 | Variable | Description |

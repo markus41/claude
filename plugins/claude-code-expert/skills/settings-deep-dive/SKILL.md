@@ -6,10 +6,10 @@ Complete reference for every settings option, configuration key, and customizati
 
 | Location | Scope | Git Tracked |
 |----------|-------|-------------|
-| `.claude/settings.json` | Project | Yes |
-| `.claude/settings.local.json` | Project (personal) | No |
+| Managed (system-level) | Organization | `/Library/...` (macOS), `/etc/claude-code/` (Linux), `C:\Program Files\...` (Win) |
 | `~/.claude/settings.json` | User (all projects) | N/A |
-| Enterprise managed | Organization | Managed |
+| `.claude/settings.json` | Project (shared) | Yes |
+| `.claude/settings.local.json` | Project (personal) | No (gitignored) |
 
 ## Complete Settings Schema
 
@@ -18,7 +18,9 @@ Complete reference for every settings option, configuration key, and customizati
   // === PERMISSIONS ===
   "permissions": {
     "allow": ["Tool(pattern)"],
-    "deny": ["Tool(pattern)"]
+    "ask": ["Tool(pattern)"],
+    "deny": ["Tool(pattern)"],
+    "defaultMode": "default"
   },
 
   // === HOOKS ===
@@ -53,12 +55,27 @@ Complete reference for every settings option, configuration key, and customizati
   // === BEHAVIOR ===
   "autoMemory": true,
   "autoCompact": true,
+  "language": "en",
+  "outputStyle": "Explanatory",
 
   // === CONTEXT WINDOW ===
   "contextWindow": {
     "compactThreshold": 0.8,
     "warningThreshold": 0.9
-  }
+  },
+
+  // === MCP ===
+  "enableAllProjectMcpServers": false,
+  "enabledMcpjsonServers": [],
+  "allowedMcpServers": [],
+
+  // === SANDBOX ===
+  "sandbox": {
+    "enabled": true
+  },
+
+  // === HOOKS ===
+  "disableAllHooks": false
 }
 ```
 
