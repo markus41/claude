@@ -123,6 +123,19 @@ const TOPIC_MAP = {
   environment: "cli-reference",
   bedrock: "cli-reference",
   vertex: "cli-reference",
+  foundry: "cli-reference",
+  oauth: "mcp-servers",
+  "agent-teams": "agent-sdk",
+  teammates: "agent-sdk",
+  remote: "agent-sdk",
+  teleport: "agent-sdk",
+  sandbox: "settings-deep-dive",
+  statusline: "settings-deep-dive",
+  "status-line": "settings-deep-dive",
+  mtls: "cli-reference",
+  "client-cert": "cli-reference",
+  login: "cli-reference",
+  auth: "cli-reference",
 };
 
 const server = new Server(

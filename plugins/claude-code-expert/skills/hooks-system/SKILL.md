@@ -24,6 +24,9 @@ Hooks are user-defined shell commands that execute at specific points in the Cla
 | `ConfigChange` | Config file changed | No |
 | `TeammateIdle` | Agent team teammate going idle | No |
 | `PreCompact` | Before conversation history compacted | No |
+| `InstructionsLoaded` | After CLAUDE.md/rules loaded | No |
+| `WorktreeCreate` | Git worktree created for agent | No |
+| `WorktreeRemove` | Git worktree cleaned up | No |
 | `SessionEnd` | Session terminates | No |
 | `Stop` | Claude about to stop | Yes (continue) |
 

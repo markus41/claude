@@ -312,6 +312,56 @@ You are an expert in [domain]. When activated, you should:
 - Include tests for new functionality
 ```
 
+## Agent Teams
+
+Agent teams allow multiple Claude instances to collaborate on tasks.
+
+### Configuration
+```bash
+# Enable agent teams
+export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
+
+# Start as teammate
+claude --teammate-mode "task description"
+
+# Set team name
+export CLAUDE_CODE_TEAM_NAME="my-team"
+
+# Require plan mode for teammates
+export CLAUDE_CODE_PLAN_MODE_REQUIRED=1
+```
+
+### Team Patterns
+```typescript
+// Coordinator spawns specialized teammates
+const result = await claude("Coordinate the following tasks", {
+  agents: {
+    "frontend-dev": {
+      description: "Frontend specialist",
+      prompt: "You handle React components",
+      tools: ["Read", "Write", "Edit", "Bash"],
+    },
+    "backend-dev": {
+      description: "Backend specialist",
+      prompt: "You handle API routes",
+      tools: ["Read", "Write", "Edit", "Bash"],
+    },
+  },
+});
+```
+
+### Remote Sessions
+```bash
+# Create a cloud session
+claude --remote "implement feature X"
+
+# Resume a web session locally
+claude --teleport
+
+# Start remote control
+/remote-control
+```
+
 ## Error Handling
 
 ```typescript

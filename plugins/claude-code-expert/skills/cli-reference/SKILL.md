@@ -114,6 +114,38 @@ claude --resume <session-id>
 | `--init` | Run initialization hooks |
 | `--maintenance` | Run maintenance hooks |
 
+### PR & Review Flags
+| Flag | Description |
+|------|-------------|
+| `--from-pr <url>` | Load PR context from GitHub URL |
+| `--fallback-model` | Fallback model if primary unavailable |
+
+### Agent Team Flags
+| Flag | Description |
+|------|-------------|
+| `--teammate-mode` | Run as part of an agent team |
+| `--chrome` | Enable Chrome browser for agent |
+| `--no-chrome` | Disable Chrome browser |
+| `--strict-mcp-config` | Fail on invalid MCP config |
+| `--setting-sources` | Show which file each setting comes from |
+| `--include-partial-messages` | Include partial messages in stream output |
+| `--betas` | Enable beta features |
+| `--no-session-persistence` | Disable session persistence |
+| `--allow-dangerously-skip-permissions` | Allow skipping permissions programmatically |
+
+### Auth CLI
+```bash
+claude auth login              # Login to Anthropic
+claude auth logout             # Logout
+claude auth status             # Show auth status
+
+claude agents                  # Manage agent teams
+claude update                  # Update Claude Code
+
+claude mcp add-json <name> <json>   # Add MCP from JSON blob
+claude mcp add-from-claude-desktop  # Import from Claude Desktop
+```
+
 ### Session ID Flags
 | Flag | Description |
 |------|-------------|
@@ -191,12 +223,40 @@ claude --resume <session-id>
 |----------|-------------|
 | `CLAUDE_CODE_USE_FOUNDRY` | `1` to use Microsoft Foundry |
 
+### Agent Teams & Advanced
+| Variable | Description |
+|----------|-------------|
+| `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS` | Enable agent teams feature |
+| `CLAUDE_CODE_TEAM_NAME` | Team name for agent teams |
+| `CLAUDE_CODE_PLAN_MODE_REQUIRED` | Require plan mode for teammates |
+| `CLAUDE_CODE_DISABLE_CRON` | Disable background cron tasks |
+| `CLAUDE_CODE_DISABLE_BACKGROUND_TASKS` | Disable all background tasks |
+| `CLAUDE_CODE_SHELL_PREFIX` | Prefix for shell commands |
+
+### mTLS & Client Certificates
+| Variable | Description |
+|----------|-------------|
+| `CLAUDE_CODE_CLIENT_CERT` | Client certificate path for mTLS |
+| `CLAUDE_CODE_CLIENT_KEY` | Client private key path |
+| `CLAUDE_CODE_CLIENT_KEY_PASSPHRASE` | Passphrase for client key |
+
 ### Proxy & Network
 | Variable | Description |
 |----------|-------------|
 | `HTTP_PROXY` / `HTTPS_PROXY` | HTTP/S proxy URL |
 | `NO_PROXY` | Proxy bypass list |
 | `NODE_TLS_REJECT_UNAUTHORIZED` | `0` to skip TLS verification |
+| `CLAUDE_CODE_PROXY_RESOLVES_HOSTS` | Let proxy handle DNS resolution |
+
+### Model Aliases
+| Alias | Resolves To |
+|-------|-------------|
+| `opus` | `claude-opus-4-6` |
+| `sonnet` | `claude-sonnet-4-6` |
+| `haiku` | `claude-haiku-4-5-20251001` |
+| `opusplan` | Opus with plan mode |
+| `sonnet[1m]` | Sonnet with 1M context |
+| `claude-opus-4-6[1m]` | Opus with 1M context |
 
 ## Exit Codes
 

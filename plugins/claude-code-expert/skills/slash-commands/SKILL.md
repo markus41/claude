@@ -81,6 +81,75 @@ Complete reference for all built-in and custom slash commands.
 | `/loop <interval>` | Recurring prompts |
 | `/claude-api` | Load Claude API reference docs |
 
+### Security & Sandbox
+| Command | Description |
+|---------|-------------|
+| `/sandbox` | View or configure sandbox settings |
+| `/security-review` | Run security analysis on codebase |
+
+### Export & Sharing
+| Command | Description |
+|---------|-------------|
+| `/export` | Export conversation |
+| `/copy` | Copy last response to clipboard |
+
+### Monitoring & Insights
+| Command | Description |
+|---------|-------------|
+| `/tasks` | View background tasks |
+| `/insights` | Session insights and analytics |
+| `/stats` | Usage statistics |
+| `/usage` | Token/cost usage for current session |
+| `/extra-usage` | Extended usage details |
+
+### Releases & Updates
+| Command | Description |
+|---------|-------------|
+| `/release-notes` | View release notes for current version |
+| `/upgrade` | Upgrade Claude Code to latest |
+
+### Hooks & Plugins
+| Command | Description |
+|---------|-------------|
+| `/save-hooks` | Save current hooks configuration |
+| `/reload-plugins` | Reload installed plugins |
+
+### Browser & Display
+| Command | Description |
+|---------|-------------|
+| `/chrome` | Open Chrome browser session |
+| `/desktop` | Desktop view mode |
+| `/mobile` | Mobile view mode |
+| `/ide` | IDE integration mode |
+
+### Account & Auth
+| Command | Description |
+|---------|-------------|
+| `/login` | Login to Anthropic |
+| `/logout` | Logout from Anthropic |
+
+### Configuration
+| Command | Description |
+|---------|-------------|
+| `/rename` | Rename current conversation |
+| `/keybindings` | View or edit keybindings |
+| `/statusline` | Configure status line display |
+| `/output-style` | Change output formatting style |
+| `/privacy-settings` | View or edit privacy settings |
+| `/add-dir` | Add working directory to context |
+
+### Remote & Apps
+| Command | Description |
+|---------|-------------|
+| `/remote-env` | Configure remote environment |
+| `/remote-control` | Start remote control session |
+
+### GitHub & Slack Apps
+| Command | Description |
+|---------|-------------|
+| `/install-github-app` | Install Claude GitHub App |
+| `/install-slack-app` | Install Claude Slack App |
+
 ### Bug Reporting
 | Command | Description |
 |---------|-------------|
@@ -120,6 +189,17 @@ Complete reference for all built-in and custom slash commands.
 | `Option+T` | Toggle extended thinking |
 | `Ctrl+G` | Open input in text editor |
 | `Ctrl+V` | Paste image |
+
+### Line Editing
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl+K` | Kill text from cursor to end of line |
+| `Ctrl+U` | Kill text from cursor to start of line |
+| `Ctrl+Y` | Yank (paste) killed text |
+| `Alt+Y` | Cycle through kill ring |
+| `Alt+B` | Move back one word |
+| `Alt+F` | Move forward one word |
+| `Alt+M` | Toggle multiline mode |
 
 ### Display & Navigation
 | Shortcut | Action |

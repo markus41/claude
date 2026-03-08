@@ -57,6 +57,24 @@ Complete reference for every settings option, configuration key, and customizati
   "autoCompact": true,
   "language": "en",
   "outputStyle": "Explanatory",
+  "spinnerVerbs": true,
+  "spinnerTipsEnabled": true,
+  "showTurnDuration": false,
+  "respectGitignore": true,
+  "cleanupPeriodDays": 30,
+  "fastModePerSessionOptIn": false,
+  "autoUpdatesChannel": "stable",
+
+  // === STATUS LINE ===
+  "statusLine": {
+    "enabled": true,
+    "showModel": true,
+    "showTokens": true,
+    "showCost": true
+  },
+
+  // === FILE SUGGESTIONS ===
+  "fileSuggestion": true,
 
   // === CONTEXT WINDOW ===
   "contextWindow": {
@@ -83,6 +101,24 @@ Complete reference for every settings option, configuration key, and customizati
 
   // === HOOKS ===
   "disableAllHooks": false,
+  "allowManagedHooksOnly": false,
+  "allowedHttpHookUrls": [],
+  "httpHookAllowedEnvVars": [],
+
+  // === AUTH & LOGIN ===
+  "forceLoginMethod": null,
+
+  // === PLUGINS ===
+  "pluginTrustMessage": "",
+  "extraKnownMarketplaces": [],
+  "strictKnownMarketplaces": false,
+  "blockedMarketplaces": [],
+
+  // === CLAUDE.md ===
+  "claudeMdExcludes": [],
+
+  // === MODELS ===
+  "availableModels": [],
 
   // === ATTRIBUTION ===
   "attribution": {

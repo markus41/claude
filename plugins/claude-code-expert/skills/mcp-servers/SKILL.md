@@ -299,6 +299,50 @@ claude mcp get server-name
 }
 ```
 
+## OAuth MCP Servers
+
+Some MCP servers support OAuth authentication:
+
+```bash
+# Add OAuth-enabled server
+claude mcp add --transport http \
+  --callback-port 8080 \
+  --client-id "my-client-id" \
+  --client-secret "my-secret" \
+  github https://api.githubcopilot.com/mcp/
+```
+
+### OAuth Configuration
+```json
+{
+  "mcpServers": {
+    "oauth-server": {
+      "type": "http",
+      "url": "https://api.example.com/mcp/",
+      "oauth": {
+        "clientId": "your-client-id",
+        "clientSecret": "your-client-secret",
+        "callbackPort": 8080,
+        "scopes": ["read", "write"]
+      }
+    }
+  }
+}
+```
+
+## Additional CLI Commands
+
+```bash
+# Add MCP server from JSON blob
+claude mcp add-json my-server '{"command":"node","args":["server.js"]}'
+
+# Import servers from Claude Desktop app
+claude mcp add-from-claude-desktop
+
+# Reset MCP server (clear cached state)
+claude mcp reset server-name
+```
+
 ## Tool Naming Convention
 
 MCP tools are exposed to Claude with the naming pattern:
