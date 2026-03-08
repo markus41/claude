@@ -1,7 +1,7 @@
 {
   "name": "upgrade-suggestion",
-  "version": "1.0.0",
-  "description": "GitHub Spark-style upgrade suggestions. Analyzes your project and suggests 3 high-quality improvements — new features, performance wins, UX polish, or architecture upgrades — presented as actionable next steps.",
+  "version": "2.0.0",
+  "description": "AI-powered upgrade intelligence platform. Multi-agent council analyzes your codebase across 8 dimensions, produces confidence-scored suggestions with visual impact heatmaps, upgrade roadmaps, framework-specific deep dives, and before/after impact previews. Features innovation radar, tech debt forecasting, and coordinated upgrade bundles.",
   "author": {
     "name": "Markus Ahling"
   },
@@ -17,6 +17,34 @@
     "dx",
     "ux",
     "performance",
-    "architecture"
+    "architecture",
+    "innovation-radar",
+    "upgrade-roadmap",
+    "tech-debt",
+    "council-review",
+    "fingerprinting",
+    "deep-analysis",
+    "impact-preview",
+    "heatmap",
+    "multi-agent"
+  ],
+  "commands": [
+    "commands/suggest-upgrades.md",
+    "commands/upgrade-roadmap.md",
+    "commands/upgrade-deep-dive.md"
+  ],
+  "agents": [
+    "agents/upgrade-analyst.md",
+    "agents/performance-specialist.md",
+    "agents/security-specialist.md",
+    "agents/architecture-specialist.md",
+    "agents/ux-specialist.md",
+    "agents/dx-specialist.md",
+    "agents/council-synthesizer.md"
+  ],
+  "skills": [
+    "skills/upgrade-analysis/SKILL.md",
+    "skills/project-fingerprinting/SKILL.md",
+    "skills/innovation-radar/SKILL.md"
   ]
 }
