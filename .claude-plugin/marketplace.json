@@ -299,6 +299,28 @@
       ]
     },
     {
+      "name": "claude-code-expert",
+      "description": "Complete Claude Code knowledge base with 19 skills, 8 specialist agents, 11 commands, multi-agent council review (6 protocols, 10 specialists), and MCP documentation server. Covers CLI, hooks, MCP, SDK, permissions, memory, orchestration, cost optimization, and troubleshooting.",
+      "version": "3.0.0",
+      "author": {
+        "name": "Markus Ahling"
+      },
+      "source": "./plugins/claude-code-expert",
+      "category": "developer-tools",
+      "tags": [
+        "claude-code",
+        "sdk",
+        "mcp",
+        "hooks",
+        "agents",
+        "debugging",
+        "configuration",
+        "orchestration",
+        "council",
+        "best-practices"
+      ]
+    },
+    {
       "name": "tvs-microsoft-deploy",
       "description": "Consul (Forerunner) - Enterprise Microsoft ecosystem orchestrator for TVS (Trusted Virtual Solutions) multi-entity multi-tenant deployment. 19 specialized agents across Entra ID, Dataverse, Power Platform, Fabric, Azure IaC, Power Pages, Excel automation, embedded analytics, M365 governance, and A3 Firebase extraction. CLI-first dual control plane with Playwright browser fallback achieving 95-98% automated coverage via pac CLI, az CLI, Graph API, and Fabric REST. Covers TVS VA platform (Power Pages + Copilot Studio + Stripe billing), broker portal, Lobbi Consulting CRM, Medicare Consulting, TAIA FMO carrier normalization sprint, and multi-entity Fabric analytics. 19 agents, 17 commands, 17 skills, 9 hooks, 5 workflows.",
       "version": "1.1.0",

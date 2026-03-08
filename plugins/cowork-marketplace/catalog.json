@@ -1,0 +1,726 @@
+{
+  "version": 1,
+  "description": "Cowork marketplace item catalog. All items are backed by real plugin agents, skills, and commands.",
+  "totalItems": 17,
+  "items": [
+    {
+      "id": "fastapi-scaffold",
+      "name": "FastAPI Scaffold",
+      "type": "template",
+      "category": "engineering",
+      "difficulty": "intermediate",
+      "description": "Quick-start FastAPI project scaffold with REST API generation, SQLAlchemy models, and pytest suites.",
+      "tags": [
+        "fastapi",
+        "python",
+        "rest-api",
+        "sqlalchemy",
+        "pytest"
+      ],
+      "rating": 4.6,
+      "trustGrade": "A",
+      "pluginBindings": {
+        "fastapi-backend": {
+          "agents": [
+            "api-designer",
+            "db-modeler",
+            "test-writer"
+          ],
+          "skills": [
+            "fastapi-core"
+          ],
+          "commands": [
+            "scaffold",
+            "model",
+            "endpoint"
+          ]
+        }
+      }
+    },
+    {
+      "id": "fullstack-react-fastapi",
+      "name": "Fullstack React + FastAPI",
+      "type": "template",
+      "category": "engineering",
+      "difficulty": "intermediate",
+      "description": "Full stack with React frontend + FastAPI backend + IaC (Terraform/Ansible).",
+      "tags": [
+        "react",
+        "fastapi",
+        "fullstack",
+        "terraform",
+        "ansible"
+      ],
+      "rating": 4.5,
+      "trustGrade": "A",
+      "pluginBindings": {
+        "fullstack-iac": {
+          "agents": [
+            "frontend-architect",
+            "infra-planner"
+          ],
+          "skills": [
+            "react-scaffold",
+            "iac-templates"
+          ],
+          "commands": [
+            "scaffold-fullstack"
+          ]
+        },
+        "fastapi-backend": {
+          "agents": [
+            "api-designer"
+          ],
+          "skills": [
+            "fastapi-core"
+          ],
+          "commands": [
+            "scaffold"
+          ]
+        }
+      }
+    },
+    {
+      "id": "home-assistant-setup",
+      "name": "Home Assistant Setup",
+      "type": "template",
+      "category": "iot",
+      "difficulty": "intermediate",
+      "description": "Complete HA installation with 8 specialized agents for automation, Zigbee, energy monitoring, and security.",
+      "tags": [
+        "home-assistant",
+        "iot",
+        "smart-home",
+        "zigbee",
+        "automation"
+      ],
+      "rating": 4.7,
+      "trustGrade": "A",
+      "pluginBindings": {
+        "home-assistant-architect": {
+          "agents": [
+            "ha-core-architect",
+            "automation-builder",
+            "dashboard-designer",
+            "ollama-integration",
+            "zigbee-specialist",
+            "energy-monitor",
+            "security-hardener",
+            "backup-manager"
+          ],
+          "skills": [
+            "ha-core",
+            "ha-automations",
+            "ha-dashboards"
+          ],
+          "commands": [
+            "ha-setup",
+            "ha-automate"
+          ]
+        }
+      }
+    },
+    {
+      "id": "jira-to-pr",
+      "name": "Jira to PR",
+      "type": "workflow",
+      "category": "operations",
+      "difficulty": "beginner",
+      "description": "End-to-end workflow from Jira ticket analysis to branch creation, implementation, and PR.",
+      "tags": [
+        "jira",
+        "git",
+        "pr",
+        "workflow",
+        "automation"
+      ],
+      "rating": 4.8,
+      "trustGrade": "A",
+      "pluginBindings": {
+        "jira-orchestrator": {
+          "agents": [
+            "commit-tracker",
+            "test-strategist",
+            "pr-reviewer"
+          ],
+          "skills": [
+            "jira-orchestration",
+            "pr-workflow"
+          ],
+          "commands": [
+            "jira:work",
+            "jira:ship",
+            "jira:pr"
+          ]
+        }
+      }
+    },
+    {
+      "id": "eks-deploy-pipeline",
+      "name": "EKS Deploy Pipeline",
+      "type": "workflow",
+      "category": "devops",
+      "difficulty": "advanced",
+      "description": "Full EKS deployment with Helm chart management, validation gates, and rollback support.",
+      "tags": [
+        "eks",
+        "kubernetes",
+        "helm",
+        "deployment",
+        "aws"
+      ],
+      "rating": 4.6,
+      "trustGrade": "A",
+      "pluginBindings": {
+        "aws-eks-helm-keycloak": {
+          "agents": [
+            "eks-manager",
+            "helm-operator"
+          ],
+          "skills": [
+            "eks-management",
+            "helm-operations"
+          ],
+          "commands": [
+            "eks-deploy",
+            "helm-deploy"
+          ]
+        },
+        "deployment-pipeline": {
+          "agents": [
+            "orchestrator",
+            "validator",
+            "rollback"
+          ],
+          "skills": [
+            "ci-cd-pipeline"
+          ],
+          "commands": [
+            "deploy:start",
+            "deploy:status"
+          ]
+        }
+      }
+    },
+    {
+      "id": "microsoft-platform-deploy",
+      "name": "Microsoft Platform Deploy",
+      "type": "workflow",
+      "category": "microsoft",
+      "difficulty": "advanced",
+      "description": "Microsoft ecosystem deployment across Azure, Dataverse, Fabric, Graph API, Power Automate, and Teams.",
+      "tags": [
+        "microsoft",
+        "azure",
+        "dataverse",
+        "fabric",
+        "graph-api",
+        "teams"
+      ],
+      "rating": 4.7,
+      "trustGrade": "A",
+      "pluginBindings": {
+        "tvs-microsoft-deploy": {
+          "agents": [
+            "identity-agent",
+            "platform-agent",
+            "data-agent",
+            "ingest-agent",
+            "azure-agent",
+            "github-agent",
+            "comms-agent"
+          ],
+          "skills": [
+            "pac-cli",
+            "az-cli",
+            "fabric-rest",
+            "graph-api",
+            "power-automate-rest",
+            "stripe-integration",
+            "firebase-extract"
+          ],
+          "commands": [
+            "deploy-all",
+            "deploy-identity",
+            "deploy-dataverse",
+            "deploy-fabric"
+          ]
+        }
+      }
+    },
+    {
+      "id": "sprint-planning-automation",
+      "name": "Sprint Planning Automation",
+      "type": "workflow",
+      "category": "operations",
+      "difficulty": "beginner",
+      "description": "Automated sprint planning with capacity analysis, backlog grooming, and sprint commitment.",
+      "tags": [
+        "sprint",
+        "agile",
+        "jira",
+        "planning",
+        "scrum"
+      ],
+      "rating": 4.5,
+      "trustGrade": "A",
+      "pluginBindings": {
+        "jira-orchestrator": {
+          "agents": [
+            "sprint-planner"
+          ],
+          "skills": [
+            "jira-orchestration"
+          ],
+          "commands": [
+            "jira:sprint"
+          ]
+        },
+        "team-accelerator": {
+          "agents": [
+            "capacity-analyzer"
+          ],
+          "skills": [
+            "team-capacity"
+          ],
+          "commands": [
+            "sprint-plan"
+          ]
+        }
+      }
+    },
+    {
+      "id": "enterprise-code-reviewer",
+      "name": "Enterprise Code Reviewer",
+      "type": "agent_config",
+      "category": "engineering",
+      "difficulty": "intermediate",
+      "description": "Multi-dimensional code review with security focus, quality analysis, and test strategy.",
+      "tags": [
+        "code-review",
+        "security",
+        "quality",
+        "testing"
+      ],
+      "rating": 4.7,
+      "trustGrade": "A",
+      "pluginBindings": {
+        "jira-orchestrator": {
+          "agents": [
+            "code-reviewer",
+            "security-reviewer",
+            "commit-tracker",
+            "test-strategist"
+          ],
+          "skills": [
+            "code-review"
+          ],
+          "commands": [
+            "jira:review"
+          ]
+        },
+        "team-accelerator": {
+          "agents": [
+            "quality-analyzer"
+          ],
+          "skills": [],
+          "commands": []
+        }
+      }
+    },
+    {
+      "id": "nonprofit-exec-director",
+      "name": "Nonprofit Exec Director",
+      "type": "agent_config",
+      "category": "nonprofit",
+      "difficulty": "beginner",
+      "description": "Full nonprofit executive management suite with 11 agents for grants, board governance, membership, and compliance.",
+      "tags": [
+        "nonprofit",
+        "association",
+        "grants",
+        "governance",
+        "automation"
+      ],
+      "rating": 4.6,
+      "trustGrade": "A",
+      "pluginBindings": {
+        "exec-automator": {
+          "agents": [
+            "admin-coordinator",
+            "grants-manager",
+            "board-liaison",
+            "membership-coordinator",
+            "communications-director",
+            "finance-oversight",
+            "compliance-monitor",
+            "event-planner",
+            "hr-coordinator",
+            "strategic-planner",
+            "technology-advisor"
+          ],
+          "skills": [
+            "exec-automation"
+          ],
+          "commands": [
+            "exec:automate"
+          ]
+        }
+      }
+    },
+    {
+      "id": "design-system-architect",
+      "name": "Design System Architect",
+      "type": "agent_config",
+      "category": "design",
+      "difficulty": "intermediate",
+      "description": "Complete design system creation and management with design tokens, component libraries, and accessibility.",
+      "tags": [
+        "design-system",
+        "components",
+        "a11y",
+        "theming",
+        "tokens"
+      ],
+      "rating": 4.5,
+      "trustGrade": "A",
+      "pluginBindings": {
+        "frontend-design-system": {
+          "agents": [
+            "design-architect",
+            "component-designer",
+            "accessibility-auditor",
+            "theme-engineer",
+            "style-implementer",
+            "responsive-specialist"
+          ],
+          "skills": [
+            "design-styles",
+            "component-patterns",
+            "css-generation",
+            "keycloak-theming"
+          ],
+          "commands": [
+            "theme",
+            "component",
+            "tokens",
+            "palette"
+          ]
+        }
+      }
+    },
+    {
+      "id": "claude-code-mastery",
+      "name": "Claude Code Mastery",
+      "type": "skill_pack",
+      "category": "developer-tools",
+      "difficulty": "beginner",
+      "description": "Complete Claude Code knowledge base with 19 skills, 8 specialist agents, 11 commands, multi-agent council review (6 protocols, 10 specialists), and MCP documentation server.",
+      "tags": [
+        "claude-code",
+        "sdk",
+        "mcp",
+        "hooks",
+        "agents",
+        "debugging",
+        "configuration",
+        "orchestration",
+        "council"
+      ],
+      "rating": 4.9,
+      "trustGrade": "A",
+      "pluginBindings": {
+        "claude-code-expert": {
+          "agents": [
+            "claude-code-architect",
+            "claude-code-debugger",
+            "council-coordinator",
+            "hooks-specialist",
+            "ide-integration-specialist",
+            "mcp-configurator",
+            "permissions-security-advisor",
+            "sdk-guide"
+          ],
+          "skills": [
+            "cli-reference",
+            "configuration",
+            "hooks-system",
+            "mcp-servers",
+            "agent-sdk",
+            "ide-integrations",
+            "permissions-security",
+            "slash-commands",
+            "context-management",
+            "memory-instructions",
+            "tools-reference",
+            "extended-thinking",
+            "git-integration",
+            "testing-workflows",
+            "cost-optimization",
+            "troubleshooting",
+            "teams-collaboration",
+            "settings-deep-dive",
+            "council-review"
+          ],
+          "commands": [
+            "cc-help",
+            "cc-config",
+            "cc-hooks",
+            "cc-mcp",
+            "cc-agent",
+            "cc-troubleshoot",
+            "cc-debug",
+            "cc-setup",
+            "cc-memory",
+            "cc-orchestrate",
+            "cc-council"
+          ]
+        }
+      }
+    },
+    {
+      "id": "devops-essentials",
+      "name": "DevOps Essentials",
+      "type": "skill_pack",
+      "category": "devops",
+      "difficulty": "intermediate",
+      "description": "Cross-platform DevOps toolkit spanning AWS EKS, Helm, CI/CD pipelines, and monitoring.",
+      "tags": [
+        "devops",
+        "eks",
+        "helm",
+        "ci-cd",
+        "monitoring",
+        "kubernetes"
+      ],
+      "rating": 4.6,
+      "trustGrade": "A",
+      "pluginBindings": {
+        "aws-eks-helm-keycloak": {
+          "agents": [
+            "eks-manager",
+            "helm-operator"
+          ],
+          "skills": [
+            "eks-management",
+            "helm-operations"
+          ],
+          "commands": [
+            "eks-deploy"
+          ]
+        },
+        "deployment-pipeline": {
+          "agents": [
+            "orchestrator",
+            "validator"
+          ],
+          "skills": [
+            "ci-cd-pipeline"
+          ],
+          "commands": [
+            "deploy:start"
+          ]
+        },
+        "home-assistant-architect": {
+          "agents": [],
+          "skills": [
+            "monitoring"
+          ],
+          "commands": []
+        },
+        "jira-orchestrator": {
+          "agents": [],
+          "skills": [],
+          "commands": []
+        }
+      }
+    },
+    {
+      "id": "react-animation-toolkit",
+      "name": "React Animation Toolkit",
+      "type": "skill_pack",
+      "category": "design",
+      "difficulty": "intermediate",
+      "description": "Full animation development suite with 11 skills covering Framer Motion, GSAP, Three.js, Lottie, and CSS animations.",
+      "tags": [
+        "react",
+        "animation",
+        "framer-motion",
+        "gsap",
+        "three-js",
+        "lottie"
+      ],
+      "rating": 4.7,
+      "trustGrade": "A",
+      "pluginBindings": {
+        "react-animation-studio": {
+          "agents": [
+            "animation-architect",
+            "creative-effects-artist",
+            "interaction-specialist",
+            "motion-designer",
+            "performance-optimizer",
+            "transition-engineer"
+          ],
+          "skills": [
+            "framer-motion",
+            "gsap",
+            "3d-animations",
+            "css-animations",
+            "scroll-animations",
+            "spring-physics",
+            "svg-animations",
+            "text-animations",
+            "accent-animations",
+            "background-animations",
+            "creative-effects"
+          ],
+          "commands": [
+            "animate",
+            "animate-3d",
+            "animate-scroll",
+            "animate-text"
+          ]
+        }
+      }
+    },
+    {
+      "id": "marketplace-intelligence",
+      "name": "Marketplace Intelligence",
+      "type": "skill_pack",
+      "category": "meta",
+      "difficulty": "advanced",
+      "description": "Plugin marketplace analytics and management: trust scoring, composition engine, federation, and developer studio.",
+      "tags": [
+        "marketplace",
+        "plugins",
+        "trust-scoring",
+        "federation",
+        "analytics"
+      ],
+      "rating": 4.4,
+      "trustGrade": "A",
+      "pluginBindings": {
+        "marketplace-pro": {
+          "agents": [],
+          "skills": [
+            "trust-scoring",
+            "composition-engine",
+            "federation",
+            "developer-studio"
+          ],
+          "commands": []
+        }
+      }
+    },
+    {
+      "id": "enterprise-release",
+      "name": "Enterprise Release",
+      "type": "session_blueprint",
+      "category": "operations",
+      "difficulty": "advanced",
+      "description": "Full release pipeline with changelog generation, deployment orchestration, and validation.",
+      "tags": [
+        "release",
+        "deployment",
+        "changelog",
+        "ci-cd"
+      ],
+      "rating": 4.6,
+      "trustGrade": "A",
+      "pluginBindings": {
+        "jira-orchestrator": {
+          "agents": [
+            "commit-tracker"
+          ],
+          "skills": [
+            "jira-orchestration"
+          ],
+          "commands": [
+            "jira:release"
+          ]
+        },
+        "deployment-pipeline": {
+          "agents": [
+            "orchestrator",
+            "validator"
+          ],
+          "skills": [
+            "ci-cd-pipeline"
+          ],
+          "commands": [
+            "deploy:start"
+          ]
+        }
+      }
+    },
+    {
+      "id": "keycloak-multi-tenant",
+      "name": "Keycloak Multi-Tenant",
+      "type": "session_blueprint",
+      "category": "security",
+      "difficulty": "advanced",
+      "description": "Multi-tenant authentication with Keycloak, themed portals, and tenant provisioning.",
+      "tags": [
+        "keycloak",
+        "multi-tenant",
+        "auth",
+        "theming",
+        "security"
+      ],
+      "rating": 4.5,
+      "trustGrade": "A",
+      "pluginBindings": {
+        "lobbi-platform-manager": {
+          "agents": [
+            "keycloak-specialist",
+            "tenant-provisioner"
+          ],
+          "skills": [],
+          "commands": []
+        },
+        "frontend-design-system": {
+          "agents": [
+            "theme-engineer"
+          ],
+          "skills": [
+            "keycloak-theming"
+          ],
+          "commands": [
+            "theme"
+          ]
+        }
+      }
+    },
+    {
+      "id": "project-scaffolder",
+      "name": "Project Scaffolder",
+      "type": "session_blueprint",
+      "category": "engineering",
+      "difficulty": "beginner",
+      "description": "Universal project scaffolding from templates using Handlebars, Cookiecutter, Copier, and Maven archetypes.",
+      "tags": [
+        "templates",
+        "scaffolding",
+        "project-setup",
+        "cookiecutter"
+      ],
+      "rating": 4.4,
+      "trustGrade": "A",
+      "pluginBindings": {
+        "claude-code-templating-plugin": {
+          "agents": [
+            "template-scaffolder",
+            "config-generator"
+          ],
+          "skills": [
+            "templating"
+          ],
+          "commands": [
+            "scaffold"
+          ]
+        }
+      }
+    }
+  ]
+}

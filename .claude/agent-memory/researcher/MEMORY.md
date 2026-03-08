@@ -5,6 +5,7 @@
 
 ## Status
 COMPREHENSIVE DOCUMENTATION RESEARCH COMPLETE
+**2026-03-08 UPDATE**: Plugin discovery & marketplace architecture documented
 
 ## What This Contains
 Complete coverage of Claude Code documentation from code.claude.com/docs including:
@@ -130,4 +131,97 @@ This documentation base enables building plugins that:
 - Approximately 100K tokens used for comprehensive retrieval
 - Organized as single knowledge base document
 - Suitable for building large-scale plugins with complete feature coverage
+
+## Plugin Discovery & Marketplace Architecture (2026-03-08)
+
+### Plugin File Structure for Discovery
+- **Manifest**: `.claude-plugin/plugin.json` (required field: `name` only, all others optional)
+- **Default locations** (auto-discovered):
+  - `commands/` - skill markdown files (legacy; use skills/ for new)
+  - `agents/` - agent .md files with YAML frontmatter
+  - `skills/` - skill folders with SKILL.md inside
+  - `hooks/hooks.json` - hook configurations
+  - `.mcp.json` - MCP server configs
+  - `.lsp.json` - LSP server configs
+  - `settings.json` - default plugin settings
+
+### Plugin Manifest Schema (plugin.json)
+**Required**: `name` only (kebab-case, no spaces)
+**Metadata**: version, description, author, homepage, repository, license, keywords
+**Component paths**: commands, agents, skills, hooks, mcpServers, lspServers, outputStyles
+**Key**: Component paths supplement default dirs (don't replace them)
+**Environment variable**: `${CLAUDE_PLUGIN_ROOT}` for absolute paths in hooks/MCP
+
+### Plugin Namespacing
+- Skills in plugins are namespaced: `/plugin-name:skill-name` (prevents conflicts)
+- Standalone config uses short names: `/skill-name`
+- Plugins always namespaced unless part of official marketplace
+
+### How Marketplaces Work (marketplace.json)
+**Location**: `.claude-plugin/marketplace.json` in repo root
+**Purpose**: Catalog of plugins with version tracking, auto-updates, multiple sources
+
+**Marketplace Required Fields**:
+- `name` - marketplace identifier (kebab-case, public-facing)
+- `owner` - object with `name` (required) and optional `email`
+- `plugins` - array of plugin entries
+
+**Plugin Entry Fields**:
+- `name` - plugin identifier (kebab-case)
+- `source` - where to fetch plugin (relative path, GitHub, npm, git URL, git-subdir)
+
+**Plugin Sources Supported**:
+- Relative path: `"./plugins/my-plugin"` (Git-based only)
+- GitHub: `{"source": "github", "repo": "owner/repo", "ref?", "sha?"}`
+- Git URL: `{"source": "url", "url": "https://...", "ref?", "sha?"}`
+- Git subdir: `{"source": "git-subdir", "url": "...", "path": "...", "ref?", "sha?"}`
+- npm: `{"source": "npm", "package": "@org/plugin", "version?", "registry?"}`
+- pip: `{"source": "pip", "package": "name", "version?", "registry?"}`
+
+**Optional Plugin Entry Fields**:
+- description, version, author, homepage, repository, license, keywords, category, tags
+- strict (true=default, plugin.json is authority; false=marketplace entry is authority)
+- Component overrides: commands, agents, hooks, mcpServers, lspServers
+
+### Plugin Installation & Caching
+- Plugins installed from marketplaces are copied to **cache** at `~/.claude/plugins/cache`
+- NOT used in-place from marketplace repo
+- Path traversal limitation: plugins cannot reference files outside their directory (`../` fails)
+- Symlinks honored during copy (workaround for shared files)
+
+### Installation Scopes
+- **user** (default): `~/.claude/settings.json` - personal, all projects
+- **project**: `.claude/settings.json` - team, shared via git
+- **local**: `.claude/settings.local.json` - project-specific, gitignored
+- **managed**: Read-only, admin-updated
+
+### Marketplace Distribution
+- Host on GitHub (easiest): users add with `/plugin marketplace add owner/repo`
+- Git services: GitLab, Bitbucket, self-hosted all supported
+- Private repos: use GITHUB_TOKEN, GITLAB_TOKEN, BITBUCKET_TOKEN env vars for auto-updates
+- Version management: MAJOR.MINOR.PATCH semantic versioning
+- Release channels: Pin marketplace entries to different refs for stable/latest
+
+### Registry/Caching Behavior
+- Plugins are versioned and cached locally
+- Update detection: version in plugin.json must change for update trigger
+- If version in both plugin.json and marketplace.json, plugin.json wins
+- Marketplace entry `strict: false` means no plugin.json needed (marketplace defines all)
+
+### Reserved Marketplace Names
+Cannot use: claude-code-marketplace, claude-code-plugins, claude-plugins-official, anthropic-marketplace, anthropic-plugins, agent-skills, life-sciences
+
+### Plugin CLI Commands
+- `claude plugin install <name>[@marketplace]` - install plugin
+- `claude plugin uninstall <name>` - remove plugin
+- `claude plugin enable/disable <name>` - toggle without uninstall
+- `claude plugin update <name>` - update to latest version
+- `claude plugin validate .` - validate plugin.json or marketplace.json
+- `--plugin-dir ./path` flag for development/testing (loads directly without cache)
+
+### Testing & Validation
+- Use `claude --plugin-dir ./my-plugin` for development
+- Load multiple: `--plugin-dir ./p1 --plugin-dir ./p2`
+- Common errors: manifest syntax, components in `.claude-plugin/` (wrong location)
+- Validation: `claude plugin validate .` or `/plugin validate`
 

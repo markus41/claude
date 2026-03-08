@@ -55,16 +55,26 @@ Shows all items in the DevOps Mastery curated collection.
 
 ## How It Works
 
-1. **Query parsing** - Extracts search terms and filter flags
-2. **Catalog search** - Matches against the seed catalog of 17 items sourced from 16 installed plugins
-3. **Filter application** - Applies type, category, difficulty, trust grade filters
-4. **Sort & display** - Orders results and presents them with:
+1. **Load catalog** - Read the structured catalog from `catalog.json` in the plugin root directory. This file contains all 17 items with their metadata, tags, ratings, and plugin bindings.
+2. **Query parsing** - Extracts search terms and filter flags
+3. **Catalog search** - Matches against item names, descriptions, tags, and plugin binding names
+4. **Filter application** - Applies type, category, difficulty, trust grade filters
+5. **Sort & display** - Orders results and presents them with:
    - Display name and description
    - Item type badge
    - Rating and install count
    - Plugin bindings (which agents/skills/commands power it)
    - Trust grade (A-F)
    - Difficulty level
+
+## Data Source
+
+The catalog data is in `catalog.json` at the plugin root. Read this file to get the full list of marketplace items. Each item has:
+
+- `id`, `name`, `type`, `category`, `difficulty`, `description`
+- `tags` array for search matching
+- `rating` and `trustGrade`
+- `pluginBindings` mapping plugin names to their agents, skills, and commands
 
 ## Catalog Contents
 
