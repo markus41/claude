@@ -355,6 +355,28 @@
         "planner",
         "m365-governance"
       ]
+    },
+    {
+      "name": "upgrade-suggestion",
+      "description": "GitHub Spark-style upgrade suggestions. Analyzes your project and suggests 3 high-quality improvements — new features, performance wins, UX polish, or architecture upgrades — presented as actionable next steps.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Markus Ahling"
+      },
+      "source": "./plugins/upgrade-suggestion",
+      "category": "developer-tools",
+      "tags": [
+        "upgrades",
+        "suggestions",
+        "improvements",
+        "spark",
+        "ai-suggestions",
+        "code-quality",
+        "dx",
+        "ux",
+        "performance",
+        "architecture"
+      ]
     }
   ]
 }
