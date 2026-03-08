@@ -1,6 +1,6 @@
 ---
 name: plugin-catalog
-description: Domain knowledge for the cowork marketplace seed catalog, including all 16 items mapped to 15 installed plugins with their agents, skills, and commands
+description: Domain knowledge for the cowork marketplace seed catalog, including all 17 items mapped to 16 installed plugins with their agents, skills, and commands
 allowed-tools:
   - Read
   - Glob
@@ -28,7 +28,7 @@ Domain knowledge for browsing and searching the cowork marketplace catalog.
 
 ## Catalog Structure
 
-The marketplace contains 16 items across 5 types:
+The marketplace contains 17 items across 5 types:
 
 ### Templates (3)
 Quick-start project scaffolds that generate complete project structures.
@@ -58,11 +58,12 @@ Pre-configured agent teams for specific roles.
 | nonprofit-exec-director | exec-automator | 11 agents including admin-coordinator, grants-manager, board-liaison | Full nonprofit executive management suite |
 | design-system-architect | frontend-design-system | design-tokens-architect, component-library-builder, a11y-specialist, theme-builder, white-label-specialist, documentation-generator | Complete design system creation and management |
 
-### Skill Packs (3)
+### Skill Packs (4)
 Bundles of domain expertise and workflows.
 
 | Item | Plugin | Skills | Key Capabilities |
 |------|--------|--------|-----------------|
+| claude-code-mastery | claude-code-expert | 18 skills including cli-reference, hooks-system, mcp-servers, agent-sdk, cost-optimization, troubleshooting | Complete Claude Code knowledge base with 7 agents, 10 commands, and MCP server |
 | devops-essentials | aws-eks-helm-keycloak, deployment-pipeline, home-assistant-architect, jira-orchestrator | eks-management, helm-operations, ci-cd-pipeline, monitoring | Cross-platform DevOps toolkit |
 | react-animation-toolkit | react-animation-studio | 11 skills including framer-motion, gsap, three-js, lottie | Full animation development suite |
 | marketplace-intelligence | marketplace-pro | trust-scoring, composition-engine, federation, developer-studio | Plugin marketplace analytics and management |

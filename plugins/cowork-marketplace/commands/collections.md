@@ -26,7 +26,7 @@ View curated collections of cowork marketplace items organized by domain and use
 ```
 /cowork-marketplace:collections
 ```
-Shows all 9 curated collections with item counts and descriptions.
+Shows all 10 curated collections with item counts and descriptions.
 
 ### View specific collection
 ```
@@ -47,6 +47,7 @@ Shows all items in the DevOps Mastery collection with their details and plugin b
 | Nonprofit & Association | 1 | nonprofit, association, management |
 | Security & Authentication | 2 | security, keycloak, authentication |
 | Plugin Ecosystem Tools | 2 | marketplace, plugins, meta-tools |
+| Developer Tools | 2 | claude-code, sdk, mcp, hooks, debugging, best-practices |
 
 ## Skills Used
 - plugin-catalog
