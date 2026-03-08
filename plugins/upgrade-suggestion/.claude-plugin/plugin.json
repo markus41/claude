@@ -27,24 +27,5 @@
     "impact-preview",
     "heatmap",
     "multi-agent"
-  ],
-  "commands": [
-    "commands/suggest-upgrades.md",
-    "commands/upgrade-roadmap.md",
-    "commands/upgrade-deep-dive.md"
-  ],
-  "agents": [
-    "agents/upgrade-analyst.md",
-    "agents/performance-specialist.md",
-    "agents/security-specialist.md",
-    "agents/architecture-specialist.md",
-    "agents/ux-specialist.md",
-    "agents/dx-specialist.md",
-    "agents/council-synthesizer.md"
-  ],
-  "skills": [
-    "skills/upgrade-analysis/SKILL.md",
-    "skills/project-fingerprinting/SKILL.md",
-    "skills/innovation-radar/SKILL.md"
   ]
 }
