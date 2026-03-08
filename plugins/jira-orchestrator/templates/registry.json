@@ -84,7 +84,11 @@
       "description": "Confluence page templates",
       "templates": [
         {"name": "tdd", "file": "tdd.md.template", "required": true},
-        {"name": "runbook", "file": "runbook.md.template", "required": true}
+        {"name": "runbook", "file": "runbook.md.template", "required": true},
+        {"name": "release-status", "file": "release-status.md.template", "required": true},
+        {"name": "incident-timeline", "file": "incident-timeline.md.template", "required": true},
+        {"name": "rollback-log", "file": "rollback-log.md.template", "required": true},
+        {"name": "sla-breach-report", "file": "sla-breach-report.md.template", "required": true}
       ]
     },
     "helm": {

@@ -1,0 +1,46 @@
+version: 1
+orchestration:
+  alert_routing:
+    teams_webhook_secret: FABRIC_PIPELINE_TEAMS_WEBHOOK
+    email_distribution:
+      - taia-readiness@tvs.example
+      - dataops@tvs.example
+  pipelines:
+    - id: pl_a3_archive_ingestion
+      notebook: fabric/notebooks/a3_archive_validate.ipynb
+      schedule:
+        frequency: daily
+        cron_utc: "0 2 * * *"
+      depends_on: []
+      outputs:
+        - br_firebase_commissions_raw
+        - sv_taia_commission_fact
+    - id: pl_commission_normalization
+      notebook: fabric/notebooks/tvs_curated_transform.ipynb
+      schedule:
+        frequency: hourly
+        cron_utc: "15 * * * *"
+      depends_on:
+        - pl_a3_archive_ingestion
+      outputs:
+        - sv_commission_fact_normalized
+        - sv_carrier_dim_conformed
+    - id: pl_consulting_alignment
+      notebook: fabric/notebooks/consulting_pipeline.ipynb
+      schedule:
+        frequency: hourly
+        cron_utc: "30 * * * *"
+      depends_on:
+        - pl_commission_normalization
+      outputs:
+        - sv_sales_fact_conformed
+    - id: pl_consolidated_reporting
+      notebook: fabric/notebooks/consolidated_rollup.ipynb
+      schedule:
+        frequency: daily
+        cron_utc: "0 4 * * *"
+      depends_on:
+        - pl_consulting_alignment
+      outputs:
+        - gd_consolidated_sale_room_kpi
+        - gd_due_diligence_entity_rollup

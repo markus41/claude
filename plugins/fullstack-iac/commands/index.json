@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "plugin": "fullstack-iac",
+  "type": "commands",
+  "generatedBy": "scripts/generate-plugin-indexes.mjs",
+  "entries": [
+    {
+      "name": "fullstack-iac:ansible",
+      "intent": "Generate Ansible playbooks and roles for server provisioning and configuration management",
+      "tags": [
+        "fullstack-iac",
+        "command",
+        "ansible"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/ansible.md"
+    },
+    {
+      "name": "fullstack-iac:api",
+      "intent": "Scaffold FastAPI backend with production features - auth, database, API docs, Docker",
+      "tags": [
+        "fullstack-iac",
+        "command",
+        "api"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/api.md"
+    },
+    {
+      "name": "fullstack-iac:docker",
+      "intent": "Generate optimized Docker configurations with multi-stage builds and docker-compose",
+      "tags": [
+        "fullstack-iac",
+        "command",
+        "docker"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/docker.md"
+    },
+    {
+      "name": "fullstack-iac:frontend",
+      "intent": "Scaffold React/Vite frontend with TypeScript, routing, state management, and deployment",
+      "tags": [
+        "fullstack-iac",
+        "command",
+        "frontend"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/frontend.md"
+    },
+    {
+      "name": "fullstack-iac:infra",
+      "intent": "Generate Terraform infrastructure as code for AWS, Azure, or GCP",
+      "tags": [
+        "fullstack-iac",
+        "command",
+        "infra"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/infra.md"
+    },
+    {
+      "name": "fullstack-iac:k8s",
+      "intent": "Generate Kubernetes manifests or Helm charts with best practices and production readiness",
+      "tags": [
+        "fullstack-iac",
+        "command",
+        "k8s"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/k8s.md"
+    },
+    {
+      "name": "fullstack-iac:monorepo",
+      "intent": "Create full-stack monorepo with multiple services - API, web, admin, mobile",
+      "tags": [
+        "fullstack-iac",
+        "command",
+        "monorepo"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/monorepo.md"
+    },
+    {
+      "name": "fullstack-iac:new",
+      "intent": "Create complete full-stack project with all configurations - infrastructure, frontend, backend, CI/CD",
+      "tags": [
+        "fullstack-iac",
+        "command",
+        "new"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/new.md"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+version: 1
+model: taia_due_diligence
+certification:
+  status: certified
+  owner: analytics-governance
+  review_cycle_days: 30
+datasets:
+  - name: ds_commission_reconciliation
+    source_table: gd_commission_reconciliation_kpi
+  - name: ds_consolidated_sale_room
+    source_table: gd_consolidated_sale_room_kpi
+row_level_security:
+  roles:
+    - name: buyer_clean_room
+      filter: entity_id IN USER_PERMITTED_ENTITIES()
+    - name: internal_exec
+      filter: true
+sharing:
+  mode: controlled_due_diligence
+  external_access_requires_watermark: true

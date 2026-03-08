@@ -1,7 +1,20 @@
 ---
+name: lobbi-platform-manager:keycloak-theme
+intent: Generate and deploy tenant-specific Keycloak themes
+tags:
+  - lobbi-platform-manager
+  - command
+  - keycloak-theme
+inputs: []
+risk: medium
+cost: medium
 description: Generate and deploy tenant-specific Keycloak themes
-argument-hint: "[--org-id ORG] [--primary-color COLOR] [--logo-url URL]"
-allowed-tools: ["Bash", "Read", "Write", "Edit", "Glob"]
+allowed-tools:
+  - Bash
+  - Read
+  - Write
+  - Edit
+  - Glob
 ---
 
 Generate and deploy tenant-specific Keycloak themes with custom branding (colors, logos, CSS) for multi-tenant organizations.

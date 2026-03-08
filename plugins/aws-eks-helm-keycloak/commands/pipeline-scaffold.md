@@ -1,4 +1,13 @@
 ---
+name: aws-eks-helm-keycloak:pipeline-scaffold
+intent: Generate Harness pipeline for EKS Helm deployments with Keycloak integration
+tags:
+  - aws-eks-helm-keycloak
+  - command
+  - pipeline-scaffold
+inputs: []
+risk: medium
+cost: medium
 description: Generate Harness pipeline for EKS Helm deployments with Keycloak integration
 ---
 

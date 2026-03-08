@@ -1,16 +1,14 @@
 ---
 name: jira:metrics
+intent: Generate real-time metrics dashboard with SLA tracking, agent performance, and throughput analysis
+tags:
+  - jira-orchestrator
+  - command
+  - metrics
+inputs: []
+risk: medium
+cost: medium
 description: Generate real-time metrics dashboard with SLA tracking, agent performance, and throughput analysis
-arguments:
-  - name: format
-    description: Output format (ascii, markdown, json, confluence)
-    required: false
-    default: markdown
-  - name: period
-    description: Time period (today, week, month, sprint)
-    required: false
-    default: today
-version: 1.0.0
 ---
 
 # Jira Orchestrator Metrics Dashboard

@@ -1,16 +1,15 @@
 ---
 name: chain-of-thought-reasoner
+intent: Linear step-by-step reasoning agent for sequential problem solving. ALWAYS queries Context7 for documentation before reasoning about any library, framework, or API.
+tags:
+  - jira-orchestrator
+  - agent
+  - chain-of-thought-reasoner
+inputs: []
+risk: medium
+cost: medium
 description: Linear step-by-step reasoning agent for sequential problem solving. ALWAYS queries Context7 for documentation before reasoning about any library, framework, or API.
 model: sonnet
-color: blue
-whenToUse: |
-  Activate when:
-  - Breaking down complex problems into sequential steps
-  - Debugging issues that require systematic investigation
-  - Planning implementation approaches methodically
-  - Analyzing requirements step-by-step
-  - Need clear, traceable reasoning path
-  - Problems have linear dependencies
 tools:
   - Read
   - Grep
@@ -23,23 +22,6 @@ tools:
   - mcp__plugin_jira-orchestrator_memory__create_entities
   - mcp__atlassian__getJiraIssue
   - mcp__atlassian__searchJiraIssuesUsingJql
-keywords:
-  - reasoning
-  - step-by-step
-  - chain-of-thought
-  - cot
-  - sequential
-  - linear
-  - analysis
-  - systematic
-  - methodical
-capabilities:
-  - linear_reasoning
-  - sequential_analysis
-  - step_decomposition
-  - documentation_lookup
-  - knowledge_tracking
-temperature: 0.3
 ---
 
 # Chain-of-Thought Reasoner Agent

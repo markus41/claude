@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "plugin": "marketplace-pro",
+  "type": "agents",
+  "generatedBy": "scripts/generate-plugin-indexes.mjs",
+  "entries": [
+    {
+      "name": "marketplace-advisor",
+      "intent": "Specialized agent for marketplace-pro guidance, plugin selection, and troubleshooting",
+      "tags": [
+        "marketplace-pro",
+        "agent",
+        "marketplace-advisor"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/marketplace-advisor.md"
+    }
+  ]
+}

@@ -1,7 +1,15 @@
 ---
 name: exec:orchestrate
+intent: Full pipeline orchestrator for executive director automation - analyze documents, map processes, score automation potential, generate LangGraph workflows, simulate execution, and deploy AI agents
+tags:
+  - exec-automator
+  - command
+  - orchestrate
+inputs: []
+risk: medium
+cost: medium
 description: Full pipeline orchestrator for executive director automation - analyze documents, map processes, score automation potential, generate LangGraph workflows, simulate execution, and deploy AI agents
-argument-hint: "[document-path] [--phase=all|analyze|map|score|generate|simulate|deploy] [--interactive] [--output-dir=./automation-output]"
+model: sonnet
 allowed-tools:
   - Read
   - Write
@@ -20,7 +28,6 @@ allowed-tools:
   - mcp__exec-automator__monitor_execution
   - mcp__obsidian__obsidian_append_content
   - mcp__obsidian__obsidian_get_file_contents
-model: sonnet
 ---
 
 # Executive Director Automation Orchestrator

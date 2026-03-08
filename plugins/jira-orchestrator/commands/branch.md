@@ -1,23 +1,14 @@
 ---
 name: jira:branch
-description: Create feature branch with Jira issue key naming and auto-transition
-arguments:
-  - name: issue_key
-    description: Jira issue key (e.g., PROJ-123)
-    required: true
-  - name: description
-    description: Branch description (kebab-case, auto-generated from issue if omitted)
-    required: false
-  - name: type
-    description: Branch type (feature, bugfix, hotfix, release)
-    default: feature
-  - name: no_transition
-    description: Skip auto-transitioning Jira issue to "In Progress"
-    default: false
+intent: Create feature branch with Jira issue key naming and auto-transition
 tags:
   - jira
   - git
   - branches
+inputs: []
+risk: medium
+cost: medium
+description: Create feature branch with Jira issue key naming and auto-transition
 ---
 
 # Jira Branch Creation

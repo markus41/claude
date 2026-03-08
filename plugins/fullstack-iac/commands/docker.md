@@ -1,7 +1,19 @@
 ---
+name: fullstack-iac:docker
+intent: Generate optimized Docker configurations with multi-stage builds and docker-compose
+tags:
+  - fullstack-iac
+  - command
+  - docker
+inputs: []
+risk: medium
+cost: medium
 description: Generate optimized Docker configurations with multi-stage builds and docker-compose
-argument-hint: "[name] --compose --multi-stage"
-allowed-tools: ["Write", "Bash", "Read", "Edit"]
+allowed-tools:
+  - Write
+  - Bash
+  - Read
+  - Edit
 ---
 
 # Zenith Docker

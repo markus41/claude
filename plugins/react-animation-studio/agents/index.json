@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "plugin": "react-animation-studio",
+  "type": "agents",
+  "generatedBy": "scripts/generate-plugin-indexes.mjs",
+  "entries": [
+    {
+      "name": "react-animation-studio:animation-architect",
+      "intent": "Animation Architect",
+      "tags": [
+        "react-animation-studio",
+        "agent",
+        "animation-architect"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/animation-architect.md"
+    },
+    {
+      "name": "react-animation-studio:creative-effects-artist",
+      "intent": "Creative Effects Artist Agent",
+      "tags": [
+        "react-animation-studio",
+        "agent",
+        "creative-effects-artist"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/creative-effects-artist.md"
+    },
+    {
+      "name": "react-animation-studio:interaction-specialist",
+      "intent": "Interaction Specialist",
+      "tags": [
+        "react-animation-studio",
+        "agent",
+        "interaction-specialist"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/interaction-specialist.md"
+    },
+    {
+      "name": "react-animation-studio:motion-designer",
+      "intent": "Motion Designer",
+      "tags": [
+        "react-animation-studio",
+        "agent",
+        "motion-designer"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/motion-designer.md"
+    },
+    {
+      "name": "react-animation-studio:performance-optimizer",
+      "intent": "Performance Optimizer",
+      "tags": [
+        "react-animation-studio",
+        "agent",
+        "performance-optimizer"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/performance-optimizer.md"
+    },
+    {
+      "name": "react-animation-studio:transition-engineer",
+      "intent": "Transition Engineer",
+      "tags": [
+        "react-animation-studio",
+        "agent",
+        "transition-engineer"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/transition-engineer.md"
+    }
+  ]
+}

@@ -1,26 +1,15 @@
 ---
 name: exec:score
-description: Calculate automation potential scores using 6-factor weighted algorithm
-color: green
-icon: bar-chart
+intent: Calculate automation potential scores using 6-factor weighted algorithm
 tags:
   - scoring
   - automation
   - analysis
+inputs: []
+risk: medium
+cost: medium
+description: Calculate automation potential scores using 6-factor weighted algorithm
 model: claude-sonnet-4-5
-arguments:
-  - name: input
-    description: Path to mapped responsibilities or "latest"
-    required: false
-    default: latest
-  - name: weights
-    description: Custom weights file or "default"
-    required: false
-    default: default
-  - name: threshold
-    description: Minimum score to include (0-100)
-    required: false
-    default: 50
 ---
 
 # Automation Potential Scoring Engine

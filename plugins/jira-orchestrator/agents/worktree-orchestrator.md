@@ -1,3 +1,15 @@
+---
+name: jira-orchestrator:worktree-orchestrator
+intent: Worktree Orchestrator Agent
+tags:
+  - jira-orchestrator
+  - agent
+  - worktree-orchestrator
+inputs: []
+risk: medium
+cost: medium
+---
+
 # Worktree Orchestrator Agent
 
 **Purpose:** Manage git worktrees for parallel development with sub-agents

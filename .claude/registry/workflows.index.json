@@ -1,17 +1,471 @@
 {
-  "$schema":"./schema/workflows.schema.json",
-  "version":"3.0.0",
-  "note":"Full metadata in workflows.index.json",
-  "fullVersion":"workflows.index.json",
-  "workflows":{
-    "development":[],
-    "devops":[],
-    "project-management":[],
-    "integration":[],
-    "data":[],
-    "group":[],
-    "documentation":[],
-    "infrastructure":[],
-    "lobbi-platform":[]
+  "$schema": "./schema/workflows.schema.json",
+  "version": "3.0.0",
+  "description": "Full workflow metadata registry - 20 multi-agent orchestration workflows",
+  "workflows": {
+    "development": [
+      {
+        "id": "feature-development",
+        "name": "Feature Development",
+        "description": "End-to-end feature development workflow using multiple agents",
+        "pattern": "pipeline",
+        "file": "../workflows/feature-development.md",
+        "format": "markdown",
+        "agents": [
+          "planner",
+          "coder",
+          "tester",
+          "reviewer",
+          "docker-builder",
+          "k8s-deployer"
+        ],
+        "triggers": [
+          "feature",
+          "implement",
+          "develop"
+        ],
+        "priority": "medium"
+      },
+      {
+        "id": "code-review",
+        "name": "Code Review",
+        "description": "Comprehensive code review workflow with multiple perspectives",
+        "pattern": "mesh",
+        "file": "../workflows/code-review.md",
+        "format": "markdown",
+        "agents": [
+          "reviewer",
+          "security-auditor",
+          "code-analyzer"
+        ],
+        "triggers": [
+          "review code",
+          "code review",
+          "review PR"
+        ],
+        "priority": "medium"
+      },
+      {
+        "id": "e2e-test-suite",
+        "name": "E2E Test Suite",
+        "description": "Automated E2E testing with parallel execution, comprehensive coverage, and detailed reporting",
+        "pattern": "parallel-sequential-hybrid",
+        "file": "../workflows/e2e-test-suite.md",
+        "format": "markdown",
+        "agents": [
+          "selenium-test-architect",
+          "auth-flow-tester",
+          "member-journey-tester",
+          "payment-flow-tester",
+          "tenant-operations-tester",
+          "test-data-manager",
+          "report-generator"
+        ],
+        "triggers": [
+          "run e2e tests",
+          "execute test suite",
+          "run integration tests",
+          "test deployment"
+        ],
+        "priority": "high"
+      }
+    ],
+    "devops": [
+      {
+        "id": "ci-cd-workflow",
+        "name": "CI/CD Pipeline",
+        "description": "Automated workflow that orchestrates code review, testing, building, and deployment",
+        "pattern": "sequential",
+        "file": "../workflows/ci-cd-workflow.json",
+        "format": "json",
+        "agents": [
+          "code-review-agent",
+          "testing-agent",
+          "security-scan-agent",
+          "build-agent",
+          "deploy-agent"
+        ],
+        "triggers": [
+          "ci/cd",
+          "build and deploy",
+          "continuous integration"
+        ],
+        "priority": "high"
+      },
+      {
+        "id": "deployment-pipeline",
+        "name": "Deployment Pipeline",
+        "description": "End-to-end deployment workflow with Helm, testing, and validation",
+        "pattern": "sequential",
+        "file": "../workflows/deployment-pipeline.md",
+        "format": "markdown",
+        "agents": [
+          "helm-chart-developer",
+          "helm-values-manager",
+          "helm-release-manager",
+          "k8s-debugger",
+          "k8s-security-specialist"
+        ],
+        "triggers": [
+          "deploy to",
+          "release to",
+          "deployment pipeline"
+        ],
+        "priority": "critical"
+      },
+      {
+        "id": "incident-response",
+        "name": "Incident Response",
+        "description": "Production incident response and resolution workflow",
+        "pattern": "hierarchical",
+        "file": "../workflows/incident-response.md",
+        "format": "markdown",
+        "agents": [
+          "incident-responder",
+          "observability",
+          "coder",
+          "k8s-deployer"
+        ],
+        "triggers": [
+          "incident",
+          "outage",
+          "production down"
+        ],
+        "priority": "critical"
+      }
+    ],
+    "project-management": [
+      {
+        "id": "scrum-ceremonies",
+        "name": "Scrum Ceremonies",
+        "description": "Complete Scrum ceremonies workflow for sprint execution",
+        "pattern": "pipeline",
+        "file": "../workflows/scrum-ceremonies.md",
+        "format": "markdown",
+        "agents": [
+          "scrum-master",
+          "product-owner",
+          "agile-coach",
+          "sprint-analyst",
+          "confluence-specialist",
+          "jira-specialist"
+        ],
+        "triggers": [
+          "scrum",
+          "sprint ceremony",
+          "standup"
+        ],
+        "priority": "medium"
+      },
+      {
+        "id": "sprint-management",
+        "name": "Sprint Management",
+        "description": "Sprint lifecycle management workflow with Jira and Confluence integration",
+        "pattern": "hierarchical",
+        "file": "../workflows/sprint-management.md",
+        "format": "markdown",
+        "agents": [
+          "agile-coach",
+          "jira-specialist",
+          "confluence-specialist",
+          "project-tracker"
+        ],
+        "triggers": [
+          "sprint plan",
+          "sprint review",
+          "sprint management"
+        ],
+        "priority": "medium"
+      }
+    ],
+    "integration": [
+      {
+        "id": "atlassian-integration",
+        "name": "Atlassian Integration",
+        "description": "End-to-end workflow integrating Jira, Confluence, and development processes",
+        "pattern": "pipeline",
+        "file": "../workflows/atlassian-integration.md",
+        "format": "markdown",
+        "agents": [
+          "jira-specialist",
+          "planner",
+          "coder",
+          "tester",
+          "confluence-specialist",
+          "agile-coach"
+        ],
+        "triggers": [
+          "jira workflow",
+          "atlassian",
+          "jira and confluence"
+        ],
+        "priority": "medium"
+      },
+      {
+        "id": "subscription-upgrade",
+        "name": "Subscription Upgrade",
+        "description": "Manage subscription changes with payment processing, feature unlocking, proration, and rollback",
+        "pattern": "transactional",
+        "file": "../workflows/subscription-upgrade.md",
+        "format": "markdown",
+        "agents": [
+          "subscription-lifecycle-manager",
+          "stripe-integration-specialist",
+          "feature-flag-manager",
+          "billing-calculation-specialist",
+          "notification-orchestrator"
+        ],
+        "triggers": [
+          "upgrade subscription",
+          "downgrade subscription",
+          "change plan",
+          "modify subscription"
+        ],
+        "priority": "high"
+      }
+    ],
+    "data": [
+      {
+        "id": "concurrent-workflow",
+        "name": "Concurrent Data Processing",
+        "description": "Concurrent workflow for parallel data processing",
+        "pattern": "concurrent",
+        "file": "../workflows/concurrent-workflow.yaml",
+        "format": "yaml",
+        "agents": [
+          "data-fetcher-a",
+          "data-fetcher-b",
+          "data-fetcher-c",
+          "aggregator-agent"
+        ],
+        "triggers": [
+          "parallel data",
+          "concurrent processing"
+        ],
+        "priority": "medium"
+      },
+      {
+        "id": "data-processing-workflow",
+        "name": "Data Processing ETL",
+        "description": "Workflow for extracting, transforming, and loading data with AI-powered quality checks",
+        "pattern": "parallel",
+        "file": "../workflows/data-processing-workflow.json",
+        "format": "json",
+        "agents": [
+          "data-extraction-agent",
+          "data-transformation-agent",
+          "data-quality-agent",
+          "data-loading-agent"
+        ],
+        "triggers": [
+          "ETL",
+          "data processing",
+          "data pipeline"
+        ],
+        "priority": "medium"
+      },
+      {
+        "id": "sequential-workflow",
+        "name": "Sequential Data Processing",
+        "description": "Sequential workflow for data analysis and processing",
+        "pattern": "sequential",
+        "file": "../workflows/sequential-workflow.json",
+        "format": "json",
+        "agents": [
+          "analyzer-agent",
+          "processor-agent",
+          "validator-agent"
+        ],
+        "triggers": [
+          "analyze data",
+          "sequential processing"
+        ],
+        "priority": "low"
+      }
+    ],
+    "group": [
+      {
+        "id": "group-chat-workflow",
+        "name": "Group Chat Collaboration",
+        "description": "Group chat workflow for collaborative problem solving",
+        "pattern": "group-chat",
+        "file": "../workflows/group-chat-workflow.json",
+        "format": "json",
+        "agents": [
+          "orchestrator-agent",
+          "domain-expert-1",
+          "domain-expert-2",
+          "summary-agent"
+        ],
+        "triggers": [
+          "group discussion",
+          "collaborate",
+          "brainstorm"
+        ],
+        "priority": "medium"
+      },
+      {
+        "id": "handoff-workflow",
+        "name": "Agent Handoff",
+        "description": "Handoff workflow with specialized agents and triage routing",
+        "pattern": "handoff",
+        "file": "../workflows/handoff-workflow.yaml",
+        "format": "yaml",
+        "agents": [
+          "triage-agent",
+          "technical-specialist",
+          "business-specialist",
+          "orchestrator-agent",
+          "general-agent",
+          "qa-agent",
+          "senior-specialist"
+        ],
+        "triggers": [
+          "handoff",
+          "triage",
+          "route to specialist"
+        ],
+        "priority": "medium"
+      }
+    ],
+    "infrastructure": [
+      {
+        "id": "infrastructure-audit",
+        "name": "Infrastructure Audit",
+        "description": "Complete infrastructure audit covering Keycloak, MongoDB, Kubernetes, and Helm",
+        "pattern": "parallel",
+        "file": "../workflows/infrastructure-audit.md",
+        "format": "markdown",
+        "agents": [
+          "keycloak-security-auditor",
+          "mongodb-query-optimizer",
+          "k8s-security-specialist",
+          "k8s-resource-optimizer"
+        ],
+        "triggers": [
+          "audit infrastructure",
+          "security audit",
+          "compliance check"
+        ],
+        "priority": "high"
+      },
+      {
+        "id": "keycloak-setup",
+        "name": "Keycloak Setup",
+        "description": "Complete Keycloak setup including realm, clients, auth flows, and themes",
+        "pattern": "sequential",
+        "file": "../workflows/keycloak-setup.md",
+        "format": "markdown",
+        "agents": [
+          "keycloak-realm-admin",
+          "keycloak-auth-flow-designer",
+          "keycloak-theme-developer",
+          "keycloak-security-auditor"
+        ],
+        "triggers": [
+          "setup keycloak",
+          "configure keycloak",
+          "initialize auth"
+        ],
+        "priority": "high"
+      },
+      {
+        "id": "mongodb-optimization",
+        "name": "MongoDB Optimization",
+        "description": "Comprehensive MongoDB optimization including schema review, index optimization, and query tuning",
+        "pattern": "parallel",
+        "file": "../workflows/mongodb-optimization.md",
+        "format": "markdown",
+        "agents": [
+          "mongodb-schema-designer",
+          "mongodb-query-optimizer",
+          "mongodb-aggregation-specialist"
+        ],
+        "triggers": [
+          "optimize mongodb",
+          "mongodb performance",
+          "database optimization"
+        ],
+        "priority": "high"
+      }
+    ],
+    "lobbi-platform": [
+      {
+        "id": "member-enrollment",
+        "name": "Member Enrollment",
+        "description": "Member enrollment with multiple entry paths - self-registration, invitation, and bulk import",
+        "pattern": "conditional-branching",
+        "file": "../workflows/member-enrollment.md",
+        "format": "markdown",
+        "agents": [
+          "membership-specialist",
+          "keycloak-realm-admin",
+          "email-notification-specialist",
+          "data-validation-specialist",
+          "bulk-import-processor"
+        ],
+        "triggers": [
+          "enroll member",
+          "register member",
+          "invite member",
+          "bulk import members"
+        ],
+        "priority": "medium"
+      },
+      {
+        "id": "tenant-onboarding",
+        "name": "Tenant Onboarding",
+        "description": "End-to-end tenant onboarding including provisioning, billing, admin setup, and theme customization",
+        "pattern": "sequential",
+        "file": "../workflows/tenant-onboarding.md",
+        "format": "markdown",
+        "agents": [
+          "tenant-provisioning-specialist",
+          "stripe-integration-specialist",
+          "keycloak-realm-admin",
+          "theme-builder",
+          "notification-orchestrator"
+        ],
+        "triggers": [
+          "onboard tenant",
+          "new tenant",
+          "create organization",
+          "setup tenant"
+        ],
+        "priority": "high"
+      }
+    ]
+  },
+  "stats": {
+    "total": 20,
+    "byCategory": {
+      "development": 3,
+      "devops": 3,
+      "project-management": 2,
+      "integration": 2,
+      "data": 3,
+      "group": 2,
+      "infrastructure": 3,
+      "lobbi-platform": 2
+    },
+    "byPattern": {
+      "sequential": 5,
+      "pipeline": 3,
+      "parallel": 3,
+      "hierarchical": 2,
+      "mesh": 1,
+      "concurrent": 1,
+      "group-chat": 1,
+      "handoff": 1,
+      "transactional": 1,
+      "conditional-branching": 1,
+      "parallel-sequential-hybrid": 1
+    },
+    "byFormat": {
+      "markdown": 13,
+      "json": 5,
+      "yaml": 2
+    },
+    "totalAgentsReferenced": 61
   }
 }

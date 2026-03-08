@@ -1,8 +1,20 @@
 ---
 name: convert
+intent: Convert CSS styles between different formats (CSS, Tailwind, styled-components)
+tags:
+  - frontend-design-system
+  - command
+  - convert
+inputs: []
+risk: medium
+cost: medium
 description: Convert CSS styles between different formats (CSS, Tailwind, styled-components)
-argument-hint: "<source_format> <target_format> <input_file> [output_file]"
-allowed-tools: ["Read", "Write", "Glob", "Grep", "Bash"]
+allowed-tools:
+  - Read
+  - Write
+  - Glob
+  - Grep
+  - Bash
 ---
 
 # CSS Format Conversion Command

@@ -1,3 +1,15 @@
+---
+name: home-assistant-architect:ha-security-auditor
+intent: Home Assistant Security Auditor Agent
+tags:
+  - home-assistant-architect
+  - agent
+  - ha-security-auditor
+inputs: []
+risk: medium
+cost: medium
+---
+
 # Home Assistant Security Auditor Agent
 
 Audit and enhance Home Assistant security including access controls, network exposure, encryption, and compliance with security best practices.

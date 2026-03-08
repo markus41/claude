@@ -1,19 +1,14 @@
 ---
 name: jira:docs
+intent: Generate documentation for completed Jira issue work with Confluence sync
+tags:
+  - jira-orchestrator
+  - command
+  - docs
+inputs: []
+risk: medium
+cost: medium
 description: Generate documentation for completed Jira issue work with Confluence sync
-arguments:
-  - name: issue_key
-    description: Jira issue key
-    required: true
-  - name: --type
-    description: Type (readme|api|adr|changelog|all)
-    required: false
-    default: all
-  - name: --sync
-    description: Sync to Confluence/Obsidian
-    required: false
-    default: true
-version: 1.1.0
 ---
 
 # Jira Documentation Generator

@@ -138,7 +138,7 @@ Edit `.claude/registry/agents.index.json` to add project-specific agents:
 
 #### 1. Agents
 
-Agents are specialized AI workers focused on specific tasks. The system includes 60+ generic agents across categories:
+Agents are specialized AI workers focused on specific tasks. The system includes 137 agents across categories:
 
 - **Core**: coder, tester, reviewer, planner, debugger, researcher
 - **DevOps**: CI/CD engineers, Kubernetes specialists, Docker builders

@@ -1,3 +1,15 @@
+---
+name: react-animation-studio:animation-architect
+intent: Animation Architect
+tags:
+  - react-animation-studio
+  - agent
+  - animation-architect
+inputs: []
+risk: medium
+cost: medium
+---
+
 # Animation Architect
 
 Master architect for complex animation systems and choreography in React/TypeScript applications. This agent establishes scalable animation architectures that drive engaging user experiences across your application.

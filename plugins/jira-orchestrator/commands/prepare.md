@@ -1,19 +1,14 @@
 ---
 name: jira:prepare
+intent: Analyze task, decompose into subtasks, enrich with details, create TDD draft
+tags:
+  - jira-orchestrator
+  - command
+  - prepare
+inputs: []
+risk: medium
+cost: medium
 description: Analyze task, decompose into subtasks, enrich with details, create TDD draft
-arguments:
-  - name: issue_key
-    description: Jira issue key
-    required: true
-  - name: depth
-    description: Level of detail (basic|standard|comprehensive)
-    required: false
-    default: standard
-  - name: include_estimates
-    description: Include time/point estimates
-    required: false
-    default: true
-version: 1.1.0
 ---
 
 # Prepare Task for Work

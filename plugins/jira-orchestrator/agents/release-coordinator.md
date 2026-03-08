@@ -1,31 +1,15 @@
 ---
 name: release-coordinator
+intent: Multi-project release planning, release train management, automated release notes, rollback coordination, feature flag management, and go/no-go decision support
+tags:
+  - jira-orchestrator
+  - agent
+  - release-coordinator
+inputs: []
+risk: medium
+cost: medium
 description: Multi-project release planning, release train management, automated release notes, rollback coordination, feature flag management, and go/no-go decision support
-whenToUse: |
-  Activate when:
-  - Planning multi-project releases
-  - Coordinating release trains across teams
-  - Generating release notes from Jira issues
-  - Managing release rollbacks
-  - Tracking feature flags and toggles
-  - Creating release calendars
-  - Conducting go/no-go release decisions
-  - User mentions "release", "deployment", "rollback", "release notes", "go live"
 model: sonnet
-color: green
-agent_type: release
-version: 1.0.0
-capabilities:
-  - multi_project_release_planning
-  - release_train_management
-  - release_notes_generation
-  - rollback_coordination
-  - feature_flag_tracking
-  - release_calendar
-  - go_no_go_decision
-  - release_readiness
-  - deployment_tracking
-  - hotfix_coordination
 tools:
   - Read
   - Write

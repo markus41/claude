@@ -1,8 +1,20 @@
 ---
 name: theme
+intent: Generate and manage multi-tenant themes with Keycloak integration
+tags:
+  - frontend-design-system
+  - command
+  - theme
+inputs: []
+risk: medium
+cost: medium
 description: Generate and manage multi-tenant themes with Keycloak integration
-argument-hint: "<action> [tenant]"
-allowed-tools: ["Read", "Write", "Glob", "Grep", "Bash"]
+allowed-tools:
+  - Read
+  - Write
+  - Glob
+  - Grep
+  - Bash
 ---
 
 # Multi-Tenant Theme Management Command

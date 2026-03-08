@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "plugin": "cowork-marketplace",
+  "type": "agents",
+  "entries": [
+    {
+      "name": "marketplace-curator",
+      "intent": "Curate, recommend, and help users discover the right marketplace items",
+      "tags": [
+        "cowork-marketplace",
+        "agent",
+        "marketplace-curator"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "low",
+      "path": "agents/marketplace-curator.md"
+    },
+    {
+      "name": "session-orchestrator",
+      "intent": "Orchestrate cowork sessions by coordinating multiple plugin agents",
+      "tags": [
+        "cowork-marketplace",
+        "agent",
+        "session-orchestrator"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/session-orchestrator.md"
+    },
+    {
+      "name": "export-packager",
+      "intent": "Package marketplace items as Cowork-compatible plugin ZIPs",
+      "tags": [
+        "cowork-marketplace",
+        "agent",
+        "export-packager"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "medium",
+      "path": "agents/export-packager.md"
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+version: 1
+contracts:
+  - source: firebase_extract
+    owner: data-platform
+    input_format: jsonl
+    cadence: daily
+    bronze_target: br_firebase_commissions_raw
+    required_columns:
+      - extract_batch_id
+      - policy_number
+      - carrier_code
+      - written_premium
+      - commission_amount
+      - producer_id
+      - sold_at_utc
+    partitioning:
+      strategy: hive
+      keys:
+        - extract_date
+        - entity
+    schema_evolution:
+      mode: additive_with_quarantine
+      breaking_change_action: fail_pipeline
+      unknown_column_action: land_in__rescued_data
+  - source: dataverse_snapshot
+    owner: crm-platform
+    input_format: parquet
+    cadence: hourly
+    bronze_target: br_dataverse_commission_snapshot_raw
+    required_columns:
+      - snapshot_at_utc
+      - commission_id
+      - account_id
+      - product_line
+      - gross_commission
+      - net_commission
+      - producer_external_id
+    partitioning:
+      strategy: temporal
+      keys:
+        - snapshot_date
+        - product_line
+    schema_evolution:
+      mode: backward_compatible
+      breaking_change_action: fail_pipeline
+      unknown_column_action: allow_and_log
+  - source: external_file_drop
+    owner: taia-transition
+    input_format: csv
+    cadence: ad_hoc
+    bronze_target: br_external_rate_cards_raw
+    required_columns:
+      - file_name
+      - source_partner
+      - effective_date
+      - carrier_name
+      - commission_schedule
+    partitioning:
+      strategy: ingestion_date
+      keys:
+        - ingest_date
+        - source_partner
+    schema_evolution:
+      mode: strict
+      breaking_change_action: fail_pipeline
+      unknown_column_action: reject_file

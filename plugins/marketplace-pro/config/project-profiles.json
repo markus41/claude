@@ -1,0 +1,340 @@
+{
+  "description": "Training dataset for the Apriori association rule miner. Each profile represents a realistic project configuration. Features that commonly co-occur will generate association rules used to detect capability gaps.",
+  "profiles": [
+    {
+      "label": "nextjs-fullstack-vercel",
+      "features": [
+        "typescript",
+        "react",
+        "nextjs",
+        "tailwind",
+        "eslint",
+        "jest",
+        "ci-cd",
+        "vercel",
+        "prisma",
+        "postgresql"
+      ]
+    },
+    {
+      "label": "nextjs-aws-enterprise",
+      "features": [
+        "typescript",
+        "react",
+        "nextjs",
+        "tailwind",
+        "eslint",
+        "jest",
+        "ci-cd",
+        "docker",
+        "kubernetes",
+        "helm",
+        "aws",
+        "monitoring",
+        "postgresql",
+        "redis"
+      ]
+    },
+    {
+      "label": "react-spa-firebase",
+      "features": [
+        "typescript",
+        "react",
+        "vite",
+        "tailwind",
+        "eslint",
+        "vitest",
+        "ci-cd",
+        "firebase",
+        "monitoring"
+      ]
+    },
+    {
+      "label": "vue-nuxt-fullstack",
+      "features": [
+        "typescript",
+        "vue",
+        "nuxt",
+        "tailwind",
+        "eslint",
+        "vitest",
+        "ci-cd",
+        "docker",
+        "postgresql",
+        "prisma"
+      ]
+    },
+    {
+      "label": "angular-enterprise",
+      "features": [
+        "typescript",
+        "angular",
+        "rxjs",
+        "eslint",
+        "jest",
+        "ci-cd",
+        "docker",
+        "kubernetes",
+        "helm",
+        "monitoring",
+        "postgresql",
+        "redis"
+      ]
+    },
+    {
+      "label": "express-api-docker",
+      "features": [
+        "typescript",
+        "nodejs",
+        "express",
+        "eslint",
+        "jest",
+        "ci-cd",
+        "docker",
+        "postgresql",
+        "prisma",
+        "redis",
+        "monitoring"
+      ]
+    },
+    {
+      "label": "express-microservices",
+      "features": [
+        "typescript",
+        "nodejs",
+        "express",
+        "eslint",
+        "jest",
+        "ci-cd",
+        "docker",
+        "kubernetes",
+        "helm",
+        "rabbitmq",
+        "event-driven",
+        "postgresql",
+        "redis",
+        "monitoring",
+        "api-gateway"
+      ]
+    },
+    {
+      "label": "fastapi-ml-platform",
+      "features": [
+        "python",
+        "fastapi",
+        "postgresql",
+        "docker",
+        "kubernetes",
+        "helm",
+        "ci-cd",
+        "monitoring",
+        "redis",
+        "celery",
+        "aws"
+      ]
+    },
+    {
+      "label": "fastapi-serverless",
+      "features": [
+        "python",
+        "fastapi",
+        "postgresql",
+        "docker",
+        "terraform",
+        "aws",
+        "ci-cd",
+        "monitoring"
+      ]
+    },
+    {
+      "label": "flask-simple-api",
+      "features": [
+        "python",
+        "flask",
+        "postgresql",
+        "docker",
+        "ci-cd",
+        "eslint",
+        "pytest"
+      ]
+    },
+    {
+      "label": "django-fullstack",
+      "features": [
+        "python",
+        "django",
+        "postgresql",
+        "redis",
+        "celery",
+        "docker",
+        "ci-cd",
+        "monitoring",
+        "nginx"
+      ]
+    },
+    {
+      "label": "go-microservices",
+      "features": [
+        "golang",
+        "grpc",
+        "postgresql",
+        "redis",
+        "docker",
+        "kubernetes",
+        "helm",
+        "ci-cd",
+        "monitoring",
+        "event-driven",
+        "kafka",
+        "api-gateway",
+        "terraform"
+      ]
+    },
+    {
+      "label": "go-cli-tool",
+      "features": [
+        "golang",
+        "ci-cd",
+        "docker",
+        "goreleaser"
+      ]
+    },
+    {
+      "label": "rust-backend",
+      "features": [
+        "rust",
+        "actix",
+        "postgresql",
+        "docker",
+        "ci-cd",
+        "monitoring",
+        "redis"
+      ]
+    },
+    {
+      "label": "java-spring-enterprise",
+      "features": [
+        "java",
+        "spring",
+        "maven",
+        "postgresql",
+        "redis",
+        "docker",
+        "kubernetes",
+        "helm",
+        "ci-cd",
+        "monitoring",
+        "kafka",
+        "event-driven",
+        "api-gateway"
+      ]
+    },
+    {
+      "label": "monorepo-fullstack",
+      "features": [
+        "typescript",
+        "react",
+        "nextjs",
+        "nodejs",
+        "express",
+        "monorepo",
+        "eslint",
+        "jest",
+        "ci-cd",
+        "docker",
+        "kubernetes",
+        "helm",
+        "postgresql",
+        "redis",
+        "monitoring"
+      ]
+    },
+    {
+      "label": "terraform-infra",
+      "features": [
+        "terraform",
+        "aws",
+        "docker",
+        "kubernetes",
+        "helm",
+        "ci-cd",
+        "monitoring",
+        "vault"
+      ]
+    },
+    {
+      "label": "k8s-platform",
+      "features": [
+        "kubernetes",
+        "helm",
+        "docker",
+        "ci-cd",
+        "monitoring",
+        "terraform",
+        "vault",
+        "api-gateway",
+        "nginx"
+      ]
+    },
+    {
+      "label": "serverless-aws",
+      "features": [
+        "typescript",
+        "nodejs",
+        "aws",
+        "terraform",
+        "ci-cd",
+        "dynamodb",
+        "api-gateway",
+        "monitoring"
+      ]
+    },
+    {
+      "label": "data-pipeline",
+      "features": [
+        "python",
+        "kafka",
+        "event-driven",
+        "docker",
+        "kubernetes",
+        "helm",
+        "ci-cd",
+        "monitoring",
+        "postgresql",
+        "redis",
+        "terraform",
+        "aws"
+      ]
+    },
+    {
+      "label": "react-native-mobile",
+      "features": [
+        "typescript",
+        "react",
+        "react-native",
+        "eslint",
+        "jest",
+        "ci-cd",
+        "firebase",
+        "monitoring"
+      ]
+    },
+    {
+      "label": "nestjs-graphql",
+      "features": [
+        "typescript",
+        "nodejs",
+        "nestjs",
+        "graphql",
+        "eslint",
+        "jest",
+        "ci-cd",
+        "docker",
+        "postgresql",
+        "prisma",
+        "redis",
+        "monitoring"
+      ]
+    }
+  ]
+}

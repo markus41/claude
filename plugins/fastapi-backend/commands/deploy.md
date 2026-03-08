@@ -1,7 +1,14 @@
 ---
 name: deploy
+intent: Deploy FastAPI application to Kubernetes cluster with Helm
+tags:
+  - fastapi-backend
+  - command
+  - deploy
+inputs: []
+risk: medium
+cost: medium
 description: Deploy FastAPI application to Kubernetes cluster with Helm
-argument-hint: "[--namespace prod] [--release myapp] [--values values.yaml] [--dry-run]"
 allowed-tools:
   - Bash
   - Read

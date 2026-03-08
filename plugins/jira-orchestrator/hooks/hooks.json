@@ -1,75 +1,160 @@
 {
+  "$schema": "../../../schemas/hooks.schema.json",
+  "version": "2.0.0",
+  "plugin": "jira-orchestrator",
   "description": "Jira Orchestrator Plugin Hooks - Automated workflow triggers for Jira integration",
-  "hooks": {
-    "UserPromptSubmit": [
-      {
-        "matcher": "\\b[A-Z]{2,10}-\\d+\\b",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/detect-jira-issue.sh",
-            "timeout": 5000
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "jira_get_issue|getJiraIssue|mcp__atlassian__getJiraIssue",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/triage-trigger.sh",
-            "timeout": 5000
-          }
-        ]
-      }
-    ],
-    "PreToolUse": [
-      {
-        "matcher": "harness_deploy|harness_create_deployment|execute_pipeline|harness_create_pull_request",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/review-gate.sh",
-            "timeout": 10000
-          }
+  "hooks": [
+    {
+      "id": "userpromptsubmit-1",
+      "event": "UserPromptSubmit",
+      "severity": "advisory",
+      "description": "UserPromptSubmit hook",
+      "trigger": {
+        "scope": "prompt",
+        "prompt_patterns": [
+          "\\b[A-Z]{2,10}-\\d+\\b"
         ]
       },
-      {
-        "matcher": "harness_deploy|harness_create_deployment|execute_pipeline|harness_create_pull_request",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/pr-size-guard.sh main",
-            "timeout": 10000
-          }
+      "handlers": [
+        {
+          "type": "command",
+          "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/detect-jira-issue.sh",
+          "timeout": 5000
+        }
+      ]
+    },
+    {
+      "id": "posttooluse-2",
+      "event": "PostToolUse",
+      "severity": "advisory",
+      "description": "PostToolUse hook",
+      "trigger": {
+        "scope": "tool",
+        "command_patterns": [
+          "jira_get_issue|getJiraIssue|mcp__atlassian__getJiraIssue"
         ]
-      }
-    ],
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/docs-reminder.sh",
-            "timeout": 5000
-          }
+      },
+      "handlers": [
+        {
+          "type": "command",
+          "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/triage-trigger.sh",
+          "timeout": 5000
+        }
+      ]
+    },
+    {
+      "id": "pretooluse-deploy-gates",
+      "event": "PreToolUse",
+      "severity": "advisory",
+      "description": "Run deployment review and PR size gates before pipeline actions.",
+      "trigger": {
+        "scope": "tool",
+        "command_patterns": [
+          "harness_deploy|harness_create_deployment|execute_pipeline|harness_create_pull_request"
         ]
-      }
-    ],
-    "SessionStart": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/session-resume.sh",
-            "timeout": 5000
-          }
+      },
+      "handlers": [
+        {
+          "type": "command",
+          "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/review-gate.sh",
+          "timeout": 10000
+        },
+        {
+          "type": "command",
+          "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/pr-size-guard.sh main",
+          "timeout": 10000
+        }
+      ]
+    },
+    {
+      "id": "pretooluse-jira-readiness-pr-gate",
+      "event": "PreToolUse",
+      "severity": "blocking",
+      "description": "Block PR creation until Jira Definition of Ready fields are complete.",
+      "trigger": {
+        "scope": "tool",
+        "command_patterns": [
+          "gh_pr_create|mcp__github__create_pull_request|mcp__make_pr__make_pr|harness_create_pull_request"
         ]
-      }
-    ]
-  }
+      },
+      "handlers": [
+        {
+          "type": "command",
+          "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/jira-readiness-gate.sh",
+          "timeout": 10000
+        }
+      ]
+    },
+    {
+      "id": "pretooluse-merge-evidence-gate",
+      "event": "PreToolUse",
+      "severity": "blocking",
+      "description": "Block merge/deploy actions until required evidence sections are complete.",
+      "trigger": {
+        "scope": "tool",
+        "command_patterns": [
+          "gh_pr_merge|mcp__github__merge_pull_request|harness_merge_pull_request|harness_deploy|execute_pipeline"
+        ]
+      },
+      "handlers": [
+        {
+          "type": "command",
+          "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/merge-evidence-gate.sh",
+          "timeout": 10000
+        }
+      ]
+    },
+    {
+      "id": "posttooluse-pr-jira-transition-routing",
+      "event": "PostToolUse",
+      "severity": "advisory",
+      "description": "Route PR state updates through the PR->Jira transition engine for idempotent transitions.",
+      "trigger": {
+        "scope": "tool",
+        "command_patterns": [
+          "gh_pr_create|gh_pr_update|gh_pr_review|gh_pr_merge|mcp__github__create_pull_request|mcp__github__update_pull_request|mcp__github__merge_pull_request|mcp__github__submit_pull_request_review"
+        ]
+      },
+      "handlers": [
+        {
+          "type": "command",
+          "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/pr-jira-transition.sh",
+          "timeout": 10000
+        }
+      ]
+    },
+    {
+      "id": "stop-5",
+      "event": "Stop",
+      "severity": "advisory",
+      "description": "Stop hook",
+      "trigger": {
+        "scope": "task"
+      },
+      "handlers": [
+        {
+          "type": "command",
+          "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/docs-reminder.sh",
+          "timeout": 5000
+        }
+      ]
+    },
+    {
+      "id": "sessionstart-6",
+      "event": "SessionStart",
+      "severity": "advisory",
+      "description": "SessionStart hook",
+      "trigger": {
+        "scope": "session"
+      },
+      "handlers": [
+        {
+          "type": "command",
+          "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/session-resume.sh",
+          "timeout": 5000
+        }
+      ]
+    }
+  ],
+  "settings": {}
 }

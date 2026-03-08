@@ -1,26 +1,13 @@
 ---
-name: jira:batch
-description: Bulk operations on Jira issues (update, transition, assign, link, import, rollback)
-arguments:
-  - name: operation
-    description: update|transition|assign|link|import|rollback
-    required: true
-  - name: target
-    description: JQL query, issue keys (comma-separated), or file path
-    required: false
-  - name: action
-    description: Field values/new status/assignees (JSON or string)
-    required: false
-  - name: --dry-run
-    description: Preview without executing
-    required: false
-  - name: --batch-size
-    description: Issues per batch (default: 25, max: 100)
-    required: false
-  - name: --rollback
-    description: Rollback by job ID
-    required: false
-version: 1.0.0
+name: jira-orchestrator:batch
+intent: Jira Batch Operations
+tags:
+  - jira-orchestrator
+  - command
+  - batch
+inputs: []
+risk: medium
+cost: medium
 ---
 
 # Jira Batch Operations

@@ -1,7 +1,19 @@
 ---
+name: fullstack-iac:frontend
+intent: Scaffold React/Vite frontend with TypeScript, routing, state management, and deployment
+tags:
+  - fullstack-iac
+  - command
+  - frontend
+inputs: []
+risk: medium
+cost: medium
 description: Scaffold React/Vite frontend with TypeScript, routing, state management, and deployment
-argument-hint: "[name] --template [basic|dashboard|saas]"
-allowed-tools: ["Write", "Bash", "Read", "Edit"]
+allowed-tools:
+  - Write
+  - Bash
+  - Read
+  - Edit
 ---
 
 # Zenith Frontend Scaffold

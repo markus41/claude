@@ -1,0 +1,322 @@
+{
+  "$schema": "https://learn.microsoft.com/en-us/rest/api/fabric/core/workspaces",
+  "metadata": {
+    "organization": "TVS Holdings",
+    "capacityId": "{FABRIC_CAPACITY_ID}",
+    "region": "eastus2",
+    "description": "Microsoft Fabric OneLake workspace definitions for all TVS Holdings entities"
+  },
+  "workspaces": {
+    "tvs": {
+      "displayName": "TVS Holdings - TVS",
+      "description": "Virtual staffing operational and curated data for TVS entity",
+      "capacityId": "{FABRIC_CAPACITY_ID}",
+      "lakehouses": {
+        "lh-tvs-operational": {
+          "displayName": "TVS Operational",
+          "description": "Raw and lightly transformed operational data from Dataverse and Stripe",
+          "shortcuts": [
+            {
+              "name": "dv_accounts",
+              "type": "Dataverse",
+              "source": {
+                "environmentUrl": "org-tvs-{env}.crm.dynamics.com",
+                "tableName": "tvs_account"
+              },
+              "targetPath": "Tables/dv_accounts"
+            },
+            {
+              "name": "dv_contacts",
+              "type": "Dataverse",
+              "source": {
+                "environmentUrl": "org-tvs-{env}.crm.dynamics.com",
+                "tableName": "tvs_contact"
+              },
+              "targetPath": "Tables/dv_contacts"
+            },
+            {
+              "name": "dv_subscriptions",
+              "type": "Dataverse",
+              "source": {
+                "environmentUrl": "org-tvs-{env}.crm.dynamics.com",
+                "tableName": "tvs_subscription"
+              },
+              "targetPath": "Tables/dv_subscriptions"
+            },
+            {
+              "name": "dv_tasks",
+              "type": "Dataverse",
+              "source": {
+                "environmentUrl": "org-tvs-{env}.crm.dynamics.com",
+                "tableName": "tvs_task"
+              },
+              "targetPath": "Tables/dv_tasks"
+            },
+            {
+              "name": "dv_timeentries",
+              "type": "Dataverse",
+              "source": {
+                "environmentUrl": "org-tvs-{env}.crm.dynamics.com",
+                "tableName": "tvs_timeentry"
+              },
+              "targetPath": "Tables/dv_timeentries"
+            },
+            {
+              "name": "dv_deliverables",
+              "type": "Dataverse",
+              "source": {
+                "environmentUrl": "org-tvs-{env}.crm.dynamics.com",
+                "tableName": "tvs_deliverable"
+              },
+              "targetPath": "Tables/dv_deliverables"
+            },
+            {
+              "name": "dv_automationlog",
+              "type": "Dataverse",
+              "source": {
+                "environmentUrl": "org-tvs-{env}.crm.dynamics.com",
+                "tableName": "tvs_automationlog"
+              },
+              "targetPath": "Tables/dv_automationlog"
+            }
+          ],
+          "folders": [
+            "Tables/",
+            "Files/stripe-events/",
+            "Files/paylocity-sync/",
+            "Files/imports/"
+          ]
+        },
+        "lh-tvs-curated": {
+          "displayName": "TVS Curated",
+          "description": "SCD Type 2 dimensions, aggregated facts, and analytics-ready tables",
+          "shortcuts": [],
+          "folders": [
+            "Tables/dim_accounts/",
+            "Tables/dim_contacts/",
+            "Tables/fact_time_entries/",
+            "Tables/fact_subscriptions/",
+            "Tables/fact_deliverables/",
+            "Tables/agg_monthly_utilization/",
+            "Tables/agg_account_health/"
+          ]
+        }
+      }
+    },
+    "consulting": {
+      "displayName": "TVS Holdings - Consulting",
+      "description": "Consulting data for Lobbi Consulting and Medicare Consulting entities",
+      "capacityId": "{FABRIC_CAPACITY_ID}",
+      "lakehouses": {
+        "lh-consulting-data": {
+          "displayName": "Consulting Data",
+          "description": "Combined consulting data for Lobbi and Medicare consulting entities",
+          "shortcuts": [
+            {
+              "name": "dv_accounts",
+              "type": "Dataverse",
+              "source": {
+                "environmentUrl": "org-consulting-{env}.crm.dynamics.com",
+                "tableName": "tvs_consultingaccount"
+              },
+              "targetPath": "Tables/dv_accounts"
+            },
+            {
+              "name": "dv_contacts",
+              "type": "Dataverse",
+              "source": {
+                "environmentUrl": "org-consulting-{env}.crm.dynamics.com",
+                "tableName": "tvs_consultingcontact"
+              },
+              "targetPath": "Tables/dv_contacts"
+            },
+            {
+              "name": "dv_engagements",
+              "type": "Dataverse",
+              "source": {
+                "environmentUrl": "org-consulting-{env}.crm.dynamics.com",
+                "tableName": "tvs_engagement"
+              },
+              "targetPath": "Tables/dv_engagements"
+            },
+            {
+              "name": "dv_activities",
+              "type": "Dataverse",
+              "source": {
+                "environmentUrl": "org-consulting-{env}.crm.dynamics.com",
+                "tableName": "tvs_activity"
+              },
+              "targetPath": "Tables/dv_activities"
+            },
+            {
+              "name": "dv_sharedprospects",
+              "type": "Dataverse",
+              "source": {
+                "environmentUrl": "org-consulting-{env}.crm.dynamics.com",
+                "tableName": "tvs_sharedprospect"
+              },
+              "targetPath": "Tables/dv_sharedprospects"
+            },
+            {
+              "name": "dv_implementations",
+              "type": "Dataverse",
+              "source": {
+                "environmentUrl": "org-consulting-{env}.crm.dynamics.com",
+                "tableName": "tvs_implementation"
+              },
+              "targetPath": "Tables/dv_implementations"
+            }
+          ],
+          "folders": [
+            "Tables/",
+            "Files/engagement-docs/",
+            "Files/proposals/",
+            "Tables/agg_pipeline/",
+            "Tables/agg_engagement_health/"
+          ]
+        }
+      }
+    },
+    "lobbi_platform": {
+      "displayName": "TVS Holdings - Lobbi Platform",
+      "description": "Platform-level metrics, usage analytics, and operational data for the Lobbi platform",
+      "capacityId": "{FABRIC_CAPACITY_ID}",
+      "lakehouses": {
+        "lh-platform-metrics": {
+          "displayName": "Platform Metrics",
+          "description": "Aggregated usage, performance, and business metrics for the Lobbi platform",
+          "shortcuts": [],
+          "folders": [
+            "Tables/usage_daily/",
+            "Tables/usage_monthly/",
+            "Tables/feature_adoption/",
+            "Tables/api_performance/",
+            "Tables/user_engagement/",
+            "Files/logs/",
+            "Files/exports/"
+          ]
+        }
+      }
+    },
+    "media": {
+      "displayName": "TVS Holdings - Media Company",
+      "description": "Media and content analytics for the TVS Holdings media entity",
+      "capacityId": "{FABRIC_CAPACITY_ID}",
+      "lakehouses": {
+        "lh-media-analytics": {
+          "displayName": "Media Analytics",
+          "description": "Content performance, audience engagement, and advertising analytics",
+          "shortcuts": [],
+          "folders": [
+            "Tables/content_performance/",
+            "Tables/audience_metrics/",
+            "Tables/campaign_analytics/",
+            "Tables/revenue_attribution/",
+            "Files/raw-feeds/",
+            "Files/social-data/"
+          ]
+        }
+      }
+    },
+    "a3_archive": {
+      "displayName": "TVS Holdings - A3 Archive",
+      "description": "Archived data extracted from TAIA's legacy A3 Firebase system",
+      "capacityId": "{FABRIC_CAPACITY_ID}",
+      "lakehouses": {
+        "lh-a3-extract": {
+          "displayName": "A3 Extract",
+          "description": "Firebase collection extracts from legacy A3 CRM: brokers, commissions, carriers, contacts, activities",
+          "shortcuts": [],
+          "folders": [
+            "Tables/brokers/",
+            "Tables/commissions/",
+            "Tables/carriers/",
+            "Tables/contacts/",
+            "Tables/activities/",
+            "Files/raw-json/brokers/",
+            "Files/raw-json/commissions/",
+            "Files/raw-json/carriers/",
+            "Files/raw-json/contacts/",
+            "Files/raw-json/activities/",
+            "Files/validation-reports/"
+          ]
+        }
+      }
+    },
+    "consolidated": {
+      "displayName": "TVS Holdings - Consolidated",
+      "description": "Cross-entity consolidated views for holdings-level reporting and analytics",
+      "capacityId": "{FABRIC_CAPACITY_ID}",
+      "lakehouses": {
+        "lh-holdings-rollup": {
+          "displayName": "Holdings Rollup",
+          "description": "Consolidated holdings-level metrics aggregated from all entity lakehouses",
+          "shortcuts": [
+            {
+              "name": "tvs_curated",
+              "type": "OneLake",
+              "source": {
+                "workspaceName": "TVS Holdings - TVS",
+                "lakehouseName": "TVS Curated",
+                "path": "Tables/"
+              },
+              "targetPath": "Tables/tvs/"
+            },
+            {
+              "name": "consulting_data",
+              "type": "OneLake",
+              "source": {
+                "workspaceName": "TVS Holdings - Consulting",
+                "lakehouseName": "Consulting Data",
+                "path": "Tables/"
+              },
+              "targetPath": "Tables/consulting/"
+            },
+            {
+              "name": "platform_metrics",
+              "type": "OneLake",
+              "source": {
+                "workspaceName": "TVS Holdings - Lobbi Platform",
+                "lakehouseName": "Platform Metrics",
+                "path": "Tables/"
+              },
+              "targetPath": "Tables/platform/"
+            },
+            {
+              "name": "media_analytics",
+              "type": "OneLake",
+              "source": {
+                "workspaceName": "TVS Holdings - Media Company",
+                "lakehouseName": "Media Analytics",
+                "path": "Tables/"
+              },
+              "targetPath": "Tables/media/"
+            },
+            {
+              "name": "a3_extract",
+              "type": "OneLake",
+              "source": {
+                "workspaceName": "TVS Holdings - A3 Archive",
+                "lakehouseName": "A3 Extract",
+                "path": "Tables/"
+              },
+              "targetPath": "Tables/a3/"
+            }
+          ],
+          "folders": [
+            "Tables/tvs/",
+            "Tables/consulting/",
+            "Tables/platform/",
+            "Tables/media/",
+            "Tables/a3/",
+            "Tables/rollup_revenue/",
+            "Tables/rollup_headcount/",
+            "Tables/rollup_cost_allocation/",
+            "Tables/rollup_entity_health/",
+            "Files/board-reports/"
+          ]
+        }
+      }
+    }
+  }
+}

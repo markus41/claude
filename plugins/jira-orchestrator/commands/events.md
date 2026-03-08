@@ -1,17 +1,14 @@
 ---
 name: jira:events
+intent: Query event sourcing system for audit trails, time-travel debugging, and state reconstruction
+tags:
+  - jira-orchestrator
+  - command
+  - events
+inputs: []
+risk: medium
+cost: medium
 description: Query event sourcing system for audit trails, time-travel debugging, and state reconstruction
-arguments:
-  - name: operation
-    description: Operation (audit, time-travel, replay, query)
-    required: true
-  - name: issue_key
-    description: Issue key to analyze
-    required: false
-  - name: timestamp
-    description: Timestamp for time-travel (ISO 8601)
-    required: false
-version: 1.0.0
 ---
 
 # Event Sourcing Operations

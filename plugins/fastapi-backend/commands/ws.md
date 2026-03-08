@@ -1,7 +1,14 @@
 ---
 name: ws
+intent: Generate a WebSocket endpoint with connection management and authentication
+tags:
+  - fastapi-backend
+  - command
+  - ws
+inputs: []
+risk: medium
+cost: medium
 description: Generate a WebSocket endpoint with connection management and authentication
-argument-hint: "[endpoint_name] [--auth] [--rooms] [--broadcast]"
 allowed-tools:
   - Read
   - Write

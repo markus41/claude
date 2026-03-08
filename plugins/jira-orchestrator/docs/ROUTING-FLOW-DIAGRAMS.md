@@ -47,10 +47,6 @@
 │  │  ├─ Pattern: jwt-auth (15 pts)                                    │    │
 │  │  └─ Final: 75.0                                                   │    │
 │  │                                                                     │    │
-│  │  ahling-command-center (Score: 68)                                 │    │
-│  │  ├─ Domain: devops (30 pts)                                       │    │
-│  │  ├─ Context: kubernetes (20 pts)                                  │    │
-│  │  └─ Final: 68.0                                                   │    │
 │  └────────────────────────────────────────────────────────────────────┘    │
 │                                   │                                          │
 │                                   ▼                                          │
@@ -59,7 +55,7 @@
 │  │                                                                     │    │
 │  │  Decision:                                                         │    │
 │  │  ├─ Primary: fastapi-backend                                      │    │
-│  │  ├─ Fallbacks: [lobbi-platform, ahling-command, jira-orch]       │    │
+│  │  ├─ Fallbacks: [lobbi-platform, jira-orch]                       │    │
 │  │  └─ Collaboration: REQUIRED (multi-domain)                        │    │
 │  │                                                                     │    │
 │  │  Collaboration Plan:                                               │    │
@@ -81,7 +77,7 @@
 │  │  └──────────────────────────────────────────────────────────┘    │    │
 │  │                           │                                        │    │
 │  │  ┌────────────────────────▼──────────────────────────────────┐    │    │
-│  │  │ Phase 3: Deployment (ahling-command-center)              │    │    │
+│  │  │ Phase 3: Deployment (jira-orchestrator)                  │    │    │
 │  │  │  - Build Docker image                                    │    │    │
 │  │  │  - Deploy to Kubernetes                                  │    │    │
 │  │  │  - Configure ingress                                     │    │    │
@@ -108,15 +104,15 @@
                     ┌──────────────┼──────────────┐
                     │              │              │
                     ▼              ▼              ▼
-         ┌──────────────┐ ┌───────────────┐ ┌──────────────┐
-         │   FastAPI    │ │    Lobbi      │ │   Ahling     │
-         │   Backend    │ │   Platform    │ │   Command    │
-         │              │ │   Manager     │ │   Center     │
-         └──────┬───────┘ └───────┬───────┘ └──────┬───────┘
-                │                 │                 │
-                └────────┬────────┴────────┬────────┘
-                         │                 │
-                         ▼                 ▼
+┌──────────────┐ ┌───────────────┐ ┌──────────────┐
+│   FastAPI    │ │    Lobbi      │ │     Jira     │
+│   Backend    │ │   Platform    │ │ Orchestrator │
+│              │ │   Manager     │ │              │
+└──────┬───────┘ └───────┬───────┘ └──────┬───────┘
+       │                 │                │
+       └────────┬────────┴────────────────┘
+                         │
+                         ▼
                  ┌──────────────┐  ┌──────────────┐
                  │ Message Bus  │  │ State Store  │
                  │ - Events     │  │ - Context    │
@@ -148,15 +144,15 @@ TIME: t0
 │                            MESSAGE BUS                                       │
 │  ┌────────────────────────────────────────────────────────────────────┐    │
 │  │ Topic: routing/decision                                            │    │
-│  │ Subscribers: [fastapi-backend, lobbi-platform, ahling-command]    │    │
+│  │ Subscribers: [fastapi-backend, lobbi-platform]                     │    │
 │  └────────────────────────────────────────────────────────────────────┘    │
-└────┬──────────────────────┬──────────────────────┬────────────────────┬─────┘
-     │                      │                      │                    │
-     ▼                      ▼                      ▼                    ▼
-┌────────────┐      ┌──────────────┐      ┌──────────────┐    ┌──────────────┐
-│  FastAPI   │      │    Lobbi     │      │   Ahling     │    │ Telemetry    │
-│  Backend   │      │  Platform    │      │   Command    │    │  Service     │
-└────────────┘      └──────────────┘      └──────────────┘    └──────────────┘
+└────┬──────────────────────┬──────────────────────┬─────────────────────────┘
+     │                      │                      │
+     ▼                      ▼                      ▼
+┌────────────┐      ┌──────────────┐      ┌──────────────┐
+│  FastAPI   │      │    Lobbi     │      │ Telemetry    │
+│  Backend   │      │  Platform    │      │  Service     │
+└────────────┘      └──────────────┘      └──────────────┘
 
 
 TIME: t1 (Phase 1 starts)
@@ -259,21 +255,21 @@ TIME: t3 (State synchronization)
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                            MESSAGE BUS                                       │
 │  Topic: state/*/change                                                      │
-└────┬────────────────────────────────────────────────────────┬───────────────┘
-     │                                                         │
-     ▼                                                         ▼
-┌──────────────┐                                      ┌──────────────┐
-│    Lobbi     │  Imports state, uses for config     │   Ahling     │  Imports for deployment
-│  Platform    │                                      │   Command    │
-└──────────────┘                                      └──────────────┘
+└────────────────────────────────────────────────────────────────────────────┘
+     │
+     ▼
+┌──────────────┐
+│    Lobbi     │  Imports state, uses for config
+│  Platform    │
+└──────────────┘
 
 
 TIME: t4 (Error occurs)
                             ┌──────────────┐
-                            │   Ahling     │  Deployment fails
-                            │   Command    │
+                            │    Lobbi     │  Deployment fails
+                            │   Platform   │
                             └──────┬───────┘
-                                   │ Topic: plugin/ahling-command/response
+                                   │ Topic: plugin/lobbi-platform/response
                                    │ {
                                    │   "correlationId": "req_123",
                                    │   "status": "error",
@@ -291,7 +287,7 @@ TIME: t4 (Error occurs)
                             └──────┬───────┘
                                    │ Topic: routing/fallback
                                    │ {
-                                   │   "originalPlugin": "ahling-command",
+                                   │   "originalPlugin": "lobbi-platform",
                                    │   "fallbackPlugin": "jira-orchestrator",
                                    │   "reason": "circuit_breaker_open"
                                    │ }
@@ -357,7 +353,7 @@ STEP 2: Query Unified Registry
 │  Searching across all plugins...                                            │
 │                                                                              │
 │  ┌─────────────────────────────────────────────────────────────────┐       │
-│  │ Plugin: frontend-powerhouse                                     │       │
+│  │ Plugin: frontend-design-system                                     │       │
 │  │                                                                  │       │
 │  │  Agent: react-component-specialist                              │       │
 │  │  ├─ Category: frontend                                         │       │
@@ -378,12 +374,12 @@ STEP 2: Query Unified Registry
 │  └─────────────────────────────────────────────────────────────────┘       │
 │                                                                              │
 │  ┌─────────────────────────────────────────────────────────────────┐       │
-│  │ Plugin: chakra-react-toolkit                                    │       │
+│  │ Plugin: react-animation-studio                                    │       │
 │  │                                                                  │       │
-│  │  Agent: chakra-component-generator                              │       │
+│  │  Agent: animation-component-builder                              │       │
 │  │  ├─ Category: frontend                                         │       │
-│  │  ├─ Capabilities: [react, chakra-ui, components]               │       │
-│  │  ├─ Keywords: [chakra, component, accessible]                  │       │
+│  │  ├─ Capabilities: [react, framer-motion, animations]           │       │
+│  │  ├─ Keywords: [animation, component, interactive]              │       │
 │  │  └─ Score: 70                                                  │       │
 │  └─────────────────────────────────────────────────────────────────┘       │
 │                                                                              │
@@ -424,14 +420,14 @@ STEP 3: Build Agent Team
 │  └────────────────────────────────────────────────────────┘    │
 │                                                                  │
 │  ┌────────────────────────────────────────────────────────┐    │
-│  │ Specialist 1: frontend-powerhouse::                    │    │
+│  │ Specialist 1: frontend-design-system::                    │    │
 │  │               react-component-specialist               │    │
 │  │  - Generate React component structure                  │    │
 │  │  - Implement hooks and state management                │    │
 │  └────────────────────────────────────────────────────────┘    │
 │                                                                  │
 │  ┌────────────────────────────────────────────────────────┐    │
-│  │ Specialist 2: frontend-powerhouse::                    │    │
+│  │ Specialist 2: frontend-design-system::                    │    │
 │  │               accessibility-auditor                    │    │
 │  │  - Add ARIA attributes                                 │    │
 │  │  - Ensure keyboard navigation                          │    │
@@ -505,7 +501,7 @@ STEP 3: Build Agent Team
 
 EXAMPLE TIMELINE:
 
-t=0s    Plugin "ahling-command-center" in CLOSED state
+t=0s    Plugin "lobbi-platform-manager" in CLOSED state
         ├─ Request 1: SUCCESS
         ├─ Request 2: SUCCESS
         └─ failures = 0
@@ -606,7 +602,7 @@ t=5s  ┌──────────────────┐
                ▼
 
 t=12s ┌──────────────────┐
-      │ Ahling Command   │  Deploys infrastructure
+      │ AWS EKS Helm     │  Deploys infrastructure
       └────────┬─────────┘
                │ ✓ SUCCESS
                │ Namespace: acme-corp-prod created
@@ -650,7 +646,7 @@ t=8s  ┌──────────────────┐
                │ })
 
 t=15s ┌──────────────────┐
-      │ Ahling Command   │  Deploys infrastructure
+      │ AWS EKS Helm     │  Deploys infrastructure
       └────────┬─────────┘
                │ ✗ FAILURE
                │ Error: "K8s quota exceeded"
@@ -763,7 +759,7 @@ ORIGINAL PLAN:
 │   - Agent: database-expert (sonnet)      Cost: $0.10      │
 │   Duration: 35 min                       Total: $0.35      │
 ├────────────────────────────────────────────────────────────┤
-│ Phase 2: Frontend (frontend-powerhouse)                   │
+│ Phase 2: Frontend (frontend-design-system)                   │
 │   - Agent: react-architect (opus)        Cost: $0.15      │
 │   - Agent: component-builder (sonnet)    Cost: $0.10      │
 │   - Agent: state-manager (sonnet)        Cost: $0.10      │
@@ -788,7 +784,7 @@ OPTIMIZED PLAN:
 │   - Agent: database-expert (haiku)       Cost: $0.03      │
 │   Duration: 30 min                       Total: $0.13      │
 │                                                            │
-│ Frontend (frontend-powerhouse):                            │
+│ Frontend (frontend-design-system):                            │
 │   - Agent: component-builder (sonnet)    Cost: $0.10      │
 │   - Agent: state-manager (haiku)         Cost: $0.03      │
 │   Duration: 25 min                       Total: $0.13      │
@@ -826,5 +822,5 @@ COST BREAKDOWN BY MODEL:
 ---
 
 **Document Version:** 1.0.0
-**Last Updated:** 2025-12-26
+**Last Updated:** 2026-02-25
 **Author:** architect-supreme

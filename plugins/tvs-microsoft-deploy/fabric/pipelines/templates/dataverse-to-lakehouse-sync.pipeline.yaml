@@ -1,0 +1,63 @@
+pipeline_id: pl_dataverse_to_lakehouse_sync
+display_name: Dataverse to Lakehouse Sync
+workspace_id: ws-tvs-prod-00000001
+sources:
+  - id: src_dataverse_account
+    type: dataverse
+    object: account
+    connection_ref: dataverse-tvs-prod
+    watermark_column: modifiedon
+  - id: src_dataverse_opportunity
+    type: dataverse
+    object: opportunity
+    connection_ref: dataverse-tvs-prod
+    watermark_column: modifiedon
+transforms:
+  - id: tr_tvs_curated_transform
+    type: notebook
+    notebook_path: fabric/notebooks/tvs_curated_transform.ipynb
+    timeout_minutes: 60
+sinks:
+  - id: sink_account
+    type: lakehouse_table
+    lakehouse_id: lh-tvs-curated
+    target: Tables/dv_account
+    mode: merge
+  - id: sink_opportunity
+    type: lakehouse_table
+    lakehouse_id: lh-tvs-curated
+    target: Tables/dv_opportunity
+    mode: merge
+schedule:
+  frequency: hourly
+  cron_utc: "15 * * * *"
+  timezone: UTC
+  retry:
+    max_attempts: 4
+    initial_backoff_seconds: 30
+    max_backoff_seconds: 600
+quality_rules:
+  - id: qr_account_primary_key
+    type: duplicate_rate
+    operator: "<="
+    threshold: 0
+    severity: error
+  - id: qr_sync_freshness
+    type: freshness_minutes
+    operator: "<="
+    threshold: 90
+    severity: error
+lineage:
+  owner: dataops@tvs.example
+  domain: crm-analytics
+  upstream:
+    - dataverse/account
+    - dataverse/opportunity
+  downstream:
+    - lakehouse/dv_account
+    - lakehouse/dv_opportunity
+    - semantic-model/client360
+  tags:
+    - recurring
+    - dataverse
+    - lakehouse-sync

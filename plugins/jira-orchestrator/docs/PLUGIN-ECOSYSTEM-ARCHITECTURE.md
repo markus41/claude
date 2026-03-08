@@ -1,6 +1,6 @@
-# Plugin Ecosystem Architecture v1.0.0
+# Plugin Ecosystem Architecture v2.0.0
 
-**Central Brain:** Jira Orchestrator | **Plugins:** 5 | **Agents:** 78 | **Commands:** 103
+**Central Brain:** Jira Orchestrator | **Plugins:** 14 | **Agents:** 175+ | **Commands:** 170+
 
 ## System Overview
 
@@ -17,12 +17,20 @@
 
 | Plugin | Agents | Commands | Specialization |
 |--------|--------|----------|----------------|
-| **jira-orchestrator** | 61 | 35 | Central routing, Jira workflows, portfolio mgmt |
-| **exec-automator** | 11 | 13 | Document analysis, LangGraph workflows |
-| **home-assistant** | 15 | 9 | Home automation, Ollama, IoT |
-| **frontend-powerhouse** | 13 | 12 | React/Next.js, Chakra UI, accessibility |
-| **ahling-command-center** | 10 | 15 | Docker, Vault, multi-cloud |
-| **lobbi-platform-manager** | 4 | 8 | Keycloak, multi-tenant, MERN |
+| **jira-orchestrator** | 82 | 47 | Central routing, Jira workflows, portfolio mgmt |
+| **exec-automator** | 12 | 14 | Nonprofit/association executive automation |
+| **home-assistant-architect** | 16 | 10 | Home automation, Ollama, IoT |
+| **frontend-design-system** | 7 | 9 | 263+ design styles, Keycloak theming |
+| **lobbi-platform-manager** | 5 | 9 | Keycloak, multi-tenant, MERN |
+| **aws-eks-helm-keycloak** | 5 | 8 | AWS EKS + Helm + Keycloak + Harness CI/CD |
+| **tvs-microsoft-deploy** | 19 | 18 | Microsoft ecosystem orchestrator |
+| **fastapi-backend** | 5 | 11 | FastAPI + MongoDB + Keycloak + K8s |
+| **fullstack-iac** | 3 | 9 | Full-stack + Terraform/Ansible/K8s IaC |
+| **marketplace-pro** | 2 | 13 | Plugin marketplace + supply chain security |
+| **deployment-pipeline** | 4 | 6 | State-machine Harness CD pipeline |
+| **claude-code-templating-plugin** | 8 | 6 | Universal templating + Harness pipelines |
+| **react-animation-studio** | 7 | 13 | React animations (Framer, GSAP) |
+| **team-accelerator** | 7 | 9 | Enterprise team DevOps toolkit |
 
 ## Architecture Layers
 
@@ -63,7 +71,7 @@ messagebus.publish({
 
 **RPC Pattern:**
 ```typescript
-const rpcClient = new RPCClient("plugin://frontend-powerhouse/rpc");
+const rpcClient = new RPCClient("plugin://frontend-design-system/rpc");
 const result = await rpcClient.call("generate_component", params);
 ```
 
@@ -157,4 +165,4 @@ This architecture provides:
 - Complex Workflows (sequential, parallel, conditional, saga)
 - Full Observability with telemetry and tracing
 
-**Status:** Ready for Implementation | **Version:** 1.0.0
+**Status:** Active | **Version:** 2.0.0 | **Last Updated:** 2026-02-25

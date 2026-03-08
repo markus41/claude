@@ -1,0 +1,35 @@
+triggers:
+  - event: deployment.status.changed
+    source: tvs:status-check
+    conditions:
+      - resourceStatus in [healthy, degraded, failed]
+    actions:
+      - teams.postStatusCard
+      - planner.upsertTask
+      - sharepoint.upsertChecklistItem
+
+  - event: readiness.gate.evaluated
+    source: tvs:taia-readiness
+    conditions:
+      - gateResult in [pass, fail]
+    actions:
+      - teams.postCheckpointSummary
+      - planner.updateBucket
+      - teams.startApprovalIfHighRisk
+
+  - event: risk.level.changed
+    source: tvs:taia-readiness
+    conditions:
+      - riskLevel in [high, critical]
+    actions:
+      - teams.postRiskEscalation
+      - mailbox.routeToEscalationMailbox
+      - sharepoint.requireEscalationEvidence
+
+  - event: checklist.item.updated
+    source: sharepoint-data-room-governance
+    conditions:
+      - evidenceStatus in [missing, pending-review, complete]
+    actions:
+      - teams.postChecklistDelta
+      - planner.syncChecklistTask

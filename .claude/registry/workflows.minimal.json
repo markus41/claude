@@ -1,17 +1,44 @@
 {
-  "$schema":"./schema/workflows.schema.json",
-  "version":"3.0.0",
-  "note":"Full metadata in workflows.index.json",
-  "fullVersion":"workflows.index.json",
-  "workflows":{
-    "development":[],
-    "devops":[],
-    "project-management":[],
-    "integration":[],
-    "data":[],
-    "group":[],
-    "documentation":[],
-    "infrastructure":[],
-    "lobbi-platform":[]
+  "$schema": "./schema/workflows.schema.json",
+  "version": "3.0.0",
+  "note": "Full metadata in workflows.index.json",
+  "fullVersion": "workflows.index.json",
+  "workflows": {
+    "development": [
+      "feature-development",
+      "code-review",
+      "e2e-test-suite"
+    ],
+    "devops": [
+      "ci-cd-workflow",
+      "deployment-pipeline",
+      "incident-response"
+    ],
+    "project-management": [
+      "scrum-ceremonies",
+      "sprint-management"
+    ],
+    "integration": [
+      "atlassian-integration",
+      "subscription-upgrade"
+    ],
+    "data": [
+      "concurrent-workflow",
+      "data-processing-workflow",
+      "sequential-workflow"
+    ],
+    "group": [
+      "group-chat-workflow",
+      "handoff-workflow"
+    ],
+    "infrastructure": [
+      "infrastructure-audit",
+      "keycloak-setup",
+      "mongodb-optimization"
+    ],
+    "lobbi-platform": [
+      "member-enrollment",
+      "tenant-onboarding"
+    ]
   }
 }

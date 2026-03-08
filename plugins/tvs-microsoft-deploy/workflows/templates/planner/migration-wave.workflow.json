@@ -1,0 +1,15 @@
+{
+  "workflowId": "migration-wave",
+  "name": "Migration Wave",
+  "description": "Tenant migration wave for data, automations, and enablement cutover.",
+  "version": "1.1.0",
+  "owners": [{"type":"group","id":"migration-office","displayName":"Migration Office"}],
+  "phases": [
+    {"id":"explore","name":"EXPLORE","state":"pending","owners":[{"type":"user","id":"arch-lead","displayName":"Architecture Lead"}],"sla":{"targetHours":40},"dependencies":[],"evidenceLinks":[],"taskTemplates":[{"title":"Inventory source systems","checklist":["Systems catalog complete","Data owners confirmed"]}]},
+    {"id":"plan","name":"PLAN","state":"pending","owners":[{"type":"group","id":"pm-team","displayName":"Program Management"}],"sla":{"targetHours":48},"dependencies":[{"phaseId":"explore"}],"evidenceLinks":[],"taskTemplates":[{"title":"Sequence migration wave backlog","checklist":["Dependency chains mapped","Rollback strategy drafted"]}]},
+    {"id":"code","name":"CODE","state":"pending","owners":[{"type":"group","id":"delivery-squad","displayName":"Delivery Squad"}],"sla":{"targetHours":96},"dependencies":[{"phaseId":"plan"}],"evidenceLinks":[],"taskTemplates":[{"title":"Build migration pipelines","checklist":["Pipeline templates committed","Secrets and identities configured"]}]},
+    {"id":"test","name":"TEST","state":"pending","owners":[{"type":"group","id":"uat-team","displayName":"UAT Team"}],"sla":{"targetHours":40},"dependencies":[{"phaseId":"code"}],"evidenceLinks":[],"taskTemplates":[{"title":"Run parallel validation","checklist":["Source-target reconciliation <1% variance","User acceptance approved"]}]},
+    {"id":"fix","name":"FIX","state":"pending","owners":[{"type":"group","id":"hypercare","displayName":"Hypercare"}],"sla":{"targetHours":32},"dependencies":[{"phaseId":"test"}],"evidenceLinks":[],"taskTemplates":[{"title":"Triage migration defects","checklist":["Priority defects resolved","Residual risk accepted"]}]},
+    {"id":"document","name":"DOCUMENT","state":"pending","owners":[{"type":"group","id":"change-mgmt","displayName":"Change Management"}],"sla":{"targetHours":24},"dependencies":[{"phaseId":"fix"}],"evidenceLinks":[],"taskTemplates":[{"title":"Publish wave handover","checklist":["Runbook finalized","Support model accepted"]}]}
+  ]
+}

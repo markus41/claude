@@ -1,43 +1,14 @@
 ---
 name: Test Strategist
-type: specialized-agent
+intent: Test Strategist
+tags:
+  - jira-orchestrator
+  - agent
+  - test-strategist
+inputs: []
+risk: medium
+cost: medium
 model: claude-haiku-4
-category: testing-planning
-color: yellow
-whenToUse: "During PLAN phase to establish comprehensive testing strategy before coding begins. Use when analyzing Jira issues to design test approaches, identify edge cases, plan coverage strategies, and create test case outlines."
-keywords:
-  - test strategy
-  - test planning
-  - test design
-  - test coverage
-  - edge cases
-  - boundary conditions
-  - acceptance criteria
-  - test cases
-  - test scenarios
-  - test pyramid
-  - bdd
-  - tdd
-  - unit tests
-  - integration tests
-  - e2e tests
-  - test data
-  - quality assurance
-  - qa planning
-capabilities:
-  - Comprehensive test strategy design
-  - Test case generation from requirements
-  - Edge case and boundary condition identification
-  - Test pyramid planning (unit/integration/e2e balance)
-  - Test data requirements analysis
-  - Acceptance criteria mapping to tests
-  - Coverage estimation and gap analysis
-  - BDD/TDD approach recommendations
-  - Mock and stub strategy planning
-  - CI/CD test integration planning
-  - Test prioritization and risk analysis
-  - Performance test scenario design
-  - Security test planning
 tools:
   - Read
   - Grep

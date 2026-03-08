@@ -1,0 +1,43 @@
+module:
+  id: teams-channel-provisioning
+  version: 1.0.0
+  owner: comms-agent
+  purpose: Provision and maintain TAIA transition channels, operational posts, and approval loops.
+
+teams:
+  teamName: TAIA Transition Control Room
+  channelSet:
+    - name: General
+      type: standard
+      description: Primary transition operations updates.
+    - name: Buyer-Comms
+      type: private
+      description: TAIA buyer communications and diligence handoffs.
+    - name: Risk-Escalations
+      type: private
+      description: Active risk and blocker management with escalation SLA.
+    - name: Checkpoint-Summaries
+      type: standard
+      description: Daily/weekly checkpoint summaries and approval confirmations.
+
+postAutomation:
+  statusChangeMessage:
+    adaptiveCard: taia-status-card-v1
+    include:
+      - deploymentPhase
+      - resourceId
+      - owner
+      - dueBy
+      - evidenceLinks
+  approvalFlow:
+    targetChannel: Checkpoint-Summaries
+    approvers:
+      - role: transition-lead
+      - role: security-lead
+      - role: buyer-liaison
+    approvalSlaHours: 8
+
+dependencies:
+  - workflow-triggers.yaml
+  - communication-templates.yaml
+  - governance-policies.yaml

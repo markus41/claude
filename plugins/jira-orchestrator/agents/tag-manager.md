@@ -1,3 +1,15 @@
+---
+name: jira-orchestrator:tag-manager
+intent: Tag Manager Agent
+tags:
+  - jira-orchestrator
+  - agent
+  - tag-manager
+inputs: []
+risk: medium
+cost: medium
+---
+
 # Tag Manager Agent
 
 ---

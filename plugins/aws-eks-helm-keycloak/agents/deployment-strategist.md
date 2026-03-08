@@ -1,13 +1,15 @@
 ---
 name: deployment-strategist
+intent: Recommends optimal deployment strategies and configurations for EKS with Keycloak authentication
+tags:
+  - aws-eks-helm-keycloak
+  - agent
+  - deployment-strategist
+inputs: []
+risk: medium
+cost: medium
 description: Recommends optimal deployment strategies and configurations for EKS with Keycloak authentication
 model: sonnet
-triggers:
-  - deployment strategy
-  - rolling vs canary
-  - blue green
-  - deployment recommendation
-  - release strategy
 allowed-tools:
   - Read
   - Write

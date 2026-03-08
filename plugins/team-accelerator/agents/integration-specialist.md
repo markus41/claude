@@ -1,4 +1,13 @@
 ---
+name: team-accelerator:integration-specialist
+intent: Use this agent when working with API design, service integrations, database connections, webhooks, or event-driven architectures. This agent specializes in building robust, scalable integration patterns.
+tags:
+  - team-accelerator
+  - agent
+  - integration-specialist
+inputs: []
+risk: medium
+cost: medium
 description: Use this agent when working with API design, service integrations, database connections, webhooks, or event-driven architectures. This agent specializes in building robust, scalable integration patterns.
 model: sonnet
 tools:

@@ -1,10 +1,14 @@
 ---
 name: jira:plan-prs
+intent: Analyze issue and create PR delivery strategy before coding
+tags:
+  - jira-orchestrator
+  - command
+  - plan-prs
+inputs: []
+risk: medium
+cost: medium
 description: Analyze issue and create PR delivery strategy before coding
-arguments:
-  - name: issue_key
-    description: Parent Jira issue key (e.g., PROJ-123)
-    required: true
 examples:
   - command: /jira:plan-prs PROJ-123
     description: Create PR strategy for PROJ-123

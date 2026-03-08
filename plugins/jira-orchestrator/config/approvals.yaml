@@ -22,6 +22,137 @@ global:
       - "security_scan == 'passed'"
       - "no_breaking_changes == true"
 
+# Jira PR Readiness Gate Policies
+jira_readiness:
+  enabled: true
+  issue_link_template: "https://jira.example.com/browse/%{issue_key}"
+  pr_tool_patterns:
+    - "gh_pr_create"
+    - "mcp__github__create_pull_request"
+    - "mcp__make_pr__make_pr"
+    - "harness_create_pull_request"
+
+  # Baseline policy used when no team/project override exists.
+  default:
+    definition_of_ready_label: "definition-of-ready"
+    acceptance_criteria_fields:
+      - "customfield_10038"
+      - "acceptance_criteria"
+    required_fields_by_issue_type:
+      Story:
+        - assignee
+        - acceptance_criteria
+        - priority
+        - component
+        - sprint
+        - definition_of_ready_label
+      Task:
+        - assignee
+        - priority
+        - component
+        - sprint
+        - definition_of_ready_label
+      Bug:
+        - assignee
+        - priority
+        - component
+        - sprint
+      default:
+        - assignee
+        - priority
+
+  # Team-level overrides. Attach with JIRA_TEAM=<team-key>.
+  teams:
+    platform:
+      definition_of_ready_label: "platform-dor"
+      acceptance_criteria_fields:
+        - "customfield_10038"
+        - "customfield_10201"
+      required_fields_by_issue_type:
+        Story:
+          - assignee
+          - acceptance_criteria
+          - priority
+          - component
+          - sprint
+          - definition_of_ready_label
+
+  # Project-level overrides by Jira project key (e.g. PROJ-123).
+  projects:
+    ENG:
+      definition_of_ready_label: "eng-dor"
+      required_fields_by_issue_type:
+        Story:
+          - assignee
+          - acceptance_criteria
+          - priority
+          - component
+          - sprint
+          - definition_of_ready_label
+        Spike:
+          - assignee
+          - priority
+          - sprint
+
+# Merge Evidence Gate Policies
+merge_evidence_gate:
+  enabled: true
+  merge_tool_patterns:
+    - "gh_pr_merge"
+    - "mcp__github__merge_pull_request"
+    - "harness_merge_pull_request"
+    - "harness_deploy"
+    - "execute_pipeline"
+  evidence_sections:
+    test_results:
+      guidance: "Attach passing CI/test run URLs or summarized results with timestamp and owner."
+    rollback_plan:
+      guidance: "Document rollback commands, owner, and blast radius expectations."
+    release_notes_impact:
+      guidance: "State customer-visible impact and release-note entry (or explicitly 'none')."
+  default:
+    default_risk_tier: medium
+    required_sections_by_risk_tier:
+      low:
+        - test_results
+      medium:
+        - test_results
+        - rollback_plan
+      high:
+        - test_results
+        - rollback_plan
+        - release_notes_impact
+      critical:
+        - test_results
+        - rollback_plan
+        - release_notes_impact
+      default:
+        - test_results
+        - rollback_plan
+    override_authorization:
+      authorized_roles:
+        - engineering_manager
+        - release_manager
+        - incident_commander
+  projects:
+    ENG:
+      required_sections_by_risk_tier:
+        low:
+          - test_results
+          - release_notes_impact
+        medium:
+          - test_results
+          - rollback_plan
+          - release_notes_impact
+        high:
+          - test_results
+          - rollback_plan
+          - release_notes_impact
+      override_authorization:
+        authorized_roles:
+          - engineering_manager
+          - director_engineering
+
 # Approval Workflows
 workflows:
   # Standard Pull Request Approval

@@ -1,9 +1,15 @@
 ---
 name: slack-notifier
+intent: Delivers Jira orchestration notifications to Slack using Block Kit, managing threads, interactive buttons, and rich formatting for optimal user experience
+tags:
+  - jira-orchestrator
+  - agent
+  - slack-notifier
+inputs: []
+risk: medium
+cost: medium
 description: Delivers Jira orchestration notifications to Slack using Block Kit, managing threads, interactive buttons, and rich formatting for optimal user experience
 model: haiku
-color: purple
-whenToUse: When notification-router determines a notification should be delivered via Slack (DMs, channels, threads)
 tools:
   - Read
   - Write

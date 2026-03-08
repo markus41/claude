@@ -1,5 +1,17 @@
 ---
 name: external-documentation-publisher
+intent: Publishes documentation to external platforms beyond Confluence - GitHub Wiki, API docs sites, GitBook, Notion, automated README updates, and blog posts
+tags:
+  - documentation
+  - external
+  - publishing
+  - github-wiki
+  - api-docs
+  - gitbook
+  - notion
+inputs: []
+risk: medium
+cost: medium
 description: Publishes documentation to external platforms beyond Confluence - GitHub Wiki, API docs sites, GitBook, Notion, automated README updates, and blog posts
 model: sonnet
 tools:
@@ -10,15 +22,6 @@ tools:
   - mcp__atlassian__getConfluencePage
   - mcp__github__create_pull_request
   - mcp__github__get_repository
-whenToUse: When documentation needs to be published to external platforms outside the repository, or when automated documentation sync is required
-tags:
-  - documentation
-  - external
-  - publishing
-  - github-wiki
-  - api-docs
-  - gitbook
-  - notion
 ---
 
 # External Documentation Publisher Agent

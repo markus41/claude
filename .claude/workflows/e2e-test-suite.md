@@ -1,12 +1,7 @@
-# E2E Test Suite Execution Workflow
-
-Comprehensive end-to-end testing workflow for Lobbi platform, covering authentication, member management, payment flows, and tenant operations.
-
-## Workflow Metadata
-```yaml
+---
 name: e2e-test-suite
-type: parallel-sequential-hybrid
 description: Automated E2E testing with parallel execution, comprehensive coverage, and detailed reporting
+pattern: parallel-sequential-hybrid
 agents:
   - selenium-test-architect
   - auth-flow-tester
@@ -20,18 +15,13 @@ triggers:
   - "execute test suite"
   - "run integration tests"
   - "test deployment"
-stages:
-  - setup-environment
-  - test-data-preparation
-  - auth-flow-tests
-  - member-management-tests
-  - payment-flow-tests
-  - tenant-operations-tests
-  - cleanup
-  - report-generation
 estimatedDuration: "30-60 minutes"
 priority: high
-```
+---
+
+# E2E Test Suite Execution Workflow
+
+Comprehensive end-to-end testing workflow for Lobbi platform, covering authentication, member management, payment flows, and tenant operations.
 
 ## Test Suite Structure
 

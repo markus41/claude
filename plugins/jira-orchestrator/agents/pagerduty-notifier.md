@@ -1,17 +1,20 @@
 ---
 name: pagerduty-notifier
+intent: Creates and manages PagerDuty incidents for critical Jira Orchestrator events with proper severity, deduplication, and auto-resolution
+tags:
+  - notifications
+  - pagerduty
+  - incidents
+  - on-call
+inputs: []
+risk: medium
+cost: medium
 description: Creates and manages PagerDuty incidents for critical Jira Orchestrator events with proper severity, deduplication, and auto-resolution
 model: haiku
 tools:
   - Read
   - Write
   - Bash
-whenToUse: When urgent/critical notifications need to create PagerDuty incidents
-tags:
-  - notifications
-  - pagerduty
-  - incidents
-  - on-call
 ---
 
 # PagerDuty Notifier Agent

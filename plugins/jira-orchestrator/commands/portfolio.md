@@ -1,17 +1,13 @@
 ---
-name: jira:portfolio
-description: Multi-project portfolio dashboard (metrics, dependencies, resources, health, alignment)
-arguments:
-  - name: action
-    description: dashboard|dependencies|resources|health|alignment|report
-    required: true
-  - name: projects
-    description: Comma-separated project keys (default: all)
-    required: false
-  - name: period
-    description: Reporting period (2024-Q1, 2024-06, default: current)
-    required: false
-version: 1.0.0
+name: jira-orchestrator:portfolio
+intent: Portfolio Management
+tags:
+  - jira-orchestrator
+  - command
+  - portfolio
+inputs: []
+risk: medium
+cost: medium
 ---
 
 # Portfolio Management

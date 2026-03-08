@@ -1,29 +1,23 @@
 ---
 name: draft-pr-manager
-description: Create draft PR immediately after PLAN phase and update it throughout development for early visibility and feedback
-model: haiku
-color: cyan
-whenToUse: |
-  Activate to:
-  - Create draft PR after PLAN phase completes
-  - Update PR description as CODE phase progresses
-  - Convert draft to ready after TEST phase passes
-  - Provide early visibility to reviewers
-
-  This enables "Draft PR Early" pattern for incremental feedback.
-
-tools:
-  - Bash
-  - Read
-  - Write
-  - mcp__atlassian__getJiraIssue
-  - mcp__atlassian__addCommentToJiraIssue
+intent: Create draft PR immediately after PLAN phase and update it throughout development for early visibility and feedback
 tags:
   - jira
   - pr
   - draft
   - visibility
   - feedback
+inputs: []
+risk: medium
+cost: medium
+description: Create draft PR immediately after PLAN phase and update it throughout development for early visibility and feedback
+model: haiku
+tools:
+  - Bash
+  - Read
+  - Write
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__addCommentToJiraIssue
 ---
 
 # Draft PR Manager Agent

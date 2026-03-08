@@ -1,27 +1,16 @@
 ---
 name: exec:template
-description: Manage workflow templates and document templates for automation - create, edit, import, export, and apply pre-built templates for common executive tasks
-color: amber
-icon: file-plus
+intent: Manage workflow templates and document templates for automation - create, edit, import, export, and apply pre-built templates for common executive tasks
 tags:
   - templates
   - workflows
   - documents
   - automation
+inputs: []
+risk: medium
+cost: medium
+description: Manage workflow templates and document templates for automation - create, edit, import, export, and apply pre-built templates for common executive tasks
 model: claude-sonnet-4-5
-arguments:
-  - name: action
-    description: Action to perform (list, create, edit, import, export, apply, delete, preview)
-    required: true
-  - name: type
-    description: Template type (workflow, document, email, report, policy, checklist)
-    required: false
-  - name: name
-    description: Template name or ID
-    required: false
-  - name: output
-    description: Output path for export operations
-    required: false
 ---
 
 # Template Manager - Executive Automation Templates

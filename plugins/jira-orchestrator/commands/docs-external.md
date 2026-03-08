@@ -1,7 +1,14 @@
 ---
 name: jira:docs-external
+intent: Publish documentation to external platforms (GitHub Wiki, API docs, GitBook, Notion, README updates, blog posts)
+tags:
+  - jira-orchestrator
+  - command
+  - docs-external
+inputs: []
+risk: medium
+cost: medium
 description: Publish documentation to external platforms (GitHub Wiki, API docs, GitBook, Notion, README updates, blog posts)
-argument-hint: "[action] [options]"
 ---
 
 # /jira:docs-external

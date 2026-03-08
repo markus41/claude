@@ -1,0 +1,42 @@
+# Plugin Policy Rules
+#
+# Rules are evaluated top-to-bottom (first match wins, like iptables).
+# Actions:
+#   allow  — Plugin is permitted
+#   deny   — Plugin is blocked
+#   require — Plugin is mandatory (warnings if missing, does not block others)
+#
+# The "unless" clause exempts matching plugins if ALL conditions are met.
+
+rules:
+  # Always allow local/project plugins
+  - action: allow
+    plugins: ["*"]
+    source: "local"
+    reason: "Local project plugins are always trusted"
+
+  # Block known-malicious plugin patterns
+  - action: deny
+    plugins: ["*-backdoor", "*-exploit", "*.malware*"]
+    reason: "Blocked by security policy — matches known malicious pattern"
+
+  # Deny unsigned plugins from public registries unless highly trusted
+  - action: deny
+    plugins: ["*"]
+    source: "public"
+    unless:
+      trust_score: ">= 60"
+    reason: "Public plugins require a trust score of at least 60"
+
+  # Deny unsigned plugins from unknown sources
+  - action: deny
+    plugins: ["*"]
+    unless:
+      signed: true
+      trust_score: ">= 40"
+    reason: "Plugins must be signed with a trust score of at least 40"
+
+  # Default: allow everything that passed the above checks
+  - action: allow
+    plugins: ["*"]
+    reason: "Default allow — passed all security checks"

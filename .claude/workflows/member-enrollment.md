@@ -1,12 +1,7 @@
-# Member Enrollment Workflow
-
-Multi-path member enrollment workflow supporting self-registration, admin invitation, and bulk import for the Lobbi platform.
-
-## Workflow Metadata
-```yaml
+---
 name: member-enrollment
-type: conditional-branching
 description: Member enrollment with multiple entry paths - self-registration, invitation, and bulk import
+pattern: conditional-branching
 agents:
   - membership-specialist
   - keycloak-realm-admin
@@ -19,17 +14,13 @@ triggers:
   - "invite member"
   - "bulk import members"
   - "add member"
-stages:
-  - enrollment-path-selection
-  - data-validation
-  - duplicate-check
-  - keycloak-user-creation
-  - member-record-creation
-  - welcome-notification
-  - bulk-processing (conditional)
 estimatedDuration: "5-15 minutes (single), 30-90 minutes (bulk)"
 priority: medium
-```
+---
+
+# Member Enrollment Workflow
+
+Multi-path member enrollment workflow supporting self-registration, admin invitation, and bulk import for the Lobbi platform.
 
 ## Enrollment Paths
 

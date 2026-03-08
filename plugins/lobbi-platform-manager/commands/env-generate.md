@@ -1,7 +1,18 @@
 ---
+name: lobbi-platform-manager:env-generate
+intent: Generate .env files for dev/staging/prod environments
+tags:
+  - lobbi-platform-manager
+  - command
+  - env-generate
+inputs: []
+risk: medium
+cost: medium
 description: Generate .env files for dev/staging/prod environments
-argument-hint: "[--mode MODE] [--output FILE]"
-allowed-tools: ["Write", "Read", "Bash"]
+allowed-tools:
+  - Write
+  - Read
+  - Bash
 ---
 
 Generate complete .env configuration files for different environments (development, staging, production) with sensible defaults and prompts for required secrets.

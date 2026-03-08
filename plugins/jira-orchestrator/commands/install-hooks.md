@@ -1,20 +1,13 @@
 ---
-name: jira:install-hooks
-description: Install and manage git hooks for Jira smart commit integration
-arguments:
-  - name: action
-    description: install, uninstall, list, test, status, configure
-    required: true
-  - name: hook-type
-    description: prepare-commit-msg, commit-msg, post-commit, all (default: all)
-    required: false
-  - name: force
-    description: Overwrite existing hooks without prompting
-    required: false
+name: jira-orchestrator:install-hooks
+intent: /jira:install-hooks
 tags:
-  - jira
-  - git
-  - hooks
+  - jira-orchestrator
+  - command
+  - install-hooks
+inputs: []
+risk: medium
+cost: medium
 ---
 
 # /jira:install-hooks

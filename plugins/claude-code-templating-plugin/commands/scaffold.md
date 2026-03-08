@@ -1,14 +1,16 @@
 ---
 name: scaffold
-description: Scaffold complete projects with automatic Harness integration, environment configuration, and post-generation setup
-color: green
-icon: folder-plus
+intent: Scaffold complete projects with automatic Harness integration, environment configuration, and post-generation setup
 tags:
   - scaffold
   - project
   - setup
   - harness
   - initialization
+inputs: []
+risk: medium
+cost: medium
+description: Scaffold complete projects with automatic Harness integration, environment configuration, and post-generation setup
 model: claude-sonnet-4-5
 ---
 

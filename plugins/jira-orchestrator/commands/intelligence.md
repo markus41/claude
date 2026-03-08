@@ -1,14 +1,14 @@
 ---
 name: jira:intelligence
+intent: Access AI-powered predictive analytics, smart prioritization, and learning insights
+tags:
+  - jira-orchestrator
+  - command
+  - intelligence
+inputs: []
+risk: medium
+cost: medium
 description: Access AI-powered predictive analytics, smart prioritization, and learning insights
-arguments:
-  - name: operation
-    description: Operation (predict, prioritize, velocity, patterns, briefing)
-    required: true
-  - name: target
-    description: Target issue key, sprint name, or project key
-    required: false
-version: 1.0.0
 ---
 
 # Intelligence Analytics

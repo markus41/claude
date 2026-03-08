@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tvs.internal/schemas/cli/command.schema.json",
+  "title": "TVS Microsoft Deploy Command Contract",
+  "type": "object",
+  "required": [
+    "name",
+    "description",
+    "summary",
+    "args",
+    "sharedArgs",
+    "errors",
+    "examples"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^tvs:[a-z0-9-]+$"
+    },
+    "description": { "type": "string", "minLength": 10 },
+    "summary": { "type": "string", "minLength": 10 },
+    "args": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["flag", "required", "description"],
+        "properties": {
+          "flag": { "type": "string", "pattern": "^--[a-z0-9-]+$" },
+          "required": { "type": "boolean" },
+          "description": { "type": "string" },
+          "default": {},
+          "pattern": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "sharedArgs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["--entity", "--tenant", "--strict", "--dry-run", "--export-json", "--plan-id"]
+      },
+      "allOf": [
+        { "contains": { "const": "--entity" } },
+        { "contains": { "const": "--tenant" } }
+      ]
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^TVS_CLI_[A-Z0-9_]+$"
+      },
+      "minItems": 1
+    },
+    "examples": {
+      "type": "object",
+      "required": ["tvs", "consulting", "taia", "crossEntitySafeMode"],
+      "properties": {
+        "tvs": { "type": "string" },
+        "consulting": { "type": "string" },
+        "taia": { "type": "string" },
+        "crossEntitySafeMode": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,20 +1,14 @@
 ---
 name: jira:confluence
+intent: Read, write, sync, create, or link Confluence pages to Jira issues
+tags:
+  - jira-orchestrator
+  - command
+  - confluence
+inputs: []
+risk: medium
+cost: medium
 description: Read, write, sync, create, or link Confluence pages to Jira issues
-arguments:
-  - name: issue_key
-    description: Jira issue key (e.g., PROJ-123)
-    required: true
-  - name: action
-    description: Action (read|write|sync|create|link)
-    default: read
-  - name: page_type
-    description: Page type (tdd|api|adr|runbook|release-notes)
-    required: false
-  - name: space_key
-    description: Confluence space key (optional)
-    required: false
-version: 1.0.0
 ---
 
 # Jira-Confluence Integration
@@ -36,8 +30,9 @@ version: 1.0.0
 1. **Validate** issue key format & fetch from Jira
 2. **Determine** Confluence space (use ${space_key} or project key)
 3. **Execute** action (read/write/sync/create/link)
-4. **Comment** on Jira with results
+4. **Comment** on Jira with canonical indexed page URLs + Operations Index URL
 5. **Create/Update** bi-directional links
+6. **Generate**/refresh `Operations Index - {project-key} - {quarter}` using CQL-discovered child pages
 
 ## Action: READ
 
@@ -85,7 +80,7 @@ version: 1.0.0
 2. Select template (pre-built HTML)
 3. Populate with Jira data
 4. Create via Confluence API
-5. Add labels (issue_key, type, page_type)
+5. Add labels (issue-key, release, incident, env, service) and write the same keys as page properties
 6. Link to Jira (remote + macro)
 
 ## Action: LINK

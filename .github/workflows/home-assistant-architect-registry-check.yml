@@ -1,0 +1,29 @@
+name: home-assistant-architect-registry-check
+
+on:
+  pull_request:
+    paths:
+      - 'plugins/home-assistant-architect/**'
+      - '.github/workflows/home-assistant-architect-registry-check.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'plugins/home-assistant-architect/**'
+      - '.github/workflows/home-assistant-architect-registry-check.yml'
+
+jobs:
+  registry-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Verify generated registries and README totals
+        run: node plugins/home-assistant-architect/scripts/generate-registry.ts --check

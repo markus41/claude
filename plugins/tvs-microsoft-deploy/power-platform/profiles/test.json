@@ -1,0 +1,23 @@
+{
+  "environment": "test",
+  "solutionMode": "managed",
+  "dataverseUrl": "https://org-test.crm.dynamics.com",
+  "flowEnvironmentId": "Default-test",
+  "packagePath": "artifacts/test",
+  "connectionReferences": {
+    "shared_commondataserviceforapps": {"connectionId": "test-cds", "auth": "servicePrincipal"},
+    "shared_office365": {"connectionId": "test-o365", "auth": "servicePrincipal"},
+    "shared_azuread": {"connectionId": "test-aad", "auth": "servicePrincipal"}
+  },
+  "capacityLimits": {
+    "databasePct": 80,
+    "filePct": 85,
+    "logPct": 85
+  },
+  "smokeChecks": [
+    "commission-processing",
+    "identity-offboarding",
+    "taia-archival",
+    "copilot:offboarding-assistant"
+  ]
+}

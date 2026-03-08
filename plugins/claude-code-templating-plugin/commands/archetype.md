@@ -1,8 +1,6 @@
 ---
 name: archetype
-description: Complete archetype lifecycle - analyze projects, create templates, scaffold new projects, register architecture, generate Harness templates, and export diagrams
-color: purple
-icon: cube
+intent: Complete archetype lifecycle - analyze projects, create templates, scaffold new projects, register architecture, generate Harness templates, and export diagrams
 tags:
   - archetype
   - template
@@ -10,6 +8,10 @@ tags:
   - structurizr
   - harness
   - gradle
+inputs: []
+risk: medium
+cost: medium
+description: Complete archetype lifecycle - analyze projects, create templates, scaffold new projects, register architecture, generate Harness templates, and export diagrams
 model: claude-sonnet-4-5
 ---
 

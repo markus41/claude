@@ -564,3 +564,17 @@ Happy orchestrating!
 ---
 
 **⚓ Golden Armada** | *You ask - The Fleet Ships*
+
+## Integration Contract Validation (Setup + CI)
+
+Run integration validation as part of setup and CI checks:
+
+```bash
+npm run setup
+npm run validate:integrations
+npm run ci
+```
+
+The validator writes a machine-readable report to `sessions/reports/integration-health.json` and exits non-zero when `error`-severity issues are detected.
+
+For fixture authoring and remediation workflow details, see `docs/ADVANCED-INTEGRATION-VALIDATION.md`.

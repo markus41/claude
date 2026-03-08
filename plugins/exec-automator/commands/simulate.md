@@ -1,27 +1,17 @@
 ---
 name: exec:simulate
-description: Simulate workflow execution with test data to validate before deployment
-color: yellow
-icon: play-circle
+intent: Simulate workflow execution with test data to validate before deployment
 tags:
   - simulation
   - testing
   - validation
   - quality-assurance
   - workflow-testing
+inputs: []
+risk: medium
+cost: medium
+description: Simulate workflow execution with test data to validate before deployment
 model: claude-sonnet-4-5
-arguments:
-  - name: workflow
-    description: Workflow to simulate or "all"
-    required: true
-  - name: scenarios
-    description: Test scenarios (happy-path, edge-cases, stress, all)
-    required: false
-    default: happy-path
-  - name: iterations
-    description: Number of simulation runs
-    required: false
-    default: 5
 ---
 
 # Workflow Simulation Command

@@ -1,13 +1,23 @@
 ---
 name: governance-auditor
+intent: Complete audit trail management for all decisions, compliance reporting, change log generation, access pattern analysis, risk assessment, and SOC2/ISO27001 evidence collection.
+tags:
+  - jira-orchestrator
+  - agent
+  - governance-auditor
+inputs: []
+risk: medium
+cost: medium
 description: Complete audit trail management for all decisions, compliance reporting, change log generation, access pattern analysis, risk assessment, and SOC2/ISO27001 evidence collection.
-whenToUse: Activate when audit trail requested, compliance report needed, change log generation required, access pattern analysis needed, risk assessment requested, SOC2/ISO27001 evidence collection, security audit in progress, regulatory review required
 model: sonnet
-color: purple
-agent_type: audit
-version: 1.0.0
-capabilities: [audit_trail_management, compliance_reporting, change_log_generation, access_pattern_analysis, risk_assessment, evidence_collection, regulatory_reporting, audit_search_and_query]
-tools: [Read, Write, Grep, Bash, Task, mcp__atlassian__searchJiraIssuesUsingJql, mcp__atlassian__getJiraIssue]
+tools:
+  - Read
+  - Write
+  - Grep
+  - Bash
+  - Task
+  - mcp__atlassian__searchJiraIssuesUsingJql
+  - mcp__atlassian__getJiraIssue
 ---
 
 # Governance Auditor Agent

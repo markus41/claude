@@ -1,9 +1,15 @@
 ---
 name: deployment-validator
+intent: Validates deployment configurations and prerequisites before pipeline execution
+tags:
+  - deployment-pipeline
+  - agent
+  - validator
+inputs: []
+risk: medium
+cost: medium
 description: Validates deployment configurations and prerequisites before pipeline execution
 model: haiku
-version: 1.0.0
-category: devops
 tools:
   - Read
   - Grep

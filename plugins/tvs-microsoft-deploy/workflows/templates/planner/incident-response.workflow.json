@@ -1,0 +1,15 @@
+{
+  "workflowId": "incident-response",
+  "name": "Incident Response",
+  "description": "Incident workflow for triage, restoration, hardening, and postmortem evidence.",
+  "version": "1.1.0",
+  "owners": [{"type":"group","id":"incident-command","displayName":"Incident Command"}],
+  "phases": [
+    {"id":"explore","name":"EXPLORE","state":"pending","owners":[{"type":"group","id":"soc","displayName":"Security Operations"}],"sla":{"targetHours":2},"dependencies":[],"evidenceLinks":[],"taskTemplates":[{"title":"Confirm incident scope and severity","checklist":["Severity assigned","Affected services listed"]}]},
+    {"id":"plan","name":"PLAN","state":"pending","owners":[{"type":"group","id":"incident-command","displayName":"Incident Command"}],"sla":{"targetHours":2},"dependencies":[{"phaseId":"explore"}],"evidenceLinks":[],"taskTemplates":[{"title":"Approve containment plan","checklist":["Containment owner assigned","Comms cadence established"]}]},
+    {"id":"code","name":"CODE","state":"pending","owners":[{"type":"group","id":"platform","displayName":"Platform Engineering"}],"sla":{"targetHours":8},"dependencies":[{"phaseId":"plan"}],"evidenceLinks":[],"taskTemplates":[{"title":"Implement mitigations","checklist":["Hotfix deployed","Threat indicators blocked"]}]},
+    {"id":"test","name":"TEST","state":"pending","owners":[{"type":"group","id":"qa-team","displayName":"Validation Team"}],"sla":{"targetHours":4},"dependencies":[{"phaseId":"code"}],"evidenceLinks":[],"taskTemplates":[{"title":"Validate service restoration","checklist":["Monitoring healthy for 30m","Core journeys verified"]}]},
+    {"id":"fix","name":"FIX","state":"pending","owners":[{"type":"group","id":"platform","displayName":"Platform Engineering"}],"sla":{"targetHours":6},"dependencies":[{"phaseId":"test"}],"evidenceLinks":[],"taskTemplates":[{"title":"Apply hardening remediations","checklist":["Root cause addressed","Compensating controls in place"]}]},
+    {"id":"document","name":"DOCUMENT","state":"pending","owners":[{"type":"group","id":"comms","displayName":"Comms + Postmortem"}],"sla":{"targetHours":12},"dependencies":[{"phaseId":"fix"}],"evidenceLinks":[],"taskTemplates":[{"title":"Publish post-incident review","checklist":["Timeline documented","Action items assigned","Leadership readout sent"]}]}
+  ]
+}

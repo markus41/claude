@@ -1,0 +1,57 @@
+pipeline_id: pl_client_kpi_mart_generation
+display_name: Client-specific KPI Mart Generation
+workspace_id: ws-consolidated-prod-00000006
+sources:
+  - id: src_sales_fact
+    type: onelake_shortcut
+    object: Tables/sv_sales_fact_conformed
+    connection_ref: consolidated-onelake
+    watermark_column: event_ts
+  - id: src_commission_fact
+    type: onelake_shortcut
+    object: Tables/sv_commission_fact_normalized
+    connection_ref: consolidated-onelake
+    watermark_column: batch_ts
+transforms:
+  - id: tr_consolidated_rollup
+    type: notebook
+    notebook_path: fabric/notebooks/consolidated_rollup.ipynb
+    timeout_minutes: 45
+sinks:
+  - id: sink_client_kpi_mart
+    type: lakehouse_table
+    lakehouse_id: lh-consolidated-gold
+    target: Tables/gd_client_kpi_mart
+    mode: overwrite
+schedule:
+  frequency: daily
+  cron_utc: "0 4 * * *"
+  timezone: UTC
+  retry:
+    max_attempts: 3
+    initial_backoff_seconds: 120
+    max_backoff_seconds: 1200
+quality_rules:
+  - id: qr_kpi_metric_coverage
+    type: metric_coverage
+    operator: ">="
+    threshold: 0.98
+    severity: error
+  - id: qr_kpi_null_rate
+    type: null_rate
+    operator: "<="
+    threshold: 0.02
+    severity: warning
+lineage:
+  owner: analytics@tvs.example
+  domain: embedded-analytics
+  upstream:
+    - lakehouse/sv_sales_fact_conformed
+    - lakehouse/sv_commission_fact_normalized
+  downstream:
+    - lakehouse/gd_client_kpi_mart
+    - report/buyer_due_diligence
+  tags:
+    - recurring
+    - kpi-mart
+    - client-facing

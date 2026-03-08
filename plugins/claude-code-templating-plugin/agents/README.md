@@ -1,3 +1,15 @@
+---
+name: claude-code-templating-plugin:README
+intent: Harness Expert Agent
+tags:
+  - claude-code-templating-plugin
+  - agent
+  - README
+inputs: []
+risk: medium
+cost: medium
+---
+
 # Harness Expert Agent
 
 Expert system for Harness CI/CD pipeline generation, template management, and intelligent pipeline suggestions.

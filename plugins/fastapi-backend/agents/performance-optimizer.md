@@ -1,5 +1,13 @@
 ---
 name: performance-optimizer
+intent: Performance optimization specialist for FastAPI applications, analyzing bottlenecks, implementing caching, and optimizing database queries
+tags:
+  - fastapi-backend
+  - agent
+  - performance-optimizer
+inputs: []
+risk: medium
+cost: medium
 description: Performance optimization specialist for FastAPI applications, analyzing bottlenecks, implementing caching, and optimizing database queries
 model: sonnet
 tools:
@@ -9,16 +17,6 @@ tools:
   - Glob
   - Grep
   - Bash
-keywords:
-  - performance
-  - optimization
-  - caching
-  - profiling
-  - query optimization
-  - latency
-  - throughput
-  - memory
-  - async
 ---
 
 # Performance Optimizer Agent

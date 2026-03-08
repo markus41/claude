@@ -1,25 +1,21 @@
 ---
 name: learning-coordinator
+intent: Coordinates real-time learning across all agents, manages knowledge consolidation, and optimizes agent selection based on historical performance
+tags:
+  - jira-orchestrator
+  - agent
+  - learning-coordinator
+inputs: []
+risk: medium
+cost: medium
 description: Coordinates real-time learning across all agents, manages knowledge consolidation, and optimizes agent selection based on historical performance
 model: sonnet
-color: purple
-whenToUse: |
-  Activate this agent to:
-  - Analyze task outcomes and update agent profiles
-  - Coordinate pattern extraction across multiple agents
-  - Select optimal agents for tasks based on learned patterns
-  - Consolidate learning insights from completed work sessions
-  - Generate performance reports and learning metrics
-  - Identify trends in agent effectiveness
-  - Recommend agent improvements based on data
-  - Manage the real-time learning system state
 tools:
   - Read
   - Write
   - Grep
   - Glob
   - Bash
-temperature: 0.3
 ---
 
 # Learning Coordinator Agent

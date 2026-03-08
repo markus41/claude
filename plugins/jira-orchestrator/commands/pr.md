@@ -1,42 +1,20 @@
 ---
 name: jira:pr
-description: Create, fix, or iterate on pull requests for Jira issues
-arguments:
-  - name: issue_key
-    description: Jira issue key for PR
-    required: true
-  - name: base
-    description: Base branch for PR
-    default: main
-  - name: draft
-    description: Create as draft PR
-    default: false
-  - name: reviewers
-    description: Comma-separated list of reviewers
-    required: false
-  - name: fix
-    description: Fix review comments and re-review (replaces /pr-fix)
-    default: false
-  - name: iterate
-    description: Iterate on feedback with auto-review (replaces /iterate)
-    default: false
-  - name: max_iterations
-    description: Max fix attempts before escalation (with --iterate)
-    default: 3
+intent: Create, fix, or iterate on pull requests for Jira issues
 tags:
   - jira
   - harness
   - pull-request
   - automation
-version: 2.0.0
+inputs: []
+risk: medium
+cost: medium
+description: Create, fix, or iterate on pull requests for Jira issues
 examples:
   - command: /jira:pr ABC-123
   - command: /jira:pr ABC-123 --fix
   - command: /jira:pr ABC-123 --iterate --max_iterations 5
   - command: /jira:pr ABC-123 main false user1,user2
-aliases:
-  - pr-fix (deprecated -> use --fix)
-  - iterate (deprecated -> use --iterate)
 ---
 
 > ⚠️ **Migration Notice:** This command now consolidates `/pr-fix` and `/jira:iterate`.
@@ -95,6 +73,16 @@ mode:
 ## Core Workflow
 
 **Validate → Fetch Issue → Branch → Analyze Changes → Discover Confluence Docs → Generate PR (with Doc Links) → Push → Create PR → Update Jira**
+
+### Auto Draft Scaffolding Contract
+
+`/jira:work` transitioning an issue to **In Progress** should invoke this command in draft scaffolding mode.
+
+- Pre-fill draft PR body using Jira context (summary, description, acceptance criteria)
+- Create initial checklist from acceptance criteria
+- Keep checklist synced when key Jira fields update (summary/description/acceptance criteria/status)
+- Subsequent commits MUST append progress notes instead of replacing PR body
+- Respect per-issue opt-out label: `no-draft-pr`
 
 ## Quick Start
 

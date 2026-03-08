@@ -1,0 +1,41 @@
+module:
+  id: mailbox-lifecycle
+  version: 1.0.0
+  owner: identity-agent
+  purpose: Manage shared mailbox lifecycle for TAIA diligence, escalation, and transition support.
+
+mailboxes:
+  - alias: taia-buyer-comms
+    displayName: TAIA Buyer Communications
+    purpose: Buyer questions, diligence responses, and communication archive.
+    accessGroups:
+      - taia-transition-leads
+      - legal-reviewers
+      - finance-reviewers
+  - alias: taia-risk-escalations
+    displayName: TAIA Risk Escalations
+    purpose: Incident, blocker, and compliance escalation mailbox.
+    accessGroups:
+      - taia-transition-leads
+      - security-response
+      - executive-ops
+  - alias: taia-checkpoints
+    displayName: TAIA Checkpoint Summaries
+    purpose: Milestone checkpoint summaries and decisions.
+    accessGroups:
+      - taia-transition-leads
+      - buyer-liaison
+
+lifecycleActions:
+  createOn:
+    - taia.transition.initiated
+  updateOn:
+    - taia.readiness.status.changed
+    - taia.risk.level.changed
+  decommissionOn:
+    - taia.transition.closed
+
+controls:
+  autoArchiveDays: 30
+  legalHoldForBuyerComms: true
+  incidentEscalationSlaHours: 4

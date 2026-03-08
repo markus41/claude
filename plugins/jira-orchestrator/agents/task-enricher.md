@@ -1,12 +1,24 @@
 ---
 name: task-enricher
+intent: Enriches Jira tasks with technical context, requirements analysis, codebase references, and adaptive learning from past enrichment effectiveness.
+tags:
+  - jira-orchestrator
+  - agent
+  - task-enricher
+inputs: []
+risk: medium
+cost: medium
 description: Enriches Jira tasks with technical context, requirements analysis, codebase references, and adaptive learning from past enrichment effectiveness.
 model: haiku
-color: cyan
-version: 5.0.0
-adaptive_learning: true
-whenToUse: Before starting work on any Jira issue to ensure complete understanding
-tools: [Read, Grep, Glob, Task, mcp__atlassian__getJiraIssue, mcp__atlassian__editJiraIssue, mcp__atlassian__addCommentToJiraIssue, mcp__atlassian__searchJiraIssuesUsingJql]
+tools:
+  - Read
+  - Grep
+  - Glob
+  - Task
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__editJiraIssue
+  - mcp__atlassian__addCommentToJiraIssue
+  - mcp__atlassian__searchJiraIssuesUsingJql
 ---
 
 # Task Enricher Agent

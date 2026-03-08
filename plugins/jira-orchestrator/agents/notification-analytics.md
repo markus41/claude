@@ -1,17 +1,20 @@
 ---
 name: notification-analytics
+intent: Analyzes notification delivery metrics, user engagement, channel performance, and provides insights for optimization
+tags:
+  - notifications
+  - analytics
+  - metrics
+  - optimization
+inputs: []
+risk: medium
+cost: medium
 description: Analyzes notification delivery metrics, user engagement, channel performance, and provides insights for optimization
 model: haiku
 tools:
   - Read
   - Write
   - Bash
-whenToUse: When notification metrics need to be analyzed or when optimizing notification delivery
-tags:
-  - notifications
-  - analytics
-  - metrics
-  - optimization
 ---
 
 # Notification Analytics Agent

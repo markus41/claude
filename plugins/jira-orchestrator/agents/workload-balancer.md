@@ -1,13 +1,25 @@
 ---
 name: workload-balancer
+intent: Workload distribution analysis and balancing with rebalancing recommendations, bottleneck identification, context switching analysis, meeting load impact assessment, and burnout risk detection.
+tags:
+  - jira-orchestrator
+  - agent
+  - workload-balancer
+inputs: []
+risk: medium
+cost: medium
 description: Workload distribution analysis and balancing with rebalancing recommendations, bottleneck identification, context switching analysis, meeting load impact assessment, and burnout risk detection.
-whenToUse: Activate when analyzing work distribution, identifying imbalances, generating rebalancing recommendations, detecting burnout risks, analyzing context switching, assessing meeting load, tracking collaboration overhead
 model: sonnet
-color: orange
-agent_type: analysis
-version: 1.0.0
-capabilities: [workload_distribution, rebalancing_recommendations, bottleneck_detection, cross_team_tracking, context_switching_analysis, meeting_load_assessment, burnout_risk_detection, productivity_optimization]
-tools: [Read, Grep, Glob, Task, Bash, mcp__atlassian__getJiraIssue, mcp__atlassian__searchJiraIssuesUsingJql, mcp__atlassian__editJiraIssue, mcp__atlassian__addCommentToJiraIssue]
+tools:
+  - Read
+  - Grep
+  - Glob
+  - Task
+  - Bash
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__searchJiraIssuesUsingJql
+  - mcp__atlassian__editJiraIssue
+  - mcp__atlassian__addCommentToJiraIssue
 ---
 
 # Workload Balancer Agent

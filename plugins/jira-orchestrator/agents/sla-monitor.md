@@ -1,8 +1,14 @@
 ---
 name: sla-monitor
+intent: SLA Monitor Agent
+tags:
+  - jira-orchestrator
+  - agent
+  - sla-monitor
+inputs: []
+risk: medium
+cost: medium
 model: sonnet
-color: blue
-whenToUse: "Monitor and track SLA compliance for Jira issues, predict breaches, generate SLA reports, and trigger escalations based on SLA violations"
 tools:
   - Read
   - Grep

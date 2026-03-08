@@ -1,3 +1,15 @@
+---
+name: react-animation-studio:animate-scroll
+intent: /animate-scroll
+tags:
+  - react-animation-studio
+  - command
+  - animate-scroll
+inputs: []
+risk: medium
+cost: medium
+---
+
 # /animate-scroll
 
 Add scroll-triggered animations to elements and sections with intelligent viewport detection.

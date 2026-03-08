@@ -1,3 +1,15 @@
+---
+name: react-animation-studio:animate-export
+intent: /animate-export
+tags:
+  - react-animation-studio
+  - command
+  - animate-export
+inputs: []
+risk: medium
+cost: medium
+---
+
 # /animate-export
 
 Export animations as reusable components, hooks, or design tokens.

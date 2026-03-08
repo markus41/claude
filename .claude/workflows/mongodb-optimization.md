@@ -1,12 +1,7 @@
-# MongoDB Optimization Workflow
-
-Multi-agent workflow for optimizing MongoDB performance and schema design.
-
-## Workflow Metadata
-```yaml
+---
 name: mongodb-optimization
-type: parallel
 description: Comprehensive MongoDB optimization including schema review, index optimization, and query tuning
+pattern: parallel
 agents:
   - mongodb-schema-designer
   - mongodb-query-optimizer
@@ -15,15 +10,13 @@ triggers:
   - "optimize mongodb"
   - "mongodb performance"
   - "database optimization"
-stages:
-  - analysis
-  - schema-review
-  - index-optimization
-  - query-tuning
-  - validation
 estimatedDuration: "1-3 hours"
 priority: high
-```
+---
+
+# MongoDB Optimization Workflow
+
+Multi-agent workflow for optimizing MongoDB performance and schema design.
 
 ## Workflow Stages
 

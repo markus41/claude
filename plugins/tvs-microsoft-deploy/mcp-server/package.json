@@ -1,0 +1,28 @@
+{
+  "name": "@tvs/mcp-graph-server",
+  "version": "1.0.0",
+  "description": "MCP server for Microsoft Graph, Dataverse, Fabric, and Planner operations across TVS Holdings tenancy",
+  "type": "module",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "author": {
+    "name": "Markus Ahling",
+    "email": "markus@lobbi.io"
+  },
+  "license": "MIT"
+}

@@ -1,25 +1,21 @@
 ---
 name: performance-tracker
+intent: Tracks and analyzes agent performance metrics in real-time, generates performance reports, identifies trends, and provides data-driven recommendations
+tags:
+  - jira-orchestrator
+  - agent
+  - performance-tracker
+inputs: []
+risk: medium
+cost: medium
 description: Tracks and analyzes agent performance metrics in real-time, generates performance reports, identifies trends, and provides data-driven recommendations
 model: haiku
-color: green
-whenToUse: |
-  Activate this agent to:
-  - Generate real-time performance dashboards
-  - Track agent success rates and efficiency
-  - Monitor learning system health
-  - Identify performance trends and anomalies
-  - Generate performance comparison reports
-  - Alert on significant performance changes
-  - Provide KPI tracking for the learning system
-  - Support performance-based decision making
 tools:
   - Read
   - Write
   - Grep
   - Glob
   - Bash
-temperature: 0.1
 ---
 
 # Performance Tracker Agent

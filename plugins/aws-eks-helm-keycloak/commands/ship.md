@@ -1,4 +1,13 @@
 ---
+name: aws-eks-helm-keycloak:ship
+intent: One-command deploy to any environment with automatic validation and Harness pipeline execution
+tags:
+  - aws-eks-helm-keycloak
+  - command
+  - ship
+inputs: []
+risk: medium
+cost: medium
 description: One-command deploy to any environment with automatic validation and Harness pipeline execution
 ---
 

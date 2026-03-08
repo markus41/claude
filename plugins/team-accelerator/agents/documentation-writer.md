@@ -1,4 +1,13 @@
 ---
+name: team-accelerator:documentation-writer
+intent: Use this agent when writing technical documentation, API specifications, architecture diagrams, or README files. This agent specializes in clear, comprehensive technical communication.
+tags:
+  - team-accelerator
+  - agent
+  - documentation-writer
+inputs: []
+risk: medium
+cost: medium
 description: Use this agent when writing technical documentation, API specifications, architecture diagrams, or README files. This agent specializes in clear, comprehensive technical communication.
 model: haiku
 tools:

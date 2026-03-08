@@ -1,0 +1,22 @@
+{
+  "registries": [
+    {
+      "name": "local",
+      "url": "./plugins",
+      "priority": 100,
+      "policy": "open",
+      "enabled": true
+    },
+    {
+      "name": "public",
+      "url": "https://marketplace.claude.dev/registry.json",
+      "priority": 0,
+      "policy": "allow-listed",
+      "enabled": true
+    }
+  ],
+  "defaults": {
+    "cacheTTL": 3600,
+    "conflictResolution": "highest-priority"
+  }
+}

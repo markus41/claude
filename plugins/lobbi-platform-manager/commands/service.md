@@ -1,7 +1,18 @@
 ---
+name: lobbi-platform-manager:service
+intent: Start, stop, restart, or check individual platform services
+tags:
+  - lobbi-platform-manager
+  - command
+  - service
+inputs: []
+risk: medium
+cost: medium
 description: Start, stop, restart, or check individual platform services
-argument-hint: "ACTION [--service SERVICE]"
-allowed-tools: ["Bash", "Read", "Grep"]
+allowed-tools:
+  - Bash
+  - Read
+  - Grep
 ---
 
 Manage individual services in the keycloak-alpha platform using docker-compose, including start, stop, restart operations and log viewing.

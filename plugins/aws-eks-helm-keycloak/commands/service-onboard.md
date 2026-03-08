@@ -1,4 +1,13 @@
 ---
+name: aws-eks-helm-keycloak:service-onboard
+intent: Onboard a new microservice to Harness for EKS deployment with Keycloak authentication
+tags:
+  - aws-eks-helm-keycloak
+  - command
+  - service-onboard
+inputs: []
+risk: medium
+cost: medium
 description: Onboard a new microservice to Harness for EKS deployment with Keycloak authentication
 ---
 

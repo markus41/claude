@@ -1,3 +1,15 @@
+---
+name: react-animation-studio:animate-text
+intent: /animate-text Command
+tags:
+  - react-animation-studio
+  - command
+  - animate-text
+inputs: []
+risk: medium
+cost: medium
+---
+
 # /animate-text Command
 
 Create expressive text animations including typewriter effects, character reveals, kinetic typography, and gradient text animations.

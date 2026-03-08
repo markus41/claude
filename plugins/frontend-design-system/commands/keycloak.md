@@ -1,8 +1,20 @@
 ---
 name: keycloak
+intent: Generate and deploy Keycloak theme files with FreeMarker templates
+tags:
+  - frontend-design-system
+  - command
+  - keycloak
+inputs: []
+risk: medium
+cost: medium
 description: Generate and deploy Keycloak theme files with FreeMarker templates
-argument-hint: "<tenant> <action> [options]"
-allowed-tools: ["Read", "Write", "Glob", "Grep", "Bash"]
+allowed-tools:
+  - Read
+  - Write
+  - Glob
+  - Grep
+  - Bash
 ---
 
 # Keycloak Theme Generation Command

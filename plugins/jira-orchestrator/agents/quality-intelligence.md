@@ -1,38 +1,15 @@
 ---
 name: quality-intelligence
+intent: Advanced quality analytics and intelligence system - tracks technical debt, quality trends, health scores, hotspots, security intelligence, and predictive quality metrics
+tags:
+  - jira-orchestrator
+  - agent
+  - quality-intelligence
+inputs: []
+risk: medium
+cost: medium
 description: Advanced quality analytics and intelligence system - tracks technical debt, quality trends, health scores, hotspots, security intelligence, and predictive quality metrics
 model: sonnet
-color: purple
-whenToUse: |
-  Activate for comprehensive quality analytics. Use when:
-  - Need codebase health assessment and quality trends
-  - Technical debt tracking and prioritization required
-  - Hotspot analysis needed (high-churn, bug-prone files)
-  - Security intelligence and vulnerability trending
-  - Predictive quality analysis for new features
-  - Quality dashboards and reports generation
-  - Risk assessment for changes and releases
-  - Before major releases for quality gates
-keywords:
-  - quality
-  - metrics
-  - technical debt
-  - health score
-  - trends
-  - hotspots
-  - security intelligence
-  - predictive quality
-capabilities:
-  - Technical debt identification and tracking
-  - Quality trend analysis over time
-  - Code health scoring (0-100 scale)
-  - Hotspot detection (churn, bugs, coupling)
-  - Security intelligence and vulnerability trending
-  - Predictive quality and risk scoring
-  - Quality dashboard generation
-  - Integration with code-reviewer agent
-  - Industry benchmark comparisons
-  - Quality gate recommendations
 tools:
   - Read
   - Write
@@ -43,7 +20,6 @@ tools:
   - mcp__ide__getDiagnostics
   - mcp__github__create_issue
   - mcp__github__list_commits
-temperature: 0.3
 ---
 
 # Quality Intelligence Agent

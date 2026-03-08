@@ -1,0 +1,125 @@
+{
+  "version": 1,
+  "plugin": "home-assistant-architect",
+  "type": "commands",
+  "generatedBy": "scripts/generate-plugin-indexes.mjs",
+  "entries": [
+    {
+      "name": "home-assistant-architect:ha-automation",
+      "intent": "Home Assistant Automation Command",
+      "tags": [
+        "home-assistant-architect",
+        "command",
+        "ha-automation"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/ha-automation.md"
+    },
+    {
+      "name": "home-assistant-architect:ha-camera",
+      "intent": "/ha-camera Command",
+      "tags": [
+        "home-assistant-architect",
+        "command",
+        "ha-camera"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/ha-camera.md"
+    },
+    {
+      "name": "home-assistant-architect:ha-control",
+      "intent": "Home Assistant Control Command",
+      "tags": [
+        "home-assistant-architect",
+        "command",
+        "ha-control"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/ha-control.md"
+    },
+    {
+      "name": "home-assistant-architect:ha-dashboard",
+      "intent": "/ha-dashboard Command",
+      "tags": [
+        "home-assistant-architect",
+        "command",
+        "ha-dashboard"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/ha-dashboard.md"
+    },
+    {
+      "name": "home-assistant-architect:ha-deploy",
+      "intent": "Home Assistant Deploy Command",
+      "tags": [
+        "home-assistant-architect",
+        "command",
+        "ha-deploy"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/ha-deploy.md"
+    },
+    {
+      "name": "home-assistant-architect:ha-energy",
+      "intent": "/ha-energy Command",
+      "tags": [
+        "home-assistant-architect",
+        "command",
+        "ha-energy"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/ha-energy.md"
+    },
+    {
+      "name": "home-assistant-architect:ha-mcp",
+      "intent": "Home Assistant MCP Command",
+      "tags": [
+        "home-assistant-architect",
+        "command",
+        "ha-mcp"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/ha-mcp.md"
+    },
+    {
+      "name": "home-assistant-architect:ha-sensor",
+      "intent": "/ha-sensor Command",
+      "tags": [
+        "home-assistant-architect",
+        "command",
+        "ha-sensor"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/ha-sensor.md"
+    },
+    {
+      "name": "home-assistant-architect:ollama-setup",
+      "intent": "Ollama Setup Command",
+      "tags": [
+        "home-assistant-architect",
+        "command",
+        "ollama-setup"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/ollama-setup.md"
+    }
+  ]
+}

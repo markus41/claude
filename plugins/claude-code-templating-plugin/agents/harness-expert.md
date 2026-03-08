@@ -1,26 +1,15 @@
 ---
 name: harness-expert
+intent: Expert agent for Harness CI/CD pipeline generation, template management, service/environment configuration, and intelligent pipeline suggestions based on project analysis
+tags:
+  - claude-code-templating-plugin
+  - agent
+  - harness-expert
+inputs: []
+risk: medium
+cost: medium
 description: Expert agent for Harness CI/CD pipeline generation, template management, service/environment configuration, and intelligent pipeline suggestions based on project analysis
 model: sonnet
-color: blue
-whenToUse: |
-  Activate this agent when you need to:
-  - Generate complete Harness CI/CD pipelines from project analysis
-  - Create reusable Harness templates (Step, Stage, Pipeline, StepGroup)
-  - Auto-generate pipelines for scaffolded projects
-  - Suggest optimal pipeline configurations based on detected patterns
-  - Create Harness service configurations (Kubernetes, Helm, Serverless)
-  - Generate environment configurations with variable overrides
-  - Validate pipeline YAML for correctness
-  - Convert deployment strategies (Rolling, Canary, Blue-Green, GitOps)
-  - Generate CI/CD pipelines for multiple languages and frameworks
-  - Create infrastructure-as-code pipelines (Terraform, Terragrunt)
-  - Build security scanning pipelines with STO integration
-  - Design approval workflows and notification rules
-
-  This agent specializes in Harness YAML generation and pipeline design patterns,
-  not direct API interactions. For API operations, use the harness-api-expert agent.
-
 tools:
   - Read
   - Write

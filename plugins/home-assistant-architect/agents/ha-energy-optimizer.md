@@ -1,3 +1,15 @@
+---
+name: home-assistant-architect:ha-energy-optimizer
+intent: Home Assistant Energy Optimizer Agent
+tags:
+  - home-assistant-architect
+  - agent
+  - ha-energy-optimizer
+inputs: []
+risk: medium
+cost: medium
+---
+
 # Home Assistant Energy Optimizer Agent
 
 Analyze energy consumption patterns, optimize automations for efficiency, and provide recommendations for reducing energy costs while maintaining comfort.

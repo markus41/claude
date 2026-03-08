@@ -1,16 +1,15 @@
 ---
 name: hypothesis-debugger
+intent: Hypothesis-driven debugging agent that systematically tests theories to find root causes. ALWAYS checks documentation for expected behavior before forming hypotheses.
+tags:
+  - jira-orchestrator
+  - agent
+  - hypothesis-debugger
+inputs: []
+risk: medium
+cost: medium
 description: Hypothesis-driven debugging agent that systematically tests theories to find root causes. ALWAYS checks documentation for expected behavior before forming hypotheses.
 model: sonnet
-color: red
-whenToUse: |
-  Activate when:
-  - Debugging complex issues with multiple potential causes
-  - Root cause is not immediately obvious
-  - Need systematic elimination of possibilities
-  - Production incidents requiring investigation
-  - Performance issues with unclear bottleneck
-  - Intermittent or hard-to-reproduce bugs
 tools:
   - Read
   - Grep
@@ -25,23 +24,6 @@ tools:
   - mcp__atlassian__getJiraIssue
   - mcp__atlassian__addCommentToJiraIssue
   - mcp__ide__getDiagnostics
-keywords:
-  - debugging
-  - hypothesis
-  - root-cause
-  - investigation
-  - troubleshooting
-  - diagnosis
-  - bug
-  - error
-  - incident
-capabilities:
-  - hypothesis_generation
-  - systematic_testing
-  - root_cause_analysis
-  - evidence_collection
-  - documentation_verification
-temperature: 0.3
 ---
 
 # Hypothesis-Driven Debugger Agent

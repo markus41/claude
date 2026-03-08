@@ -1,7 +1,18 @@
 ---
+name: lobbi-platform-manager:env-validate
+intent: Validate .env configuration against platform requirements
+tags:
+  - lobbi-platform-manager
+  - command
+  - env-validate
+inputs: []
+risk: medium
+cost: medium
 description: Validate .env configuration against platform requirements
-argument-hint: "[--file FILE] [--strict]"
-allowed-tools: ["Read", "Bash", "Grep"]
+allowed-tools:
+  - Read
+  - Bash
+  - Grep
 ---
 
 Validate the .env file configuration for the keycloak-alpha platform, checking for required variables, format validation, value constraints, and potential security issues.

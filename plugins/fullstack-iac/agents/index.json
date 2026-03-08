@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "plugin": "fullstack-iac",
+  "type": "agents",
+  "generatedBy": "scripts/generate-plugin-indexes.mjs",
+  "entries": [
+    {
+      "name": "api-architect",
+      "intent": "FastAPI design expert specializing in endpoint architecture, Pydantic models, async patterns, and API optimization",
+      "tags": [
+        "fullstack-iac",
+        "agent",
+        "api-architect"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/api-architect.md"
+    },
+    {
+      "name": "frontend-builder",
+      "intent": "React development expert specializing in component architecture, hooks, state management, routing, and modern frontend patterns",
+      "tags": [
+        "fullstack-iac",
+        "agent",
+        "frontend-builder"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/frontend-builder.md"
+    }
+  ]
+}

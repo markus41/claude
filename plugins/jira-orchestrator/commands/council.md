@@ -1,23 +1,14 @@
 ---
 name: jira:council
+intent: Agent council review using blackboard pattern for comprehensive PR analysis
+tags:
+  - jira-orchestrator
+  - command
+  - council
+inputs: []
+risk: medium
+cost: medium
 description: Agent council review using blackboard pattern for comprehensive PR analysis
-arguments:
-  - name: target
-    description: PR URL, repo:pr_number, or issue_key
-    required: true
-  - name: preset
-    description: Preset (quick|standard|security|performance|full)
-    default: standard
-  - name: depth
-    description: Depth (surface|standard|deep)
-    default: standard
-  - name: output
-    description: Output (inline|summary|both)
-    default: both
-  - name: submit
-    description: Submit review (true/false)
-    default: true
-version: 1.0.0
 ---
 
 # Council Review - Blackboard Pattern

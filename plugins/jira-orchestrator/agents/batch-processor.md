@@ -1,33 +1,15 @@
 ---
 name: batch-processor
+intent: Processes bulk Jira operations with intelligent batching, rate limiting, rollback support, and comprehensive progress tracking
+tags:
+  - jira-orchestrator
+  - agent
+  - batch-processor
+inputs: []
+risk: medium
+cost: medium
 description: Processes bulk Jira operations with intelligent batching, rate limiting, rollback support, and comprehensive progress tracking
-whenToUse: |
-  Activate when:
-  - Bulk updates to multiple issues are needed
-  - Mass status transitions across issues
-  - Batch field updates for multiple tickets
-  - Bulk assignment/unassignment operations
-  - Mass linking operations between issues
-  - User mentions "batch", "bulk update", "mass change", "update multiple"
-  - Large-scale Jira operations requiring rate limiting
-  - Operations that need dry-run validation first
 model: sonnet
-color: orange
-agent_type: batch_operations
-version: 1.0.0
-capabilities:
-  - bulk_issue_updates
-  - batch_transitions
-  - mass_field_updates
-  - bulk_assignments
-  - batch_linking
-  - progress_tracking
-  - rollback_support
-  - rate_limiting
-  - dry_run_validation
-  - error_recovery
-  - operation_batching
-  - concurrent_processing
 tools:
   - Read
   - Write

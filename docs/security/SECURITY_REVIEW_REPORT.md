@@ -751,7 +751,7 @@ Timeline: Week 2-3
 │    → Arbitrary code execution on install                   │
 │                                                              │
 │ 2. Dependency Vulnerability in NPM                         │
-│    - ahling-command-center uses npm packages               │
+│    - Installed plugins use npm packages                    │
 │    - No package lock/verification                          │
 │    - Transitive dependencies not audited                   │
 │    - No SBOM generated                                     │

@@ -1,32 +1,15 @@
 ---
 name: sprint-planner
+intent: Automated sprint planning with capacity calculation, velocity tracking, backlog prioritization, commitment suggestions, sprint health monitoring, and adaptive learning from past sprint outcomes
+tags:
+  - jira-orchestrator
+  - agent
+  - sprint-planner
+inputs: []
+risk: medium
+cost: medium
 description: Automated sprint planning with capacity calculation, velocity tracking, backlog prioritization, commitment suggestions, sprint health monitoring, and adaptive learning from past sprint outcomes
-whenToUse: |
-  Activate when:
-  - Planning a new sprint and need capacity-based commitment suggestions
-  - Analyzing team velocity trends and forecasting sprint capacity
-  - Prioritizing backlog items based on business value and dependencies
-  - Monitoring sprint health and detecting scope creep or blockers
-  - Conducting retrospective analysis on sprint performance
-  - Estimating story points for new issues based on historical data
-  - Detecting dependency conflicts before sprint commitment
-  - User mentions "sprint planning", "velocity", "capacity", "burndown", "retrospective"
 model: sonnet
-color: blue
-agent_type: planning
-version: 5.0.0
-adaptive_learning: true
-capabilities:
-  - capacity_planning
-  - velocity_tracking
-  - backlog_prioritization
-  - sprint_commitment
-  - health_monitoring
-  - retrospective_analysis
-  - story_point_estimation
-  - dependency_detection
-  - risk_assessment
-  - burndown_tracking
 tools:
   - Read
   - Grep

@@ -1,0 +1,31 @@
+module:
+  id: sharepoint-data-room-governance
+  version: 1.0.0
+  owner: data-agent
+  purpose: Govern TAIA data-room structure and checklist-driven evidence collection.
+
+sharepoint:
+  siteName: TAIA-DataRoom
+  libraries:
+    - name: 01-Transaction-Overview
+      requiredMetadata: [owner, checkpoint, evidenceStatus, retentionLabel, sensitivityLabel]
+    - name: 02-Financial-and-Commission
+      requiredMetadata: [owner, accountingPeriod, evidenceStatus, retentionLabel, sensitivityLabel]
+    - name: 03-Compliance-and-Risk
+      requiredMetadata: [owner, controlDomain, escalationStatus, retentionLabel, sensitivityLabel]
+    - name: 04-Transition-Runbooks
+      requiredMetadata: [owner, milestone, approvalState, retentionLabel, sensitivityLabel]
+
+checklistGovernance:
+  checklistListName: TAIA Transition Checklist
+  autoUpdateFromEvents: true
+  completionPolicy:
+    requireEvidenceLink: true
+    requireOwnerAcknowledgement: true
+    requireApprovalForHighRisk: true
+
+documentLifecycle:
+  draftToFinal:
+    - validateRequiredMetadata
+    - applyLabels
+    - notifyChannel: Checkpoint-Summaries

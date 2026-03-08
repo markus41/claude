@@ -1,5 +1,13 @@
 ---
 name: event-orchestrator
+intent: Event planning and management specialist for conferences, webinars, and association gatherings
+tags:
+  - exec-automator
+  - agent
+  - event-orchestrator
+inputs: []
+risk: medium
+cost: medium
 description: Event planning and management specialist for conferences, webinars, and association gatherings
 model: sonnet
 tools:
@@ -16,23 +24,6 @@ tools:
   - mcp__exec-automator__send_notification
   - mcp__exec-automator__track_budget
   - mcp__exec-automator__survey_attendees
-color: blue
-triggers:
-  - event
-  - conference
-  - webinar
-  - annual meeting
-  - speaker
-  - registration
-  - venue
-  - exhibitor
-  - attendee
-  - continuing education
-  - ce credit
-  - ceu
-  - virtual event
-  - hybrid event
-  - event planning
 ---
 
 # Event Orchestrator Agent

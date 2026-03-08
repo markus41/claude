@@ -1,15 +1,14 @@
 ---
+name: team-accelerator:deploy
+intent: Deploy applications to multi-cloud environments (Azure, AWS, GCP, Kubernetes) with support for Helm charts, GitHub Actions, and Harness pipelines
+tags:
+  - team-accelerator
+  - command
+  - deploy
+inputs: []
+risk: medium
+cost: medium
 description: Deploy applications to multi-cloud environments (Azure, AWS, GCP, Kubernetes) with support for Helm charts, GitHub Actions, and Harness pipelines
-arguments:
-  - name: target
-    description: "Deployment target: azure, aws, gcp, k8s, or all"
-    required: true
-  - name: environment
-    description: "Target environment: dev, staging, prod"
-    required: true
-  - name: strategy
-    description: "Deployment strategy: rolling, blue-green, canary (default: rolling)"
-    required: false
 ---
 
 # Deploy Command

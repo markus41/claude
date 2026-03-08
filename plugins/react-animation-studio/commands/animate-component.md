@@ -1,3 +1,15 @@
+---
+name: react-animation-studio:animate-component
+intent: /animate-component
+tags:
+  - react-animation-studio
+  - command
+  - animate-component
+inputs: []
+risk: medium
+cost: medium
+---
+
 # /animate-component
 
 Add animations to existing React components with intelligent analysis and seamless integration.

@@ -1,0 +1,38 @@
+# Fastapi Backend Plugin Guide
+
+## Purpose
+- Operational guide for working safely in `plugins/fastapi-backend`.
+- Keep edits scoped, minimal, and aligned with this plugin's existing architecture.
+
+## Supported Commands
+- `deploy` (see `commands/deploy.md`)
+- `dev` (see `commands/dev.md`)
+- `docker` (see `commands/docker.md`)
+- `endpoint` (see `commands/endpoint.md`)
+- `migrate` (see `commands/migrate.md`)
+- `model` (see `commands/model.md`)
+- `scaffold` (see `commands/scaffold.md`)
+- `task` (see `commands/task.md`)
+- `test` (see `commands/test.md`)
+- `ws` (see `commands/ws.md`)
+
+## Prohibited Actions
+- Do not delete or rename `.claude-plugin/plugin.json`.
+- Do not introduce secrets, credentials, or tenant-specific IDs in tracked files.
+- Do not modify unrelated plugins from this plugin workflow unless explicitly requested.
+
+## Required Validation Checks
+- Run `npm run check:plugin-context`.
+- Run `npm run check:plugin-schema`.
+- If code/scripts changed in this plugin, run targeted tests for `plugins/fastapi-backend`.
+
+## Context Budget
+Load in this order and stop when you have enough context:
+1. `CONTEXT_SUMMARY.md`
+2. `commands/index` (or list files in `commands/`)
+3. `README.md` and only the specific docs needed for the current task
+
+## Escalation Path
+- If requirements conflict with plugin guardrails, pause implementation and document the conflict.
+- If validation fails and root cause is unclear, escalate with failing command output and touched files.
+- For production-impacting changes, request maintainer review before release/publish steps.

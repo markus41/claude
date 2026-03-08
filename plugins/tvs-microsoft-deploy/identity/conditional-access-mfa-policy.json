@@ -1,0 +1,93 @@
+{
+  "displayName": "TVS Holdings - Require MFA for All Users",
+  "state": "enabledForReportingButNotEnforced",
+  "conditions": {
+    "users": {
+      "includeUsers": ["All"],
+      "excludeUsers": [],
+      "excludeGroups": [],
+      "excludeRoles": []
+    },
+    "applications": {
+      "includeApplications": ["All"]
+    },
+    "clientAppTypes": ["browser", "mobileAppsAndDesktopClients"],
+    "locations": {
+      "includeLocations": ["All"],
+      "excludeLocations": ["AllTrusted"]
+    }
+  },
+  "grantControls": {
+    "operator": "OR",
+    "builtInControls": ["mfa"]
+  },
+  "sessionControls": {
+    "signInFrequency": {
+      "value": 12,
+      "type": "hours",
+      "isEnabled": true
+    }
+  },
+  "_comment_policies": [
+    {
+      "displayName": "TVS - Require FIDO2 for Philippines VAs",
+      "state": "enabledForReportingButNotEnforced",
+      "conditions": {
+        "users": {
+          "includeGroups": ["philippines-vas-group-id"]
+        },
+        "applications": {
+          "includeApplications": ["All"]
+        },
+        "locations": {
+          "includeLocations": ["All"],
+          "excludeLocations": []
+        }
+      },
+      "grantControls": {
+        "operator": "AND",
+        "builtInControls": ["mfa"],
+        "authenticationStrength": {
+          "id": "fido2-security-key-strength-id",
+          "displayName": "FIDO2 Security Key"
+        }
+      }
+    },
+    {
+      "displayName": "TVS - Require Compliant Device for Admins",
+      "state": "enabledForReportingButNotEnforced",
+      "conditions": {
+        "users": {
+          "includeRoles": [
+            "62e90394-69f5-4237-9190-012177145e10",
+            "194ae4cb-b126-40b2-bd5b-6091b380977d"
+          ]
+        },
+        "applications": {
+          "includeApplications": ["All"]
+        }
+      },
+      "grantControls": {
+        "operator": "AND",
+        "builtInControls": ["mfa", "compliantDevice"]
+      }
+    },
+    {
+      "displayName": "TVS - Break Glass Emergency Access",
+      "state": "enabled",
+      "conditions": {
+        "users": {
+          "includeUsers": ["All"],
+          "excludeUsers": ["emergency-admin-object-id"]
+        },
+        "applications": {
+          "includeApplications": ["All"]
+        }
+      },
+      "grantControls": {
+        "operator": "OR",
+        "builtInControls": ["mfa"]
+      }
+    }
+  ]
+}

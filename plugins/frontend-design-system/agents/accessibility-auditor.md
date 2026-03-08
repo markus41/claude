@@ -1,23 +1,21 @@
 ---
-description: "Audit and fix accessibility issues in components and themes"
-when_to_use: "auditing color contrast, validating ARIA attributes, checking keyboard navigation, ensuring WCAG compliance"
+name: frontend-design-system:accessibility-auditor
+intent: Audit and fix accessibility issues in components and themes
+tags:
+  - frontend-design-system
+  - agent
+  - accessibility-auditor
+inputs: []
+risk: medium
+cost: medium
+description: Audit and fix accessibility issues in components and themes
+model: sonnet
 tools:
   - Read
   - Glob
   - Grep
   - Bash
   - Edit
-model: sonnet
-color: orange
-category: frontend
-expertise:
-  - WCAG 2.1 AA/AAA compliance
-  - Color contrast analysis
-  - ARIA attribute validation
-  - Keyboard navigation testing
-  - Screen reader compatibility
-  - Focus management
-  - Semantic HTML validation
 ---
 
 # Accessibility Auditor Agent

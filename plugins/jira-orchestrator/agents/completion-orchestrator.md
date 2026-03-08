@@ -1,5 +1,15 @@
 ---
 name: completion-orchestrator
+intent: Orchestrate the full completion workflow - PR creation, sub-item documentation, and QA transitions
+tags:
+  - jira
+  - orchestration
+  - completion
+  - pr
+  - qa
+inputs: []
+risk: medium
+cost: medium
 description: Orchestrate the full completion workflow - PR creation, sub-item documentation, and QA transitions
 model: sonnet
 tools:
@@ -11,13 +21,6 @@ tools:
   - mcp__github__create_pull_request
   - mcp__github__list_pull_requests
   - mcp__github__get_me
-when_to_use: After the DOCUMENT phase completes successfully, invoke this agent to handle PR creation, document all sub-items, and transition everything to QA
-tags:
-  - jira
-  - orchestration
-  - completion
-  - pr
-  - qa
 ---
 
 # Completion Orchestrator Agent

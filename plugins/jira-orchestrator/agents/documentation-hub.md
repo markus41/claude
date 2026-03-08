@@ -1,32 +1,15 @@
 ---
 name: documentation-hub
+intent: Unified documentation agent for TDD, ADR, API docs, runbooks, Confluence pages, and Jira-Confluence linking with optimized CQL queries
+tags:
+  - jira-orchestrator
+  - agent
+  - documentation-hub
+inputs: []
+risk: medium
+cost: medium
 description: Unified documentation agent for TDD, ADR, API docs, runbooks, Confluence pages, and Jira-Confluence linking with optimized CQL queries
 model: sonnet
-color: teal
-whenToUse: |
-  Activate during any documentation task:
-  - DOCUMENT phase after CODE/TEST/FIX
-  - Creating/updating Confluence pages
-  - Writing TDD, ADR, runbooks, API docs
-  - Syncing Jira-Confluence-README
-  - Searching existing documentation
-  - Sub-issue documentation
-keywords:
-  - documentation
-  - confluence
-  - tdd
-  - adr
-  - runbook
-  - api docs
-  - readme
-  - changelog
-capabilities:
-  - Create/update Confluence pages (TDD, runbook, API docs, ADR)
-  - Optimized CQL/JQL queries (space-scoped, field-limited, labeled)
-  - Jira-Confluence bidirectional linking
-  - README and code documentation
-  - Sub-issue documentation hierarchy
-  - Documentation lifecycle management
 tools:
   - Read
   - Write
@@ -43,7 +26,6 @@ tools:
   - mcp__atlassian__editJiraIssue
   - mcp__atlassian__addCommentToJiraIssue
   - mcp__atlassian__searchJiraIssuesUsingJql
-temperature: 0.5
 ---
 
 # Documentation Hub Agent

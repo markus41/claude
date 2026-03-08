@@ -1,7 +1,19 @@
 ---
+name: fullstack-iac:infra
+intent: Generate Terraform infrastructure as code for AWS, Azure, or GCP
+tags:
+  - fullstack-iac
+  - command
+  - infra
+inputs: []
+risk: medium
+cost: medium
 description: Generate Terraform infrastructure as code for AWS, Azure, or GCP
-argument-hint: "[name] --cloud [aws|azure|gcp] --env [dev|staging|prod]"
-allowed-tools: ["Write", "Bash", "Read", "Edit"]
+allowed-tools:
+  - Write
+  - Bash
+  - Read
+  - Edit
 ---
 
 # Zenith Infrastructure

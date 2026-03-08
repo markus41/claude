@@ -1,8 +1,20 @@
 ---
 name: style
+intent: Apply a specific design style from 263+ styles and generate implementation code
+tags:
+  - frontend-design-system
+  - command
+  - style
+inputs: []
+risk: medium
+cost: medium
 description: Apply a specific design style from 263+ styles and generate implementation code
-argument-hint: "<style_name> [output_format]"
-allowed-tools: ["Read", "Write", "Glob", "Grep", "Bash"]
+allowed-tools:
+  - Read
+  - Write
+  - Glob
+  - Grep
+  - Bash
 ---
 
 # Style Application Command

@@ -1,25 +1,14 @@
 ---
 name: jira:commit-template
+intent: Generate conventional commit templates from Jira issue context with smart commits
+tags:
+  - jira-orchestrator
+  - command
+  - commit-template
+inputs: []
+risk: medium
+cost: medium
 description: Generate conventional commit templates from Jira issue context with smart commits
-arguments:
-  - name: issue-key
-    description: Jira issue key (auto-detect from branch)
-    required: false
-  - name: --time
-    description: Time (e.g., 2h, 30m, 1d)
-    required: false
-  - name: --auto-time
-    description: Auto-estimate from git diff
-    required: false
-  - name: --transition
-    description: Target transition (e.g., "In Review")
-    required: false
-  - name: --scope
-    description: Override scope
-    required: false
-  - name: --clipboard
-    description: Copy to clipboard
-    required: false
 ---
 
 # Commit Template Generator

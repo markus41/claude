@@ -1,12 +1,6 @@
 ---
 name: smart-commit-validator
-description: Pre-flight validation of smart commit parameters to prevent failed commits and ensure data integrity
-model: haiku
-tools:
-  - mcp__atlassian__getJiraIssue
-  - mcp__atlassian__getTransitionsForJiraIssue
-  - Bash
-when_to_use: Before executing git commits with Jira smart commit syntax. Use this agent to validate issue keys, transitions, time tracking, and comment formatting before attempting the commit.
+intent: Pre-flight validation of smart commit parameters to prevent failed commits and ensure data integrity
 tags:
   - jira
   - git
@@ -14,6 +8,15 @@ tags:
   - smart-commits
   - pre-flight
   - time-tracking
+inputs: []
+risk: medium
+cost: medium
+description: Pre-flight validation of smart commit parameters to prevent failed commits and ensure data integrity
+model: haiku
+tools:
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__getTransitionsForJiraIssue
+  - Bash
 ---
 
 # Smart Commit Validator Agent

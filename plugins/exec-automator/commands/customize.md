@@ -1,24 +1,15 @@
 ---
 name: exec:customize
-description: Customize automation workflows, scoring weights, and agent behaviors
-color: pink
-icon: settings
+intent: Customize automation workflows, scoring weights, and agent behaviors
 tags:
   - customization
   - configuration
   - tuning
+inputs: []
+risk: medium
+cost: medium
+description: Customize automation workflows, scoring weights, and agent behaviors
 model: claude-sonnet-4-5
-arguments:
-  - name: target
-    description: What to customize (workflow, agent, scoring, templates)
-    required: true
-  - name: name
-    description: Name of specific item to customize
-    required: false
-  - name: interactive
-    description: Use interactive mode
-    required: false
-    default: true
 ---
 
 # Executive Automation Customization

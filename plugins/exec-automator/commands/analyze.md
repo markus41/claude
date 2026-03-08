@@ -1,27 +1,17 @@
 ---
 name: exec:analyze
-description: Analyze organizational documents to extract executive director responsibilities and automation opportunities
-color: blue
-icon: search
+intent: Analyze organizational documents to extract executive director responsibilities and automation opportunities
 tags:
   - analysis
   - documents
   - responsibilities
   - extraction
   - automation-potential
+inputs: []
+risk: medium
+cost: medium
+description: Analyze organizational documents to extract executive director responsibilities and automation opportunities
 model: claude-sonnet-4-5
-arguments:
-  - name: document
-    description: Path to document or "paste" for clipboard content
-    required: true
-  - name: type
-    description: Document type (rfp, job-description, bylaws, contract, manual)
-    required: false
-    default: auto-detect
-  - name: depth
-    description: Analysis depth (quick, standard, comprehensive)
-    required: false
-    default: standard
 ---
 
 # Executive Document Analysis - Extract Responsibilities & Automation Opportunities

@@ -1,4 +1,13 @@
 ---
+name: team-accelerator:code-reviewer
+intent: Use this agent when reviewing code changes, enforcing quality standards, or before committing code. This agent specializes in code quality analysis, best practices enforcement, and comprehensive code review.
+tags:
+  - team-accelerator
+  - agent
+  - code-reviewer
+inputs: []
+risk: medium
+cost: medium
 description: Use this agent when reviewing code changes, enforcing quality standards, or before committing code. This agent specializes in code quality analysis, best practices enforcement, and comprehensive code review.
 model: sonnet
 tools:

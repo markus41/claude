@@ -1,15 +1,14 @@
 ---
 name: jira:sprint-plan
+intent: Automated sprint planning with capacity calculation, backlog prioritization, and velocity-based commitment
+tags:
+  - jira-orchestrator
+  - command
+  - sprint-plan
+inputs: []
+risk: medium
+cost: medium
 description: Automated sprint planning with capacity calculation, backlog prioritization, and velocity-based commitment
-arguments:
-  - name: sprint_name
-    description: Name of the sprint to plan (e.g., Sprint 42)
-    required: true
-  - name: team_id
-    description: Team identifier for capacity lookup
-    required: false
-    default: default
-version: 1.0.0
 ---
 
 # Sprint Planning Automation

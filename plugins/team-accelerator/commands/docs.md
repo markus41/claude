@@ -1,12 +1,14 @@
 ---
+name: team-accelerator:docs
+intent: Generate and manage documentation including OpenAPI specs, Mermaid diagrams, README files, changelogs, and ADRs
+tags:
+  - team-accelerator
+  - command
+  - docs
+inputs: []
+risk: medium
+cost: medium
 description: Generate and manage documentation including OpenAPI specs, Mermaid diagrams, README files, changelogs, and ADRs
-arguments:
-  - name: type
-    description: "Documentation type: api, diagram, readme, changelog, adr, or all"
-    required: true
-  - name: output
-    description: "Output format or path (default: auto-detect)"
-    required: false
 ---
 
 # Docs Command

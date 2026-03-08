@@ -1,0 +1,164 @@
+{
+  "version": 1,
+  "plugin": "react-animation-studio",
+  "type": "commands",
+  "generatedBy": "scripts/generate-plugin-indexes.mjs",
+  "entries": [
+    {
+      "name": "react-animation-studio:animate-3d",
+      "intent": "/animate-3d Command",
+      "tags": [
+        "react-animation-studio",
+        "command",
+        "animate-3d"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/animate-3d.md"
+    },
+    {
+      "name": "react-animation-studio:animate-audit",
+      "intent": "/animate-audit",
+      "tags": [
+        "react-animation-studio",
+        "command",
+        "animate-audit"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/animate-audit.md"
+    },
+    {
+      "name": "react-animation-studio:animate-background",
+      "intent": "/animate-background Command",
+      "tags": [
+        "react-animation-studio",
+        "command",
+        "animate-background"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/animate-background.md"
+    },
+    {
+      "name": "react-animation-studio:animate-component",
+      "intent": "/animate-component",
+      "tags": [
+        "react-animation-studio",
+        "command",
+        "animate-component"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/animate-component.md"
+    },
+    {
+      "name": "react-animation-studio:animate-effects",
+      "intent": "/animate-effects Command",
+      "tags": [
+        "react-animation-studio",
+        "command",
+        "animate-effects"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/animate-effects.md"
+    },
+    {
+      "name": "react-animation-studio:animate-export",
+      "intent": "/animate-export",
+      "tags": [
+        "react-animation-studio",
+        "command",
+        "animate-export"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/animate-export.md"
+    },
+    {
+      "name": "react-animation-studio:animate-preset",
+      "intent": "/animate-preset",
+      "tags": [
+        "react-animation-studio",
+        "command",
+        "animate-preset"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/animate-preset.md"
+    },
+    {
+      "name": "react-animation-studio:animate-scroll",
+      "intent": "/animate-scroll",
+      "tags": [
+        "react-animation-studio",
+        "command",
+        "animate-scroll"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/animate-scroll.md"
+    },
+    {
+      "name": "react-animation-studio:animate-sequence",
+      "intent": "/animate-sequence",
+      "tags": [
+        "react-animation-studio",
+        "command",
+        "animate-sequence"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/animate-sequence.md"
+    },
+    {
+      "name": "react-animation-studio:animate-text",
+      "intent": "/animate-text Command",
+      "tags": [
+        "react-animation-studio",
+        "command",
+        "animate-text"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/animate-text.md"
+    },
+    {
+      "name": "react-animation-studio:animate-transition",
+      "intent": "/animate-transition",
+      "tags": [
+        "react-animation-studio",
+        "command",
+        "animate-transition"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/animate-transition.md"
+    },
+    {
+      "name": "react-animation-studio:animate",
+      "intent": "/animate",
+      "tags": [
+        "react-animation-studio",
+        "command",
+        "animate"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/animate.md"
+    }
+  ]
+}

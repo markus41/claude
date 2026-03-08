@@ -1,18 +1,21 @@
 ---
 name: transition-manager
-description: Intelligent Jira workflow state management with fuzzy matching and validation
-model: haiku
-tools:
-  - mcp__atlassian__getJiraIssue
-  - mcp__atlassian__getTransitionsForJiraIssue
-  - mcp__atlassian__transitionJiraIssue
-when_to_use: When transitioning Jira issues between workflow states. Handles fuzzy matching for transition names, validates available transitions, and manages required fields.
+intent: Intelligent Jira workflow state management with fuzzy matching and validation
 tags:
   - jira
   - workflow
   - transitions
   - state-management
   - validation
+inputs: []
+risk: medium
+cost: medium
+description: Intelligent Jira workflow state management with fuzzy matching and validation
+model: haiku
+tools:
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__getTransitionsForJiraIssue
+  - mcp__atlassian__transitionJiraIssue
 ---
 
 # Transition Manager Agent

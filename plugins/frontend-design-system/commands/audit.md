@@ -1,8 +1,20 @@
 ---
 name: audit
+intent: Audit UI for design style consistency and accessibility
+tags:
+  - frontend-design-system
+  - command
+  - audit
+inputs: []
+risk: medium
+cost: medium
 description: Audit UI for design style consistency and accessibility
-argument-hint: "<scope> [style]"
-allowed-tools: ["Read", "Write", "Glob", "Grep", "Bash"]
+allowed-tools:
+  - Read
+  - Write
+  - Glob
+  - Grep
+  - Bash
 ---
 
 # Design System Audit Command

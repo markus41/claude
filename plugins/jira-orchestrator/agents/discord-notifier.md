@@ -1,16 +1,19 @@
 ---
 name: discord-notifier
+intent: Sends notifications to Discord channels using Discord API with rich embeds, mentions, and threading support
+tags:
+  - notifications
+  - discord
+  - messaging
+inputs: []
+risk: medium
+cost: medium
 description: Sends notifications to Discord channels using Discord API with rich embeds, mentions, and threading support
 model: haiku
 tools:
   - Read
   - Write
   - Bash
-whenToUse: When notifications need to be sent to Discord channels
-tags:
-  - notifications
-  - discord
-  - messaging
 ---
 
 # Discord Notifier Agent

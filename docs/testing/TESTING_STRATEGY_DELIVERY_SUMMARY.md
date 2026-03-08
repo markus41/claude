@@ -279,7 +279,6 @@ Total: 1,220 tests
 ```
 jira-orchestrator     : 300 tests (27%)
 exec-automator        : 230 tests (21%)
-ahling-command-center : 190 tests (17%)
 container-workflow    : 155 tests (14%)
 frontend-powerhouse   : 170 tests (15%)
 core/shared           : 175 tests (16%)

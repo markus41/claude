@@ -1,12 +1,14 @@
 ---
 name: template
-description: Manage and interact with templates - list, search, view details, generate from templates, and validate template configurations
-color: blue
-icon: file-template
+intent: Manage and interact with templates - list, search, view details, generate from templates, and validate template configurations
 tags:
   - template
   - generation
   - configuration
+inputs: []
+risk: medium
+cost: medium
+description: Manage and interact with templates - list, search, view details, generate from templates, and validate template configurations
 model: claude-sonnet-4-5
 ---
 

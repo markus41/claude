@@ -1,3 +1,15 @@
+---
+name: home-assistant-architect:ha-automation-architect
+intent: Home Assistant Automation Architect Agent
+tags:
+  - home-assistant-architect
+  - agent
+  - ha-automation-architect
+inputs: []
+risk: medium
+cost: medium
+---
+
 # Home Assistant Automation Architect Agent
 
 Design, create, optimize, and troubleshoot Home Assistant automations, scripts, and scenes with advanced pattern recognition and best practices.

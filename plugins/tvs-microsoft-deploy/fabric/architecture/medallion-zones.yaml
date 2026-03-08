@@ -1,0 +1,59 @@
+version: 1
+architecture: taia-sale-readiness-medallion
+zones:
+  bronze:
+    description: Raw source captures with ingestion timestamps and contract versioning.
+    domains:
+      taia_a3_archive:
+        lakehouse: tvs-a3-archive
+        storage:
+          tables:
+            - br_firebase_brokers_raw
+            - br_firebase_commissions_raw
+            - br_firebase_carriers_raw
+          files:
+            - files/firebase/extract_date={yyyy-mm-dd}/
+            - files/external_archive/source={partner}/ingest_date={yyyy-mm-dd}/
+      commission_normalization:
+        lakehouse: tvs-consolidated
+        storage:
+          tables:
+            - br_dataverse_commission_snapshot_raw
+            - br_external_rate_cards_raw
+      cross_entity_reporting:
+        lakehouse: tvs-consolidated
+        storage:
+          tables:
+            - br_entity_sales_events_raw
+            - br_entity_agent_dim_raw
+  silver:
+    description: Conformed, typed, deduplicated data with surrogate keys and quality tags.
+    domains:
+      taia_a3_archive:
+        tables:
+          - sv_taia_policy_fact
+          - sv_taia_commission_fact
+          - sv_taia_agent_dim
+      commission_normalization:
+        tables:
+          - sv_commission_fact_normalized
+          - sv_carrier_dim_conformed
+          - sv_agent_hierarchy_conformed
+      cross_entity_reporting:
+        tables:
+          - sv_sales_fact_conformed
+          - sv_entity_dim
+          - sv_reporting_calendar_dim
+  gold:
+    description: Certified executive and buyer-facing aggregates with row-level governance.
+    domains:
+      taia_a3_archive:
+        tables:
+          - gd_taia_archive_readiness_kpi
+      commission_normalization:
+        tables:
+          - gd_commission_reconciliation_kpi
+      cross_entity_reporting:
+        tables:
+          - gd_consolidated_sale_room_kpi
+          - gd_due_diligence_entity_rollup

@@ -1,32 +1,14 @@
 ---
 name: jira:ship
+intent: One command to ship - intelligent question gathering, prepare, code, PR, and council review
+tags:
+  - jira-orchestrator
+  - command
+  - ship
+inputs: []
+risk: medium
+cost: medium
 description: One command to ship - intelligent question gathering, prepare, code, PR, and council review
-arguments:
-  - name: issue_key
-    description: Jira issue key (e.g., PROJ-123)
-    required: true
-  - name: mode
-    description: Execution mode (auto, guided, review-only)
-    default: auto
-  - name: council
-    description: Use agent council for review (true|false)
-    default: true
-  - name: depth
-    description: Review depth (quick, standard, deep)
-    default: standard
-  - name: resume
-    description: Resume from last checkpoint
-    default: false
-  - name: dry_run
-    description: Show what would happen without executing
-    default: false
-  - name: interactive
-    description: Ask before each major phase
-    default: false
-  - name: wait_ci
-    description: Wait for CI results before council review
-    default: true
-version: 2.0.0
 ---
 
 # Ship Command v2.0 - Intelligent Orchestration
@@ -52,7 +34,7 @@ Validate all requirements before work begins:
 
 ## Phase 1: Intelligent Questions (CRITICAL)
 
-**Agents:** requirements-analyzer, codebase-scanner, decision-identifier
+**Agents:** requirements-analyzer, triage-agent, task-enricher
 
 Generates questions upfront for:
 - Technical decisions (auth method, database choice, state management)
@@ -85,9 +67,9 @@ Uses answers + constraints + technical decisions
 **CODE:** Domain specialists + code-reviewer (continuous) → implementation, tests + checkpoint (show diff, ask review)
 - Coding standards enforced: terraform (snake_case vars), python (PascalCase classes), TypeScript (camelCase functions), database (snake_case tables)
 
-**TEST:** test-strategist, test-runner → all tests passing, coverage threshold met
+**TEST:** test-strategist → all tests passing, coverage threshold met
 
-**FIX:** debugger, fixer (max 3 iterations) → resolve failures, checkpoint if still failing
+**FIX:** hypothesis-debugger, root-cause-analyzer (max 3 iterations) → resolve failures, checkpoint if still failing
 
 **DOCUMENT:** documentation-writer, confluence-manager → README, Confluence, API docs
 

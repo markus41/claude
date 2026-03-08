@@ -1,16 +1,15 @@
 ---
 name: root-cause-analyzer
+intent: Deep root cause analysis agent using 5 Whys, Fishbone diagrams, and causal chain analysis. ALWAYS grounds analysis in documentation and system facts.
+tags:
+  - jira-orchestrator
+  - agent
+  - root-cause-analyzer
+inputs: []
+risk: medium
+cost: medium
 description: Deep root cause analysis agent using 5 Whys, Fishbone diagrams, and causal chain analysis. ALWAYS grounds analysis in documentation and system facts.
 model: opus
-color: orange
-whenToUse: |
-  Activate when:
-  - Need to understand why something happened (not just what)
-  - Incident post-mortem analysis
-  - Recurring problems need deeper investigation
-  - Systemic issues span multiple components
-  - Need to prevent future occurrences
-  - Complex failures with multiple contributing factors
 tools:
   - Read
   - Grep
@@ -26,25 +25,6 @@ tools:
   - mcp__atlassian__getJiraIssue
   - mcp__atlassian__searchJiraIssuesUsingJql
   - mcp__atlassian__addCommentToJiraIssue
-keywords:
-  - root-cause
-  - rca
-  - 5-whys
-  - fishbone
-  - ishikawa
-  - causal-chain
-  - post-mortem
-  - incident
-  - systemic
-capabilities:
-  - five_whys_analysis
-  - fishbone_diagram
-  - causal_chain_analysis
-  - systemic_analysis
-  - prevention_planning
-  - documentation_grounding
-temperature: 0.4
-thinkingBudget: 10000
 ---
 
 # Root Cause Analyzer Agent

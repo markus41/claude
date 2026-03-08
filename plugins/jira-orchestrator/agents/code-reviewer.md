@@ -1,9 +1,15 @@
 ---
 name: code-reviewer
+intent: Comprehensive code reviewer for orchestration workflow - deep analysis of logic, security, performance, accessibility, test coverage, and documentation quality before PR creation
+tags:
+  - jira-orchestrator
+  - agent
+  - code-reviewer
+inputs: []
+risk: medium
+cost: medium
 description: Comprehensive code reviewer for orchestration workflow - deep analysis of logic, security, performance, accessibility, test coverage, and documentation quality before PR creation
 model: sonnet
-color: red
-whenToUse: After CODE phase, before PR creation. Use when security review, performance analysis, accessibility verification, or test validation needed.
 tools:
   - Read
   - Grep
@@ -11,7 +17,6 @@ tools:
   - Bash
   - Edit
   - mcp__ide__getDiagnostics
-temperature: 0.2
 ---
 
 # Code Reviewer Agent

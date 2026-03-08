@@ -270,6 +270,55 @@
       "conditions": {
         "keywords": ["sprint", "jira", "backlog", "story", "scrum"]
       }
+    },
+    "advanced-ai": {
+      "description": "Advanced AI reasoning, multi-agent deliberation, and predictive intelligence",
+      "maxResources": {
+        "agents": 8,
+        "skills": 10,
+        "mcps": 5,
+        "workflows": 3
+      },
+      "defaults": {
+        "skills": ["extended-thinking", "complex-reasoning", "deep-analysis", "llm-integration"],
+        "agents": ["cognitive-reasoner", "tribunal-convener", "knowledge-graph-builder", "predictive-engine"],
+        "mcps": ["context7", "github", "atlassian"]
+      },
+      "conditions": {
+        "keywords": ["complex", "architecture", "debug", "investigate", "review", "deliberate", "predict", "reasoning", "analyze"]
+      },
+      "agentTeams": {
+        "enabled": true,
+        "teamStructure": "deliberation-council",
+        "defaultTeamSize": 5,
+        "coordinationPattern": "shared-task-list",
+        "requirePlanApproval": true
+      }
+    },
+    "release-pipeline": {
+      "description": "Release management with coordinated review, test, release, and notification",
+      "maxResources": {
+        "agents": 7,
+        "skills": 8,
+        "mcps": 5,
+        "workflows": 4
+      },
+      "defaults": {
+        "skills": ["git-workflows", "testing", "docker", "kubernetes"],
+        "agents": ["cicd-engineer", "tester", "k8s-deployer", "security-sentinel", "release-coordinator"],
+        "mcps": ["github", "vercel", "atlassian"],
+        "workflows": ["ci-cd-workflow", "release-coordination"]
+      },
+      "conditions": {
+        "keywords": ["release", "deploy", "pipeline", "version", "rollout", "canary", "ship", "publish"]
+      },
+      "agentTeams": {
+        "enabled": true,
+        "teamStructure": "pipeline-stages",
+        "defaultTeamSize": 4,
+        "coordinationPattern": "task-dependency-chain",
+        "requirePlanApproval": false
+      }
     }
   },
 
@@ -307,6 +356,22 @@
         {
           "when": {"workflow": "ci-cd-workflow"},
           "also": {"mcps": ["github", "vercel"], "agents": ["cicd-engineer"]}
+        },
+        {
+          "when": {"skill": "extended-thinking"},
+          "also": {"agents": ["cognitive-reasoner"], "skills": ["complex-reasoning", "deep-analysis"]}
+        },
+        {
+          "when": {"agent": "tribunal-convener"},
+          "also": {"skills": ["extended-thinking"], "agents": ["security-sentinel", "performance-guardian"]}
+        },
+        {
+          "when": {"workflow": "release-coordination"},
+          "also": {"mcps": ["github", "atlassian"], "agents": ["release-coordinator", "tester"]}
+        },
+        {
+          "when": {"keyword": "agent-team"},
+          "also": {"skills": ["complex-reasoning"], "agents": ["cognitive-reasoner", "tribunal-convener"]}
         }
       ]
     }
@@ -373,6 +438,98 @@
       },
       "activateTogether": true,
       "trigger": "deploy"
+    },
+    "advanced-ai-stack": {
+      "description": "Advanced AI reasoning and deliberation capabilities",
+      "resources": {
+        "skills": ["extended-thinking", "complex-reasoning", "deep-analysis"],
+        "agents": ["cognitive-reasoner", "tribunal-convener", "knowledge-graph-builder", "predictive-engine", "model-router"],
+        "mcps": ["context7"]
+      },
+      "activateTogether": true,
+      "trigger": "advanced-ai"
+    },
+    "release-pipeline-stack": {
+      "description": "Complete release pipeline from review to deploy",
+      "resources": {
+        "skills": ["git-workflows", "testing", "docker", "kubernetes"],
+        "agents": ["cicd-engineer", "tester", "release-coordinator", "security-sentinel"],
+        "mcps": ["github", "vercel"],
+        "workflows": ["ci-cd-workflow", "release-coordination"]
+      },
+      "activateTogether": true,
+      "trigger": "release"
+    }
+  },
+
+  "agentTeams": {
+    "enabled": true,
+    "experimentalFlag": "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS",
+    "defaultTeammateMode": "in-process",
+    "teamTemplates": {
+      "deliberation-council": {
+        "description": "Multi-agent code review and deliberation team",
+        "roles": [
+          {"name": "security-reviewer", "model": "sonnet", "focus": "Security implications and vulnerabilities"},
+          {"name": "performance-reviewer", "model": "sonnet", "focus": "Performance impact and optimization"},
+          {"name": "architecture-reviewer", "model": "opus", "focus": "Design patterns and architectural decisions"},
+          {"name": "test-coverage-reviewer", "model": "haiku", "focus": "Test coverage and quality validation"},
+          {"name": "devils-advocate", "model": "sonnet", "focus": "Challenge assumptions and find edge cases"}
+        ],
+        "coordinationPattern": "shared-task-list",
+        "requirePlanApproval": true,
+        "hooks": {
+          "TeammateIdle": "Check for unclaimed review tasks and assign",
+          "TaskCompleted": "Validate review completeness before marking done"
+        }
+      },
+      "pipeline-stages": {
+        "description": "Sequential release pipeline with parallel within stages",
+        "roles": [
+          {"name": "code-reviewer", "model": "sonnet", "focus": "Code quality and standards"},
+          {"name": "test-runner", "model": "haiku", "focus": "Execute and validate test suites"},
+          {"name": "security-scanner", "model": "sonnet", "focus": "Security audit and vulnerability scanning"},
+          {"name": "deployment-engineer", "model": "sonnet", "focus": "Build, deploy, and verify release"}
+        ],
+        "coordinationPattern": "task-dependency-chain",
+        "requirePlanApproval": false
+      },
+      "research-squad": {
+        "description": "Parallel research and investigation team",
+        "roles": [
+          {"name": "codebase-explorer", "model": "haiku", "focus": "Search and map relevant code sections"},
+          {"name": "hypothesis-tester", "model": "sonnet", "focus": "Test theories and validate assumptions"},
+          {"name": "impact-analyzer", "model": "sonnet", "focus": "Analyze blast radius and dependencies"},
+          {"name": "solution-architect", "model": "opus", "focus": "Design solution based on findings"},
+          {"name": "knowledge-synthesizer", "model": "sonnet", "focus": "Combine findings into actionable plan"}
+        ],
+        "coordinationPattern": "shared-task-list",
+        "requirePlanApproval": true
+      },
+      "debugging-hypotheses": {
+        "description": "Competing hypothesis investigation for complex bugs",
+        "roles": [
+          {"name": "hypothesis-a", "model": "sonnet", "focus": "Investigate first theory"},
+          {"name": "hypothesis-b", "model": "sonnet", "focus": "Investigate second theory"},
+          {"name": "hypothesis-c", "model": "sonnet", "focus": "Investigate third theory"},
+          {"name": "evidence-judge", "model": "opus", "focus": "Evaluate evidence and determine root cause"},
+          {"name": "fix-implementer", "model": "sonnet", "focus": "Implement fix based on winning hypothesis"}
+        ],
+        "coordinationPattern": "adversarial-debate",
+        "requirePlanApproval": true
+      },
+      "sprint-planning": {
+        "description": "Autonomous sprint planning and coordination team",
+        "roles": [
+          {"name": "backlog-analyzer", "model": "haiku", "focus": "Analyze and prioritize backlog items"},
+          {"name": "capacity-planner", "model": "sonnet", "focus": "Calculate team capacity and velocity"},
+          {"name": "risk-assessor", "model": "sonnet", "focus": "Identify risks and blockers"},
+          {"name": "task-decomposer", "model": "sonnet", "focus": "Break stories into implementable tasks"},
+          {"name": "sprint-architect", "model": "opus", "focus": "Design sprint plan with dependencies"}
+        ],
+        "coordinationPattern": "shared-task-list",
+        "requirePlanApproval": true
+      }
     }
   },
 
@@ -436,6 +593,26 @@
           "agents": ["react-specialist"]
         },
         "reasoning": "Use context7 to fetch latest React documentation for hooks"
+      },
+      {
+        "context": "User asks for a deep code review with multiple perspectives",
+        "activate": {
+          "skills": ["extended-thinking", "complex-reasoning"],
+          "mcps": ["github", "context7"],
+          "agents": ["cognitive-reasoner", "tribunal-convener", "security-sentinel", "performance-guardian"],
+          "agentTeam": "deliberation-council"
+        },
+        "reasoning": "Deep review benefits from Agent Teams deliberation council with 5 specialized reviewers working in parallel"
+      },
+      {
+        "context": "User asks to ship a release and deploy to production",
+        "activate": {
+          "skills": ["git-workflows", "testing", "kubernetes"],
+          "mcps": ["github", "vercel", "atlassian"],
+          "agents": ["cicd-engineer", "tester", "release-coordinator"],
+          "agentTeam": "pipeline-stages"
+        },
+        "reasoning": "Release pipeline uses Agent Teams with dependency chain - review must complete before test, test before deploy"
       }
     ]
   },
@@ -454,6 +631,7 @@
       "docs-writer": 6
     },
     "profile": "full",
-    "lastEvaluated": "2025-11-28T12:40:00Z"
+    "lastEvaluated": "2026-02-22T00:00:00Z",
+    "agentTeamsAvailable": true
   }
 }

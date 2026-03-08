@@ -1,5 +1,13 @@
 ---
 name: test-generator
+intent: Automated pytest test suite generator for FastAPI applications with async support, fixtures, and comprehensive coverage
+tags:
+  - fastapi-backend
+  - agent
+  - test-generator
+inputs: []
+risk: medium
+cost: medium
 description: Automated pytest test suite generator for FastAPI applications with async support, fixtures, and comprehensive coverage
 model: sonnet
 tools:
@@ -9,15 +17,6 @@ tools:
   - Glob
   - Grep
   - Bash
-keywords:
-  - test generation
-  - pytest
-  - unit tests
-  - integration tests
-  - test coverage
-  - fixtures
-  - async tests
-  - e2e tests
 ---
 
 # Test Generator Agent

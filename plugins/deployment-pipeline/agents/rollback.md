@@ -1,9 +1,15 @@
 ---
 name: rollback-specialist
+intent: Handles deployment rollback procedures safely and completely
+tags:
+  - deployment-pipeline
+  - agent
+  - rollback
+inputs: []
+risk: medium
+cost: medium
 description: Handles deployment rollback procedures safely and completely
 model: sonnet
-version: 1.0.0
-category: devops
 tools:
   - Bash
   - Read

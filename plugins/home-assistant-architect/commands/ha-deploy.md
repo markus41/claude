@@ -1,3 +1,15 @@
+---
+name: home-assistant-architect:ha-deploy
+intent: Home Assistant Deploy Command
+tags:
+  - home-assistant-architect
+  - command
+  - ha-deploy
+inputs: []
+risk: medium
+cost: medium
+---
+
 # Home Assistant Deploy Command
 
 Deploy Home Assistant on Ubuntu server with Docker and complementary services.

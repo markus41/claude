@@ -1,3 +1,15 @@
+---
+name: react-animation-studio:transition-engineer
+intent: Transition Engineer
+tags:
+  - react-animation-studio
+  - agent
+  - transition-engineer
+inputs: []
+risk: medium
+cost: medium
+---
+
 # Transition Engineer
 
 Page transitions, route animations, and layout morphing specialist. This agent creates seamless navigation experiences that establish spatial relationships and maintain context during state changes.

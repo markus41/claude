@@ -51,29 +51,6 @@ The **Jira Orchestrator** (Golden Armada) is an autonomous DevOps orchestration 
 
 ### System Layers
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│              JIRA ORCHESTRATOR (Central Brain)                │
-│              Meta-Controller & Routing Engine                │
-│  ┌────────────┐  ┌──────────────┐  ┌─────────────┐         │
-│  │  Routing   │  │ Agent        │  │  Command    │         │
-│  │  Engine    │  │ Registry     │  │  Chaining   │         │
-│  └────────────┘  └──────────────┘  └─────────────┘         │
-│                                                              │
-│  61 agents | 35 commands                                    │
-└──────────────────────┬───────────────────────────────────────┘
-                       │
-        ┌──────────────┼──────────────┬──────────────┐
-        │              │              │              │
-    ┌───▼───┐      ┌──▼───┐      ┌──▼───┐      ┌──▼───┐
-    │ Exec  │      │ Home │      │Front │      │Ahling│
-    │Automat│      │Assist│      │Power │      │Cmd   │
-    │  or   │      │  or  │      │ house│      │Center│
-    └───────┘      └──────┘      └──────┘      └──────┘
-    11 agents      15 agents     13 agents     10 agents
-    13 cmds        9 cmds        12 cmds       15 cmds
-```
-
 ### Core Components
 
 1. **Request Classifier** - Analyzes user requests and determines complexity

@@ -1,12 +1,7 @@
-# Infrastructure Audit Workflow
-
-Multi-agent workflow for comprehensive infrastructure security and compliance audit.
-
-## Workflow Metadata
-```yaml
+---
 name: infrastructure-audit
-type: parallel
 description: Complete infrastructure audit covering Keycloak, MongoDB, Kubernetes, and Helm
+pattern: parallel
 agents:
   - keycloak-security-auditor
   - mongodb-query-optimizer
@@ -16,14 +11,13 @@ triggers:
   - "audit infrastructure"
   - "security audit"
   - "compliance check"
-stages:
-  - security-audit
-  - performance-audit
-  - compliance-check
-  - remediation-plan
 estimatedDuration: "1-2 hours"
 priority: high
-```
+---
+
+# Infrastructure Audit Workflow
+
+Multi-agent workflow for comprehensive infrastructure security and compliance audit.
 
 ## Workflow Stages
 

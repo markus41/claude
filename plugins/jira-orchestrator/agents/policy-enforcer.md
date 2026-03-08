@@ -1,30 +1,15 @@
 ---
 name: policy-enforcer
+intent: Policy definition and evaluation engine for code quality gates, security requirements, review policies, branch protection, and compliance checks
+tags:
+  - jira-orchestrator
+  - agent
+  - policy-enforcer
+inputs: []
+risk: medium
+cost: medium
 description: Policy definition and evaluation engine for code quality gates, security requirements, review policies, branch protection, and compliance checks
-whenToUse: |
-  Activate when:
-  - Code quality gate evaluation needed
-  - Security scan policy check required
-  - Review requirement validation needed
-  - Branch protection policy enforcement
-  - Compliance check (SOC2, GDPR, ISO27001)
-  - Custom rule evaluation
-  - Policy violation detected
-  - User mentions "policy", "gate", "compliance", "quality gate", "enforce policy"
 model: sonnet
-color: red
-agent_type: policy
-version: 1.0.0
-capabilities:
-  - policy_definition
-  - policy_evaluation
-  - code_quality_gates
-  - security_scan_requirements
-  - review_requirements
-  - branch_protection
-  - compliance_checks
-  - custom_rule_engine
-  - policy_violation_handling
 tools:
   - Read
   - Write

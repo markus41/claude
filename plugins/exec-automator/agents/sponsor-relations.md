@@ -1,5 +1,13 @@
 ---
 name: sponsor-relations
+intent: Sponsorship and partner management specialist for revenue generation, prospect development, fulfillment tracking, and relationship cultivation
+tags:
+  - exec-automator
+  - agent
+  - sponsor-relations
+inputs: []
+risk: medium
+cost: medium
 description: Sponsorship and partner management specialist for revenue generation, prospect development, fulfillment tracking, and relationship cultivation
 model: sonnet
 tools:
@@ -14,21 +22,6 @@ tools:
   - mcp__exec-automator__generate_report
   - mcp__exec-automator__update_crm
   - mcp__exec-automator__schedule_follow_up
-color: gold
-triggers:
-  - sponsor
-  - sponsorship
-  - partners
-  - partnership
-  - revenue
-  - prospecting
-  - donor
-  - funding
-  - benefits
-  - fulfillment
-  - recognition
-  - exhibitor
-  - underwriter
 ---
 
 # Sponsor Relations Agent

@@ -1,31 +1,16 @@
 ---
 name: jira:bulk-commit
-description: Process multiple existing commits and send aggregated updates to Jira
-arguments:
-  - name: commit-range
-    description: Git commit range (e.g., HEAD~5..HEAD, main..feature)
-    required: true
-  - name: aggregate-time
-    description: Aggregate time logs per issue instead of individual logs
-    default: true
-  - name: deduplicate-comments
-    description: Combine similar comments instead of adding duplicates
-    default: true
-  - name: dry-run
-    description: Preview changes without executing
-    default: false
-  - name: skip-errors
-    description: Continue processing even if individual commits fail
-    default: true
-  - name: verbose
-    description: Show detailed processing output
-    default: false
+intent: Process multiple existing commits and send aggregated updates to Jira
 tags:
   - jira
   - git
   - batch
   - smart-commits
   - time-tracking
+inputs: []
+risk: medium
+cost: medium
+description: Process multiple existing commits and send aggregated updates to Jira
 ---
 
 # Bulk Commit Processing

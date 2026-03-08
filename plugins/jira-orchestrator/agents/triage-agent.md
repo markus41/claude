@@ -1,21 +1,25 @@
 ---
 name: triage-agent
+intent: Jira Issue Triage Agent
+tags:
+  - jira-orchestrator
+  - agent
+  - triage-agent
+inputs: []
+risk: medium
+cost: medium
 model: haiku
-color: orange
-whenToUse: "First agent called when any Jira issue is detected - analyzes and routes to appropriate workflow"
 tools:
   - Read
   - Grep
   - Glob
   - Task
-  # Atlassian MCP SSE Tools (Official)
   - mcp__atlassian__getJiraIssue
   - mcp__atlassian__searchJiraIssuesUsingJql
   - mcp__atlassian__getVisibleJiraProjects
   - mcp__atlassian__getJiraProjectIssueTypesMetadata
   - mcp__atlassian__search
   - mcp__atlassian__getConfluencePage
-  # Obsidian for documentation
   - mcp__obsidian__vault_search
   - mcp__obsidian__get_file_contents
 ---

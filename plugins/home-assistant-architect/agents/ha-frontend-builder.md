@@ -1,3 +1,15 @@
+---
+name: home-assistant-architect:ha-frontend-builder
+intent: Home Assistant Frontend Builder Agent
+tags:
+  - home-assistant-architect
+  - agent
+  - ha-frontend-builder
+inputs: []
+risk: medium
+cost: medium
+---
+
 # Home Assistant Frontend Builder Agent
 
 Build and design Home Assistant Lovelace dashboards with production-ready cards, layouts, and responsive designs.

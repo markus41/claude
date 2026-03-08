@@ -1,39 +1,17 @@
 ---
 name: exec:report
-description: Generate comprehensive automation analysis and ROI reports with executive summaries, performance metrics, cost savings analysis, and strategic recommendations
-color: indigo
-icon: file-text
+intent: Generate comprehensive automation analysis and ROI reports with executive summaries, performance metrics, cost savings analysis, and strategic recommendations
 tags:
   - reporting
   - analysis
   - roi
   - executive
   - compliance
+inputs: []
+risk: medium
+cost: medium
+description: Generate comprehensive automation analysis and ROI reports with executive summaries, performance metrics, cost savings analysis, and strategic recommendations
 model: claude-sonnet-4-5
-arguments:
-  - name: type
-    description: Report type (executive, technical, roi, compliance, board)
-    required: false
-    default: executive
-  - name: format
-    description: Output format (markdown, pdf, html, json)
-    required: false
-    default: markdown
-  - name: period
-    description: Reporting period (current, monthly, quarterly, annual)
-    required: false
-    default: current
-  - name: output-path
-    description: Where to save the report (default - automation-output/reports/)
-    required: false
-  - name: include-charts
-    description: Include visual charts and graphs (true/false)
-    required: false
-    default: true
-  - name: include-appendices
-    description: Include detailed appendices (true/false)
-    required: false
-    default: true
 allowed-tools:
   - Read
   - Write

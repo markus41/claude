@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "plugin": "frontend-design-system",
+  "type": "agents",
+  "generatedBy": "scripts/generate-plugin-indexes.mjs",
+  "entries": [
+    {
+      "name": "frontend-design-system:accessibility-auditor",
+      "intent": "Audit and fix accessibility issues in components and themes",
+      "tags": [
+        "frontend-design-system",
+        "agent",
+        "accessibility-auditor"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/accessibility-auditor.md"
+    },
+    {
+      "name": "frontend-design-system:component-designer",
+      "intent": "Design and generate accessible React components with consistent styling",
+      "tags": [
+        "frontend-design-system",
+        "agent",
+        "component-designer"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/component-designer.md"
+    },
+    {
+      "name": "frontend-design-system:design-architect",
+      "intent": "Strategic design decisions, style selection, and design system architecture",
+      "tags": [
+        "frontend-design-system",
+        "agent",
+        "design-architect"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/design-architect.md"
+    },
+    {
+      "name": "frontend-design-system:responsive-specialist",
+      "intent": "Implement responsive layouts and mobile-first design patterns",
+      "tags": [
+        "frontend-design-system",
+        "agent",
+        "responsive-specialist"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/responsive-specialist.md"
+    },
+    {
+      "name": "frontend-design-system:style-implementer",
+      "intent": "Implements selected design styles into production CSS/Tailwind/styled-components code",
+      "tags": [
+        "frontend-design-system",
+        "agent",
+        "style-implementer"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/style-implementer.md"
+    },
+    {
+      "name": "frontend-design-system:theme-engineer",
+      "intent": "Multi-tenant theming with Keycloak realm integration and design token management",
+      "tags": [
+        "frontend-design-system",
+        "agent",
+        "theme-engineer"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/theme-engineer.md"
+    }
+  ]
+}

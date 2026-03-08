@@ -1,12 +1,14 @@
 ---
+name: team-accelerator:perf
+intent: Performance monitoring and optimization with k6 load testing, Prometheus queries, Grafana dashboards, and profiling tools
+tags:
+  - team-accelerator
+  - command
+  - perf
+inputs: []
+risk: medium
+cost: medium
 description: Performance monitoring and optimization with k6 load testing, Prometheus queries, Grafana dashboards, and profiling tools
-arguments:
-  - name: action
-    description: "Action: test, query, dashboard, profile, or analyze"
-    required: true
-  - name: target
-    description: "Target endpoint, service, or metric name"
-    required: false
 ---
 
 # Perf Command

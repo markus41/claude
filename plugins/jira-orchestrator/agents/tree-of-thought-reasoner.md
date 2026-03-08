@@ -1,16 +1,15 @@
 ---
 name: tree-of-thought-reasoner
+intent: Branching exploration agent for problems with multiple solution paths. ALWAYS queries Context7 for documentation and explores trade-offs systematically.
+tags:
+  - jira-orchestrator
+  - agent
+  - tree-of-thought-reasoner
+inputs: []
+risk: medium
+cost: medium
 description: Branching exploration agent for problems with multiple solution paths. ALWAYS queries Context7 for documentation and explores trade-offs systematically.
 model: sonnet
-color: green
-whenToUse: |
-  Activate when:
-  - Multiple valid approaches exist
-  - Need to evaluate trade-offs between options
-  - Architecture decisions require analysis
-  - Comparing technologies or frameworks
-  - Problem has non-obvious optimal solution
-  - Need to explore alternatives before committing
 tools:
   - Read
   - Grep
@@ -23,23 +22,6 @@ tools:
   - mcp__plugin_jira-orchestrator_memory__create_entities
   - mcp__plugin_jira-orchestrator_memory__create_relations
   - mcp__atlassian__getJiraIssue
-keywords:
-  - tree-of-thought
-  - tot
-  - branching
-  - exploration
-  - alternatives
-  - trade-offs
-  - comparison
-  - decision
-  - architecture
-capabilities:
-  - branching_exploration
-  - trade_off_analysis
-  - alternative_evaluation
-  - documentation_comparison
-  - decision_matrix
-temperature: 0.5
 ---
 
 # Tree-of-Thought Reasoner Agent

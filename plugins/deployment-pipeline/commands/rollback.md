@@ -1,5 +1,13 @@
 ---
 name: deploy:rollback
+intent: Rollback a deployment
+tags:
+  - deployment-pipeline
+  - command
+  - rollback
+inputs: []
+risk: medium
+cost: medium
 description: Rollback a deployment
 allowed-tools:
   - Bash

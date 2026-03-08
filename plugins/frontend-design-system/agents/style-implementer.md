@@ -1,22 +1,21 @@
 ---
-description: "Implements selected design styles into production CSS/Tailwind/styled-components code"
-when_to_use: "implementing styles, writing CSS, creating Tailwind configs, styled-components themes"
+name: frontend-design-system:style-implementer
+intent: Implements selected design styles into production CSS/Tailwind/styled-components code
+tags:
+  - frontend-design-system
+  - agent
+  - style-implementer
+inputs: []
+risk: medium
+cost: medium
+description: Implements selected design styles into production CSS/Tailwind/styled-components code
+model: sonnet
 tools:
   - Read
   - Write
   - Edit
   - Glob
   - Grep
-model: sonnet
-color: green
-category: frontend
-expertise:
-  - CSS/SCSS/Sass implementation
-  - Tailwind CSS configuration
-  - styled-components theming
-  - CSS-in-JS solutions
-  - Design token implementation
-  - Responsive design code
 ---
 
 # Style Implementer Agent

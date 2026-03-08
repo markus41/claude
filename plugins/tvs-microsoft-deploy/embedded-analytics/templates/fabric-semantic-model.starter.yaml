@@ -1,0 +1,47 @@
+version: 1
+name: fabric-semantic-model-starter
+description: Starter deployment template for Fabric/Power BI semantic model provisioning.
+parameters:
+  environment:
+    type: string
+    allowed: [dev, test, prod]
+  tenantCode:
+    type: string
+  workspaceName:
+    type: string
+  lakehouseName:
+    type: string
+  semanticModelName:
+    type: string
+  capacitySku:
+    type: string
+resources:
+  - type: fabric.workspace
+    name: "${workspaceName}"
+    settings:
+      capacitySku: "${capacitySku}"
+      tags:
+        owner: embedded-analytics
+        tenant: "${tenantCode}"
+        environment: "${environment}"
+  - type: fabric.lakehouse
+    name: "${lakehouseName}"
+    workspaceRef: "${workspaceName}"
+  - type: fabric.semanticModel
+    name: "${semanticModelName}"
+    workspaceRef: "${workspaceName}"
+    source:
+      mode: directlake
+      lakehouseRef: "${lakehouseName}"
+    rls:
+      table: TenantAccess
+      roleName: TenantScopedViewer
+      filter: "TenantAccess[PrincipalObjectId] = USEROBJECTID()"
+    refresh:
+      schedule:
+        timezone: UTC
+        frequency: hourly
+      notifications:
+        onFailure: true
+        recipients:
+          - analytics-ops@example.com

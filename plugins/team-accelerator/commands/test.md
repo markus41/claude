@@ -1,15 +1,14 @@
 ---
+name: team-accelerator:test
+intent: Run test suites including unit tests, integration tests, E2E tests (Playwright/Selenium), and generate coverage reports
+tags:
+  - team-accelerator
+  - command
+  - test
+inputs: []
+risk: medium
+cost: medium
 description: Run test suites including unit tests, integration tests, E2E tests (Playwright/Selenium), and generate coverage reports
-arguments:
-  - name: type
-    description: "Test type: all, unit, integration, e2e, or smoke"
-    required: false
-  - name: coverage
-    description: "Generate coverage report: true or false (default: true)"
-    required: false
-  - name: watch
-    description: "Run in watch mode: true or false (default: false)"
-    required: false
 ---
 
 # Test Command

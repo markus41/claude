@@ -1,9 +1,23 @@
 ---
 name: compliance-reporter
+intent: Compliance Reporter Agent
+tags:
+  - jira-orchestrator
+  - agent
+  - compliance-reporter
+inputs: []
+risk: medium
+cost: medium
 model: sonnet
-color: purple
-whenToUse: "Generate compliance reports, track SOC2/GDPR/ISO27001 controls, collect audit evidence, monitor control effectiveness, and manage exceptions"
-tools: [Read, Grep, Glob, Task, mcp__atlassian__getJiraIssue, mcp__atlassian__searchJiraIssuesUsingJql, mcp__atlassian__addCommentToJiraIssue, mcp__obsidian__vault_search]
+tools:
+  - Read
+  - Grep
+  - Glob
+  - Task
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__searchJiraIssuesUsingJql
+  - mcp__atlassian__addCommentToJiraIssue
+  - mcp__obsidian__vault_search
 ---
 
 # Compliance Reporter Agent

@@ -1,27 +1,14 @@
 ---
 name: jira:deploy
+intent: Track deployment, update Jira with status, timestamps, metadata
+tags:
+  - jira-orchestrator
+  - command
+  - deploy
+inputs: []
+risk: medium
+cost: medium
 description: Track deployment, update Jira with status, timestamps, metadata
-arguments:
-  - name: environment
-    description: Target environment (dev|staging|production)
-    required: true
-  - name: --issue
-    description: Jira issue key (auto-detected from commits if omitted)
-    required: false
-  - name: --version
-    description: Release version tag
-    required: false
-  - name: --url
-    description: Deployment URL
-    required: false
-  - name: --status
-    description: Status (pending|in_progress|success|failure)
-    required: false
-    default: success
-  - name: --rollback
-    description: Mark as rollback deployment
-    required: false
-    type: boolean
 ---
 
 # Deployment Tracking

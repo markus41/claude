@@ -1,19 +1,14 @@
 ---
 name: jira:create-repo
+intent: Create a new modular Harness repository with full infrastructure scaffolding (Helm, Terraform, K8s), concise README with Confluence links, and Jira integration. Interactive by default.
+tags:
+  - jira-orchestrator
+  - command
+  - create-repo
+inputs: []
+risk: medium
+cost: medium
 description: Create a new modular Harness repository with full infrastructure scaffolding (Helm, Terraform, K8s), concise README with Confluence links, and Jira integration. Interactive by default.
-arguments:
-  - name: service_name
-    description: Name of the new service/repository (prompted if not provided)
-    required: false
-  - name: jira_key
-    description: Jira issue key to link (e.g., PROJ-123)
-    required: false
-  - name: type
-    description: Repository type (microservice, helm-chart, terraform-module, shared-lib)
-    default: microservice
-  - name: auto
-    description: Run in non-interactive mode (skips all prompts)
-    default: false
 ---
 
 # /jira:create-repo

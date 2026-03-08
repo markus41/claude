@@ -1,8 +1,14 @@
 ---
 name: escalation-manager
+intent: Escalation Manager Agent
+tags:
+  - jira-orchestrator
+  - agent
+  - escalation-manager
+inputs: []
+risk: medium
+cost: medium
 model: sonnet
-color: red
-whenToUse: "Manage escalations for critical issues, SLA breaches, high-priority incidents, and customer escalations with multi-level routing and automated notifications"
 tools:
   - Read
   - Grep

@@ -63,7 +63,7 @@ Install directly from a Git repository:
 /plugin-install https://github.com/user/my-claude-plugin#v1.2.0
 ```
 
-Plugins are cloned to `.claude-plugins/{plugin-name}/`.
+Plugins are cloned to `plugins/{plugin-name}/`.
 
 ### 3. Local Path
 
@@ -97,7 +97,7 @@ The installation process follows these steps:
 2. **Validate Plugin**: Check plugin structure and manifest (`plugin.json`)
 3. **Check Dependencies**: Resolve and validate dependencies
 4. **Install Dependencies**: Install required dependencies (unless `--no-deps`)
-5. **Copy/Clone/Link**: Move plugin to `.claude-plugins/`
+5. **Copy/Clone/Link**: Move plugin to `plugins/`
 6. **Register Plugin**: Update registry indexes
 7. **Run Post-Install Hooks**: Execute any post-install scripts
 8. **Generate Report**: Show installation summary
@@ -249,12 +249,12 @@ These run automatically after installation. Skip with `--skip-hooks`.
 
 ### Permission Errors
 
-**Problem:** Cannot write to `.claude-plugins/`
+**Problem:** Cannot write to `plugins/`
 
 **Solutions:**
-1. Check directory permissions: `ls -la .claude-plugins`
-2. Create directory: `mkdir -p .claude-plugins`
-3. Fix ownership: `chown -R $USER .claude-plugins`
+1. Check directory permissions: `ls -la plugins`
+2. Create directory: `mkdir -p plugins`
+3. Fix ownership: `chown -R $USER plugins`
 
 ## Configuration
 
@@ -263,7 +263,7 @@ Create `.claude/plugin-install.config.json` to customize installation:
 ```json
 {
   "defaultSource": "registry",
-  "pluginsDir": ".claude-plugins",
+  "pluginsDir": "plugins",
   "registryUrl": "https://registry.claude-code.com/plugins",
   "autoInstallDeps": true,
   "runHooks": true,
@@ -308,7 +308,7 @@ This command uses the **plugin-manager** agent for execution.
 Plugin: lobbi-platform-manager
 Version: 1.0.0
 Source: registry
-Installed: .claude-plugins/lobbi-platform-manager
+Installed: plugins/lobbi-platform-manager
 
 ✓ Validation passed
 ✓ Dependencies installed (0 required)

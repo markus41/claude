@@ -159,7 +159,7 @@ When this command is invoked, use the Bash tool to call the plugin CLI:
 
 ```bash
 # Navigate to plugin-cli directory
-cd C:\Users\MarkusAhling\pro\alpha-0.1\claude\.claude\tools\plugin-cli
+cd .claude/tools/plugin-cli
 
 # Run the desired command
 npm run dev -- <command> [options]
@@ -232,5 +232,4 @@ npm test
 ## See Also
 
 - Plugin CLI README: `.claude/tools/plugin-cli/README.md`
-- Plugin Manager: `.claude/tools/plugin-manager/`
-- Template Examples: `.claude/tools/plugin-cli/templates/`
+- Plugin Registry: `.claude/registry/plugins.index.json`

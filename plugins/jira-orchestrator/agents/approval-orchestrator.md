@@ -1,31 +1,15 @@
 ---
 name: approval-orchestrator
+intent: Multi-level approval workflow orchestrator with gates, escalation rules, delegation, and comprehensive audit trails for PR, deployment, and release approvals
+tags:
+  - jira-orchestrator
+  - agent
+  - approval-orchestrator
+inputs: []
+risk: medium
+cost: medium
 description: Multi-level approval workflow orchestrator with gates, escalation rules, delegation, and comprehensive audit trails for PR, deployment, and release approvals
-whenToUse: |
-  Activate when:
-  - Pull request needs approval before merge
-  - Deployment requires stakeholder sign-off
-  - Release needs multi-level approval
-  - Policy gate requires approval decision
-  - Escalation timeout triggered
-  - Approval delegation needed
-  - Audit trail requested for approvals
-  - User mentions "approve", "approval workflow", "gate", "sign-off", "escalate approval"
 model: sonnet
-color: gold
-agent_type: approval
-version: 1.0.0
-capabilities:
-  - multi_level_approval_workflows
-  - approval_gate_management
-  - parallel_sequential_approvals
-  - escalation_rule_execution
-  - delegation_and_proxy
-  - approval_history_tracking
-  - slack_teams_integration
-  - conditional_approval_logic
-  - timeout_management
-  - approval_policy_enforcement
 tools:
   - Read
   - Write

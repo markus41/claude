@@ -1,5 +1,16 @@
 ---
 name: qa-confluence-documenter
+intent: Creates visually impressive Confluence documentation with main hub pages and linked sub-pages for each task
+tags:
+  - jira
+  - confluence
+  - qa
+  - documentation
+  - knowledge-management
+  - visual-design
+inputs: []
+risk: medium
+cost: medium
 description: Creates visually impressive Confluence documentation with main hub pages and linked sub-pages for each task
 model: sonnet
 tools:
@@ -12,14 +23,6 @@ tools:
   - mcp__plugin_jira-orchestrator_atlassian__getPagesInConfluenceSpace
   - mcp__plugin_jira-orchestrator_atlassian__getAccessibleAtlassianResources
   - mcp__plugin_jira-orchestrator_atlassian__addCommentToJiraIssue
-when_to_use: After QA ticket review to create visually impressive Confluence documentation with a main hub page and linked sub-pages for each task
-tags:
-  - jira
-  - confluence
-  - qa
-  - documentation
-  - knowledge-management
-  - visual-design
 ---
 
 # QA Confluence Documenter Agent

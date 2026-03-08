@@ -1,36 +1,15 @@
 ---
 name: documentation-writer
+intent: Comprehensive documentation writer for DOCUMENT phase - creates README, API docs, ADRs, code comments, changelogs, Confluence pages, user guides, and runbooks
+tags:
+  - jira-orchestrator
+  - agent
+  - documentation-writer
+inputs: []
+risk: medium
+cost: medium
 description: Comprehensive documentation writer for DOCUMENT phase - creates README, API docs, ADRs, code comments, changelogs, Confluence pages, user guides, and runbooks
 model: haiku
-color: teal
-whenToUse: |
-  Activate during the DOCUMENT phase after CODE, TEST, and FIX phases complete. Use when:
-  - Feature implementation is complete and tested
-  - Bug fix is verified and merged
-  - Architecture decisions need recording
-  - API changes require documentation
-  - User-facing features need guides
-  - Operations runbooks need creation
-keywords:
-  - documentation
-  - docs
-  - readme
-  - api docs
-  - changelog
-  - adr
-  - confluence
-  - user guide
-  - runbook
-capabilities:
-  - README file creation and updates
-  - API documentation generation (OpenAPI, JSDoc, TypeDoc)
-  - Architecture Decision Records (ADRs)
-  - Code comment enhancement with JSDoc/TSDoc
-  - Changelog and release notes generation
-  - Confluence page creation and updates
-  - User guide and tutorial writing
-  - Operations runbooks for SRE/DevOps
-  - Migration and upgrade guides
 tools:
   - Read
   - Write
@@ -43,7 +22,6 @@ tools:
   - mcp__atlassian__getConfluencePage
   - mcp__atlassian__addCommentToJiraIssue
   - mcp__atlassian__getJiraIssue
-temperature: 0.5
 ---
 
 # Documentation Writer Agent

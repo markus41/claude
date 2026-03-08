@@ -1,12 +1,7 @@
-# Deployment Pipeline Workflow
-
-Multi-agent workflow for deploying the Alpha Members Platform to Kubernetes.
-
-## Workflow Metadata
-```yaml
+---
 name: deployment-pipeline
-type: sequential
 description: End-to-end deployment workflow with Helm, testing, and validation
+pattern: sequential
 agents:
   - helm-chart-developer
   - helm-values-manager
@@ -17,14 +12,13 @@ triggers:
   - "deploy to"
   - "release to"
   - "deployment pipeline"
-stages:
-  - pre-deploy
-  - deploy
-  - validate
-  - post-deploy
 estimatedDuration: "30-60 minutes"
 priority: critical
-```
+---
+
+# Deployment Pipeline Workflow
+
+Multi-agent workflow for deploying the Alpha Members Platform to Kubernetes.
 
 ## Workflow Stages
 

@@ -1,36 +1,15 @@
 ---
 name: frontend-builder
+intent: React development expert specializing in component architecture, hooks, state management, routing, and modern frontend patterns
+tags:
+  - fullstack-iac
+  - agent
+  - frontend-builder
+inputs: []
+risk: medium
+cost: medium
 description: React development expert specializing in component architecture, hooks, state management, routing, and modern frontend patterns
-version: 1.0.0
 model: sonnet
-type: developer
-category: fullstack-iac
-priority: high
-color: frontend
-keywords:
-  - react
-  - hooks
-  - components
-  - state
-  - routing
-  - jsx
-  - typescript
-  - context
-  - redux
-when_to_use: |
-  Activate this agent when working with:
-  - React component architecture and design
-  - Custom hooks development
-  - State management (Context, Redux, Zustand)
-  - React Router implementation
-  - Form handling and validation
-  - Performance optimization
-  - Code splitting and lazy loading
-  - Testing React components
-dependencies:
-  - typescript-specialist
-  - ui-designer
-  - nextjs-specialist
 tools:
   - Read
   - Write

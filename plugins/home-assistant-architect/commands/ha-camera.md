@@ -1,3 +1,15 @@
+---
+name: home-assistant-architect:ha-camera
+intent: /ha-camera Command
+tags:
+  - home-assistant-architect
+  - command
+  - ha-camera
+inputs: []
+risk: medium
+cost: medium
+---
+
 # /ha-camera Command
 
 Configure cameras, NVR systems, and video analytics.

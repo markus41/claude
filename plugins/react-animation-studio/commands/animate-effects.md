@@ -1,3 +1,15 @@
+---
+name: react-animation-studio:animate-effects
+intent: /animate-effects Command
+tags:
+  - react-animation-studio
+  - command
+  - animate-effects
+inputs: []
+risk: medium
+cost: medium
+---
+
 # /animate-effects Command
 
 Create artistic and experimental visual effects including morphing shapes, glitch effects, liquid animations, magnetic interactions, and creative loaders.

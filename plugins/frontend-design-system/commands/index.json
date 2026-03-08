@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "plugin": "frontend-design-system",
+  "type": "commands",
+  "generatedBy": "scripts/generate-plugin-indexes.mjs",
+  "entries": [
+    {
+      "name": "audit",
+      "intent": "Audit UI for design style consistency and accessibility",
+      "tags": [
+        "frontend-design-system",
+        "command",
+        "audit"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/audit.md"
+    },
+    {
+      "name": "component",
+      "intent": "Generate styled UI components with design system consistency",
+      "tags": [
+        "frontend-design-system",
+        "command",
+        "component"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/component.md"
+    },
+    {
+      "name": "convert",
+      "intent": "Convert CSS styles between different formats (CSS, Tailwind, styled-components)",
+      "tags": [
+        "frontend-design-system",
+        "command",
+        "convert"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/convert.md"
+    },
+    {
+      "name": "keycloak",
+      "intent": "Generate and deploy Keycloak theme files with FreeMarker templates",
+      "tags": [
+        "frontend-design-system",
+        "command",
+        "keycloak"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/keycloak.md"
+    },
+    {
+      "name": "palette",
+      "intent": "Generate color palettes from design style characteristics",
+      "tags": [
+        "frontend-design-system",
+        "command",
+        "palette"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/palette.md"
+    },
+    {
+      "name": "style",
+      "intent": "Apply a specific design style from 263+ styles and generate implementation code",
+      "tags": [
+        "frontend-design-system",
+        "command",
+        "style"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/style.md"
+    },
+    {
+      "name": "theme",
+      "intent": "Generate and manage multi-tenant themes with Keycloak integration",
+      "tags": [
+        "frontend-design-system",
+        "command",
+        "theme"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/theme.md"
+    },
+    {
+      "name": "tokens",
+      "intent": "Generate design tokens from a selected design style",
+      "tags": [
+        "frontend-design-system",
+        "command",
+        "tokens"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/tokens.md"
+    }
+  ]
+}

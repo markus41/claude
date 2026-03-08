@@ -1,15 +1,16 @@
 ---
 name: exec:map
-description: Map responsibilities to LangGraph workflow nodes, edges, and state - Transform analyzed executive director responsibilities into comprehensive LangGraph workflow architecture with node definitions, state schemas, edge relationships, and human-in-the-loop checkpoints
-color: purple
-icon: git-branch
+intent: Map responsibilities to LangGraph workflow nodes, edges, and state - Transform analyzed executive director responsibilities into comprehensive LangGraph workflow architecture with node definitions, state schemas, edge relationships, and human-in-the-loop checkpoints
 tags:
   - mapping
   - langgraph
   - workflows
   - architecture
+inputs: []
+risk: medium
+cost: medium
+description: Map responsibilities to LangGraph workflow nodes, edges, and state - Transform analyzed executive director responsibilities into comprehensive LangGraph workflow architecture with node definitions, state schemas, edge relationships, and human-in-the-loop checkpoints
 model: claude-sonnet-4-5
-argument-hint: "[analysis-path] [--format=visual|json|code] [--include-examples] [--output-dir=./mapping-output]"
 allowed-tools:
   - Read
   - Write

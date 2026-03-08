@@ -1,20 +1,14 @@
 ---
 name: jira:release
+intent: Multi-project release planning, coordination, and execution with automated release notes, go/no-go decisions, and rollback management
+tags:
+  - jira-orchestrator
+  - command
+  - release
+inputs: []
+risk: medium
+cost: medium
 description: Multi-project release planning, coordination, and execution with automated release notes, go/no-go decisions, and rollback management
-arguments:
-  - name: action
-    description: plan|status|notes|readiness|go-no-go|deploy|rollback|calendar
-    required: true
-  - name: version
-    description: Release version (e.g., v2.5.0). Required for most actions.
-    required: false
-  - name: projects
-    description: Comma-separated project keys. Auto-detected from version if omitted.
-    required: false
-  - name: date
-    description: Release date (YYYY-MM-DD). Required for 'plan' action.
-    required: false
-version: 1.0.0
 ---
 
 # Release Management Command
@@ -72,6 +66,7 @@ Execute Jira Release Management actions: **${action}** | **Version:** ${version}
 4. Frontend applications
 5. Smoke tests + health checks
 6. Enable monitoring
+7. Route Harness execution events through `lib/harness-transition-engine.ts` using `config/harness-transition-map.yaml` so Jira transitions/comments/properties are applied consistently and idempotently.
 
 ### Rollback
 1. Confirm decision (safety check)

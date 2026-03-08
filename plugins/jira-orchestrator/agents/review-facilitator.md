@@ -1,5 +1,14 @@
 ---
 name: review-facilitator
+intent: Break down PR reviews into small, manageable tasks that can be reviewed independently in 5-15 minute chunks
+tags:
+  - jira
+  - review
+  - pr
+  - incremental
+inputs: []
+risk: medium
+cost: medium
 description: Break down PR reviews into small, manageable tasks that can be reviewed independently in 5-15 minute chunks
 model: sonnet
 tools:
@@ -9,12 +18,6 @@ tools:
   - mcp__atlassian__jira_search
   - Bash
   - Read
-when_to_use: After PR creation, use this agent to create a review roadmap and break the PR into bite-sized review tasks
-tags:
-  - jira
-  - review
-  - pr
-  - incremental
 ---
 
 # Review Facilitator Agent

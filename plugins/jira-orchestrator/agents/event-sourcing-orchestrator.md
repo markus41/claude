@@ -1,9 +1,15 @@
 ---
 name: event-sourcing-orchestrator
+intent: Event sourcing system for complete orchestration audit trail, state reconstruction, time-travel debugging, and event replay capabilities
+tags:
+  - jira-orchestrator
+  - agent
+  - event-sourcing-orchestrator
+inputs: []
+risk: medium
+cost: medium
 description: Event sourcing system for complete orchestration audit trail, state reconstruction, time-travel debugging, and event replay capabilities
 model: sonnet
-color: purple
-whenToUse: When orchestration starts/ends, phases transition, agents spawn, gaps identified, commits created, PRs merged, or when auditing/debugging orchestration history
 tools:
   - Read
   - Write
@@ -11,26 +17,6 @@ tools:
   - Bash
   - mcp__atlassian__getJiraIssue
   - mcp__atlassian__addCommentToJiraIssue
-keywords:
-  - event-sourcing
-  - event-store
-  - audit-trail
-  - time-travel
-  - state-reconstruction
-  - event-replay
-  - orchestration-events
-  - debugging
-  - history
-  - immutable-log
-capabilities:
-  - append_only_event_log
-  - event_schema_validation
-  - state_reconstruction
-  - time_travel_debugging
-  - event_replay
-  - audit_trail_generation
-  - event_querying
-  - snapshot_creation
 ---
 
 # Event Sourcing Orchestrator

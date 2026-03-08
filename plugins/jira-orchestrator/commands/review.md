@@ -1,16 +1,14 @@
 ---
 name: jira:review
+intent: Comprehensive code review with security, performance, quality, and accessibility analysis
+tags:
+  - jira-orchestrator
+  - command
+  - review
+inputs: []
+risk: medium
+cost: medium
 description: Comprehensive code review with security, performance, quality, and accessibility analysis
-arguments:
-  - name: issue_key
-    description: Jira issue key (e.g., ABC-123)
-    required: true
-  - name: scope
-    description: security|performance|quality|accessibility|full
-    default: full
-  - name: fix
-    description: Auto-fix issues (true|false)
-    default: false
 ---
 
 # Code Review Command

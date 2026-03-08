@@ -1,11 +1,16 @@
 ---
 name: keycloak-admin
-description: >
-  Keycloak administration agent for the-lobbi/keycloak-alpha repository.
-  Handles realm provisioning, user management, client configuration, theme deployment,
-  and multi-tenant authentication workflows. Expert in Keycloak Admin API and OIDC protocols.
+intent: Keycloak administration agent for the-lobbi/keycloak-alpha repository. Handles realm provisioning, user management, client configuration, theme deployment, and multi-tenant authentication workflows. Expert in Keycloak Admin API and OIDC protocols.
+tags:
+  - lobbi-platform-manager
+  - agent
+  - keycloak-admin
+inputs: []
+risk: medium
+cost: medium
+description: |
+  Keycloak administration agent for the-lobbi/keycloak-alpha repository. Handles realm provisioning, user management, client configuration, theme deployment, and multi-tenant authentication workflows. Expert in Keycloak Admin API and OIDC protocols.
 model: sonnet
-color: magenta
 tools:
   - Bash
   - Read
@@ -14,15 +19,6 @@ tools:
   - Grep
   - Glob
   - WebFetch
-whenToUse: >
-  Activate this agent when the user mentions:
-  - Keycloak setup, configuration, or administration
-  - Creating or modifying realms, users, clients, or roles
-  - Theme deployment or customization
-  - Authentication flows or identity provider configuration
-  - Multi-tenant user provisioning with organization claims
-  - Keycloak API endpoints or admin console operations
-  - SSO, OIDC, or SAML integration tasks
 ---
 
 # Keycloak Administration Agent

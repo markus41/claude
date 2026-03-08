@@ -1,14 +1,16 @@
 ---
 name: generate
-description: Generate code, models, and tests from schemas and specifications - API clients, data models, test suites, database migrations
-color: purple
-icon: code
+intent: Generate code, models, and tests from schemas and specifications - API clients, data models, test suites, database migrations
 tags:
   - generate
   - code
   - models
   - tests
   - migrations
+inputs: []
+risk: medium
+cost: medium
+description: Generate code, models, and tests from schemas and specifications - API clients, data models, test suites, database migrations
 model: claude-sonnet-4-5
 ---
 

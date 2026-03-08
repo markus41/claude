@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TVS Microsoft Deploy CLI Error Code Catalog",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["code", "severity", "category", "message", "operatorAction"],
+    "properties": {
+      "code": {
+        "type": "string",
+        "pattern": "^TVS_CLI_[A-Z0-9_]+$"
+      },
+      "severity": {
+        "type": "string",
+        "enum": ["info", "warning", "error", "fatal"]
+      },
+      "category": {
+        "type": "string",
+        "enum": ["validation", "identity", "authorization", "dependency", "execution", "policy", "network", "unknown"]
+      },
+      "message": { "type": "string" },
+      "operatorAction": { "type": "string" },
+      "retryable": { "type": "boolean", "default": false },
+      "docsRef": { "type": "string" }
+    },
+    "additionalProperties": false
+  },
+  "default": [
+    {
+      "code": "TVS_CLI_INVALID_ARGS",
+      "severity": "error",
+      "category": "validation",
+      "message": "Command arguments failed schema validation.",
+      "operatorAction": "Review required flags, fix input values, and rerun with --dry-run.",
+      "retryable": true,
+      "docsRef": "docs/cli/COMMANDS.md#shared-arguments"
+    },
+    {
+      "code": "TVS_CLI_POLICY_BLOCKED",
+      "severity": "fatal",
+      "category": "policy",
+      "message": "Execution blocked by identity/policy guardrails.",
+      "operatorAction": "Run identity attestations and drift checks, remediate deny findings, then re-plan.",
+      "retryable": false,
+      "docsRef": "plugins/tvs-microsoft-deploy/commands/identity-drift.md"
+    },
+    {
+      "code": "TVS_CLI_DEPENDENCY_FAILED",
+      "severity": "error",
+      "category": "dependency",
+      "message": "A prerequisite command or external service failed.",
+      "operatorAction": "Inspect upstream dependency logs, re-run with --plan-id to correlate, then resume.",
+      "retryable": true,
+      "docsRef": "plugins/tvs-microsoft-deploy/commands/status-check.md"
+    },
+    {
+      "code": "TVS_CLI_EXECUTION_FAILED",
+      "severity": "error",
+      "category": "execution",
+      "message": "An execution step failed after validation passed.",
+      "operatorAction": "Capture --export-json artifacts, isolate failed phase, and rerun targeted command.",
+      "retryable": true,
+      "docsRef": "plugins/tvs-microsoft-deploy/commands/deploy-all.md"
+    },
+    {
+      "code": "TVS_CLI_UNEXPECTED",
+      "severity": "fatal",
+      "category": "unknown",
+      "message": "Unexpected runtime exception.",
+      "operatorAction": "Collect stack trace, command payload, and environment metadata for incident escalation.",
+      "retryable": false,
+      "docsRef": "docs/cli/commands.json"
+    }
+  ]
+}

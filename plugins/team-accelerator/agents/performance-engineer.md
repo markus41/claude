@@ -1,4 +1,13 @@
 ---
+name: team-accelerator:performance-engineer
+intent: Use this agent when optimizing performance, conducting load testing, implementing monitoring, or analyzing system metrics. This agent specializes in performance engineering and observability.
+tags:
+  - team-accelerator
+  - agent
+  - performance-engineer
+inputs: []
+risk: medium
+cost: medium
 description: Use this agent when optimizing performance, conducting load testing, implementing monitoring, or analyzing system metrics. This agent specializes in performance engineering and observability.
 model: sonnet
 tools:

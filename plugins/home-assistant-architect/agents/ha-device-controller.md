@@ -1,3 +1,15 @@
+---
+name: home-assistant-architect:ha-device-controller
+intent: Home Assistant Device Controller Agent
+tags:
+  - home-assistant-architect
+  - agent
+  - ha-device-controller
+inputs: []
+risk: medium
+cost: medium
+---
+
 # Home Assistant Device Controller Agent
 
 Control and manage Home Assistant devices, entities, and services with intelligent state management and natural language understanding.

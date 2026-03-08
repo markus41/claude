@@ -1,4 +1,13 @@
 ---
+name: aws-eks-helm-keycloak:debug
+intent: Smart debugging for EKS deployment issues with AI-powered analysis and fix suggestions
+tags:
+  - aws-eks-helm-keycloak
+  - command
+  - debug
+inputs: []
+risk: medium
+cost: medium
 description: Smart debugging for EKS deployment issues with AI-powered analysis and fix suggestions
 ---
 

@@ -1,17 +1,14 @@
 ---
 name: jira:triage
+intent: Analyze issue to determine optimal workflow path
+tags:
+  - jira-orchestrator
+  - command
+  - triage
+inputs: []
+risk: medium
+cost: medium
 description: Analyze issue to determine optimal workflow path
-arguments:
-  - name: issue_key
-    description: Jira issue key (PROJ-123)
-    required: true
-  - name: depth
-    description: Analysis depth (quick|standard|deep)
-    default: standard
-  - name: auto_start
-    description: Auto-start workflow after triage
-    default: false
-version: 1.0.0
 ---
 
 # Jira Issue Triage

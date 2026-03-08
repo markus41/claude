@@ -48,7 +48,7 @@ Display installed Claude Code plugins or browse the marketplace for available pl
 
 When using `marketplace` or `available` mode, the command reads from:
 - `.claude/registry/plugins.index.json` - Registry section for available plugins
-- `.claude-plugin/marketplace.json` - Additional marketplace entries
+- `.claude/plugins/` - Available (not yet installed) plugins directory
 
 ### Marketplace Output
 
@@ -144,7 +144,7 @@ Machine-readable output:
       "author": "Markus Ahling",
       "license": "MIT",
       "source": "local",
-      "path": ".claude-plugins/lobbi-platform-manager",
+      "path": "plugins/lobbi-platform-manager",
       "installedAt": "2025-12-12T20:15:00Z",
       "provides": {
         "commands": 8,
@@ -311,7 +311,7 @@ Description: Streamline development on the-lobbi/keycloak-alpha with
              Keycloak management, service orchestration, and test generation
 
 Repository:  https://github.com/the-lobbi/keycloak-alpha
-Path:        .claude-plugins/lobbi-platform-manager
+Path:        plugins/lobbi-platform-manager
 Source:      local
 Installed:   2025-12-12 20:15:00
 Status:      ✓ Active

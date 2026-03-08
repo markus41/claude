@@ -1,17 +1,14 @@
 ---
 name: jira:qa-review
+intent: Review QA tickets - improve content, create docs, respond to comments
+tags:
+  - jira-orchestrator
+  - command
+  - qa-review
+inputs: []
+risk: medium
+cost: medium
 description: Review QA tickets - improve content, create docs, respond to comments
-arguments:
-  - name: ticket
-    description: Optional ticket key (e.g., LF-27). Omit for all QA tickets.
-    required: false
-  - name: mode
-    description: Review mode (full|review-only|docs-only|comments-only)
-    default: full
-  - name: dry-run
-    description: Preview changes without applying
-    default: false
-version: 1.0.0
 ---
 
 # QA Review Workflow

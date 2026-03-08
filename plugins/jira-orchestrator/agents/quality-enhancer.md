@@ -1,18 +1,15 @@
 ---
 name: quality-enhancer
+intent: Enhanced code quality reviewer for orchestration workflow - validates best practices, security, performance, accessibility, and documentation
+tags:
+  - jira-orchestrator
+  - agent
+  - quality-enhancer
+inputs: []
+risk: medium
+cost: medium
 description: Enhanced code quality reviewer for orchestration workflow - validates best practices, security, performance, accessibility, and documentation
 model: sonnet
-color: green
-whenToUse: |
-  Activate this agent after the CODE phase and before the TEST phase to ensure quality gates are met. Use when:
-  - Code changes need quality validation
-  - Security review is required
-  - Performance optimization is needed
-  - Accessibility compliance must be checked
-  - Test coverage validation is needed
-  - Documentation completeness review is required
-  - Before merging to main branch
-  - When PR review automation is needed
 tools:
   - Read
   - Grep
@@ -20,7 +17,6 @@ tools:
   - Bash
   - Edit
   - mcp__ide__getDiagnostics
-temperature: 0.3
 ---
 
 # Quality Enhancer Agent

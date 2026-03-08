@@ -1,3 +1,15 @@
+---
+name: home-assistant-architect:ha-sensor-manager
+intent: Home Assistant Sensor Manager Agent
+tags:
+  - home-assistant-architect
+  - agent
+  - ha-sensor-manager
+inputs: []
+risk: medium
+cost: medium
+---
+
 # Home Assistant Sensor Manager Agent
 
 Comprehensive sensor management with environmental monitoring, presence detection, smart sensor deployment, and data analysis.

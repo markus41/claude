@@ -11,7 +11,7 @@
 ## Executive Summary
 
 This document defines a comprehensive testing strategy for the Claude Code plugin ecosystem, encompassing:
-- **5 Core Plugins**: jira-orchestrator, exec-automator, ahling-command-center, container-workflow, frontend-powerhouse
+- **4 Core Plugins**: jira-orchestrator, exec-automator, container-workflow, frontend-powerhouse
 - **78 Specialized Agents**: Distributed across Forerunner, Promethean, and Spartan factions
 - **103 Commands**: Slash commands for user interaction and automation
 - **Message Bus Communication**: Inter-plugin event-driven architecture

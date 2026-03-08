@@ -1,0 +1,27 @@
+{
+  "criticalAutomations": [
+    {
+      "name": "commission-processing",
+      "gate": "must-pass",
+      "rollbackPackage": "plugins/tvs-microsoft-deploy/power-platform/rollback-packages/commission-processing.rollback.zip",
+      "postDeploySmokeCheck": "flow-run:commission-processing"
+    },
+    {
+      "name": "identity-offboarding",
+      "gate": "must-pass",
+      "rollbackPackage": "plugins/tvs-microsoft-deploy/power-platform/rollback-packages/identity-offboarding.rollback.zip",
+      "postDeploySmokeCheck": "flow-run:identity-offboarding"
+    },
+    {
+      "name": "taia-archival",
+      "gate": "must-pass",
+      "rollbackPackage": "plugins/tvs-microsoft-deploy/power-platform/rollback-packages/taia-archival.rollback.zip",
+      "postDeploySmokeCheck": "flow-run:taia-archival"
+    }
+  ],
+  "copilotSmokeChecks": [
+    "bot-session:commission-assistant",
+    "bot-session:offboarding-assistant",
+    "bot-session:taia-archive-assistant"
+  ]
+}

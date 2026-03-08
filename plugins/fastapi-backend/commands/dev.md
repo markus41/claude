@@ -1,7 +1,14 @@
 ---
 name: dev
+intent: Start FastAPI development server with hot reload and proper configuration
+tags:
+  - fastapi-backend
+  - command
+  - dev
+inputs: []
+risk: medium
+cost: medium
 description: Start FastAPI development server with hot reload and proper configuration
-argument-hint: "[--port 8000] [--host 0.0.0.0] [--reload] [--workers 1]"
 allowed-tools:
   - Bash
   - Read

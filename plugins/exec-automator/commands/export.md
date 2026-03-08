@@ -1,27 +1,17 @@
 ---
 name: exec:export
-description: Export automation configurations, workflows, reports, and data from the exec-automator platform
-color: gray
-icon: download
+intent: Export automation configurations, workflows, reports, and data from the exec-automator platform
 tags:
   - export
   - backup
   - data
   - configuration
   - reports
+inputs: []
+risk: medium
+cost: medium
+description: Export automation configurations, workflows, reports, and data from the exec-automator platform
 model: claude-sonnet-4-5
-arguments:
-  - name: type
-    description: What to export (config, workflows, reports, all, templates, history)
-    required: true
-  - name: format
-    description: Export format (json, yaml, zip, pdf, markdown)
-    required: false
-    default: json
-  - name: destination
-    description: Output path for exported files
-    required: false
-    default: ./exports
 ---
 
 # Executive Automation Export - Configuration & Data Backup

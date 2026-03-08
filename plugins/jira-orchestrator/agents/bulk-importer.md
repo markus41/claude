@@ -1,22 +1,15 @@
 ---
 name: bulk-importer
+intent: Imports issues from CSV, Excel, and JSON files with field mapping, validation, duplicate detection, and comprehensive error handling
+tags:
+  - jira-orchestrator
+  - agent
+  - bulk-importer
+inputs: []
+risk: medium
+cost: medium
 description: Imports issues from CSV, Excel, and JSON files with field mapping, validation, duplicate detection, and comprehensive error handling
-whenToUse: Importing issues from external files, migrating data, bulk creation from templates, user mentions "import", "upload", "bulk create", "load from file", batch issue creation, data migration
 model: sonnet
-color: blue
-agent_type: data_import
-version: 1.0.0
-capabilities:
-  - csv_import
-  - excel_import
-  - json_import
-  - field_mapping
-  - data_validation
-  - duplicate_detection
-  - template_management
-  - error_handling
-  - progress_reporting
-  - rollback_support
 tools:
   - Read
   - Write

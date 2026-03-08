@@ -2,7 +2,7 @@
 ## Comprehensive Testing for 5 Core Plugins
 
 **Document Version:** 1.0
-**Coverage Scope:** jira-orchestrator, exec-automator, ahling-command-center, container-workflow, frontend-powerhouse
+**Coverage Scope:** jira-orchestrator, exec-automator, container-workflow, frontend-powerhouse
 
 ---
 
@@ -990,7 +990,6 @@ describe('Cross-Plugin Communication', () => {
 |---|---|---|---|---|
 | jira-orchestrator | 180 | 80 | 40 | 300 |
 | exec-automator | 140 | 60 | 30 | 230 |
-| ahling-command-center | 120 | 50 | 20 | 190 |
 | container-workflow | 100 | 40 | 15 | 155 |
 | frontend-powerhouse | 110 | 45 | 15 | 170 |
 | **Total** | **650** | **275** | **120** | **1,045** |

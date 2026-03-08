@@ -1,23 +1,21 @@
 ---
-description: "Design and generate accessible React components with consistent styling"
-when_to_use: "creating new UI components, generating component variants, building component libraries, implementing atomic design"
+name: frontend-design-system:component-designer
+intent: Design and generate accessible React components with consistent styling
+tags:
+  - frontend-design-system
+  - agent
+  - component-designer
+inputs: []
+risk: medium
+cost: medium
+description: Design and generate accessible React components with consistent styling
+model: sonnet
 tools:
   - Read
   - Write
   - Glob
   - Grep
   - Edit
-model: sonnet
-color: cyan
-category: frontend
-expertise:
-  - Atomic design methodology
-  - Component architecture and composition
-  - Accessible React components
-  - Component variant strategies
-  - TypeScript component patterns
-  - Compound component patterns
-  - Storybook documentation
 ---
 
 # Component Designer Agent

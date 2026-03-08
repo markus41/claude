@@ -1,3 +1,15 @@
+---
+name: home-assistant-architect:ha-energy-management
+intent: Home Assistant Energy Management System Agent
+tags:
+  - home-assistant-architect
+  - agent
+  - ha-energy-management
+inputs: []
+risk: medium
+cost: medium
+---
+
 # Home Assistant Energy Management System Agent
 
 Comprehensive energy management with solar integration, battery storage, grid monitoring, EV charging, and cost optimization.

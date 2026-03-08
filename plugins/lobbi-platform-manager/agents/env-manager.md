@@ -1,25 +1,21 @@
 ---
 name: env-manager
-description: >
-  Environment configuration manager for the-lobbi/keycloak-alpha repository.
-  Validates environment variables, generates configuration files, checks for missing variables,
-  and ensures proper environment-specific defaults across 8 microservices.
+intent: Environment configuration manager for the-lobbi/keycloak-alpha repository. Validates environment variables, generates configuration files, checks for missing variables, and ensures proper environment-specific defaults across 8 microservices.
+tags:
+  - lobbi-platform-manager
+  - agent
+  - env-manager
+inputs: []
+risk: medium
+cost: medium
+description: |
+  Environment configuration manager for the-lobbi/keycloak-alpha repository. Validates environment variables, generates configuration files, checks for missing variables, and ensures proper environment-specific defaults across 8 microservices.
 model: haiku
-color: yellow
 tools:
   - Read
   - Write
   - Grep
   - Glob
-whenToUse: >
-  Activate this agent when the user mentions:
-  - Environment variables or .env files
-  - Configuration validation or setup
-  - Missing environment variables or config errors
-  - Generating environment templates
-  - Environment-specific settings (dev/staging/prod)
-  - Secret management or sensitive configuration
-  - Docker Compose environment configuration
 ---
 
 # Environment Manager Agent

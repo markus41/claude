@@ -1,0 +1,11 @@
+{
+  "name": "@claude-custom/workflow-bridge-mcp",
+  "version": "1.0.0",
+  "description": "MCP server bridging Docker builds, Helm deploys, and K8s operations into unified workflows",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {}
+}

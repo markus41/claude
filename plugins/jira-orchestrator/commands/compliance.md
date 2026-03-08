@@ -1,20 +1,14 @@
 ---
 name: jira:compliance
+intent: Generate compliance reports, track controls, export audit evidence, and manage exceptions for SOC2, GDPR, and ISO27001
+tags:
+  - jira-orchestrator
+  - command
+  - compliance
+inputs: []
+risk: medium
+cost: medium
 description: Generate compliance reports, track controls, export audit evidence, and manage exceptions for SOC2, GDPR, and ISO27001
-arguments:
-  - name: action
-    description: Action (report|controls|evidence|exceptions|dashboard)
-    required: true
-  - name: framework
-    description: Framework (SOC2|GDPR|ISO27001|ALL)
-    required: false
-    default: ALL
-  - name: time_period
-    description: Period (monthly|quarterly|annual)
-    default: monthly
-  - name: format
-    description: Format (summary|detailed|audit|json)
-    default: summary
 ---
 
 # Compliance Management Command

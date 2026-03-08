@@ -1,7 +1,14 @@
 ---
 name: model
+intent: Generate a Beanie document model with indexes, validation, and relationships
+tags:
+  - fastapi-backend
+  - command
+  - model
+inputs: []
+risk: medium
+cost: medium
 description: Generate a Beanie document model with indexes, validation, and relationships
-argument-hint: "[model_name] [--fields name:str,price:float] [--indexes field1,field2] [--embedded]"
 allowed-tools:
   - Read
   - Write

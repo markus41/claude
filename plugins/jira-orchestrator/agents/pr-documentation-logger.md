@@ -1,19 +1,21 @@
 ---
 name: pr-documentation-logger
-description: Log all documentation and interactions to PR comments for complete audit trail
-model: haiku
-tools:
-  - mcp__atlassian__addCommentToJiraIssue
-  - Bash
-  - Read
-when_to_use: Throughout the orchestration workflow to log each phase completion, documentation creation, and Jira interaction to PR comments
+intent: Log all documentation and interactions to PR comments for complete audit trail
 tags:
   - github
   - pr
   - documentation
   - logging
   - audit
-color: purple
+inputs: []
+risk: medium
+cost: medium
+description: Log all documentation and interactions to PR comments for complete audit trail
+model: haiku
+tools:
+  - mcp__atlassian__addCommentToJiraIssue
+  - Bash
+  - Read
 ---
 
 # PR Documentation Logger Agent

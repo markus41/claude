@@ -1,0 +1,30 @@
+{
+  "name": "TVSDataverseCore",
+  "publisher": "tvs_",
+  "version": "1.12.0",
+  "type": "both",
+  "description": "Canonical Dataverse tables, columns, forms, and model-driven app components.",
+  "tables": [
+    "tvs_account",
+    "tvs_contact",
+    "tvs_subscription",
+    "tvs_task",
+    "tvs_timeentry",
+    "tvs_deliverable",
+    "tvs_automationlog",
+    "tvs_engagement",
+    "tvs_activity",
+    "tvs_sharedprospect",
+    "tvs_implementation"
+  ],
+  "requiredEnvironmentVariables": [
+    "TVS_DATAVERSE_ENV_URL",
+    "CONSULTING_DATAVERSE_ENV_URL",
+    "POWER_PLATFORM_TENANT_ID"
+  ],
+  "requiredConnectionReferences": [
+    "shared_commondataserviceforapps",
+    "shared_office365",
+    "shared_teams"
+  ]
+}

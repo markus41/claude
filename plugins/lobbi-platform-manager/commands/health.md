@@ -1,7 +1,18 @@
 ---
+name: lobbi-platform-manager:health
+intent: Check health status of all 8 platform services
+tags:
+  - lobbi-platform-manager
+  - command
+  - health
+inputs: []
+risk: medium
+cost: medium
 description: Check health status of all 8 platform services
-argument-hint: "[--service SERVICE] [--verbose]"
-allowed-tools: ["Bash", "Read", "Grep"]
+allowed-tools:
+  - Bash
+  - Read
+  - Grep
 ---
 
 Check the health status of all services in the keycloak-alpha platform including service availability, response times, port status, and dependency validation.

@@ -9,7 +9,7 @@
 
 ## Executive Summary
 
-This roadmap outlines the complete implementation plan for building a unified plugin ecosystem where **Jira Orchestrator** acts as the central routing intelligence for 5 specialized plugins totaling 78 agents and 103 commands.
+This roadmap outlines the complete implementation plan for building a unified plugin ecosystem where **Jira Orchestrator** acts as the central routing intelligence for 13 specialized plugins totaling 175+ agents and 170+ commands.
 
 ### Key Deliverables
 
@@ -483,7 +483,7 @@ This roadmap outlines the complete implementation plan for building a unified pl
   - Update manifest
   - Testing
 
-- [ ] **Frontend Powerhouse Plugin** (1 day)
+- [ ] **Frontend Design System Plugin** (1 day)
   - Add message bus client
   - Add RPC server
   - Update manifest
@@ -514,7 +514,7 @@ This roadmap outlines the complete implementation plan for building a unified pl
   - Update manifest
   - Testing
 
-- [ ] **Ahling Command Center Plugin** (1 day)
+- [ ] **AWS EKS Helm Keycloak Plugin** (1 day)
   - Add message bus client
   - Add RPC server
   - Update manifest
@@ -817,8 +817,8 @@ npm run dev
 
 ---
 
-**Document Version:** 1.0.0
-**Last Updated:** 2025-12-26
+**Document Version:** 7.5.0
+**Last Updated:** 2026-02-25
 **Author:** architect-supreme
 **Status:** Ready for Implementation
 **Approvals Required:** Tech Lead, Product Manager, Engineering Manager

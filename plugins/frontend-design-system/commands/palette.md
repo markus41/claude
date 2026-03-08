@@ -1,8 +1,20 @@
 ---
 name: palette
+intent: Generate color palettes from design style characteristics
+tags:
+  - frontend-design-system
+  - command
+  - palette
+inputs: []
+risk: medium
+cost: medium
 description: Generate color palettes from design style characteristics
-argument-hint: "<style_name> [mode]"
-allowed-tools: ["Read", "Write", "Glob", "Grep", "Bash"]
+allowed-tools:
+  - Read
+  - Write
+  - Glob
+  - Grep
+  - Bash
 ---
 
 # Color Palette Generation Command

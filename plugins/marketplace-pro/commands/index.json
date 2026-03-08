@@ -1,0 +1,166 @@
+{
+  "version": 1,
+  "plugin": "marketplace-pro",
+  "type": "commands",
+  "generatedBy": "scripts/generate-plugin-indexes.mjs",
+  "entries": [
+    {
+      "name": "mp:compose",
+      "intent": "Resolve an intent into an ordered plugin composition plan using greedy set cover and Kahn's topological sort",
+      "tags": [
+        "marketplace-pro",
+        "command",
+        "compose"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/compose.md"
+    },
+    {
+      "name": "mp:dev",
+      "intent": "Plugin Dev Studio — hot-reload dev server, interactive playground, dependency graph visualization, and validation suite for plugin development.",
+      "tags": [
+        "marketplace-pro",
+        "command",
+        "dev"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/dev.md"
+    },
+    {
+      "name": "mp:help",
+      "intent": "Show all available marketplace-pro commands organized by module",
+      "tags": [
+        "marketplace-pro",
+        "command",
+        "help"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/help.md"
+    },
+    {
+      "name": "mp:lock",
+      "intent": "Manage deterministic lockfiles for reproducible plugin installations across environments",
+      "tags": [
+        "marketplace-pro",
+        "command",
+        "lock"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/lock.md"
+    },
+    {
+      "name": "mp:policy",
+      "intent": "Manage and evaluate security policies controlling plugin installation and registry access",
+      "tags": [
+        "marketplace-pro",
+        "command",
+        "policy"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/policy.md"
+    },
+    {
+      "name": "mp:quick",
+      "intent": "Rapid single-purpose marketplace actions — scan, trust, check, graph",
+      "tags": [
+        "marketplace-pro",
+        "command",
+        "quick"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/quick.md"
+    },
+    {
+      "name": "mp:recommend",
+      "intent": "Scan the current project and recommend plugins based on detected stack, patterns, and capability gaps",
+      "tags": [
+        "marketplace-pro",
+        "command",
+        "recommend"
+      ],
+      "inputs": [
+        "[--verbose] [--dir <path>] [--top <n>]"
+      ],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/recommend.md"
+    },
+    {
+      "name": "mp:registry",
+      "intent": "Manage federated plugin registries with priority-based resolution and policy enforcement",
+      "tags": [
+        "marketplace-pro",
+        "command",
+        "registry"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/registry.md"
+    },
+    {
+      "name": "mp:setup",
+      "intent": "Interactive setup wizard for marketplace-pro — configures federation, security policies, and project intelligence in one command",
+      "tags": [
+        "marketplace-pro",
+        "command",
+        "setup"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/setup.md"
+    },
+    {
+      "name": "mp:status",
+      "intent": "Dashboard view of the entire marketplace-pro ecosystem — federation, security, intelligence, lockfile, and dev status",
+      "tags": [
+        "marketplace-pro",
+        "command",
+        "status"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/status.md"
+    },
+    {
+      "name": "mp:trust",
+      "intent": "Compute supply chain trust score and security audit for a plugin",
+      "tags": [
+        "marketplace-pro",
+        "command",
+        "trust"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/trust.md"
+    },
+    {
+      "name": "mp:verify",
+      "intent": "Verify signature integrity of a .cpkg plugin bundle",
+      "tags": [
+        "marketplace-pro",
+        "command",
+        "verify"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/verify.md"
+    }
+  ]
+}

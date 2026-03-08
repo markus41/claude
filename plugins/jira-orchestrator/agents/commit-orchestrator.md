@@ -1,14 +1,6 @@
 ---
 name: commit-orchestrator
-description: Unified commit operations agent - generate, validate, and track commits with Jira smart commit integration
-model: sonnet
-tools:
-  - mcp__atlassian__getJiraIssue
-  - mcp__atlassian__getTransitionsForJiraIssue
-  - mcp__atlassian__searchJiraIssuesUsingJql
-  - mcp__atlassian__addCommentToJiraIssue
-  - Bash
-when_to_use: For all commit-related operations - generating commit messages, validating smart commit syntax, tracking commits to issues, and posting commit summaries to Jira. Consolidates commit workflow into single orchestrator.
+intent: Unified commit operations agent - generate, validate, and track commits with Jira smart commit integration
 tags:
   - jira
   - git
@@ -17,6 +9,17 @@ tags:
   - conventional-commits
   - validation
   - tracking
+inputs: []
+risk: medium
+cost: medium
+description: Unified commit operations agent - generate, validate, and track commits with Jira smart commit integration
+model: sonnet
+tools:
+  - mcp__atlassian__getJiraIssue
+  - mcp__atlassian__getTransitionsForJiraIssue
+  - mcp__atlassian__searchJiraIssuesUsingJql
+  - mcp__atlassian__addCommentToJiraIssue
+  - Bash
 ---
 
 # Commit Orchestrator Agent

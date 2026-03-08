@@ -1,15 +1,14 @@
 ---
 name: jira:orchestrate-advanced
+intent: Execute advanced orchestration patterns including Blackboard, Circuit Breaker, Dynamic Replanning, and Saga patterns
+tags:
+  - jira-orchestrator
+  - command
+  - orchestrate-advanced
+inputs: []
+risk: medium
+cost: medium
 description: Execute advanced orchestration patterns including Blackboard, Circuit Breaker, Dynamic Replanning, and Saga patterns
-arguments:
-  - name: issue_key
-    description: The Jira issue key to orchestrate
-    required: true
-  - name: pattern
-    description: Pattern to use (auto, blackboard, circuit-breaker, hierarchical, saga, all)
-    required: false
-    default: auto
-version: 1.0.0
 ---
 
 # Advanced Orchestration Patterns

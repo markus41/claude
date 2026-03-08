@@ -25,6 +25,7 @@ This plugin establishes a universal templating and Harness expert system that en
 | `/scaffold` | Scaffold new projects from templates |
 | `/harness` | Create pipelines and templates |
 | `/generate` | Generate API clients, models, tests |
+| `/archetype` | Create and manage project archetypes |
 
 ## Agents
 

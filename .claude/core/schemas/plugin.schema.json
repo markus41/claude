@@ -7,10 +7,6 @@
     "required": ["name", "version", "description", "author"],
     "additionalProperties": false,
     "properties": {
-        "$schema": {
-            "type": "string",
-            "description": "JSON Schema reference"
-        },
         "name": {
             "type": "string",
             "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
@@ -328,43 +324,75 @@
             }
         },
         "hooks": {
-            "type": "object",
-            "description": "Hook script paths",
-            "additionalProperties": false,
-            "properties": {
-                "preTask": {
+            "oneOf": [
+                {
                     "type": "string",
-                    "description": "Script to run before task execution"
+                    "description": "Path to hooks.json configuration file"
                 },
-                "postTask": {
-                    "type": "string",
-                    "description": "Script to run after task execution"
-                },
-                "preCommit": {
-                    "type": "string",
-                    "description": "Script to run before git commit"
-                },
-                "postCommit": {
-                    "type": "string",
-                    "description": "Script to run after git commit"
-                },
-                "preEdit": {
-                    "type": "string",
-                    "description": "Script to run before file edit"
-                },
-                "postEdit": {
-                    "type": "string",
-                    "description": "Script to run after file edit"
-                },
-                "sessionStart": {
-                    "type": "string",
-                    "description": "Script to run at session start"
-                },
-                "sessionEnd": {
-                    "type": "string",
-                    "description": "Script to run at session end"
+                {
+                    "type": "object",
+                    "description": "Hook configuration keyed by Claude Code event name",
+                    "additionalProperties": false,
+                    "properties": {
+                        "PreToolUse": {
+                            "$ref": "#/$defs/hookEventConfig",
+                            "description": "Before any tool execution"
+                        },
+                        "PostToolUse": {
+                            "$ref": "#/$defs/hookEventConfig",
+                            "description": "After successful tool execution"
+                        },
+                        "PostToolUseFailure": {
+                            "$ref": "#/$defs/hookEventConfig",
+                            "description": "After tool execution fails"
+                        },
+                        "UserPromptSubmit": {
+                            "$ref": "#/$defs/hookEventConfig",
+                            "description": "When user submits a prompt"
+                        },
+                        "Stop": {
+                            "$ref": "#/$defs/hookEventConfig",
+                            "description": "When attempting to stop"
+                        },
+                        "SessionStart": {
+                            "$ref": "#/$defs/hookEventConfig",
+                            "description": "At session start"
+                        },
+                        "SessionEnd": {
+                            "$ref": "#/$defs/hookEventConfig",
+                            "description": "At session end"
+                        },
+                        "Notification": {
+                            "$ref": "#/$defs/hookEventConfig",
+                            "description": "When notifications are sent"
+                        },
+                        "SubagentStart": {
+                            "$ref": "#/$defs/hookEventConfig",
+                            "description": "When a subagent starts"
+                        },
+                        "SubagentStop": {
+                            "$ref": "#/$defs/hookEventConfig",
+                            "description": "When a subagent stops"
+                        },
+                        "PermissionRequest": {
+                            "$ref": "#/$defs/hookEventConfig",
+                            "description": "When permission dialog is shown"
+                        },
+                        "TeammateIdle": {
+                            "$ref": "#/$defs/hookEventConfig",
+                            "description": "When teammate is about to idle"
+                        },
+                        "TaskCompleted": {
+                            "$ref": "#/$defs/hookEventConfig",
+                            "description": "When a task is marked complete"
+                        },
+                        "PreCompact": {
+                            "$ref": "#/$defs/hookEventConfig",
+                            "description": "Before conversation compaction"
+                        }
+                    }
                 }
-            }
+            ]
         },
         "permissions": {
             "type": "object",
@@ -682,6 +710,46 @@
         }
     },
     "$defs": {
+        "hookEventConfig": {
+            "type": "array",
+            "description": "Array of hook matchers for an event",
+            "items": {
+                "type": "object",
+                "required": ["hooks"],
+                "properties": {
+                    "matcher": {
+                        "type": "string",
+                        "description": "Regex or tool name pattern to match"
+                    },
+                    "hooks": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "required": ["type"],
+                            "properties": {
+                                "type": {
+                                    "type": "string",
+                                    "enum": ["command", "prompt", "agent"],
+                                    "description": "Hook execution type"
+                                },
+                                "command": {
+                                    "type": "string",
+                                    "description": "Shell command to execute (for type: command)"
+                                },
+                                "prompt": {
+                                    "type": "string",
+                                    "description": "LLM prompt to evaluate (for type: prompt)"
+                                },
+                                "timeout": {
+                                    "type": "number",
+                                    "description": "Timeout in milliseconds"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "discoveryConfig": {
             "type": "object",
             "required": ["enabled"],

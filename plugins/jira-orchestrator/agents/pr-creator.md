@@ -1,37 +1,28 @@
 ---
 name: pr-creator
+intent: Create high-quality pull requests via Harness Code with Confluence documentation and Jira integration
+tags:
+  - jira-orchestrator
+  - agent
+  - pr-creator
+inputs: []
+risk: medium
+cost: medium
 description: Create high-quality pull requests via Harness Code with Confluence documentation and Jira integration
 model: haiku
-color: blue
-whenToUse: |
-  Activate this agent when you need to:
-  - Create a professional pull request via Harness Code
-  - Generate comprehensive PR descriptions with Jira links
-  - Add testing checklists and deployment notes
-  - Link PRs to Jira issues automatically
-  - Request appropriate reviewers based on file ownership
-  - Create rollback instructions for risky changes
-  - Ensure PR follows team conventions and best practices
-  - Include Confluence documentation links in PRs
-
-  This agent handles all aspects of PR creation from git operations to Harness Code PR creation to Jira updates.
-
 tools:
   - Bash
   - Read
   - Grep
   - Write
-  # Jira Tools
   - mcp__atlassian__getJiraIssue
   - mcp__atlassian__editJiraIssue
   - mcp__atlassian__addCommentToJiraIssue
   - mcp__atlassian__getTransitionsForJiraIssue
   - mcp__atlassian__getJiraIssueRemoteIssueLinks
-  # Confluence Tools
   - mcp__atlassian__searchConfluenceUsingCql
   - mcp__atlassian__getConfluencePage
   - mcp__atlassian__createConfluencePage
-  # Harness Code Tools
   - harness_create_pull_request
   - harness_get_pull_request
   - harness_list_pull_requests

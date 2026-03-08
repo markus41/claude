@@ -1,0 +1,17 @@
+version: 1
+report_pack: buyer_due_diligence
+uses_semantic_model: taia_due_diligence
+reports:
+  - name: carrier_mix_stability
+    dataset: ds_consolidated_sale_room
+    certified: true
+  - name: commission_reconciliation_summary
+    dataset: ds_commission_reconciliation
+    certified: true
+  - name: agent_hierarchy_integrity
+    dataset: ds_consolidated_sale_room
+    certified: true
+distribution:
+  audience: approved_buyers
+  delivery: secure_share_link
+  watermarking: enabled

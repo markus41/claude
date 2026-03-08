@@ -1,12 +1,7 @@
-# Subscription Upgrade Workflow
-
-Handles subscription tier changes for Lobbi tenants, including upgrades, downgrades, and plan modifications with proration and feature management.
-
-## Workflow Metadata
-```yaml
+---
 name: subscription-upgrade
-type: transactional
 description: Manage subscription changes with payment processing, feature unlocking, proration, and rollback support
+pattern: transactional
 agents:
   - subscription-lifecycle-manager
   - stripe-integration-specialist
@@ -18,18 +13,13 @@ triggers:
   - "downgrade subscription"
   - "change plan"
   - "modify subscription"
-stages:
-  - eligibility-check
-  - plan-comparison
-  - proration-calculation
-  - payment-processing
-  - feature-unlock
-  - database-update
-  - notification
-  - confirmation
 estimatedDuration: "10-20 minutes"
 priority: high
-```
+---
+
+# Subscription Upgrade Workflow
+
+Handles subscription tier changes for Lobbi tenants, including upgrades, downgrades, and plan modifications with proration and feature management.
 
 ## Subscription Change Types
 

@@ -1,3 +1,15 @@
+---
+name: react-animation-studio:animate-transition
+intent: /animate-transition
+tags:
+  - react-animation-studio
+  - command
+  - animate-transition
+inputs: []
+risk: medium
+cost: medium
+---
+
 # /animate-transition
 
 Create page transitions and route animations for seamless navigation experiences.

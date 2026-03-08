@@ -24,27 +24,27 @@ Each phase must complete validation gates before proceeding.
 ### Phase 1: EXPLORE
 - Fetch issue details, acceptance criteria, linked issues
 - Analyze affected codebase areas and dependencies
-- Agents: code-analyst, requirements-analyzer, dependency-mapper
+- Agents: requirements-analyzer, dependency-mapper
 - Outputs: Issue analysis, affected files, dependency map, risk assessment
 - Jira: Transition to "In Progress", add analysis comment, log effort
 
 ### Phase 2: PLAN
 - Design solution, break into subtasks, create task DAG
 - Plan file changes, define success criteria
-- Agents (by type): Bug→critical-bug-analyzer; Story→feature-architect; Task→technical-planner; Epic→epic-decomposer
+- Agents (by type): Bug→triage-agent; Story→requirements-analyzer; Task→task-enricher; Epic→epic-decomposer
 - Outputs: Implementation plan, test plan, rollback strategy
 - Jira: Create sub-tasks, add plan comment, update estimate
 
 ### Phase 3: CODE
 - Execute DAG tasks in parallel
 - Implement changes, add docs and error handling
-- Agents (by tech): Frontend→frontend-developer; Backend→backend-developer; DevOps→infra-engineer
+- Agents (by tech): Frontend→requirements-analyzer; Backend→requirements-analyzer; DevOps→infrastructure-orchestrator
 - Outputs: Code changes, configs, migration scripts
 - Jira: Add progress comments, log time spent, flag blockers
 
 ### Phase 4: TEST
 - Run unit/integration/E2E tests, verify acceptance criteria
-- Agents: test-engineer, qa-specialist, integration-tester
+- Agents: test-strategist, qa-ticket-reviewer, test-strategist
 - Outputs: Test results, coverage, performance metrics
 - Jira: Add test results, attach reports
 - Failure: Return to FIX, do NOT complete issue
@@ -52,28 +52,28 @@ Each phase must complete validation gates before proceeding.
 ### Phase 5: FIX
 - Debug failures, address code review feedback
 - Re-run tests until passing (max 3 iterations before escalation)
-- Agents: debugger, code-reviewer, refactoring-specialist
+- Agents: hypothesis-debugger, review-orchestrator, code-quality-enforcer
 - Loop: Return to TEST after fixes
 
 ### Phase 6: COMMIT
 - Create PR with issue key, link to Jira, request review
 - Format: `[ISSUE-KEY] description\n\nResolves: ISSUE-KEY`
-- Agents: git-specialist, pr-creator, documentation-writer
+- Agents: commit-orchestrator, pr-creator, documentation-hub
 - Jira: Add PR link, transition to "In Review"
 
 ## Agent Selection
 
 | Issue Type | Primary | Secondary |
 |-----------|---------|-----------|
-| Bug | critical-bug-analyzer, debugger | root-cause-investigator, test-engineer |
-| Story | feature-architect, code-architect | frontend/backend-developer |
-| Task | technical-planner | technology-specific |
+| Bug | triage-agent, hypothesis-debugger | root-cause-analyzer, test-strategist |
+| Story | requirements-analyzer, code-architect | requirements-analyzer |
+| Task | task-enricher | technology-specific |
 | Epic | epic-decomposer | split into stories first |
-| Spike | research-specialist, poc-developer | domain experts |
+| Spike | requirements-analyzer, requirements-analyzer | domain experts |
 
-By Technology: Frontend→react-specialist; Backend→api-specialist; DevOps→infra-engineer; Mobile→mobile-developer
+By Technology: Frontend→react-specialist; Backend→api-specialist; DevOps→infrastructure-orchestrator; Mobile→mobile-developer
 
-By Priority: Blocker→critical-bug-analyzer + escalate; Critical→senior agents + extended thinking; High→standard selection; Medium/Low→optimize for efficiency
+By Priority: Blocker→triage-agent + escalate; Critical→senior agents + extended thinking; High→standard selection; Medium/Low→optimize for efficiency
 
 ## Blocker Handling
 
@@ -158,12 +158,12 @@ Resolves: ISSUE-KEY
 
 | Phase | Activity | Agents |
 |-------|----------|--------|
-| EXPLORE | Analyze auth code, identify JWT expiry | code-analyst, security-specialist |
-| PLAN | Design fix: extend expiry, fix cleanup | critical-bug-analyzer |
-| CODE | Update JWT config, implement refresh | backend-developer, security-specialist |
-| TEST | Unit/integration/manual tests | test-engineer, qa-specialist |
+| EXPLORE | Analyze auth code, identify JWT expiry | requirements-analyzer, security-specialist |
+| PLAN | Design fix: extend expiry, fix cleanup | triage-agent |
+| CODE | Update JWT config, implement refresh | requirements-analyzer, security-specialist |
+| TEST | Unit/integration/manual tests | test-strategist, qa-ticket-reviewer |
 | FIX | No fixes needed | - |
-| COMMIT | Create PR, link to PROJ-123 | git-specialist |
+| COMMIT | Create PR, link to PROJ-123 | commit-orchestrator |
 
 ## Integration
 

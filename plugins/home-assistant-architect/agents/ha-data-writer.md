@@ -1,3 +1,15 @@
+---
+name: home-assistant-architect:ha-data-writer
+intent: Home Assistant Data Writer Agent
+tags:
+  - home-assistant-architect
+  - agent
+  - ha-data-writer
+inputs: []
+risk: medium
+cost: medium
+---
+
 # Home Assistant Data Writer Agent
 
 Write, update, and manage data in Home Assistant including entity states, input helpers, databases, and configuration files.

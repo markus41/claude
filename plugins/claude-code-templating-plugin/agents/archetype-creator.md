@@ -1,32 +1,15 @@
 ---
 name: archetype-creator
+intent: Creates reusable project archetypes from existing projects, designs template variable schemas, generates archetype configurations (Maven, Cookiecutter, Copier), and integrates with Structurizr for automatic architecture registration
+tags:
+  - claude-code-templating-plugin
+  - agent
+  - archetype-creator
+inputs: []
+risk: medium
+cost: medium
 description: Creates reusable project archetypes from existing projects, designs template variable schemas, generates archetype configurations (Maven, Cookiecutter, Copier), and integrates with Structurizr for automatic architecture registration
 model: sonnet
-color: purple
-whenToUse: |
-  Activate when converting existing projects to reusable templates. Use when:
-  - Converting a working project into a reusable archetype/template
-  - Designing template variable schemas for customization points
-  - Generating archetype-metadata.xml (Maven), cookiecutter.json, or copier.yml
-  - Creating Structurizr DSL fragments for automatic architecture registration
-  - Building Gradle tasks for template management
-keywords:
-  - archetype
-  - template-creation
-  - project-to-template
-  - cookiecutter
-  - copier
-  - maven-archetype
-  - variable-schema
-  - structurizr-integration
-capabilities:
-  - Project analysis for template conversion
-  - Variable extraction and schema design
-  - Multi-format archetype generation (Maven, Cookiecutter, Copier, Harness)
-  - Structurizr DSL fragment generation for architecture registration
-  - Gradle task generation for template management
-  - Template validation and testing
-  - Architecture diagram auto-registration
 tools:
   - Read
   - Write
@@ -35,7 +18,6 @@ tools:
   - Grep
   - Bash
   - Task
-temperature: 0.4
 ---
 
 # Archetype Creator Agent

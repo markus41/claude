@@ -1,0 +1,47 @@
+templates:
+  taiaBuyerCommunication:
+    channel: Buyer-Comms
+    subject: "TAIA Buyer Update | {{checkpoint}}"
+    ownerField: owner
+    slaField: slaHours
+    sections:
+      - title: Summary
+        body: "{{summary}}"
+      - title: Decision Needed
+        body: "{{decisionNeeded}}"
+      - title: Evidence Links
+        body: "{{evidenceLinks}}"
+      - title: Due By
+        body: "{{dueBy}}"
+
+  riskEscalationNotice:
+    channel: Risk-Escalations
+    subject: "TAIA Risk Escalation | {{riskId}} | {{severity}}"
+    ownerField: owner
+    slaField: slaHours
+    sections:
+      - title: Risk Description
+        body: "{{riskDescription}}"
+      - title: Business Impact
+        body: "{{impact}}"
+      - title: Immediate Actions
+        body: "{{immediateActions}}"
+      - title: Evidence Links
+        body: "{{evidenceLinks}}"
+
+  transitionCheckpointSummary:
+    channel: Checkpoint-Summaries
+    subject: "TAIA Transition Checkpoint | {{checkpointDate}}"
+    ownerField: owner
+    slaField: slaHours
+    sections:
+      - title: Overall Status
+        body: "{{overallStatus}}"
+      - title: Completed Since Last Checkpoint
+        body: "{{completedItems}}"
+      - title: Open Approvals
+        body: "{{openApprovals}}"
+      - title: Document Checklist Delta
+        body: "{{checklistDelta}}"
+      - title: Evidence Links
+        body: "{{evidenceLinks}}"

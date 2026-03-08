@@ -1,3 +1,15 @@
+---
+name: home-assistant-architect:ollama-setup
+intent: Ollama Setup Command
+tags:
+  - home-assistant-architect
+  - command
+  - ollama-setup
+inputs: []
+risk: medium
+cost: medium
+---
+
 # Ollama Setup Command
 
 Setup and configure Ollama for local LLM integration with Home Assistant.

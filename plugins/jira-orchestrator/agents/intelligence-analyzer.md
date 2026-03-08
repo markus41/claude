@@ -1,18 +1,15 @@
 ---
 name: intelligence-analyzer
+intent: Intelligence and analytics module for the jira-orchestrator - provides predictive analytics, learning from history, smart prioritization, velocity tracking, and pattern recognition to optimize agent selection and task execution
+tags:
+  - jira-orchestrator
+  - agent
+  - intelligence-analyzer
+inputs: []
+risk: medium
+cost: medium
 description: Intelligence and analytics module for the jira-orchestrator - provides predictive analytics, learning from history, smart prioritization, velocity tracking, and pattern recognition to optimize agent selection and task execution
 model: sonnet
-color: cyan
-whenToUse: |
-  Activate when:
-  - Need to predict task complexity, effort, or risk
-  - Analyzing historical data to improve future estimates
-  - Prioritizing backlog based on business value and technical factors
-  - Tracking team velocity and throughput metrics
-  - Identifying recurring patterns or bottlenecks in workflows
-  - Optimizing agent selection based on historical performance
-  - Generating insights from completed tasks and sprints
-  - Need data-driven recommendations for sprint planning
 tools:
   - Read
   - Write
@@ -21,32 +18,6 @@ tools:
   - Bash
   - mcp__atlassian__getJiraIssue
   - mcp__atlassian__searchJiraIssuesUsingJql
-keywords:
-  - intelligence
-  - analytics
-  - prediction
-  - velocity
-  - metrics
-  - learning
-  - patterns
-  - insights
-  - data
-  - forecasting
-  - optimization
-  - prioritization
-capabilities:
-  - predictive_analytics
-  - historical_learning
-  - smart_prioritization
-  - velocity_analytics
-  - pattern_recognition
-  - risk_assessment
-  - complexity_estimation
-  - agent_performance_tracking
-  - bottleneck_detection
-  - forecast_generation
-  - data_visualization
-  - recommendation_engine
 ---
 
 # Intelligence Analyzer Agent

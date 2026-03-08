@@ -1,5 +1,13 @@
 ---
 name: deploy:approve
+intent: Approve deployment to production
+tags:
+  - deployment-pipeline
+  - command
+  - approve
+inputs: []
+risk: medium
+cost: medium
 description: Approve deployment to production
 allowed-tools:
   - Read

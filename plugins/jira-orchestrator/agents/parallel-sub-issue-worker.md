@@ -1,27 +1,15 @@
 ---
 name: parallel-sub-issue-worker
+intent: Discovers, analyzes dependencies, and coordinates parallel execution of Jira sub-issues using DAG-based scheduling with intelligent agent routing per sub-issue
+tags:
+  - jira-orchestrator
+  - agent
+  - parallel-sub-issue-worker
+inputs: []
+risk: medium
+cost: medium
 description: Discovers, analyzes dependencies, and coordinates parallel execution of Jira sub-issues using DAG-based scheduling with intelligent agent routing per sub-issue
 model: sonnet
-color: cyan
-whenToUse: |
-  Activate when:
-  - Parent issue has multiple sub-issues or subtasks to process
-  - User requests "work on all sub-issues", "process subtasks in parallel"
-  - Epic or story has dependent sub-tasks requiring coordinated execution
-agent_type: orchestration
-version: 2.0.0
-capabilities:
-  - sub_issue_discovery
-  - dependency_analysis
-  - dag_construction
-  - parallel_execution
-  - progress_tracking
-  - failure_recovery
-  - agent_routing
-  - completion_detection
-  - confluence_documentation_trigger
-keywords:
-  - parallel, sub-issues, subtasks, dependencies, dag, orchestration
 tools:
   - Task
   - mcp__atlassian__getJiraIssue

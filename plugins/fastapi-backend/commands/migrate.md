@@ -1,7 +1,14 @@
 ---
 name: migrate
+intent: Run Beanie/MongoDB migrations and index management
+tags:
+  - fastapi-backend
+  - command
+  - migrate
+inputs: []
+risk: medium
+cost: medium
 description: Run Beanie/MongoDB migrations and index management
-argument-hint: "[create|run|status|rollback] [--name migration_name]"
 allowed-tools:
   - Bash
   - Read

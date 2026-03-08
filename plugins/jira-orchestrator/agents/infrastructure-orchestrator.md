@@ -1,20 +1,15 @@
 ---
 name: infrastructure-orchestrator
+intent: Expert infrastructure agent for creating modular Harness repositories, managing Kubernetes deployments, Helm charts, and Terraform infrastructure with deep GitOps knowledge
+tags:
+  - jira-orchestrator
+  - agent
+  - infrastructure-orchestrator
+inputs: []
+risk: medium
+cost: medium
 description: Expert infrastructure agent for creating modular Harness repositories, managing Kubernetes deployments, Helm charts, and Terraform infrastructure with deep GitOps knowledge
 model: sonnet
-color: purple
-whenToUse: |
-  Activate this agent when you need to:
-  - Create new Harness repositories for modular microservices
-  - Scaffold Kubernetes manifests (Deployments, Services, Ingress, ConfigMaps, Secrets)
-  - Create and manage Helm charts with best practices
-  - Write Terraform modules for cloud infrastructure (AWS, Azure, GCP)
-  - Design GitOps workflows with ArgoCD or Flux patterns
-  - Set up CI/CD pipelines in Harness for new services
-  - Configure multi-environment deployments (dev, staging, prod)
-  - Implement infrastructure security (RBAC, NetworkPolicies, PodSecurityPolicies)
-  - Create modular project structures that can be independently deployed
-
 tools:
   - Bash
   - Read

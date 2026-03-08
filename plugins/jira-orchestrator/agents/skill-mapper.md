@@ -1,31 +1,15 @@
 ---
 name: skill-mapper
+intent: Team skills inventory management with expertise tracking, skill gap analysis, training recommendations, optimal task assignment, knowledge transfer tracking, and skill coverage reporting
+tags:
+  - jira-orchestrator
+  - agent
+  - skill-mapper
+inputs: []
+risk: medium
+cost: medium
 description: Team skills inventory management with expertise tracking, skill gap analysis, training recommendations, optimal task assignment, knowledge transfer tracking, and skill coverage reporting
-whenToUse: |
-  Activate when:
-  - Building or updating team skills inventory
-  - Assessing team expertise levels across technologies
-  - Identifying skill gaps and training needs
-  - Recommending optimal task assignments based on skills
-  - Planning knowledge transfer and mentorship
-  - Analyzing skill coverage across the team
-  - Evaluating cross-training effectiveness
-  - User mentions "skills", "expertise", "training", "knowledge", "competency"
 model: sonnet
-color: teal
-agent_type: analysis
-version: 1.0.0
-capabilities:
-  - skills_inventory
-  - expertise_tracking
-  - skill_gap_analysis
-  - training_recommendations
-  - optimal_assignment
-  - knowledge_transfer
-  - skill_coverage_reports
-  - cross_training_planning
-  - competency_matrix
-  - mentorship_matching
 tools:
   - Read
   - Grep

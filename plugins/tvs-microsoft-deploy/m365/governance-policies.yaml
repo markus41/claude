@@ -1,0 +1,40 @@
+governance:
+  retentionLabels:
+    - label: TAIA-Transaction-Record-7Y
+      appliesTo:
+        - SharePointDocument
+        - TeamsMessage
+        - PlannerTaskComment
+      retentionYears: 7
+    - label: TAIA-Operational-Working-2Y
+      appliesTo:
+        - SharePointDocument
+        - TeamsMessage
+      retentionYears: 2
+
+  sensitivityLabels:
+    - label: TAIA-Highly-Confidential
+      encryptionRequired: true
+      externalSharing: blocked
+      watermark: "TAIA HIGHLY CONFIDENTIAL"
+    - label: TAIA-Internal-Restricted
+      encryptionRequired: true
+      externalSharing: approved-domains-only
+
+  accessReviewCadence:
+    dataRoom:
+      frequency: weekly
+      reviewers:
+        - transition-lead
+        - security-lead
+        - legal-liaison
+    teamsWorkspace:
+      frequency: bi-weekly
+      reviewers:
+        - transition-lead
+        - identity-admin
+
+  enforcement:
+    blockUploadWithoutLabel: true
+    blockGuestAccessForSensitiveChannels: true
+    requireEvidenceLinkForChecklistCompletion: true

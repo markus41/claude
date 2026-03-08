@@ -1,15 +1,14 @@
 ---
 name: jira:quality
+intent: Generate quality intelligence report with tech debt analysis, health scoring, and predictive insights
+tags:
+  - jira-orchestrator
+  - command
+  - quality
+inputs: []
+risk: medium
+cost: medium
 description: Generate quality intelligence report with tech debt analysis, health scoring, and predictive insights
-arguments:
-  - name: scope
-    description: Scope of analysis (project, sprint, issue, file)
-    required: false
-    default: project
-  - name: target
-    description: Target identifier (project key, sprint name, issue key, or file path)
-    required: false
-version: 1.0.0
 ---
 
 # Quality Intelligence Report

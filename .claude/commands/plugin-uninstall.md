@@ -79,7 +79,7 @@ Use `--force` to override this check.
 ## What Gets Removed
 
 ### Plugin Files
-- `.claude-plugins/<plugin-name>/` directory
+- `plugins/<plugin-name>/` directory
 - All commands, agents, skills, hooks within
 
 ### Registry Entries
@@ -194,10 +194,10 @@ To uninstall a plugin with dependents:
 **Problem:** Plugin directory still exists after uninstall
 
 **Solutions:**
-1. Check permissions: `ls -la .claude-plugins/`
-2. Manually remove: `rm -rf .claude-plugins/<plugin-name>`
+1. Check permissions: `ls -la plugins/`
+2. Manually remove: `rm -rf plugins/<plugin-name>`
 3. Use `--clean` flag for thorough removal
-4. Check if plugin is symlinked: `ls -l .claude-plugins/<plugin-name>`
+4. Check if plugin is symlinked: `ls -l plugins/<plugin-name>`
 
 ### Registry Not Updated
 
@@ -285,7 +285,7 @@ This command uses the **plugin-manager** agent for execution.
 
 Plugin: lobbi-platform-manager
 Version: 1.0.0
-Installed: .claude-plugins/lobbi-platform-manager
+Installed: plugins/lobbi-platform-manager
 
 Pre-uninstall checks:
 ✓ No dependent plugins found
@@ -296,7 +296,7 @@ Removed:
 ✓ 4 agents
 ✓ 3 skills
 ✓ 3 hooks
-✓ Plugin directory (.claude-plugins/lobbi-platform-manager)
+✓ Plugin directory (plugins/lobbi-platform-manager)
 
 Preserved:
 • Configuration (.claude/lobbi-platform-manager.local.md)

@@ -1,8 +1,14 @@
 ---
 name: jira:iterate
-description: "[DEPRECATED] Use /jira:pr --iterate instead"
-deprecated: true
-redirect: /jira:pr --iterate
+intent: '[DEPRECATED] Use /jira:pr --iterate instead'
+tags:
+  - jira-orchestrator
+  - command
+  - iterate
+inputs: []
+risk: medium
+cost: medium
+description: '[DEPRECATED] Use /jira:pr --iterate instead'
 ---
 
 # DEPRECATED: Use `/jira:pr --iterate`

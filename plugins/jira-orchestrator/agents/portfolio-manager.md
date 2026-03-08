@@ -1,20 +1,15 @@
 ---
 name: portfolio-manager
+intent: Multi-project portfolio management with aggregated metrics, cross-project dependencies, resource allocation, strategic alignment, and executive-level reporting
+tags:
+  - jira-orchestrator
+  - agent
+  - portfolio-manager
+inputs: []
+risk: medium
+cost: medium
 description: Multi-project portfolio management with aggregated metrics, cross-project dependencies, resource allocation, strategic alignment, and executive-level reporting
-whenToUse: Activate for multi-project visibility, dependency tracking, resource allocation, executive reports, strategic alignment, risk aggregation
 model: opus
-color: gold
-agent_type: portfolio
-version: 1.0.0
-capabilities:
-  - multi_project_aggregation
-  - portfolio_dashboards
-  - cross_project_dependencies
-  - resource_allocation
-  - strategic_alignment
-  - program_reporting
-  - health_indicators
-  - risk_aggregation
 tools:
   - Read
   - Write

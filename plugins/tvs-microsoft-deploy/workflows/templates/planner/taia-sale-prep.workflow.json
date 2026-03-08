@@ -1,0 +1,25 @@
+{
+  "workflowId": "taia-sale-prep",
+  "name": "TAIA Sale Prep",
+  "description": "Prepare TAIA assets, compliance posture, and due-diligence evidence for buyer readiness.",
+  "version": "1.1.0",
+  "owners": [{ "type": "group", "id": "sales-readiness", "displayName": "Sales Readiness Team" }],
+  "planner": {
+    "labelMap": {
+      "category1": "Risk",
+      "category2": "Compliance",
+      "category3": "Finance",
+      "category4": "Security",
+      "category5": "External-Dependency",
+      "category6": "Blocked"
+    }
+  },
+  "phases": [
+    {"id":"explore","name":"EXPLORE","state":"pending","owners":[{"type":"user","id":"owner-ops","displayName":"Ops Lead"}],"sla":{"targetHours":24,"warningHours":18},"dependencies":[],"evidenceLinks":[],"taskTemplates":[{"title":"Confirm buyer diligence scope","checklist":["Buyer request list collected","Data room index approved"]},{"title":"Identify deal-risk hotspots","labels":["Risk","Finance"],"checklist":["Revenue concentration analyzed","Carrier dependency matrix drafted"]}]},
+    {"id":"plan","name":"PLAN","state":"pending","owners":[{"type":"user","id":"owner-pm","displayName":"Program Manager"}],"sla":{"targetHours":36,"warningHours":24},"dependencies":[{"phaseId":"explore"}],"evidenceLinks":[],"taskTemplates":[{"title":"Publish sale-prep workback plan","checklist":["Owner mapping done","Milestone baseline approved"]},{"title":"Define required evidence artifacts","labels":["Compliance"],"checklist":["SOC controls mapping","Contractual obligations matrix"]}]},
+    {"id":"code","name":"CODE","state":"pending","owners":[{"type":"group","id":"eng-team","displayName":"Engineering"}],"sla":{"targetHours":72,"warningHours":48},"dependencies":[{"phaseId":"plan"}],"evidenceLinks":[],"taskTemplates":[{"title":"Implement extraction automations","labels":["External-Dependency"],"checklist":["Fabric pipeline run complete","Dataverse export generated"]},{"title":"Generate buyer-ready KPI pack","labels":["Finance"],"checklist":["Revenue rollup validated","Variance notes attached"]}]},
+    {"id":"test","name":"TEST","state":"pending","owners":[{"type":"group","id":"qa-team","displayName":"QA"}],"sla":{"targetHours":24},"dependencies":[{"phaseId":"code"}],"evidenceLinks":[],"taskTemplates":[{"title":"Validate artifact completeness","checklist":["Evidence links resolvable","No stale data older than 24h"]}]},
+    {"id":"fix","name":"FIX","state":"pending","owners":[{"type":"group","id":"eng-team","displayName":"Engineering"}],"sla":{"targetHours":24},"dependencies":[{"phaseId":"test"}],"evidenceLinks":[],"taskTemplates":[{"title":"Remediate diligence findings","labels":["Risk"],"checklist":["Action owner assigned","Updated artifact linked"]}]},
+    {"id":"document","name":"DOCUMENT","state":"pending","owners":[{"type":"group","id":"revops","displayName":"Revenue Operations"}],"sla":{"targetHours":16},"dependencies":[{"phaseId":"fix"}],"evidenceLinks":[],"taskTemplates":[{"title":"Publish final closeout pack","checklist":["Executive summary written","Evidence manifest exported","Sign-off captured"]}]}
+  ]
+}
