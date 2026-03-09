@@ -1,0 +1,45 @@
+{
+  "name": "microsoft-teams-app",
+  "version": "1.0.0",
+  "description": "Microsoft Teams App Development Toolkit — manifest v1.25 schema, meeting apps, message extensions, Custom Engine Agents, M365 Agents Toolkit, Nested App Authentication, Live Share SDK, dialog namespace, and migration from TeamsFx. 8 commands, 1 agent, 1 skill with 7 reference docs.",
+  "author": {
+    "name": "Markus Ahling",
+    "email": "markus@lobbi.io"
+  },
+  "keywords": [
+    "microsoft-teams",
+    "teams-app",
+    "manifest-v1.25",
+    "meeting-apps",
+    "message-extensions",
+    "compose-extensions",
+    "adaptive-cards",
+    "live-share-sdk",
+    "custom-engine-agents",
+    "agent-365",
+    "m365-agents-toolkit",
+    "nested-app-auth",
+    "dialog-namespace",
+    "teams-toolkit-migration",
+    "bot-framework",
+    "together-mode",
+    "stage-view",
+    "link-unfurling",
+    "universal-actions",
+    "agents-playground"
+  ],
+  "repository": "https://github.com/Lobbi-Docs/claude",
+  "license": "MIT",
+  "marketplace": {
+    "category": "microsoft",
+    "tags": [
+      "teams",
+      "m365",
+      "meeting-apps",
+      "message-extensions",
+      "agents"
+    ],
+    "featured": true,
+    "pricing": "free"
+  }
+}

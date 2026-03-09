@@ -1,0 +1,44 @@
+{
+  "commands": [
+    {
+      "name": "teams:manifest",
+      "file": "teams-manifest.md",
+      "description": "v1.25 manifest schema reference, migration from v1.17, known bugs"
+    },
+    {
+      "name": "teams:meeting-app",
+      "file": "teams-meeting-app.md",
+      "description": "Meeting apps — side panels, stage view, content bubbles, Live Share, Together Mode"
+    },
+    {
+      "name": "teams:msgext",
+      "file": "teams-msgext.md",
+      "description": "Message extensions — search, action, link unfurling, API-based, Universal Actions"
+    },
+    {
+      "name": "teams:auth",
+      "file": "teams-auth.md",
+      "description": "Single-tenant enforcement, NAA pop-up-free SSO, bot auth"
+    },
+    {
+      "name": "teams:agent",
+      "file": "teams-agent.md",
+      "description": "Custom Engine Agents, Declarative Agents, Agent 365"
+    },
+    {
+      "name": "teams:agent365",
+      "file": "teams-agent365.md",
+      "description": "Agent 365 blueprints, identity, MCP tools, publishing"
+    },
+    {
+      "name": "teams:dialog",
+      "file": "teams-dialog.md",
+      "description": "Dialog namespace replacing deprecated tasks — URL, Adaptive Card, bot"
+    },
+    {
+      "name": "teams:migrate",
+      "file": "teams-migrate.md",
+      "description": "Migration from TeamsFx/Bot Framework to M365 Agents Toolkit"
+    }
+  ]
+}
