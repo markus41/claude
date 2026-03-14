@@ -31,6 +31,74 @@ real-time system state through color coding, icons, labels, and visual indicator
 
 ---
 
+## Flags
+
+| Flag | Alias | Type | Default | Description |
+|------|-------|------|---------|-------------|
+| `--source <type>` | `-s` | string | none | Data source type (jira, github, k8s, prometheus, rest, csv, json) |
+| `--url <endpoint>` | `-u` | string | none | REST API endpoint or data source URL |
+| `--repo <owner/repo>` | `-r` | string | auto-detect | GitHub repository for GitHub Actions / PR status binding |
+| `--namespace <ns>` | `-N` | string | `default` | Kubernetes namespace for pod/service status binding |
+| `--port <n>` | `-p` | number | varies | Port for data source connections (e.g., Prometheus 9090) |
+| `--output <path>` | `-o` | string | in-place | Output path for the data-bound diagram |
+| `--refresh-interval <sec>` | `-R` | number | `0` | Auto-refresh interval in seconds (0 = one-shot) |
+| `--format <fmt>` | `-f` | string | `drawio` | Output format after binding (drawio, svg, png) |
+| `--template <file>` | `-t` | string | none | Template diagram to use as the binding target |
+| `--filter <expr>` | `-F` | string | none | Filter expression to select specific data points |
+| `--transform <script>` | `-T` | string | none | JavaScript transform function applied to data before binding |
+| `--staged` | | boolean | `false` | Only process staged (git add) diagram files |
+| `--watch` | `-w` | boolean | `false` | Watch for data source changes and re-bind continuously |
+| `--quiet` | `-q` | boolean | `false` | Suppress informational output |
+| `--verbose` | `-v` | boolean | `false` | Show detailed data fetching and binding operations |
+| `--dry-run` | `-n` | boolean | `false` | Fetch data and show what would change without modifying the diagram |
+
+### Flag Details
+
+#### Data Source Flags
+- **`--source <type>`** (`-s`): The external data provider. `jira` fetches issue status and assignments. `github` reads CI/CD status, PR state, and deployments. `k8s` queries pod health, replica counts, and resource usage. `prometheus` pulls metrics. `rest` calls arbitrary REST APIs. `csv`/`json` reads local data files.
+- **`--url <endpoint>`** (`-u`): Connection URL for the data source. For REST: the full API endpoint. For Prometheus: the query API URL. For K8s: the cluster API server (defaults to in-cluster config).
+- **`--repo <owner/repo>`** (`-r`): GitHub repository identifier for binding CI status, PR comments, and deployment state. Auto-detected from git remote when omitted.
+- **`--namespace <ns>`** (`-N`): Kubernetes namespace to query. Binds pod status, service endpoints, and resource metrics to diagram elements.
+- **`--port <n>`** (`-p`): Override the default port for data source connections.
+
+#### Binding Control Flags
+- **`--template <file>`** (`-t`): Use a template diagram with placeholder `%variable%` syntax. Data values replace placeholders during binding.
+- **`--filter <expr>`** (`-F`): Select specific data points. Syntax depends on source type. For Jira: JQL expression. For K8s: label selector. For REST: JSONPath expression.
+- **`--transform <script>`** (`-T`): A JavaScript one-liner or file path to a transform function. Applied to each data point before binding. Example: `--transform "d => ({...d, status: d.health > 90 ? 'healthy' : 'degraded'})"`.
+
+#### Refresh & Watch Flags
+- **`--refresh-interval <sec>`** (`-R`): Re-fetch data and update the diagram at this interval. Use with `--output` to continuously update an exported image. Set to `0` for a single binding pass.
+- **`--watch`** (`-w`): Continuously monitor the data source for changes and re-bind when detected. Uses webhooks or polling depending on the source type.
+
+#### Output Flags
+- **`--output <path>`** (`-o`): Write the bound diagram to a new file. Without this, the original file is updated in-place.
+- **`--format <fmt>`** (`-f`): After binding data, optionally export to SVG or PNG. The `.drawio` file is always updated first.
+- **`--dry-run`** (`-n`): Fetch data from the source, compute the bindings, and report what would change (cell colors, labels, values) without modifying any files.
+- **`--verbose`** (`-v`): Show each data fetch, binding resolution, and style change as it happens.
+- **`--quiet`** (`-q`): Suppress all output except errors. Useful in cron jobs and CI pipelines.
+
+#### Examples with Flags
+
+```bash
+# Bind Kubernetes pod status to architecture diagram
+drawio:data-bind architecture.drawio --source k8s --namespace production --verbose
+
+# Bind GitHub Actions CI status
+drawio:data-bind ci-pipeline.drawio --source github --repo myorg/myapp
+
+# Bind Prometheus metrics with custom filter
+drawio:data-bind infra.drawio --source prometheus --url http://prometheus:9090 --filter 'up{job="api"}'
+
+# Bind from REST API with transform
+drawio:data-bind services.drawio --source rest --url https://api.example.com/status --transform "d => ({status: d.healthy ? 'active' : 'degraded'})"
+
+# Dry-run to preview bindings
+drawio:data-bind architecture.drawio --source k8s --namespace staging --dry-run
+
+# Watch mode with auto-refresh every 30 seconds
+drawio:data-bind dashboard.drawio --source prometheus --url http://localhost:9090 --watch --refresh-interval 30
+```
+
 ## Core Concepts
 
 ### Custom Properties on Diagram Cells

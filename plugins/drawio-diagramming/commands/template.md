@@ -30,6 +30,70 @@ category. Each template contains draw.io XML with placeholder variables that are
 resolved at generation time. Templates can be composed together, inherited from base
 definitions, and selected automatically based on project analysis.
 
+## Flags
+
+| Flag | Alias | Type | Default | Description |
+|------|-------|------|---------|-------------|
+| `--category <name>` | `-c` | string | none | Filter templates by category (architecture, cloud, database, business, devops, network, uml, agile) |
+| `--list` | `-l` | boolean | `false` | List all available templates (optionally filtered by --category) |
+| `--search <query>` | `-s` | string | none | Search templates by name, description, or tags |
+| `--output <path>` | `-o` | string | `./<template-name>.drawio` | Output file path for the generated diagram |
+| `--variables <json>` | `-V` | string | `{}` | JSON object with template variable values |
+| `--preview` | `-p` | boolean | `false` | Show template metadata and variable list without generating |
+| `--interactive` | `-i` | boolean | `false` | Prompt for each template variable interactively |
+| `--verbose` | `-v` | boolean | `false` | Show template resolution and variable substitution details |
+| `--dry-run` | `-n` | boolean | `false` | Resolve variables and preview output without writing files |
+
+### Flag Details
+
+#### Discovery Flags
+- **`--list`** (`-l`): Display all available templates with their names, categories, and descriptions. Combine with `--category` to filter: `--list --category cloud`.
+- **`--search <query>`** (`-s`): Full-text search across template names, descriptions, and tags. Example: `--search "kubernetes"` finds K8s architecture, K8s deployment, and K8s monitoring templates.
+- **`--category <name>`** (`-c`): Filter templates by category. Available categories:
+  - `architecture` — Microservices, monolith, event-driven, hexagonal, clean architecture
+  - `cloud` — AWS VPC, Azure VNET, GCP network, multi-cloud, serverless
+  - `database` — ER diagrams, Prisma schema, MongoDB schema, migration flow
+  - `business` — BPMN processes, swimlanes, org charts, journey maps
+  - `devops` — CI/CD pipelines, Docker architecture, K8s clusters, monitoring
+  - `network` — Topology, firewall rules, load balancers, DNS
+  - `uml` — Class, sequence, state, activity, use case
+  - `agile` — Sprint board, story map, kanban, retrospective
+
+#### Generation Flags
+- **`--output <path>`** (`-o`): Where to write the generated diagram. Defaults to the template name as the filename in the current directory.
+- **`--variables <json>`** (`-V`): Provide values for template placeholders as a JSON string. Example: `--variables '{"service_name": "API Gateway", "port": "8080", "replicas": "3"}'`. Unknown variables are left as `%variable%` placeholders.
+- **`--interactive`** (`-i`): The command lists all template variables and prompts for values one by one. Missing required variables cause an error; optional variables use defaults.
+
+#### Preview Flags
+- **`--preview`** (`-p`): Show template metadata: name, category, description, required variables, optional variables with defaults, and a text preview of the structure. Does not generate any file.
+- **`--dry-run`** (`-n`): Resolve all variables and show the final XML that would be written, without creating the file.
+- **`--verbose`** (`-v`): Show each variable substitution, template inheritance chain, and composition steps.
+
+#### Examples with Flags
+
+```bash
+# List all templates
+drawio:template --list
+
+# Search for microservices templates
+drawio:template --search "microservices"
+
+# List templates in the cloud category
+drawio:template --list --category cloud
+
+# Preview a template before generating
+drawio:template aws-vpc --preview
+
+# Generate with variables
+drawio:template microservices --variables '{"gateway_name": "Kong", "service_1_name": "Users", "service_2_name": "Orders", "service_3_name": "Payments"}' --output docs/architecture.drawio
+
+# Interactive mode for variable filling
+drawio:template er-diagram --interactive --output docs/data-model.drawio
+
+# Dry run to see resolved template
+drawio:template ci-pipeline --variables '{"repo": "myorg/myapp", "branch": "main"}' --dry-run
+```
+
 ## Template Categories
 
 ### 1. Software Architecture

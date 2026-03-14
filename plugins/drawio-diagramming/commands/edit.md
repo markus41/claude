@@ -31,6 +31,80 @@ the current XML structure, applies modifications precisely, and writes back
 well-formed XML. Supports everything from single-cell tweaks to bulk operations
 across the entire diagram.
 
+## Flags
+
+| Flag | Alias | Type | Default | Description |
+|------|-------|------|---------|-------------|
+| `--add-vertex <label>` | `-a` | string | none | Add a new shape (vertex) with the given label |
+| `--connect-to <id>` | `-c` | string | none | Connect a newly added vertex to an existing cell by ID |
+| `--remove <id>` | `-r` | string | none | Remove a cell by ID (and all connected edges) |
+| `--rename <old> <new>` | | string | none | Rename a cell label from old to new |
+| `--move <id> <x> <y>` | | string | none | Move a cell to absolute position (x, y) |
+| `--resize <id> <w> <h>` | | string | none | Resize a cell to width w and height h |
+| `--reparent <id> <parent>` | | string | none | Move a cell to a different parent container or layer |
+| `--style <preset>` | `-s` | string | none | Apply a style preset to the entire diagram (dark, sketch, minimal, etc.) |
+| `--recolor-by-status` | | boolean | `false` | Recolor cells based on status metadata (active=green, deprecated=red, etc.) |
+| `--diff <file1> <file2>` | `-d` | string | none | Diff two diagram versions and report changes |
+| `--merge <file>` | `-M` | string | none | Merge another diagram file into the current one |
+| `--analyze` | `-A` | boolean | `false` | Analyze the diagram for structural issues and suggest fixes |
+| `--output <path>` | `-o` | string | in-place | Write edited diagram to a different file (preserves original) |
+| `--batch <script>` | `-b` | string | none | Run a batch edit script (JSON array of operations) |
+| `--undo-safe` | `-u` | boolean | `false` | Create a `.drawio.bak` backup before editing |
+| `--backup` | `-B` | boolean | `false` | Same as --undo-safe; create backup before any modifications |
+| `--noout` | | boolean | `false` | Suppress diagram output (useful with --analyze) |
+| `--force` | `-F` | boolean | `false` | Skip confirmation prompts for destructive operations |
+| `--verbose` | `-v` | boolean | `false` | Show detailed processing output for each edit operation |
+| `--dry-run` | `-n` | boolean | `false` | Preview changes without modifying any files |
+
+### Flag Details
+
+#### Element Manipulation Flags
+- **`--add-vertex <label>`** (`-a`): Insert a new shape into the diagram with the given label. Uses default styling (blue rounded rectangle) unless combined with `--style`. Position is auto-calculated to avoid overlaps.
+- **`--connect-to <id>`** (`-c`): Used with `--add-vertex` to create an edge from the new vertex to an existing cell. The edge uses orthogonal routing by default.
+- **`--remove <id>`** (`-r`): Delete a cell and all edges that reference it as source or target. Use `--force` to skip the confirmation prompt. Cannot remove structural cells (id="0" or id="1").
+- **`--rename <old> <new>`**: Find cells with label matching `old` and replace with `new`. Supports regex patterns when old is wrapped in slashes: `--rename "/v[0-9]+/" "v2"`.
+- **`--move <id> <x> <y>`**: Set absolute position. Coordinates are in pixels from the top-left origin. For grouped elements, coordinates are relative to the parent container.
+- **`--resize <id> <w> <h>`**: Change width and height while preserving position. Connected edges are automatically rerouted.
+- **`--reparent <id> <parent>`**: Move a cell to a different container or layer. Adjusts coordinates from absolute to relative (or vice versa) automatically.
+
+#### Style & Appearance Flags
+- **`--style <preset>`** (`-s`): Apply a named style preset to all cells. Options: `dark`, `sketch`, `minimal`, `blueprint`, `colorful`, `professional`. Remaps fill colors, stroke colors, font families, and effects.
+- **`--recolor-by-status`**: Reads `status` custom properties on cells and applies semantic colors: `active`=green, `deprecated`=red, `planned`=yellow, `in-review`=purple.
+
+#### Comparison & Merge Flags
+- **`--diff <file1> <file2>`** (`-d`): Compare two diagram files and output added, removed, and modified cells. Returns JSON when combined with `--noout`.
+- **`--merge <file>`** (`-M`): Import all cells from another diagram file. Cells are added as a new page by default, or merged into the same page with `--force` (applies coordinate offset to avoid overlap).
+
+#### Safety & Output Flags
+- **`--output <path>`** (`-o`): Write the result to a new file instead of modifying in-place. The original file is never touched.
+- **`--undo-safe`** / **`--backup`**: Create a timestamped `.bak` copy before making changes. Useful for irreversible operations like bulk renames.
+- **`--dry-run`** (`-n`): Parse the diagram, compute all changes, and report what would happen, but do not write any files.
+- **`--verbose`** (`-v`): Log each individual cell modification (add, remove, restyle, reposition) as it happens.
+- **`--noout`**: Suppress the diagram file output. Useful when combining `--analyze` or `--diff` with scripting.
+- **`--force`** (`-F`): Skip confirmation prompts for destructive operations (remove, merge into same page, overwrite).
+
+#### Examples with Flags
+
+```bash
+# Add a service and connect it to the gateway
+drawio:edit architecture.drawio --add-vertex "Payment Service" --connect-to "api-gateway"
+
+# Safely restyle to dark mode with backup
+drawio:edit architecture.drawio --style dark --backup
+
+# Diff two versions
+drawio:edit --diff v1/arch.drawio v2/arch.drawio
+
+# Bulk rename with dry-run preview
+drawio:edit architecture.drawio --rename "v1" "v2" --dry-run --verbose
+
+# Remove a deprecated service
+drawio:edit architecture.drawio --remove "svc-legacy" --force
+
+# Merge two diagrams into one
+drawio:edit main.drawio --merge secondary.drawio --output merged.drawio
+```
+
 ## Reading and Parsing .drawio Files
 
 ### Step 1: Locate the diagram file

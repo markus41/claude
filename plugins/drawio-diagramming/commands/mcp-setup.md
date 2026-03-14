@@ -25,6 +25,83 @@ and development environments.
 
 ## Overview
 
+## Flags
+
+| Flag | Alias | Type | Default | Description |
+|------|-------|------|---------|-------------|
+| `--server <name>` | `-s` | string | `tool` | MCP server to configure (app, tool, community) |
+| `--client <name>` | `-c` | string | auto-detect | Target client (claude-desktop, claude-code, vscode, zed, codex) |
+| `--port <n>` | `-p` | number | varies | Port for local MCP server |
+| `--editor` | `-e` | boolean | `false` | Enable built-in editor for community server |
+| `--version <ver>` | `-V` | string | `latest` | MCP server version to install |
+| `--output <path>` | `-o` | string | `.mcp.json` | Output path for MCP configuration file |
+| `--force` | `-f` | boolean | `false` | Overwrite existing configuration |
+| `--test` | `-t` | boolean | `false` | Test the MCP server connection after setup |
+| `--registry <url>` | | string | `https://registry.npmjs.org` | npm registry URL for package installation |
+| `--scale <factor>` | | number | `1.0` | Default scale for MCP server diagram rendering |
+| `--export` | `-E` | boolean | `false` | Export current MCP configuration to stdout |
+| `--input <path>` | `-i` | string | none | Import MCP configuration from a file |
+| `--reset` | `-R` | boolean | `false` | Remove all draw.io MCP configuration |
+| `--verbose` | `-v` | boolean | `false` | Show detailed setup steps and connection info |
+| `--dry-run` | `-n` | boolean | `false` | Preview configuration changes without writing |
+
+### Flag Details
+
+#### Server Selection Flags
+- **`--server <name>`** (`-s`): Choose which MCP server to configure:
+  - `app` — Official jgraph App Server (hosted at `mcp.draw.io`). No local installation. Renders diagrams as iframes in chat UI.
+  - `tool` — Official jgraph Tool Server (local via npx). Provides create/edit/export tools. Best for editor integration.
+  - `community` — Community drawio-mcp-server by lgazo. CRUD operations with built-in editor. Best for direct diagram manipulation.
+- **`--client <name>`** (`-c`): Target client application. Auto-detected from the environment when omitted. Each client has a specific configuration file location:
+  - `claude-desktop` — `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS)
+  - `claude-code` — `.mcp.json` in project root
+  - `vscode` — `.vscode/mcp.json` or VS Code settings
+  - `zed` — `~/.config/zed/settings.json`
+  - `codex` — `codex-mcp-config.json`
+
+#### Installation Flags
+- **`--version <ver>`** (`-V`): Pin a specific MCP server version. Defaults to `latest`. Example: `--version "1.2.0"`.
+- **`--port <n>`** (`-p`): Override the default port. The tool server uses stdio by default; the community server defaults to port 3000 when using HTTP transport.
+- **`--editor`** (`-e`): Enable the built-in web editor in the community server. Adds `--editor` to the npx args.
+- **`--registry <url>`**: Use a custom npm registry for package installation. Useful in corporate environments with private registries.
+
+#### Configuration Management Flags
+- **`--output <path>`** (`-o`): Write the generated configuration to a specific file. Defaults to the standard location for the detected client.
+- **`--force`** (`-f`): Overwrite existing MCP configuration without prompting. Without this flag, the command merges new entries into existing config.
+- **`--export`** (`-E`): Dump the current draw.io MCP configuration to stdout as JSON. Useful for backup or sharing.
+- **`--input <path>`** (`-i`): Import MCP configuration from a file. Merges with existing configuration.
+- **`--reset`** (`-R`): Remove all draw.io MCP server entries from the configuration file.
+
+#### Validation Flags
+- **`--test`** (`-t`): After writing the configuration, attempt to connect to the MCP server and verify it responds correctly. Reports server version, available tools, and connection latency.
+- **`--dry-run`** (`-n`): Show the configuration that would be written without modifying any files.
+- **`--verbose`** (`-v`): Show installation commands, configuration file paths, and connection details.
+
+#### Examples with Flags
+
+```bash
+# Quick setup with community server for Claude Code
+drawio:mcp-setup --server community --editor
+
+# Setup official tool server for VS Code
+drawio:mcp-setup --server tool --client vscode
+
+# Setup app server for Claude Desktop
+drawio:mcp-setup --server app --client claude-desktop
+
+# Test connection after setup
+drawio:mcp-setup --server community --test --verbose
+
+# Export current configuration
+drawio:mcp-setup --export
+
+# Reset all draw.io MCP config
+drawio:mcp-setup --reset --force
+
+# Dry run to preview config
+drawio:mcp-setup --server tool --client claude-code --dry-run
+```
+
 Draw.io offers two official MCP server options from jgraph (the company behind
 draw.io) plus a community-built alternative. Each serves different use cases:
 

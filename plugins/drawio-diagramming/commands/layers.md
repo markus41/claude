@@ -31,6 +31,91 @@ audiences need to see different levels of detail.
 
 ---
 
+## Flags
+
+| Flag | Alias | Type | Default | Description |
+|------|-------|------|---------|-------------|
+| `--name <text>` | `-n` | string | none | Layer name for create, rename, or target operations |
+| `--id <id>` | | string | auto-generated | Explicit layer ID (defaults to slugified name) |
+| `--create` | `-c` | boolean | `false` | Create a new layer with the given name |
+| `--delete <id>` | `-d` | string | none | Delete a layer by ID (moves orphaned elements to default layer) |
+| `--locked` | `-L` | boolean | `false` | Set the layer as locked (not editable in draw.io) |
+| `--hidden` | `-H` | boolean | `false` | Set the layer as hidden (not visible in draw.io) |
+| `--elements <ids>` | `-e` | string | none | Comma-separated cell IDs to assign to the layer |
+| `--to <layer-id>` | `-t` | string | none | Target layer for move operations |
+| `--reorder <ids>` | `-r` | string | none | Comma-separated layer IDs in desired z-order (bottom to top) |
+| `--merge-layers <ids>` | `-m` | string | none | Merge multiple layers into one (comma-separated IDs) |
+| `--preset <name>` | `-p` | string | none | Apply a layer preset template (infra, c4, devops, security, app) |
+| `--template <name>` | `-T` | string | none | Alias for --preset |
+| `--layers <names>` | `-l` | string | none | Comma-separated layer names to create in bulk |
+| `--output <path>` | `-o` | string | in-place | Write result to a different file |
+| `--interactive` | `-i` | boolean | `false` | Interactive mode: prompt for layer assignments |
+| `--verbose` | `-v` | boolean | `false` | Show detailed layer operations and element counts |
+| `--dry-run` | | boolean | `false` | Preview layer changes without modifying files |
+
+### Flag Details
+
+#### Layer Creation & Deletion Flags
+- **`--create`** (`-c`): Create a new layer. Requires `--name`. Optionally use `--id` for a custom ID, `--locked` to lock, and `--hidden` to hide. Example: `--create --name "Security" --locked`.
+- **`--delete <id>`** (`-d`): Remove a layer by ID. All elements on the deleted layer are moved to the default layer (id="1") to prevent orphaning. Cannot delete the default layer.
+- **`--layers <names>`** (`-l`): Bulk-create multiple layers. Example: `--layers "Infrastructure,Application,Data,Security"` creates four layers in one operation.
+
+#### Layer Properties Flags
+- **`--name <text>`** (`-n`): The display name for the layer. Used with `--create` or to rename an existing layer when combined with `--id`.
+- **`--id <id>`**: Explicit XML id attribute. When omitted, the ID is auto-generated from the slugified name (e.g., "Security Overlay" becomes "layer-security-overlay").
+- **`--locked`** (`-L`): Make the layer read-only. Locked layers cannot be edited in the draw.io UI. Adds `style="locked=1"` to the layer cell.
+- **`--hidden`** (`-H`): Make the layer invisible. Hidden layers are not rendered in exports unless explicitly toggled. Sets `visible="0"` on the layer cell.
+
+#### Element Assignment Flags
+- **`--elements <ids>`** (`-e`): Move specific elements to a layer. Used with `--to` to specify the target layer. Example: `--elements "svc-api,svc-db,svc-cache" --to "layer-data"`.
+- **`--to <layer-id>`** (`-t`): Target layer for move operations. Combined with `--elements` to reassign cells, or used alone to specify the destination for `--merge-layers`.
+
+#### Organization Flags
+- **`--reorder <ids>`** (`-r`): Set the z-order of layers. Layers listed first appear below layers listed later. Example: `--reorder "layer-infra,layer-app,layer-security"` puts infrastructure at the bottom and security on top.
+- **`--merge-layers <ids>`** (`-m`): Combine multiple layers into a single layer. All elements are reparented to the first layer in the list. The other layers are deleted. Example: `--merge-layers "layer-network,layer-infra"`.
+
+#### Preset & Template Flags
+- **`--preset <name>`** (`-p`): Apply a predefined layer structure. Available presets:
+  - `infra`: Network, Compute, Storage, Security
+  - `c4`: Context, Container, Component, Code
+  - `devops`: CI/CD, Monitoring, Logging, Infrastructure
+  - `security`: Network Security, Identity, Data Protection, Compliance
+  - `app`: Frontend, Backend, Database, External Services
+
+#### Behavior Flags
+- **`--output <path>`** (`-o`): Write the modified diagram to a new file instead of editing in-place.
+- **`--interactive`** (`-i`): Step through each element and prompt for layer assignment. Useful for initial layer organization of a flat diagram.
+- **`--verbose`** (`-v`): Show layer creation details, element counts per layer, and z-order changes.
+- **`--dry-run`**: Preview all layer operations without writing to any file.
+
+#### Examples with Flags
+
+```bash
+# Create a new locked security layer
+drawio:layers architecture.drawio --create --name "Security" --locked
+
+# Bulk create layers from preset
+drawio:layers architecture.drawio --preset infra
+
+# Move elements to a specific layer
+drawio:layers architecture.drawio --elements "svc-api,svc-db" --to "layer-data"
+
+# Reorder layers (bottom to top)
+drawio:layers architecture.drawio --reorder "layer-infra,layer-app,layer-security"
+
+# Delete a layer (elements moved to default)
+drawio:layers architecture.drawio --delete "layer-temp"
+
+# Merge layers
+drawio:layers architecture.drawio --merge-layers "layer-network,layer-infra" --verbose
+
+# Interactive layer assignment
+drawio:layers architecture.drawio --interactive
+
+# Preview layer changes
+drawio:layers architecture.drawio --preset c4 --dry-run
+```
+
 ## How Layers Work in draw.io XML
 
 ### Layer Structure

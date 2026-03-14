@@ -31,6 +31,81 @@ individual shape properties to full theme application across all cells.
 
 ---
 
+## Flags
+
+| Flag | Alias | Type | Default | Description |
+|------|-------|------|---------|-------------|
+| `--theme <name>` | `-t` | string | none | Apply a named theme preset (professional, sketch, dark, colorful, minimal, blueprint, corporate) |
+| `--target <selector>` | `-T` | string | `all` | Target cells to style (all, vertices, edges, or comma-separated cell IDs) |
+| `--set <property=value>` | `-s` | string | none | Set a specific style property (e.g., `--set "fillColor=#DAE8FC"`) |
+| `--copy-from <id>` | `-f` | string | none | Copy style from a source cell ID |
+| `--copy-to <ids>` | | string | none | Paste copied style to target cell IDs (comma-separated) |
+| `--match <property>` | `-m` | string | none | Select cells matching a style property (e.g., `--match "fillColor=#F8CECC"`) |
+| `--check-consistency` | `-c` | boolean | `false` | Audit style consistency across the diagram and report issues |
+| `--output <path>` | `-o` | string | in-place | Write styled diagram to a different file |
+| `--preview` | `-p` | boolean | `false` | Show a before/after summary of style changes |
+| `--reset` | `-R` | boolean | `false` | Reset all styles to the default theme |
+| `--accessibility-check` | `-a` | boolean | `false` | Check contrast ratios and color-blind safety |
+| `--verbose` | `-v` | boolean | `false` | Show detailed per-cell style changes |
+| `--dry-run` | `-n` | boolean | `false` | Preview style changes without modifying files |
+
+### Flag Details
+
+#### Theme & Style Flags
+- **`--theme <name>`** (`-t`): Apply a complete theme preset to the entire diagram. Each theme defines coordinated fill colors, stroke colors, font family, font size, corner radius, shadow, and sketch effects. Available themes:
+  - `professional` — Clean blue/green palette, Helvetica, rounded corners
+  - `sketch` — Hand-drawn effect with Comic Sans, jiggle, and curve fitting
+  - `dark` — Dark backgrounds with light strokes and white text
+  - `colorful` — Vibrant colors with shadows and glass effects
+  - `minimal` — No fills, thin strokes, small font
+  - `blueprint` — Dark blue backgrounds, Courier font, technical aesthetic
+  - `corporate` — Subdued colors, serif fonts, formal appearance
+- **`--set <property=value>`** (`-s`): Set a single style property on targeted cells. Can be used multiple times: `--set "fillColor=#DAE8FC" --set "fontSize=14"`. Properties are appended or replaced in the existing style string.
+- **`--reset`** (`-R`): Remove all custom styling and revert to the default professional theme. Preserves shape types and positions.
+
+#### Targeting Flags
+- **`--target <selector>`** (`-T`): Control which cells are affected. `all` applies to every cell. `vertices` applies only to shapes. `edges` applies only to connectors. Comma-separated IDs target specific cells: `--target "svc-api,svc-db,svc-cache"`.
+- **`--match <property>`** (`-m`): Select cells by matching a style property. Useful for bulk updates: `--match "fillColor=#F8CECC"` selects all red elements. Combine with `--set` to restyle them: `--match "fillColor=#F8CECC" --set "fillColor=#D5E8D4"`.
+
+#### Copy & Paste Flags
+- **`--copy-from <id>`** (`-f`): Read the full style string from a source cell. Used with `--copy-to` to replicate the style.
+- **`--copy-to <ids>`**: Apply the copied style to one or more target cells. Example: `--copy-from "svc-api" --copy-to "svc-db,svc-cache,svc-queue"`.
+
+#### Analysis Flags
+- **`--check-consistency`** (`-c`): Audit the diagram for style inconsistencies. Reports elements of the same type with different styles, mixed font families, inconsistent font sizes, and mismatched color palettes.
+- **`--accessibility-check`** (`-a`): Evaluate WCAG contrast ratios between fill and font colors, check for color-blind problematic combinations (red-green), and verify minimum font sizes.
+
+#### Output Flags
+- **`--output <path>`** (`-o`): Save the restyled diagram to a new file, preserving the original.
+- **`--preview`** (`-p`): Show a summary of changes: how many cells affected, which properties changed, before/after color values.
+- **`--dry-run`** (`-n`): Compute all style changes and report them without writing files.
+- **`--verbose`** (`-v`): Log each individual cell's style change with before/after values.
+
+#### Examples with Flags
+
+```bash
+# Apply dark theme to entire diagram
+drawio:style architecture.drawio --theme dark
+
+# Restyle only edge connectors
+drawio:style architecture.drawio --target edges --set "strokeWidth=2" --set "rounded=1"
+
+# Copy style from one cell to others
+drawio:style architecture.drawio --copy-from "svc-api" --copy-to "svc-db,svc-cache"
+
+# Recolor all red elements to green
+drawio:style architecture.drawio --match "fillColor=#F8CECC" --set "fillColor=#D5E8D4" --set "strokeColor=#82B366"
+
+# Check style consistency
+drawio:style architecture.drawio --check-consistency --verbose
+
+# Accessibility audit
+drawio:style architecture.drawio --accessibility-check
+
+# Preview theme change without applying
+drawio:style architecture.drawio --theme blueprint --dry-run --preview
+```
+
 ## Style String Format
 
 Every draw.io cell has a `style` attribute containing a semicolon-delimited string of

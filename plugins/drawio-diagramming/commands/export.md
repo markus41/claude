@@ -32,6 +32,94 @@ editability where possible. It supports CLI-based export using the draw.io deskt
 application, programmatic export via a headless server, and conversion to
 Mermaid.js for text-based diagram portability.
 
+## Flags
+
+| Flag | Alias | Type | Default | Description |
+|------|-------|------|---------|-------------|
+| `--format <fmt>` | `-f` | string | `svg` | Output format (svg, png, pdf, html, mermaid, xml) |
+| `--output <path>` | `-o` | string | auto-generated | Output file path |
+| `--embed-diagram` | `-e` | boolean | `false` | Embed draw.io XML in SVG/PNG for re-editability |
+| `--all-formats` | `-A` | boolean | `false` | Export to all supported formats simultaneously |
+| `--all-pages` | | boolean | `false` | Export all pages in a multi-page diagram |
+| `--page-index <n>` | `-P` | number | `0` | Zero-based page index to export |
+| `--page <n>` | | number | none | One-based page number to export (alias for page-index + 1) |
+| `--pages <range>` | | string | none | Page range to export (e.g., "1-3", "all") |
+| `--dpi <n>` | | number | `96` | DPI for raster exports (PNG) |
+| `--scale <factor>` | `-s` | number | `1.0` | Scale factor for export (2.0 = 2x resolution) |
+| `--quality <pct>` | `-q` | number | `100` | JPEG/PNG quality percentage (1-100) |
+| `--width <px>` | `-W` | number | auto | Output width in pixels (height auto-calculated) |
+| `--height <px>` | `-H` | number | auto | Output height in pixels (width auto-calculated) |
+| `--border <px>` | `-b` | number | `0` | Padding border around exported content in pixels |
+| `--crop` | `-c` | boolean | `false` | Crop to diagram content (remove whitespace) |
+| `--transparent` | `-t` | boolean | `false` | Use transparent background instead of white |
+| `--dark` | `-d` | boolean | `false` | Export with dark mode color remapping |
+| `--batch` | `-B` | boolean | `false` | Batch export all .drawio files in a directory |
+| `--include <glob>` | | string | `*.drawio` | File glob pattern for batch export |
+| `--ci` | | boolean | `false` | CI/CD mode: headless export, non-interactive |
+| `--no-sandbox` | | boolean | `false` | Disable Chromium sandbox (required in some CI environments) |
+| `--page-width <in>` | | number | auto | PDF page width in inches |
+| `--page-height <in>` | | number | auto | PDF page height in inches |
+| `--export` | | boolean | `true` | Explicit export flag (used by draw.io CLI) |
+| `--verbose` | `-v` | boolean | `false` | Show detailed export progress and file sizes |
+| `--dry-run` | `-n` | boolean | `false` | Preview export operations without writing files |
+
+### Flag Details
+
+#### Format & Output Flags
+- **`--format <fmt>`** (`-f`): Target export format. `svg` produces scalable vector graphics ideal for web and docs. `png` produces raster images for presentations and chat. `pdf` for printing. `html` creates a self-editing viewer. `mermaid` converts to Mermaid.js text syntax.
+- **`--output <path>`** (`-o`): Destination file. Defaults to the input filename with the appropriate extension (e.g., `arch.drawio` becomes `arch.drawio.svg` with `--embed-diagram`, or `arch.svg` without).
+- **`--embed-diagram`** (`-e`): Critical for preserving editability. When enabled, the draw.io XML is stored inside the SVG/PNG metadata, allowing the file to be reopened and edited in draw.io.
+- **`--all-formats`** (`-A`): Export to SVG, PNG (1x and 2x), and PDF in a single operation. Files are placed in the same directory as the output path.
+
+#### Quality & Dimension Flags
+- **`--dpi <n>`**: Dots per inch for PNG exports. Use `300` for print, `96` for screen, `192` for retina.
+- **`--scale <factor>`** (`-s`): Multiplier for output resolution. `--scale 2` produces a 2x image suitable for high-DPI displays.
+- **`--quality <pct>`** (`-q`): Compression quality for lossy formats. `100` = maximum quality, `75` = good balance of quality and size.
+- **`--width <px>`** / **`--height <px>`**: Force specific output dimensions. When only one is specified, the other is auto-calculated to maintain aspect ratio.
+- **`--border <px>`** (`-b`): Add padding around the diagram content. Useful for slides and documents where the diagram needs breathing room.
+
+#### Page Selection Flags
+- **`--all-pages`**: Export every page in a multi-page diagram as separate files. Output filenames are suffixed with the page name.
+- **`--page-index <n>`** (`-P`): Select a specific page by zero-based index. Use with multi-page diagrams.
+- **`--page <n>`**: Human-friendly one-based page number. `--page 1` exports the first page.
+- **`--pages <range>`**: Range syntax: `"1-3"` exports pages 1 through 3, `"1,3,5"` exports specific pages, `"all"` exports all.
+
+#### Appearance Flags
+- **`--crop`** (`-c`): Remove empty space around the diagram. The exported image is trimmed to the bounding box of all elements.
+- **`--transparent`** (`-t`): Set the background to transparent instead of white. Useful for overlaying diagrams on colored backgrounds.
+- **`--dark`** (`-d`): Apply automatic dark mode color remapping before export. Light fills become dark, dark strokes become light.
+
+#### Batch & CI Flags
+- **`--batch`** (`-B`): Process all `.drawio` files matching `--include` pattern. Results are written to the same directory or `--output` directory.
+- **`--include <glob>`**: File pattern for batch mode. Default `*.drawio`. Example: `--include "docs/**/*.drawio"`.
+- **`--ci`**: Headless operation mode. Suppresses interactive prompts, uses xvfb wrapper automatically, returns non-zero exit code on failure.
+- **`--no-sandbox`**: Required in Docker containers and some CI runners where Chromium sandboxing is not available.
+
+#### Examples with Flags
+
+```bash
+# High-res editable SVG
+drawio:export architecture.drawio --format svg --embed-diagram --crop
+
+# Retina PNG for presentation
+drawio:export architecture.drawio --format png --scale 2 --border 20
+
+# Print-quality PDF with all pages
+drawio:export architecture.drawio --format pdf --all-pages --crop
+
+# Dark mode transparent SVG
+drawio:export architecture.drawio --format svg --dark --transparent --crop
+
+# Batch export entire docs directory
+drawio:export docs/diagrams/ --batch --format svg --embed-diagram --verbose
+
+# CI pipeline export
+drawio:export architecture.drawio --format svg --ci --no-sandbox --embed-diagram
+
+# Dry run to see what would be exported
+drawio:export docs/diagrams/ --batch --format png --dry-run
+```
+
 ## Export Format Reference
 
 | Format | Extension | Editable | Best For |

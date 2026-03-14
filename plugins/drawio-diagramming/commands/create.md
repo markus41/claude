@@ -31,6 +31,75 @@ optimal diagram type, then generating well-structured XML with proper styling,
 color themes, and layout. It supports 15+ diagram types, 6 style presets, and
 multiple output formats.
 
+## Flags
+
+| Flag | Alias | Type | Default | Description |
+|------|-------|------|---------|-------------|
+| `--type <type>` | `-t` | string | auto-detect | Diagram type to create (sequence, er, c4, flowchart, class, network, bpmn, swimlane, mindmap, gantt, orgchart, k8s, aws, azure, gcp, state) |
+| `--style <preset>` | `-s` | string | `professional` | Style preset to apply (professional, sketch, dark, colorful, minimal, blueprint) |
+| `--title <text>` | `-T` | string | auto-generated | Diagram title displayed in the page tab |
+| `--output <path>` | `-o` | string | `./<title>.drawio` | Output file path for the generated diagram |
+| `--pages <names>` | `-p` | string | single page | Comma-separated page names for multi-page diagrams |
+| `--theme <name>` | | string | `standard` | Color theme palette (standard, dark, pastel, monochrome, high-contrast) |
+| `--format <fmt>` | `-f` | string | `drawio` | Output format (drawio, svg, png, pdf) |
+| `--width <px>` | `-W` | number | `1169` | Page width in pixels |
+| `--height <px>` | `-H` | number | `827` | Page height in pixels |
+| `--template <name>` | | string | none | Use a named template as the starting point |
+| `--layers <names>` | `-l` | string | single layer | Comma-separated layer names to create |
+| `--multi-page` | `-m` | boolean | `false` | Create a multi-page diagram with drill-down structure |
+| `--analyze <path>` | `-a` | string | none | Analyze source files at path to inform diagram generation |
+| `--embed-diagram` | `-e` | boolean | `false` | Embed diagram XML in exported SVG/PNG for editability |
+| `--export <format>` | `-E` | string | none | Auto-export to format after creation (svg, png, pdf) |
+| `--interactive` | `-i` | boolean | `false` | Prompt for confirmation at each generation step |
+| `--verbose` | `-v` | boolean | `false` | Show detailed processing output |
+| `--dry-run` | `-n` | boolean | `false` | Preview what would be created without writing files |
+| `--overwrite` | | boolean | `false` | Overwrite existing file without prompting |
+
+### Flag Details
+
+#### Output & Format Flags
+- **`--output <path>`** (`-o`): Destination file path. Defaults to `./<title>.drawio` where title is derived from the diagram content or `--title` flag. Parent directories are created automatically.
+- **`--format <fmt>`** (`-f`): Final output format. When set to `svg` or `png`, the command generates the `.drawio` XML first, then exports. Requires draw.io CLI for non-XML formats.
+- **`--width <px>`** / **`--height <px>`**: Set the `pageWidth` and `pageHeight` attributes on the `mxGraphModel` element. Affects export dimensions.
+- **`--export <format>`** (`-E`): Trigger automatic export after creation. The `.drawio` file is always created; this flag adds an additional exported file.
+
+#### Style & Theme Flags
+- **`--style <preset>`** (`-s`): Apply a coordinated style preset to all diagram elements. Presets control fill colors, stroke colors, font family, font size, rounded corners, shadows, and sketch effects.
+- **`--theme <name>`**: Select a color palette. Works independently of `--style`. For example, `--style minimal --theme dark` creates a minimal layout with dark colors.
+- **`--template <name>`**: Start from a pre-built template instead of generating from scratch. Templates include placeholders that are auto-filled from context.
+
+#### Structure Flags
+- **`--type <type>`** (`-t`): Override automatic diagram type detection. Use when the auto-detection picks the wrong type or you want a specific visualization.
+- **`--pages <names>`** (`-p`): Create multiple pages in one file. Example: `--pages "Context,Container,Component"` creates a C4 drill-down.
+- **`--layers <names>`** (`-l`): Pre-create named layers. Example: `--layers "Infrastructure,Application,Data,Security"`.
+- **`--multi-page`** (`-m`): Automatically decompose complex diagrams into multiple pages with cross-page links.
+- **`--analyze <path>`** (`-a`): Point to source code for the auto-detection engine to analyze. Overrides the default working directory scan.
+
+#### Behavior Flags
+- **`--dry-run`** (`-n`): Preview the diagram type, element count, and output path without creating any files. Useful for validating auto-detection.
+- **`--verbose`** (`-v`): Show step-by-step processing: context analysis, type selection, template resolution, XML generation, and export.
+- **`--interactive`** (`-i`): Pause after type selection and style application to allow manual overrides before writing.
+- **`--overwrite`**: Skip the confirmation prompt when the output file already exists.
+
+#### Examples with Flags
+
+```bash
+# Create with explicit type, style, and export
+drawio:create --type sequence --style sketch --title "Auth Flow" --export svg
+
+# Multi-page C4 architecture with dark theme
+drawio:create --type c4 --pages "Context,Container,Component" --theme dark --title "Platform Architecture"
+
+# Analyze source code and auto-detect, with verbose output
+drawio:create --analyze src/api/ --verbose --output docs/diagrams/api-flow.drawio
+
+# Dry run to preview what would be generated
+drawio:create --analyze src/ --dry-run
+
+# Create with custom dimensions and layers
+drawio:create --type k8s --width 1920 --height 1080 --layers "Network,Compute,Storage" --title "K8s Cluster"
+```
+
 ## Context-Based Diagram Type Selection
 
 ### Decision Tree

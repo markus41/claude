@@ -30,6 +30,70 @@ dimensions. It produces a numeric score (0-100), categorized findings, and speci
 recommendations for improvement. It can also compare two diagram versions and
 report structural and visual differences.
 
+## Flags
+
+| Flag | Alias | Type | Default | Description |
+|------|-------|------|---------|-------------|
+| `--compare <file>` | `-c` | string | none | Compare against another diagram version and report diff |
+| `--json` | `-j` | boolean | `false` | Output analysis report as JSON (for CI/CD integration) |
+| `--standard <name>` | `-s` | string | auto-detect | Notation standard to check (uml, bpmn, c4, auto, skip) |
+| `--output <path>` | `-o` | string | stdout | Write analysis report to file instead of stdout |
+| `--format <fmt>` | `-f` | string | `text` | Report format (text, json, markdown, html) |
+| `--threshold <score>` | `-t` | number | `0` | Minimum passing score (0-100); exit non-zero if below |
+| `--categories <list>` | | string | all | Comma-separated categories to analyze (layout, color, labels, connections, layers, accessibility) |
+| `--fix` | `-F` | boolean | `false` | Auto-fix issues where possible (spacing, alignment, missing labels) |
+| `--name-only` | | boolean | `false` | Output only the filename (useful with batch analysis) |
+| `--strict` | | boolean | `false` | Treat warnings as errors in threshold evaluation |
+| `--ignore <rules>` | | string | none | Comma-separated rule IDs to ignore (e.g., "UML-004,C4-005") |
+| `--verbose` | `-v` | boolean | `false` | Show detailed per-element analysis results |
+
+### Flag Details
+
+#### Output & Format Flags
+- **`--json`** (`-j`): Emit the full analysis report as a JSON object with `total_score`, `grade`, `category_scores`, `findings`, and `suggestions` keys. Ideal for CI/CD quality gates.
+- **`--output <path>`** (`-o`): Write the report to a file. Supports `.json`, `.md`, `.html`, or `.txt` based on extension or `--format` flag.
+- **`--format <fmt>`** (`-f`): Control report formatting. `text` for terminal output, `json` for machine parsing, `markdown` for documentation, `html` for browser viewing.
+- **`--name-only`**: Minimal output showing just the filename and score. Useful in batch scripts: `drawio:analyze *.drawio --name-only`.
+
+#### Analysis Control Flags
+- **`--standard <name>`** (`-s`): Force a specific notation standard for compliance checking. `auto` detects the standard from shape types. `skip` disables compliance checks entirely.
+- **`--categories <list>`**: Limit analysis to specific categories. Example: `--categories "layout,connections"` skips color, label, layer, and accessibility checks.
+- **`--threshold <score>`** (`-t`): Set a minimum passing score. The command exits with code 1 if the diagram scores below the threshold. Use in CI pipelines: `drawio:analyze arch.drawio --threshold 70 --json`.
+- **`--strict`**: Elevate warnings to errors when evaluating the threshold. A diagram with warnings may pass normally but fail in strict mode.
+- **`--ignore <rules>`**: Skip specific compliance rules by ID. Example: `--ignore "UML-004,BPMN-005"` to suppress informational style rules.
+
+#### Comparison & Fix Flags
+- **`--compare <file>`** (`-c`): Structural diff between two diagram versions. Reports added, removed, and modified cells with details on what changed (label, style, position, connections).
+- **`--fix`** (`-F`): Attempt automatic fixes for common issues: snap elements to grid, add missing labels with placeholder text, standardize font sizes, and connect orphan vertices to nearest neighbors. Creates a backup before fixing.
+
+#### Behavior Flags
+- **`--verbose`** (`-v`): Show detailed per-element scores and individual property evaluations. Useful for understanding why a specific element contributed to a low score.
+
+#### Examples with Flags
+
+```bash
+# Full analysis with human-readable output
+drawio:analyze architecture.drawio
+
+# JSON output for CI quality gate with threshold
+drawio:analyze architecture.drawio --json --threshold 70
+
+# Compare two versions
+drawio:analyze architecture.drawio --compare architecture-old.drawio
+
+# Analyze only layout and connections
+drawio:analyze architecture.drawio --categories "layout,connections" --verbose
+
+# Auto-fix issues
+drawio:analyze architecture.drawio --fix --verbose
+
+# Strict BPMN compliance check
+drawio:analyze process.drawio --standard bpmn --strict --threshold 80
+
+# Batch analysis with minimal output
+drawio:analyze docs/diagrams/*.drawio --name-only --threshold 60
+```
+
 ## Quality Scoring System
 
 The overall quality score is a weighted composite of six categories:

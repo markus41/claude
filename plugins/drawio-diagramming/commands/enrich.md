@@ -33,34 +33,99 @@ generates enriched diagrams from scratch by mining source code and the web.
 /drawio:enrich --analyze-gaps <diagram.drawio>
 ```
 
-### Options
+## Flags
 
-| Flag | Description | Default |
-|------|-------------|---------|
-| `--level <1-4>` | Enrichment depth (see Enrichment Levels below) | `2` |
-| `--sources <dirs...>` | Source directories to analyze | `.` |
-| `--type <type>` | Diagram type: `architecture`, `sequence`, `erd`, `class`, `infra`, `c4`, `network`, `pipeline` | auto-detect |
-| `--research-apis` | Enable web research for API documentation | `false` |
-| `--cloud-details` | Add cloud service limits, pricing, regions | `false` |
-| `--pricing` | Include pricing tier annotations | `false` |
-| `--trace-dependencies` | Follow import/call chains across files | `false` |
-| `--depth <n>` | Max dependency trace depth | `3` |
-| `--output <path>` | Output file path | in-place update |
-| `--dry-run` | Report what would be enriched without modifying | `false` |
-| `--focus <component>` | Enrich only a specific component/service | all |
-| `--lang <language>` | Force language detection (ts, py, java, go, rust, csharp) | auto-detect |
-| `--git-history` | Include git change-frequency hotspot analysis | `false` |
+| Flag | Alias | Type | Default | Description |
+|------|-------|------|---------|-------------|
+| `--level <1-4>` | `-l` | number | `2` | Enrichment depth level (1=quick, 2=standard, 3=deep, 4=exhaustive) |
+| `--sources <dirs>` | `-s` | string[] | `.` | Source directories to analyze (space-separated) |
+| `--type <type>` | `-t` | string | auto-detect | Diagram type (architecture, sequence, erd, class, infra, c4, network, pipeline) |
+| `--from-code <dir>` | `-C` | string | none | Generate an enriched diagram from source code instead of enriching existing |
+| `--analyze-gaps` | `-g` | boolean | `false` | Analyze an existing diagram for missing details without modifying it |
+| `--research-apis` | `-r` | boolean | `false` | Enable Firecrawl web research for API documentation and specs |
+| `--cloud-details` | | boolean | `false` | Add cloud service limits, pricing tiers, and region info |
+| `--pricing` | `-p` | boolean | `false` | Include pricing tier annotations on cloud service elements |
+| `--trace-dependencies` | `-D` | boolean | `false` | Follow import/call chains across files for deep dependency analysis |
+| `--depth <n>` | `-d` | number | `3` | Max dependency trace depth when using --trace-dependencies |
+| `--output <path>` | `-o` | string | in-place | Output file path (defaults to in-place update of the input file) |
+| `--format <fmt>` | `-f` | string | `drawio` | Output format after enrichment (drawio, svg, png) |
+| `--focus <component>` | `-F` | string | all | Enrich only a specific component or service by name |
+| `--lang <language>` | `-L` | string | auto-detect | Force source language (ts, py, java, go, rust, csharp) |
+| `--git-history` | `-G` | boolean | `false` | Include git change-frequency hotspot analysis (heatmap coloring) |
+| `--theme <name>` | `-T` | string | none | Apply a theme to enriched elements (professional, dark, minimal) |
+| `--max-tokens <n>` | `-M` | number | `4000` | Maximum token budget for web research queries |
+| `--cache` | | boolean | `true` | Cache web research results to avoid redundant API calls |
+| `--parallel <n>` | `-P` | number | `3` | Number of parallel research workers (level 3-4 only) |
+| `--verbose` | `-v` | boolean | `false` | Show detailed enrichment steps, data sources, and cell modifications |
+| `--quiet` | `-q` | boolean | `false` | Suppress all output except errors and the final summary |
+| `--dry-run` | `-n` | boolean | `false` | Report what would be enriched without modifying any files |
+
+### Flag Details
+
+#### Enrichment Level Flags
+- **`--level <1-4>`** (`-l`): Controls the depth and breadth of enrichment:
+  - Level 1 (Quick): Static code analysis only. Adds labels, types, source file references. ~30-90 seconds.
+  - Level 2 (Standard): Full code analysis + dependency tracing + framework metadata. ~2-5 minutes.
+  - Level 3 (Deep): Above + Firecrawl web research for API docs, cloud service details, and architecture patterns. ~5-15 minutes.
+  - Level 4 (Exhaustive): Above + cross-repo analysis, historical git analysis, performance metrics, and agent-powered deep research. ~15-60 minutes.
+- **`--from-code <dir>`** (`-C`): Generate a new enriched diagram from scratch by analyzing the specified source directory. The diagram type is auto-detected unless `--type` is specified.
+- **`--analyze-gaps`** (`-g`): Read an existing diagram and report what details are missing (unlabeled elements, missing connections, undocumented services) without modifying the file.
+
+#### Research & Data Flags
+- **`--research-apis`** (`-r`): Enable web research using Firecrawl MCP tools (search, scrape, map, extract). Fetches API documentation, OpenAPI specs, and architecture best practices. Requires level 3+.
+- **`--cloud-details`**: Add detailed cloud service annotations: instance types, storage limits, network throughput, region availability, SLA percentages. Sources data from official documentation.
+- **`--pricing`** (`-p`): Annotate cloud service elements with pricing information: monthly cost estimates, tier names, and cost-optimization suggestions.
+- **`--git-history`** (`-G`): Analyze git log to identify change hotspots. Elements with frequent changes get warmer colors (yellow/orange/red) to indicate risk areas.
+- **`--max-tokens <n>`** (`-M`): Budget limit for web research queries. Higher values allow more detailed research but increase API costs and processing time.
+- **`--cache`**: Cache research results locally to avoid redundant API calls when re-running enrichment. Cache is stored in `.drawio-cache/`. Disable with `--no-cache`.
+- **`--parallel <n>`** (`-P`): Number of concurrent research workers. Higher values speed up level 3-4 enrichment but increase API load.
+
+#### Source Analysis Flags
+- **`--sources <dirs>`** (`-s`): Directories to scan for source code. Multiple directories can be specified: `--sources src/ lib/ shared/`.
+- **`--trace-dependencies`** (`-D`): Follow import chains across files to build a complete dependency graph. Combined with `--depth` to control traversal depth.
+- **`--depth <n>`** (`-d`): Maximum hops to follow when tracing dependencies. Higher values discover more connections but increase analysis time.
+- **`--focus <component>`** (`-F`): Limit enrichment to a specific component or service. Other elements are left unchanged. Useful for targeted enrichment of large diagrams.
+- **`--lang <language>`** (`-L`): Override language auto-detection. Necessary when source files use non-standard extensions or when multiple languages are present.
+
+#### Output & Format Flags
+- **`--output <path>`** (`-o`): Write the enriched diagram to a new file. Without this flag, the input file is modified in-place (a `.bak` backup is created at level 3+).
+- **`--format <fmt>`** (`-f`): Optionally export the enriched diagram after processing. `svg` and `png` trigger an automatic export step.
+- **`--theme <name>`** (`-T`): Apply a visual theme to newly added enrichment elements so they visually stand out from the original diagram content.
+
+#### Behavior Flags
+- **`--dry-run`** (`-n`): Run the full analysis pipeline and report: number of elements to enrich, data sources to query, estimated time, and specific changes per cell. No files are modified.
+- **`--verbose`** (`-v`): Show each enrichment step: source file scanning, dependency resolution, web queries, cell modifications, and style changes.
+- **`--quiet`** (`-q`): Suppress progress output. Only errors and the final summary (elements enriched, time elapsed) are shown.
 
 ### Examples
 
-```
-/drawio:enrich architecture.drawio --level 3 --sources ./src ./docs
+```bash
+# Standard enrichment of an architecture diagram
+/drawio:enrich architecture.drawio --level 2 --sources ./src ./docs
+
+# Deep enrichment with API research
+/drawio:enrich architecture.drawio --level 3 --research-apis --verbose
+
+# Generate enriched diagram from source code
 /drawio:enrich --from-code ./src/api --type sequence --research-apis
-/drawio:enrich infrastructure.drawio --cloud-details --pricing
-/drawio:enrich microservices.drawio --trace-dependencies --depth 3
-/drawio:enrich --from-code ./backend --type erd --lang python
-/drawio:enrich api-flow.drawio --level 4 --git-history --research-apis
-/drawio:enrich --analyze-gaps architecture.drawio
+
+# Cloud infrastructure with pricing annotations
+/drawio:enrich infrastructure.drawio --cloud-details --pricing --level 3
+
+# Trace dependencies with deep analysis
+/drawio:enrich microservices.drawio --trace-dependencies --depth 5 --parallel 4
+
+# Git hotspot analysis
+/drawio:enrich architecture.drawio --git-history --theme professional
+
+# Analyze gaps without modifying
+/drawio:enrich --analyze-gaps architecture.drawio --verbose
+
+# Dry run to preview enrichment
+/drawio:enrich architecture.drawio --level 4 --dry-run
+
+# Focus on a specific service
+/drawio:enrich architecture.drawio --focus "Payment Service" --research-apis --level 3
 ```
 
 ## Enrichment Levels

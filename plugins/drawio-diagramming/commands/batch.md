@@ -29,6 +29,85 @@ Batch operations allow you to apply a single action across many diagrams at once
 This is essential for maintaining consistency across a documentation set, keeping
 exports up to date, and integrating diagram workflows into CI/CD pipelines.
 
+## Flags
+
+| Flag | Alias | Type | Default | Description |
+|------|-------|------|---------|-------------|
+| `--type <operation>` | `-t` | string | `export` | Batch operation type (generate, export, style, embed, refresh, analyze, validate) |
+| `--format <fmt>` | `-f` | string | `svg` | Export format for batch export (svg, png, pdf) |
+| `--output <dir>` | `-o` | string | `./exports` | Output directory for batch results |
+| `--include <glob>` | `-I` | string | `*.drawio` | File glob pattern to include |
+| `--exclude <glob>` | `-X` | string | none | File glob pattern to exclude |
+| `--recursive` | `-r` | boolean | `false` | Search for files recursively in subdirectories |
+| `--parallel <n>` | `-p` | number | `4` | Number of parallel workers |
+| `--max-concurrent <n>` | | number | `4` | Alias for --parallel |
+| `--theme <name>` | `-T` | string | none | Theme to apply in batch style operations |
+| `--custom-theme <json>` | | string | none | JSON string with custom theme colors |
+| `--quality <pct>` | `-q` | number | `100` | Export quality percentage (1-100) |
+| `--scale <factor>` | `-s` | number | `1.0` | Export scale factor |
+| `--transparent` | | boolean | `false` | Use transparent background in exports |
+| `--page-index <n>` | `-P` | number | all | Export only this page index (0-based) |
+| `--export` | `-E` | boolean | `true` | Trigger export (draw.io CLI flag) |
+| `--json` | `-j` | boolean | `false` | Output results as JSON report |
+| `--name-only` | | boolean | `false` | Output only filenames in results |
+| `--dry-run` | `-n` | boolean | `false` | Preview batch operations without executing |
+| `--verbose` | `-v` | boolean | `false` | Show detailed per-file processing output |
+| `--fail-fast` | | boolean | `false` | Stop batch on first failure |
+| `--continue-on-error` | `-C` | boolean | `true` | Continue processing remaining files after a failure |
+
+### Flag Details
+
+#### Operation & Scope Flags
+- **`--type <operation>`** (`-t`): The batch operation to perform. `generate` creates diagrams from source files. `export` converts .drawio to image formats. `style` applies theme changes. `embed` updates platform embeds. `refresh` re-runs data bindings. `analyze` runs quality analysis. `validate` checks for structural errors.
+- **`--include <glob>`** (`-I`): File pattern to match. Default `*.drawio` finds all draw.io files in the target directory. Use `**/*.drawio` with `--recursive` for deep search.
+- **`--exclude <glob>`** (`-X`): Exclude files matching this pattern. Example: `--exclude "*-draft.drawio"` skips draft diagrams.
+- **`--recursive`** (`-r`): Search subdirectories for matching files. Without this flag, only the immediate directory is searched.
+
+#### Export Flags
+- **`--format <fmt>`** (`-f`): Target format for batch export. Supports all draw.io export formats: svg, png, pdf.
+- **`--output <dir>`** (`-o`): Destination directory. Created automatically if it does not exist. Files retain their original names with the new extension.
+- **`--quality <pct>`** (`-q`): Image compression quality for PNG exports.
+- **`--scale <factor>`** (`-s`): Resolution multiplier. `2.0` produces retina-quality exports.
+- **`--transparent`**: Transparent backgrounds for all exports. Useful for diagrams embedded on colored pages.
+- **`--page-index <n>`** (`-P`): Export a specific page from multi-page diagrams. When omitted, all pages are exported.
+
+#### Style Flags
+- **`--theme <name>`** (`-T`): Apply a named theme across all matching diagrams. Used with `--type style`.
+- **`--custom-theme <json>`**: Provide a custom color mapping as JSON. Example: `--custom-theme '{"fill":"#1a1a2e","stroke":"#16213e","font":"#e0e0e0"}'`.
+
+#### Performance & Error Handling Flags
+- **`--parallel <n>`** / **`--max-concurrent <n>`**: Control parallelism. Higher values speed up batch processing but increase memory usage. Set to `1` for sequential processing.
+- **`--fail-fast`**: Stop the entire batch on the first failure. Useful in CI pipelines where any failure should abort.
+- **`--continue-on-error`** (`-C`): Default behavior. Log failures and continue processing remaining files. The final report shows success/failure counts.
+
+#### Output Flags
+- **`--json`** (`-j`): Emit a JSON report with per-file results including status, output path, file size, and any errors.
+- **`--name-only`**: Minimal output showing only processed filenames.
+- **`--dry-run`** (`-n`): List all files that would be processed and the operations that would be applied, without executing anything.
+- **`--verbose`** (`-v`): Show detailed output for each file: export commands, file sizes, processing time.
+
+#### Examples with Flags
+
+```bash
+# Batch export all diagrams to SVG
+drawio:batch docs/diagrams/ --type export --format svg --output exports/
+
+# Batch export with retina quality, recursive search
+drawio:batch . --type export --format png --scale 2 --recursive --verbose
+
+# Apply dark theme to all diagrams
+drawio:batch docs/diagrams/ --type style --theme dark --dry-run
+
+# Analyze all diagrams with JSON report
+drawio:batch docs/ --type analyze --json --recursive --output reports/
+
+# Batch validate with fail-fast for CI
+drawio:batch . --type validate --recursive --fail-fast --json
+
+# Parallel export with custom include pattern
+drawio:batch . --type export --include "architecture-*.drawio" --parallel 8 --format svg
+```
+
 ## Supported Batch Operations
 
 | Operation | Description | Risk |

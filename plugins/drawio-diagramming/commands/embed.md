@@ -30,6 +30,87 @@ This command generates the correct embedding code for draw.io diagrams on any
 supported platform. It auto-detects the target platform from the working context
 (git remote, file types, project structure) and produces the right snippet format.
 
+## Flags
+
+| Flag | Alias | Type | Default | Description |
+|------|-------|------|---------|-------------|
+| `--platform <name>` | `-p` | string | auto-detect | Target platform (github, confluence, jira, azure-devops, notion, teams, harness) |
+| `--target <file>` | `-t` | string | none | Target file to insert the embed snippet into (e.g., README.md) |
+| `--format <fmt>` | `-f` | string | `svg` | Export format for embedding (svg, png, pdf) |
+| `--output <path>` | `-o` | string | stdout | Write embed snippet to file instead of stdout |
+| `--all-platforms` | `-A` | boolean | `false` | Generate embed snippets for all supported platforms |
+| `--pr-comment` | | boolean | `false` | Generate a GitHub PR comment with the diagram |
+| `--wiki-page <name>` | | string | none | Target wiki page name (GitHub Wiki or Azure DevOps Wiki) |
+| `--issue <key>` | | string | none | Jira issue key or GitHub issue number to attach diagram to |
+| `--page-id <id>` | | string | none | Confluence page ID for diagram attachment |
+| `--embed-diagram` | `-e` | boolean | `true` | Embed draw.io XML in exported SVG/PNG for editability |
+| `--link-source` | `-L` | boolean | `false` | Add source code links to diagram elements |
+| `--code-map <path>` | | string | none | Source directory for generating component-to-code mapping |
+| `--scale <factor>` | `-S` | number | `1.0` | Scale factor for exported images |
+| `--export` | `-E` | boolean | `false` | Export the diagram before embedding (auto-detect format) |
+| `--branch <name>` | `-b` | string | current branch | Git branch for raw file URLs |
+| `--auto-update` | `-u` | boolean | `false` | Generate CI workflow to auto-export on diagram changes |
+| `--ci-mode` | | boolean | `false` | Optimize output for CI/CD pipeline consumption (no prompts, JSON output) |
+| `--git-dir <path>` | | string | auto-detect | Git repository root for URL generation |
+| `--show-current` | | boolean | `false` | Show currently embedded diagrams in the target file |
+| `--staged` | | boolean | `false` | Only process staged (git add) diagram files |
+| `--quiet` | `-q` | boolean | `false` | Suppress informational output; only emit the snippet |
+| `--verbose` | `-v` | boolean | `false` | Show detailed platform detection and URL generation steps |
+| `--dry-run` | `-n` | boolean | `false` | Preview the embed snippet without writing to any files |
+
+### Flag Details
+
+#### Platform & Target Flags
+- **`--platform <name>`** (`-p`): Override automatic platform detection. When omitted, the command inspects git remotes, project files, and directory structure to determine the target platform.
+- **`--target <file>`** (`-t`): Specify a file where the embed snippet should be inserted. The command finds an appropriate insertion point (e.g., after an `## Architecture` heading in a README).
+- **`--all-platforms`** (`-A`): Generate embedding code for every supported platform. Useful for creating a reference document with copy-paste snippets.
+
+#### Platform-Specific Flags
+- **`--pr-comment`**: Format the output as a GitHub PR comment with collapsible edit instructions. Includes raw URL from the current branch.
+- **`--wiki-page <name>`**: Target a specific wiki page. For GitHub Wiki, uses the wiki repo convention. For Azure DevOps, uses the wiki API path.
+- **`--issue <key>`**: Attach the diagram to a Jira issue (e.g., `PROJ-1234`) or GitHub issue (e.g., `#42`). Requires API credentials in environment.
+- **`--page-id <id>`**: Confluence page ID for uploading diagram as an attachment and inserting the draw.io macro.
+
+#### Export & Format Flags
+- **`--format <fmt>`** (`-f`): Choose the image format for embedding. SVG is recommended for GitHub/web (scalable, editable). PNG for email/chat. PDF for formal docs.
+- **`--embed-diagram`** (`-e`): Include the draw.io XML data inside the exported SVG/PNG. This allows the exported image to be re-opened and edited in draw.io. Enabled by default.
+- **`--scale <factor>`** (`-S`): Control image resolution. Use `2.0` for retina displays, `0.5` for thumbnails.
+- **`--export`** (`-E`): Run the draw.io CLI export before generating the embed snippet. Ensures the exported image is up to date.
+
+#### Source Linking Flags
+- **`--link-source`** (`-L`): Add clickable links from diagram elements to source code files. Elements are matched by ID or label to source file paths.
+- **`--code-map <path>`**: Specify the source directory root for building the component-to-file mapping table appended to the embed.
+
+#### Behavior Flags
+- **`--branch <name>`** (`-b`): Use a specific branch for constructing raw file URLs. Defaults to the current git branch.
+- **`--auto-update`** (`-u`): Generate a CI/CD workflow file (GitHub Actions, Azure Pipelines, or GitLab CI) that auto-exports diagrams on push.
+- **`--ci-mode`**: Machine-friendly output. Suppresses interactive prompts, outputs JSON with embed URLs and snippet text.
+- **`--dry-run`** (`-n`): Show the generated embed snippet and any file modifications without actually writing them.
+- **`--verbose`** (`-v`): Show platform detection reasoning, URL construction, and export command details.
+- **`--quiet`** (`-q`): Output only the embed snippet with no surrounding information. Useful for piping into other commands.
+
+#### Examples with Flags
+
+```bash
+# Auto-detect platform, embed in README
+drawio:embed architecture.drawio --target README.md
+
+# GitHub PR comment with source links
+drawio:embed architecture.drawio --pr-comment --link-source --code-map src/
+
+# Confluence page with specific page ID
+drawio:embed architecture.drawio --platform confluence --page-id 123456
+
+# All platforms at once, quiet mode for scripting
+drawio:embed architecture.drawio --all-platforms --quiet
+
+# Export first, then embed with 2x scale
+drawio:embed architecture.drawio --export --scale 2 --format png --target docs/README.md
+
+# CI mode for pipeline integration
+drawio:embed architecture.drawio --ci-mode --format svg --branch main
+```
+
 ## Platform Auto-Detection
 
 ```bash

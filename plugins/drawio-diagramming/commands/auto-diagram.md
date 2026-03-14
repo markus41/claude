@@ -30,6 +30,78 @@ draw.io-compatible XML, and then self-edits the output for optimal layout and cl
 
 ---
 
+## Flags
+
+| Flag | Alias | Type | Default | Description |
+|------|-------|------|---------|-------------|
+| `--scope <level>` | `-s` | string | `directory` | Analysis scope (file, directory, repo, pr) |
+| `--type <type>` | `-t` | string | auto-detect | Force a specific diagram type instead of auto-detecting |
+| `--output <path>` | `-o` | string | `docs/diagrams/<type>.drawio` | Output file path |
+| `--format <fmt>` | `-f` | string | `drawio` | Output format (drawio, svg, png, mermaid) |
+| `--update <file>` | `-u` | string | none | Update an existing diagram incrementally instead of regenerating |
+| `--pr` | `-P` | boolean | `false` | Analyze PR changes and generate a diagram focused on modified components |
+| `--max-depth <n>` | `-d` | number | `5` | Maximum directory depth to scan for source files |
+| `--include-tests` | | boolean | `false` | Include test files in analysis (normally excluded) |
+| `--include-private` | | boolean | `false` | Include private/internal symbols in class diagrams |
+| `--style <preset>` | `-S` | string | `professional` | Visual style preset (professional, sketch, dark, minimal, blueprint) |
+| `--theme <name>` | | string | `standard` | Color theme (standard, dark, pastel, high-contrast) |
+| `--stat` | | boolean | `false` | Show analysis statistics without generating a diagram |
+| `--oneline` | | boolean | `false` | One-line summary output (type, element count, path) |
+| `--name-only` | | boolean | `false` | Output only the generated filename |
+| `--verbose` | `-v` | boolean | `false` | Show detailed context analysis and type selection reasoning |
+| `--dry-run` | `-n` | boolean | `false` | Analyze and report what would be generated without creating files |
+
+### Flag Details
+
+#### Scope & Source Flags
+- **`--scope <level>`** (`-s`): Control how much of the project is analyzed. `file` analyzes only the specified file(s). `directory` (default) scans the current or specified directory. `repo` performs a full repository scan. `pr` examines the git diff against the base branch.
+- **`--pr`** (`-P`): Shortcut for `--scope pr`. Reads the current branch diff against main/master, identifies changed components, and generates a diagram highlighting additions (green), modifications (yellow), and deletions (red outline).
+- **`--max-depth <n>`** (`-d`): Limit directory traversal depth. Set lower for faster analysis in large monorepos. Set higher to discover deeply nested services.
+- **`--include-tests`**: By default, test files (`*.test.*`, `*.spec.*`, `__tests__/`) are excluded from analysis. Enable this to include them in class and dependency diagrams.
+- **`--include-private`**: By default, private class members and unexported symbols are excluded. Enable for complete class diagrams.
+
+#### Type & Output Flags
+- **`--type <type>`** (`-t`): Override the automatic type selection. Options: `class`, `sequence`, `er`, `c4`, `k8s`, `aws`, `azure`, `gcp`, `flowchart`, `component`, `state`, `event`, `network`, `bpmn`.
+- **`--output <path>`** (`-o`): Specify the output file. Default path uses the detected diagram type: `docs/diagrams/sequence-api.drawio`.
+- **`--format <fmt>`** (`-f`): Output format. `drawio` produces native XML. `svg`/`png` additionally exports the image. `mermaid` generates Mermaid.js text instead of draw.io XML.
+- **`--update <file>`** (`-u`): Incremental update mode. Reads an existing diagram, re-analyzes source code, and patches only the changed elements while preserving manual customizations.
+
+#### Style Flags
+- **`--style <preset>`** (`-S`): Apply a visual style preset to all generated elements. Affects fill colors, stroke styles, font family, corners, and shadows.
+- **`--theme <name>`**: Independent color theme selection. Can be combined with `--style` for fine-grained control.
+
+#### Output Control Flags
+- **`--stat`**: Print analysis results (detected patterns, file counts, dominant type) without generating a diagram. Useful for understanding what auto-diagram would produce.
+- **`--oneline`**: Compact one-line output: `sequence | 4 participants, 6 messages | docs/diagrams/sequence-api.drawio`.
+- **`--name-only`**: Print only the output filename. Useful for scripting: `file=$(drawio:auto-diagram --name-only)`.
+- **`--dry-run`** (`-n`): Full analysis pass with detailed output, but no files are written.
+- **`--verbose`** (`-v`): Show the complete decision tree evaluation: which patterns were detected, confidence scores, and why the final type was selected.
+
+#### Examples with Flags
+
+```bash
+# Auto-detect from current directory
+drawio:auto-diagram
+
+# Analyze specific API routes
+drawio:auto-diagram src/api/routes/*.ts --type sequence
+
+# PR-based diagram
+drawio:auto-diagram --pr --style sketch --output docs/pr-changes.drawio
+
+# Repository-wide architecture
+drawio:auto-diagram --scope repo --type c4 --verbose
+
+# Update existing diagram incrementally
+drawio:auto-diagram --update docs/architecture.drawio --verbose
+
+# Dry run to preview detection
+drawio:auto-diagram --scope repo --dry-run --stat
+
+# Include tests and private members for detailed class diagram
+drawio:auto-diagram src/services/ --type class --include-tests --include-private
+```
+
 ## Context Analysis Engine
 
 The auto-diagram command begins by gathering context from multiple sources to determine
