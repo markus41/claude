@@ -1072,3 +1072,15 @@ cat /root/.config/gh/config.yml 2>/dev/null`
 - **Input:** `C:\Users\MarkusAhling\.claude\plugins\cache\temp_local_1772999716991_weywmo\.claude-plugin\plugin.json`
 - **Error:** File does not exist. Note: your current working directory is c:\Users\MarkusAhling\pro\claude.
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: mcp__firecrawl__firecrawl_search failure (2026-03-14T05:30:14Z)
+- **Tool:** mcp__firecrawl__firecrawl_search
+- **Input:** `N/A`
+- **Error:** Tool 'firecrawl_search' execution failed: Maximum number of redirects exceeded
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: mcp__firecrawl__firecrawl_search failure (2026-03-14T05:30:15Z)
+- **Tool:** mcp__firecrawl__firecrawl_search
+- **Input:** `N/A`
+- **Error:** Tool 'firecrawl_search' execution failed: Maximum number of redirects exceeded
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
