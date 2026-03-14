@@ -1084,3 +1084,36 @@ cat /root/.config/gh/config.yml 2>/dev/null`
 - **Input:** `N/A`
 - **Error:** Tool 'firecrawl_search' execution failed: Maximum number of redirects exceeded
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-03-14T16:34:26Z)
+- **Tool:** Bash
+- **Input:** `for f in commands/*.md; do echo "=== $(basename $f) ===" && grep -c "^| \`--" "$f" && echo "---"; done`
+- **Error:** Exit code 1
+=== analyze.md ===
+0
+=== auto-diagram.md ===
+0
+=== batch.md ===
+0
+=== create.md ===
+0
+=== data-bind.md ===
+0
+=== edit.md ===
+0
+=== embed.md ===
+0
+=== enrich.md ===
+13
+---
+=== export.md ===
+0
+=== layers.md ===
+0
+=== mcp-setup.md ===
+0
+=== style.md ===
+0
+=== template.md ===
+0
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
