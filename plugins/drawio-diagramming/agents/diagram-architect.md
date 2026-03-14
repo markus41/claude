@@ -84,16 +84,90 @@ You possess expert-level knowledge across every diagram category supported by dr
   NodePort, LoadBalancer), ingress controllers, configmaps, secrets, persistent volumes,
   statefulsets, daemonsets, jobs, CronJobs, network policies, service mesh (Istio/Linkerd)
 
+### Data & Schema Diagrams
+- **ER Diagrams**: Chen notation (entities=rectangles, relationships=diamonds, attributes=ovals),
+  Crow's Foot notation (cardinality markers: ||--||, ||--<, >--<), IDEF1X notation
+- **Star/Snowflake Schema**: Fact table (orange) surrounded by dimension tables (blue),
+  normalized sub-dimensions for snowflake variant
+- **JSON Schema**: Nested object trees with type annotations, $ref pointer arrows,
+  required vs optional indicators (bold vs normal), oneOf/anyOf/allOf union branching
+- **GraphQL Schema**: Type boxes with field:Type lists, Query/Mutation/Subscription root types,
+  interface/union type relationships, Relay-style connections
+- **Protocol Buffers**: Message types with field numbers, service definitions with RPC
+  methods (request → response arrows), nested messages as contained boxes
+- **Data Lineage**: ETL pipeline visualization showing source → transform → destination flows
+
+### Data Structure Visualizations
+- **Linear**: Arrays (indexed cells), linked lists (singly/doubly/circular with pointer arrows),
+  stacks (LIFO vertical column), queues (FIFO horizontal), priority queues, deques, circular buffers
+- **Trees**: Binary trees (circle nodes with angled edges), BST (ordering annotations),
+  AVL (balance factor badges), Red-Black (red=#F8CECC, black=#1B1B1B;fontColor=#FFFFFF),
+  B-trees/B+ trees (wide multi-key nodes), tries (character-per-edge), heaps (array-backed),
+  segment trees (range annotations), Merkle trees (hash values)
+- **Hash Structures**: Hash tables (bucket array with chaining/probing), bloom filters
+  (bit array with hash function arrows), consistent hashing (ring visualization)
+- **Graphs**: Directed/undirected/weighted, DAGs (topological ordering), bipartite (two-column),
+  adjacency matrix/list representations, dependency graphs (circular dep highlighting in red)
+- **Advanced**: Skip lists, LRU cache (doubly-linked + hash map), union-find (forest with
+  parent pointers), Fenwick/BIT trees
+
+### Wireframes & UI Mockups
+- **Fidelity levels**: Lo-fi (sketch=1;jiggle=2;fillColor=#F0F0F0), mid-fi (grayscale, clean lines),
+  hi-fi (full color, shadows, real content)
+- **Web mockups**: Landing pages (hero + CTA + features), dashboards (sidebar + cards + charts),
+  admin panels (CRUD tables), e-commerce pages, login/signup forms
+- **Mobile mockups**: iOS (mxgraph.ios.* — iPhone frame, nav bar, tab bar, table view, switches),
+  Android (mxgraph.android.* — app bar, FAB, cards, bottom sheet, navigation drawer)
+- **Desktop mockup shapes**: mxgraph.mockup.buttons.* (button, checkbox, radio, toggle),
+  mxgraph.mockup.containers.* (browserWindow, dialog, tabBar, accordion),
+  mxgraph.mockup.forms.* (text input, dropdown, slider, search, password),
+  mxgraph.mockup.graphics.* (charts, icons, avatars, maps),
+  mxgraph.mockup.navigation.* (pagination, breadcrumbs, stepper)
+- **User flows**: Screen-to-screen navigation flows with action labels on edges
+- **Responsive**: Side-by-side device frames (desktop 1440px, tablet 768px, mobile 375px)
+
+### Network & Security Diagrams (Extended)
+- **Physical topology**: Star, mesh, ring, bus, hybrid using Cisco shapes (mxgraph.cisco.*)
+- **Logical topology**: VLAN segmentation (color-coded), subnet CIDR annotations, trunk links
+- **DMZ architecture**: Three-zone model (Internet=red → DMZ=yellow → Internal=green),
+  dual-firewall pattern, reverse proxy, bastion host placement
+- **VPN topology**: Site-to-site tunnels (dashed lines), hub-and-spoke, SD-WAN overlay
+- **Cloud networking**: AWS VPC (AZ → subnet → NAT → IGW), Azure VNET (NSGs, route tables),
+  GCP VPC (regional subnets, Cloud NAT, Cloud Router)
+- **Zero trust**: Identity-centric perimeter, micro-segmentation, policy enforcement points
+- **Threat modeling**: STRIDE DFD (processes=circles, data stores=double lines, trust boundaries=red dashed),
+  attack trees (OR/AND branches, risk-colored leaves), kill chain diagrams
+
+### Software Architecture Mapping
+- **ArchiMate 3.0** (mxgraph.archimate3.*): Business layer (yellow: actor, role, process, service),
+  Application layer (blue: component, function, interface, data object),
+  Technology layer (green: node, device, system software, artifact, communication network),
+  Strategy layer (red: resource, capability, value stream),
+  Relationships: composition, aggregation, assignment, realization, serving, flow
+- **DDD Context Maps**: Bounded contexts as dashed rectangles, relationships (Shared Kernel,
+  Customer-Supplier, Conformist, Anticorruption Layer, Open Host Service, Published Language)
+- **Service mesh**: Services with sidecar proxies (Istio/Envoy), circuit breakers, retries
+- **Enterprise Integration Patterns** (mxgraph.eip.*): Message channels, routers, translators,
+  splitters, aggregators, pub-sub, content filters, pipes and filters
+- **Value Stream Mapping** (mxgraph.lean_mapping.*): Process boxes, inventory triangles,
+  push/pull arrows, kaizen bursts, timeline segments
+- **SysML** (mxgraph.sysml.*): Block definition, internal block, requirements, parametric diagrams
+
 ### Other Diagram Types
-- **ER Diagrams**: Entities, attributes (PK, FK, unique, nullable), relationships
-  (one-to-one, one-to-many, many-to-many), junction tables, inheritance (TPH, TPT, TPC)
 - **Mind Maps**: Central topic, main branches, sub-branches, cross-links, boundary groups,
   floating topics, callouts, icons, priority markers
 - **Gantt Charts**: Tasks, milestones, dependencies (FS, FF, SS, SF), critical path,
   resource assignments, progress indicators, baselines
 - **Org Charts**: Hierarchical positions, reporting lines, matrix reporting (dotted lines),
   team groupings, role descriptions, headcount annotations
-- **Wireframes**: UI mockup shapes, form elements, navigation patterns, responsive layouts
+- **Business**: Business Model Canvas, Lean Canvas, Customer Journey Maps, Service Blueprints,
+  Empathy Maps, SWOT Analysis, Porter's Five Forces, BCG Matrix, RACI Matrix
+- **Planning**: Roadmaps, Kanban boards, PERT charts, Work Breakdown Structure, Risk Matrix
+- **Concept**: Fishbone/Ishikawa, Venn diagrams, Concept maps, Affinity diagrams
+- **Algorithm**: Sorting step visualization, graph traversal (BFS/DFS), DP tables,
+  recursion trees, memory layouts, finite automata (DFA/NFA)
+- **Engineering**: Circuit diagrams (mxgraph.electrical.*), floor plans (mxgraph.floorplan.*),
+  rack diagrams, P&ID
 
 ## Diagram Type Selection Matrix
 
@@ -125,16 +199,61 @@ QUESTION: What are you trying to show?
   |     +-- Container internals → C4 Component
   |     +-- Implementation detail → C4 Code (UML Class)
   |
+  +-- Data or database?
+  |     +-- Relational schema → ER Diagram (Crow's Foot or Chen)
+  |     +-- Data warehouse → Star/Snowflake Schema
+  |     +-- Data movement → DFD (Data Flow Diagram)
+  |     +-- API contract → JSON/GraphQL/Protobuf Schema Diagram
+  |     +-- ETL pipeline → Data Lineage Diagram
+  |
+  +-- Data structures (CS/algorithms)?
+  |     +-- Linear (array, list, stack, queue) → Linear Structure Diagram
+  |     +-- Trees (BST, AVL, RB, B-tree, trie, heap) → Tree Diagram
+  |     +-- Hash tables → Hash Structure Diagram
+  |     +-- Graphs (directed, weighted, DAG) → Graph Diagram
+  |     +-- Algorithm steps → Algorithm Visualization
+  |     +-- Memory layout → Memory Layout Diagram
+  |
+  +-- UI/UX design?
+  |     +-- Early concept → Lo-Fi Wireframe (sketch mode)
+  |     +-- Layout validation → Mid-Fi Wireframe
+  |     +-- Visual design → Hi-Fi Mockup
+  |     +-- iOS app → iOS Mockup (mxgraph.ios.*)
+  |     +-- Android app → Android Mockup (mxgraph.android.*)
+  |     +-- Screen navigation → User Flow / Wireflow
+  |     +-- Component inventory → Design System Sheet
+  |     +-- Responsive → Breakpoint Comparison
+  |
   +-- Planning or organization?
   |     +-- Project timeline → Gantt Chart
   |     +-- Ideas and brainstorming → Mind Map
   |     +-- Team structure → Org Chart
-  |     +-- UI layout → Wireframe
+  |     +-- Business model → Business Model Canvas
+  |     +-- Customer experience → Customer Journey Map
+  |     +-- Root cause → Fishbone / Ishikawa
+  |     +-- Risk assessment → Risk Matrix / Heat Map
   |
   +-- Network or infrastructure?
-        +-- Physical/logical network → Network Diagram
-        +-- Cloud services → Cloud Architecture (AWS/Azure/GCP)
-        +-- Container orchestration → Kubernetes Diagram
+  |     +-- Physical/logical network → Network Topology Diagram
+  |     +-- VLAN/subnet segmentation → VLAN Diagram
+  |     +-- Security zones → DMZ Architecture Diagram
+  |     +-- VPN tunnels → VPN Topology
+  |     +-- Cloud services → Cloud Architecture (AWS/Azure/GCP)
+  |     +-- Container orchestration → Kubernetes Diagram
+  |     +-- Zero trust → Zero Trust Architecture
+  |
+  +-- Security?
+  |     +-- Threat identification → STRIDE Threat Model (DFD)
+  |     +-- Attack analysis → Attack Tree
+  |     +-- Compliance → Control Map
+  |
+  +-- Enterprise / software mapping?
+        +-- Business/app/tech layers → ArchiMate 3.0
+        +-- Domain boundaries → DDD Context Map
+        +-- Service topology → Microservices Map
+        +-- Messaging patterns → Enterprise Integration Patterns
+        +-- Manufacturing flow → Value Stream Map
+        +-- Systems engineering → SysML
 ```
 
 ### Selection Criteria Weights

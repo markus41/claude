@@ -4,9 +4,11 @@
 Intelligent diagramming plugin powered by draw.io / diagrams.net. Generates production-quality diagrams with AI assistance, embeds them across 7+ platforms, and supports conditional formatting linked to live data and statuses.
 
 ## Architecture
-- **Commands**: 13 slash commands for diagram lifecycle (create, edit, embed, export, analyze, template, style, layers, data-bind, auto-diagram, batch, mcp-setup, enrich)
+- **Commands**: 13 slash commands for diagram lifecycle (create, edit, embed, export, analyze, template, style, layers, data-bind, auto-diagram, batch, mcp-setup, enrich) — each with comprehensive flag system (237 flags total)
 - **Agents**: 6 specialized agents (diagram-architect, integration-specialist, style-engineer, data-connector, auto-documenter, enrichment-researcher)
-- **Skills**: 6 knowledge domains (XML generation, diagram types, platform integrations, conditional formatting, AI generation, MCP integration)
+- **Skills**: 10 knowledge domains:
+  - Core: XML generation, diagram types, platform integrations, conditional formatting, AI generation, MCP integration
+  - Extended: **diagram-catalog** (196 diagram types), **wireframes-mockups** (UI/UX), **data-structures** (CS visualizations), **network-software-mapping** (infra/architecture)
 
 ## MCP Server Integration
 This plugin supports two draw.io MCP servers:
@@ -42,6 +44,18 @@ The plugin automatically selects the right diagram type based on context:
 | Sprint planning | Swimlane | Role-based workflow |
 | Network topology | Network diagram | Devices and connections |
 | State machine | UML State diagram | State transitions |
+| Data structures | Data Structure diagram | Arrays, trees, graphs, hash tables |
+| UI/UX design | Wireframe / Mockup | Lo-fi, mid-fi, hi-fi fidelity |
+| iOS/Android app | Mobile Mockup | Platform-specific UI elements |
+| Threat analysis | STRIDE Threat Model | DFD with trust boundaries |
+| Enterprise layers | ArchiMate 3.0 | Business/app/tech layers |
+| Domain boundaries | DDD Context Map | Bounded context relationships |
+| JSON/GraphQL API | Schema Diagram | Type system visualization |
+| Message patterns | EIP Diagram | Integration flow patterns |
+| Manufacturing flow | Value Stream Map | Lean process optimization |
+| Security zones | DMZ Architecture | Network security boundaries |
+
+See `skills/diagram-catalog/SKILL.md` for the full 196-type reference catalog.
 
 ## XML Generation Rules
 1. Always include structural cells: `id="0"` (root) and `id="1" parent="0"` (default layer)
