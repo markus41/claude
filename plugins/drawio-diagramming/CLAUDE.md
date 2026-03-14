@@ -4,8 +4,8 @@
 Intelligent diagramming plugin powered by draw.io / diagrams.net. Generates production-quality diagrams with AI assistance, embeds them across 7+ platforms, and supports conditional formatting linked to live data and statuses.
 
 ## Architecture
-- **Commands**: 12 slash commands for diagram lifecycle (create, edit, embed, export, analyze, template, style, layers, data-bind, auto-diagram, batch, mcp-setup)
-- **Agents**: 5 specialized agents (diagram-architect, integration-specialist, style-engineer, data-connector, auto-documenter)
+- **Commands**: 13 slash commands for diagram lifecycle (create, edit, embed, export, analyze, template, style, layers, data-bind, auto-diagram, batch, mcp-setup, enrich)
+- **Agents**: 6 specialized agents (diagram-architect, integration-specialist, style-engineer, data-connector, auto-documenter, enrichment-researcher)
 - **Skills**: 6 knowledge domains (XML generation, diagram types, platform integrations, conditional formatting, AI generation, MCP integration)
 
 ## MCP Server Integration
@@ -62,6 +62,24 @@ The plugin automatically selects the right diagram type based on context:
 | Notion | Chrome extension or File > Embed > Notion | `.drawio.svg` embed |
 | Teams | OneDrive/SharePoint integration | Shared file link |
 | Harness | SVG/PNG in pipeline docs, wiki markdown | Image embed |
+
+## Diagram Enrichment (Firecrawl-Powered)
+The plugin can enrich diagrams with deeper analysis at 4 levels:
+
+| Level | Scope | Tools Used |
+|-------|-------|-----------|
+| 1 - Quick | Add labels, types, basic metadata | Code analysis (Grep, Glob, Read) |
+| 2 - Standard | Full code analysis + dependency tracing + framework metadata | Code analysis + AST parsing |
+| 3 - Deep | Above + web research + API docs + cloud service details | Firecrawl MCP (search, scrape, map, extract) |
+| 4 - Exhaustive | Above + cross-repo analysis + historical git analysis + metrics | All tools + Agent subagents |
+
+Firecrawl tools used for enrichment:
+- `firecrawl_search` — Find API documentation, architecture patterns, best practices
+- `firecrawl_scrape` — Extract structured API specs (OpenAPI/Swagger endpoints, schemas)
+- `firecrawl_map` — Discover all pages of documentation sites before targeted scraping
+- `firecrawl_extract` — Pull structured data (configs, pricing, service limits) from docs
+
+Self-editing enrichment loop: generate → analyze gaps → research → enrich → re-analyze → repeat
 
 ## Quality Standards
 - Use draw.io color themes for consistency (blue, green, yellow, orange, red, purple, gray)

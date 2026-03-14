@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "plugin": "drawio-diagramming",
+  "type": "agents",
+  "generatedBy": "scripts/generate-plugin-indexes.mjs",
+  "entries": [
+    {
+      "name": "drawio:auto-documenter",
+      "intent": "Automated documentation agent that generates diagrams from code analysis and keeps them synchronized",
+      "tags": [
+        "drawio-diagramming",
+        "agent",
+        "auto-documenter"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "medium",
+      "path": "agents/auto-documenter.md"
+    },
+    {
+      "name": "drawio:data-connector",
+      "intent": "Data binding specialist for conditional formatting, live data integration, and dynamic diagram updates",
+      "tags": [
+        "drawio-diagramming",
+        "agent",
+        "data-connector"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/data-connector.md"
+    },
+    {
+      "name": "drawio:diagram-architect",
+      "intent": "Expert architect that selects optimal diagram types and generates production-quality draw.io XML",
+      "tags": [
+        "drawio-diagramming",
+        "agent",
+        "diagram-architect"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/diagram-architect.md"
+    },
+    {
+      "name": "drawio:enrichment-researcher",
+      "intent": "Deep research agent that enriches diagrams with codebase analysis and web-sourced intelligence",
+      "tags": [
+        "drawio-diagramming",
+        "agent",
+        "enrichment-researcher"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "high",
+      "path": "agents/enrichment-researcher.md"
+    },
+    {
+      "name": "drawio:integration-specialist",
+      "intent": "Platform integration expert for embedding diagrams across GitHub, Confluence, Azure DevOps, Notion, Teams, and Harness",
+      "tags": [
+        "drawio-diagramming",
+        "agent",
+        "integration-specialist"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/integration-specialist.md"
+    },
+    {
+      "name": "drawio:style-engineer",
+      "intent": "Visual design specialist for draw.io diagram styling, theming, and professional appearance",
+      "tags": [
+        "drawio-diagramming",
+        "agent",
+        "style-engineer"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/style-engineer.md"
+    }
+  ]
+}
