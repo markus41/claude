@@ -1,7 +1,7 @@
 {
   "version": 1,
   "description": "Cowork marketplace item catalog. All items are backed by real plugin agents, skills, and commands.",
-  "totalItems": 17,
+  "totalItems": 18,
   "items": [
     {
       "id": "fastapi-scaffold",
@@ -688,6 +688,67 @@
           ],
           "commands": [
             "theme"
+          ]
+        }
+      }
+    },
+    {
+      "id": "drawio-diagramming",
+      "name": "Draw.io Diagramming",
+      "type": "skill_pack",
+      "category": "design",
+      "difficulty": "beginner",
+      "description": "AI-powered draw.io diagramming with 196 diagram types, multi-platform embedding (GitHub, Confluence, Azure DevOps, Notion, Teams, Harness), conditional formatting, live data binding, and MCP integration.",
+      "tags": [
+        "drawio",
+        "diagrams",
+        "flowchart",
+        "uml",
+        "architecture",
+        "c4",
+        "bpmn",
+        "wireframe",
+        "mcp",
+        "embedding"
+      ],
+      "rating": 4.7,
+      "trustGrade": "A",
+      "pluginBindings": {
+        "drawio-diagramming": {
+          "agents": [
+            "diagram-architect",
+            "integration-specialist",
+            "style-engineer",
+            "data-connector",
+            "auto-documenter",
+            "enrichment-researcher"
+          ],
+          "skills": [
+            "xml-generation",
+            "diagram-types",
+            "platform-integrations",
+            "conditional-formatting",
+            "ai-generation",
+            "mcp-integration",
+            "diagram-catalog",
+            "wireframes-mockups",
+            "data-structures",
+            "network-software-mapping"
+          ],
+          "commands": [
+            "create",
+            "edit",
+            "embed",
+            "export",
+            "analyze",
+            "template",
+            "style",
+            "layers",
+            "data-bind",
+            "auto-diagram",
+            "batch",
+            "mcp-setup",
+            "enrich"
           ]
         }
       }
