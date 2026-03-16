@@ -1165,3 +1165,72 @@ for cat, items in cats.items():
 
 === categories ===
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-03-16T02:11:44Z)
+- **Tool:** Bash
+- **Input:** `python3 << 'PYEOF'
+import json
+
+# Check the categories section - is 'diagramming' in any of the category lists?
+d = json.load(open('/home/user/claude/.claude/registry/index.json'))
+cats = d.get('categories', {})
+for cat_type, cat_list in cats.items():
+    print(f'categories.{cat_type}: {cat_list}')
+
+# Check contextActivation profiles for drawio
+ca = d.get('contextActivation', {})
+profiles = ca.get('profiles', {})
+print('\ncontextActivation profiles:', list(profiles.keys()))
+
+# Check search keywordIndex
+search = d.get('search', {})
+kw_idx = search.get('keywordIndex', {})
+drawio_kw = {k: v for k, v in kw_idx.items() if 'drawio' in k.lower() or 'diagram' in k.lower()}
+print('\nSearch keywordIndex drawio/diagram entries:', drawio_kw)
+print('Total keywordIndex entries:', len(kw_idx))
+PYEOF`
+- **Error:** Exit code 1
+categories.agents: ['core', 'devops', 'development', 'frontend', 'languages', 'security', 'data-ai', 'operations', 'cloud', 'swarm', 'github', 'atlassian', 'documentation', 'testing', 'golden-armada']
+categories.skills: ['reasoning', 'infrastructure', 'development', 'frontend', 'data', 'cloud', 'security', 'project-management']
+categories.commands: ['core', 'development', 'deployment', 'security', 'atlassian', 'orchestration', 'analysis']
+categories.mcps: ['core', 'project', 'extension']
+Traceback (most recent call last):
+  File "<stdin>", line 12, in <module>
+AttributeError: 'list' object has no attribute 'keys'
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-03-16T02:11:52Z)
+- **Tool:** Bash
+- **Input:** `python3 << 'PYEOF'
+import json
+
+d = json.load(open('/home/user/claude/.claude/registry/index.json'))
+search = d.get('search', {})
+kw_idx = search.get('keywordIndex', {})
+drawio_kw = {k: v for k, v in kw_idx.items() if 'drawio' in k.lower() or 'diagram' in k.lower()}
+print('Search keywordIndex drawio/diagram entries:', drawio_kw)
+print('Total keywordIndex entries:', len(kw_idx))
+print('All keywordIndex keys:', list(kw_idx.keys()))
+PYEOF`
+- **Error:** Exit code 1
+Traceback (most recent call last):
+  File "<stdin>", line 6, in <module>
+AttributeError: 'str' object has no attribute 'items'
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-03-16T02:11:58Z)
+- **Tool:** Bash
+- **Input:** `python3 << 'PYEOF'
+import json
+d = json.load(open('/home/user/claude/.claude/registry/index.json'))
+search = d.get('search', {})
+kw_idx = search.get('keywordIndex', {})
+print('keywordIndex type:', type(kw_idx).__name__)
+print('keywordIndex keys:', list(kw_idx.keys()))
+PYEOF`
+- **Error:** Exit code 1
+keywordIndex type: str
+Traceback (most recent call last):
+  File "<stdin>", line 6, in <module>
+AttributeError: 'str' object has no attribute 'keys'
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
