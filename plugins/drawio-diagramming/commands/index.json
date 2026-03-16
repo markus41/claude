@@ -135,6 +135,20 @@
       "path": "commands/layers.md"
     },
     {
+      "name": "drawio:open",
+      "intent": "Open draw.io diagrams in the desktop application or browser editor",
+      "tags": [
+        "drawio-diagramming",
+        "command",
+        "open",
+        "desktop"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "low",
+      "path": "commands/open.md"
+    },
+    {
       "name": "drawio:mcp-setup",
       "intent": "Configure draw.io MCP servers for AI-powered diagramming",
       "tags": [

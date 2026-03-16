@@ -42,6 +42,11 @@
     "harness",
     "azure-devops",
     "mcp",
-    "vibe-diagramming"
+    "vibe-diagramming",
+    "desktop",
+    "electron",
+    "drawio-desktop",
+    "visual-editor",
+    "wsl"
   ]
 }

@@ -53,6 +53,7 @@ multiple output formats.
 | `--interactive` | `-i` | boolean | `false` | Prompt for confirmation at each generation step |
 | `--verbose` | `-v` | boolean | `false` | Show detailed processing output |
 | `--dry-run` | `-n` | boolean | `false` | Preview what would be created without writing files |
+| `--open` | `-O` | boolean | `false` | Open the created diagram in draw.io desktop app after generation |
 | `--overwrite` | | boolean | `false` | Overwrite existing file without prompting |
 
 ### Flag Details
@@ -79,6 +80,7 @@ multiple output formats.
 - **`--dry-run`** (`-n`): Preview the diagram type, element count, and output path without creating any files. Useful for validating auto-detection.
 - **`--verbose`** (`-v`): Show step-by-step processing: context analysis, type selection, template resolution, XML generation, and export.
 - **`--interactive`** (`-i`): Pause after type selection and style application to allow manual overrides before writing.
+- **`--open`** (`-O`): After creating the `.drawio` file, open it in the draw.io desktop application for visual editing. Auto-detects the editor on macOS, Linux, and Windows (including WSL). Falls back to the browser editor at `https://app.diagrams.net` if the desktop app is not installed. See `drawio:open` for editor detection details.
 - **`--overwrite`**: Skip the confirmation prompt when the output file already exists.
 
 #### Examples with Flags

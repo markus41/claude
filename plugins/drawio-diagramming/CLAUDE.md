@@ -4,11 +4,55 @@
 Intelligent diagramming plugin powered by draw.io / diagrams.net. Generates production-quality diagrams with AI assistance, embeds them across 7+ platforms, and supports conditional formatting linked to live data and statuses.
 
 ## Architecture
-- **Commands**: 13 slash commands for diagram lifecycle (create, edit, embed, export, analyze, template, style, layers, data-bind, auto-diagram, batch, mcp-setup, enrich) — each with comprehensive flag system (237 flags total)
+- **Commands**: 14 slash commands for diagram lifecycle (create, edit, embed, export, **open**, analyze, template, style, layers, data-bind, auto-diagram, batch, mcp-setup, enrich) — each with comprehensive flag system (247+ flags total)
 - **Agents**: 6 specialized agents (diagram-architect, integration-specialist, style-engineer, data-connector, auto-documenter, enrichment-researcher)
-- **Skills**: 10 knowledge domains:
+- **Skills**: 11 knowledge domains:
   - Core: XML generation, diagram types, platform integrations, conditional formatting, AI generation, MCP integration
   - Extended: **diagram-catalog** (196 diagram types), **wireframes-mockups** (UI/UX), **data-structures** (CS visualizations), **network-software-mapping** (infra/architecture)
+  - Desktop: **desktop-integration** (draw.io desktop app, OS detection, CLI export, file watching)
+
+## Desktop Support (Claude Code Desktop)
+
+This plugin works on both Claude Code web and Claude Code desktop. On desktop,
+the draw.io desktop application (Electron) provides visual editing alongside
+AI-powered generation.
+
+### Quick Start (Desktop)
+
+```bash
+# Create a diagram and open it in the desktop editor
+drawio:create --type c4 --analyze src/ --output docs/architecture.drawio --open
+
+# Open an existing diagram for visual editing
+drawio:open --file docs/architecture.drawio
+
+# Export and open the result
+drawio:export docs/architecture.drawio --format svg --embed-diagram --open
+```
+
+### Desktop App Installation
+
+| Platform | Command |
+|----------|---------|
+| **macOS** | `brew install --cask drawio` |
+| **Linux (snap)** | `sudo snap install drawio` |
+| **Linux (deb)** | `sudo dpkg -i drawio-amd64-*.deb` |
+| **Windows** | `winget install JGraph.Draw` |
+
+### Iterative AI + Human Workflow
+
+1. AI generates diagram XML → `drawio:create --open`
+2. User refines visually in draw.io desktop → saves
+3. AI detects changes → `drawio:enrich` or `drawio:edit` to further improve
+4. Desktop auto-reloads the updated file
+
+### WSL Support
+
+When running Claude Code in WSL, the plugin detects this and opens diagrams
+in the Windows draw.io app automatically.
+
+See `skills/desktop-integration/SKILL.md` for full platform detection, CLI
+reference, and troubleshooting.
 
 ## MCP Server Integration
 This plugin supports two draw.io MCP servers:
