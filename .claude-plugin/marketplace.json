@@ -384,6 +384,35 @@
         "fingerprinting",
         "heatmap"
       ]
+    },
+    {
+      "name": "drawio-diagramming",
+      "description": "Intelligent draw.io diagramming plugin with AI-powered diagram generation, multi-platform embedding (GitHub, Confluence, Azure DevOps, Notion, Teams, Harness), conditional formatting, live data binding, and MCP server integration. 13 commands, 6 agents, 10 skills.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Markus Ahling"
+      },
+      "source": "./plugins/drawio-diagramming",
+      "category": "diagramming",
+      "tags": [
+        "drawio",
+        "diagrams",
+        "draw.io",
+        "flowchart",
+        "uml",
+        "bpmn",
+        "c4",
+        "architecture",
+        "network",
+        "cloud",
+        "kubernetes",
+        "wireframe",
+        "mcp",
+        "ai-diagrams",
+        "conditional-formatting",
+        "live-data",
+        "embedding"
+      ]
     }
   ]
 }

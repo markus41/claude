@@ -1141,3 +1141,27 @@ cat /root/.config/gh/config.yml 2>/dev/null`
 - **Input:** `/root/.claude/projects/-home-user-claude/memory/MEMORY.md`
 - **Error:** File does not exist. Note: your current working directory is /home/user/claude.
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-03-16T02:09:58Z)
+- **Tool:** Bash
+- **Input:** `python3 -c "
+import json
+d = json.load(open('/home/user/claude/.claude/registry/index.json'))
+# Check if drawio appears in quickLookup
+ql = d.get('quickLookup', {})
+drawio_triggers = {k: v for k, v in ql.get('byTrigger', {}).items() if 'drawio' in v.lower() or 'draw' in k.lower() or 'diagram' in k.lower()}
+print('=== drawio triggers in quickLookup ===')
+print(json.dumps(drawio_triggers, indent=2))
+print()
+# check categories
+cats = d.get('categories', {})
+print('=== categories ===')
+for cat, items in cats.items():
+    print(f'{cat}: {list(items.keys())[:5]}')
+" 2>/dev/null`
+- **Error:** Exit code 1
+=== drawio triggers in quickLookup ===
+{}
+
+=== categories ===
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
