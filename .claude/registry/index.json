@@ -88,7 +88,8 @@
       "atlassian",
       "documentation",
       "testing",
-      "golden-armada"
+      "golden-armada",
+      "diagramming"
     ],
     "skills": [
       "reasoning",
@@ -98,7 +99,8 @@
       "data",
       "cloud",
       "security",
-      "project-management"
+      "project-management",
+      "diagramming"
     ],
     "commands": [
       "core",
@@ -107,7 +109,8 @@
       "security",
       "atlassian",
       "orchestration",
-      "analysis"
+      "analysis",
+      "diagramming"
     ],
     "mcps": [
       "core",
@@ -143,7 +146,8 @@
       "docs|documentation|readme|api-docs": "agents/doc-writer",
       "test|e2e|coverage|regression": "agents/test-writer",
       "debug|bug|root-cause|hypothesis": "agents/debugger",
-      "metrics|velocity|burndown|dora": "mcps/project-metrics"
+      "metrics|velocity|burndown|dora": "mcps/project-metrics",
+      "drawio|diagram|draw.io|flowchart|uml|bpmn|c4|architecture-diagram|erd|wireframe": "skills/drawio-diagramming"
     },
     "byTask": {
       "deploy": [
@@ -172,6 +176,14 @@
         "debugger",
         "incident-responder",
         "observability"
+      ],
+      "diagram": [
+        "diagram-architect",
+        "integration-specialist",
+        "style-engineer",
+        "data-connector",
+        "auto-documenter",
+        "enrichment-researcher"
       ],
       "design": [
         "system-architect",
