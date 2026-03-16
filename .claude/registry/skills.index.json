@@ -45,6 +45,16 @@
     "nextjs": "skills/nextjs/SKILL.md",
     "extended-thinking": "skills/extended-thinking/SKILL.md",
     "complex-reasoning": "skills/complex-reasoning/SKILL.md",
-    "deep-analysis": "skills/deep-analysis/SKILL.md"
+    "deep-analysis": "skills/deep-analysis/SKILL.md",
+    "drawio:xml-generation": "../plugins/drawio-diagramming/skills/xml-generation/SKILL.md",
+    "drawio:diagram-types": "../plugins/drawio-diagramming/skills/diagram-types/SKILL.md",
+    "drawio:diagram-catalog": "../plugins/drawio-diagramming/skills/diagram-catalog/SKILL.md",
+    "drawio:platform-integrations": "../plugins/drawio-diagramming/skills/platform-integrations/SKILL.md",
+    "drawio:conditional-formatting": "../plugins/drawio-diagramming/skills/conditional-formatting/SKILL.md",
+    "drawio:ai-generation": "../plugins/drawio-diagramming/skills/ai-generation/SKILL.md",
+    "drawio:mcp-integration": "../plugins/drawio-diagramming/skills/mcp-integration/SKILL.md",
+    "drawio:wireframes-mockups": "../plugins/drawio-diagramming/skills/wireframes-mockups/SKILL.md",
+    "drawio:data-structures": "../plugins/drawio-diagramming/skills/data-structures/SKILL.md",
+    "drawio:network-software-mapping": "../plugins/drawio-diagramming/skills/network-software-mapping/SKILL.md"
   }
 }

@@ -412,6 +412,104 @@
         "path": "agents/utility/registry-manager-agent.md",
         "model": "haiku"
       }
+    },
+    "drawio-diagramming": {
+      "diagram-architect": {
+        "path": "../plugins/drawio-diagramming/agents/diagram-architect.md",
+        "model": "sonnet",
+        "domains": [
+          "diagramming",
+          "architecture",
+          "visualization"
+        ],
+        "routing": {
+          "priority": "medium",
+          "complexityRange": [
+            0,
+            100
+          ]
+        }
+      },
+      "integration-specialist": {
+        "path": "../plugins/drawio-diagramming/agents/integration-specialist.md",
+        "model": "sonnet",
+        "domains": [
+          "diagramming",
+          "integration",
+          "embedding"
+        ],
+        "routing": {
+          "priority": "low",
+          "complexityRange": [
+            0,
+            60
+          ]
+        }
+      },
+      "style-engineer": {
+        "path": "../plugins/drawio-diagramming/agents/style-engineer.md",
+        "model": "sonnet",
+        "domains": [
+          "diagramming",
+          "styling",
+          "theming"
+        ],
+        "routing": {
+          "priority": "low",
+          "complexityRange": [
+            0,
+            60
+          ]
+        }
+      },
+      "data-connector": {
+        "path": "../plugins/drawio-diagramming/agents/data-connector.md",
+        "model": "sonnet",
+        "domains": [
+          "diagramming",
+          "data-binding",
+          "conditional-formatting"
+        ],
+        "routing": {
+          "priority": "medium",
+          "complexityRange": [
+            20,
+            80
+          ]
+        }
+      },
+      "auto-documenter": {
+        "path": "../plugins/drawio-diagramming/agents/auto-documenter.md",
+        "model": "sonnet",
+        "domains": [
+          "diagramming",
+          "documentation",
+          "code-analysis"
+        ],
+        "routing": {
+          "priority": "low",
+          "complexityRange": [
+            0,
+            80
+          ]
+        }
+      },
+      "enrichment-researcher": {
+        "path": "../plugins/drawio-diagramming/agents/enrichment-researcher.md",
+        "model": "sonnet",
+        "domains": [
+          "diagramming",
+          "research",
+          "enrichment"
+        ],
+        "routing": {
+          "priority": "medium",
+          "complexityRange": [
+            30,
+            100
+          ]
+        }
+      }
     }
   },
   "counts": {

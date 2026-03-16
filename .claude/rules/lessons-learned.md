@@ -1072,3 +1072,72 @@ cat /root/.config/gh/config.yml 2>/dev/null`
 - **Input:** `C:\Users\MarkusAhling\.claude\plugins\cache\temp_local_1772999716991_weywmo\.claude-plugin\plugin.json`
 - **Error:** File does not exist. Note: your current working directory is c:\Users\MarkusAhling\pro\claude.
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: mcp__firecrawl__firecrawl_search failure (2026-03-14T05:30:14Z)
+- **Tool:** mcp__firecrawl__firecrawl_search
+- **Input:** `N/A`
+- **Error:** Tool 'firecrawl_search' execution failed: Maximum number of redirects exceeded
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: mcp__firecrawl__firecrawl_search failure (2026-03-14T05:30:15Z)
+- **Tool:** mcp__firecrawl__firecrawl_search
+- **Input:** `N/A`
+- **Error:** Tool 'firecrawl_search' execution failed: Maximum number of redirects exceeded
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-03-14T16:34:26Z)
+- **Tool:** Bash
+- **Input:** `for f in commands/*.md; do echo "=== $(basename $f) ===" && grep -c "^| \`--" "$f" && echo "---"; done`
+- **Error:** Exit code 1
+=== analyze.md ===
+0
+=== auto-diagram.md ===
+0
+=== batch.md ===
+0
+=== create.md ===
+0
+=== data-bind.md ===
+0
+=== edit.md ===
+0
+=== embed.md ===
+0
+=== enrich.md ===
+13
+---
+=== export.md ===
+0
+=== layers.md ===
+0
+=== mcp-setup.md ===
+0
+=== style.md ===
+0
+=== template.md ===
+0
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-15T23:52:16Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/plugins/drawio-diagramming/skills/wireframes-mockups/SKILL.md`
+- **Error:** File does not exist. Note: your current working directory is /home/user/claude.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-15T23:52:26Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/plugins/drawio-diagramming/skills/data-structures/SKILL.md`
+- **Error:** File does not exist. Note: your current working directory is /home/user/claude.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-15T23:52:26Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/plugins/drawio-diagramming/skills/network-software-mapping/SKILL.md`
+- **Error:** File does not exist. Note: your current working directory is /home/user/claude.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-16T01:44:40Z)
+- **Tool:** Read
+- **Input:** `/root/.claude/projects/-home-user-claude/memory/MEMORY.md`
+- **Error:** File does not exist. Note: your current working directory is /home/user/claude.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving

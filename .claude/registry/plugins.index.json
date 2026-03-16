@@ -107,6 +107,13 @@
       "source": "local",
       "installedAt": "2026-03-08T12:00:00.000Z",
       "dependencies": {}
+    },
+    "drawio-diagramming": {
+      "version": "1.0.0",
+      "path": "../plugins/drawio-diagramming",
+      "source": "local",
+      "installedAt": "2026-03-16T00:00:00.000Z",
+      "dependencies": {}
     }
   },
   "registry": {
@@ -302,6 +309,36 @@
         "marketplace",
         "orchestration"
       ]
+    },
+    "drawio-diagramming": {
+      "name": "drawio-diagramming",
+      "version": "1.0.0",
+      "description": "Intelligent draw.io diagramming with AI generation, multi-platform embedding, conditional formatting, live data binding, and MCP integration",
+      "author": {
+        "name": "Markus Ahling",
+        "url": "https://github.com/markus41"
+      },
+      "keywords": [
+        "drawio",
+        "diagrams",
+        "diagramming",
+        "flowchart",
+        "uml",
+        "bpmn",
+        "c4",
+        "architecture",
+        "network",
+        "cloud",
+        "kubernetes",
+        "wireframe",
+        "mcp",
+        "ai-diagrams"
+      ],
+      "categories": [
+        "diagramming",
+        "documentation",
+        "design"
+      ]
     }
   },
   "plugins": {
@@ -414,6 +451,15 @@
         "tier": "standard"
       }
     },
+    "diagramming": {
+      "drawio-diagramming": {
+        "path": "../plugins/drawio-diagramming/.claude-plugin/plugin.json",
+        "callsign": "Cartographer",
+        "version": "1.0.0",
+        "status": "active",
+        "tier": "standard"
+      }
+    },
     "marketplace": {
       "api-integration-helper": {
         "path": "../.claude/plugins/api-integration-helper/.claude-plugin/plugin.json",
@@ -463,19 +509,20 @@
     "Bootstrap": "dev-environment-bootstrap",
     "Migrator": "migration-wizard",
     "TestForge": "testforge",
-    "Consul": "tvs-microsoft-deploy"
+    "Consul": "tvs-microsoft-deploy",
+    "Cartographer": "drawio-diagramming"
   },
   "stats": {
-    "totalInstalled": 15,
-    "totalPlugins": 21,
+    "totalInstalled": 16,
+    "totalPlugins": 22,
     "totalAvailable": 6,
-    "lastUpdated": "2026-03-08T00:00:00.000Z",
+    "lastUpdated": "2026-03-16T00:00:00.000Z",
     "byTier": {
       "enterprise": 1,
-      "standard": 19
+      "standard": 20
     },
     "byLocation": {
-      "plugins/": 15,
+      "plugins/": 16,
       ".claude/plugins/": 6
     }
   }

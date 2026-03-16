@@ -1,0 +1,177 @@
+{
+  "version": 1,
+  "plugin": "drawio-diagramming",
+  "type": "commands",
+  "generatedBy": "scripts/generate-plugin-indexes.mjs",
+  "entries": [
+    {
+      "name": "drawio:analyze",
+      "intent": "Analyze existing diagrams for quality, completeness, and suggest improvements",
+      "tags": [
+        "drawio-diagramming",
+        "command",
+        "analyze"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "medium",
+      "path": "commands/analyze.md"
+    },
+    {
+      "name": "drawio:auto-diagram",
+      "intent": "Automatically generate the right diagram by analyzing code, PRs, or conversation context",
+      "tags": [
+        "drawio-diagramming",
+        "command",
+        "auto-diagram"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "medium",
+      "path": "commands/auto-diagram.md"
+    },
+    {
+      "name": "drawio:batch",
+      "intent": "Batch process multiple diagrams - generate, export, update, or analyze in bulk",
+      "tags": [
+        "drawio-diagramming",
+        "command",
+        "batch"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "high",
+      "path": "commands/batch.md"
+    },
+    {
+      "name": "drawio:create",
+      "intent": "Create a new draw.io diagram with AI-powered type selection and generation",
+      "tags": [
+        "drawio-diagramming",
+        "command",
+        "create"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "medium",
+      "path": "commands/create.md"
+    },
+    {
+      "name": "drawio:data-bind",
+      "intent": "Bind diagram elements to live data sources for conditional formatting and dynamic updates",
+      "tags": [
+        "drawio-diagramming",
+        "command",
+        "data-bind"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "high",
+      "path": "commands/data-bind.md"
+    },
+    {
+      "name": "drawio:edit",
+      "intent": "Edit and modify existing draw.io diagrams with intelligent updates",
+      "tags": [
+        "drawio-diagramming",
+        "command",
+        "edit"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "medium",
+      "path": "commands/edit.md"
+    },
+    {
+      "name": "drawio:embed",
+      "intent": "Embed draw.io diagrams into GitHub PRs, wikis, Confluence, Jira, Azure DevOps, Notion, Teams, and Harness",
+      "tags": [
+        "drawio-diagramming",
+        "command",
+        "embed"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "medium",
+      "path": "commands/embed.md"
+    },
+    {
+      "name": "drawio:enrich",
+      "intent": "Enrich and deepen diagrams by analyzing codebases, APIs, and web sources for more granular detail",
+      "tags": [
+        "drawio-diagramming",
+        "command",
+        "enrich"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "high",
+      "path": "commands/enrich.md"
+    },
+    {
+      "name": "drawio:export",
+      "intent": "Export draw.io diagrams to SVG, PNG, PDF with embedded editability",
+      "tags": [
+        "drawio-diagramming",
+        "command",
+        "export"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "medium",
+      "path": "commands/export.md"
+    },
+    {
+      "name": "drawio:layers",
+      "intent": "Manage diagram layers for complex multi-layered visualizations",
+      "tags": [
+        "drawio-diagramming",
+        "command",
+        "layers"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "low",
+      "path": "commands/layers.md"
+    },
+    {
+      "name": "drawio:mcp-setup",
+      "intent": "Configure draw.io MCP servers for AI-powered diagramming",
+      "tags": [
+        "drawio-diagramming",
+        "command",
+        "mcp-setup"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "low",
+      "path": "commands/mcp-setup.md"
+    },
+    {
+      "name": "drawio:style",
+      "intent": "Apply professional styling, themes, and visual presets to draw.io diagrams",
+      "tags": [
+        "drawio-diagramming",
+        "command",
+        "style"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "low",
+      "path": "commands/style.md"
+    },
+    {
+      "name": "drawio:template",
+      "intent": "Generate diagrams from intelligent templates with auto-populated content",
+      "tags": [
+        "drawio-diagramming",
+        "command",
+        "template"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "low",
+      "path": "commands/template.md"
+    }
+  ]
+}

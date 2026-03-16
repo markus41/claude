@@ -198,9 +198,23 @@ This documentation base enables building plugins that:
 ### Marketplace Distribution
 - Host on GitHub (easiest): users add with `/plugin marketplace add owner/repo`
 - Git services: GitLab, Bitbucket, self-hosted all supported
-- Private repos: use GITHUB_TOKEN, GITLAB_TOKEN, BITBUCKET_TOKEN env vars for auto-updates
-- Version management: MAJOR.MINOR.PATCH semantic versioning
-- Release channels: Pin marketplace entries to different refs for stable/latest
+
+## draw.io / diagrams.net Research (2026-03-14)
+Full reference: `.claude/agent-memory/researcher/drawio-reference.md`
+Key findings:
+- Official MCP: github.com/jgraph/drawio-mcp (@drawio/mcp on npm); 4 approaches; hosted at https://mcp.draw.io/mcp
+- Community MCP: lgazo/drawio-mcp-server (npx -y drawio-mcp-server --editor); inspector/modifier/layer tools
+- XML format: mxCell (vertex/edge), mxGeometry, object (metadata), placeholder %vars%; uncompressed for AI use
+- Embed: embed.diagrams.net with postMessage protocol; 20+ URL params; lightbox=1 for viewer iframes
+- Export: PNG, SVG, PDF, WebP, XML, HTML, CSV; PDF requires server endpoint
+- Import: Mermaid v11.10.1, CSV, Gliffy, Lucidchart, VSDX; PlantUML deprecated end 2025
+- AI: Sparkle/Generate tool (multi-engine); enableAi config; admin-controlled in Confluence
+- VS Code: hediet.vscode-drawio extension; .drawio/.dio/.drawio.svg/.drawio.png; Code Link feature
+- Integrations: Confluence (Forge-only by Jan 2026), Jira, GitHub, GitLab, Office 365, Notion (Chrome ext), Nextcloud
+- Azure DevOps: no native integration; workarounds exist via marketplace extension or CI/CD pipeline
+- Shape libraries: AWS/Azure/GCP/IBM/Cisco/UML/BPMN/network/etc.; enable via libs URL param
+- Docker: jgraph/drawio image; env vars DRAWIO_SERVER_URL, DRAWIO_CONFIG, etc.
+- Config JSON: 50+ options (fonts, colors, styles, libraries, behavior, AI, collaboration)
 
 ### Registry/Caching Behavior
 - Plugins are versioned and cached locally
