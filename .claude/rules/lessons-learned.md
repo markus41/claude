@@ -1117,3 +1117,21 @@ cat /root/.config/gh/config.yml 2>/dev/null`
 === template.md ===
 0
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-15T23:52:16Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/plugins/drawio-diagramming/skills/wireframes-mockups/SKILL.md`
+- **Error:** File does not exist. Note: your current working directory is /home/user/claude.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-15T23:52:26Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/plugins/drawio-diagramming/skills/data-structures/SKILL.md`
+- **Error:** File does not exist. Note: your current working directory is /home/user/claude.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-15T23:52:26Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/plugins/drawio-diagramming/skills/network-software-mapping/SKILL.md`
+- **Error:** File does not exist. Note: your current working directory is /home/user/claude.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
