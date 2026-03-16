@@ -60,6 +60,7 @@ Mermaid.js for text-based diagram portability.
 | `--page-width <in>` | | number | auto | PDF page width in inches |
 | `--page-height <in>` | | number | auto | PDF page height in inches |
 | `--export` | | boolean | `true` | Explicit export flag (used by draw.io CLI) |
+| `--open` | `-O` | boolean | `false` | Open the exported file in the default viewer or draw.io desktop after export |
 | `--verbose` | `-v` | boolean | `false` | Show detailed export progress and file sizes |
 | `--dry-run` | `-n` | boolean | `false` | Preview export operations without writing files |
 
@@ -94,6 +95,9 @@ Mermaid.js for text-based diagram portability.
 - **`--include <glob>`**: File pattern for batch mode. Default `*.drawio`. Example: `--include "docs/**/*.drawio"`.
 - **`--ci`**: Headless operation mode. Suppresses interactive prompts, uses xvfb wrapper automatically, returns non-zero exit code on failure.
 - **`--no-sandbox`**: Required in Docker containers and some CI runners where Chromium sandboxing is not available.
+
+#### Desktop Integration Flags
+- **`--open`** (`-O`): After exporting, open the output file. For `.drawio` and `.drawio.svg` files, opens in draw.io desktop. For `.png`, `.pdf`, and `.svg` files, opens in the OS default viewer. Auto-detects platform (macOS `open`, Linux `xdg-open`, Windows `start`). See `drawio:open` for details.
 
 #### Examples with Flags
 
