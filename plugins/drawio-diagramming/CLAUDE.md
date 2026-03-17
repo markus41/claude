@@ -6,10 +6,31 @@ Intelligent diagramming plugin powered by draw.io / diagrams.net. Generates prod
 ## Architecture
 - **Commands**: 14 slash commands for diagram lifecycle (create, edit, embed, export, **open**, analyze, template, style, layers, data-bind, auto-diagram, batch, mcp-setup, enrich) — each with comprehensive flag system (247+ flags total)
 - **Agents**: 6 specialized agents (diagram-architect, integration-specialist, style-engineer, data-connector, auto-documenter, enrichment-researcher)
-- **Skills**: 11 knowledge domains:
-  - Core: XML generation, diagram types, platform integrations, conditional formatting, AI generation, MCP integration
+- **Skills**: 14 knowledge domains (see `skills/INDEX.md` for load order):
+  - Core: XML generation, templates, **quality-critique**, diagram types, AI generation, MCP integration
+  - Research: **research-agents** (6 agent configs for code/infra/API/web/DB/git research)
   - Extended: **diagram-catalog** (196 diagram types), **wireframes-mockups** (UI/UX), **data-structures** (CS visualizations), **network-software-mapping** (infra/architecture)
-  - Desktop: **desktop-integration** (draw.io desktop app, OS detection, CLI export, file watching)
+  - Integration: platform-integrations, conditional-formatting, **desktop-integration**
+
+## Using Plugin Agents as Subagents
+
+The plugin's agents (diagram-architect, style-engineer, etc.) are markdown instruction
+files, NOT built-in Claude Code subagent types. To use them as subagents:
+
+```
+# CORRECT: Read the agent file and pass its instructions in the prompt
+Agent(
+  subagent_type="general-purpose",
+  prompt="Follow the instructions in agents/diagram-architect.md to create a [diagram]..."
+)
+
+# WRONG: This doesn't work — plugin agents aren't registered subagent_types
+Agent(subagent_type="drawio:diagram-architect", ...)
+```
+
+**For research-backed diagram creation**, use the research agent configurations in
+`skills/research-agents/SKILL.md` which map to proper Claude Code subagent types
+(`Explore`, `researcher`, etc.).
 
 ## Desktop Support (Claude Code Desktop)
 
@@ -104,11 +125,14 @@ See `skills/diagram-catalog/SKILL.md` for the full 196-type reference catalog.
 ## XML Generation Rules
 1. Always include structural cells: `id="0"` (root) and `id="1" parent="0"` (default layer)
 2. Use uncompressed XML — never Base64/deflate
-3. Use simplified `<mxGraphModel>` format (no `<mxfile>` wrapper) unless multi-page needed
+3. **ALWAYS use the full `<mxfile>` wrapper** with `<diagram>` and `<mxGraphModel>` inside — the simplified `<mxGraphModel>`-only format causes blank files in draw.io desktop and many editors
 4. Style strings: semicolon-separated key=value pairs, always end with semicolon
 5. Unique IDs for all cells
 6. Vertices: `vertex="1"`, Edges: `edge="1"` (mutually exclusive)
 7. Coordinates: origin (0,0) is top-left; x→right, y→down
+8. **Always use layers** — create at least 2-3 semantic layers (e.g., Infrastructure/Application/Data) even for simple diagrams
+9. **Edge routing**: Always use `edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;` for clean connections with rounded bends. Add `jumpStyle=arc;jumpSize=16;` when edges may cross. Use explicit `exitX/exitY/entryX/entryY` connection points for precise routing
+10. **Professional defaults**: Apply `shadow=1;`, use HTML labels (`html=1`), use containers/groups for related elements, include a title annotation
 
 ## Platform Embedding
 | Platform | Method | Format |
@@ -143,6 +167,10 @@ Self-editing enrichment loop: generate → analyze gaps → research → enrich 
 - Use draw.io color themes for consistency (blue, green, yellow, orange, red, purple, gray)
 - Apply `shadow=1` and proper spacing for professional appearance
 - Use HTML labels (`html=1`) for rich formatting
-- Layer complex diagrams (infrastructure, application, data layers)
+- **Always layer diagrams** — even simple diagrams benefit from layers (e.g., "Main", "Annotations", "Connections")
 - Add metadata via `<object>` tags for data binding
 - Follow C4 model conventions for architecture diagrams
+- **Edge quality**: Use `rounded=1;jettySize=auto;` on all orthogonal edges for clean bends. Specify `exitX/exitY/entryX/entryY` when shapes are not vertically/horizontally aligned to prevent awkward routing. Use `strokeWidth=2;` for primary flows
+- **Containers**: Group related elements using `container=1;collapsible=1;` parent cells
+- **Title block**: Include a title annotation cell at the top of every diagram
+- **Legend**: For diagrams with 3+ color-coded categories, include a legend group

@@ -484,14 +484,16 @@ Download the attached .drawio file and open at [app.diagrams.net|https://app.dia
 
 ## Azure DevOps Embedding
 
-### Method 1: Azure DevOps Wiki (Markdown)
+**IMPORTANT**: Azure DevOps wikis and repos do NOT render `.drawio.svg` files with embedded XML correctly. Always use **PNG format** for Azure DevOps embedding. Export with `--scale 2` for retina-quality images.
+
+### Method 1: Azure DevOps Wiki (Markdown — PNG only)
 
 ```markdown
 ## Architecture
 
-![Architecture Diagram](/docs/diagrams/architecture.drawio.svg)
+![Architecture Diagram](/docs/diagrams/architecture.png)
 
-**Last updated:** 2026-03-14
+**Last updated:** 2026-03-17
 **Source:** [architecture.drawio](/docs/diagrams/architecture.drawio)
 ```
 
@@ -562,14 +564,14 @@ curl -X POST \
   --data-binary @architecture.png
 ```
 
-### Method 4: Azure DevOps PR Description
+### Method 4: Azure DevOps PR Description (PNG only)
 
 ```markdown
 ## Changes
 
 ### Architecture Update
 
-![Architecture](docs/diagrams/exported/architecture.drawio.svg)
+![Architecture](docs/diagrams/exported/architecture.png)
 
 ### What changed
 - Added new caching layer between API and database
@@ -579,6 +581,8 @@ curl -X POST \
 1. Review the diagram above for correctness
 2. Check the source `.drawio` file for details
 ```
+
+**Note**: Azure DevOps PR descriptions and comments only reliably render PNG images. SVG files (especially `.drawio.svg` with embedded XML) may not display.
 
 ## Notion Embedding
 
@@ -1014,12 +1018,58 @@ drawio:embed architecture.drawio --platform confluence --page-id 123456
 # Jira issue
 drawio:embed architecture.drawio --platform jira --issue PROJ-1234
 
-# Azure DevOps wiki
-drawio:embed architecture.drawio --platform azure-devops --wiki-page "Architecture"
+# Azure DevOps wiki (MUST use PNG format)
+drawio:embed architecture.drawio --platform azure-devops --format png --wiki-page "Architecture"
 
 # All platforms at once
 drawio:embed architecture.drawio --all-platforms
 
 # With source code links
 drawio:embed architecture.drawio --link-source --code-map src/
+
+# Inline in Claude Code chat (SVG for visual display)
+drawio:embed architecture.drawio --platform chat --format svg
+```
+
+## Chat / Inline Embedding
+
+For displaying diagrams directly in Claude Code chat or terminal-based conversations:
+
+### Method 1: Inline SVG (Claude Code Desktop)
+
+When running in Claude Code Desktop, diagrams can be rendered inline by outputting
+raw SVG markup. The desktop app's webview renders SVG natively.
+
+```bash
+# Export to SVG and output inline
+drawio --export --format svg --embed-diagram diagram.drawio -o /dev/stdout
+```
+
+### Method 2: Claude Visualize Feature
+
+Claude's `visualize` capability can render interactive diagrams directly in chat.
+Instead of generating a `.drawio` file, output a self-contained HTML/SVG artifact:
+
+```
+Use the visualize feature to create an interactive diagram:
+1. Generate the diagram as SVG markup (not a file)
+2. Wrap it in an HTML container with zoom/pan controls
+3. Output via Claude's artifact/visualize system
+
+The visualize approach supports:
+- Pan and zoom with mouse/touch
+- Hover tooltips on elements
+- Click-to-expand for containers
+- Dark/light mode auto-detection
+- No external file needed — renders in the chat window
+```
+
+### Method 3: Mermaid Fallback (Terminal/CLI)
+
+For pure CLI environments where SVG rendering is not available, convert the
+draw.io diagram to Mermaid.js syntax for text-based display:
+
+```bash
+drawio:export diagram.drawio --format mermaid
+# Outputs mermaid syntax that can be rendered by markdown viewers
 ```
