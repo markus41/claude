@@ -39,16 +39,19 @@ globs:
 </mxfile>
 ```
 
-### Simplified Format (recommended for AI generation)
+### Simplified Format (IMPORT ONLY — do NOT use for .drawio files)
 
-Use `mxGraphModel` as root element without the `mxfile`/`diagram` wrapper. This is cleaner, easier to generate, and fully supported by draw.io import.
+The `mxGraphModel`-only format works for clipboard import but **causes blank files**
+when saved directly as `.drawio`. The draw.io desktop app and web editor both expect
+the full `<mxfile>` wrapper to render the diagram. Always use the full format above.
 
 ```xml
+<!-- DO NOT save this as a .drawio file — it will appear blank -->
 <mxGraphModel>
   <root>
     <mxCell id="0"/>
     <mxCell id="1" parent="0"/>
-    <!-- diagram content here -->
+    <!-- only works for import/paste, not for .drawio files -->
   </root>
 </mxGraphModel>
 ```
@@ -72,7 +75,9 @@ Use `mxGraphModel` as root element without the `mxfile`/`diagram` wrapper. This 
 | `pageHeight` | 827 | Page height (A4 landscape) |
 | `math` | 0 | Enable LaTeX math rendering |
 | `shadow` | 0 | Default shadow on shapes |
-| `background` | none | Background color |
+| `background` | `none` | Background color — **always use `none` (transparent)** for clean embedding |
+
+**IMPORTANT**: Always set `background="none"` on the `<mxGraphModel>` element. Transparent backgrounds ensure diagrams embed cleanly in any context (dark mode, light mode, wiki pages, PRs). Never use a solid white background unless explicitly requested.
 
 ## Mandatory Structural Cells
 
@@ -482,6 +487,52 @@ shape=mxgraph.kubernetes.pvc
 | `edgeStyle=none` | Straight line (no routing) |
 | `curved=1` | Smooth curved connections |
 
+### Recommended Edge Style (prevents ugly connections)
+
+Always use this as the base edge style for clean, professional connections:
+
+```
+edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;orthogonalLoop=1;
+```
+
+**Why each property matters:**
+- `rounded=1` — rounds corners at bends instead of sharp right angles
+- `jettySize=auto` — automatically calculates segment length so edges don't overlap shapes
+- `orthogonalLoop=1` — prevents self-loop edges from collapsing
+
+**For edges between non-aligned shapes**, specify explicit connection points:
+
+```xml
+<!-- Exit from right side of source, enter left side of target -->
+<mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;
+        exitX=1;exitY=0.5;exitDx=0;exitDy=0;
+        entryX=0;entryY=0.5;entryDx=0;entryDy=0;"
+        edge="1" source="a" target="b" parent="1">
+  <mxGeometry relative="1" as="geometry"/>
+</mxCell>
+```
+
+**Connection point reference (exitX/exitY and entryX/entryY):**
+- `(0, 0.5)` = left center
+- `(1, 0.5)` = right center
+- `(0.5, 0)` = top center
+- `(0.5, 1)` = bottom center
+
+**For crossing edges**, add jump style:
+```
+jumpStyle=arc;jumpSize=16;
+```
+
+**For primary/important flows**, increase stroke width:
+```
+strokeWidth=2;
+```
+
+**For return/response flows**, use dashed:
+```
+dashed=1;dashPattern=8 4;
+```
+
 ## Perimeter Types
 
 Perimeters determine where connection points sit on a shape:
@@ -668,116 +719,138 @@ Multiple `<diagram>` elements inside `<mxfile>`:
 
 Before outputting any draw.io XML, verify:
 
-1. **Structural cells present**: `<mxCell id="0"/>` and `<mxCell id="1" parent="0"/>` exist
-2. **Unique IDs**: Every cell has a unique `id` attribute
-3. **Valid parent references**: Every `parent` attribute references an existing cell ID
-4. **Vertex/edge flag**: Shapes have `vertex="1"`, connectors have `edge="1"`
-5. **Edge targets exist**: `source` and `target` on edges reference existing vertex IDs
-6. **Geometry present**: Every vertex has `<mxGeometry>` with `width` and `height`
-7. **Edge geometry**: Every edge has `<mxGeometry relative="1" as="geometry"/>`
-8. **Style spelling**: All style properties use exact camelCase names from this reference
-9. **Perimeter matches shape**: Hexagons use `hexagonPerimeter2`, not `rectanglePerimeter`
-10. **HTML escaping**: If `html=1`, all `<` `>` `&` in `value` are XML-escaped
-11. **No overlapping shapes**: Check that shapes have distinct x, y positions
-12. **Reasonable dimensions**: Shapes are 40-300px wide, 30-200px tall typically
-13. **Connected graph**: All edges connect to existing source/target vertices
-14. **Label readability**: Font size >= 10pt for normal text
+1. **Full mxfile wrapper**: XML starts with `<mxfile>` containing `<diagram>` containing `<mxGraphModel>` — bare `<mxGraphModel>` causes blank files
+2. **Structural cells present**: `<mxCell id="0"/>` and `<mxCell id="1" parent="0"/>` exist
+3. **Unique IDs**: Every cell has a unique `id` attribute
+4. **Valid parent references**: Every `parent` attribute references an existing cell ID
+5. **Vertex/edge flag**: Shapes have `vertex="1"`, connectors have `edge="1"`
+6. **Edge targets exist**: `source` and `target` on edges reference existing vertex IDs
+7. **Geometry present**: Every vertex has `<mxGeometry>` with `width` and `height`
+8. **Edge geometry**: Every edge has `<mxGeometry relative="1" as="geometry"/>`
+9. **Edge routing quality**: Edges use `rounded=1;jettySize=auto;` for clean bends; non-aligned shapes specify `exitX/exitY/entryX/entryY` for precise connection points
+10. **Style spelling**: All style properties use exact camelCase names from this reference
+11. **Perimeter matches shape**: Hexagons use `hexagonPerimeter2`, not `rectanglePerimeter`
+12. **HTML escaping**: If `html=1`, all `<` `>` `&` in `value` are XML-escaped
+13. **No overlapping shapes**: Check that shapes have distinct x, y positions
+14. **Reasonable dimensions**: Shapes are 40-300px wide, 30-200px tall typically
+15. **Connected graph**: All edges connect to existing source/target vertices
+16. **Label readability**: Font size >= 10pt for normal text
+17. **Layers used**: At least 2 layers defined (content + annotations or semantic grouping)
+18. **Containers used**: Related elements grouped using `container=1` parent cells
 
 ## Complete Examples
 
 ### Example 1: Simple Flowchart
 
 ```xml
-<mxGraphModel>
-  <root>
-    <mxCell id="0"/>
-    <mxCell id="1" parent="0"/>
-    <mxCell id="2" value="Start" style="ellipse;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;" vertex="1" parent="1">
-      <mxGeometry x="200" y="20" width="80" height="40" as="geometry"/>
-    </mxCell>
-    <mxCell id="3" value="Process Data" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
-      <mxGeometry x="170" y="100" width="140" height="60" as="geometry"/>
-    </mxCell>
-    <mxCell id="4" value="Valid?" style="rhombus;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
-      <mxGeometry x="190" y="200" width="100" height="80" as="geometry"/>
-    </mxCell>
-    <mxCell id="5" value="Save" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
-      <mxGeometry x="170" y="330" width="140" height="60" as="geometry"/>
-    </mxCell>
-    <mxCell id="6" value="Error" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
-      <mxGeometry x="370" y="210" width="120" height="60" as="geometry"/>
-    </mxCell>
-    <mxCell id="7" value="End" style="ellipse;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;" vertex="1" parent="1">
-      <mxGeometry x="200" y="430" width="80" height="40" as="geometry"/>
-    </mxCell>
-    <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="2" target="3" parent="1">
-      <mxGeometry relative="1" as="geometry"/>
-    </mxCell>
-    <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="3" target="4" parent="1">
-      <mxGeometry relative="1" as="geometry"/>
-    </mxCell>
-    <mxCell id="e3" value="Yes" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="4" target="5" parent="1">
-      <mxGeometry relative="1" as="geometry"/>
-    </mxCell>
-    <mxCell id="e4" value="No" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="4" target="6" parent="1">
-      <mxGeometry relative="1" as="geometry"/>
-    </mxCell>
-    <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="5" target="7" parent="1">
-      <mxGeometry relative="1" as="geometry"/>
-    </mxCell>
-  </root>
-</mxGraphModel>
+<mxfile host="Claude" modified="2026-03-17T00:00:00.000Z" agent="Claude Code" version="24.0.0" type="device">
+  <diagram id="flowchart-1" name="Flowchart">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0" background="none">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" value="Flow" parent="0"/>
+        <mxCell id="layer-notes" value="Annotations" parent="0"/>
+        <mxCell id="title" value="&lt;b&gt;Data Processing Flow&lt;/b&gt;" style="text;html=1;fontSize=16;align=left;" vertex="1" parent="layer-notes">
+          <mxGeometry x="40" y="10" width="250" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="2" value="Start" style="ellipse;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;shadow=1;html=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="50" width="100" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="3" value="&lt;b&gt;Process Data&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="175" y="140" width="150" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="4" value="&lt;b&gt;Valid?&lt;/b&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="195" y="240" width="110" height="90" as="geometry"/>
+        </mxCell>
+        <mxCell id="5" value="&lt;b&gt;Save&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="175" y="380" width="150" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="6" value="&lt;b&gt;Handle Error&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="380" y="255" width="130" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="7" value="End" style="ellipse;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;shadow=1;html=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="490" width="100" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;strokeWidth=2;" edge="1" source="2" target="3" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;strokeWidth=2;" edge="1" source="3" target="4" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e3" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" source="4" target="5" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e4" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="4" target="6" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;strokeWidth=2;" edge="1" source="5" target="7" parent="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
 ```
 
 ### Example 2: Architecture Diagram with Containers
 
 ```xml
-<mxGraphModel>
-  <root>
-    <mxCell id="0"/>
-    <mxCell id="1" parent="0"/>
-    <!-- VPC Container -->
-    <mxCell id="vpc" value="VPC (10.0.0.0/16)" style="swimlane;container=1;collapsible=0;startSize=30;fillColor=#e6d0de;strokeColor=#ae4132;rounded=1;" vertex="1" parent="1">
-      <mxGeometry x="50" y="50" width="600" height="350" as="geometry"/>
-    </mxCell>
-    <!-- Public Subnet -->
-    <mxCell id="pub" value="Public Subnet" style="swimlane;container=1;startSize=25;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="vpc">
-      <mxGeometry x="20" y="50" width="260" height="280" as="geometry"/>
-    </mxCell>
-    <mxCell id="alb" value="ALB" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.elastic_load_balancing;" vertex="1" parent="pub">
-      <mxGeometry x="90" y="40" width="60" height="60" as="geometry"/>
-    </mxCell>
-    <mxCell id="ec2a" value="EC2 (App)" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.ec2;" vertex="1" parent="pub">
-      <mxGeometry x="30" y="140" width="60" height="60" as="geometry"/>
-    </mxCell>
-    <mxCell id="ec2b" value="EC2 (App)" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.ec2;" vertex="1" parent="pub">
-      <mxGeometry x="150" y="140" width="60" height="60" as="geometry"/>
-    </mxCell>
-    <!-- Private Subnet -->
-    <mxCell id="priv" value="Private Subnet" style="swimlane;container=1;startSize=25;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="vpc">
-      <mxGeometry x="320" y="50" width="260" height="280" as="geometry"/>
-    </mxCell>
-    <mxCell id="rds" value="RDS (Postgres)" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.rds;" vertex="1" parent="priv">
-      <mxGeometry x="90" y="60" width="60" height="60" as="geometry"/>
-    </mxCell>
-    <mxCell id="cache" value="ElastiCache" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.elasticache;" vertex="1" parent="priv">
-      <mxGeometry x="90" y="170" width="60" height="60" as="geometry"/>
-    </mxCell>
-    <!-- Edges -->
-    <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;strokeWidth=2;" edge="1" source="alb" target="ec2a" parent="vpc">
-      <mxGeometry relative="1" as="geometry"/>
-    </mxCell>
-    <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;strokeWidth=2;" edge="1" source="alb" target="ec2b" parent="vpc">
-      <mxGeometry relative="1" as="geometry"/>
-    </mxCell>
-    <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;dashed=1;" edge="1" source="ec2a" target="rds" parent="vpc">
-      <mxGeometry relative="1" as="geometry"/>
-    </mxCell>
-    <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;dashed=1;" edge="1" source="ec2b" target="rds" parent="vpc">
-      <mxGeometry relative="1" as="geometry"/>
-    </mxCell>
-  </root>
-</mxGraphModel>
+<mxfile host="Claude" modified="2026-03-17T00:00:00.000Z" agent="Claude Code" version="24.0.0" type="device">
+  <diagram id="arch-1" name="AWS Architecture">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0" background="none">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" value="Infrastructure" parent="0"/>
+        <mxCell id="layer-data" value="Data Layer" parent="0"/>
+        <mxCell id="layer-notes" value="Annotations" parent="0"/>
+        <!-- Title -->
+        <mxCell id="title" value="&lt;b&gt;AWS VPC Architecture&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#666&quot; style=&quot;font-size:10px;&quot;&gt;Production Environment&lt;/font&gt;" style="text;html=1;fontSize=16;align=left;" vertex="1" parent="layer-notes">
+          <mxGeometry x="50" y="10" width="300" height="40" as="geometry"/>
+        </mxCell>
+        <!-- VPC Container -->
+        <mxCell id="vpc" value="&lt;b&gt;VPC&lt;/b&gt; (10.0.0.0/16)" style="swimlane;container=1;collapsible=0;startSize=30;fillColor=none;strokeColor=#ae4132;strokeWidth=2;rounded=1;dashed=1;dashPattern=5 5;html=1;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="60" width="620" height="360" as="geometry"/>
+        </mxCell>
+        <!-- Public Subnet -->
+        <mxCell id="pub" value="&lt;b&gt;Public Subnet&lt;/b&gt;" style="swimlane;container=1;startSize=25;fillColor=#dae8fc;fillOpacity=40;strokeColor=#6c8ebf;html=1;" vertex="1" parent="vpc">
+          <mxGeometry x="20" y="50" width="270" height="290" as="geometry"/>
+        </mxCell>
+        <mxCell id="alb" value="&lt;b&gt;ALB&lt;/b&gt;" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.elastic_load_balancing;html=1;shadow=1;" vertex="1" parent="pub">
+          <mxGeometry x="95" y="40" width="60" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="ec2a" value="&lt;b&gt;EC2&lt;/b&gt;&lt;br&gt;App-1" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.ec2;html=1;shadow=1;" vertex="1" parent="pub">
+          <mxGeometry x="30" y="150" width="60" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="ec2b" value="&lt;b&gt;EC2&lt;/b&gt;&lt;br&gt;App-2" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.ec2;html=1;shadow=1;" vertex="1" parent="pub">
+          <mxGeometry x="160" y="150" width="60" height="60" as="geometry"/>
+        </mxCell>
+        <!-- Private Subnet on data layer -->
+        <mxCell id="priv" value="&lt;b&gt;Private Subnet&lt;/b&gt;" style="swimlane;container=1;startSize=25;fillColor=#d5e8d4;fillOpacity=40;strokeColor=#82b366;html=1;" vertex="1" parent="vpc">
+          <mxGeometry x="330" y="50" width="270" height="290" as="geometry"/>
+        </mxCell>
+        <mxCell id="rds" value="&lt;b&gt;RDS&lt;/b&gt;&lt;br&gt;Postgres" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.rds;html=1;shadow=1;" vertex="1" parent="priv">
+          <mxGeometry x="95" y="60" width="60" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="cache" value="&lt;b&gt;ElastiCache&lt;/b&gt;&lt;br&gt;Redis" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.elasticache;html=1;shadow=1;" vertex="1" parent="priv">
+          <mxGeometry x="95" y="180" width="60" height="60" as="geometry"/>
+        </mxCell>
+        <!-- Edges with proper routing -->
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;strokeWidth=2;exitX=0.25;exitY=1;exitDx=0;exitDy=0;" edge="1" source="alb" target="ec2a" parent="vpc">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;strokeWidth=2;exitX=0.75;exitY=1;exitDx=0;exitDy=0;" edge="1" source="alb" target="ec2b" parent="vpc">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e3" value="TCP/5432" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;dashed=1;dashPattern=8 4;strokeColor=#82b366;fontSize=9;jumpStyle=arc;jumpSize=16;" edge="1" source="ec2a" target="rds" parent="vpc">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e4" value="TCP/5432" style="edgeStyle=orthogonalEdgeStyle;rounded=1;jettySize=auto;dashed=1;dashPattern=8 4;strokeColor=#82b366;fontSize=9;jumpStyle=arc;jumpSize=16;" edge="1" source="ec2b" target="rds" parent="vpc">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
 ```
 
 ### Example 3: UML Sequence Diagram
