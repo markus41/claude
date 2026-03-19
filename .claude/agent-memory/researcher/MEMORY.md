@@ -239,3 +239,65 @@ Cannot use: claude-code-marketplace, claude-code-plugins, claude-plugins-officia
 - Common errors: manifest syntax, components in `.claude-plugin/` (wrong location)
 - Validation: `claude plugin validate .` or `/plugin validate`
 
+## MCP Tools Research (2026-03-19)
+
+### Firecrawl MCP vs Perplexity MCP Comparison
+Full reference: `.claude/agent-memory/researcher/mcp_comparison_firecrawl_vs_perplexity.md`
+
+**Key Findings**:
+- **Perplexity**: For Q&A, web search, current events. ~80% cheaper for simple queries. Returns cited sources.
+- **Firecrawl**: For data extraction, crawling, structured JSON. Purpose-built for LLMs. 1 credit per page.
+- **Decision**: Use Perplexity FIRST for any question/search. Use Firecrawl ONLY when structured extraction needed.
+- **Firecrawl Agent**: 100-1,500+ credits per query (unpredictable). Avoid unless multi-page autonomous research essential.
+- **Protected Sites**: Firecrawl fails 83% of time on LinkedIn/Amazon/etc. Use Perplexity to find URLs instead.
+
+**Pricing**:
+- Firecrawl Standard: $83/yr for 100k credits (~$0.0008/page)
+- Perplexity: ~$0.02 per query; usage-based
+- Recommendation: Perplexity for 80% of tasks; Firecrawl reserved for extraction
+
+## Claude Code Memory System Deep Dive (2026-03-19)
+
+Full research: `.claude/agent-memory/researcher/memory_system_research.md`
+
+### Auto-Memory Architecture
+- **Location**: `~/.claude/projects/<project>/memory/MEMORY.md` (200-line hard limit)
+- **Topic files**: Auto-created when approaching 200 lines (no size limit, on-demand load)
+- **Scope**: Per git repository (all worktrees share one memory)
+- **CLAUDE.md**: Best practice <200 lines but loads fully regardless
+- **Mechanism**: First 200 lines of MEMORY.md injected at session start; topic files load on-demand via file tools
+
+### Context Anchoring Under Compaction
+- **Survives compaction**: CLAUDE.md (full re-injection), first 200 lines of MEMORY.md (fresh load), `.claude/rules/` files
+- **Lost during compaction**: Earlier conversation turns (summarized), content beyond line 200 of MEMORY.md, inline instructions
+- **Hook control**: PreCompact fires before summarization (save state); PostCompact fires after (react to result)
+- **Best practice**: Store critical state in CLAUDE.md or MEMORY.md; implement PreCompact to save important diffs/vars
+
+### Error → Fix → Prevent Loop
+- **Capture**: PostToolUseFailure hook auto-appends error to `.claude/rules/lessons-learned.md`
+- **Fix**: Claude fixes issue in same session
+- **Document**: Update entry: Status: RESOLVED, Fix: description, Prevention: how-to-avoid
+- **Prevent**: Next session loads lessons-learned.md as rule file; Claude avoids repeat
+- **Promote**: When 3+ similar errors appear, create permanent rule in `.claude/rules/` and remove promoted entries
+
+### Compliance Patterns (2026 research)
+- **Focused 30-line rules outperform 200-line comprehensive rules** — Each rule gets more attention
+- **Positive instructions work better than negative** — "Use pnpm" >> "Don't use npm"
+- **Rules + Hooks hybrid optimal** — Combine suggestions (rules) with enforcement (hooks); expect 70-80% compliance
+- **Specificity drives adherence** — "2-space indentation" >> "format code properly"
+
+### Memory Scoping for Agents
+Four types for `~/.claude/agent-memory/<agent-name>/`:
+1. **user** — Agent understanding of user role/expertise
+2. **feedback** — Corrections ("don't do X") and validated patterns ("keep doing Y")
+3. **project** — Ongoing work, deadlines, stakeholders (use absolute dates, not relative)
+4. **reference** — External system pointers (Linear projects, Slack channels, Grafana boards)
+
+Format: `<type>_<topic>.md` with frontmatter specifying type. Index up to 200 lines in MEMORY.md.
+
+### MCP-Backed Memory
+- **Package**: `@modelcontextprotocol/server-memory`
+- **Storage**: SQLite database (local, machine-local)
+- **Transport**: Stdio
+- **Use case**: Semantic knowledge graphs shared across sessions; tool-based (not markdown) memory
+
