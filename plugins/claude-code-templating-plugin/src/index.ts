@@ -10,6 +10,7 @@
 
 import { EventEmitter } from 'eventemitter3';
 import { TemplateOrchestrator, createOrchestrator } from './core/orchestrator.js';
+import { ClaudeProjectSetupManager } from './core/claude-setup.js';
 import { HarnessExpertAgent } from './agents/harness-expert.js';
 import type {
   ScaffoldSpec,
@@ -208,6 +209,7 @@ export class ClaudeCodeTemplatingPlugin extends EventEmitter<PluginEvents> {
   private initialized = false;
   private orchestrator: TemplateOrchestrator | null = null;
   private harnessAgent: HarnessExpertAgent | null = null;
+  private setupManager: ClaudeProjectSetupManager | null = null;
 
   /**
    * Plugin name
@@ -258,6 +260,10 @@ export class ClaudeCodeTemplatingPlugin extends EventEmitter<PluginEvents> {
       // Initialize Harness Expert Agent
       this.harnessAgent = new HarnessExpertAgent();
       context.logger.debug('Harness Expert Agent initialized');
+
+      // Initialize Claude project setup manager
+      this.setupManager = new ClaudeProjectSetupManager(context.logger);
+      context.logger.debug('Claude project setup manager initialized');
 
       // Register commands
       await this.registerCommands(context);
@@ -342,6 +348,11 @@ export class ClaudeCodeTemplatingPlugin extends EventEmitter<PluginEvents> {
       return this.handleScaffold(args);
     });
 
+    // /setup command
+    context.api.registerCommand('setup', async (args) => {
+      return this.handleSetup(args);
+    });
+
     // /harness command
     context.api.registerCommand('harness', async (args) => {
       const action = args.args[0];
@@ -407,7 +418,7 @@ export class ClaudeCodeTemplatingPlugin extends EventEmitter<PluginEvents> {
       name: 'project-scaffolding',
       description:
         'Project scaffolding patterns and best practices for new projects',
-      triggers: ['scaffold', 'new project', 'bootstrap', 'starter'],
+      triggers: ['scaffold', 'new project', 'bootstrap', 'starter', 'setup', 'update'],
       content: 'skills/project-scaffolding/SKILL.md',
     });
 
@@ -563,6 +574,35 @@ export class ClaudeCodeTemplatingPlugin extends EventEmitter<PluginEvents> {
     };
   }
 
+
+  private async handleSetup(args: CommandArgs): Promise<CommandResult> {
+    if (!this.setupManager) {
+      return { success: false, error: 'Claude setup manager not initialized' };
+    }
+
+    const action = args.args[0] || 'update';
+    if (action !== 'setup' && action !== 'update') {
+      return { success: false, error: 'Usage: /setup <setup|update> [path] [--install-lsps=true|false]' };
+    }
+
+    const targetPath = args.args[1] || args.context.cwd;
+    const installLspsOption = args.options['install-lsps'];
+    const installLsps = installLspsOption === undefined ? true : installLspsOption === true || installLspsOption === 'true';
+
+    const result = await this.setupManager.synchronizeProject(targetPath, {
+      mode: action,
+      installLsps,
+    });
+
+    const failedLspInstalls = result.lspResults.filter((entry) => !entry.success && !entry.skipped);
+    return {
+      success: failedLspInstalls.length === 0,
+      message: `${action === 'setup' ? 'Initialized' : 'Updated'} Claude setup for ${result.fingerprint.name}. Managed ${result.filesWritten.length} files and ${result.repositoriesUpdated.length} nested repositories.`,
+      data: result,
+      error: failedLspInstalls.length > 0 ? `Some LSP installations failed: ${failedLspInstalls.map((entry) => entry.command).join(', ')}` : undefined,
+    };
+  }
+
   private async handleScaffold(args: CommandArgs): Promise<CommandResult> {
     if (!this.orchestrator) {
       return { success: false, error: 'Orchestrator not initialized' };
@@ -578,10 +618,17 @@ export class ClaudeCodeTemplatingPlugin extends EventEmitter<PluginEvents> {
     const envStr = args.options['env'] as string | undefined;
     const environments = envStr ? envStr.split(',') : undefined;
 
+    const variables = {
+      ...args.options,
+      installLsps: args.options['install-lsps'] === undefined
+        ? true
+        : args.options['install-lsps'] === true || args.options['install-lsps'] === 'true',
+    } as Record<string, unknown>;
+
     const spec: ScaffoldSpec = {
       name,
       template,
-      variables: args.options as Record<string, unknown>,
+      variables,
       harnessIntegration: args.options['harness'] === true,
       environments,
       dryRun: args.options['dry-run'] === true,

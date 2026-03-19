@@ -51,6 +51,21 @@
       "path": "commands/harness.md"
     },
     {
+      "name": "setup",
+      "intent": "Initialize or refresh the Claude Code operating baseline for an installed project, including nested .claude repositories, documentation context, and LSP coverage",
+      "tags": [
+        "setup",
+        "update",
+        "claude",
+        "documentation",
+        "fingerprinting"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/setup.md"
+    },
+    {
       "name": "scaffold",
       "intent": "Scaffold complete projects with automatic Harness integration, environment configuration, and post-generation setup",
       "tags": [

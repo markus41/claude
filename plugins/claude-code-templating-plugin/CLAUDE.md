@@ -23,6 +23,7 @@ This plugin establishes a universal templating and Harness expert system that en
 |---------|-------------|
 | `/template` | List, search, generate from templates |
 | `/scaffold` | Scaffold new projects from templates |
+| `/setup` | Refresh Claude Code setup, docs, nested repos, and LSP coverage |
 | `/harness` | Create pipelines and templates |
 | `/generate` | Generate API clients, models, tests |
 | `/archetype` | Create and manage project archetypes |
@@ -137,3 +138,8 @@ npm run lint
 - Cache resolved templates
 - Use streaming for large files
 - Minimize API calls through batching
+
+
+## Managed Claude Setup
+
+Run `/setup setup` for first-time provisioning or `/setup update` to refresh the Claude baseline in an installed project. The command fingerprints the repository, rebuilds the managed `CLAUDE.md` and README structures, expands `.claude/` and `docs/context/` assets, provisions nested repository `.claude/` directories below the root `.claude/`, and writes LSP install plans.
