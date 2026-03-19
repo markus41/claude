@@ -45,6 +45,7 @@ claude-code-templating-plugin/
 |---------|-------------|
 | `/template` | List, search, or generate from available templates |
 | `/scaffold` | Scaffold a new project from a template |
+| `/setup` | Initialize or refresh the Claude Code baseline in an installed project |
 | `/harness` | Create Harness pipelines, templates, or input sets |
 | `/generate` | Generate API clients, models, or tests from specs |
 | `/archetype` | Create or manage Maven archetypes |
@@ -79,7 +80,13 @@ npm ci && npm run build          # Build the TypeScript source
 
 ```
 /scaffold fastapi-microservice user-service --harness --env dev,staging,prod
+/setup update                           # Refresh Claude baseline after plugin upgrades
 /harness pipeline create ci-cd-standard --service my-service
 /generate api-client --spec openapi.yaml --language typescript
 /template list                           # Browse available templates
 ```
+
+
+## Claude Code Baseline Sync
+
+Use `/setup setup` when bootstrapping a repository and `/setup update` whenever this plugin changes and you need the installed project to pick up the latest Claude structure. The command fingerprints the target project, refreshes managed README and `CLAUDE.md` content, creates nested `docs/context/` references, ensures nested repositories under the root `.claude/` also receive their own `.claude/` directories, and writes an LSP manifest plus installer script.

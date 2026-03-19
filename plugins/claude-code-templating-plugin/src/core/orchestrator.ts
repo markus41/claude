@@ -28,6 +28,7 @@ import type {
   TemplateCreationResult,
   ProjectPipelineParams,
 } from '../types/agents.js';
+import { ClaudeProjectSetupManager } from './claude-setup.js';
 
 /**
  * Orchestrator events
@@ -178,9 +179,15 @@ export class TemplateOrchestrator extends EventEmitter<OrchestratorEvents> {
         this.emit('fileGenerated', file);
       }
 
-      // Generate CLAUDE.md for the new project
+      // Generate Claude Code project setup for the new project
       if (!spec.dryRun) {
-        await this.generateClaudeMd(outputPath, spec, templateInfo);
+        const setupManager = new ClaudeProjectSetupManager(this.config.logger);
+        await setupManager.synchronizeProject(outputPath, {
+          mode: 'setup',
+          spec,
+          templateInfo,
+          installLsps: spec.variables?.['installLsps'] !== false,
+        });
       }
 
       // Handle Harness integration if requested
@@ -422,61 +429,6 @@ export class TemplateOrchestrator extends EventEmitter<OrchestratorEvents> {
     Object.assign(merged, userVariables);
 
     return merged;
-  }
-
-  /**
-   * Generate CLAUDE.md for a new project
-   */
-  private async generateClaudeMd(
-    outputPath: string,
-    spec: ScaffoldSpec,
-    templateInfo: TemplateInfo
-  ): Promise<void> {
-    const claudeMd = `# ${spec.name}
-
-**Generated from:** ${templateInfo.name} v${templateInfo.version || '1.0.0'}
-**Created:** ${new Date().toISOString()}
-
-## Overview
-
-${spec.description || `Project scaffolded from ${templateInfo.name} template.`}
-
-## Quick Reference
-
-| Resource | Path |
-|----------|------|
-| Source | \`src/\` |
-| Tests | \`test/\` |
-| Config | \`config/\` |
-
-## Development
-
-\`\`\`bash
-# Install dependencies
-npm install
-
-# Start development
-npm run dev
-
-# Run tests
-npm test
-\`\`\`
-
-## Template Variables Used
-
-${templateInfo.variables.map(v => `- **${v.name}**: ${v.description || v.prompt}`).join('\n')}
-
-## Harness Integration
-
-${spec.harnessIntegration ? `
-This project includes Harness CI/CD integration:
-- Pipeline: \`.harness/${this.toIdentifier(spec.name)}.yaml\`
-- Environments: ${(spec.environments || ['dev']).join(', ')}
-` : 'Not configured. Use `/harness pipeline create` to add CI/CD.'}
-`;
-
-    await writeFile(join(outputPath, 'CLAUDE.md'), claudeMd, 'utf-8');
-    this.config.logger.debug('Generated CLAUDE.md');
   }
 
   /**
