@@ -1,8 +1,8 @@
 {
   "$schema": "https://claude.local/schemas/plugin.schema.json",
   "name": "claude-code-expert",
-  "version": "5.0.0",
-  "description": "High-intelligence Claude Code copilot with deep code reasoning, evidence-driven planning, orchestration-first execution, research routing, context anchoring, self-healing, and a queryable documentation MCP server.",
+  "version": "6.0.0",
+  "description": "High-intelligence Claude Code copilot with deep code reasoning, evidence-driven planning, orchestration-first execution, model routing, context budgeting, CI/CD integration, enterprise security, plugin development, prompt engineering, performance profiling, agent teams, interactive tutorials, and a queryable 10-tool MCP documentation server.",
   "author": {
     "name": "Markus Ahling"
   },
@@ -40,7 +40,18 @@
     "evidence-driven-planning",
     "repo-fingerprinting",
     "root-cause-analysis",
-    "design-review"
+    "design-review",
+    "ci-cd",
+    "github-actions",
+    "model-routing",
+    "plugin-development",
+    "prompt-engineering",
+    "enterprise",
+    "compliance",
+    "tutorials",
+    "performance-profiling",
+    "context-budgeting",
+    "session-analytics"
   ],
   "permissions": {
     "requires": [
@@ -61,7 +72,12 @@
       "deep-code-analysis",
       "repo-intelligence",
       "queryable-documentation",
-      "debugging-and-self-healing"
+      "debugging-and-self-healing",
+      "ci-cd-integration",
+      "model-routing",
+      "enterprise-security",
+      "plugin-development-guide",
+      "session-analytics"
     ],
     "requires": []
   },
@@ -69,7 +85,7 @@
   "context": {
     "entry": "CONTEXT_SUMMARY.md",
     "title": "Claude Code Expert",
-    "summary": "Bootstrap context for a high-intelligence Claude Code expert plugin focused on deep code reasoning, orchestration, diagnostics, and guided task routing.",
+    "summary": "Bootstrap context for a high-intelligence Claude Code expert plugin (v6.0.0) with 16 commands, 33 skills, 16 agents, and a 10-tool MCP server covering deep code reasoning, orchestration, CI/CD, enterprise security, model routing, context budgeting, and interactive tutorials.",
     "tags": [
       "claude-code",
       "expert",
@@ -78,7 +94,10 @@
       "debugging",
       "mcp",
       "skills",
-      "agents"
+      "agents",
+      "ci-cd",
+      "enterprise",
+      "tutorials"
     ],
     "bootstrapFiles": [
       "CONTEXT_SUMMARY.md"
@@ -98,7 +117,12 @@
       "commands/cc-intel.md",
       "agents/principal-engineer-strategist.md",
       "skills/research-routing/SKILL.md",
-      "skills/council-review/SKILL.md"
+      "skills/council-review/SKILL.md",
+      "skills/model-routing/SKILL.md",
+      "skills/prompt-engineering/SKILL.md",
+      "skills/enterprise-security/SKILL.md",
+      "commands/cc-budget.md",
+      "commands/cc-cicd.md"
     ]
   }
 }
