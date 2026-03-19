@@ -1177,3 +1177,59 @@ for cat, items in cats.items():
 - **Input:** `/home/user/claude/CLAUDE.md`
 - **Error:** File does not exist. Note: your current working directory is /home/user/claude.
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-03-19T07:28:13Z)
+- **Tool:** Bash
+- **Input:** `echo "=== COMMANDS ===" && ls /home/user/claude/plugins/claude-code-expert/commands/ 2>/dev/null && echo "=== AGENTS ===" && ls /home/user/claude/plugins/claude-code-expert/agents/ 2>/dev/null && echo "=== SKILLS ===" && ls /home/user/claude/plugins/claude-code-expert/skills/ 2>/dev/null && echo "=== HOOKS ===" && ls /home/user/claude/plugins/claude-code-expert/hooks/ 2>/dev/null`
+- **Error:** Exit code 2
+=== COMMANDS ===
+cc-agent.md
+cc-config.md
+cc-council.md
+cc-debug.md
+cc-help.md
+cc-hooks.md
+cc-mcp.md
+cc-memory.md
+cc-orchestrate.md
+cc-setup.md
+cc-troubleshoot.md
+=== AGENTS ===
+agent-lifecycle-manager.md
+audit-reviewer.md
+claude-code-architect.md
+claude-code-debugger.md
+council-coordinator.md
+hooks-specialist.md
+ide-integration-specialist.md
+mcp-configurator.md
+permissions-security-advisor.md
+research-orchestrator.md
+sdk-guide.md
+team-orchestrator.md
+=== SKILLS ===
+agent-lifecycle
+agent-sdk
+cli-reference
+configuration
+context-anchoring
+context-management
+cost-optimization
+council-review
+extended-thinking
+git-integration
+hooks-system
+ide-integrations
+mcp-servers
+memory-instructions
+permissions-security
+research-routing
+self-healing-advanced
+settings-deep-dive
+slash-commands
+teams-collaboration
+testing-workflows
+tools-reference
+troubleshooting
+=== HOOKS ===
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
