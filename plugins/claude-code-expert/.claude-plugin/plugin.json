@@ -1,7 +1,7 @@
 {
   "name": "claude-code-expert",
-  "version": "4.1.0",
-  "description": "Comprehensive Claude Code knowledge base with 23 skills, 12 specialist agents, 11 commands, multi-agent council review (6 protocols, 10 specialists), mandatory audit loops, agent lifecycle management, research routing (Perplexity/Firecrawl/Context7), context anchoring, and advanced self-healing.",
+  "version": "5.0.0",
+  "description": "Comprehensive Claude Code knowledge base with 23 skills, 15 specialist agents (including dedicated Perplexity/Firecrawl/Context7 researchers), 12 commands, multi-agent council review, mandatory Context7 audits, 3-tier memory architecture, context anchoring with PreCompact/PostCompact hooks, research findings persistence, sub-repo discovery, docs/context scaffolding, fingerprint system, and advanced self-healing with pattern rotation.",
   "author": {
     "name": "Markus Ahling"
   },
@@ -48,6 +48,18 @@
     "scoring",
     "claude-4.6",
     "opus-4.6",
-    "1m-context"
+    "1m-context",
+    "perplexity-researcher",
+    "firecrawl-researcher",
+    "context7-researcher",
+    "research-orchestrator",
+    "three-tier-memory",
+    "memory-rotation",
+    "fingerprint-system",
+    "sub-repo-discovery",
+    "docs-context-scaffolding",
+    "anchoring-system",
+    "precompact-hooks",
+    "cc-update"
   ]
 }

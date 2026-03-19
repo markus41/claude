@@ -124,57 +124,59 @@ Rotate lessons-learned.md when:
 
 ## Enhanced Capture Hook
 
-Improved `PostToolUseFailure` hook with deduplication and severity tagging:
+The production hook at `.claude/hooks/lessons-learned-capture.sh` includes these features:
 
-```bash
-#!/bin/bash
-# .claude/hooks/lessons-learned-capture.sh (enhanced)
+### Feature Summary
 
-# Read tool failure input
-INPUT=$(head -c 65536)
+| Feature | Description |
+|---------|-------------|
+| **Deduplication** | Checks last ~10 entries (120 lines) for matching tool+error signature; skips if duplicate found |
+| **Severity tagging** | Auto-classifies errors as `critical`, `high`, `medium`, or `low` based on tool type and error keywords |
+| **Pattern counter** | Tracks per-tool error frequency inline (e.g., "Seen: 3 times") to surface repeat offenders |
+| **Input sanitization** | Strips control characters, escapes backticks/dollars/backslashes via `tr` and `sed` (no `eval`) |
+| **Atomic writes** | Uses `flock -w 5` on a lockfile to prevent concurrent write corruption |
+| **Auto-rotation trigger** | When file exceeds 300 lines, appends a one-time ROTATION NEEDED reminder with instructions |
+| **hookSpecificOutput** | Returns JSON context to Claude with severity and frequency info for smarter follow-up |
 
-# Validate JSON
-if ! printf '%s' "$INPUT" | jq -e . >/dev/null 2>&1; then
-  exit 0
-fi
+### Severity Classification
 
-TOOL=$(printf '%s' "$INPUT" | jq -r '.tool_name // "unknown"')
-ERROR=$(printf '%s' "$INPUT" | jq -r '.error // ""' | head -c 500)
-TOOL_INPUT=$(printf '%s' "$INPUT" | jq -r '.tool_input | tostring' | head -c 300)
-TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+```
+critical  → permission denied, EACCES, secrets, credentials, force push, reset --hard
+high      → EISDIR, ENOENT, command not found, module not found, nonzero exit codes
+medium    → SyntaxError, TypeError, KeyError (Bash); all Read errors; all MCP errors
+low       → everything else
+```
 
-# Sanitize inputs to prevent injection
-TOOL=$(printf '%s' "$TOOL" | tr -cd '[:alnum:]._-')
-ERROR=$(printf '%s' "$ERROR" | sed 's/[`$]/\\&/g')
-TOOL_INPUT=$(printf '%s' "$TOOL_INPUT" | sed 's/[`$]/\\&/g')
+### Entry Format
 
-LESSONS_FILE=".claude/rules/lessons-learned.md"
+Each captured error produces this markdown block:
 
-# Deduplication: skip if same tool+error already logged in last 5 entries
-if [ -f "$LESSONS_FILE" ]; then
-  RECENT=$(tail -50 "$LESSONS_FILE")
-  if printf '%s' "$RECENT" | grep -qF "$ERROR"; then
-    # Already captured recently, skip
-    exit 0
-  fi
-fi
-
-# Atomic write with flock
-(
-  flock -n 200 || exit 0
-
-  cat >> "$LESSONS_FILE" << ENTRY
-
-### Error: ${TOOL} failure (${TIMESTAMP})
-- **Tool:** ${TOOL}
-- **Input:** \`${TOOL_INPUT}\`
-- **Error:** ${ERROR}
+```markdown
+### Error: Bash failure (2026-03-19T12:00:00Z)
+- **Tool:** Bash
+- **Severity:** high
+- **Seen:** 5 times
+- **Input:** `ls /nonexistent`
+- **Error:** Exit code 2
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
-ENTRY
+```
 
-) 200>"${LESSONS_FILE}.lock"
+### Deduplication Logic
 
-rm -f "${LESSONS_FILE}.lock"
+The hook extracts the last 120 lines of the lessons file (roughly 10 entries) and checks
+for both a matching `**Tool:**` line and the first 60 characters of the error message.
+If both match, the entry is skipped and Claude receives a message to fix the existing entry
+instead of creating a new one.
+
+### Auto-Rotation Trigger
+
+When the file exceeds 300 lines and no rotation reminder exists yet, the hook appends:
+
+```
+> **ROTATION NEEDED**: This file exceeds 300 lines. Claude should:
+> 1. Archive RESOLVED entries older than 30 days to `.claude/lessons-archive/`
+> 2. Promote patterns (3+ similar) to permanent rules in `.claude/rules/`
+> 3. Prune NEEDS_FIX entries older than 14 days with no resolution
 ```
 
 ## Cross-Agent Learning

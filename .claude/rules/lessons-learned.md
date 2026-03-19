@@ -1171,3 +1171,17 @@ for cat, items in cats.items():
 - **Input:** `/home/user/claude/.claude/agent-memory/MEMORY.md`
 - **Error:** File does not exist. Note: your current working directory is /home/user/claude.
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-19T04:01:28Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/.claude/agent-memory/researcher`
+- **Error:** EISDIR: illegal operation on a directory, read '/home/user/claude/.claude/agent-memory/researcher'
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+
+---
+> **ROTATION NEEDED**: This file exceeds 300 lines. Claude should:
+> 1. Archive RESOLVED entries older than 30 days to `.claude/lessons-archive/`
+> 2. Promote patterns (3+ similar) to permanent rules in `.claude/rules/`
+> 3. Prune NEEDS_FIX entries older than 14 days with no resolution
+---
