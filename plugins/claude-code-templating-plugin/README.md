@@ -23,7 +23,7 @@ claude-code-templating-plugin/
   CLAUDE.md / CONTEXT_SUMMARY.md
   src/                           # TypeScript source (orchestrator, engines, MCP)
   agents/                        # 6 agents
-  commands/                      # 5 commands
+  commands/                      # 7 commands
   skills/                        # 3 skills (subdirectories with SKILL.md)
   templates/                     # Bundled project and pipeline templates
 ```
@@ -46,6 +46,7 @@ claude-code-templating-plugin/
 | `/template` | List, search, or generate from available templates |
 | `/scaffold` | Scaffold a new project from a template |
 | `/harness` | Create Harness pipelines, templates, or input sets |
+| `/setup` / `/update` | Bootstrap or refresh the Claude Code workspace in an installed project |
 | `/generate` | Generate API clients, models, or tests from specs |
 | `/archetype` | Create or manage Maven archetypes |
 
@@ -78,8 +79,20 @@ npm ci && npm run build          # Build the TypeScript source
 ## Quick Start
 
 ```
+/setup --project-root .                  # Create the managed Claude workspace
+/update --project-root .                 # Refresh after plugin changes
 /scaffold fastapi-microservice user-service --harness --env dev,staging,prod
 /harness pipeline create ci-cd-standard --service my-service
 /generate api-client --spec openapi.yaml --language typescript
 /template list                           # Browse available templates
 ```
+
+## Claude Workspace Sync
+
+The new `/setup` and `/update` commands generate a nested documentation tree for installed projects. The sync includes:
+
+- Root `README.md` and `CLAUDE.md` with explicit read-when guidance.
+- A rich `.claude/` hierarchy with rules, skills, templates, agents, hooks, local overrides, and `lessons-learned.md`.
+- `docs/context/` files such as `project.md`, `architecture.md`, `api-contracts.md`, `testing-strategy.md`, and ADRs.
+- Recursive detection of repository-like folders under the root `.claude/` directory so those locations also receive `.claude/` guidance.
+- Best-effort installation of supported LSP packages during setup/update.

@@ -1,13 +1,14 @@
 # claude-code-templating-plugin Context Summary
 
 ## Plugin purpose
-Universal templating and Harness expert plugin for Claude Code - enables fully autonomous project generation, pipeline creation, and deployment automation through a unified template interface. Supports Handlebars, Cookiecutter, Copier, Maven archetypes, and Harness pipelines. 5 commands, 6 agents, 3 skills.
+Universal templating and Harness expert plugin for Claude Code - enables fully autonomous project generation, pipeline creation, and deployment automation through a unified template interface. Supports Handlebars, Cookiecutter, Copier, Maven archetypes, and Harness pipelines. 7 commands, 6 agents, 3 skills.
 
 ## Command index
 - `commands/archetype.md`
 - `commands/generate.md`
 - `commands/harness.md`
 - `commands/scaffold.md`
+- `commands/setup.md`
 - `commands/template.md`
 
 ## Agent index
@@ -39,3 +40,6 @@ Use this table to decide when to move beyond this summary.
 | You are validating security, compliance, or rollout risk | `SECURITY*.md`, workstream/review docs | Provides controls, risk notes, and release constraints. |
 | The summary omits edge cases you need | Any referenced deep-dive docs linked above | Ensures decisions are based on complete plugin-specific details. |
 
+
+## Additional routing note
+- Load `commands/setup.md` when the task is about installing, updating, or resynchronizing Claude workspace files inside a project.

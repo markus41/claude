@@ -10,6 +10,7 @@
 
 import { EventEmitter } from 'eventemitter3';
 import { TemplateOrchestrator, createOrchestrator } from './core/orchestrator.js';
+import { ClaudeSetupManager, createClaudeSetupManager } from './core/claude-setup.js';
 import { HarnessExpertAgent } from './agents/harness-expert.js';
 import type {
   ScaffoldSpec,
@@ -208,6 +209,7 @@ export class ClaudeCodeTemplatingPlugin extends EventEmitter<PluginEvents> {
   private initialized = false;
   private orchestrator: TemplateOrchestrator | null = null;
   private harnessAgent: HarnessExpertAgent | null = null;
+  private claudeSetupManager: ClaudeSetupManager | null = null;
 
   /**
    * Plugin name
@@ -258,6 +260,10 @@ export class ClaudeCodeTemplatingPlugin extends EventEmitter<PluginEvents> {
       // Initialize Harness Expert Agent
       this.harnessAgent = new HarnessExpertAgent();
       context.logger.debug('Harness Expert Agent initialized');
+
+      // Initialize Claude setup manager
+      this.claudeSetupManager = createClaudeSetupManager();
+      context.logger.debug('Claude setup manager initialized');
 
       // Register commands
       await this.registerCommands(context);
@@ -358,6 +364,16 @@ export class ClaudeCodeTemplatingPlugin extends EventEmitter<PluginEvents> {
             error: `Unknown action: ${action}. Use: pipeline, template, deploy`,
           };
       }
+    });
+
+    // /setup command
+    context.api.registerCommand('setup', async (args) => {
+      return this.handleClaudeSetup('setup', args);
+    });
+
+    // /update command
+    context.api.registerCommand('update', async (args) => {
+      return this.handleClaudeSetup('update', args);
     });
 
     // /generate command
@@ -710,6 +726,34 @@ export class ClaudeCodeTemplatingPlugin extends EventEmitter<PluginEvents> {
         error: result.error || 'Template creation failed',
       };
     }
+  }
+
+  private async handleClaudeSetup(mode: 'setup' | 'update', args: CommandArgs): Promise<CommandResult> {
+    if (!this.claudeSetupManager) {
+      return { success: false, error: 'Claude setup manager not initialized' };
+    }
+
+    const projectRoot = (args.options['project-root'] as string) || args.context.cwd;
+
+    const includeNestedRepositories =
+      args.options['include-nested-repositories'] !== false
+      && args.options['no-include-nested-repositories'] !== true;
+    const installLsps =
+      args.options['install-lsps'] !== false
+      && args.options['no-install-lsps'] !== true;
+
+    const result = await this.claudeSetupManager.ensureProjectSetup({
+      mode,
+      projectRoot,
+      includeNestedRepositories,
+      installLsps,
+    });
+
+    return {
+      success: true,
+      message: `${mode === 'setup' ? 'Bootstrapped' : 'Updated'} Claude Code workspace in ${projectRoot}`,
+      data: result,
+    };
   }
 
   private async handleHarnessDeploy(args: CommandArgs): Promise<CommandResult> {

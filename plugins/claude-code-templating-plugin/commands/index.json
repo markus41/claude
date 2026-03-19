@@ -77,6 +77,21 @@
       "risk": "medium",
       "cost": "medium",
       "path": "commands/template.md"
+    },
+    {
+      "name": "setup",
+      "intent": "Bootstrap or refresh Claude Code workspace files inside an installed project, including nested repositories discovered beneath the root .claude tree",
+      "tags": [
+        "setup",
+        "update",
+        "claude",
+        "documentation",
+        "lsp"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "low",
+      "path": "commands/setup.md"
     }
   ]
 }

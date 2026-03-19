@@ -24,6 +24,7 @@ This plugin establishes a universal templating and Harness expert system that en
 | `/template` | List, search, generate from templates |
 | `/scaffold` | Scaffold new projects from templates |
 | `/harness` | Create pipelines and templates |
+| `/setup` / `/update` | Bootstrap or refresh the managed Claude workspace in an installed project |
 | `/generate` | Generate API clients, models, tests |
 | `/archetype` | Create and manage project archetypes |
 
@@ -78,6 +79,12 @@ GITHUB_TOKEN=your_github_token
 | Harness | `*.yaml` | YAML + Expressions |
 
 ## Usage Examples
+
+### Bootstrap Claude workspace files
+```bash
+/setup --project-root .
+/update --project-root .
+```
 
 ### Scaffold a Microservice
 ```bash
@@ -137,3 +144,10 @@ npm run lint
 - Cache resolved templates
 - Use streaming for large files
 - Minimize API calls through batching
+
+## Claude Workspace Sync Guarantees
+
+- Setup and update share the same fingerprinted generator so installed projects can always be resynchronized after plugin changes.
+- The managed structure includes nested documentation for `.claude/`, `docs/context/`, `project.md`, `lessons-learned.md`, and ADRs.
+- Repository-like folders discovered beneath the root `.claude/` tree are given their own `.claude/` folder automatically.
+- Node-based projects attempt to install common LSP packages needed for Claude Code-assisted development.
