@@ -126,7 +126,7 @@ describe('ClaudeSetupManager', () => {
     );
   });
 
-  it('adds local .claude docs for nested repositories under the root .claude tree', async () => {
+  it('adds local .claude docs for a real nested repo under .claude/repositories', async () => {
     await writeFile(join(tempRoot, 'package.json'), JSON.stringify({ name: 'root-app' }), 'utf-8');
     const nestedRepo = join(tempRoot, '.claude', 'repositories', 'sample-repo');
     await mkdir(nestedRepo, { recursive: true });
@@ -143,6 +143,38 @@ describe('ClaudeSetupManager', () => {
 
     const nestedReadme = await readFile(join(nestedRepo, '.claude', 'README.md'), 'utf-8');
     expect(nestedReadme).toContain('Nested Repository Claude Workspace');
+  });
+
+  it('ignores false-positive repository folder names inside plugin-managed .claude/templates', async () => {
+    await writeFile(join(tempRoot, 'package.json'), JSON.stringify({ name: 'root-app' }), 'utf-8');
+    const templateFolder = join(tempRoot, '.claude', 'templates', 'repository-guidelines');
+    await mkdir(templateFolder, { recursive: true });
+
+    const manager = new ClaudeSetupManager();
+    const result = await manager.ensureProjectSetup({
+      mode: 'update',
+      projectRoot: tempRoot,
+      installLsps: false,
+    });
+
+    expect(result.nestedRepositories).not.toContain('.claude/templates/repository-guidelines');
+    await expect(readFile(join(templateFolder, '.claude', 'README.md'), 'utf-8')).rejects.toThrow();
+  });
+
+  it('ignores folders with repo in the name when they have no repository markers', async () => {
+    await writeFile(join(tempRoot, 'package.json'), JSON.stringify({ name: 'root-app' }), 'utf-8');
+    const fakeRepoFolder = join(tempRoot, '.claude', 'workspace-repo-cache');
+    await mkdir(fakeRepoFolder, { recursive: true });
+
+    const manager = new ClaudeSetupManager();
+    const result = await manager.ensureProjectSetup({
+      mode: 'update',
+      projectRoot: tempRoot,
+      installLsps: false,
+    });
+
+    expect(result.nestedRepositories).not.toContain('.claude/workspace-repo-cache');
+    await expect(readFile(join(fakeRepoFolder, '.claude', 'README.md'), 'utf-8')).rejects.toThrow();
   });
 
   it('attempts to install relevant LSP packages for node-based projects', async () => {

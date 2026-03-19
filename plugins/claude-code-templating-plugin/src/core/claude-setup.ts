@@ -381,11 +381,11 @@ export class ClaudeSetupManager {
       }
 
       const fullPath = join(currentPath, entry.name);
-      if (entry.name === '.claude') {
+      if (entry.name === '.claude' || this.isExcludedClaudeDirectory(fullPath)) {
         continue;
       }
 
-      if (this.isRepositoryCandidate(fullPath, entry.name)) {
+      if (this.isRepositoryCandidate(fullPath)) {
         discovered.add(fullPath);
       }
 
@@ -393,19 +393,38 @@ export class ClaudeSetupManager {
     }
   }
 
-  private isRepositoryCandidate(directoryPath: string, directoryName: string): boolean {
-    if (directoryName.toLowerCase().includes('repository') || directoryName.toLowerCase().includes('repo')) {
-      return true;
-    }
+  private isRepositoryCandidate(directoryPath: string): boolean {
+    const repositoryMarkers = [
+      '.git',
+      'package.json',
+      'pyproject.toml',
+      'requirements.txt',
+      'go.mod',
+      'Cargo.toml',
+    ];
 
-    const markers = ['.git', 'package.json', 'pyproject.toml', 'go.mod', 'Cargo.toml'];
-    for (const marker of markers) {
+    for (const marker of repositoryMarkers) {
       if (existsSync(join(directoryPath, marker))) {
         return true;
       }
     }
 
     return false;
+  }
+
+  private isExcludedClaudeDirectory(directoryPath: string): boolean {
+    const claudeSubpath = this.getClaudeSubpath(directoryPath);
+    return claudeSubpath.length === 1 && ['skills', 'templates', 'agents', 'hooks'].includes(claudeSubpath[0] ?? '');
+  }
+
+  private getClaudeSubpath(directoryPath: string): string[] {
+    const segments = directoryPath.split(/[\\/]+/);
+    const claudeSegmentIndex = segments.lastIndexOf('.claude');
+    if (claudeSegmentIndex === -1) {
+      return [];
+    }
+
+    return segments.slice(claudeSegmentIndex + 1);
   }
 
   private async installRequiredLsps(projectRoot: string, profile: DetectedProjectProfile): Promise<{ installed: string[]; warnings: string[] }> {
