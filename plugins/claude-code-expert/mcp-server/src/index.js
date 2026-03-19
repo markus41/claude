@@ -171,6 +171,51 @@ const TASK_HINTS = [
     match: ["setup", "install", "configure", "settings", "hooks", "claude", "mcp"],
     docs: ["cc-setup", "configuration", "settings-deep-dive", "cc-config"],
   },
+  {
+    kind: "ci-cd",
+    match: ["ci", "cd", "pipeline", "github actions", "pre-commit", "automated review", "headless"],
+    docs: ["cc-cicd", "cicd-integration", "agent-sdk"],
+  },
+  {
+    kind: "model",
+    match: ["model", "cost", "budget", "routing", "expensive", "cheap", "haiku", "sonnet", "opus"],
+    docs: ["model-routing", "cost-optimization", "cc-perf"],
+  },
+  {
+    kind: "security",
+    match: ["security", "audit", "compliance", "soc2", "secrets", "enterprise", "hipaa", "gdpr", "permissions"],
+    docs: ["enterprise-security", "permissions-security", "security-compliance-advisor", "cc-council"],
+  },
+  {
+    kind: "context",
+    match: ["context", "budget", "compact", "tokens", "anchor", "window", "overflow"],
+    docs: ["cc-budget", "context-budgeting", "context-management", "context-anchoring"],
+  },
+  {
+    kind: "plugin",
+    match: ["plugin", "build plugin", "create plugin", "scaffold", "marketplace", "manifest"],
+    docs: ["plugin-development", "plugin-architect", "cc-mcp"],
+  },
+  {
+    kind: "performance",
+    match: ["performance", "slow", "expensive", "optimize", "cache", "profiling", "waste"],
+    docs: ["cc-perf", "session-analytics", "cost-optimization", "model-routing"],
+  },
+  {
+    kind: "teams",
+    match: ["agent team", "teammate", "worktree", "parallel session", "mesh", "coordinate"],
+    docs: ["agent-teams-advanced", "teams-architect", "cc-orchestrate", "teams-collaboration"],
+  },
+  {
+    kind: "prompt",
+    match: ["prompt", "instructions", "claude.md", "rule writing", "effective prompt"],
+    docs: ["prompt-engineering", "memory-instructions", "configuration"],
+  },
+  {
+    kind: "tutorial",
+    match: ["tutorial", "example", "walkthrough", "how to", "learn", "getting started"],
+    docs: ["worked-examples", "cc-learn", "cc-help"],
+  },
 ];
 
 function scoreDoc(doc, queryTokens) {
@@ -252,8 +297,130 @@ function resolveTask(query) {
   return { commands, agents, skills, workflow };
 }
 
+// --- Model routing data for cc_docs_model_recommend ---
+const MODEL_DATA = {
+  "opus": { id: "claude-opus-4-6", inputCost: 15.00, outputCost: 75.00, cacheRead: 1.50, best: "architecture, complex debugging, security review" },
+  "sonnet": { id: "claude-sonnet-4-6", inputCost: 3.00, outputCost: 15.00, cacheRead: 0.30, best: "implementation, code review, refactoring, test writing" },
+  "haiku": { id: "claude-haiku-4-5-20251001", inputCost: 0.80, outputCost: 4.00, cacheRead: 0.08, best: "lookups, research, docs, simple Q&A, commit messages" },
+};
+
+const TASK_MODEL_MAP = [
+  { patterns: ["architecture", "design", "complex", "security review", "audit"], model: "opus", reason: "Deep multi-step reasoning required" },
+  { patterns: ["debug", "root cause", "hard bug", "race condition", "flaky"], model: "opus", reason: "Complex hypothesis evaluation" },
+  { patterns: ["implement", "build", "create", "add feature", "refactor", "code review", "test"], model: "sonnet", reason: "Best cost/quality for code generation" },
+  { patterns: ["search", "find", "lookup", "list", "grep", "read", "summarize", "research", "docs"], model: "haiku", reason: "Simple task, cheapest model sufficient" },
+];
+
+function recommendModel(task, budget) {
+  const normalized = task.toLowerCase();
+  let rec = { model: "sonnet", reason: "Default: good balance of cost and quality" };
+  for (const entry of TASK_MODEL_MAP) {
+    if (entry.patterns.some((p) => normalized.includes(p))) {
+      rec = { model: entry.model, reason: entry.reason };
+      break;
+    }
+  }
+  const data = MODEL_DATA[rec.model];
+  const estInputTokens = normalized.length > 100 ? 200000 : normalized.length > 50 ? 100000 : 50000;
+  const estOutputTokens = Math.round(estInputTokens * 0.2);
+  const estCost = (estInputTokens / 1e6) * data.inputCost + (estOutputTokens / 1e6) * data.outputCost;
+
+  if (budget) {
+    const budgetNum = parseFloat(budget.replace("$", ""));
+    if (!isNaN(budgetNum) && estCost > budgetNum && rec.model !== "haiku") {
+      const fallback = rec.model === "opus" ? "sonnet" : "haiku";
+      const fbData = MODEL_DATA[fallback];
+      const fbCost = (estInputTokens / 1e6) * fbData.inputCost + (estOutputTokens / 1e6) * fbData.outputCost;
+      return {
+        recommended: fallback, id: fbData.id, reason: `Budget constraint: ${rec.model} estimated at $${estCost.toFixed(2)} exceeds $${budgetNum.toFixed(2)}. Downgraded to ${fallback}.`,
+        estimatedCost: `$${fbCost.toFixed(2)}`, originalRecommendation: rec.model,
+      };
+    }
+  }
+  return { recommended: rec.model, id: data.id, reason: rec.reason, estimatedCost: `$${estCost.toFixed(2)}` };
+}
+
+// --- Checklist data for cc_docs_checklist ---
+const CHECKLISTS = {
+  setup: [
+    "1. Run `/init` to generate starter CLAUDE.md",
+    "2. Review and customize CLAUDE.md (keep under 200 lines)",
+    "3. Create `.claude/rules/` for path-scoped instructions",
+    "4. Configure MCP servers in `.mcp.json` (`/cc-mcp add`)",
+    "5. Set up hooks in settings.json (`/cc-hooks create`)",
+    "6. Configure permissions (`/cc-config generate`)",
+    "7. Install relevant plugins (`/cc-plugin install`)",
+    "8. Run `/cc-setup --audit` to validate configuration",
+    "9. Enable auto memory for cross-session learning",
+    "10. Set model preferences in settings.json",
+  ],
+  review: [
+    "1. Identify review scope (files, PR, architecture)",
+    "2. Choose protocol: `/cc-council --protocol expert-panel` for standard, `red-blue-team` for adversarial",
+    "3. Select preset: `quick` (fast), `standard`, `security`, `performance`, `full`",
+    "4. Set depth: `standard` for most, `deep` for critical code",
+    "5. Run the review and examine scoring",
+    "6. Address HIGH and CRITICAL findings first",
+    "7. Re-run on changed files to verify fixes",
+  ],
+  debug: [
+    "1. Reproduce the issue and capture error messages",
+    "2. Run `/cc-intel --mode debug` for root cause analysis",
+    "3. Build hypothesis ladder (most likely, competing, edge case)",
+    "4. Collect evidence for each hypothesis",
+    "5. Use Opus model for complex debugging",
+    "6. Check lessons-learned.md for known patterns",
+    "7. Verify fix resolves root cause, not just symptom",
+    "8. Update lessons-learned.md with fix and prevention",
+  ],
+  deploy: [
+    "1. Run tests: `pnpm test`",
+    "2. Run type check: `npx tsc --noEmit`",
+    "3. Run lint: `npx eslint .`",
+    "4. Run `/cc-council --preset pre-merge` on changed files",
+    "5. Check for secrets or credentials in diff",
+    "6. Verify CI pipeline passes",
+    "7. Create PR with clear description",
+    "8. Request review from appropriate team members",
+  ],
+  security: [
+    "1. Run `/cc-council --preset security` on codebase",
+    "2. Check for hardcoded secrets (API keys, passwords, tokens)",
+    "3. Verify input validation on all external inputs",
+    "4. Check authentication and authorization patterns",
+    "5. Review dependency versions for known CVEs",
+    "6. Verify no SQL injection, XSS, or command injection vectors",
+    "7. Check file access patterns for path traversal",
+    "8. Review hook scripts for injection vulnerabilities",
+    "9. Audit MCP server configurations for over-permissive access",
+    "10. Generate compliance report with `/cc-council --preset compliance`",
+  ],
+};
+
+// --- Compare helper for cc_docs_compare ---
+function compareDocuments(ids) {
+  const docs = ids.map((id) => documentationById.get(id)).filter(Boolean);
+  if (docs.length < 2) return null;
+
+  const rows = docs.map((doc) => ({
+    id: doc.id, type: doc.type, title: doc.title, summary: doc.summary,
+    cost: doc.metadata.cost || "unknown", risk: doc.metadata.risk || "unknown",
+    model: doc.metadata.model || "n/a",
+  }));
+
+  const header = "| Aspect | " + rows.map((r) => r.title).join(" | ") + " |";
+  const divider = "|--------|" + rows.map(() => "--------").join("|") + "|";
+  const typeRow = "| Type | " + rows.map((r) => r.type).join(" | ") + " |";
+  const summaryRow = "| Purpose | " + rows.map((r) => r.summary.slice(0, 80)).join(" | ") + " |";
+  const costRow = "| Cost | " + rows.map((r) => r.cost).join(" | ") + " |";
+  const riskRow = "| Risk | " + rows.map((r) => r.risk).join(" | ") + " |";
+  const modelRow = "| Model | " + rows.map((r) => r.model).join(" | ") + " |";
+
+  return [header, divider, typeRow, summaryRow, costRow, riskRow, modelRow].join("\n");
+}
+
 const server = new Server(
-  { name: "claude-code-docs", version: "2.0.0" },
+  { name: "claude-code-docs", version: "3.0.0" },
   { capabilities: { tools: {} } }
 );
 
@@ -333,6 +500,57 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
           },
         },
         required: ["task"],
+      },
+    },
+    {
+      name: "cc_docs_model_recommend",
+      description:
+        "Recommend the optimal Claude model for a task with cost estimate. Accepts a task description and optional budget ceiling.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          task: {
+            type: "string",
+            description: "Description of the task, e.g. 'refactor the auth module' or 'quick file lookup'.",
+          },
+          budget: {
+            type: "string",
+            description: "Optional cost ceiling, e.g. '$0.50' or '$2.00'. If the recommended model exceeds this, a cheaper alternative is suggested.",
+          },
+        },
+        required: ["task"],
+      },
+    },
+    {
+      name: "cc_docs_checklist",
+      description:
+        "Get a step-by-step checklist for a common task type, aggregated from relevant commands and skills.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          task_type: {
+            type: "string",
+            description: "Type of task to get a checklist for.",
+            enum: ["setup", "review", "debug", "deploy", "security"],
+          },
+        },
+        required: ["task_type"],
+      },
+    },
+    {
+      name: "cc_docs_compare",
+      description:
+        "Compare 2-3 commands, skills, or agents side-by-side. Returns a comparison table with purpose, cost, risk, and model.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          items: {
+            type: "array",
+            items: { type: "string" },
+            description: "Array of 2-3 topic IDs to compare, e.g. ['cc-intel', 'cc-council'] or ['builder-validator', 'qa-swarm'].",
+          },
+        },
+        required: ["items"],
       },
     },
   ],
@@ -452,6 +670,54 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
               `## Suggested workflow\n${resolution.workflow.map((step, index) => `${index + 1}. ${step}`).join("\n") || "1. Search documentation and choose a starting command."}`,
           },
         ],
+      };
+    }
+
+    case "cc_docs_model_recommend": {
+      const result = recommendModel(args.task || "", args.budget);
+      const lines = [
+        `# Model Recommendation`,
+        ``,
+        `**Task:** ${args.task}`,
+        `**Recommended model:** ${result.recommended} (\`${result.id}\`)`,
+        `**Reason:** ${result.reason}`,
+        `**Estimated cost:** ${result.estimatedCost}`,
+      ];
+      if (result.originalRecommendation) {
+        lines.push(`**Original recommendation:** ${result.originalRecommendation} (exceeded budget)`);
+      }
+      if (args.budget) {
+        lines.push(`**Budget:** ${args.budget}`);
+      }
+      lines.push(``, `## All models`, ``);
+      for (const [name, data] of Object.entries(MODEL_DATA)) {
+        lines.push(`- **${name}** (\`${data.id}\`): $${data.inputCost}/M input, $${data.outputCost}/M output — ${data.best}`);
+      }
+      return { content: [{ type: "text", text: lines.join("\n") }] };
+    }
+
+    case "cc_docs_checklist": {
+      const taskType = args.task_type || "setup";
+      const steps = CHECKLISTS[taskType];
+      if (!steps) {
+        return { content: [{ type: "text", text: `Unknown task type "${taskType}". Available: ${Object.keys(CHECKLISTS).join(", ")}` }] };
+      }
+      return {
+        content: [{ type: "text", text: `# ${taskType.charAt(0).toUpperCase() + taskType.slice(1)} Checklist\n\n${steps.join("\n")}` }],
+      };
+    }
+
+    case "cc_docs_compare": {
+      const items = args.items || [];
+      if (items.length < 2) {
+        return { content: [{ type: "text", text: "Provide at least 2 topic IDs to compare." }] };
+      }
+      const table = compareDocuments(items.slice(0, 3));
+      if (!table) {
+        return { content: [{ type: "text", text: `Could not find documents for: ${items.join(", ")}. Use cc_docs_list_topics to see available IDs.` }] };
+      }
+      return {
+        content: [{ type: "text", text: `# Comparison: ${items.join(" vs ")}\n\n${table}` }],
       };
     }
 

@@ -1177,3 +1177,52 @@ for cat, items in cats.items():
 - **Input:** `/home/user/claude/CLAUDE.md`
 - **Error:** File does not exist. Note: your current working directory is /home/user/claude.
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-03-19T16:32:08Z)
+- **Tool:** Bash
+- **Input:** `grep -r "^/\|slash command\|`/[a-z]" /home/user/claude/.claude/skills --include="*.md" 2>/dev/null | cut -d: -f2 | grep "^/\|slash" | sort -u | head -30`
+- **Error:** Exit code 2
+/bin/bash: eval: line 1: unexpected EOF while looking for matching ``'
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-19T16:33:36Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/plugins/claude-code-expert/mcp-server/src/index.ts`
+- **Error:** File does not exist. Note: your current working directory is /home/user/claude. Did you mean index.js?
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: mcp__firecrawl__firecrawl_scrape failure (2026-03-19T16:39:06Z)
+- **Tool:** mcp__firecrawl__firecrawl_scrape
+- **Input:** `N/A`
+- **Error:** Tool 'firecrawl_scrape' execution failed: Maximum number of redirects exceeded
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: mcp__firecrawl__firecrawl_scrape failure (2026-03-19T16:39:09Z)
+- **Tool:** mcp__firecrawl__firecrawl_scrape
+- **Input:** `N/A`
+- **Error:** Tool 'firecrawl_scrape' execution failed: Maximum number of redirects exceeded
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-19T16:39:44Z)
+- **Tool:** Read
+- **Input:** `/tmp/claude-0/-home-user-claude/e35fb0c0-105f-4827-94ee-aa6b1e46c2a3/tasks/a7d7d590c0cf5e852.output`
+- **Error:** File content (114176 tokens) exceeds maximum allowed tokens (25000). Use offset and limit parameters to read specific portions of the file, or search for specific content instead of reading the whole file.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-19T16:39:47Z)
+- **Tool:** Read
+- **Input:** `/tmp/claude-0/-home-user-claude/e35fb0c0-105f-4827-94ee-aa6b1e46c2a3/tasks/a7d7d590c0cf5e852.output`
+- **Error:** File content (127611 tokens) exceeds maximum allowed tokens (25000). Use offset and limit parameters to read specific portions of the file, or search for specific content instead of reading the whole file.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-19T16:45:06Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude`
+- **Error:** EISDIR: illegal operation on a directory, read '/home/user/claude'
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-19T16:46:14Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/plugins/claude-code-expert/skills`
+- **Error:** EISDIR: illegal operation on a directory, read '/home/user/claude/plugins/claude-code-expert/skills'
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
