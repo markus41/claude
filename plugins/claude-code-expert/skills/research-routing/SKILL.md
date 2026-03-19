@@ -3,6 +3,18 @@
 Optimal routing of research tasks across Perplexity MCP, Firecrawl MCP, and Context7 MCP.
 Each tool has distinct strengths — use the right one for each job.
 
+## Dedicated Researcher Agents
+
+Three specialized agents are available for delegation:
+
+| Agent | Primary MCP | Spawn When |
+|-------|-------------|------------|
+| `perplexity-researcher` | Perplexity | Knowledge Q&A, comparisons, current events, best practices |
+| `firecrawl-researcher` | Firecrawl | URL scraping, structured extraction, site mapping |
+| `context7-researcher` | Context7 | Library docs, API reference, version verification, **MANDATORY for audits** |
+
+For simple queries (1-2 tool calls), handle directly. For complex queries, spawn the appropriate agent.
+
 ## Tool Strengths at a Glance
 
 | Tool | Best For | Cost | Speed |
@@ -222,3 +234,43 @@ For a typical research task:
 | Firecrawl Agent | $0.08-$1.20 | AVOID — use chain instead |
 
 **Rule**: Start cheap (Context7 → Perplexity → Firecrawl Scrape). Only escalate if cheaper tools don't have the answer.
+
+## MANDATORY Context7 Enforcement
+
+### Enforced Contexts (Non-Negotiable)
+
+Context7 MUST be used before any output in these contexts:
+
+1. **Quality Audits** (`audit-reviewer`, `cc-council`, code reviews)
+   - Verify every library API call against Context7 docs
+   - Check for deprecated methods
+   - Flag incorrect parameter usage
+
+2. **Planning Agents** (`code-architect`, `team-orchestrator`, feature planning)
+   - Verify library supports planned approach
+   - Check version compatibility
+   - Confirm API availability
+
+3. **Code Reviews** (any PR review or code-reviewer agent)
+   - Look up correct API usage for libraries in changed files
+   - Verify framework patterns match official docs
+
+4. **Error Debugging** (when error involves a library)
+   - Check documented behavior vs observed behavior
+   - Verify parameter types and required fields
+
+### Enforcement Pattern
+```
+# In any audit/plan/review context:
+1. Identify libraries in scope
+2. resolve-library-id for each
+3. query-docs for specific APIs being used/planned
+4. Compare documented vs actual/planned usage
+5. Report discrepancies with doc references
+```
+
+### Why This Is Mandatory
+- Training data may be outdated — Context7 is always current
+- Hallucinated API signatures lead to broken code
+- Version-specific behavior can't be assumed
+- Audit credibility requires authoritative sources

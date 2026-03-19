@@ -217,12 +217,123 @@ Enterprise managed settings     (cannot be overridden)
 - Primitives: later values override
 - Enterprise settings: always win
 
+## Three-Tier Memory Architecture
+
+### Tier 1: Structured Rules (Always Active)
+```
+.claude/rules/              ← Loaded as system instructions
+├── architecture.md         ← Global: project structure
+├── code-style.md           ← Scoped: *.ts, *.tsx, *.js
+├── git-workflow.md         ← Global: commit conventions
+├── research.md             ← Global: MCP tool routing
+├── self-healing.md         ← Global: error capture protocol
+├── testing.md              ← Scoped: *.test.*, *.spec.*
+└── lessons-learned.md      ← Global: auto-growing error log
+```
+
+**Survives**: compaction, session boundaries, agent handoffs
+**Cost**: ~8-15K tokens (always loaded)
+**Update frequency**: Rarely — only when patterns stabilize
+
+### Tier 2: Auto-Memory Files (Session-Persistent)
+```
+~/.claude/projects/<hash>/memory/
+├── MEMORY.md               ← Index file (first 200 lines auto-loaded)
+├── user_role.md            ← Who the user is
+├── feedback_preferences.md ← How user wants to work
+├── project_state.md        ← Current project state
+├── reference_resources.md  ← External system pointers
+└── research_findings.md    ← Key research anchored to project
+```
+
+**Survives**: compaction (first 200 lines of MEMORY.md), session boundaries (all files)
+**Cost**: ~3K tokens (MEMORY.md index only, topic files loaded on demand)
+**Update frequency**: Per-session — after learning something useful
+
+### Tier 3: Anchored State (Dynamic, Compaction-Safe)
+```
+.claude/
+├── anchored-state.md       ← Git state, modified files, task progress
+├── research-findings.md    ← Research results anchored to codebase
+├── orchestration-state.md  ← Multi-agent task tracking
+└── handoff-state.md        ← Agent-to-agent context transfer
+```
+
+**Survives**: compaction (if saved before via PreCompact hook)
+**Cost**: Variable (loaded on demand after compaction)
+**Update frequency**: Continuous — updated by hooks during session
+
+### Memory Tier Decision Matrix
+
+| Information Type | Tier | File | Survives Compact? |
+|-----------------|------|------|-------------------|
+| Build commands | 1 | CLAUDE.md | Always |
+| Code conventions | 1 | rules/code-style.md | When editing code |
+| Error patterns | 1 | rules/lessons-learned.md | Always |
+| User preferences | 2 | memory/feedback_*.md | Yes (via MEMORY.md) |
+| Current task state | 3 | anchored-state.md | If saved by hook |
+| Research findings | 3 | research-findings.md | If anchored |
+| Agent handoff context | 3 | handoff-state.md | No (temporary) |
+
+## Memory Rotation Protocol
+
+### When to Rotate
+
+| File | Rotation Trigger | Action |
+|------|-----------------|--------|
+| lessons-learned.md | >300 lines or >20 RESOLVED entries | Archive to .claude/lessons-archive/ |
+| MEMORY.md | >200 lines | Move details to topic files, keep index |
+| research-findings.md | >200 lines | Archive old findings, keep recent |
+| anchored-state.md | >50 lines | Prune stale entries |
+
+### Rotation Steps
+1. **Archive**: Move old RESOLVED lessons to `.claude/lessons-archive/{year}-{month}.md`
+2. **Promote**: Entries with 3+ similar patterns → permanent rules in `.claude/rules/`
+3. **Prune**: Remove NEEDS_FIX entries older than 14 days
+4. **Reindex**: Update MEMORY.md index to reflect current topic files
+
+## Fingerprint System
+
+Track plugin and project state for incremental updates:
+
+```json
+// .claude/fingerprint.json
+{
+  "pluginVersion": "5.0.0",
+  "lastUpdate": "2026-03-19T00:00:00Z",
+  "stack": {
+    "languages": ["typescript", "python"],
+    "frameworks": ["react", "fastapi"],
+    "packageManager": "pnpm",
+    "runtime": "node"
+  },
+  "managedFiles": [
+    ".claude/rules/architecture.md",
+    ".claude/rules/lessons-learned.md",
+    ".claude/hooks/lessons-learned-capture.sh"
+  ],
+  "subRepos": [
+    { "path": "packages/api", "hasClaudeSetup": true },
+    { "path": "packages/web", "hasClaudeSetup": true }
+  ],
+  "memoryHealth": {
+    "lessonsLearnedLines": 145,
+    "memoryMdLines": 52,
+    "unresolvedErrors": 3,
+    "lastRotation": "2026-03-01"
+  }
+}
+```
+
 ## Best Practices
 
-1. **Keep CLAUDE.md focused** — Build commands, conventions, architecture
+1. **Keep CLAUDE.md focused** — Build commands, conventions, architecture (<200 lines)
 2. **Use rules for enforcement** — Path-scoped rules for file-type conventions
 3. **Let auto-memory learn** — Don't manually duplicate auto-saved info
 4. **Review lessons-learned** — Promote patterns to permanent rules
 5. **Scope rules narrowly** — Docker rules shouldn't load for TypeScript work
 6. **Version control CLAUDE.md** — It's project documentation
 7. **Gitignore settings.local.json** — Personal overrides stay local
+8. **Rotate regularly** — Keep lessons-learned under 300 lines
+9. **Anchor research** — Connect findings to specific codebase files
+10. **Fingerprint state** — Track what the plugin manages for safe updates

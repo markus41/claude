@@ -1,16 +1,22 @@
-# Claude Code Expert Plugin v4.1
+# Claude Code Expert Plugin v5.0
 
-A comprehensive Claude Code knowledge base with **4-layer extension stack deployment**, **orchestration-first agent teams**, **mandatory audit loops**, **agent lifecycle management**, **intelligent research routing**, **context anchoring**, and **advanced self-healing**. Auto-detects your repo's tech stack and deploys a complete Claude Code configuration: CLAUDE.md (routing OS), Skills (capability packs), Hooks (guardrails & automation), Agents (specialized workers), MCP servers, hybrid memory architecture, and agent team orchestration templates.
+A comprehensive Claude Code knowledge base with **4-layer extension stack deployment**, **orchestration-first agent teams**, **mandatory audit loops**, **dedicated research agents** (Perplexity/Firecrawl/Context7), **3-tier memory architecture**, **context anchoring system**, **sub-repository discovery**, **docs/context scaffolding**, **fingerprint-based incremental updates**, and **advanced self-healing with pattern rotation**.
 
-**New in v4.1:**
-- **Research routing** — Dedicated research-orchestrator routes tasks to optimal MCP tools: Context7 (free library docs), Perplexity (knowledge Q&A), Firecrawl (structured extraction)
-- **Mandatory Context7 validation** — Quality audits and planners MUST verify library usage against official docs via Context7 before accepting code
-- **Context anchoring system** — PreCompact/PostCompact hooks preserve critical state across `/compact` events. Anchor budget guidance for optimal compliance
-- **Advanced self-healing** — Pattern detection across lessons-learned entries, automated rotation, rule promotion (3+ similar errors → permanent rule), cross-agent learning
-- **Enhanced memory management** — Lessons-learned health scoring, rotation protocol, archive system, cross-agent knowledge propagation
+**New in v5.0:**
+- **Dedicated researcher agents** — Three specialized agents: `perplexity-researcher` (knowledge Q&A, comparisons, current events), `firecrawl-researcher` (URL scraping, structured extraction, site mapping), `context7-researcher` (library docs, API reference, version checks)
+- **Enhanced research-orchestrator** — Routes to dedicated researchers based on query type, anchors findings to project context, persists key research for future sessions
+- **3-tier memory architecture** — Tier 1: Structured rules (always active), Tier 2: Auto-memory files (session-persistent), Tier 3: Anchored state (dynamic, compaction-safe)
+- **Context anchoring hooks** — PreCompact saves git state, PostCompact restores context, SubagentStop anchors research findings to `.claude/research-findings.md`
+- **Enhanced lessons-learned capture** — Deduplication, severity tagging (critical/high/medium/low), pattern counting, sanitized inputs, atomic writes with flock, auto-rotation trigger at 300 lines
+- **`/cc-update` command** — Incremental plugin sync using fingerprint system. Discovers sub-repos, validates hooks, checks health, rotates lessons
+- **Sub-repository discovery** — Scans for nested git repos and monorepo packages, ensures each has `.claude` setup
+- **docs/context/ scaffolding** — Generates documentation structure (project-overview, architecture, glossary, testing-strategy, ADRs, etc.)
+- **Fingerprint system** — Tracks managed files, detected stack, sub-repos, and memory health for safe incremental updates
+- **Mandatory Context7 enforcement** — All quality audits, planners, code reviews, and team orchestration agents now have Context7 tools and mandatory verification rules
+- **LSP detection** — Detects required language servers based on stack and reports missing installations
 
-**From v4.0:**
-- Orchestration-first principle, mandatory audit loops, agent lifecycle management
+**From v4.x:**
+- Research routing, context anchoring, advanced self-healing, orchestration-first
 - Cross-audit pattern, Claude Code Agent Teams, 3 orchestration agents
 - Updated for Claude 4.6 (Opus 4.6 1M context, Sonnet 4.6, Haiku 4.5)
 
@@ -29,10 +35,10 @@ Power users use all four layers together for transformative productivity gains:
 
 ## What's Included
 
-### Agents (12)
+### Agents (15)
 | Agent | Domain |
 |-------|--------|
-| `claude-code-architect` | Overall Claude Code setup, project structure, CLAUDE.md |
+| `claude-code-architect` | Overall Claude Code setup, project structure, CLAUDE.md + Context7 |
 | `claude-code-debugger` | Diagnose and fix ALL Claude Code setup/runtime issues |
 | `council-coordinator` | Multi-agent council reviews with deliberation protocols + Context7 |
 | `hooks-specialist` | Hook system design, lifecycle events, security patterns |
@@ -40,10 +46,13 @@ Power users use all four layers together for transformative productivity gains:
 | `sdk-guide` | Claude Agent SDK, building custom agents, tool use |
 | `ide-integration-specialist` | VS Code, JetBrains, Vim/Neovim integration |
 | `permissions-security-advisor` | Permission model, security best practices |
-| **`team-orchestrator`** | Master orchestrator — delegates, monitors, audits, routes research |
-| **`audit-reviewer`** | Second-round auditor with Context7 library validation |
+| **`team-orchestrator`** | Master orchestrator — delegates, monitors, audits + Context7 |
+| **`audit-reviewer`** | Second-round auditor with mandatory Context7 library validation |
 | **`agent-lifecycle-manager`** | Agent health checks, idle cleanup, retention policies |
-| **`research-orchestrator`** | Routes research to Perplexity/Firecrawl/Context7 based on task |
+| **`research-orchestrator`** | Routes research to dedicated researcher agents |
+| **`perplexity-researcher`** | Knowledge Q&A, comparisons, current events via Perplexity MCP |
+| **`firecrawl-researcher`** | URL scraping, structured extraction, site mapping via Firecrawl MCP |
+| **`context7-researcher`** | Library docs, API reference, version checks via Context7 MCP |
 
 ### Skills (23)
 | Skill | Coverage |
@@ -71,10 +80,11 @@ Power users use all four layers together for transformative productivity gains:
 | **`context-anchoring`** | Preserve critical info across /compact — PreCompact/PostCompact hooks |
 | **`self-healing-advanced`** | Pattern detection, rotation, rule promotion, cross-agent learning |
 
-### Commands (11)
+### Commands (12)
 | Command | Purpose |
 |---------|---------|
-| `/cc-setup` | **Full repo analysis & 4-layer deployment** — detect stack, deploy all layers, install MCP, configure memory |
+| `/cc-setup` | **Full repo analysis & 4-layer deployment** — detect stack, deploy all layers, install MCP, configure memory, discover sub-repos, scaffold docs/context |
+| **`/cc-update`** | **Incremental plugin sync** — fingerprint-based updates, sub-repo discovery, health checks, lessons rotation |
 | `/cc-memory` | **Hybrid memory architecture** — split rule files, MCP-backed long-term memory, rotation, audit |
 | `/cc-orchestrate` | **Agent team templates** — builder-validator, QA swarm, feature squad, research council, and more |
 | `/cc-help` | Interactive Claude Code documentation lookup |
@@ -84,6 +94,7 @@ Power users use all four layers together for transformative productivity gains:
 | `/cc-agent` | Build custom agents with the Agent SDK |
 | `/cc-troubleshoot` | Diagnose and fix Claude Code issues |
 | `/cc-debug` | Comprehensive debugger for Claude Code setup |
+| `/cc-council` | Multi-agent council review with 6 protocols |
 
 ### Custom MCP Server (6 tools)
 | Tool | Purpose |

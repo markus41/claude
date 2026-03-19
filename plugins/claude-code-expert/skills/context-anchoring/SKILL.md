@@ -269,3 +269,83 @@ When using `/cc-memory --anchor`:
 4. Set up `.claude/anchored-state.md` for dynamic state
 5. Configure MEMORY.md as an index (under 200 lines)
 6. Create anchor tags in rules files for must-not-forget content
+
+## Research Anchoring
+
+When research agents complete, their findings should be anchored:
+
+### Research Anchor Protocol
+```
+Research agent completes
+  ↓
+SubagentStop hook fires (.claude/hooks/research-anchor.sh)
+  ↓
+Key findings extracted from agent output
+  ↓
+Appended to .claude/research-findings.md with:
+  - Timestamp
+  - Research question
+  - Key findings (bullet points)
+  - Source URLs
+  - Affected project files
+  ↓
+Next compaction: research-findings.md survives as anchored state
+```
+
+### Research Finding Format
+```markdown
+## Research: {question} ({date})
+
+### Findings
+- {finding 1} — [Source](url)
+- {finding 2} — [Source](url)
+
+### Affects
+- `src/auth/middleware.ts` — needs JWT refresh rotation
+- `package.json` — upgrade next-auth to v5
+
+### Decision
+{what was decided based on this research}
+```
+
+## Anchoring for Quality Audits
+
+Quality audits and planning agents anchor their Context7 lookups:
+
+### Audit Anchor
+```markdown
+## Audit Anchor: {library} ({date})
+
+### API Verified
+- `prisma.user.findMany` — correct usage confirmed (Context7 /prisma/prisma)
+- `useEffect` cleanup — missing cleanup in `src/hooks/useAuth.ts:42`
+
+### Deprecated APIs Found
+- `componentWillMount` at `src/legacy/Widget.tsx:15` — removed in React 18
+```
+
+### Planner Anchor
+```markdown
+## Plan Anchor: {feature} ({date})
+
+### Library Verification
+- Next.js 15: App Router `generateMetadata` — supported ✓ (Context7)
+- Prisma 6: Client extensions — supported ✓ (Context7)
+- tRPC v11: Next.js App Router integration — supported ✓ (Context7)
+
+### Plan Decision
+Use tRPC v11 with Prisma 6 client extensions for type-safe API layer.
+```
+
+## Full Anchoring Setup Checklist
+
+When setting up anchoring for a project:
+
+- [ ] CLAUDE.md is under 200 lines with critical-only content
+- [ ] Rules files exist in `.claude/rules/` for each concern
+- [ ] MEMORY.md exists as an index under 200 lines
+- [ ] PreCompact hook saves git state to `.claude/anchored-state.md`
+- [ ] PostCompact hook reminds about anchored state
+- [ ] SubagentStop hook anchors research findings
+- [ ] Fingerprint file tracks managed files
+- [ ] Rotation schedule documented for lessons-learned
