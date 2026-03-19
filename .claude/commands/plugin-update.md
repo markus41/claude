@@ -77,18 +77,28 @@ Updates respect these constraints and check compatibility.
 
 ## Update Process
 
-1. **Check Current Version**: Read installed plugin version
-2. **Query Registry**: Find latest available version
-3. **Check Compatibility**: Verify semver constraints
-4. **Check Dependencies**: Ensure dependency compatibility
-5. **Run Pre-Update Hooks**: Execute plugin's pre-update script
-6. **Backup Current Version**: Create backup (optional)
-7. **Download/Clone New Version**: Fetch updated plugin
-8. **Validate New Version**: Check plugin structure
-9. **Update Registry**: Update plugin metadata
-10. **Run Post-Update Hooks**: Execute plugin's post-update script
-11. **Run Tests**: Validate plugin works (if configured)
-12. **Generate Report**: Show update summary
+1. **Detect Unregistered Plugins**: Scan `plugins/` for directories with `.claude-plugin/plugin.json` that are missing from `plugins.index.json`. Register them before proceeding.
+2. **Check Current Version**: Read installed plugin version from registry AND from on-disk `plugin.json` manifest. If they differ, the registry is stale.
+3. **Query Registry**: Find latest available version
+4. **Check Compatibility**: Verify semver constraints
+5. **Check Dependencies**: Ensure dependency compatibility
+6. **Run Pre-Update Hooks**: Execute plugin's pre-update script
+7. **Backup Current Version**: Create backup (optional)
+8. **Download/Clone New Version**: Fetch updated plugin
+9. **Validate New Version**: Check plugin structure
+10. **Update Registry**: Update plugin metadata in all sections (`installed`, `registry`, `plugins`, `callsignRegistry`, `stats`)
+11. **Run Post-Update Hooks**: Execute plugin's post-update script
+12. **Run Tests**: Validate plugin works (if configured)
+13. **Generate Report**: Show update summary
+
+### Registry Drift Detection (Step 1-2)
+
+Plugins can become unregistered when:
+- Manually copied into `plugins/` without running `/plugin-install`
+- Installed via marketplace but the registry entry was not persisted
+- Plugin was updated on disk but the registry version was not bumped
+
+The update command now scans for these drift cases and fixes them automatically before proceeding with the version update.
 
 ## Examples
 
