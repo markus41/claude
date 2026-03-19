@@ -334,3 +334,99 @@ Persistent patterns from repeated councils:
 ```
 If same finding appears in 3+ councils → promote to rule in .claude/rules/
 ```
+
+---
+
+## Second-Round Audit Protocol (MANDATORY)
+
+After the council produces its report, a second-round audit agent reviews the council's own work:
+
+### Audit Flow
+
+```
+Council Members → Fan-In → Council Report
+                                ↓
+                        Audit Reviewer (Opus)
+                                ↓
+                    Checks for:
+                    - False positives (findings that aren't real issues)
+                    - Missed issues (gaps the council overlooked)
+                    - Severity miscalibrations (critical marked as info, etc.)
+                    - Contradictions between council members
+                    - Auto-fix suggestions that could break things
+                                ↓
+                    Audit Verdict:
+                    PASS → publish council report as-is
+                    AMENDED → publish corrected report
+                    FAIL → re-run affected council members
+```
+
+### Audit Agent Prompt
+
+```markdown
+You are auditing a multi-agent council review. The council consisted of
+{member_count} specialists who reviewed {target_files}.
+
+## Council Report
+{council_report}
+
+## Your Task
+1. Check each finding for accuracy — is this a real issue?
+2. Check severity ratings — are critical/warning/info appropriate?
+3. Check for contradictions — did agents disagree without resolution?
+4. Check for gaps — scan the files yourself for issues the council missed
+5. Check auto-fix suggestions — would any of them break something?
+
+## Output
+Produce an audit report with:
+- Findings confirmed (accurate)
+- Findings disputed (false positives or wrong severity)
+- Findings added (gaps the council missed)
+- Amended council score (if different)
+- Recommendation: PASS / AMENDED / FAIL
+```
+
+### Integration with State Machine
+
+```
+INIT → PLAN → FAN_OUT → ANALYZE → FAN_IN → DELIBERATE → SCORE → DECIDE
+  → AUDIT → [AMEND?] → OUTPUT → [AUTO_FIX] → COMPLETE
+      │                    ↑
+      └── FAIL: re-run ───┘
+```
+
+The `AUDIT` state is inserted between `DECIDE` and `OUTPUT`. If the audit amends
+the report, it updates the findings and score before output generation.
+
+---
+
+## Agent Lifecycle Management
+
+The council coordinator is responsible for managing agent lifecycle during reviews:
+
+### Check-In Protocol
+```
+While agents are analyzing:
+  Every 120 seconds:
+    1. Check which agents have returned results
+    2. For agents still running:
+       - If making progress → continue
+       - If idle >60s → send check-in via SendMessage
+       - If stalled >180s → terminate, use partial output
+    3. Log: { agent, status, elapsed, tokens }
+```
+
+### Cleanup Protocol
+```
+After fan-in completes:
+  1. Verify all agent results collected
+  2. Terminate any still-running agents
+  3. Release completed agents
+  4. Report: { spawned, completed, timed_out, terminated }
+```
+
+### No Orphaned Agents Rule
+Before producing the final report, the coordinator MUST:
+1. List all agents spawned during this council
+2. Confirm each is either completed or terminated
+3. Log any agents that were force-terminated and note data loss

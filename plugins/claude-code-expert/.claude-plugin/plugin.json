@@ -1,7 +1,7 @@
 {
   "name": "claude-code-expert",
-  "version": "3.0.0",
-  "description": "Comprehensive Claude Code knowledge base with 19 skills, 8 specialist agents, 11 commands, multi-agent council review (6 protocols, 10 specialists), and MCP documentation server.",
+  "version": "4.0.0",
+  "description": "Comprehensive Claude Code knowledge base with 20 skills, 11 specialist agents, 11 commands, multi-agent council review (6 protocols, 10 specialists), mandatory audit loops, agent lifecycle management, and MCP documentation server.",
   "author": {
     "name": "Markus Ahling"
   },
@@ -20,17 +20,26 @@
     "debugger",
     "troubleshooting",
     "teams",
+    "agent-teams",
+    "subagents",
     "settings",
     "permissions",
     "security",
     "memory",
     "orchestration",
-    "agent-teams",
-    "subagents",
+    "orchestration-first",
+    "audit-loop",
+    "agent-lifecycle",
+    "idle-cleanup",
+    "health-checks",
+    "cross-audit",
     "cost-optimization",
     "council",
     "multi-agent-review",
     "deliberation",
-    "scoring"
+    "scoring",
+    "claude-4.6",
+    "opus-4.6",
+    "1m-context"
   ]
 }

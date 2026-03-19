@@ -39,7 +39,8 @@ general-purpose, Explore, Plan, claude-code-guide, researcher,
 test-writer, code-reviewer, debugger, doc-writer, security-reviewer,
 regex-expert, prisma-specialist, redis-specialist, graphql-specialist,
 infrastructure-specialist, docker-ops, k8s-image-auditor, ansible-specialist,
-pulumi-specialist
+pulumi-specialist, coverage-analyzer, spec-validator, rabbitmq-specialist,
+event-streaming-architect, kafka-specialist, plugin-manager, statusline-setup
 
 ### Multi-Agent Patterns
 - Parallel research (Promise.all)
@@ -48,6 +49,21 @@ pulumi-specialist
 - Fan-out/fan-in (distribute + aggregate)
 - Background agents (run_in_background)
 - Worktree isolation
+- **Audit loop** (builder → auditor → fix → re-audit)
+- **Cross-audit** (agent A audits B, B audits C, C audits A)
+- **Agent teams** (mesh network with SendMessage between teammates)
+
+### Orchestration-First Principle
+Claude should prefer to delegate to specialized agents rather than doing work
+directly. Every agent's output must be audited. Idle agents must be checked
+and cleaned up. Direct work is the fallback, not the default.
+
+### Agent Lifecycle Management
+- Track all spawned agent IDs
+- Check in on background agents every 2 minutes via SendMessage
+- Terminate stalled agents (no response >3 min)
+- Collect results from completed agents immediately
+- No orphaned agents when session ends
 
 ### CI/CD Integration
 - Non-interactive mode: `claude -p "..." --output-format json`
