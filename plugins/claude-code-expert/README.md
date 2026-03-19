@@ -1,6 +1,13 @@
-# Claude Code Expert Plugin v4.1
+# Claude Code Expert Plugin v5.0
 
-A comprehensive Claude Code knowledge base with **4-layer extension stack deployment**, **orchestration-first agent teams**, **mandatory audit loops**, **agent lifecycle management**, **intelligent research routing**, **context anchoring**, and **advanced self-healing**. Auto-detects your repo's tech stack and deploys a complete Claude Code configuration: CLAUDE.md (routing OS), Skills (capability packs), Hooks (guardrails & automation), Agents (specialized workers), MCP servers, hybrid memory architecture, and agent team orchestration templates.
+A high-intelligence Claude Code copilot with **4-layer extension stack deployment**, **principal-engineer reasoning**, **evidence-driven planning**, **orchestration-first agent teams**, **mandatory audit loops**, **intelligent research routing**, **context anchoring**, and **advanced self-healing**. It auto-detects your repo's tech stack and deploys a complete Claude Code configuration: CLAUDE.md (routing OS), Skills (capability packs), Hooks (guardrails & automation), Agents (specialized workers), MCP servers, hybrid memory architecture, and agent team orchestration templates.
+
+
+**New in v5.0:**
+- **Deep Code Intelligence** — `/cc-intel` adds principal-level repo fingerprinting, constraint extraction, evidence matrices, option scoring, and validation planning before implementation
+- **Principal Engineer Strategist** — new specialist agent for root-cause isolation, hidden-coupling detection, tradeoff analysis, and execution pressure-testing
+- **Smarter MCP documentation retrieval** — the MCP server now indexes skills, commands, and agents together and can resolve a natural-language task into the best docs, commands, and specialists
+- **Publishable plugin bootstrap context** — adds `CLAUDE.md`, `CONTEXT_SUMMARY.md`, and schema-ready plugin metadata for better discoverability and loading discipline
 
 **New in v4.1:**
 - **Research routing** — Dedicated research-orchestrator routes tasks to optimal MCP tools: Context7 (free library docs), Perplexity (knowledge Q&A), Firecrawl (structured extraction)
@@ -29,7 +36,7 @@ Power users use all four layers together for transformative productivity gains:
 
 ## What's Included
 
-### Agents (12)
+### Agents (13)
 | Agent | Domain |
 |-------|--------|
 | `claude-code-architect` | Overall Claude Code setup, project structure, CLAUDE.md |
@@ -44,8 +51,9 @@ Power users use all four layers together for transformative productivity gains:
 | **`audit-reviewer`** | Second-round auditor with Context7 library validation |
 | **`agent-lifecycle-manager`** | Agent health checks, idle cleanup, retention policies |
 | **`research-orchestrator`** | Routes research to Perplexity/Firecrawl/Context7 based on task |
+| **`principal-engineer-strategist`** | Principal-level reasoning for architecture, debugging, tradeoffs, and hidden constraints |
 
-### Skills (23)
+### Skills (24)
 | Skill | Coverage |
 |-------|----------|
 | `cli-reference` | Every CLI flag, argument, and environment variable |
@@ -70,8 +78,9 @@ Power users use all four layers together for transformative productivity gains:
 | **`research-routing`** | Optimal routing: Perplexity (Q&A), Firecrawl (extraction), Context7 (docs) |
 | **`context-anchoring`** | Preserve critical info across /compact — PreCompact/PostCompact hooks |
 | **`self-healing-advanced`** | Pattern detection, rotation, rule promotion, cross-agent learning |
+| **`deep-code-intelligence`** | Evidence-driven workflow for hard bugs, architecture choices, and high-stakes implementation plans |
 
-### Commands (11)
+### Commands (12)
 | Command | Purpose |
 |---------|---------|
 | `/cc-setup` | **Full repo analysis & 4-layer deployment** — detect stack, deploy all layers, install MCP, configure memory |
@@ -84,8 +93,9 @@ Power users use all four layers together for transformative productivity gains:
 | `/cc-agent` | Build custom agents with the Agent SDK |
 | `/cc-troubleshoot` | Diagnose and fix Claude Code issues |
 | `/cc-debug` | Comprehensive debugger for Claude Code setup |
+| `/cc-intel` | Deep code intelligence mode — repo fingerprinting, hypothesis trees, option scoring, and validation strategy |
 
-### Custom MCP Server (6 tools)
+### Custom MCP Server (7 tools)
 | Tool | Purpose |
 |------|---------|
 | `cc_docs_search` | Search documentation by topic keyword |
@@ -94,6 +104,7 @@ Power users use all four layers together for transformative productivity gains:
 | `cc_docs_env_vars` | Environment variables reference |
 | `cc_docs_settings_schema` | Complete settings.json schema |
 | `cc_docs_troubleshoot` | Troubleshooting guidance for specific issues |
+| `cc_docs_resolve_task` | Recommend the best commands, agents, and docs for a natural-language engineering task |
 
 ## Installation
 

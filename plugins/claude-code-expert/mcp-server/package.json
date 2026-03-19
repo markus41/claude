@@ -1,6 +1,6 @@
 {
   "name": "@claude-code-expert/mcp-server",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "MCP server providing Claude Code documentation as queryable tools",
   "type": "module",
   "main": "src/index.js",
