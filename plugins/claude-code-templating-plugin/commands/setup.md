@@ -27,6 +27,7 @@ The `/setup` command creates the managed Claude Code structure expected by this 
 - `docs/context/` with nested, durable markdown files such as `project.md`, `architecture.md`, `testing-strategy.md`, and ADRs.
 - Automatic discovery of repository-like folders beneath the root `.claude/` tree so they also receive local `.claude/` guidance.
 - Best-effort LSP installation for supported stacks.
+- Safe handling for existing top-level `README.md` and `CLAUDE.md`; those files are preserved by default unless you opt in with `--force`.
 
 Use `/update` to run the same synchronization flow later after the plugin changes.
 
@@ -35,8 +36,8 @@ Use `/update` to run the same synchronization flow later after the plugin change
 ## Basic Syntax
 
 ```bash
-/setup [--project-root <path>] [--no-install-lsps] [--no-include-nested-repositories]
-/update [--project-root <path>] [--no-install-lsps] [--no-include-nested-repositories]
+/setup [--project-root <path>] [--force | --no-force] [--no-install-lsps] [--no-include-nested-repositories]
+/update [--project-root <path>] [--force | --no-force] [--no-install-lsps] [--no-include-nested-repositories]
 ```
 
 ---
@@ -45,6 +46,7 @@ Use `/update` to run the same synchronization flow later after the plugin change
 
 ```
 --project-root <path>               Root of the installed project to manage (default: current directory)
+--force / --no-force                Overwrite protected top-level managed files such as README.md and CLAUDE.md
 --install-lsps / --no-install-lsps  Enable or disable automatic LSP package installation
 --include-nested-repositories / --no-include-nested-repositories
                                    Enable or disable scanning inside the root .claude tree for repositories
@@ -86,6 +88,12 @@ project/
 - `/update` is the command you should rerun after plugin upgrades or template revisions.
 - The fingerprint file records generated metadata so the workspace remains traceable.
 
+### Protected top-level files
+- Root `README.md` and `CLAUDE.md` are treated as host-project-owned files.
+- If either file already exists, setup/update leaves it in place by default and emits a warning in the command result.
+- Pass `--force` to intentionally replace those protected files with the plugin-managed versions.
+- Plugin-owned files under `.claude/` and `docs/context/` continue to regenerate automatically.
+
 ### Nested repository handling
 - The root `.claude/` folder is scanned recursively.
 - Directories that look like repositories, or directories named with `repo` / `repository`, receive their own `.claude/README.md` and `.claude/CLAUDE.md`.
@@ -107,9 +115,9 @@ project/
 /setup --project-root .
 ```
 
-### Refresh after updating the plugin
+### Refresh after updating the plugin and replace protected top-level docs intentionally
 ```bash
-/update --project-root .
+/update --project-root . --force
 ```
 
 ### Refresh docs only without touching LSP dependencies

@@ -1,4 +1,4 @@
-import { mkdir, writeFile, readdir, readFile } from 'fs/promises';
+import { mkdir, writeFile, readdir, readFile, access } from 'fs/promises';
 import { existsSync } from 'fs';
 import { join, basename, relative, dirname } from 'path';
 import { createHash } from 'crypto';
@@ -44,6 +44,11 @@ interface ManagedDoc {
   content: string;
 }
 
+interface ManagedWriteOptions {
+  force?: boolean;
+  warnings: string[];
+}
+
 export class ClaudeSetupManager {
   async ensureProjectSetup(options: ClaudeSetupOptions): Promise<ClaudeSetupResult> {
     const root = options.projectRoot;
@@ -58,7 +63,10 @@ export class ClaudeSetupManager {
     const managedDocs = this.buildManagedDocs(root, profile, options.mode);
 
     for (const doc of managedDocs) {
-      await this.writeManagedFile(root, doc, updatedFiles);
+      await this.writeManagedFile(root, doc, updatedFiles, {
+        force: options.force,
+        warnings,
+      });
     }
 
     if (includeNestedRepositories) {
@@ -68,7 +76,10 @@ export class ClaudeSetupManager {
         const repoProfile = await this.detectProjectProfile(repoPath);
         const nestedDocs = this.buildNestedRepositoryDocs(root, repoPath, repoProfile, options.mode);
         for (const doc of nestedDocs) {
-          await this.writeManagedFile(repoPath, doc, updatedFiles, root);
+          await this.writeManagedFile(repoPath, doc, updatedFiles, {
+            force: options.force,
+            warnings,
+          }, root);
         }
 
         if (options.installLsps !== false) {
@@ -308,11 +319,39 @@ export class ClaudeSetupManager {
     ];
   }
 
-  private async writeManagedFile(root: string, doc: ManagedDoc, updatedFiles: string[], relativeTo = root): Promise<void> {
+  private async writeManagedFile(
+    root: string,
+    doc: ManagedDoc,
+    updatedFiles: string[],
+    options: ManagedWriteOptions,
+    relativeTo = root
+  ): Promise<void> {
     const fullPath = join(root, doc.path);
+    const fileExists = await this.pathExists(fullPath);
+
+    if (fileExists && this.shouldPreserveExistingRootFile(root, doc.path) && !options.force) {
+      options.warnings.push(
+        `Skipped overwriting existing ${doc.path}; rerun with --force to replace the managed template.`
+      );
+      return;
+    }
+
     await mkdir(dirname(fullPath), { recursive: true });
     await writeFile(fullPath, doc.content, 'utf-8');
     updatedFiles.push(relative(relativeTo, fullPath));
+  }
+
+  private shouldPreserveExistingRootFile(root: string, docPath: string): boolean {
+    return root === dirname(join(root, docPath)) && (docPath === 'README.md' || docPath === 'CLAUDE.md');
+  }
+
+  private async pathExists(filePath: string): Promise<boolean> {
+    try {
+      await access(filePath);
+      return true;
+    } catch {
+      return false;
+    }
   }
 
   private async findNestedRepositories(projectRoot: string): Promise<string[]> {
