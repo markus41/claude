@@ -295,7 +295,7 @@ Memory
   [PASS] 4 memory files, all referenced
 
 Plugins
-  [PASS] claude-code-expert (v4.2.0): 11 commands, 12 agents, 23 skills
+  [PASS] claude-code-expert (v5.0.0): 15 commands, 13 agents, 24 skills
   [WARN] 2 orphaned skill directories not in manifest
 
 ──────────────────────────────────────────
