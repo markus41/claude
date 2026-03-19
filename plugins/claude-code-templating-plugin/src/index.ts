@@ -741,10 +741,14 @@ export class ClaudeCodeTemplatingPlugin extends EventEmitter<PluginEvents> {
     const installLsps =
       args.options['install-lsps'] !== false
       && args.options['no-install-lsps'] !== true;
+    const force =
+      args.options.force === true
+      && args.options['no-force'] !== true;
 
     const result = await this.claudeSetupManager.ensureProjectSetup({
       mode,
       projectRoot,
+      force,
       includeNestedRepositories,
       installLsps,
     });

@@ -66,6 +66,66 @@ describe('ClaudeSetupManager', () => {
     expect(fingerprint.managedFiles).toContain('README.md');
   });
 
+  it('preserves an existing root README.md by default and adds a warning', async () => {
+    await writeFile(join(tempRoot, 'package.json'), JSON.stringify({ name: 'demo-app' }), 'utf-8');
+    await writeFile(join(tempRoot, 'README.md'), 'host README', 'utf-8');
+
+    const manager = new ClaudeSetupManager();
+    const result = await manager.ensureProjectSetup({
+      mode: 'setup',
+      projectRoot: tempRoot,
+      installLsps: false,
+    });
+
+    expect(await readFile(join(tempRoot, 'README.md'), 'utf-8')).toBe('host README');
+    expect(result.updatedFiles).not.toContain('README.md');
+    expect(result.warnings).toContain(
+      'Skipped overwriting existing README.md; rerun with --force to replace the managed template.'
+    );
+  });
+
+  it('preserves an existing root CLAUDE.md by default and adds a warning', async () => {
+    await writeFile(join(tempRoot, 'package.json'), JSON.stringify({ name: 'demo-app' }), 'utf-8');
+    await writeFile(join(tempRoot, 'CLAUDE.md'), 'host CLAUDE', 'utf-8');
+
+    const manager = new ClaudeSetupManager();
+    const result = await manager.ensureProjectSetup({
+      mode: 'update',
+      projectRoot: tempRoot,
+      installLsps: false,
+    });
+
+    expect(await readFile(join(tempRoot, 'CLAUDE.md'), 'utf-8')).toBe('host CLAUDE');
+    expect(result.updatedFiles).not.toContain('CLAUDE.md');
+    expect(result.warnings).toContain(
+      'Skipped overwriting existing CLAUDE.md; rerun with --force to replace the managed template.'
+    );
+  });
+
+  it('overwrites managed targets intentionally when force is true', async () => {
+    await writeFile(join(tempRoot, 'package.json'), JSON.stringify({ name: 'demo-app' }), 'utf-8');
+    await writeFile(join(tempRoot, 'README.md'), 'host README', 'utf-8');
+    await writeFile(join(tempRoot, 'CLAUDE.md'), 'host CLAUDE', 'utf-8');
+    await mkdir(join(tempRoot, '.claude', 'rules'), { recursive: true });
+    await writeFile(join(tempRoot, '.claude', 'rules', 'coding.md'), 'old managed content', 'utf-8');
+
+    const manager = new ClaudeSetupManager();
+    const result = await manager.ensureProjectSetup({
+      mode: 'setup',
+      projectRoot: tempRoot,
+      force: true,
+      installLsps: false,
+    });
+
+    expect(await readFile(join(tempRoot, 'README.md'), 'utf-8')).toContain('# demo-app');
+    expect(await readFile(join(tempRoot, 'CLAUDE.md'), 'utf-8')).toContain('Claude Operating Manual');
+    expect(await readFile(join(tempRoot, '.claude', 'rules', 'coding.md'), 'utf-8')).toContain('# Coding Rules');
+    expect(result.updatedFiles).toEqual(expect.arrayContaining(['README.md', 'CLAUDE.md', '.claude/rules/coding.md']));
+    expect(result.warnings).not.toContain(
+      expect.stringContaining('rerun with --force')
+    );
+  });
+
   it('adds local .claude docs for nested repositories under the root .claude tree', async () => {
     await writeFile(join(tempRoot, 'package.json'), JSON.stringify({ name: 'root-app' }), 'utf-8');
     const nestedRepo = join(tempRoot, '.claude', 'repositories', 'sample-repo');
