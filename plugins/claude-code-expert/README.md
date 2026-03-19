@@ -74,11 +74,12 @@ Power users use all four layers together for transformative productivity gains:
 | **`self-healing-advanced`** | Pattern detection, rotation, rule promotion, cross-agent learning |
 | **`prompt-engineering`** | CLAUDE.md crafting, agent prompts, skill design, anti-patterns, quality checklist |
 
-### Commands (14)
+### Commands (15)
 | Command | Purpose |
 |---------|---------|
 | `/cc-setup` | **Full repo analysis & 4-layer deployment** — detect stack, deploy all layers, install MCP, configure memory |
 | `/cc-memory` | **Hybrid memory architecture** — split rule files, MCP-backed long-term memory, rotation, audit |
+| `/cc-deploy` | **Idempotent re-deployment & enrichment** — refresh config, scaffold docs, propagate to sub-repos, install LSPs |
 | `/cc-orchestrate` | **Agent team templates** — builder-validator, QA swarm, feature squad, research council, and more |
 | `/cc-help` | Interactive Claude Code documentation lookup |
 | `/cc-config` | Generate or audit Claude Code configuration |
@@ -90,6 +91,7 @@ Power users use all four layers together for transformative productivity gains:
 | `/cc-migrate` | **Migration assistant** — detect outdated configs, convert legacy formats, upgrade deprecated patterns |
 | `/cc-bench` | **Configuration benchmarking** — score config across 8 dimensions, track trends, compare snapshots |
 | `/cc-healthcheck` | **Live runtime diagnostics** — proactive health sweep of MCP, hooks, context, memory, plugins |
+| `/cc-council` | **Multi-agent council orchestration** — structured deliberation, cross-audit, and decision protocols |
 
 ### Custom MCP Server (6 tools)
 | Tool | Purpose |
@@ -145,6 +147,14 @@ cd plugins/claude-code-expert/mcp-server && npm install
 /cc-memory --audit                     # Find bloat, duplicates, stale entries
 /cc-memory --rotate                    # Archive old session summaries
 /cc-memory --dry-run                   # Preview without writing files
+```
+
+### Refresh & Redeploy
+```bash
+/cc-deploy                             # Refresh existing Claude Code setup
+/cc-deploy --update --verify           # Rebuild managed assets and score deployment
+/cc-deploy --sub-repos --force         # Propagate config into nested repos
+/cc-deploy --docs-only                 # Scaffold docs/context and templates only
 ```
 
 ### Agent Orchestration
