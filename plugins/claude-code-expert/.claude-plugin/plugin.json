@@ -1,7 +1,7 @@
 {
   "name": "claude-code-expert",
-  "version": "4.2.0",
-  "description": "Comprehensive Claude Code knowledge base with 23 skills, 12 specialist agents, 11 commands, multi-agent council review (6 protocols, 10 specialists), mandatory audit loops, agent lifecycle management, research routing (Perplexity/Firecrawl/Context7), context anchoring, and advanced self-healing.",
+  "version": "5.0.0",
+  "description": "Comprehensive Claude Code knowledge base with 24 skills, 13 specialist agents, 14 commands, multi-agent council review (6 protocols, 10 specialists), mandatory audit loops, agent lifecycle management, research routing (Perplexity/Firecrawl/Context7), context anchoring, advanced self-healing, configuration benchmarking, migration assistant, live healthchecks, pattern detection, and prompt engineering guidance.",
   "author": {
     "name": "Markus Ahling"
   },
@@ -48,7 +48,11 @@
     "scoring",
     "claude-4.6",
     "opus-4.6",
-    "1m-context"
+    "1m-context",
+    "migration",
+    "benchmarking",
+    "healthcheck",
+    "prompt-engineering"
   ],
   "commands": [
     {
@@ -94,6 +98,18 @@
     {
       "name": "cc-troubleshoot",
       "path": "commands/cc-troubleshoot.md"
+    },
+    {
+      "name": "cc-migrate",
+      "path": "commands/cc-migrate.md"
+    },
+    {
+      "name": "cc-bench",
+      "path": "commands/cc-bench.md"
+    },
+    {
+      "name": "cc-healthcheck",
+      "path": "commands/cc-healthcheck.md"
     }
   ],
   "agents": [
@@ -144,6 +160,10 @@
     {
       "name": "team-orchestrator",
       "path": "agents/team-orchestrator.md"
+    },
+    {
+      "name": "pattern-detector",
+      "path": "agents/pattern-detector.md"
     }
   ],
   "skills": [
@@ -238,6 +258,10 @@
     {
       "name": "troubleshooting",
       "path": "skills/troubleshooting"
+    },
+    {
+      "name": "prompt-engineering",
+      "path": "skills/prompt-engineering"
     }
   ]
 }

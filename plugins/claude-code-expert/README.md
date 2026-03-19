@@ -1,17 +1,18 @@
-# Claude Code Expert Plugin v4.1
+# Claude Code Expert Plugin v5.0
 
-A comprehensive Claude Code knowledge base with **4-layer extension stack deployment**, **orchestration-first agent teams**, **mandatory audit loops**, **agent lifecycle management**, **intelligent research routing**, **context anchoring**, and **advanced self-healing**. Auto-detects your repo's tech stack and deploys a complete Claude Code configuration: CLAUDE.md (routing OS), Skills (capability packs), Hooks (guardrails & automation), Agents (specialized workers), MCP servers, hybrid memory architecture, and agent team orchestration templates.
+A comprehensive Claude Code knowledge base with **4-layer extension stack deployment**, **orchestration-first agent teams**, **mandatory audit loops**, **agent lifecycle management**, **intelligent research routing**, **context anchoring**, **advanced self-healing**, **configuration benchmarking**, **migration assistant**, and **prompt engineering guidance**. Auto-detects your repo's tech stack and deploys a complete Claude Code configuration: CLAUDE.md (routing OS), Skills (capability packs), Hooks (guardrails & automation), Agents (specialized workers), MCP servers, hybrid memory architecture, and agent team orchestration templates.
 
-**New in v4.1:**
-- **Research routing** — Dedicated research-orchestrator routes tasks to optimal MCP tools: Context7 (free library docs), Perplexity (knowledge Q&A), Firecrawl (structured extraction)
-- **Mandatory Context7 validation** — Quality audits and planners MUST verify library usage against official docs via Context7 before accepting code
-- **Context anchoring system** — PreCompact/PostCompact hooks preserve critical state across `/compact` events. Anchor budget guidance for optimal compliance
-- **Advanced self-healing** — Pattern detection across lessons-learned entries, automated rotation, rule promotion (3+ similar errors → permanent rule), cross-agent learning
-- **Enhanced memory management** — Lessons-learned health scoring, rotation protocol, archive system, cross-agent knowledge propagation
+**New in v5.0:**
+- **`/cc-migrate`** — Project Migration Assistant. Detects outdated configs, converts legacy formats (flat skills, text hook output, old model IDs), upgrades deprecated patterns with backup and rollback
+- **`/cc-bench`** — Configuration Benchmarking. Scores config across 8 dimensions (context efficiency, hook coverage, agent utilization, MCP connectivity, memory hygiene, security posture, skill coverage, cost optimization) with trend tracking and gap analysis
+- **`/cc-healthcheck`** — Live Runtime Diagnostics. Proactive health sweep: MCP connectivity, hook validity, context bloat, lessons-learned freshness, memory health, plugin registry consistency. Single-line score output
+- **`pattern-detector` agent** — Cross-Session Intelligence. Analyzes lessons-learned for recurring patterns, auto-promotes clusters to permanent rules, generates digests, integrates with `lessons_patterns` MCP tool
+- **`prompt-engineering` skill** — Prompt Craft. Covers writing effective CLAUDE.md, agent system prompts, skill files, slash commands. Includes anti-patterns, quality checklist, and instruction hierarchy reference
 
-**From v4.0:**
+**From v4.x:**
+- Research routing, mandatory Context7 validation, context anchoring, advanced self-healing
 - Orchestration-first principle, mandatory audit loops, agent lifecycle management
-- Cross-audit pattern, Claude Code Agent Teams, 3 orchestration agents
+- Multi-agent council review (6 protocols, 10 specialists), cross-audit pattern
 - Updated for Claude 4.6 (Opus 4.6 1M context, Sonnet 4.6, Haiku 4.5)
 
 Includes a **custom MCP server** for querying documentation programmatically and a **dedicated debugger** for diagnosing setup issues.
@@ -29,7 +30,7 @@ Power users use all four layers together for transformative productivity gains:
 
 ## What's Included
 
-### Agents (12)
+### Agents (13)
 | Agent | Domain |
 |-------|--------|
 | `claude-code-architect` | Overall Claude Code setup, project structure, CLAUDE.md |
@@ -40,12 +41,13 @@ Power users use all four layers together for transformative productivity gains:
 | `sdk-guide` | Claude Agent SDK, building custom agents, tool use |
 | `ide-integration-specialist` | VS Code, JetBrains, Vim/Neovim integration |
 | `permissions-security-advisor` | Permission model, security best practices |
-| **`team-orchestrator`** | Master orchestrator — delegates, monitors, audits, routes research |
-| **`audit-reviewer`** | Second-round auditor with Context7 library validation |
-| **`agent-lifecycle-manager`** | Agent health checks, idle cleanup, retention policies |
-| **`research-orchestrator`** | Routes research to Perplexity/Firecrawl/Context7 based on task |
+| `team-orchestrator` | Master orchestrator — delegates, monitors, audits, routes research |
+| `audit-reviewer` | Second-round auditor with Context7 library validation |
+| `agent-lifecycle-manager` | Agent health checks, idle cleanup, retention policies |
+| `research-orchestrator` | Routes research to Perplexity/Firecrawl/Context7 based on task |
+| **`pattern-detector`** | Cross-session intelligence — analyzes error patterns, auto-promotes rules, generates digests |
 
-### Skills (23)
+### Skills (24)
 | Skill | Coverage |
 |-------|----------|
 | `cli-reference` | Every CLI flag, argument, and environment variable |
@@ -70,8 +72,9 @@ Power users use all four layers together for transformative productivity gains:
 | **`research-routing`** | Optimal routing: Perplexity (Q&A), Firecrawl (extraction), Context7 (docs) |
 | **`context-anchoring`** | Preserve critical info across /compact — PreCompact/PostCompact hooks |
 | **`self-healing-advanced`** | Pattern detection, rotation, rule promotion, cross-agent learning |
+| **`prompt-engineering`** | CLAUDE.md crafting, agent prompts, skill design, anti-patterns, quality checklist |
 
-### Commands (11)
+### Commands (14)
 | Command | Purpose |
 |---------|---------|
 | `/cc-setup` | **Full repo analysis & 4-layer deployment** — detect stack, deploy all layers, install MCP, configure memory |
@@ -84,6 +87,9 @@ Power users use all four layers together for transformative productivity gains:
 | `/cc-agent` | Build custom agents with the Agent SDK |
 | `/cc-troubleshoot` | Diagnose and fix Claude Code issues |
 | `/cc-debug` | Comprehensive debugger for Claude Code setup |
+| `/cc-migrate` | **Migration assistant** — detect outdated configs, convert legacy formats, upgrade deprecated patterns |
+| `/cc-bench` | **Configuration benchmarking** — score config across 8 dimensions, track trends, compare snapshots |
+| `/cc-healthcheck` | **Live runtime diagnostics** — proactive health sweep of MCP, hooks, context, memory, plugins |
 
 ### Custom MCP Server (6 tools)
 | Tool | Purpose |
@@ -151,6 +157,17 @@ cd plugins/claude-code-expert/mcp-server && npm install
 /cc-orchestrate --template pr-review-board     # Critical PR multi-review
 /cc-orchestrate --worktree                     # Git worktrees for parallel agents
 /cc-orchestrate --dry-run --template qa-swarm  # Preview without deploying
+```
+
+### Migration & Health
+```bash
+/cc-migrate                            # Detect and upgrade outdated configs
+/cc-migrate --dry-run                  # Preview changes without writing
+/cc-bench                              # Score config across 8 dimensions
+/cc-bench --save                       # Save snapshot for trend tracking
+/cc-bench --compare latest             # Compare vs last saved snapshot
+/cc-healthcheck                        # Full runtime health sweep
+/cc-healthcheck --fix                  # Auto-fix safe issues
 ```
 
 ### Other Commands
