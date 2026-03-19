@@ -1,16 +1,18 @@
-# Claude Code Expert Plugin v4.0
+# Claude Code Expert Plugin v4.1
 
-A comprehensive Claude Code knowledge base with **4-layer extension stack deployment**, **orchestration-first agent teams**, **mandatory audit loops**, and **agent lifecycle management**. Auto-detects your repo's tech stack and deploys a complete Claude Code configuration: CLAUDE.md (routing OS), Skills (capability packs), Hooks (guardrails & automation), Agents (specialized workers), MCP servers, hybrid memory architecture, and agent team orchestration templates.
+A comprehensive Claude Code knowledge base with **4-layer extension stack deployment**, **orchestration-first agent teams**, **mandatory audit loops**, **agent lifecycle management**, **intelligent research routing**, **context anchoring**, and **advanced self-healing**. Auto-detects your repo's tech stack and deploys a complete Claude Code configuration: CLAUDE.md (routing OS), Skills (capability packs), Hooks (guardrails & automation), Agents (specialized workers), MCP servers, hybrid memory architecture, and agent team orchestration templates.
 
-**New in v4.0:**
-- **Orchestration-first principle** — Claude prefers to delegate work to specialized agents rather than doing everything directly
-- **Mandatory audit loops** — every agent's output gets a second-round review before acceptance
-- **Agent lifecycle management** — health checks, idle detection, cleanup, and retention policies
-- **Cross-audit pattern** — in teams of 3+, agents audit each other's work round-robin
-- **3 new specialist agents** — team-orchestrator, audit-reviewer, agent-lifecycle-manager
-- **2 new templates** — audited-builder, audited-squad
-- **Claude Code Agent Teams support** — experimental mesh-network teams with TeammateIdle hooks
-- **Updated for Claude 4.6** — Opus 4.6 (1M context), Sonnet 4.6, Haiku 4.5
+**New in v4.1:**
+- **Research routing** — Dedicated research-orchestrator routes tasks to optimal MCP tools: Context7 (free library docs), Perplexity (knowledge Q&A), Firecrawl (structured extraction)
+- **Mandatory Context7 validation** — Quality audits and planners MUST verify library usage against official docs via Context7 before accepting code
+- **Context anchoring system** — PreCompact/PostCompact hooks preserve critical state across `/compact` events. Anchor budget guidance for optimal compliance
+- **Advanced self-healing** — Pattern detection across lessons-learned entries, automated rotation, rule promotion (3+ similar errors → permanent rule), cross-agent learning
+- **Enhanced memory management** — Lessons-learned health scoring, rotation protocol, archive system, cross-agent knowledge propagation
+
+**From v4.0:**
+- Orchestration-first principle, mandatory audit loops, agent lifecycle management
+- Cross-audit pattern, Claude Code Agent Teams, 3 orchestration agents
+- Updated for Claude 4.6 (Opus 4.6 1M context, Sonnet 4.6, Haiku 4.5)
 
 Includes a **custom MCP server** for querying documentation programmatically and a **dedicated debugger** for diagnosing setup issues.
 
@@ -27,22 +29,23 @@ Power users use all four layers together for transformative productivity gains:
 
 ## What's Included
 
-### Agents (11)
+### Agents (12)
 | Agent | Domain |
 |-------|--------|
 | `claude-code-architect` | Overall Claude Code setup, project structure, CLAUDE.md |
 | `claude-code-debugger` | Diagnose and fix ALL Claude Code setup/runtime issues |
-| `council-coordinator` | Multi-agent council reviews with deliberation protocols |
+| `council-coordinator` | Multi-agent council reviews with deliberation protocols + Context7 |
 | `hooks-specialist` | Hook system design, lifecycle events, security patterns |
 | `mcp-configurator` | MCP server setup, configuration, custom servers |
 | `sdk-guide` | Claude Agent SDK, building custom agents, tool use |
 | `ide-integration-specialist` | VS Code, JetBrains, Vim/Neovim integration |
 | `permissions-security-advisor` | Permission model, security best practices |
-| **`team-orchestrator`** | Master orchestrator — delegates, monitors, audits agent work |
-| **`audit-reviewer`** | Second-round auditor — finds gaps other agents missed |
+| **`team-orchestrator`** | Master orchestrator — delegates, monitors, audits, routes research |
+| **`audit-reviewer`** | Second-round auditor with Context7 library validation |
 | **`agent-lifecycle-manager`** | Agent health checks, idle cleanup, retention policies |
+| **`research-orchestrator`** | Routes research to Perplexity/Firecrawl/Context7 based on task |
 
-### Skills (20)
+### Skills (23)
 | Skill | Coverage |
 |-------|----------|
 | `cli-reference` | Every CLI flag, argument, and environment variable |
@@ -64,6 +67,9 @@ Power users use all four layers together for transformative productivity gains:
 | `teams-collaboration` | Team plans, Agent Teams, enterprise settings, multi-user workflows, onboarding |
 | `settings-deep-dive` | Complete settings.json schema, every permission pattern, feature flags |
 | **`agent-lifecycle`** | Agent health checks, idle detection, cleanup, retention, audit loops |
+| **`research-routing`** | Optimal routing: Perplexity (Q&A), Firecrawl (extraction), Context7 (docs) |
+| **`context-anchoring`** | Preserve critical info across /compact — PreCompact/PostCompact hooks |
+| **`self-healing-advanced`** | Pattern detection, rotation, rule promotion, cross-agent learning |
 
 ### Commands (11)
 | Command | Purpose |
@@ -207,6 +213,9 @@ This plugin provides deep knowledge across these areas:
 - **Commands**: All built-in slash commands, keyboard shortcuts, custom commands
 - **Context**: Window management, /compact, /clear, token reduction strategies
 - **Memory**: 3-tier hybrid architecture, split files, MCP-backed persistence, rotation
+- **Research Routing**: Perplexity (knowledge), Firecrawl (extraction), Context7 (library docs), chaining strategies
+- **Anchoring**: Context preservation, PreCompact/PostCompact hooks, anchor budgets, state recovery
+- **Self-Healing**: Pattern detection, lessons rotation, rule promotion, cross-agent learning, health scoring
 - **Orchestration**: Subagents, Agent Teams, 10 templates, audit loops, lifecycle management, worktrees, headless/cron
 - **Tools**: Every built-in tool with parameters and best practices
 - **Thinking**: Extended thinking, budget config, API usage
