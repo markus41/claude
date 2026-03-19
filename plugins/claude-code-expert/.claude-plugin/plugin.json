@@ -1,7 +1,8 @@
 {
+  "$schema": "https://claude.local/schemas/plugin.schema.json",
   "name": "claude-code-expert",
-  "version": "4.1.0",
-  "description": "Comprehensive Claude Code knowledge base with 23 skills, 12 specialist agents, 11 commands, multi-agent council review (6 protocols, 10 specialists), mandatory audit loops, agent lifecycle management, research routing (Perplexity/Firecrawl/Context7), context anchoring, and advanced self-healing.",
+  "version": "5.0.0",
+  "description": "High-intelligence Claude Code copilot with deep code reasoning, evidence-driven planning, orchestration-first execution, research routing, context anchoring, self-healing, and a queryable documentation MCP server.",
   "author": {
     "name": "Markus Ahling"
   },
@@ -27,27 +28,77 @@
     "security",
     "memory",
     "orchestration",
-    "orchestration-first",
     "audit-loop",
     "agent-lifecycle",
-    "idle-cleanup",
-    "health-checks",
-    "cross-audit",
     "context-anchoring",
     "research-routing",
-    "perplexity",
-    "firecrawl",
-    "context7",
     "self-healing",
-    "lessons-learned",
-    "pattern-detection",
     "cost-optimization",
     "council",
     "multi-agent-review",
-    "deliberation",
-    "scoring",
-    "claude-4.6",
-    "opus-4.6",
-    "1m-context"
-  ]
+    "deep-code-intelligence",
+    "evidence-driven-planning",
+    "repo-fingerprinting",
+    "root-cause-analysis",
+    "design-review"
+  ],
+  "permissions": {
+    "requires": [
+      "read",
+      "write",
+      "bash"
+    ],
+    "optional": [
+      "agent",
+      "mcp",
+      "network"
+    ]
+  },
+  "capabilities": {
+    "provides": [
+      "claude-code-configuration",
+      "multi-agent-orchestration",
+      "deep-code-analysis",
+      "repo-intelligence",
+      "queryable-documentation",
+      "debugging-and-self-healing"
+    ],
+    "requires": []
+  },
+  "contextEntry": "CONTEXT_SUMMARY.md",
+  "context": {
+    "entry": "CONTEXT_SUMMARY.md",
+    "title": "Claude Code Expert",
+    "summary": "Bootstrap context for a high-intelligence Claude Code expert plugin focused on deep code reasoning, orchestration, diagnostics, and guided task routing.",
+    "tags": [
+      "claude-code",
+      "expert",
+      "orchestration",
+      "reasoning",
+      "debugging",
+      "mcp",
+      "skills",
+      "agents"
+    ],
+    "bootstrapFiles": [
+      "CONTEXT_SUMMARY.md"
+    ],
+    "maxTokens": 700,
+    "excludeGlobs": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/build/**",
+      "**/coverage/**",
+      "**/*.zip",
+      "**/*.tar*"
+    ],
+    "lazyLoadSections": [
+      "CLAUDE.md",
+      "skills/deep-code-intelligence/SKILL.md",
+      "commands/cc-intel.md",
+      "agents/principal-engineer-strategist.md",
+      "skills/research-routing/SKILL.md",
+      "skills/council-review/SKILL.md"
+    ]
+  }
 }
