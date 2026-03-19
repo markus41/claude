@@ -1,6 +1,18 @@
-# Claude Code Expert Plugin v2.0
+# Claude Code Expert Plugin v4.1
 
-A comprehensive Claude Code knowledge base with **4-layer extension stack deployment**. Auto-detects your repo's tech stack and deploys a complete Claude Code configuration: CLAUDE.md (routing OS), Skills (capability packs), Hooks (guardrails & automation), Agents (specialized workers), MCP servers, hybrid memory architecture, and agent team orchestration templates.
+A comprehensive Claude Code knowledge base with **4-layer extension stack deployment**, **orchestration-first agent teams**, **mandatory audit loops**, **agent lifecycle management**, **intelligent research routing**, **context anchoring**, and **advanced self-healing**. Auto-detects your repo's tech stack and deploys a complete Claude Code configuration: CLAUDE.md (routing OS), Skills (capability packs), Hooks (guardrails & automation), Agents (specialized workers), MCP servers, hybrid memory architecture, and agent team orchestration templates.
+
+**New in v4.1:**
+- **Research routing** — Dedicated research-orchestrator routes tasks to optimal MCP tools: Context7 (free library docs), Perplexity (knowledge Q&A), Firecrawl (structured extraction)
+- **Mandatory Context7 validation** — Quality audits and planners MUST verify library usage against official docs via Context7 before accepting code
+- **Context anchoring system** — PreCompact/PostCompact hooks preserve critical state across `/compact` events. Anchor budget guidance for optimal compliance
+- **Advanced self-healing** — Pattern detection across lessons-learned entries, automated rotation, rule promotion (3+ similar errors → permanent rule), cross-agent learning
+- **Enhanced memory management** — Lessons-learned health scoring, rotation protocol, archive system, cross-agent knowledge propagation
+
+**From v4.0:**
+- Orchestration-first principle, mandatory audit loops, agent lifecycle management
+- Cross-audit pattern, Claude Code Agent Teams, 3 orchestration agents
+- Updated for Claude 4.6 (Opus 4.6 1M context, Sonnet 4.6, Haiku 4.5)
 
 Includes a **custom MCP server** for querying documentation programmatically and a **dedicated debugger** for diagnosing setup issues.
 
@@ -17,18 +29,23 @@ Power users use all four layers together for transformative productivity gains:
 
 ## What's Included
 
-### Agents (7)
+### Agents (12)
 | Agent | Domain |
 |-------|--------|
 | `claude-code-architect` | Overall Claude Code setup, project structure, CLAUDE.md |
+| `claude-code-debugger` | Diagnose and fix ALL Claude Code setup/runtime issues |
+| `council-coordinator` | Multi-agent council reviews with deliberation protocols + Context7 |
 | `hooks-specialist` | Hook system design, lifecycle events, security patterns |
 | `mcp-configurator` | MCP server setup, configuration, custom servers |
 | `sdk-guide` | Claude Agent SDK, building custom agents, tool use |
 | `ide-integration-specialist` | VS Code, JetBrains, Vim/Neovim integration |
 | `permissions-security-advisor` | Permission model, security best practices |
-| `claude-code-debugger` | Diagnose and fix ALL Claude Code setup/runtime issues |
+| **`team-orchestrator`** | Master orchestrator — delegates, monitors, audits, routes research |
+| **`audit-reviewer`** | Second-round auditor with Context7 library validation |
+| **`agent-lifecycle-manager`** | Agent health checks, idle cleanup, retention policies |
+| **`research-orchestrator`** | Routes research to Perplexity/Firecrawl/Context7 based on task |
 
-### Skills (18)
+### Skills (23)
 | Skill | Coverage |
 |-------|----------|
 | `cli-reference` | Every CLI flag, argument, and environment variable |
@@ -47,10 +64,14 @@ Power users use all four layers together for transformative productivity gains:
 | `testing-workflows` | Test running, TDD patterns, test frameworks, coverage |
 | `cost-optimization` | Token usage, model routing, caching, batch processing, cost reduction |
 | `troubleshooting` | Common errors, debugging, diagnostics, self-healing protocol |
-| `teams-collaboration` | Team plans, enterprise settings, multi-user workflows, onboarding |
+| `teams-collaboration` | Team plans, Agent Teams, enterprise settings, multi-user workflows, onboarding |
 | `settings-deep-dive` | Complete settings.json schema, every permission pattern, feature flags |
+| **`agent-lifecycle`** | Agent health checks, idle detection, cleanup, retention, audit loops |
+| **`research-routing`** | Optimal routing: Perplexity (Q&A), Firecrawl (extraction), Context7 (docs) |
+| **`context-anchoring`** | Preserve critical info across /compact — PreCompact/PostCompact hooks |
+| **`self-healing-advanced`** | Pattern detection, rotation, rule promotion, cross-agent learning |
 
-### Commands (10)
+### Commands (11)
 | Command | Purpose |
 |---------|---------|
 | `/cc-setup` | **Full repo analysis & 4-layer deployment** — detect stack, deploy all layers, install MCP, configure memory |
@@ -164,16 +185,18 @@ mcp__claude-code-docs__cc_docs_troubleshoot("MCP server not starting")
 
 ## Orchestration Templates
 
-| Template | Type | Agents | Use Case |
-|----------|------|--------|----------|
-| `builder-validator` | Subagent | 2 | Standard feature work with quality review |
-| `qa-swarm` | Agent Team | 4-6 | Thorough multi-perspective testing |
-| `feature-squad` | Agent Team | 3-4 | Full-stack features (FE + BE + infra) |
-| `research-council` | Subagent | 2-3 | Evaluate design approaches |
-| `refactor-pipeline` | Subagent | 3 | Large-scale code migrations |
-| `pr-review-board` | Agent Team | 3 | Critical PR review (correctness + security + quality) |
-| `docs-sprint` | Agent Team | 3-4 | Parallel documentation updates |
-| `continuous-monitor` | Headless | 1-4 | Scheduled automated checks |
+| Template | Type | Agents | Audit | Use Case |
+|----------|------|--------|-------|----------|
+| `builder-validator` | Subagent | 2 | Single review | Standard feature work |
+| **`audited-builder`** | Subagent | 3 | Full audit loop | Quality-critical features |
+| `qa-swarm` | Agent Team | 4-6 | Peer review | Thorough testing |
+| `feature-squad` | Agent Team | 3-4 | Lead review | Full-stack features |
+| **`audited-squad`** | Agent Team | 5 | Cross-audit + final | Critical full-stack work |
+| `research-council` | Subagent | 2-3 | Source validation | Design decisions |
+| `refactor-pipeline` | Subagent | 3 | Verifier step | Large refactors |
+| `pr-review-board` | Agent Team | 3 | Cross-review | Critical PR reviews |
+| `docs-sprint` | Agent Team | 3-4 | Accuracy check | Documentation updates |
+| `continuous-monitor` | Headless | 1-4 | Automated | Ongoing automation |
 
 ## Documentation Coverage
 
@@ -190,7 +213,10 @@ This plugin provides deep knowledge across these areas:
 - **Commands**: All built-in slash commands, keyboard shortcuts, custom commands
 - **Context**: Window management, /compact, /clear, token reduction strategies
 - **Memory**: 3-tier hybrid architecture, split files, MCP-backed persistence, rotation
-- **Orchestration**: Subagents, Agent Teams, 8 templates, worktrees, headless/cron
+- **Research Routing**: Perplexity (knowledge), Firecrawl (extraction), Context7 (library docs), chaining strategies
+- **Anchoring**: Context preservation, PreCompact/PostCompact hooks, anchor budgets, state recovery
+- **Self-Healing**: Pattern detection, lessons rotation, rule promotion, cross-agent learning, health scoring
+- **Orchestration**: Subagents, Agent Teams, 10 templates, audit loops, lifecycle management, worktrees, headless/cron
 - **Tools**: Every built-in tool with parameters and best practices
 - **Thinking**: Extended thinking, budget config, API usage
 - **Git**: Commit workflow, PR creation, worktrees, parallel development

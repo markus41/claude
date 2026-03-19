@@ -13,6 +13,8 @@ optional MCP-backed long-term memory for large codebases.
 /cc-memory --rotate              # Archive old session summaries
 /cc-memory --audit               # Check for bloat, duplicates, stale entries
 /cc-memory --mcp                 # Set up MCP-backed persistent memory server
+/cc-memory --anchor              # Set up context anchoring (PreCompact/PostCompact hooks)
+/cc-memory --lessons             # Manage lessons-learned: rotate, promote patterns, health score
 /cc-memory --dry-run             # Show what would be created without writing
 ```
 
@@ -349,4 +351,161 @@ MCP recommendation:
 
 Estimated per-session token cost: ~3000 tokens
 No files written. Run without --dry-run to apply.
+```
+
+---
+
+## Context Anchoring
+
+When `/cc-memory --anchor` is used, set up hooks and files to preserve critical
+information across `/compact` events.
+
+### What Gets Anchored
+
+| Content | Anchor | Survives /compact? |
+|---------|--------|-------------------|
+| CLAUDE.md | Built-in | Always (re-injected) |
+| `.claude/rules/*.md` | Built-in | Always (for matching files) |
+| MEMORY.md (≤200 lines) | Built-in | Always (re-injected) |
+| Git state, task progress | PreCompact hook | Yes (saved to file) |
+| Conversation turns | None | No (summarized) |
+| Tool outputs | None | No (discarded) |
+| Inline instructions | None | No (lost) |
+
+### Anchor Setup
+
+Creates these files:
+
+```
+.claude/
+├── hooks/
+│   ├── anchor-state.sh         # PreCompact: save git state + task progress
+│   └── recover-state.sh        # PostCompact: remind Claude about saved state
+├── anchored-state.md           # Dynamic state file (updated on each compact)
+└── settings.json               # Hook configuration (PreCompact + PostCompact)
+```
+
+### anchor-state.sh (PreCompact)
+
+```bash
+#!/bin/bash
+# Save critical state before compaction
+{
+  echo "## Anchored State ($(date -u +%Y-%m-%dT%H:%M:%SZ))"
+  echo ""
+  echo "### Git State"
+  echo "- Branch: $(git branch --show-current 2>/dev/null)"
+  echo "- Modified: $(git diff --name-only 2>/dev/null | wc -l) files"
+  echo "- Staged: $(git diff --cached --name-only 2>/dev/null | wc -l) files"
+  echo ""
+  echo "### Modified Files"
+  git diff --name-only 2>/dev/null | head -20
+  echo ""
+  echo "### Recent Commits"
+  git log --oneline -5 2>/dev/null
+} > .claude/anchored-state.md 2>/dev/null
+
+echo "Anchored state saved to .claude/anchored-state.md" >&2
+```
+
+### recover-state.sh (PostCompact)
+
+```bash
+#!/bin/bash
+if [ -f ".claude/anchored-state.md" ]; then
+  echo "Read .claude/anchored-state.md to restore context from before compaction" >&2
+fi
+```
+
+### Settings Configuration
+
+```json
+{
+  "hooks": {
+    "PreCompact": [{
+      "matcher": "",
+      "hooks": [{
+        "type": "command",
+        "command": "bash .claude/hooks/anchor-state.sh",
+        "timeout": 10
+      }]
+    }],
+    "PostCompact": [{
+      "matcher": "",
+      "hooks": [{
+        "type": "command",
+        "command": "bash .claude/hooks/recover-state.sh"
+      }]
+    }]
+  }
+}
+```
+
+### Anchor Budget
+
+Keep total anchored content under these limits:
+
+| Anchor | Max Lines | Max Tokens |
+|--------|-----------|-----------|
+| CLAUDE.md | 200 | ~3,000 |
+| Global rules | 500 total | ~8,000 |
+| Scoped rules | 200 per file | ~3,000 |
+| MEMORY.md | 200 | ~3,000 |
+| **Total always-loaded** | | **~17,000** |
+
+If total anchored content exceeds 20k tokens, compliance drops. Keep it focused.
+
+---
+
+## Lessons-Learned Management
+
+When `/cc-memory --lessons` is used, manage the self-healing knowledge base:
+
+### Health Score
+
+```
+Score = 100 - penalties
+
+Penalties:
+  -5 per NEEDS_FIX entry older than 7 days
+  -3 per NEEDS_FIX entry older than 3 days
+  -2 per RESOLVED entry without Prevention field
+  -10 if file exceeds 500 lines
+  -5 per detected pattern not yet promoted
+  -15 if same error appears 5+ times
+```
+
+### Rotation
+
+```
+1. ARCHIVE: RESOLVED entries older than 30 days → .claude/lessons-archive/{year}-{month}.md
+2. PROMOTE: Entries with 3+ similar patterns → permanent rule in .claude/rules/
+3. PRUNE: NEEDS_FIX older than 14 days with no resolution → archive with note
+4. REINDEX: Clean up numbering and formatting
+```
+
+### Pattern Detection
+
+Automatically detect recurring errors:
+
+```
+Group RESOLVED lessons by: (tool, root_cause)
+If group.count >= 3:
+  → Suggest promotion to permanent rule
+  → Draft rule content from Prevention fields
+If group.count >= 5:
+  → Auto-promote (create rule file)
+  → Archive promoted entries
+```
+
+### Cross-Agent Learning
+
+All agents share `.claude/rules/lessons-learned.md` — when one agent discovers
+an error pattern, every future agent session inherits the fix.
+
+```
+Agent A error → captured in lessons-learned.md
+  → Next session: any agent reads the fix
+  → Pattern promoted to .claude/rules/{topic}.md
+  → All agents inherit the permanent rule
 ```

@@ -192,6 +192,37 @@ When using the `Agent` tool within Claude Code, these sub-agent types are availa
 | `k8s-image-auditor` | K8s deployment auditing | Read-only + Bash |
 | `ansible-specialist` | Ansible automation | All tools |
 | `pulumi-specialist` | Pulumi IaC | All tools |
+| `coverage-analyzer` | Test coverage analysis | All tools |
+| `spec-validator` | API spec validation | All tools |
+| `rabbitmq-specialist` | RabbitMQ messaging | All tools |
+| `event-streaming-architect` | CQRS/event sourcing | All tools |
+| `kafka-specialist` | Apache Kafka streaming | All tools |
+| `plugin-manager` | Claude Code plugin management | All tools |
+| `statusline-setup` | Claude Code status line config | Read + Edit |
+
+### Agent Lifecycle & Orchestration
+
+When spawning agents, Claude should **prefer to orchestrate** — delegate work to
+specialist agents rather than doing it directly. Key principles:
+
+1. **Track all agent IDs** — record every ID returned from Agent tool calls
+2. **Check in on background agents** — use `SendMessage(to: agent_id)` every 2 min
+3. **Audit every output** — spawn a second agent to review the first agent's work
+4. **Clean up idle agents** — terminate agents idle >3 min with no planned follow-up
+5. **Use `run_in_background: true`** for independent work you don't need immediately
+6. **Use `isolation: "worktree"`** for agents that write code to prevent conflicts
+
+### Agent Naming for Resumption
+
+Name your agents for easy resumption:
+
+```
+Agent(name="builder-1", subagent_type="general-purpose", ...)
+Agent(name="auditor-1", subagent_type="code-reviewer", ...)
+
+# Later, resume:
+SendMessage(to: "builder-1", message: "Fix the issues found in audit")
+```
 
 ## Multi-Agent Patterns
 

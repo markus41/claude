@@ -4,6 +4,10 @@ Deploy pre-built agent team configurations for common development patterns. Choo
 subagent patterns (hub-and-spoke) and full Agent Teams (mesh coordination) based on your
 task complexity.
 
+**Orchestration-first**: Claude should prefer to delegate work to specialized agents rather
+than doing everything directly. Every agent's output gets a second-round audit. Idle agents
+are detected and cleaned up automatically.
+
 ## Usage
 
 ```bash
@@ -14,6 +18,9 @@ task complexity.
 /cc-orchestrate --status                       # Check running teams/subagents
 /cc-orchestrate --dry-run                      # Show template without deploying
 /cc-orchestrate --worktree                     # Set up git worktrees for parallel agents
+/cc-orchestrate --audit-depth quick|standard|thorough  # Set audit depth
+/cc-orchestrate --lifecycle                    # Show agent lifecycle dashboard
+/cc-orchestrate --cleanup                      # Force cleanup idle/stalled agents
 ```
 
 ---
@@ -607,3 +614,263 @@ Agents: 3
 ```
 
 Then deploy: `/cc-orchestrate --template my-template`
+
+---
+
+## Mandatory Audit Loop
+
+**Every agent's work is audited before acceptance. This is non-negotiable.**
+
+### How It Works
+
+```
+Agent completes task
+       ↓
+Orchestrator spawns audit agent (code-reviewer or audit-reviewer)
+       ↓
+Audit agent checks:
+  - Completeness: did the agent do everything asked?
+  - Correctness: is the output right?
+  - Consistency: does it match project style?
+  - Security: any vulnerabilities introduced?
+  - Testing: are new things tested?
+       ↓
+Verdict:
+  PASS → accept work, include in deliverables
+  PASS_WITH_NOTES → accept with logged improvement notes
+  FAIL → return to original agent with specific fixes (max 2 rework rounds)
+```
+
+### Audit Depth
+
+Control how thorough the audit is:
+
+| Depth | Checks | Model | Cost | When to Use |
+|-------|--------|-------|------|-------------|
+| `quick` | completeness, correctness | haiku | Low | Simple changes, trusted agents |
+| `standard` | + consistency, security | sonnet | Medium | Normal development work |
+| `thorough` | + testing, documentation | opus | High | Critical changes, production deploys |
+
+### Cross-Audit for Teams
+
+In teams with 3+ agents, use round-robin cross-auditing:
+
+```
+Agent A → audited by Agent B
+Agent B → audited by Agent C
+Agent C → audited by Agent A
+```
+
+This distributes audit load and provides diverse review perspectives.
+
+---
+
+## Agent Lifecycle Management
+
+### Orchestration-First Principle
+
+Claude should **prefer to orchestrate** rather than do work directly:
+
+1. Break the task into discrete work units
+2. Assign each to the best-fit agent type
+3. Run agents in parallel where possible
+4. Monitor agent health with periodic check-ins
+5. Audit every agent's output
+6. Clean up idle/stalled agents
+7. Synthesize results
+
+**Direct work is the fallback, not the default.**
+
+### Agent Health States
+
+| State | Meaning | Action |
+|-------|---------|--------|
+| `active` | Producing output | None — let it work |
+| `idle` | No output >60s | Send check-in message |
+| `stalled` | No response >120s | Evaluate: redirect or terminate |
+| `completed` | Task done | Collect results immediately |
+| `orphaned` | Lost reference | Terminate and log |
+| `errored` | Unrecoverable error | Collect partial output, terminate |
+
+### Check-In Protocol
+
+Every 2 minutes during orchestration:
+
+```
+1. List all spawned agent IDs
+2. For each agent:
+   - Active → continue
+   - Idle >60s → SendMessage: "Status check: progress on [{task}]?"
+   - No response to check-in >30s → mark stalled
+   - Stalled >180s → terminate, reassign if needed
+   - Completed → collect results, release
+3. Report cleanup summary
+```
+
+### Cleanup Triggers
+
+Cleanup runs automatically:
+- Every 2 minutes during orchestration
+- After fan-in (before producing results)
+- Before session ends (final sweep)
+- On `--cleanup` flag (manual trigger)
+
+### Token Budget Management
+
+```
+Per-agent budget = total_budget / num_agents
+
+If agent > 150% per-agent budget → flag for review
+If total > 80% budget → switch remaining to cheaper models
+If total > 95% budget → terminate non-essential agents, alert user
+```
+
+### No Orphaned Agents Rule
+
+Before producing final output, the orchestrator MUST:
+1. List all agents spawned during this session
+2. Confirm each is completed or terminated
+3. Collect any uncollected results
+4. Log force-terminated agents and note any data loss
+
+---
+
+## Template 9: Audited Builder (Subagent Pattern with Audit Loop)
+
+**When**: Any implementation task where quality is critical and every change must be verified.
+**Pattern**: Builder implements, Audit Reviewer catches gaps, Builder fixes, re-audit.
+
+```yaml
+name: audited-builder
+type: subagent
+agents:
+  lead:
+    role: Orchestrator
+    model: sonnet
+    responsibilities:
+      - Receive task, break into work units
+      - Spawn builder for implementation
+      - Spawn audit-reviewer to verify
+      - If audit fails: send fixes back to builder
+      - Max 2 rework rounds, then escalate
+      - Clean up all agents when done
+
+  builder:
+    role: Implementation
+    model: sonnet
+    responsibilities:
+      - Implement code changes
+      - Write tests
+      - Run tests, fix failures
+    tools: [Read, Write, Edit, Bash, Glob, Grep]
+
+  audit-reviewer:
+    role: Second-Round Auditor
+    model: opus
+    responsibilities:
+      - Review all builder changes
+      - Check completeness, correctness, security, tests
+      - Produce audit verdict: PASS / PASS_WITH_NOTES / FAIL
+      - If FAIL: list specific fixes needed
+    tools: [Read, Bash, Glob, Grep]
+```
+
+### Flow
+
+```
+User Task → Builder implements → Audit Reviewer checks
+                                       ↓
+                    PASS → deliver to user
+                    FAIL → Builder fixes → Audit re-checks (max 2x)
+                                       ↓
+                              Still FAIL → escalate to user
+```
+
+---
+
+## Template 10: Full-Stack Squad with Audit (Agent Team + Audit)
+
+**When**: Multi-layer feature with cross-cutting audit.
+**Pattern**: Parallel specialists + cross-audit + final synthesis.
+
+```yaml
+name: audited-squad
+type: agent-team
+team_size: 5
+agents:
+  lead:
+    role: Tech Lead & Orchestrator
+    model: opus
+    responsibilities:
+      - Decompose feature into frontend/backend/infra tasks
+      - Assign tasks, monitor progress
+      - Run cross-audit: frontend audits backend, backend audits infra
+      - Final integration test and synthesis
+      - Lifecycle management: check-in, cleanup idle agents
+
+  frontend-dev:
+    role: Frontend Specialist
+    model: sonnet
+    audit_by: backend-dev  # cross-audit assignment
+
+  backend-dev:
+    role: Backend Specialist
+    model: sonnet
+    audit_by: infra-dev  # cross-audit assignment
+
+  infra-dev:
+    role: Infrastructure Specialist
+    model: sonnet
+    audit_by: frontend-dev  # cross-audit assignment
+
+  final-auditor:
+    role: Integration Auditor
+    model: opus
+    responsibilities:
+      - After cross-audits pass, review entire changeset holistically
+      - Check integration points between layers
+      - Verify no gaps between frontend/backend contract
+      - Final quality gate
+```
+
+---
+
+## Updated Template Comparison
+
+| Template | Type | Agents | Cost | Audit | Use Case |
+|----------|------|--------|------|-------|----------|
+| builder-validator | Subagent | 3 | Low | Single review | Standard feature work |
+| **audited-builder** | Subagent | 3 | Medium | Full audit loop | Quality-critical features |
+| qa-swarm | Team | 6 | High | Peer review | Thorough testing |
+| feature-squad | Team | 4 | Medium | Lead review | Full-stack features |
+| **audited-squad** | Team | 5 | High | Cross-audit + final | Critical full-stack work |
+| research-council | Subagent | 3-4 | Low | Source validation | Design decisions |
+| refactor-pipeline | Subagent | 4 | Medium | Verifier step | Large refactors |
+| pr-review-board | Team | 4 | Medium | Cross-review | Critical PR reviews |
+| docs-sprint | Team | 4 | Medium | Accuracy check | Documentation updates |
+| continuous-monitor | Headless | 1/schedule | Very Low | Automated | Ongoing automation |
+
+---
+
+## Lifecycle Dashboard
+
+When `/cc-orchestrate --lifecycle` is used, display:
+
+```
+=== Agent Lifecycle Dashboard ===
+
+Active Agents: 3
+  [abc123] code-reviewer    ACTIVE   2m 15s   ~12k tokens
+  [def456] test-writer      IDLE     1m 30s   ~8k tokens   ← check-in sent
+  [ghi789] security-review  COMPLETED 0m 45s  ~5k tokens   ← results ready
+
+Completed: 2
+  [jkl012] researcher       DONE     3m 20s   ~15k tokens  results: collected
+  [mno345] doc-writer       DONE     2m 10s   ~6k tokens   results: collected
+
+Terminated: 1
+  [pqr678] builder          STALLED  5m 00s   ~20k tokens  reason: no response
+
+Total Tokens: ~66k | Budget: 200k (33% used)
+Audit Status: 2/3 passed, 1 pending
+```
