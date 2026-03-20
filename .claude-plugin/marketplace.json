@@ -300,8 +300,8 @@
     },
     {
       "name": "claude-code-expert",
-      "description": "Complete Claude Code knowledge base with 19 skills, 8 specialist agents, 11 commands, multi-agent council review (6 protocols, 10 specialists), and MCP documentation server. Covers CLI, hooks, MCP, SDK, permissions, memory, orchestration, cost optimization, and troubleshooting.",
-      "version": "3.0.0",
+      "description": "High-intelligence Claude Code copilot with deep code reasoning, evidence-driven planning, orchestration-first execution, model routing, context budgeting, CI/CD integration, enterprise security, plugin development, prompt engineering, performance profiling, agent teams, interactive tutorials, and a queryable 10-tool MCP documentation server. 16 commands, 33 skills, 16 agents.",
+      "version": "6.0.0",
       "author": {
         "name": "Markus Ahling"
       },

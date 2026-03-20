@@ -203,7 +203,7 @@
     "agent-architecture@context-engineering-marketplace": true,
     "agent-development@context-engineering-marketplace": true,
     "skill-creator@awesome-claude-skills": true,
-    "claude-code-expert": true
+    "claude-code-expert@claude-orchestration": true
   },
   "outputStyle": "agent-orchestrator"
 }
