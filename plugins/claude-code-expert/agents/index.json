@@ -1,0 +1,216 @@
+{
+  "version": 1,
+  "plugin": "claude-code-expert",
+  "type": "agents",
+  "generatedBy": "manual",
+  "entries": [
+    {
+      "name": "claude-code-expert:agent-lifecycle-manager",
+      "intent": "Agent Lifecycle Manager",
+      "tags": [
+        "claude-code-expert",
+        "agent",
+        "agent-lifecycle-manager"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "medium",
+      "path": "agents/agent-lifecycle-manager.md"
+    },
+    {
+      "name": "claude-code-expert:audit-reviewer",
+      "intent": "Audit Reviewer Agent",
+      "tags": [
+        "claude-code-expert",
+        "agent",
+        "audit-reviewer"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "medium",
+      "path": "agents/audit-reviewer.md"
+    },
+    {
+      "name": "claude-code-expert:claude-code-architect",
+      "intent": "Claude Code Architect Agent",
+      "tags": [
+        "claude-code-expert",
+        "agent",
+        "claude-code-architect"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "medium",
+      "path": "agents/claude-code-architect.md"
+    },
+    {
+      "name": "claude-code-expert:claude-code-debugger",
+      "intent": "Claude Code Debugger Agent",
+      "tags": [
+        "claude-code-expert",
+        "agent",
+        "claude-code-debugger"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "medium",
+      "path": "agents/claude-code-debugger.md"
+    },
+    {
+      "name": "claude-code-expert:council-coordinator",
+      "intent": "Council Coordinator",
+      "tags": [
+        "claude-code-expert",
+        "agent",
+        "council-coordinator"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "medium",
+      "path": "agents/council-coordinator.md"
+    },
+    {
+      "name": "claude-code-expert:hooks-specialist",
+      "intent": "Hooks Specialist Agent",
+      "tags": [
+        "claude-code-expert",
+        "agent",
+        "hooks-specialist"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "medium",
+      "path": "agents/hooks-specialist.md"
+    },
+    {
+      "name": "claude-code-expert:ide-integration-specialist",
+      "intent": "IDE Integration Specialist Agent",
+      "tags": [
+        "claude-code-expert",
+        "agent",
+        "ide-integration-specialist"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "medium",
+      "path": "agents/ide-integration-specialist.md"
+    },
+    {
+      "name": "claude-code-expert:mcp-configurator",
+      "intent": "MCP Configurator Agent",
+      "tags": [
+        "claude-code-expert",
+        "agent",
+        "mcp-configurator"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "medium",
+      "path": "agents/mcp-configurator.md"
+    },
+    {
+      "name": "claude-code-expert:permissions-security-advisor",
+      "intent": "Permissions & Security Advisor Agent",
+      "tags": [
+        "claude-code-expert",
+        "agent",
+        "permissions-security-advisor"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "medium",
+      "path": "agents/permissions-security-advisor.md"
+    },
+    {
+      "name": "claude-code-expert:plugin-architect",
+      "intent": "Plugin Architect",
+      "tags": [
+        "claude-code-expert",
+        "agent",
+        "plugin-architect"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "medium",
+      "path": "agents/plugin-architect.md"
+    },
+    {
+      "name": "claude-code-expert:principal-engineer-strategist",
+      "intent": "Principal Engineer Strategist",
+      "tags": [
+        "claude-code-expert",
+        "agent",
+        "principal-engineer-strategist"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "medium",
+      "path": "agents/principal-engineer-strategist.md"
+    },
+    {
+      "name": "claude-code-expert:research-orchestrator",
+      "intent": "Research Orchestrator Agent",
+      "tags": [
+        "claude-code-expert",
+        "agent",
+        "research-orchestrator"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "medium",
+      "path": "agents/research-orchestrator.md"
+    },
+    {
+      "name": "claude-code-expert:sdk-guide",
+      "intent": "SDK Guide Agent",
+      "tags": [
+        "claude-code-expert",
+        "agent",
+        "sdk-guide"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "medium",
+      "path": "agents/sdk-guide.md"
+    },
+    {
+      "name": "claude-code-expert:security-compliance-advisor",
+      "intent": "Security Compliance Advisor",
+      "tags": [
+        "claude-code-expert",
+        "agent",
+        "security-compliance-advisor"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "medium",
+      "path": "agents/security-compliance-advisor.md"
+    },
+    {
+      "name": "claude-code-expert:team-orchestrator",
+      "intent": "Team Orchestrator Agent",
+      "tags": [
+        "claude-code-expert",
+        "agent",
+        "team-orchestrator"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "medium",
+      "path": "agents/team-orchestrator.md"
+    },
+    {
+      "name": "claude-code-expert:teams-architect",
+      "intent": "Teams Architect",
+      "tags": [
+        "claude-code-expert",
+        "agent",
+        "teams-architect"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "medium",
+      "path": "agents/teams-architect.md"
+    }
+  ]
+}
