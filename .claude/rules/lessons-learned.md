@@ -1226,3 +1226,40 @@ for cat, items in cats.items():
 - **Input:** `/home/user/claude/plugins/claude-code-expert/skills`
 - **Error:** EISDIR: illegal operation on a directory, read '/home/user/claude/plugins/claude-code-expert/skills'
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-03-20T01:43:47Z)
+- **Tool:** Bash
+- **Input:** `python3 -c "
+import json
+d = json.load(open('/home/user/claude/.claude/registry/commands.index.json'))
+print('Keys:', list(d.keys()))
+print('Type of commands:', type(d.get('commands', [])))
+cmds = d.get('commands', [])
+print('Total commands:', len(cmds))
+if cmds and isinstance(cmds, list):
+    print('First entry keys:', list(cmds[0].keys()) if isinstance(cmds[0], dict) else 'not a dict')
+    # sample a few to see structure
+    plugins_seen = set()
+    for c in cmds:
+        p = c.get('plugin', c.get('source', 'unknown'))
+        plugins_seen.add(p)
+    print('Plugins represented:', sorted(plugins_seen)[:20])
+" 2>/dev/null`
+- **Error:** Exit code 1
+Keys: ['$schema', 'version', 'note', 'fullVersion', 'commands']
+Type of commands: <class 'list'>
+Total commands: 114
+First entry keys: not a dict
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-03-20T01:45:03Z)
+- **Tool:** Bash
+- **Input:** `head -80 /home/user/claude/.claude/tools/generate-plugin-indexes.mjs 2>/dev/null`
+- **Error:** Exit code 1
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-20T01:45:06Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/.claude/tools/generate-plugin-indexes.mjs`
+- **Error:** File does not exist. Note: your current working directory is /home/user/claude.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
