@@ -1,6 +1,6 @@
 # Cowork Marketplace Plugin
 
-Browse, install, launch, and export cowork marketplace items backed by real plugin agents, skills, and commands.
+Browse, install, update, launch, and export cowork marketplace items backed by real plugin agents, skills, and commands.
 
 ## Available Commands
 
@@ -8,6 +8,7 @@ Browse, install, launch, and export cowork marketplace items backed by real plug
 |---------|------------|
 | `/cowork-marketplace:browse` | Search and discover marketplace items |
 | `/cowork-marketplace:install` | Install an item and activate its plugin bindings |
+| `/cowork-marketplace:update` | Update an item by re-syncing plugin bindings and registry |
 | `/cowork-marketplace:launch` | Start a cowork session with an installed item |
 | `/cowork-marketplace:details` | View full item details, trust score, and plugin bindings |
 | `/cowork-marketplace:collections` | Browse 10 curated collections by domain |
@@ -24,13 +25,13 @@ Browse, install, launch, and export cowork marketplace items backed by real plug
 
 ## Skills
 
-- **plugin-catalog** - Catalog knowledge (17 items, 16 plugins, 136+ agents)
+- **plugin-catalog** - Catalog knowledge (18 items, 18 plugins, 136+ agents)
 - **cowork-sessions** - Session lifecycle and agent coordination
 - **plugin-packaging** - Cowork plugin format and distribution
 
 ## Catalog
 
-17 items across 5 types, backed by 16 installed plugins:
+18 items across 5 types, backed by 18 installed plugins:
 - 3 Templates (FastAPI, Fullstack, Home Assistant)
 - 4 Workflows (Jira-to-PR, EKS Deploy, Microsoft Platform, Sprint Planning)
 - 3 Agent Configs (Code Reviewer, Nonprofit Director, Design Architect)

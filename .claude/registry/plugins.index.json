@@ -114,6 +114,20 @@
       "source": "local",
       "installedAt": "2026-03-16T00:00:00.000Z",
       "dependencies": {}
+    },
+    "claude-code-expert": {
+      "version": "6.0.0",
+      "path": "../plugins/claude-code-expert",
+      "source": "local",
+      "installedAt": "2026-03-08T00:00:00.000Z",
+      "dependencies": {}
+    },
+    "cowork-marketplace": {
+      "version": "1.0.0",
+      "path": "../plugins/cowork-marketplace",
+      "source": "local",
+      "installedAt": "2026-02-23T00:00:00.000Z",
+      "dependencies": {}
     }
   },
   "registry": {
@@ -310,6 +324,26 @@
         "orchestration"
       ]
     },
+    "claude-code-expert": {
+      "name": "claude-code-expert",
+      "version": "6.0.0",
+      "description": "High-intelligence Claude Code copilot with deep code reasoning, orchestration, CI/CD, enterprise security, and MCP documentation server",
+      "author": {
+        "name": "Markus Ahling"
+      },
+      "keywords": [
+        "claude-code",
+        "expert",
+        "orchestration",
+        "mcp",
+        "debugging",
+        "enterprise"
+      ],
+      "categories": [
+        "developer-tools",
+        "orchestration"
+      ]
+    },
     "drawio-diagramming": {
       "name": "drawio-diagramming",
       "version": "1.0.0",
@@ -443,7 +477,22 @@
         "tier": "standard"
       }
     },
+    "developer-tools": {
+      "claude-code-expert": {
+        "path": "../plugins/claude-code-expert/.claude-plugin/plugin.json",
+        "callsign": "Expert",
+        "version": "6.0.0",
+        "status": "active",
+        "tier": "standard"
+      }
+    },
     "marketplace-ecosystem": {
+      "cowork-marketplace": {
+        "path": "../plugins/cowork-marketplace/.claude-plugin/plugin.json",
+        "version": "1.0.0",
+        "status": "active",
+        "tier": "standard"
+      },
       "marketplace-pro": {
         "path": "../plugins/marketplace-pro/.claude-plugin/plugin.json",
         "version": "1.0.0",
@@ -510,19 +559,20 @@
     "Migrator": "migration-wizard",
     "TestForge": "testforge",
     "Consul": "tvs-microsoft-deploy",
-    "Cartographer": "drawio-diagramming"
+    "Cartographer": "drawio-diagramming",
+    "Expert": "claude-code-expert"
   },
   "stats": {
-    "totalInstalled": 16,
-    "totalPlugins": 22,
+    "totalInstalled": 18,
+    "totalPlugins": 24,
     "totalAvailable": 6,
-    "lastUpdated": "2026-03-16T00:00:00.000Z",
+    "lastUpdated": "2026-03-19T00:00:00.000Z",
     "byTier": {
       "enterprise": 1,
-      "standard": 20
+      "standard": 22
     },
     "byLocation": {
-      "plugins/": 16,
+      "plugins/": 18,
       ".claude/plugins/": 6
     }
   }
