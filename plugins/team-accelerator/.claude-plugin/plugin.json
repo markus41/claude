@@ -1,6 +1,6 @@
 {
   "name": "team-accelerator",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Enterprise development toolkit for teams - DevOps, code quality, integrations, workflow automation, documentation, and performance optimization across multi-cloud and full-stack platforms",
   "author": {
     "name": "Markus Ahling",
@@ -19,7 +19,13 @@
     "github-actions",
     "harness",
     "playwright",
-    "prometheus"
+    "prometheus",
+    "agentic-patterns",
+    "multi-agent",
+    "parallelization",
+    "routing",
+    "resource-aware",
+    "learning"
   ],
   "license": "MIT",
   "repository": "https://github.com/Lobbi-Docs/claude"

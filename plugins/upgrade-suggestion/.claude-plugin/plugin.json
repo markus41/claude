@@ -1,6 +1,6 @@
 {
   "name": "upgrade-suggestion",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "AI-powered upgrade intelligence platform. Multi-agent council analyzes your codebase across 8 dimensions, produces confidence-scored suggestions with visual impact heatmaps, upgrade roadmaps, framework-specific deep dives, and before/after impact previews. Features innovation radar, tech debt forecasting, and coordinated upgrade bundles.",
   "author": {
     "name": "Markus Ahling"
@@ -26,6 +26,13 @@
     "deep-analysis",
     "impact-preview",
     "heatmap",
-    "multi-agent"
+    "multi-agent",
+    "agentic-design-patterns",
+    "reflection",
+    "parallelization",
+    "reasoning",
+    "evaluation",
+    "planning",
+    "resource-aware"
   ]
 }

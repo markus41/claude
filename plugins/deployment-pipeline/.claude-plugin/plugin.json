@@ -1,6 +1,6 @@
 {
   "name": "deployment-pipeline",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Harness CD integration pipeline with state-machine workflow orchestration",
   "author": {
     "name": "Markus Ahling"
@@ -15,6 +15,12 @@
     "harness",
     "ci-cd",
     "deployment",
-    "pipeline"
+    "pipeline",
+    "agentic-patterns",
+    "prompt-chaining",
+    "hitl",
+    "guardrails",
+    "multi-agent",
+    "exception-handling"
   ]
 }

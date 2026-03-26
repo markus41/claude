@@ -1,6 +1,6 @@
 {
   "name": "lobbi-platform-manager",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Streamline development on the-lobbi/keycloak-alpha with Keycloak management, service orchestration, and test generation",
   "author": {
     "name": "Markus Ahling"
@@ -14,7 +14,17 @@
     "docker",
     "testing",
     "devops",
-    "platform-management"
+    "platform-management",
+    "agentic-patterns",
+    "multi-agent",
+    "tool-use",
+    "exception-handling",
+    "guardrails",
+    "memory",
+    "hitl",
+    "routing",
+    "planning",
+    "evaluation"
   ],
   "repository": "https://github.com/the-lobbi/keycloak-alpha"
 }

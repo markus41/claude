@@ -1,6 +1,6 @@
 {
   "name": "tvs-microsoft-deploy",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "Consul - Enterprise Microsoft ecosystem orchestrator for TVS (Trusted Virtual Solutions) multi-entity multi-tenant deployment. 19 agents, 18 commands, 17 skills, 14 hooks, 5 workflows. MCP server for Graph API, Dataverse, Fabric, and Planner.",
   "author": {
     "name": "Markus Ahling",
@@ -33,7 +33,19 @@
     "dlp",
     "excel-automation",
     "solution-architect",
-    "pipeline-orchestration"
+    "pipeline-orchestration",
+    "agentic-patterns",
+    "prompt-chaining",
+    "planning",
+    "tool-use",
+    "exception-handling",
+    "guardrails",
+    "hitl",
+    "multi-agent",
+    "memory",
+    "a2a",
+    "routing",
+    "resource-aware"
   ],
   "repository": "https://github.com/Lobbi-Docs/claude",
   "license": "MIT"

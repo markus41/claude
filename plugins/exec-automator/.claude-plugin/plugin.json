@@ -1,6 +1,6 @@
 {
   "name": "exec-automator",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Genesis (Forerunner) - AI-Powered Executive Director Automation Platform. Analyze organizational responsibilities, score automation potential with 6-factor algorithm, generate LangGraph workflows, and deploy 11 specialized agents for trade associations and nonprofits.",
   "author": {
     "name": "Brookside BI",
@@ -16,7 +16,16 @@
     "ai-automation",
     "nonprofit",
     "trade-association",
-    "process-automation"
+    "process-automation",
+    "agentic-design-patterns",
+    "planning",
+    "multi-agent",
+    "routing",
+    "parallelization",
+    "memory",
+    "exception-handling",
+    "hitl",
+    "goal-setting"
   ],
   "license": "Proprietary",
   "repository": "https://github.com/brooksidebi/exec-automator"
