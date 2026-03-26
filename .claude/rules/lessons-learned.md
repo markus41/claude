@@ -1263,3 +1263,165 @@ First entry keys: not a dict
 - **Input:** `/home/user/claude/.claude/tools/generate-plugin-indexes.mjs`
 - **Error:** File does not exist. Note: your current working directory is /home/user/claude.
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-26T03:54:30Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-26T03:54:31Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-26T03:54:44Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-26T03:54:45Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-26T03:54:46Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-26T03:54:47Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-26T03:54:50Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 403
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-26T03:54:51Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-26T03:54:55Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-26T03:54:56Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-26T03:55:25Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-26T03:55:55Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** maxContentLength size of 10485760 exceeded
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-26T03:56:09Z)
+- **Tool:** Read
+- **Input:** `/tmp/claude-0/-home-user-claude/730a65f9-b2d2-49e5-bf5b-9d4e6c59b639/tasks/ac13023c034da837b.output`
+- **Error:** File content (38394 tokens) exceeds maximum allowed tokens (10000). Use offset and limit parameters to read specific portions of the file, or search for specific content instead of reading the whole file.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-26T03:56:17Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-26T03:56:17Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 403
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-26T03:56:21Z)
+- **Tool:** Read
+- **Input:** `/tmp/claude-0/-home-user-claude/730a65f9-b2d2-49e5-bf5b-9d4e6c59b639/tasks/ac13023c034da837b.output`
+- **Error:** File content (21583 tokens) exceeds maximum allowed tokens (10000). Use offset and limit parameters to read specific portions of the file, or search for specific content instead of reading the whole file.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-26T03:56:27Z)
+- **Tool:** Read
+- **Input:** `/tmp/claude-0/-home-user-claude/730a65f9-b2d2-49e5-bf5b-9d4e6c59b639/tasks/ac13023c034da837b.output`
+- **Error:** File content (13980 tokens) exceeds maximum allowed tokens (10000). Use offset and limit parameters to read specific portions of the file, or search for specific content instead of reading the whole file.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-26T03:56:29Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-26T03:56:30Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-26T03:56:33Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: mcp__github__get_file_contents failure (2026-03-26T03:56:45Z)
+- **Tool:** mcp__github__get_file_contents
+- **Input:** `N/A`
+- **Error:** Access denied: repository "mathews-tom/agentic-design-patterns" is not configured for this session. Allowed repositories: markus41/claude
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-26T03:57:26Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-26T03:57:27Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-26T03:57:28Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-26T03:57:30Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-26T03:57:31Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-26T04:00:42Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
