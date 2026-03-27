@@ -122,7 +122,54 @@ Complete reference for every settings option, configuration key, and customizati
 
   // === ATTRIBUTION ===
   "attribution": {
-    "commit": "Generated with Claude Code"
+    "commit": "Generated with AI\n\nCo-Authored-By: AI <ai@example.com>",
+    "pr": ""
+  },
+  "includeCoAuthoredBy": true, // DEPRECATED: use attribution instead
+
+  // === CHANNELS (v2.1.80+) ===
+  "channelsEnabled": true,       // Managed only - master switch for Team/Enterprise
+  "allowedChannelPlugins": [     // Managed only - restrict which channel plugins
+    { "marketplace": "claude-plugins-official", "plugin": "telegram" }
+  ],
+
+  // === AGENT TEAMS (experimental) ===
+  "teammateMode": "auto",       // "auto" | "in-process" | "tmux"
+
+  // === WORKTREE ===
+  "worktree": {
+    "symlinkDirectories": ["node_modules", ".cache"],
+    "sparsePaths": ["packages/my-app", "shared/utils"]
+  },
+
+  // === AUTO MODE ===
+  "autoMode": {
+    "environment": ["Trusted repo: github.example.com/acme"],
+    "allow": ["Read any file in the project"],
+    "soft_deny": ["Never delete production databases"]
+  },
+  "disableAutoMode": "disable",  // Set to "disable" to block auto mode; omit or remove key to allow
+  "useAutoModeDuringPlan": true,
+
+  // === EFFORT & VOICE ===
+  "effortLevel": "high",        // "low" | "medium" | "high" (Opus 4.6, Sonnet 4.6)
+  "voiceEnabled": false,
+  "alwaysThinkingEnabled": false,
+
+  // === UI CUSTOMIZATION ===
+  "spinnerTipsOverride": {
+    "excludeDefault": true,
+    "tips": ["Use our internal tool X"]
+  },
+  "prefersReducedMotion": false,
+  "terminalProgressBarEnabled": true,
+  "showClearContextOnPlanAccept": false,
+  "plansDirectory": "~/.claude/plans",
+
+  // === MODELS ===
+  "availableModels": ["sonnet", "haiku", "opus"],
+  "modelOverrides": {
+    "claude-opus-4-6": "arn:aws:bedrock:us-east-1:..."
   }
 }
 ```
@@ -431,6 +478,124 @@ for f in glob.glob('plugins/*/. claude-plugin/plugin.json'):
   "autoMemory": false
 }
 ```
+
+## Attribution Customization
+
+Default commit attribution:
+```
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+   Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
+```
+
+Default PR attribution:
+```
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+```
+
+### Custom Attribution (no Claude Code branding)
+```json
+{
+  "attribution": {
+    "commit": "AI-assisted development\n\nCo-Authored-By: AI Assistant <ai@company.com>",
+    "pr": "AI-assisted development"
+  }
+}
+```
+
+### Hide All Attribution
+```json
+{
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  }
+}
+```
+
+### Inline Badge (shields.io)
+```json
+{
+  "attribution": {
+    "commit": "",
+    "pr": "[![Built by Markus](https://img.shields.io/badge/built%20by-Markus%20Ahling-ff6b35?style=for-the-badge&logo=github&logoColor=white)](https://github.com/markus41)"
+  }
+}
+```
+
+## Channels Settings (v2.1.80+)
+
+Channels push events into running sessions. Team/Enterprise require admin enablement.
+
+### Enable for Organization (Managed Settings)
+```json
+{
+  "channelsEnabled": true,
+  "allowedChannelPlugins": [
+    { "marketplace": "claude-plugins-official", "plugin": "telegram" },
+    { "marketplace": "claude-plugins-official", "plugin": "discord" },
+    { "marketplace": "acme-corp-plugins", "plugin": "internal-ci-alerts" }
+  ]
+}
+```
+
+### CLI Flags
+```bash
+# Start with channels
+claude --channels plugin:telegram@claude-plugins-official
+
+# Multiple channels
+claude --channels plugin:telegram@claude-plugins-official plugin:discord@claude-plugins-official
+
+# Development channels (custom/local)
+claude --dangerously-load-development-channels server:my-webhook
+```
+
+## Agent Teams Settings (Experimental)
+
+### Enable
+```json
+{
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
+  "teammateMode": "in-process"
+}
+```
+
+### Display Modes
+| Mode | Description |
+|------|-------------|
+| `"auto"` | Split panes in tmux/iTerm2, in-process otherwise |
+| `"in-process"` | All teammates in main terminal |
+| `"tmux"` | Force split panes (requires tmux or iTerm2) |
+
+### CLI Override
+```bash
+claude --teammate-mode in-process
+```
+
+## Worktree Settings
+
+Reduce disk usage and startup time in large monorepos:
+```json
+{
+  "worktree": {
+    "symlinkDirectories": ["node_modules", ".cache"],
+    "sparsePaths": ["packages/my-app", "shared/utils"]
+  }
+}
+```
+
+## Settings Precedence
+
+1. **Managed** (highest) — server-managed > MDM/plist > file-based > HKCU registry
+2. **Command line arguments** — temporary session overrides
+3. **Local** (`.claude/settings.local.json`) — personal project overrides
+4. **Project** (`.claude/settings.json`) — team-shared settings
+5. **User** (`~/.claude/settings.json`) — personal global (lowest)
+
+Array settings (like permissions, sandbox paths) merge across scopes — they concatenate and deduplicate.
 
 ### Security-Hardened
 ```json

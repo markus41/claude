@@ -200,7 +200,7 @@
     ]
   },
   "attribution": {
-    "commit": "Co-Authored-By: Claude <noreply@anthropic.com>",
-    "pr": "Generated with Claude Code"
+    "commit": "",
+    "pr": "---\n\n<div align=\"center\">\n\n[![Markus Ahling](https://img.shields.io/badge/%E2%9A%A1-markus41-000000?style=for-the-badge&labelColor=FF4500&color=1a1a2e)](https://github.com/markus41) [![Marketplace](https://img.shields.io/badge/plugin-marketplace-blueviolet?style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/markus41/claude) [![Status](https://img.shields.io/badge/status-shipped%20%F0%9F%9A%80-brightgreen?style=for-the-badge)](https://github.com/markus41/claude)\n\n*architecture by humans, velocity by machines*\n\n</div>"
   }
 }

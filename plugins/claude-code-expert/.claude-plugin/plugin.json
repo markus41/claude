@@ -1,8 +1,8 @@
 {
   "$schema": "https://claude.local/schemas/plugin.schema.json",
   "name": "claude-code-expert",
-  "version": "7.0.0",
-  "description": "High-intelligence Claude Code copilot with deep code reasoning, evidence-driven planning, orchestration-first execution, model routing, context budgeting, CI/CD integration, enterprise security, plugin development, prompt engineering, performance profiling, agent teams, interactive tutorials, and a queryable 10-tool MCP documentation server.",
+  "version": "7.1.0",
+  "description": "High-intelligence Claude Code copilot with deep code reasoning, evidence-driven planning, orchestration-first execution, model routing, context budgeting, CI/CD integration, enterprise security, plugin development, prompt engineering, performance profiling, agent teams, channels (MCP event streaming), interactive tutorials, and a queryable 10-tool MCP documentation server.",
   "author": {
     "name": "Markus Ahling"
   },
@@ -64,7 +64,15 @@
     "evaluation-monitoring",
     "a2a-communication",
     "resource-optimization",
-    "reasoning-techniques"
+    "reasoning-techniques",
+    "channels",
+    "mcp-channels",
+    "webhooks",
+    "permission-relay",
+    "scheduled-tasks",
+    "cron",
+    "checkpointing",
+    "rewind"
   ],
   "permissions": {
     "requires": [
@@ -90,7 +98,11 @@
       "model-routing",
       "enterprise-security",
       "plugin-development-guide",
-      "session-analytics"
+      "session-analytics",
+      "channels-event-streaming",
+      "agent-teams-orchestration",
+      "scheduled-tasks",
+      "checkpointing"
     ],
     "requires": []
   },
@@ -135,7 +147,12 @@
       "skills/prompt-engineering/SKILL.md",
       "skills/enterprise-security/SKILL.md",
       "commands/cc-budget.md",
-      "commands/cc-cicd.md"
+      "commands/cc-cicd.md",
+      "skills/channels/SKILL.md",
+      "skills/channels-user-guide/SKILL.md",
+      "skills/agent-teams/SKILL.md",
+      "skills/scheduled-tasks/SKILL.md",
+      "skills/checkpointing/SKILL.md"
     ]
   }
 }
