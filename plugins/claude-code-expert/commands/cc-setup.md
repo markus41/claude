@@ -901,8 +901,9 @@ MCP Servers:             ████████░░  80%  ✓ 3/4 detected, 
 LSP:                     ██████████ 100%  ✓ 2/2 detected, both installed
 Memory:                  ██████████ 100%  ✓ Split memory with 5 files
 Cost Optimization:       ████████░░  80%  ✓ Model cascading configured
+Agentic Patterns:        ██████████ 100%  ✓ 4/4 patterns wired (reflection, chain, routing, eval-opt)
 
-Overall Score: 88/100 — Power User Setup
+Overall Score: 92/100 — Power User Setup
 ```
 
 Scoring rubric:
@@ -911,6 +912,122 @@ Scoring rubric:
 - **51-75**: Intermediate — 2-3 layers configured
 - **76-90**: Advanced — All 4 layers + MCP + memory
 - **91-100**: Power User — Full stack with cost optimization
+
+---
+
+## Phase 11: Agentic Pattern Wiring
+
+Wire agentic design patterns into the 4-layer stack based on project complexity and preset.
+This phase bridges the gap between having pattern knowledge and actually deploying it.
+
+See `skills/agentic-patterns/SKILL.md` for the full pattern catalog.
+
+### 11.1 Pattern Selection by Project Scale
+
+| Scale | Patterns Wired | Rationale |
+|-------|---------------|-----------|
+| Small (<10k LOC) | Reflection only | Single-agent self-review is enough |
+| Medium (10k-100k) | Reflection + Prompt Chaining + Routing | Multi-step tasks benefit from chains; routing saves cost |
+| Large (100k+) | All workflow patterns + Eval-Optimizer | Complex codebase needs structured decomposition and quality gates |
+| Monorepo | All patterns including Orchestrator-Workers + Blackboard | Cross-package coordination requires multi-agent |
+
+### 11.2 Pattern → Layer Wiring
+
+For each selected pattern, generate concrete artifacts across all 4 layers:
+
+#### Reflection Pattern Wiring
+```
+Layer 1: Add to CLAUDE.md rules:
+  "Review your own output before presenting. Check for off-by-one errors,
+   unhandled edge cases, and inconsistency with existing code patterns."
+
+Layer 3: Add PostToolUse hook on Write/Edit:
+  hooks/self-review-gate.sh — prompts Claude to re-check before finalizing
+
+Layer 4: Generate agents/audit-reviewer.md if not present
+```
+
+#### Prompt Chaining Pattern Wiring
+```
+Layer 1: Add to CLAUDE.md:
+  "For multi-step tasks, follow the chain: analyze → plan → implement → verify.
+   Do not skip steps. Each step's output feeds the next."
+
+Layer 2: Generate skills/evidence-driven-planning if not present
+  (defines the chain steps with typed handoff schemas)
+
+Layer 4: Generate agents/principal-engineer-strategist if not present
+  (executes the chain with structured reasoning)
+```
+
+#### Routing Pattern Wiring
+```
+Layer 1: Add to CLAUDE.md:
+  "Route by complexity: factual lookups→haiku, implementation→sonnet,
+   architecture/security→opus. Use subagents for research."
+
+Layer 2: Generate skills/model-routing if not present
+  (decision matrix with cost/capability tables)
+```
+
+#### Evaluator-Optimizer Pattern Wiring
+```
+Layer 1: Add to CLAUDE.md rules:
+  "Generated code/configs must pass quality evaluation before committing.
+   Use the evaluator-optimizer loop for quality-critical outputs."
+
+Layer 4: Generate agents/evaluator-optimizer.md
+  (runs generate→evaluate→refine cycle with rubric scoring)
+```
+
+#### Parallelization Pattern Wiring
+```
+Layer 2: Generate skills/council-review if not present
+  (fan-out templates with structured merge protocol)
+
+Layer 4: Generate agents/council-coordinator.md if not present
+  (structured aggregation, dedup, severity-ranked output)
+```
+
+#### Orchestrator-Workers Pattern Wiring
+```
+Layer 4: Generate agents/team-orchestrator.md if not present
+  (dynamic delegation with worker spawning)
+
+Layer 4: Generate agents/pattern-router.md if not present
+  (selects optimal pattern before orchestration starts)
+```
+
+### 11.3 Generated Pattern Config Block
+
+Add to `.claude/rules/patterns.md`:
+
+```markdown
+# Agentic Patterns Configuration
+
+## Active Patterns
+{list of patterns enabled for this project}
+
+## Pattern Triggers
+- Multi-file change → Prompt Chaining (analyze → plan → implement → verify)
+- Code review request → Parallelization (security + performance + style)
+- Bug report → ReAct Planning (thought → action → observation cycles)
+- Config generation → Evaluator-Optimizer (generate → score → refine)
+- Large feature → Orchestrator-Workers (lead decomposes → workers execute)
+
+## Quality Gates
+- Generated code: eval threshold >= 80
+- Security-critical: eval threshold >= 90
+- Config files: must pass JSON/YAML validation + schema check
+
+## Cost Ceiling per Pattern
+- Single agent: $0.05
+- Prompt chain: $0.20
+- Parallel review: $0.50
+- Eval-optimizer: $0.60
+- Orchestrator-workers: $1.00
+- Full council: $2.00
+```
 
 ---
 
@@ -933,7 +1050,8 @@ When `/cc-setup` is invoked:
 9. **Configure LSP** — Report and install recommendations (Phase 7)
 10. **Generate settings** — Permissions, model, features (Phase 8)
 11. **Apply cost optimizations** — Model cascading, context rules (Phase 9)
-12. **Verify & score** — Audit everything, output report (Phase 10)
+12. **Wire agentic patterns** — Deploy pattern artifacts per project scale (Phase 11)
+13. **Verify & score** — Audit everything, output report (Phase 10)
 
 ---
 
@@ -980,6 +1098,9 @@ When `/cc-setup` is invoked:
 - Auto-generated skills for every detected stack component
 - Agent team templates (builder + validator + security)
 - Git worktree setup for parallel development
+- **All agentic patterns wired**: reflection, prompt chaining, routing, eval-optimizer, parallelization, orchestrator-workers
+- Pattern router agent for automatic pattern selection
+- Quality gates with eval thresholds per artifact type
 
 ### `ci-cd`
 - Restrictive permissions (read-only + test/build)
