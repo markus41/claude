@@ -1,6 +1,6 @@
 {
   "name": "cowork-marketplace",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Browse, install, and manage cowork marketplace items backed by real plugin agents, skills, and commands",
   "author": {
     "name": "Markus Ahling",
@@ -16,6 +16,14 @@
     "skills",
     "templates",
     "workflows",
-    "session-blueprints"
+    "session-blueprints",
+    "agentic-design-patterns",
+    "routing",
+    "a2a",
+    "resource-aware",
+    "exploration",
+    "memory",
+    "guardrails",
+    "tool-use"
   ]
 }

@@ -1,6 +1,6 @@
 {
   "name": "fullstack-iac",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Zenith (Forerunner) - Complete full-stack development and infrastructure automation. FastAPI, React/Vite, Ansible, Terraform, Kubernetes with production-ready templates and CI/CD pipelines.",
   "author": {
     "name": "Markus Ahling",
@@ -18,7 +18,16 @@
     "infrastructure-as-code",
     "ci-cd",
     "templates",
-    "scaffolding"
+    "scaffolding",
+    "agentic-patterns",
+    "prompt-chaining",
+    "planning",
+    "tool-use",
+    "exception-handling",
+    "guardrails",
+    "hitl",
+    "multi-agent",
+    "evaluation"
   ],
   "license": "MIT",
   "repository": "https://github.com/Lobbi-Docs/claude"

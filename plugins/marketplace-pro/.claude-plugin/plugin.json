@@ -1,6 +1,6 @@
 {
   "name": "marketplace-pro",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Advanced plugin marketplace platform with intent-based composition, supply chain security, contextual intelligence, dev studio hot-reload, and federated registry protocol. Transforms the marketplace from a package manager into an enterprise orchestration platform.",
   "author": {
     "name": "Markus Ahling",
@@ -20,7 +20,15 @@
     "fingerprinting",
     "sandboxing",
     "lockfile",
-    "policy-engine"
+    "policy-engine",
+    "agentic-design-patterns",
+    "a2a-communication",
+    "routing",
+    "guardrails",
+    "resource-optimization",
+    "exploration",
+    "memory-management",
+    "evaluation-monitoring"
   ],
   "license": "MIT",
   "repository": "https://github.com/Lobbi-Docs/claude"

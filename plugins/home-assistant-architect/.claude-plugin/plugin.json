@@ -1,6 +1,6 @@
 {
   "name": "home-assistant-architect",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Complete Home Assistant platform with frontend design, energy management, cameras, sensors, local LLM integration, and Ubuntu server deployment",
   "author": {
     "name": "Brookside BI"
@@ -16,6 +16,16 @@
     "local-llm",
     "mcp-server",
     "ubuntu",
-    "iot"
+    "iot",
+    "agentic-patterns",
+    "tool-use",
+    "routing",
+    "planning",
+    "exception-handling",
+    "memory",
+    "guardrails",
+    "hitl",
+    "parallelization",
+    "learning"
   ]
 }

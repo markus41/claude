@@ -1,6 +1,6 @@
 {
   "$schema": "./schema/skills.schema.json",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "note": "Full metadata in skills.index.json",
   "fullVersion": "skills.index.json",
   "skills": {
@@ -55,6 +55,25 @@
     "drawio:mcp-integration": "../plugins/drawio-diagramming/skills/mcp-integration/SKILL.md",
     "drawio:wireframes-mockups": "../plugins/drawio-diagramming/skills/wireframes-mockups/SKILL.md",
     "drawio:data-structures": "../plugins/drawio-diagramming/skills/data-structures/SKILL.md",
-    "drawio:network-software-mapping": "../plugins/drawio-diagramming/skills/network-software-mapping/SKILL.md"
+    "drawio:network-software-mapping": "../plugins/drawio-diagramming/skills/network-software-mapping/SKILL.md",
+    "agentic-design-patterns": "skills/agentic-design-patterns/SKILL.md",
+    "claude-code-expert:agentic-patterns": "../plugins/claude-code-expert/skills/agentic-patterns/SKILL.md",
+    "jira-orchestrator:agentic-patterns": "../plugins/jira-orchestrator/skills/agentic-patterns/SKILL.md",
+    "marketplace-pro:agentic-patterns": "../plugins/marketplace-pro/skills/agentic-patterns/SKILL.md",
+    "exec-automator:agentic-patterns": "../plugins/exec-automator/skills/agentic-patterns/SKILL.md",
+    "upgrade-suggestion:agentic-patterns": "../plugins/upgrade-suggestion/skills/agentic-patterns/SKILL.md",
+    "cowork-marketplace:agentic-patterns": "../plugins/cowork-marketplace/skills/agentic-patterns/SKILL.md",
+    "deployment-pipeline:agentic-patterns": "../plugins/deployment-pipeline/skills/agentic-patterns/SKILL.md",
+    "team-accelerator:agentic-patterns": "../plugins/team-accelerator/skills/agentic-patterns/SKILL.md",
+    "fastapi-backend:agentic-patterns": "../plugins/fastapi-backend/skills/agentic-patterns/SKILL.md",
+    "home-assistant-architect:agentic-patterns": "../plugins/home-assistant-architect/skills/agentic-patterns/SKILL.md",
+    "drawio-diagramming:agentic-patterns": "../plugins/drawio-diagramming/skills/agentic-patterns/SKILL.md",
+    "fullstack-iac:agentic-patterns": "../plugins/fullstack-iac/skills/agentic-patterns/SKILL.md",
+    "aws-eks-helm-keycloak:agentic-patterns": "../plugins/aws-eks-helm-keycloak/skills/agentic-patterns/SKILL.md",
+    "react-animation-studio:agentic-patterns": "../plugins/react-animation-studio/skills/agentic-patterns/SKILL.md",
+    "frontend-design-system:agentic-patterns": "../plugins/frontend-design-system/skills/agentic-patterns/SKILL.md",
+    "claude-code-templating:agentic-patterns": "../plugins/claude-code-templating-plugin/skills/agentic-patterns/SKILL.md",
+    "lobbi-platform-manager:agentic-patterns": "../plugins/lobbi-platform-manager/skills/agentic-patterns/SKILL.md",
+    "tvs-microsoft-deploy:agentic-patterns": "../plugins/tvs-microsoft-deploy/skills/agentic-patterns/SKILL.md"
   }
 }

@@ -301,3 +301,8 @@ Format: `<type>_<topic>.md` with frontmatter specifying type. Index up to 200 li
 - **Transport**: Stdio
 - **Use case**: Semantic knowledge graphs shared across sessions; tool-based (not markdown) memory
 
+## Agentic Design Patterns Research (2026-03-26)
+Full reference: `.claude/agent-memory/researcher/agentic_design_patterns_research.md`
+Source: github.com/Mathews-Tom/Agentic-Design-Patterns (Gulli & Sauco, 424 pages, MIT)
+21 patterns across 4 parts; frameworks: LangChain/LangGraph, Google ADK, CrewAI, FastMCP, AutoGen
+

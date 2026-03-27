@@ -1,6 +1,6 @@
 {
   "name": "frontend-design-system",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "263+ design styles with multi-tenant Keycloak theming for AI-powered frontend development",
   "author": {
     "name": "Markus Ahling"
@@ -16,6 +16,15 @@
     "tailwind",
     "ui-ux",
     "multi-tenant",
-    "accessibility"
+    "accessibility",
+    "agentic-patterns",
+    "prompt-chaining",
+    "routing",
+    "reflection",
+    "planning",
+    "tool-use",
+    "memory",
+    "parallelization",
+    "guardrails"
   ]
 }

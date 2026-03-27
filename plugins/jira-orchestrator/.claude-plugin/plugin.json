@@ -1,6 +1,6 @@
 {
   "name": "jira-orchestrator",
-  "version": "7.5.0",
+  "version": "8.0.0",
   "description": "Enterprise Jira orchestration with 81 agents, 16 teams, 46 commands, 11 skills. Features Atlassian MCP OAuth, Harness integration, Neon PostgreSQL, Redis caching, Temporal workflows, and structured reasoning frameworks.",
   "author": {
     "name": "Markus Ahling",
@@ -23,7 +23,19 @@
     "neon",
     "postgresql",
     "redis",
-    "temporal"
+    "temporal",
+    "agentic-design-patterns",
+    "routing",
+    "planning",
+    "multi-agent",
+    "memory-management",
+    "reflection",
+    "parallelization",
+    "exception-handling",
+    "human-in-the-loop",
+    "evaluation-monitoring",
+    "prioritization",
+    "goal-setting"
   ],
   "license": "MIT",
   "repository": "https://github.com/Lobbi-Docs/claude"

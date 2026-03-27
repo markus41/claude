@@ -1,6 +1,6 @@
 {
   "name": "fastapi-backend",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Comprehensive FastAPI backend development plugin with MongoDB/Beanie, Keycloak auth, Docker/K8s deployment, background tasks, caching, observability, and real-time features",
   "author": {
     "name": "Markus Ahling",
@@ -21,7 +21,15 @@
     "redis",
     "celery",
     "arq",
-    "observability"
+    "observability",
+    "agentic-patterns",
+    "prompt-chaining",
+    "tool-use",
+    "rag",
+    "guardrails",
+    "memory",
+    "parallelization",
+    "resource-aware"
   ],
   "repository": "https://github.com/Lobbi-Docs/claude",
   "license": "MIT"
