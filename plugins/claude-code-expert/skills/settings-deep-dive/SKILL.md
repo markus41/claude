@@ -148,7 +148,7 @@ Complete reference for every settings option, configuration key, and customizati
     "allow": ["Read any file in the project"],
     "soft_deny": ["Never delete production databases"]
   },
-  "disableAutoMode": false,      // "disable" to block auto mode
+  "disableAutoMode": "disable",  // Set to "disable" to block auto mode; omit or remove key to allow
   "useAutoModeDuringPlan": true,
 
   // === EFFORT & VOICE ===
