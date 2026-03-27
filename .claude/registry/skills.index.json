@@ -76,6 +76,9 @@
     "lobbi-platform-manager:agentic-patterns": "../plugins/lobbi-platform-manager/skills/agentic-patterns/SKILL.md",
     "tvs-microsoft-deploy:agentic-patterns": "../plugins/tvs-microsoft-deploy/skills/agentic-patterns/SKILL.md",
     "claude-code-expert:channels": "../plugins/claude-code-expert/skills/channels/SKILL.md",
-    "claude-code-expert:channels-user-guide": "../plugins/claude-code-expert/skills/channels-user-guide/SKILL.md"
+    "claude-code-expert:channels-user-guide": "../plugins/claude-code-expert/skills/channels-user-guide/SKILL.md",
+    "claude-code-expert:agent-teams": "../plugins/claude-code-expert/skills/agent-teams/SKILL.md",
+    "claude-code-expert:scheduled-tasks": "../plugins/claude-code-expert/skills/scheduled-tasks/SKILL.md",
+    "claude-code-expert:checkpointing": "../plugins/claude-code-expert/skills/checkpointing/SKILL.md"
   }
 }
