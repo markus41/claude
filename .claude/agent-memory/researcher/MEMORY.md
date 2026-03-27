@@ -301,8 +301,31 @@ Format: `<type>_<topic>.md` with frontmatter specifying type. Index up to 200 li
 - **Transport**: Stdio
 - **Use case**: Semantic knowledge graphs shared across sessions; tool-based (not markdown) memory
 
-## Agentic Design Patterns Research (2026-03-26)
-Full reference: `.claude/agent-memory/researcher/agentic_design_patterns_research.md`
+## Agentic Design Patterns Research (2026-03-27)
+Full reference: `.claude/agent-memory/researcher/agentic_design_patterns.md` (comprehensive deep dive)
+Also: `.claude/agent-memory/researcher/agentic-patterns-research.md` (quick summary)
 Source: github.com/Mathews-Tom/Agentic-Design-Patterns (Gulli & Sauco, 424 pages, MIT)
-21 patterns across 4 parts; frameworks: LangChain/LangGraph, Google ADK, CrewAI, FastMCP, AutoGen
+
+**4 Core Patterns (Andrew Ng)**:
+- **Reflection** — LLM critiques own output, iterates to improve (15.6% accuracy gain)
+- **Tool Use** — LLM decides which functions/APIs to call for tasks
+- **Planning** — Agent breaks goals into subtasks, identifies dependencies, sequences execution
+- **Multi-Agent** — Specialized agents collaborate toward complex goals
+
+**21 patterns organized in 4 parts:**
+- **Part 1 (Foundational)**: Prompt chaining, routing, parallelization, reflection, tool use, planning, multi-agent
+- **Part 2 (Advanced Systems)**: Memory management, learning/adaptation, MCP, goal setting
+- **Part 3 (Production)**: Exception handling, human-in-loop, RAG
+- **Part 4 (Multi-Agent)**: A2A communication, resource optimization, reasoning, guardrails, evaluation, prioritization, discovery
+
+**Additional Key Patterns**:
+- **Prompt Chaining** — Sequential steps with intermediate validation (15.6% vs monolithic)
+- **Routing** — Direct requests to specialized handlers by intent/domain
+- **Parallelization** — Run independent tasks concurrently, combine results
+- **Evaluator-Optimizer** — Generator + evaluator agent in feedback loop
+
+**Frameworks**: LangGraph (recommended), CrewAI, AutoGen, DSPy, Smolagents
+**Implementation guidance**: Start with single pattern. Combine 2-3 patterns for production. Multi-agent costs 25x single-agent.
+**Cost awareness**: Each agent call + coordination + reflection loop = token expense. Balance quality vs. cost.
+**Success factors**: Clear separation of concerns, well-defined interfaces, error handling, context management, monitoring
 

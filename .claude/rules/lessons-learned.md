@@ -1454,3 +1454,27 @@ First entry keys: not a dict
 - **Input:** `N/A`
 - **Error:** GitHub GraphQL error: GraphQL error: Could not resolve to a node with the global id of 'PRT_kwDOOYmw3s6XJG7l'.
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-27T06:16:55Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-27T06:18:24Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/.claude/agent-memory/researcher`
+- **Error:** EISDIR: illegal operation on a directory, read '/home/user/claude/.claude/agent-memory/researcher'
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-03-27T06:18:26Z)
+- **Tool:** Bash
+- **Input:** `for f in add1cf258fdb144f6 a12a51922007209a1 a8e130b3a07d8fcfd; do echo "=== $f ===" && tail -2 /tmp/claude-0/-home-user-claude/b41b06cd-a7d0-4505-9a74-3d5b0fe2663e/tasks/$f.output 2>/dev/null | grep -c "end_turn\|stop_reason.*end_turn" && echo "---"; done`
+- **Error:** Exit code 1
+=== add1cf258fdb144f6 ===
+0
+=== a12a51922007209a1 ===
+0
+=== a8e130b3a07d8fcfd ===
+0
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
