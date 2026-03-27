@@ -1,6 +1,6 @@
 # Claude Code Expert Context Summary
 
-High-intelligence Claude Code expert plugin (v6.0.0) with 16 commands, 33 skills, 16 agents, and a 10-tool MCP server for deep code reasoning, orchestrated execution, model routing, CI/CD integration, enterprise security, context budgeting, and interactive tutorials.
+High-intelligence Claude Code expert plugin (v7.2.0) with 16 commands, 39 skills, 18 agents, and a 10-tool MCP server for deep code reasoning, agentic design patterns, orchestrated execution, model routing, CI/CD integration, enterprise security, context budgeting, and interactive tutorials.
 
 ## What this plugin is best at
 - Turning vague engineering requests into evidence-backed plans.
@@ -15,6 +15,13 @@ High-intelligence Claude Code expert plugin (v6.0.0) with 16 commands, 33 skills
 - `agents/principal-engineer-strategist.md`: senior reviewer for architecture, tradeoffs, and hidden-risk detection.
 - `skills/deep-code-intelligence/SKILL.md`: reusable reasoning workflow for hard coding tasks.
 - `mcp-server/src/index.js`: 10-tool searchable docs index with model recommendations, checklists, and comparisons.
+
+## v7.2.0 additions
+- **Agentic patterns overhaul**: `skills/agentic-patterns/SKILL.md` — integrated Anthropic's workflow/agent taxonomy with Andrew Ng's four foundational patterns. 13 patterns with concrete 4-layer implementation templates.
+- **Evaluator-Optimizer agent**: `agents/evaluator-optimizer.md` — generate→evaluate→refine loop with rubric scoring and quality thresholds.
+- **Pattern Router agent**: `agents/pattern-router.md` — analyzes tasks and selects optimal agentic pattern (chain, routing, parallelization, eval-optimizer, orchestrator-workers, reflection, ReAct).
+- **4 new orchestration templates**: eval-optimizer loop, orchestrator-workers, blackboard council, ReAct debugger — in `commands/cc-orchestrate.md`.
+- **Pattern wiring in cc-setup**: Phase 11 auto-deploys agentic pattern artifacts across all 4 layers based on project scale.
 
 ## v6.0.0 additions
 - **Model routing**: `skills/model-routing/SKILL.md` — intelligent model selection with cost tables.

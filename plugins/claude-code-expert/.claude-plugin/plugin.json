@@ -1,7 +1,7 @@
 {
   "$schema": "https://claude.local/schemas/plugin.schema.json",
   "name": "claude-code-expert",
-  "version": "7.1.0",
+  "version": "7.2.0",
   "description": "High-intelligence Claude Code copilot with deep code reasoning, evidence-driven planning, orchestration-first execution, model routing, context budgeting, CI/CD integration, enterprise security, plugin development, prompt engineering, performance profiling, agent teams, channels (MCP event streaming), interactive tutorials, and a queryable 10-tool MCP documentation server.",
   "author": {
     "name": "Markus Ahling"
@@ -110,7 +110,7 @@
   "context": {
     "entry": "CONTEXT_SUMMARY.md",
     "title": "Claude Code Expert",
-    "summary": "Bootstrap context for a high-intelligence Claude Code expert plugin (v6.0.0) with 16 commands, 33 skills, 16 agents, and a 10-tool MCP server covering deep code reasoning, orchestration, CI/CD, enterprise security, model routing, context budgeting, and interactive tutorials.",
+    "summary": "Bootstrap context for a high-intelligence Claude Code expert plugin (v7.2.0) with 16 commands, 39 skills, 18 agents, and a 10-tool MCP server covering deep code reasoning, agentic design patterns (eval-optimizer, orchestrator-workers, blackboard, ReAct), orchestration, CI/CD, enterprise security, model routing, context budgeting, and interactive tutorials.",
     "tags": [
       "claude-code",
       "expert",

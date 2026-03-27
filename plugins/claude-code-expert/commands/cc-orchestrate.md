@@ -835,20 +835,251 @@ agents:
 
 ---
 
+## Pattern-Based Templates (NEW)
+
+These templates are built on the agentic design patterns from `skills/agentic-patterns/SKILL.md`.
+Use `--auto-pattern` to let the pattern-router agent select the best template automatically.
+
+### Template 9: Eval-Optimizer Loop (Subagent Pattern)
+
+**When**: Quality-critical output — generated configs, API designs, complex algorithms.
+**Pattern**: Generator produces, evaluator scores against rubric, generator refines. Iterates until threshold met.
+
+```yaml
+name: eval-optimizer
+type: subagent
+pattern: evaluator-optimizer  # from agentic-patterns skill
+agents:
+  lead:
+    role: Orchestrator
+    model: sonnet
+    responsibilities:
+      - Parse requirements and define quality rubric
+      - Delegate generation to Generator
+      - Delegate evaluation to Evaluator
+      - Feed critique back to Generator for refinement
+      - Accept when score >= threshold or max iterations reached
+
+  generator:
+    role: Artifact Creator
+    model: sonnet
+    tools: [Read, Write, Edit, Bash, Grep, Glob]
+    prompt: |
+      Generate the requested artifact meeting all requirements.
+      If this is a refinement pass, address every critique point
+      from the evaluator. Do not regress on previously passing criteria.
+
+  evaluator:
+    role: Quality Scorer
+    model: opus  # evaluator should be >= generator capability
+    tools: [Read, Grep, Glob, Bash]
+    prompt: |
+      Score the artifact against the rubric. For each dimension
+      (correctness, completeness, style, safety), provide:
+      - Score (0-100)
+      - Specific issues found
+      - Concrete suggestions for improvement
+      Return structured JSON with { score, pass, critique[], suggestions[] }.
+
+config:
+  quality_threshold: 80
+  max_iterations: 3
+  on_stuck: escalate_to_human  # if score doesn't improve across 2 iterations
+  estimated_cost: "$0.15-0.60"
+```
+
+### Template 10: Orchestrator-Workers (Dynamic Subagent Pattern)
+
+**When**: Task decomposition isn't known upfront — the orchestrator must reason about what to delegate.
+**Pattern**: Central orchestrator analyzes task, spawns workers on-demand, synthesizes results.
+
+```yaml
+name: orchestrator-workers
+type: subagent
+pattern: orchestrator-workers  # from agentic-patterns skill
+agents:
+  orchestrator:
+    role: Lead Engineer
+    model: opus
+    tools: [Agent, Read, Grep, Glob, TodoWrite]
+    prompt: |
+      Analyze the task. Decompose into subtasks. For each subtask,
+      spawn the best-fit worker. You may spawn additional workers
+      if gaps emerge from earlier results. Synthesize all worker
+      outputs into a coherent deliverable.
+    rules:
+      - Never implement directly — always delegate to workers
+      - Spawn at most 5 workers to control cost
+      - Track progress via TodoWrite
+      - Audit every worker's output before accepting
+
+  worker_pool:
+    available:
+      - name: implementer
+        model: sonnet
+        tools: [Read, Write, Edit, Bash, Grep, Glob]
+        specialty: "Write and modify code"
+      - name: tester
+        model: sonnet
+        tools: [Read, Write, Bash, Grep, Glob]
+        specialty: "Write tests and verify correctness"
+      - name: reviewer
+        model: sonnet
+        tools: [Read, Grep, Glob, Bash]
+        specialty: "Review code for bugs, style, and security"
+      - name: researcher
+        model: haiku
+        tools: [Read, Grep, Glob, Bash, WebSearch]
+        specialty: "Search codebase, find examples, look up docs"
+    spawn_policy: on_demand  # orchestrator decides which to use
+
+config:
+  max_workers: 5
+  timeout_per_worker: 120s
+  estimated_cost: "$0.20-1.00"
+```
+
+### Template 11: Blackboard Council (Agent Team Pattern)
+
+**When**: Cross-domain analysis where findings in one area inform another.
+**Pattern**: Agents share a blackboard (common state store). Each reads findings from others
+and contributes their own. An architect resolves conflicts.
+
+```yaml
+name: blackboard-council
+type: team
+pattern: multi-agent-blackboard  # from agentic-patterns skill
+agents:
+  architect:
+    role: Lead Architect & Conflict Resolver
+    model: opus
+    tools: [Read, Write, Edit, Grep, Glob, Agent, TodoWrite]
+    prompt: |
+      You lead a cross-domain council. Read the shared blackboard
+      for findings from all analysts. Resolve conflicts between
+      findings. Write final decisions. Synthesize the complete
+      analysis when all analysts have reported.
+    reads: [findings, conflicts, open_questions]
+    writes: [decisions, findings]
+
+  security_analyst:
+    role: Security Domain Expert
+    model: sonnet
+    tools: [Read, Grep, Glob, Bash]
+    prompt: |
+      Analyze the codebase for security issues. Read the shared
+      blackboard for context from other analysts. Write your
+      findings to the blackboard. If your finding conflicts with
+      another analyst's, write to conflicts[].
+    reads: [findings, open_questions]
+    writes: [findings, open_questions, conflicts]
+
+  performance_analyst:
+    role: Performance Domain Expert
+    model: sonnet
+    tools: [Read, Grep, Glob, Bash]
+    reads: [findings, open_questions]
+    writes: [findings, open_questions]
+
+  reliability_analyst:
+    role: Reliability & Testing Expert
+    model: sonnet
+    tools: [Read, Grep, Glob, Bash]
+    reads: [findings, open_questions]
+    writes: [findings, open_questions, conflicts]
+
+blackboard:
+  schema:
+    findings: "{ agent, domain, finding, severity, evidence, confidence }"
+    open_questions: "{ agent, question, context, priority }"
+    conflicts: "{ agent_a, agent_b, topic, position_a, position_b }"
+    decisions: "{ architect, topic, decision, rationale }"
+  protocol:
+    1. All analysts read blackboard before starting
+    2. Analysts write findings as they discover them
+    3. Analysts check for conflicts with existing findings
+    4. Architect resolves conflicts after all analysts report
+    5. All agents re-read decisions before finalizing
+
+config:
+  estimated_cost: "$0.50-2.00"
+```
+
+### Template 12: ReAct Debugger (Subagent Pattern)
+
+**When**: Debugging or investigation where the next step depends on what you discover.
+**Pattern**: Explicit Thought → Action → Observation cycles with an auditable trace.
+
+```yaml
+name: react-debugger
+type: subagent
+pattern: react-planning  # from agentic-patterns skill
+agents:
+  debugger:
+    role: Investigator
+    model: sonnet
+    tools: [Read, Grep, Glob, Bash, Edit]
+    prompt: |
+      For each step, follow this cycle:
+      THOUGHT: State your hypothesis about the issue.
+      ACTION: Execute ONE tool call to test it.
+      OBSERVATION: What did you learn? Confirm or refute?
+      Log each cycle. Continue until root cause is found.
+    rules:
+      - Maximum 20 cycles before escalating
+      - Log each cycle to .claude/traces/{task_id}.jsonl
+      - If stuck for 3+ cycles, try a different approach
+      - Present findings as: root cause, evidence chain, fix
+
+config:
+  max_cycles: 20
+  trace_log: true
+  escalation: ask_human
+  estimated_cost: "$0.05-0.30"
+```
+
+---
+
+## Pattern Selection Guide
+
+Use `--auto-pattern` to let the `pattern-router` agent select automatically, or choose manually:
+
+```
+What kind of task is it?
+├── Simple implementation → builder-validator (Template 1)
+├── Quality-critical output → eval-optimizer (Template 9)
+├── Unknown decomposition → orchestrator-workers (Template 10)
+├── Multi-domain analysis → blackboard-council (Template 11)
+├── Bug investigation → react-debugger (Template 12)
+├── Multi-component feature → feature-squad (Template 3)
+├── Testing campaign → qa-swarm (Template 2)
+├── Design decision → research-council (Template 4)
+├── Large refactor → refactor-pipeline (Template 5)
+├── Critical PR review → pr-review-board (Template 6)
+├── Documentation → docs-sprint (Template 7)
+└── Ongoing monitoring → continuous-monitor (Template 8)
+```
+
+---
+
 ## Updated Template Comparison
 
-| Template | Type | Agents | Cost | Audit | Use Case |
-|----------|------|--------|------|-------|----------|
-| builder-validator | Subagent | 3 | Low | Single review | Standard feature work |
-| **audited-builder** | Subagent | 3 | Medium | Full audit loop | Quality-critical features |
-| qa-swarm | Team | 6 | High | Peer review | Thorough testing |
-| feature-squad | Team | 4 | Medium | Lead review | Full-stack features |
-| **audited-squad** | Team | 5 | High | Cross-audit + final | Critical full-stack work |
-| research-council | Subagent | 3-4 | Low | Source validation | Design decisions |
-| refactor-pipeline | Subagent | 4 | Medium | Verifier step | Large refactors |
-| pr-review-board | Team | 4 | Medium | Cross-review | Critical PR reviews |
-| docs-sprint | Team | 4 | Medium | Accuracy check | Documentation updates |
-| continuous-monitor | Headless | 1/schedule | Very Low | Automated | Ongoing automation |
+| Template | Type | Pattern | Agents | Cost | Audit | Use Case |
+|----------|------|---------|--------|------|-------|----------|
+| builder-validator | Subagent | Prompt Chain | 3 | Low | Single review | Standard feature work |
+| **audited-builder** | Subagent | Chain + Reflection | 3 | Medium | Full audit loop | Quality-critical features |
+| qa-swarm | Team | Parallelization | 6 | High | Peer review | Thorough testing |
+| feature-squad | Team | Orchestrator-Workers | 4 | Medium | Lead review | Full-stack features |
+| **audited-squad** | Team | Orch-Workers + Eval | 5 | High | Cross-audit + final | Critical full-stack work |
+| research-council | Subagent | Parallelization | 3-4 | Low | Source validation | Design decisions |
+| refactor-pipeline | Subagent | Prompt Chain | 4 | Medium | Verifier step | Large refactors |
+| pr-review-board | Team | Parallelization | 4 | Medium | Cross-review | Critical PR reviews |
+| docs-sprint | Team | Parallelization | 4 | Medium | Accuracy check | Documentation updates |
+| continuous-monitor | Headless | Routing | 1/schedule | Very Low | Automated | Ongoing automation |
+| **eval-optimizer** | Subagent | Eval-Optimizer | 3 | Medium | Rubric scoring | Quality-critical artifacts |
+| **orchestrator-workers** | Subagent | Orchestrator-Workers | 1+N | Variable | Lead audit | Dynamic task decomposition |
+| **blackboard-council** | Team | Blackboard | 4 | High | Architect resolves | Cross-domain deep analysis |
+| **react-debugger** | Subagent | ReAct | 1 | Low | Trace log | Investigation & debugging |
 
 ---
 
