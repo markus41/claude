@@ -74,6 +74,8 @@
     "frontend-design-system:agentic-patterns": "../plugins/frontend-design-system/skills/agentic-patterns/SKILL.md",
     "claude-code-templating:agentic-patterns": "../plugins/claude-code-templating-plugin/skills/agentic-patterns/SKILL.md",
     "lobbi-platform-manager:agentic-patterns": "../plugins/lobbi-platform-manager/skills/agentic-patterns/SKILL.md",
-    "tvs-microsoft-deploy:agentic-patterns": "../plugins/tvs-microsoft-deploy/skills/agentic-patterns/SKILL.md"
+    "tvs-microsoft-deploy:agentic-patterns": "../plugins/tvs-microsoft-deploy/skills/agentic-patterns/SKILL.md",
+    "claude-code-expert:channels": "../plugins/claude-code-expert/skills/channels/SKILL.md",
+    "claude-code-expert:channels-user-guide": "../plugins/claude-code-expert/skills/channels-user-guide/SKILL.md"
   }
 }
