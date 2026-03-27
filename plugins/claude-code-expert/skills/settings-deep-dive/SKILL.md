@@ -513,13 +513,12 @@ Default PR attribution:
 }
 ```
 
-### Custom Branding Examples
+### Inline Badge (shields.io)
 ```json
-// Branded for your team
 {
   "attribution": {
-    "commit": "Built with Markus AI Platform\n\nCo-Authored-By: Markus AI <ai@markusplatform.com>",
-    "pr": "Built with Markus AI Platform"
+    "commit": "",
+    "pr": "[![Built by Markus](https://img.shields.io/badge/built%20by-Markus%20Ahling-ff6b35?style=for-the-badge&logo=github&logoColor=white)](https://github.com/markus41)"
   }
 }
 ```

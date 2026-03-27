@@ -200,7 +200,7 @@
     ]
   },
   "attribution": {
-    "commit": "⚡ Engineered by Markus AI\n\nCo-Authored-By: Markus AI Platform <ai@markus41.dev>",
-    "pr": "⚡ Engineered by Markus AI Platform"
+    "commit": "",
+    "pr": "[![Built by Markus](https://img.shields.io/badge/built%20by-Markus%20Ahling-ff6b35?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0id2hpdGUiPjxwYXRoIGQ9Ik0xMiAyTDEgMjFoMjJMMTIgMnptMCw0bDcuNTMgMTNINi40N0wxMiA2eiIvPjwvc3ZnPg==&logoColor=white)](https://github.com/markus41)"
   }
 }
