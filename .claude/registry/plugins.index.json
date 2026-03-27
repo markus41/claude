@@ -154,7 +154,7 @@
     },
     "frontend-design-system": {
       "name": "frontend-design-system",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "description": "Design styles with multi-tenant Keycloak theming",
       "keywords": [
         "frontend",
@@ -168,7 +168,7 @@
     },
     "aws-eks-helm-keycloak": {
       "name": "aws-eks-helm-keycloak",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "description": "AWS EKS deployments with Helm, Keycloak, and Harness CI/CD",
       "keywords": [
         "aws",
@@ -183,7 +183,7 @@
     },
     "claude-code-templating": {
       "name": "claude-code-templating",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "description": "Universal templating and Harness expert plugin",
       "keywords": [
         "templating",
@@ -309,7 +309,7 @@
     },
     "marketplace-pro": {
       "name": "marketplace-pro",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "description": "Plugin marketplace with federation, composition engine, trust scoring, and dev studio",
       "keywords": [
         "marketplace",
@@ -326,7 +326,7 @@
     },
     "claude-code-expert": {
       "name": "claude-code-expert",
-      "version": "6.0.0",
+      "version": "7.0.0",
       "description": "High-intelligence Claude Code copilot with deep code reasoning, orchestration, CI/CD, enterprise security, and MCP documentation server",
       "author": {
         "name": "Markus Ahling"
@@ -346,7 +346,7 @@
     },
     "drawio-diagramming": {
       "name": "drawio-diagramming",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "description": "Intelligent draw.io diagramming with AI generation, multi-platform embedding, conditional formatting, live data binding, and MCP integration",
       "author": {
         "name": "Markus Ahling",
@@ -380,7 +380,7 @@
       "jira-orchestrator": {
         "path": "../plugins/jira-orchestrator/.claude-plugin/plugin.json",
         "callsign": "Arbiter",
-        "version": "7.5.0",
+        "version": "8.0.0",
         "status": "active",
         "tier": "enterprise"
       }
@@ -389,13 +389,13 @@
       "frontend-design-system": {
         "path": "../plugins/frontend-design-system/.claude-plugin/plugin.json",
         "callsign": "Stylist",
-        "version": "1.0.0",
+        "version": "2.0.0",
         "status": "active",
         "tier": "standard"
       },
       "react-animation-studio": {
         "path": "../plugins/react-animation-studio/.claude-plugin/plugin.json",
-        "version": "1.0.0",
+        "version": "2.0.0",
         "status": "active",
         "tier": "standard"
       }
@@ -404,19 +404,19 @@
       "aws-eks-helm-keycloak": {
         "path": "../plugins/aws-eks-helm-keycloak/.claude-plugin/plugin.json",
         "callsign": "Conduit",
-        "version": "1.0.0",
+        "version": "2.0.0",
         "status": "active",
         "tier": "standard"
       },
       "fullstack-iac": {
         "path": "../plugins/fullstack-iac/.claude-plugin/plugin.json",
-        "version": "1.0.0",
+        "version": "2.0.0",
         "status": "active",
         "tier": "standard"
       },
       "deployment-pipeline": {
         "path": "../plugins/deployment-pipeline/.claude-plugin/plugin.json",
-        "version": "1.0.0",
+        "version": "2.0.0",
         "status": "active",
         "tier": "standard"
       },
@@ -432,7 +432,7 @@
       "claude-code-templating": {
         "path": "../plugins/claude-code-templating-plugin/.claude-plugin/plugin.json",
         "callsign": "Architect",
-        "version": "1.0.0",
+        "version": "2.0.0",
         "status": "active",
         "tier": "standard"
       }
@@ -448,19 +448,19 @@
     "domain": {
       "home-assistant-architect": {
         "path": "../plugins/home-assistant-architect/.claude-plugin/plugin.json",
-        "version": "1.0.0",
+        "version": "3.0.0",
         "status": "active",
         "tier": "standard"
       },
       "lobbi-platform-manager": {
         "path": "../plugins/lobbi-platform-manager/.claude-plugin/plugin.json",
-        "version": "1.0.0",
+        "version": "2.0.0",
         "status": "active",
         "tier": "standard"
       },
       "exec-automator": {
         "path": "../plugins/exec-automator/.claude-plugin/plugin.json",
-        "version": "1.0.0",
+        "version": "2.0.0",
         "status": "active",
         "tier": "standard"
       },
@@ -472,7 +472,7 @@
       },
       "team-accelerator": {
         "path": "../plugins/team-accelerator/.claude-plugin/plugin.json",
-        "version": "1.0.0",
+        "version": "2.0.0",
         "status": "active",
         "tier": "standard"
       }
@@ -481,7 +481,7 @@
       "claude-code-expert": {
         "path": "../plugins/claude-code-expert/.claude-plugin/plugin.json",
         "callsign": "Expert",
-        "version": "6.0.0",
+        "version": "7.0.0",
         "status": "active",
         "tier": "standard"
       }
@@ -489,13 +489,13 @@
     "marketplace-ecosystem": {
       "cowork-marketplace": {
         "path": "../plugins/cowork-marketplace/.claude-plugin/plugin.json",
-        "version": "1.0.0",
+        "version": "2.0.0",
         "status": "active",
         "tier": "standard"
       },
       "marketplace-pro": {
         "path": "../plugins/marketplace-pro/.claude-plugin/plugin.json",
-        "version": "1.0.0",
+        "version": "2.0.0",
         "status": "active",
         "tier": "standard"
       }
@@ -504,7 +504,7 @@
       "drawio-diagramming": {
         "path": "../plugins/drawio-diagramming/.claude-plugin/plugin.json",
         "callsign": "Cartographer",
-        "version": "1.0.0",
+        "version": "2.0.0",
         "status": "active",
         "tier": "standard"
       }
@@ -566,7 +566,7 @@
     "totalInstalled": 18,
     "totalPlugins": 24,
     "totalAvailable": 6,
-    "lastUpdated": "2026-03-19T00:00:00.000Z",
+    "lastUpdated": "2026-03-26T00:00:00.000Z",
     "byTier": {
       "enterprise": 1,
       "standard": 22
