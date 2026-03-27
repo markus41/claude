@@ -1425,3 +1425,32 @@ First entry keys: not a dict
 - **Input:** `N/A`
 - **Error:** Request failed with status code 404
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-03-27T06:09:58Z)
+- **Tool:** Bash
+- **Input:** `node scripts/check-plugin-context.mjs 2>&1`
+- **Error:** Exit code 1
+❌ aws-eks-helm-keycloak: plugin manifest is missing required "contextEntry" field
+❌ claude-code-templating-plugin: plugin manifest is missing required "contextEntry" field
+❌ cowork-marketplace: plugin manifest is missing required "contextEntry" field
+❌ deployment-pipeline: plugin manifest is missing required "contextEntry" field
+❌ drawio-diagramming: plugin manifest is missing required "contextEntry" field
+❌ exec-automator: plugin manifest is missing required "contextEntry" field
+❌ fastapi-backend: plugin manifest is missing required "contextEntry" field
+❌ frontend-design-system: plugin manifest is missing required "contextEntry" field
+❌ fullstack-iac: plugin manifest is missing required "contextEntry" field
+❌ home-assistant-architect: plugin manifest is missing required "contextEntry" field
+❌ jira-orchestrator: plugin manifest is missing required "contextEntry" field
+❌ lobbi-platform-manager: plugin manifest is missing required "contextEntry" field
+❌ marketplace-pro: plugin manifest is missing required "contextEntry" field
+❌ react-animation-studio: plugin manifest is missing required "contextEntry" field
+❌ team-accelerator: plugin manifest is missing required "contextEntry" field
+❌ tvs-microsoft-deploy: plugin manifest is missing required "contextEntry" field
+❌ upgrade-suggestion: plugin manifest is missing required "contextEntry" field
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: mcp__github__resolve_review_thread failure (2026-03-27T06:10:34Z)
+- **Tool:** mcp__github__resolve_review_thread
+- **Input:** `N/A`
+- **Error:** GitHub GraphQL error: GraphQL error: Could not resolve to a node with the global id of 'PRT_kwDOOYmw3s6XJG7l'.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
