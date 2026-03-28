@@ -1,6 +1,6 @@
 ---
-name: mui-layout-responsive
-description: MUI layout and responsive design — Grid v2, Stack, Container, Box, useMediaQuery, breakpoints, CSS Grid, and common layout patterns
+name: layout-responsive
+description: MUI layout components and responsive design patterns
 triggers:
   - layout
   - Grid
@@ -9,12 +9,6 @@ triggers:
   - breakpoints
   - Container
   - useMediaQuery
-  - mobile
-  - flexbox
-  - grid layout
-  - holy grail
-  - sidebar layout
-  - dashboard grid
 allowed-tools:
   - Read
   - Glob
@@ -26,101 +20,91 @@ globs:
   - "*.jsx"
 ---
 
-# MUI Layout & Responsive Design Skill
+# MUI Layout and Responsive Design
 
 ## Grid v2
 
-MUI v6 uses Grid v2 by default (imported from `@mui/material/Grid2` or `@mui/material/Unstable_Grid2` in v5). Grid v2 replaces the `xs`/`sm`/`md`/`lg`/`xl` props with a single `size` prop and adds `offset`.
+MUI v6 ships Grid v2 as default (imported from `@mui/material/Grid`). The `size` prop
+replaces the old `xs`/`sm`/`md` props. Grid v2 always uses CSS grid internally and no
+longer requires the `item` prop — every direct child of a `container` is a grid item.
 
-### Basic Grid
+### Basic grid
 
 ```tsx
-import Grid from '@mui/material/Grid2';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
 
-// 12-column grid — size values out of 12
 <Grid container spacing={2}>
-  <Grid size={12}>Full width</Grid>
-  <Grid size={6}>Half width</Grid>
-  <Grid size={6}>Half width</Grid>
-  <Grid size={4}>Third</Grid>
-  <Grid size={4}>Third</Grid>
-  <Grid size={4}>Third</Grid>
-  {/* size="grow" fills remaining space */}
-  <Grid size="grow">Grows to fill</Grid>
+  <Grid size={12}>
+    <Paper sx={{ p: 2 }}>Full width header</Paper>
+  </Grid>
+  <Grid size={{ xs: 12, md: 8 }}>
+    <Paper sx={{ p: 2 }}>Main content (full on mobile, 8/12 on desktop)</Paper>
+  </Grid>
+  <Grid size={{ xs: 12, md: 4 }}>
+    <Paper sx={{ p: 2 }}>Sidebar (full on mobile, 4/12 on desktop)</Paper>
+  </Grid>
 </Grid>
 ```
 
-### Responsive size
+### size values
 
 ```tsx
-<Grid container spacing={{ xs: 1, md: 2 }}>
-  <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-    <Card>Item</Card>
-  </Grid>
-  <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-    <Card>Item</Card>
-  </Grid>
-</Grid>
+// Fixed column span
+<Grid size={6} />           // always 6/12
+
+// Responsive spans
+<Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} />
+
+// 'auto' — shrinks to content width
+<Grid size="auto" />
+
+// 'grow' — fills remaining space (equivalent to old xs="true")
+<Grid size="grow" />
+```
+
+### Spacing and column/row gap
+
+```tsx
+// Uniform spacing
+<Grid container spacing={3}>
+
+// Separate column and row spacing
+<Grid container columnSpacing={4} rowSpacing={2}>
+
+// Responsive spacing
+<Grid container spacing={{ xs: 1, sm: 2, md: 3 }}>
 ```
 
 ### Offset
 
 ```tsx
+// Offset pushes the item right by n columns
 <Grid container>
-  {/* Skip 3 columns, take 9 */}
-  <Grid size={9} offset={3}>
-    Offset item
+  <Grid size={4} offset={4}>
+    <Paper sx={{ p: 2 }}>Centered 4-column block</Paper>
   </Grid>
+</Grid>
 
-  {/* Responsive offset */}
-  <Grid size={{ xs: 12, md: 6 }} offset={{ xs: 0, md: 3 }}>
-    Centered on desktop
-  </Grid>
+// Responsive offset
+<Grid size={6} offset={{ xs: 0, md: 3 }}>
+  Centered on desktop, left-aligned on mobile
 </Grid>
 ```
 
-### Nested grids
+### Nested grid
 
 ```tsx
-<Grid container spacing={3}>
+<Grid container spacing={2}>
   <Grid size={8}>
-    {/* Nested grid — inherits container context */}
+    {/* Nested grid — no additional container needed in v2 */}
     <Grid container spacing={1}>
-      <Grid size={6}><TextField fullWidth label="First name" /></Grid>
-      <Grid size={6}><TextField fullWidth label="Last name" /></Grid>
+      <Grid size={6}><Paper sx={{ p: 1 }}>Nested A</Paper></Grid>
+      <Grid size={6}><Paper sx={{ p: 1 }}>Nested B</Paper></Grid>
     </Grid>
   </Grid>
   <Grid size={4}>
-    <Sidebar />
-  </Grid>
-</Grid>
-```
-
-### Grid spacing
-
-```tsx
-// Uniform spacing
-<Grid container spacing={2}>
-
-// Different row and column spacing
-<Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-
-// No spacing
-<Grid container spacing={0}>
-```
-
-### Auto-layout (size="grow")
-
-```tsx
-<Grid container spacing={2} alignItems="center">
-  <Grid>
-    <Avatar src="/user.jpg" />
-  </Grid>
-  <Grid size="grow">
-    <Typography>Username that takes remaining space</Typography>
-  </Grid>
-  <Grid>
-    <Button>Action</Button>
+    <Paper sx={{ p: 2 }}>Sidebar</Paper>
   </Grid>
 </Grid>
 ```
@@ -129,44 +113,74 @@ import Grid from '@mui/material/Grid2';
 
 ## Stack
 
-Stack lays out children in a single direction with uniform spacing. It's simpler than Grid for 1D layouts.
+`Stack` is a one-dimensional layout component (flexbox row or column). Simpler than Grid
+for linear sequences of components.
+
+### Basic usage
 
 ```tsx
 import Stack from '@mui/material/Stack';
+import Divider from '@mui/material/Divider';
 
-// Vertical stack (default)
+// Vertical stack (default direction)
 <Stack spacing={2}>
-  <Item />
-  <Item />
-  <Item />
+  <TextField label="First name" />
+  <TextField label="Last name" />
+  <TextField label="Email" />
+  <Button variant="contained">Submit</Button>
 </Stack>
 
-// Horizontal stack
+// Horizontal row
 <Stack direction="row" spacing={1} alignItems="center">
-  <Avatar />
-  <Typography>Name</Typography>
-  <Chip label="Admin" size="small" />
+  <Avatar src={user.avatar} />
+  <Typography>{user.name}</Typography>
+  <Chip label={user.role} size="small" />
 </Stack>
+```
 
-// Responsive direction
-<Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-  <Card sx={{ flex: 1 }}>Left panel</Card>
-  <Card sx={{ flex: 1 }}>Right panel</Card>
+### Responsive direction
+
+```tsx
+<Stack
+  direction={{ xs: 'column', sm: 'row' }}
+  spacing={{ xs: 1, sm: 2 }}
+  alignItems={{ xs: 'stretch', sm: 'center' }}
+  justifyContent="space-between"
+>
+  <SearchInput />
+  <FilterPanel />
+  <ActionButtons />
 </Stack>
+```
 
-// With dividers
+### Divider between items
+
+```tsx
 <Stack
   direction="row"
-  divider={<Divider orientation="vertical" flexItem />}
   spacing={2}
+  divider={<Divider orientation="vertical" flexItem />}
 >
-  <Box>Section 1</Box>
-  <Box>Section 2</Box>
-  <Box>Section 3</Box>
+  <Typography>Section A</Typography>
+  <Typography>Section B</Typography>
+  <Typography>Section C</Typography>
 </Stack>
+```
 
-// useFlexGap — applies gap instead of negative-margin spacing (better for wrapping)
-<Stack direction="row" spacing={2} useFlexGap flexWrap="wrap">
+### useFlexGap
+
+By default Stack uses negative margin to simulate gaps. Set `useFlexGap` to use the CSS
+`gap` property instead — required when children have `overflow: hidden` or when the
+container has `overflow: hidden`.
+
+```tsx
+<Stack
+  direction="row"
+  spacing={2}
+  useFlexGap
+  flexWrap="wrap"
+  sx={{ width: '100%' }}
+>
   {tags.map((tag) => <Chip key={tag} label={tag} />)}
 </Stack>
 ```
@@ -175,72 +189,60 @@ import Stack from '@mui/material/Stack';
 
 ## Container
 
-Container constrains content width and centers it horizontally.
+Centers content horizontally with a max-width. The main layout wrapper for page content.
 
 ```tsx
 import Container from '@mui/material/Container';
 
-// Responsive max-width (snaps to breakpoint values)
-<Container maxWidth="sm">  {/* 600px */}
-<Container maxWidth="md">  {/* 900px */}
-<Container maxWidth="lg">  {/* 1200px — most common for page content */}
-<Container maxWidth="xl">  {/* 1536px */}
-<Container maxWidth={false}> {/* Full width, no max */}
-
-// Fixed — exact breakpoint width (no fluid scaling between)
-<Container maxWidth="md" fixed>
-
-// No gutters (horizontal padding)
-<Container disableGutters>
-
-// Common page layout pattern
-<Container maxWidth="lg" sx={{ py: 4 }}>
-  <Grid container spacing={3}>
-    {/* page content */}
-  </Grid>
+// Responsive max-width (uses theme breakpoints)
+<Container maxWidth="lg">        {/* lg = 1200px by default */}
+  <Typography variant="h1">Page title</Typography>
 </Container>
+
+// Exact pixel constraint
+<Container maxWidth="sm">        {/* sm = 600px */}
+
+// Disable max-width (full fluid width)
+<Container maxWidth={false}>
+
+// 'fixed' — jumps between fixed widths at each breakpoint
+<Container fixed>
+
+// Typical page layout
+<Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+  <AppBar position="sticky">{/* ... */}</AppBar>
+  <Container maxWidth="xl" sx={{ flex: 1, py: 3 }}>
+    {children}
+  </Container>
+  <Box component="footer" sx={{ bgcolor: 'background.paper', py: 4 }}>
+    <Container maxWidth="xl">{/* footer content */}</Container>
+  </Box>
+</Box>
 ```
 
 ---
 
-## Box
+## Box as a Layout Primitive
 
-Box is the foundational layout primitive — a `div` with the `sx` prop and `component` override.
+`Box` renders a `div` by default but accepts a `component` prop. It has full access to
+the `sx` prop and system shorthands.
 
 ```tsx
 import Box from '@mui/material/Box';
 
-// Flexbox layout
-<Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
-  <Avatar />
-  <Box sx={{ flexGrow: 1 }}>
-    <Typography variant="subtitle2">Title</Typography>
-    <Typography variant="body2" color="text.secondary">Subtitle</Typography>
-  </Box>
-  <Button>Action</Button>
+// Flex centering helper
+<Box display="flex" alignItems="center" justifyContent="center" minHeight="100vh">
+  <CircularProgress />
 </Box>
 
-// Semantic HTML via component prop
-<Box component="section" sx={{ py: 6, bgcolor: 'background.paper' }}>
-  <Box component="article" sx={{ maxWidth: 720, mx: 'auto', px: 2 }}>
-    <Box component="h1" sx={{ typography: 'h3', mb: 2 }}>Heading</Box>
-    <Box component="p" sx={{ typography: 'body1', color: 'text.secondary' }}>
-      Article content here.
-    </Box>
-  </Box>
+// Section spacing
+<Box component="section" sx={{ py: { xs: 6, md: 10 } }}>
+  {children}
 </Box>
 
-// Absolute positioning
-<Box sx={{ position: 'relative', width: '100%', height: 300 }}>
-  <Box
-    component="img"
-    src="/hero.jpg"
-    alt="Hero"
-    sx={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-  />
-  <Box sx={{ position: 'relative', zIndex: 1, p: 4, color: 'common.white' }}>
-    Overlay content
-  </Box>
+// Scroll container
+<Box sx={{ overflowY: 'auto', maxHeight: 400, '&::-webkit-scrollbar': { width: 6 } }}>
+  {longList}
 </Box>
 ```
 
@@ -248,334 +250,181 @@ import Box from '@mui/material/Box';
 
 ## Breakpoints
 
-### useMediaQuery hook
+MUI's default breakpoints (in `px`):
+
+| Key | Min width |
+|-----|-----------|
+| xs  | 0         |
+| sm  | 600       |
+| md  | 900       |
+| lg  | 1200      |
+| xl  | 1536      |
+
+### useMediaQuery
 
 ```tsx
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 
-function MyComponent() {
+function ResponsiveComponent() {
   const theme = useTheme();
-  const isXs = useMediaQuery(theme.breakpoints.down('sm'));       // < 600px
-  const isMd = useMediaQuery(theme.breakpoints.up('md'));        // >= 900px
-  const isBetween = useMediaQuery(theme.breakpoints.between('sm', 'md')); // 600–899px
-  const isLg = useMediaQuery(theme.breakpoints.only('lg'));      // 1200–1535px
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
-  // Custom media query
-  const isTall = useMediaQuery('(min-height: 600px)');
-  const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
-  const prefersDark = useMediaQuery('(prefers-color-scheme: dark)');
+  // SSR: default to a value so the first render matches server output
+  const prefersDark = useMediaQuery('(prefers-color-scheme: dark)', {
+    defaultMatches: false,
+    noSsr: true,
+  });
 
-  return (
-    <Box>
-      {isXs && <MobileNav />}
-      {isMd && <DesktopNav />}
-    </Box>
-  );
+  return isMobile ? <MobileLayout /> : <DesktopLayout />;
 }
 ```
 
-### SSR considerations
+### Breakpoint helpers
 
 ```tsx
-// SSR: useMediaQuery returns false on server (no window)
-// Use noSsr to skip the SSR phase and always hydrate with the client value
-const isLarge = useMediaQuery(theme.breakpoints.up('lg'), { noSsr: true });
+// theme.breakpoints.up(key)   — key and above
+// theme.breakpoints.down(key) — below key (exclusive)
+// theme.breakpoints.between(start, end) — start to end (exclusive end)
+// theme.breakpoints.only(key) — exactly key
 
-// Or provide an initial value matching your SSR assumption
-const isMobile = useMediaQuery(theme.breakpoints.down('sm'), { defaultMatches: false });
-```
-
-### Breakpoint helpers in sx
-
-```tsx
-// These are all equivalent ways to apply styles above 'md':
+// In sx prop (shorthand)
 <Box sx={{
-  // 1. Responsive object
-  display: { xs: 'none', md: 'flex' },
-  // 2. Callback with breakpoints
-  ...(theme) => ({ [theme.breakpoints.up('md')]: { display: 'flex' } }),
-}} />
-
-// In styled()
-const NavBar = styled(Box)(({ theme }) => ({
-  display: 'none',
-  [theme.breakpoints.up('md')]: { display: 'flex' },
-}));
-```
-
-### Hiding elements responsively
-
-```tsx
-// Replace deprecated Hidden component with sx display
-<Box sx={{ display: { xs: 'block', md: 'none' } }}>
-  Mobile only content
-</Box>
-
-<Box sx={{ display: { xs: 'none', md: 'block' } }}>
+  display: { xs: 'none', md: 'block' },     // hide on mobile
+}}>
   Desktop only content
 </Box>
 
-// Or use conditional rendering with useMediaQuery
-const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-{isMobile ? <MobileMenu /> : <DesktopMenu />}
-```
-
----
-
-## CSS Grid with sx
-
-For complex two-dimensional layouts, use native CSS Grid via the `sx` prop:
-
-```tsx
-// Auto-responsive card grid (no breakpoints needed)
-<Box
-  sx={{
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-    gap: 3,
-  }}
->
-  {items.map((item) => <Card key={item.id}>{item.name}</Card>)}
-</Box>
-
-// Explicit responsive grid
-<Box
-  sx={{
-    display: 'grid',
-    gridTemplateColumns: {
-      xs: '1fr',
-      sm: 'repeat(2, 1fr)',
-      md: 'repeat(3, 1fr)',
-      lg: 'repeat(4, 1fr)',
-    },
-    gap: { xs: 2, md: 3 },
-  }}
->
-
-// Named areas
-<Box
-  sx={{
-    display: 'grid',
-    gridTemplateAreas: {
-      xs: `
-        "header"
-        "sidebar"
-        "main"
-        "footer"
-      `,
-      md: `
-        "header header"
-        "sidebar main"
-        "footer footer"
-      `,
-    },
-    gridTemplateColumns: { xs: '1fr', md: '240px 1fr' },
-    gridTemplateRows: { xs: 'auto', md: '64px 1fr 64px' },
-    minHeight: '100vh',
-  }}
->
-  <Box sx={{ gridArea: 'header' }}><AppBar /></Box>
-  <Box sx={{ gridArea: 'sidebar' }}><Sidebar /></Box>
-  <Box sx={{ gridArea: 'main' }} component="main"><Content /></Box>
-  <Box sx={{ gridArea: 'footer' }}><Footer /></Box>
-</Box>
+// In styled()
+const HiddenOnMobile = styled(Box)(({ theme }) => ({
+  [theme.breakpoints.down('md')]: {
+    display: 'none',
+  },
+}));
 ```
 
 ---
 
 ## Common Layout Patterns
 
-### Sidebar + Content (responsive)
+### App shell: sidebar + main content
 
 ```tsx
-const SIDEBAR_WIDTH = 260;
+const DRAWER_WIDTH = 240;
 
-function AppLayout({ children }: { children: React.ReactNode }) {
-  const [open, setOpen] = useState(true);
+function AppShell() {
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
+  const drawerContent = (
+    <Box>
+      <Toolbar />
+      <Divider />
+      <NavMenu />
+    </Box>
+  );
+
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
-      {/* Sidebar */}
+    <Box sx={{ display: 'flex' }}>
+      <AppBar
+        position="fixed"
+        sx={{ zIndex: (t) => t.zIndex.drawer + 1 }}
+      >
+        <Toolbar>
+          {isMobile && (
+            <IconButton color="inherit" edge="start" onClick={() => setMobileOpen(true)}>
+              <MenuIcon />
+            </IconButton>
+          )}
+          <Typography variant="h6" sx={{ flexGrow: 1 }}>My App</Typography>
+        </Toolbar>
+      </AppBar>
+
+      {/* Mobile: temporary drawer */}
       <Drawer
-        variant={isMobile ? 'temporary' : 'permanent'}
-        open={isMobile ? open : true}
-        onClose={() => setOpen(false)}
+        variant="temporary"
+        open={mobileOpen}
+        onClose={() => setMobileOpen(false)}
+        ModalProps={{ keepMounted: true }}
         sx={{
-          width: SIDEBAR_WIDTH,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: SIDEBAR_WIDTH,
-            boxSizing: 'border-box',
-            borderRight: '1px solid',
-            borderColor: 'divider',
-          },
+          display: { xs: 'block', md: 'none' },
+          '& .MuiDrawer-paper': { width: DRAWER_WIDTH },
         }}
       >
-        <Box sx={{ p: 2 }}>
-          <Logo />
-        </Box>
-        <SidebarNav />
+        {drawerContent}
       </Drawer>
 
-      {/* Main area */}
-      <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-        <AppBar
-          position="sticky"
-          elevation={0}
-          sx={{ borderBottom: '1px solid', borderColor: 'divider' }}
-        >
-          <Toolbar>
-            {isMobile && (
-              <IconButton onClick={() => setOpen(true)} sx={{ mr: 1 }}>
-                <MenuIcon />
-              </IconButton>
-            )}
-            <Typography variant="h6" sx={{ flexGrow: 1 }}>Dashboard</Typography>
-          </Toolbar>
-        </AppBar>
+      {/* Desktop: permanent drawer */}
+      <Drawer
+        variant="permanent"
+        sx={{
+          display: { xs: 'none', md: 'block' },
+          '& .MuiDrawer-paper': { width: DRAWER_WIDTH, boxSizing: 'border-box' },
+          width: DRAWER_WIDTH,
+          flexShrink: 0,
+        }}
+        open
+      >
+        {drawerContent}
+      </Drawer>
 
-        <Box component="main" sx={{ flexGrow: 1, p: 3, overflow: 'auto' }}>
-          {children}
-        </Box>
+      <Box component="main" sx={{ flexGrow: 1, p: 3, ml: { md: `${DRAWER_WIDTH}px` } }}>
+        <Toolbar /> {/* Spacer for AppBar */}
+        {/* Page content */}
       </Box>
     </Box>
   );
 }
 ```
 
-### Dashboard Grid
+### Dashboard card grid
 
 ```tsx
 function Dashboard() {
   return (
-    <Container maxWidth="xl" sx={{ py: 3 }}>
-      {/* Stats row */}
-      <Grid container spacing={3} sx={{ mb: 3 }}>
+    <Container maxWidth="xl" sx={{ py: 4 }}>
+      {/* Stat cards row */}
+      <Grid container spacing={3} sx={{ mb: 4 }}>
         {stats.map((stat) => (
-          <Grid key={stat.label} size={{ xs: 12, sm: 6, lg: 3 }}>
-            <StatCard {...stat} />
+          <Grid key={stat.id} size={{ xs: 12, sm: 6, md: 3 }}>
+            <StatCard stat={stat} />
           </Grid>
         ))}
       </Grid>
 
-      {/* Charts row */}
-      <Grid container spacing={3} sx={{ mb: 3 }}>
+      {/* Main content + sidebar */}
+      <Grid container spacing={3}>
         <Grid size={{ xs: 12, lg: 8 }}>
-          <Card sx={{ p: 3, height: 360 }}>
-            <RevenueChart />
-          </Card>
+          <Paper sx={{ p: 3 }}>
+            <Typography variant="h6" gutterBottom>Recent Activity</Typography>
+            <ActivityChart />
+          </Paper>
         </Grid>
         <Grid size={{ xs: 12, lg: 4 }}>
-          <Card sx={{ p: 3, height: 360 }}>
-            <TrafficChart />
-          </Card>
+          <Stack spacing={3}>
+            <Paper sx={{ p: 3 }}>
+              <Typography variant="h6" gutterBottom>Quick Stats</Typography>
+              <QuickStats />
+            </Paper>
+            <Paper sx={{ p: 3 }}>
+              <Typography variant="h6" gutterBottom>Top Items</Typography>
+              <TopItemsList />
+            </Paper>
+          </Stack>
         </Grid>
       </Grid>
-
-      {/* Table */}
-      <Card>
-        <RecentOrdersTable />
-      </Card>
     </Container>
   );
 }
 ```
 
-### Responsive Card Grid
+### Centered auth form
 
 ```tsx
-function ProductGrid({ products }) {
-  return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: {
-            xs: '1fr',
-            sm: 'repeat(2, 1fr)',
-            md: 'repeat(3, 1fr)',
-            lg: 'repeat(4, 1fr)',
-          },
-          gap: 3,
-        }}
-      >
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </Box>
-    </Container>
-  );
-}
-```
-
-### Holy Grail Layout
-
-```tsx
-function HolyGrailLayout() {
-  return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      {/* Header */}
-      <AppBar position="sticky">
-        <Toolbar>
-          <Typography variant="h6">Site Name</Typography>
-        </Toolbar>
-      </AppBar>
-
-      {/* Middle row: nav + main + aside */}
-      <Box sx={{ display: 'flex', flexGrow: 1 }}>
-        {/* Left nav */}
-        <Box
-          component="nav"
-          sx={{
-            width: { xs: 0, md: 220 },
-            flexShrink: 0,
-            display: { xs: 'none', md: 'block' },
-            borderRight: '1px solid',
-            borderColor: 'divider',
-            p: 2,
-          }}
-        >
-          <LeftNav />
-        </Box>
-
-        {/* Main content */}
-        <Box component="main" sx={{ flexGrow: 1, p: 3, minWidth: 0 }}>
-          <Outlet />
-        </Box>
-
-        {/* Right aside */}
-        <Box
-          component="aside"
-          sx={{
-            width: { xs: 0, lg: 280 },
-            flexShrink: 0,
-            display: { xs: 'none', lg: 'block' },
-            borderLeft: '1px solid',
-            borderColor: 'divider',
-            p: 2,
-          }}
-        >
-          <RelatedContent />
-        </Box>
-      </Box>
-
-      {/* Footer */}
-      <Box component="footer" sx={{ bgcolor: 'background.paper', borderTop: '1px solid', borderColor: 'divider', py: 4 }}>
-        <Container maxWidth="lg">
-          <Footer />
-        </Container>
-      </Box>
-    </Box>
-  );
-}
-```
-
-### Centered Auth Layout
-
-```tsx
-function AuthLayout({ children }: { children: React.ReactNode }) {
+function LoginPage() {
   return (
     <Box
       sx={{
@@ -587,83 +436,31 @@ function AuthLayout({ children }: { children: React.ReactNode }) {
         p: 2,
       }}
     >
-      <Box sx={{ width: '100%', maxWidth: 440 }}>
-        <Box sx={{ mb: 4, textAlign: 'center' }}>
-          <Logo />
-        </Box>
-        <Paper sx={{ p: { xs: 3, sm: 4 }, borderRadius: 2 }}>
-          {children}
+      <Container maxWidth="xs">
+        <Paper elevation={3} sx={{ p: { xs: 3, sm: 4 }, borderRadius: 2 }}>
+          <Stack spacing={3} alignItems="center">
+            <Logo />
+            <Typography variant="h5" fontWeight={600}>Sign in</Typography>
+            <LoginForm />
+          </Stack>
         </Paper>
-      </Box>
+      </Container>
     </Box>
   );
 }
 ```
 
----
-
-## Responsive Typography
+### Masonry layout
 
 ```tsx
-// Method 1: responsiveFontSizes utility
-import { createTheme, responsiveFontSizes } from '@mui/material/styles';
-let theme = createTheme();
-theme = responsiveFontSizes(theme); // auto-scales h1–h6 for each breakpoint
+// For masonry layout, use Masonry from @mui/lab
+import Masonry from '@mui/lab/Masonry';
 
-// Method 2: Manual responsive typography in theme
-const theme = createTheme({
-  typography: {
-    h1: {
-      fontSize: '2rem',
-      [theme.breakpoints.up('md')]: { fontSize: '3rem' },
-      [theme.breakpoints.up('lg')]: { fontSize: '4rem' },
-    },
-  },
-});
-
-// Method 3: sx responsive typography
-<Typography sx={{ fontSize: { xs: '1.5rem', md: '2rem', lg: '3rem' }, fontWeight: 700 }}>
-  Responsive Heading
-</Typography>
-```
-
----
-
-## Layout Utilities
-
-```tsx
-// Full-height flex column
-<Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-  <AppBar />
-  <Box sx={{ flexGrow: 1, overflow: 'auto' }}>scrollable content</Box>
-  <BottomBar />
-</Box>
-
-// Vertically centered content (fallback for old browsers)
-<Box
-  sx={{
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    minHeight: '60vh',
-  }}
->
-  <CircularProgress />
-</Box>
-
-// Sticky sidebar
-<Box sx={{ display: 'flex', gap: 3, alignItems: 'flex-start' }}>
-  <Box sx={{ flexGrow: 1 }}>
-    <MainContent />
-  </Box>
-  <Box sx={{ width: 300, flexShrink: 0, position: 'sticky', top: 88 }}>
-    <TableOfContents />
-  </Box>
-</Box>
-
-// Truncate text in flex children (common bug — requires minWidth: 0)
-<Box sx={{ display: 'flex' }}>
-  <Typography noWrap sx={{ minWidth: 0 }}>Very long text that will truncate…</Typography>
-  <Button sx={{ flexShrink: 0 }}>Action</Button>
-</Box>
+<Masonry columns={{ xs: 1, sm: 2, md: 3 }} spacing={2}>
+  {items.map((item) => (
+    <Paper key={item.id} sx={{ p: 2 }}>
+      <Typography variant="body2">{item.content}</Typography>
+    </Paper>
+  ))}
+</Masonry>
 ```
