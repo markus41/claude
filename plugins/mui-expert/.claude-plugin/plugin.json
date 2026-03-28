@@ -1,0 +1,77 @@
+{
+  "$schema": "https://claude.local/schemas/plugin.schema.json",
+  "name": "mui-expert",
+  "version": "1.0.0",
+  "description": "Material UI (MUI) expert plugin — theming, components, sx/styled API, MUI X data grid & date pickers, accessibility, performance optimization, and migration guidance for MUI v5/v6.",
+  "author": {
+    "name": "Claude Code"
+  },
+  "license": "MIT",
+  "keywords": [
+    "mui",
+    "material-ui",
+    "react",
+    "theming",
+    "design-system",
+    "data-grid",
+    "date-picker",
+    "sx-prop",
+    "styled",
+    "emotion",
+    "accessibility",
+    "responsive",
+    "dark-mode"
+  ],
+  "permissions": {
+    "requires": [
+      "read",
+      "write",
+      "bash"
+    ],
+    "optional": [
+      "agent",
+      "mcp",
+      "network"
+    ]
+  },
+  "capabilities": {
+    "provides": [
+      "mui-theming",
+      "mui-components",
+      "mui-data-grid",
+      "mui-date-pickers",
+      "mui-accessibility",
+      "mui-performance",
+      "mui-migration"
+    ],
+    "requires": []
+  },
+  "contextEntry": "CONTEXT_SUMMARY.md",
+  "context": {
+    "entry": "CONTEXT_SUMMARY.md",
+    "title": "MUI Expert",
+    "summary": "Material UI expert — theming, components, sx/styled, MUI X, accessibility, performance, migration.",
+    "tags": [
+      "mui",
+      "material-ui",
+      "react",
+      "theming",
+      "components"
+    ],
+    "bootstrapFiles": [
+      "CONTEXT_SUMMARY.md"
+    ],
+    "maxTokens": 700,
+    "excludeGlobs": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/build/**",
+      "**/*.zip"
+    ],
+    "lazyLoadSections": [
+      "CLAUDE.md",
+      "skills/*/SKILL.md",
+      "commands/*.md"
+    ]
+  }
+}

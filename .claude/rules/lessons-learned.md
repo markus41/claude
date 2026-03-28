@@ -1478,3 +1478,27 @@ First entry keys: not a dict
 === a8e130b3a07d8fcfd ===
 0
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-28T10:26:07Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/plugins/frontend-design-system/skills/design-system-expert/SKILL.md`
+- **Error:** File does not exist. Note: your current working directory is /home/user/claude.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-28T10:26:07Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/plugins/deployment-pipeline/agents/harness-deployer.md`
+- **Error:** File does not exist. Note: your current working directory is /home/user/claude.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: mcp__firecrawl__firecrawl_scrape failure (2026-03-28T10:45:59Z)
+- **Tool:** mcp__firecrawl__firecrawl_scrape
+- **Input:** `N/A`
+- **Error:** Tool 'firecrawl_scrape' execution failed: Maximum number of redirects exceeded
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-03-28T10:51:19Z)
+- **Tool:** Bash
+- **Input:** `ls /home/user/claude/plugins/drawio-diagramming/.claude-plugin/registry/ 2>/dev/null && echo "---" && ls /home/user/claude/plugins/drawio-diagramming/agents/ 2>/dev/null | head -3 && echo "---" && ls /home/user/claude/plugins/drawio-diagramming/commands/ 2>/dev/null | head -3`
+- **Error:** Exit code 2
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving

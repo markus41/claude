@@ -1,0 +1,127 @@
+{
+  "version": 1,
+  "plugin": "mui-expert",
+  "type": "skills",
+  "entries": [
+    {
+      "name": "mui:theming",
+      "intent": "MUI theming — createTheme, palette, typography, dark mode, TypeScript augmentation, component overrides",
+      "tags": [
+        "mui-expert",
+        "skill",
+        "theme",
+        "dark-mode",
+        "design-tokens"
+      ],
+      "path": "skills/theming/SKILL.md"
+    },
+    {
+      "name": "mui:sx-styled",
+      "intent": "MUI sx prop and styled() API — responsive values, pseudo-selectors, performance",
+      "tags": [
+        "mui-expert",
+        "skill",
+        "sx",
+        "styled",
+        "CSS-in-JS"
+      ],
+      "path": "skills/sx-styled/SKILL.md"
+    },
+    {
+      "name": "mui:components",
+      "intent": "MUI core component patterns — inputs, display, navigation, feedback, surfaces",
+      "tags": [
+        "mui-expert",
+        "skill",
+        "components",
+        "Button",
+        "TextField",
+        "Dialog"
+      ],
+      "path": "skills/components/SKILL.md"
+    },
+    {
+      "name": "mui:data-grid",
+      "intent": "MUI X DataGrid — columns, sorting, filtering, pagination, editing, server-side, virtualization",
+      "tags": [
+        "mui-expert",
+        "skill",
+        "DataGrid",
+        "MUI-X",
+        "table"
+      ],
+      "path": "skills/data-grid/SKILL.md"
+    },
+    {
+      "name": "mui:date-pickers",
+      "intent": "MUI X Date/Time Pickers — DatePicker, TimePicker, DateRangePicker, LocalizationProvider, slots",
+      "tags": [
+        "mui-expert",
+        "skill",
+        "DatePicker",
+        "calendar"
+      ],
+      "path": "skills/date-pickers/SKILL.md"
+    },
+    {
+      "name": "mui:forms-validation",
+      "intent": "MUI forms — React Hook Form, Formik, Zod/Yup, FormControl, multi-step Stepper, accessibility",
+      "tags": [
+        "mui-expert",
+        "skill",
+        "form",
+        "validation",
+        "react-hook-form"
+      ],
+      "path": "skills/forms-validation/SKILL.md"
+    },
+    {
+      "name": "mui:layout-responsive",
+      "intent": "MUI layout — Grid v2, Stack, Container, Box, useMediaQuery, breakpoints, responsive design",
+      "tags": [
+        "mui-expert",
+        "skill",
+        "layout",
+        "Grid",
+        "responsive"
+      ],
+      "path": "skills/layout-responsive/SKILL.md"
+    },
+    {
+      "name": "mui:accessibility",
+      "intent": "MUI accessibility — ARIA patterns, keyboard navigation, WCAG compliance, color contrast",
+      "tags": [
+        "mui-expert",
+        "skill",
+        "a11y",
+        "WCAG",
+        "aria"
+      ],
+      "path": "skills/accessibility/SKILL.md"
+    },
+    {
+      "name": "mui:performance",
+      "intent": "MUI performance — tree-shaking, bundle size, sx memoization, SSR, Next.js, virtualization",
+      "tags": [
+        "mui-expert",
+        "skill",
+        "performance",
+        "optimization",
+        "bundle"
+      ],
+      "path": "skills/performance/SKILL.md"
+    },
+    {
+      "name": "mui:migration",
+      "intent": "MUI migration — v4→v5, v5→v6, codemods, makeStyles→styled/sx, breaking changes",
+      "tags": [
+        "mui-expert",
+        "skill",
+        "migration",
+        "upgrade",
+        "codemod"
+      ],
+      "path": "skills/migration/SKILL.md"
+    }
+  ]
+}

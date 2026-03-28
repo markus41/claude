@@ -1,0 +1,555 @@
+---
+name: data-grid
+description: MUI X DataGrid configuration, server-side integration, and optimization
+triggers:
+  - DataGrid
+  - data grid
+  - table
+  - MUI X
+  - columns
+  - sorting
+  - filtering
+  - pagination
+allowed-tools:
+  - Read
+  - Glob
+  - Grep
+  - Write
+  - Edit
+  - Bash
+globs:
+  - "*.tsx"
+  - "*.ts"
+  - "*.jsx"
+---
+
+# MUI X DataGrid
+
+## Package Tiers
+
+| Package | Import | Features |
+|---------|--------|---------|
+| `@mui/x-data-grid` | `DataGrid` | Sorting, filtering, pagination, export (free, MIT) |
+| `@mui/x-data-grid-pro` | `DataGridPro` | Column pinning, row grouping, master-detail, infinite scroll |
+| `@mui/x-data-grid-premium` | `DataGridPremium` | Aggregation, pivoting, Excel export, row spanning |
+
+Always import `GridColDef` and the grid from the same package.
+
+---
+
+## Basic Setup
+
+```tsx
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import Chip from '@mui/material/Chip';
+import Box from '@mui/material/Box';
+
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+  createdAt: string;
+  active: boolean;
+}
+
+const columns: GridColDef<User>[] = [
+  { field: 'id', headerName: 'ID', width: 80 },
+  { field: 'name', headerName: 'Name', width: 180, flex: 1 },
+  { field: 'email', headerName: 'Email', width: 220 },
+  { field: 'role', headerName: 'Role', width: 120 },
+  {
+    field: 'createdAt',
+    headerName: 'Created',
+    width: 140,
+    type: 'date',
+    valueGetter: (value) => new Date(value),        // convert string to Date
+    valueFormatter: (value: Date) =>
+      value?.toLocaleDateString('en-US', { dateStyle: 'medium' }),
+  },
+  {
+    field: 'active',
+    headerName: 'Status',
+    width: 100,
+    type: 'boolean',
+    renderCell: ({ value }) => (
+      <Chip
+        label={value ? 'Active' : 'Inactive'}
+        color={value ? 'success' : 'default'}
+        size="small"
+      />
+    ),
+  },
+];
+
+function UsersGrid({ rows }: { rows: User[] }) {
+  return (
+    <Box sx={{ height: 600, width: '100%' }}>
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        initialState={{
+          pagination: { paginationModel: { pageSize: 25 } },
+          sorting: { sortModel: [{ field: 'createdAt', sort: 'desc' }] },
+        }}
+        pageSizeOptions={[10, 25, 50, 100]}
+        checkboxSelection
+        disableRowSelectionOnClick
+        density="compact"                   // 'compact' | 'standard' | 'comfortable'
+        getRowId={(row) => row.id}          // only needed if row.id is not the key
+      />
+    </Box>
+  );
+}
+```
+
+---
+
+## GridColDef Reference
+
+```tsx
+const col: GridColDef = {
+  field: 'fieldName',          // must match row object key
+  headerName: 'Display Name',
+  description: 'Tooltip on header hover',
+  width: 150,                  // fixed px width
+  minWidth: 100,
+  maxWidth: 300,
+  flex: 1,                     // fill remaining space (like CSS flex-grow)
+  type: 'string',              // 'string' | 'number' | 'date' | 'dateTime' | 'boolean' | 'singleSelect' | 'actions'
+  align: 'left',               // 'left' | 'right' | 'center'
+  headerAlign: 'left',
+  sortable: true,
+  filterable: true,
+  hideable: true,
+  pinnable: true,              // Pro/Premium only
+  editable: false,
+
+  // Transform raw value for display/sorting (not for renderCell)
+  valueGetter: (value, row) => `${row.firstName} ${row.lastName}`,
+
+  // Format value for display (runs after valueGetter)
+  valueFormatter: (value: number) => `$${value.toFixed(2)}`,
+
+  // Custom cell renderer — receives GridRenderCellParams
+  renderCell: (params) => (
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+      <Avatar src={params.row.avatar} sx={{ width: 24, height: 24 }} />
+      {params.value}
+    </Box>
+  ),
+
+  // Custom header renderer
+  renderHeader: (params) => (
+    <strong>{params.colDef.headerName} <span aria-hidden>*</span></strong>
+  ),
+};
+```
+
+### Actions column
+
+```tsx
+import { GridActionsCellItem, GridColDef } from '@mui/x-data-grid';
+
+const actionsColumn: GridColDef = {
+  field: 'actions',
+  type: 'actions',
+  headerName: 'Actions',
+  width: 100,
+  getActions: (params) => [
+    <GridActionsCellItem
+      key="edit"
+      icon={<EditIcon />}
+      label="Edit"
+      onClick={() => handleEdit(params.row)}
+    />,
+    <GridActionsCellItem
+      key="delete"
+      icon={<DeleteIcon />}
+      label="Delete"
+      onClick={() => handleDelete(params.id)}
+      showInMenu           // show in overflow menu instead of inline
+    />,
+  ],
+};
+```
+
+---
+
+## Client-Side Sorting, Filtering, Pagination
+
+Client-side is the default. All three happen automatically — just provide `rows` and
+`columns`. Customise with `initialState` or controlled props.
+
+```tsx
+import { GridSortModel, GridFilterModel } from '@mui/x-data-grid';
+
+// Controlled sort
+const [sortModel, setSortModel] = React.useState<GridSortModel>([
+  { field: 'name', sort: 'asc' },
+]);
+
+<DataGrid
+  rows={rows}
+  columns={columns}
+  sortModel={sortModel}
+  onSortModelChange={setSortModel}
+/>
+
+// Controlled filter
+const [filterModel, setFilterModel] = React.useState<GridFilterModel>({
+  items: [{ field: 'role', operator: 'equals', value: 'admin' }],
+});
+
+<DataGrid
+  rows={rows}
+  columns={columns}
+  filterModel={filterModel}
+  onFilterModelChange={setFilterModel}
+/>
+```
+
+---
+
+## Server-Side Pagination, Sorting, and Filtering
+
+Set `paginationMode`, `filterMode`, and `sortingMode` to `"server"`. Provide `rowCount`
+so the grid knows total records. Fetch data whenever the model changes.
+
+```tsx
+import {
+  DataGrid,
+  GridSortModel,
+  GridFilterModel,
+  GridPaginationModel,
+} from '@mui/x-data-grid';
+
+function ServerGrid() {
+  const [rows, setRows] = React.useState<User[]>([]);
+  const [rowCount, setRowCount] = React.useState(0);
+  const [loading, setLoading] = React.useState(false);
+
+  const [paginationModel, setPaginationModel] = React.useState<GridPaginationModel>({
+    page: 0,
+    pageSize: 25,
+  });
+  const [sortModel, setSortModel] = React.useState<GridSortModel>([]);
+  const [filterModel, setFilterModel] = React.useState<GridFilterModel>({ items: [] });
+
+  // Fetch whenever any model changes
+  React.useEffect(() => {
+    let active = true;
+    setLoading(true);
+
+    fetchUsers({
+      page: paginationModel.page,
+      pageSize: paginationModel.pageSize,
+      sort: sortModel,
+      filter: filterModel,
+    }).then((result) => {
+      if (active) {
+        setRows(result.rows);
+        setRowCount(result.total);
+        setLoading(false);
+      }
+    });
+
+    return () => { active = false; };
+  }, [paginationModel, sortModel, filterModel]);
+
+  return (
+    <Box sx={{ height: 600, width: '100%' }}>
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        rowCount={rowCount}
+        loading={loading}
+        // Server-side modes
+        paginationMode="server"
+        sortingMode="server"
+        filterMode="server"
+        // Controlled models
+        paginationModel={paginationModel}
+        onPaginationModelChange={setPaginationModel}
+        sortModel={sortModel}
+        onSortModelChange={setSortModel}
+        filterModel={filterModel}
+        onFilterModelChange={(model) => {
+          setFilterModel(model);
+          // Reset to page 0 on filter change
+          setPaginationModel((prev) => ({ ...prev, page: 0 }));
+        }}
+        pageSizeOptions={[25, 50, 100]}
+        keepNonExistentRowsSelected     // preserve selection across pages
+      />
+    </Box>
+  );
+}
+```
+
+---
+
+## Editable Grid
+
+```tsx
+import {
+  DataGrid,
+  GridRowId,
+  GridRowModel,
+  GridRowModesModel,
+  GridRowModes,
+  GridRowEditStopReasons,
+  GridEventListener,
+} from '@mui/x-data-grid';
+
+function EditableGrid({ initialRows }: { initialRows: User[] }) {
+  const [rows, setRows] = React.useState(initialRows);
+  const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
+
+  const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
+    if (params.reason === GridRowEditStopReasons.rowFocusOut) {
+      event.defaultMuiPrevented = true; // don't save on blur, only on Enter
+    }
+  };
+
+  const handleSave = (id: GridRowId) => {
+    setRowModesModel((prev) => ({
+      ...prev,
+      [id]: { mode: GridRowModes.View },
+    }));
+  };
+
+  const handleCancel = (id: GridRowId) => {
+    setRowModesModel((prev) => ({
+      ...prev,
+      [id]: { mode: GridRowModes.View, ignoreModifications: true },
+    }));
+  };
+
+  // Called when a row exits edit mode — validate and persist here
+  const processRowUpdate = React.useCallback(
+    async (updatedRow: GridRowModel, originalRow: GridRowModel) => {
+      if (!updatedRow.name) throw new Error('Name is required');
+      const saved = await api.updateUser(updatedRow);
+      setRows((prev) => prev.map((r) => (r.id === saved.id ? saved : r)));
+      return saved;
+    },
+    [],
+  );
+
+  const handleProcessRowUpdateError = (error: Error) => {
+    showSnackbar(error.message, 'error');
+  };
+
+  const editColumns: GridColDef[] = [
+    { field: 'name', headerName: 'Name', flex: 1, editable: true },
+    {
+      field: 'role',
+      headerName: 'Role',
+      width: 140,
+      editable: true,
+      type: 'singleSelect',
+      valueOptions: ['admin', 'editor', 'viewer'],
+    },
+    {
+      field: 'actions',
+      type: 'actions',
+      width: 100,
+      getActions: ({ id }) => {
+        const isEditing = rowModesModel[id]?.mode === GridRowModes.Edit;
+        if (isEditing) {
+          return [
+            <GridActionsCellItem key="save" icon={<SaveIcon />} label="Save" onClick={() => handleSave(id)} />,
+            <GridActionsCellItem key="cancel" icon={<CancelIcon />} label="Cancel" onClick={() => handleCancel(id)} />,
+          ];
+        }
+        return [
+          <GridActionsCellItem
+            key="edit"
+            icon={<EditIcon />}
+            label="Edit"
+            onClick={() =>
+              setRowModesModel((prev) => ({
+                ...prev,
+                [id]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
+              }))
+            }
+          />,
+        ];
+      },
+    },
+  ];
+
+  return (
+    <Box sx={{ height: 500 }}>
+      <DataGrid
+        rows={rows}
+        columns={editColumns}
+        editMode="row"
+        rowModesModel={rowModesModel}
+        onRowModesModelChange={setRowModesModel}
+        onRowEditStop={handleRowEditStop}
+        processRowUpdate={processRowUpdate}
+        onProcessRowUpdateError={handleProcessRowUpdateError}
+      />
+    </Box>
+  );
+}
+```
+
+---
+
+## Custom renderCell Examples
+
+```tsx
+import LinearProgress from '@mui/material/LinearProgress';
+import Link from '@mui/material/Link';
+
+// Progress bar cell
+const progressCol: GridColDef = {
+  field: 'progress',
+  headerName: 'Progress',
+  width: 150,
+  renderCell: ({ value }) => (
+    <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', gap: 1 }}>
+      <LinearProgress
+        variant="determinate"
+        value={value}
+        sx={{ flex: 1, height: 8, borderRadius: 4 }}
+      />
+      <Typography variant="caption">{value}%</Typography>
+    </Box>
+  ),
+};
+
+// Link cell
+const nameCol: GridColDef = {
+  field: 'name',
+  renderCell: ({ value, row }) => (
+    <Link component={RouterLink} to={`/users/${row.id}`} underline="hover">
+      {value}
+    </Link>
+  ),
+};
+
+// Multi-line cell (needs rowHeight adjustment on the grid)
+const descriptionCol: GridColDef = {
+  field: 'description',
+  width: 300,
+  renderCell: ({ value }) => (
+    <Box sx={{ py: 1 }}>
+      <Typography variant="body2" sx={{ whiteSpace: 'normal', lineHeight: 1.4 }}>
+        {value}
+      </Typography>
+    </Box>
+  ),
+};
+```
+
+---
+
+## Custom Toolbar
+
+```tsx
+import {
+  GridToolbarContainer,
+  GridToolbarColumnsButton,
+  GridToolbarFilterButton,
+  GridToolbarDensitySelector,
+  GridToolbarExport,
+  GridToolbarQuickFilter,
+} from '@mui/x-data-grid';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+
+function CustomToolbar({ onAddRow }: { onAddRow: () => void }) {
+  return (
+    <GridToolbarContainer sx={{ justifyContent: 'space-between', px: 1, py: 0.5 }}>
+      <Stack direction="row" spacing={0.5}>
+        <GridToolbarColumnsButton />
+        <GridToolbarFilterButton />
+        <GridToolbarDensitySelector />
+        <GridToolbarExport
+          csvOptions={{ fileName: 'users-export', utf8WithBom: true }}
+          printOptions={{ hideFooter: true }}
+        />
+      </Stack>
+      <Stack direction="row" spacing={1} alignItems="center">
+        <GridToolbarQuickFilter
+          quickFilterParser={(input) => input.split(',').map((s) => s.trim())}
+          debounceMs={300}
+        />
+        <Button size="small" variant="contained" startIcon={<AddIcon />} onClick={onAddRow}>
+          Add row
+        </Button>
+      </Stack>
+    </GridToolbarContainer>
+  );
+}
+
+// Pass to DataGrid
+<DataGrid
+  slots={{ toolbar: CustomToolbar }}
+  slotProps={{ toolbar: { onAddRow: handleAddRow } }}
+/>
+```
+
+---
+
+## Column Pinning (Pro/Premium)
+
+```tsx
+import { DataGridPro } from '@mui/x-data-grid-pro';
+
+<DataGridPro
+  rows={rows}
+  columns={columns}
+  initialState={{
+    pinnedColumns: { left: ['name'], right: ['actions'] },
+  }}
+  // Or controlled:
+  pinnedColumns={pinnedColumns}
+  onPinnedColumnsChange={setPinnedColumns}
+/>
+```
+
+---
+
+## Performance Tips
+
+1. **Memoize `columns`** — define outside the component or with `React.useMemo`.
+   Re-creating the array on every render causes unnecessary column re-registration.
+
+```tsx
+// Bad: new array every render
+function MyGrid({ data }) {
+  const columns: GridColDef[] = [ ... ]; // recreated each render
+  return <DataGrid rows={data} columns={columns} />;
+}
+
+// Good: stable reference
+const COLUMNS: GridColDef[] = [ ... ]; // defined at module scope
+
+function MyGrid({ data }) {
+  return <DataGrid rows={data} columns={COLUMNS} />;
+}
+```
+
+2. **Use `getRowId`** only when rows do not have an `id` field. Providing it
+   unnecessarily adds overhead.
+
+3. **Virtualization** is on by default and handles thousands of rows efficiently. Do not
+   disable it (`disableVirtualization`) in production.
+
+4. **`rowBuffer`** (default 3) controls how many off-screen rows to render. Increase for
+   smoother scrolling on fast machines; decrease to reduce DOM nodes on slow devices.
+
+```tsx
+<DataGrid rowBuffer={5} columnBuffer={3} />
+```
+
+5. **Server-side for large datasets** — use `paginationMode="server"` when rowCount
+   exceeds ~10,000 rows to avoid loading the full dataset into memory.
+
+6. **`keepNonExistentRowsSelected`** prevents selection loss during server-side
+   pagination page changes.
