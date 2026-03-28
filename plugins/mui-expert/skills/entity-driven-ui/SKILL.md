@@ -841,3 +841,316 @@ export function useEntityData(metadata: EntityMetadata) {
 ```
 
 No per-entity React code needed — the metadata drives everything.
+
+---
+
+## ASP.NET Core Backend Integration
+
+### C# Query Model (matches DataGrid sort/filter/pagination)
+
+```csharp
+// Models/DataGridQuery.cs
+public class DataGridQuery
+{
+    public int Page { get; set; } = 0;
+    public int PageSize { get; set; } = 25;
+    public List<SortItem>? SortModel { get; set; }
+    public FilterModel? FilterModel { get; set; }
+}
+
+public class SortItem
+{
+    public string Field { get; set; } = "";
+    public string Sort { get; set; } = "asc"; // "asc" | "desc"
+}
+
+public class FilterModel
+{
+    public List<FilterItem> Items { get; set; } = new();
+    public string LogicOperator { get; set; } = "and"; // "and" | "or"
+}
+
+public class FilterItem
+{
+    public string Field { get; set; } = "";
+    public string Operator { get; set; } = ""; // "contains", "equals", "startsWith", ">" etc.
+    public string? Value { get; set; }
+}
+
+public class DataGridResponse<T>
+{
+    public List<T> Rows { get; set; } = new();
+    public int Total { get; set; }
+}
+```
+
+### ASP.NET Controller with Dynamic Sort/Filter
+
+```csharp
+// Controllers/UsersController.cs
+[ApiController]
+[Route("api/[controller]")]
+public class UsersController : ControllerBase
+{
+    private readonly AppDbContext _db;
+
+    public UsersController(AppDbContext db) => _db = db;
+
+    [HttpPost("query")]
+    public async Task<ActionResult<DataGridResponse<UserDto>>> Query(
+        [FromBody] DataGridQuery query)
+    {
+        IQueryable<User> q = _db.Users.AsNoTracking();
+
+        // Apply filters
+        foreach (var filter in query.FilterModel?.Items ?? new())
+        {
+            q = ApplyFilter(q, filter);
+        }
+
+        // Get total before pagination
+        var total = await q.CountAsync();
+
+        // Apply sorting
+        if (query.SortModel?.Any() == true)
+        {
+            var sort = query.SortModel[0];
+            q = sort.Sort == "desc"
+                ? q.OrderByDescending(e => EF.Property<object>(e, ToPascalCase(sort.Field)))
+                : q.OrderBy(e => EF.Property<object>(e, ToPascalCase(sort.Field)));
+        }
+        else
+        {
+            q = q.OrderBy(e => e.Id); // default sort
+        }
+
+        // Apply pagination
+        var rows = await q
+            .Skip(query.Page * query.PageSize)
+            .Take(query.PageSize)
+            .Select(u => new UserDto
+            {
+                Id = u.Id,
+                Name = u.Name,
+                Email = u.Email,
+                Role = u.Role,
+                CreatedAt = u.CreatedAt,
+            })
+            .ToListAsync();
+
+        return Ok(new DataGridResponse<UserDto> { Rows = rows, Total = total });
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<UserDto>> Create([FromBody] CreateUserDto dto)
+    {
+        // Validate using same rules as metadata
+        var user = new User { Name = dto.Name, Email = dto.Email, Role = dto.Role };
+        _db.Users.Add(user);
+        await _db.SaveChangesAsync();
+        return CreatedAtAction(nameof(GetById), new { id = user.Id }, ToDto(user));
+    }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult<UserDto>> Update(int id, [FromBody] UpdateUserDto dto)
+    {
+        var user = await _db.Users.FindAsync(id);
+        if (user == null) return NotFound();
+
+        user.Name = dto.Name;
+        user.Email = dto.Email;
+        user.Role = dto.Role;
+        await _db.SaveChangesAsync();
+        return Ok(ToDto(user));
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var user = await _db.Users.FindAsync(id);
+        if (user == null) return NotFound();
+        _db.Users.Remove(user);
+        await _db.SaveChangesAsync();
+        return NoContent();
+    }
+
+    private static IQueryable<User> ApplyFilter(IQueryable<User> q, FilterItem filter)
+    {
+        // Map DataGrid filter operators to LINQ
+        return filter.Operator switch
+        {
+            "contains" => q.Where(e =>
+                EF.Property<string>(e, ToPascalCase(filter.Field)).Contains(filter.Value!)),
+            "equals" => q.Where(e =>
+                EF.Property<string>(e, ToPascalCase(filter.Field)) == filter.Value),
+            "startsWith" => q.Where(e =>
+                EF.Property<string>(e, ToPascalCase(filter.Field)).StartsWith(filter.Value!)),
+            "endsWith" => q.Where(e =>
+                EF.Property<string>(e, ToPascalCase(filter.Field)).EndsWith(filter.Value!)),
+            "isEmpty" => q.Where(e =>
+                EF.Property<string>(e, ToPascalCase(filter.Field)) == null ||
+                EF.Property<string>(e, ToPascalCase(filter.Field)) == ""),
+            _ => q,
+        };
+    }
+
+    private static string ToPascalCase(string camelCase) =>
+        char.ToUpper(camelCase[0]) + camelCase[1..];
+}
+```
+
+### Entity Metadata Endpoint
+
+```csharp
+// Controllers/EntityMetadataController.cs
+[ApiController]
+[Route("api/entities")]
+public class EntityMetadataController : ControllerBase
+{
+    [HttpGet("{entity}/metadata")]
+    public ActionResult<EntityMetadata> GetMetadata(string entity)
+    {
+        // Return metadata that drives both DataGrid columns and FormEngine forms
+        return entity switch
+        {
+            "users" => Ok(new EntityMetadata
+            {
+                Name = "User",
+                Label = "Users",
+                Api = new ApiEndpoints
+                {
+                    List = "/api/users/query",
+                    Get = "/api/users/{id}",
+                    Create = "/api/users",
+                    Update = "/api/users/{id}",
+                    Delete = "/api/users/{id}",
+                },
+                Fields = new List<FieldMetadata>
+                {
+                    new() { Name = "id", Label = "ID", DataType = "number",
+                            IsPrimaryKey = true, Access = new() { Write = new() { Hidden = true } } },
+                    new() { Name = "name", Label = "Full Name", DataType = "string",
+                            Widget = "text", IsSortable = true, IsFilterable = true,
+                            Validations = new() { new() { Type = "required" } },
+                            Layout = new() { Order = 1, Step = "Account" } },
+                    new() { Name = "email", Label = "Email", DataType = "string",
+                            Widget = "text", IsSortable = true, IsFilterable = true,
+                            Validations = new() { new() { Type = "required" }, new() { Type = "email" } },
+                            Layout = new() { Order = 2, Step = "Account" } },
+                    new() { Name = "role", Label = "Role", DataType = "enum",
+                            Widget = "select", IsSortable = true, IsFilterable = true,
+                            EnumOptions = new() {
+                                new() { Value = "admin", Label = "Administrator" },
+                                new() { Value = "editor", Label = "Editor" },
+                                new() { Value = "viewer", Label = "Viewer" },
+                            },
+                            Validations = new() { new() { Type = "required" } },
+                            Layout = new() { Order = 3, Step = "Profile" } },
+                    new() { Name = "createdAt", Label = "Created", DataType = "date",
+                            Widget = "date", IsSortable = true,
+                            Access = new() { Write = new() { ReadOnly = true } },
+                            Layout = new() { Order = 4, Step = "Profile" } },
+                },
+            }),
+            _ => NotFound(),
+        };
+    }
+}
+```
+
+### React Fetch Hook Wired to ASP.NET
+
+```ts
+// hooks/useEntityData.ts — POST-based fetching for full sort/filter model
+export function useEntityData(metadata: EntityMetadata) {
+  const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 25 });
+  const [sortModel, setSortModel] = useState<GridSortModel>([]);
+  const [filterModel, setFilterModel] = useState<GridFilterModel>({ items: [] });
+
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: [metadata.api.list, paginationModel, sortModel, filterModel],
+    queryFn: async () => {
+      // POST body matches ASP.NET DataGridQuery model
+      const res = await fetch(metadata.api.list, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          page: paginationModel.page,
+          pageSize: paginationModel.pageSize,
+          sortModel: sortModel.length ? sortModel : undefined,
+          filterModel: filterModel.items.length ? filterModel : undefined,
+        }),
+      });
+      if (!res.ok) throw new Error('Fetch failed');
+      return res.json() as Promise<{ rows: any[]; total: number }>;
+    },
+    placeholderData: (prev) => prev,
+  });
+
+  return {
+    rows: data?.rows ?? [],
+    rowCount: data?.total ?? 0,
+    loading: isLoading,
+    paginationModel, setPaginationModel,
+    sortModel, setSortModel,
+    filterModel, setFilterModel,
+    refetch,
+  };
+}
+```
+
+### Custom Filter Operators → LINQ Translation
+
+Map DataGrid filter operators to backend LINQ expressions:
+
+| DataGrid Operator | C# LINQ | SQL |
+|-------------------|---------|-----|
+| `contains` | `.Contains(value)` | `LIKE '%value%'` |
+| `equals` | `== value` | `= 'value'` |
+| `startsWith` | `.StartsWith(value)` | `LIKE 'value%'` |
+| `endsWith` | `.EndsWith(value)` | `LIKE '%value'` |
+| `isEmpty` | `== null \|\| == ""` | `IS NULL OR = ''` |
+| `isNotEmpty` | `!= null && != ""` | `IS NOT NULL AND != ''` |
+| `>` / `<` / `>=` / `<=` | Comparison operators | Direct comparison |
+| `isAnyOf` | `.Contains(value)` on list | `IN (...)` |
+
+### Validation Sharing: C# → TypeScript
+
+Generate validation rules from C# data annotations and serve via metadata:
+
+```csharp
+// Map [Required], [StringLength], [Range], [EmailAddress] to ValidationRule[]
+public static List<ValidationRule> FromDataAnnotations(Type entityType, string propertyName)
+{
+    var prop = entityType.GetProperty(propertyName);
+    var rules = new List<ValidationRule>();
+
+    if (prop?.GetCustomAttribute<RequiredAttribute>() is { } req)
+        rules.Add(new() { Type = "required", Message = req.ErrorMessage });
+
+    if (prop?.GetCustomAttribute<StringLengthAttribute>() is { } len)
+    {
+        if (len.MinimumLength > 0)
+            rules.Add(new() { Type = "min", Value = len.MinimumLength.ToString() });
+        rules.Add(new() { Type = "max", Value = len.MaximumLength.ToString() });
+    }
+
+    if (prop?.GetCustomAttribute<RangeAttribute>() is { } range)
+    {
+        rules.Add(new() { Type = "min", Value = range.Minimum.ToString() });
+        rules.Add(new() { Type = "max", Value = range.Maximum.ToString() });
+    }
+
+    if (prop?.GetCustomAttribute<EmailAddressAttribute>() != null)
+        rules.Add(new() { Type = "email" });
+
+    if (prop?.GetCustomAttribute<RegularExpressionAttribute>() is { } regex)
+        rules.Add(new() { Type = "regex", Value = regex.Pattern, Message = regex.ErrorMessage });
+
+    return rules;
+}
+```
+
+This makes your C# `[Required]`, `[EmailAddress]`, `[StringLength(100)]` annotations
+automatically drive DataGrid cell validation and FormEngine form validation — one truth,
+three consumers (backend, DataGrid, FormEngine).
