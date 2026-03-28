@@ -21,6 +21,26 @@ accessibility patterns, performance optimization, and version migration.
 @emotion/styled      — styled() function
 ```
 
+## MUI MCP Server
+
+The official MUI MCP server (`@mui/mcp`) is configured in `.mcp.json` as `mui-mcp`.
+It provides direct access to MUI's official documentation — use it to get accurate,
+up-to-date answers for complex MUI questions.
+
+**Tools provided by `mui-mcp`:**
+- `useMuiDocs` — Fetch documentation for a specific MUI package/topic
+- `fetchDocs` — Follow-up fetch for additional doc URLs returned by `useMuiDocs`
+
+**When to use:**
+- Complex theming or component questions where skills alone may be insufficient
+- Verifying API signatures, prop types, or behavior for specific MUI versions
+- Getting the latest migration guidance or changelog details
+
+**Recommended workflow:**
+1. Call `useMuiDocs` with the relevant package/topic
+2. Call `fetchDocs` for any additional URLs in the returned content
+3. Combine MCP results with plugin skills to provide a complete answer
+
 ## Operating rules
 1. Always use named imports from `@mui/material` (tree-shakeable)
 2. Never import from `@mui/material/index` or barrel files in production code

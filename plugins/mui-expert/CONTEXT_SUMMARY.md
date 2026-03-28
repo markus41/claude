@@ -28,6 +28,12 @@ sx/styled API, MUI X (DataGrid, DatePickers), accessibility, performance, and mi
 | `/mui-migrate` | Migrate MUI code between versions |
 | `/mui-datagrid` | Build or configure MUI X DataGrid |
 
+## MUI MCP Server
+
+The official `@mui/mcp` server is configured in `.mcp.json` as `mui-mcp`.
+Use `useMuiDocs` and `fetchDocs` tools to query MUI's official documentation
+for accurate, up-to-date API details, migration guidance, and complex questions.
+
 ## Agents
 
 | Agent | Role |

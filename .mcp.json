@@ -56,6 +56,13 @@
         "CLAUDE_PROJECT_DIR": "."
       }
     },
+    "mui-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@mui/mcp@latest"
+      ]
+    },
     "workflow-bridge": {
       "command": "node",
       "args": [
