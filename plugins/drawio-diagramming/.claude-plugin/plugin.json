@@ -56,5 +56,37 @@
     "routing",
     "parallelization",
     "resource-aware"
-  ]
+  ],
+  "contextEntry": "CONTEXT_SUMMARY.md",
+  "context": {
+    "entry": "CONTEXT_SUMMARY.md",
+    "title": "Draw.io Diagramming",
+    "summary": "Intelligent draw.io diagramming with AI-powered generation, multi-platform embedding, conditional formatting, live data binding, desktop integration, and MCP server support. 14 commands, 6 agents, 15 skills covering 196 diagram types.",
+    "tags": [
+      "drawio",
+      "diagrams",
+      "flowchart",
+      "uml",
+      "architecture",
+      "mcp",
+      "ai-diagrams",
+      "c4",
+      "bpmn"
+    ],
+    "bootstrapFiles": [
+      "CONTEXT_SUMMARY.md"
+    ],
+    "maxTokens": 700,
+    "excludeGlobs": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/build/**",
+      "**/*.zip"
+    ],
+    "lazyLoadSections": [
+      "CLAUDE.md",
+      "skills/*/SKILL.md",
+      "commands/*.md"
+    ]
+  }
 }

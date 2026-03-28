@@ -38,5 +38,36 @@
     "goal-setting"
   ],
   "license": "MIT",
-  "repository": "https://github.com/Lobbi-Docs/claude"
+  "repository": "https://github.com/Lobbi-Docs/claude",
+  "contextEntry": "CONTEXT_SUMMARY.md",
+  "context": {
+    "entry": "CONTEXT_SUMMARY.md",
+    "title": "Jira Orchestrator",
+    "summary": "Enterprise Jira orchestration with 81 agents, 16 teams, 46 commands, 11 skills. Features Atlassian MCP OAuth, Harness integration, Neon PostgreSQL, Redis caching, Temporal workflows, and structured reasoning frameworks.",
+    "tags": [
+      "jira",
+      "orchestration",
+      "atlassian",
+      "harness",
+      "ci-cd",
+      "workflow",
+      "automation",
+      "mcp"
+    ],
+    "bootstrapFiles": [
+      "CONTEXT_SUMMARY.md"
+    ],
+    "maxTokens": 700,
+    "excludeGlobs": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/build/**",
+      "**/*.zip"
+    ],
+    "lazyLoadSections": [
+      "CLAUDE.md",
+      "skills/*/SKILL.md",
+      "commands/*.md"
+    ]
+  }
 }
