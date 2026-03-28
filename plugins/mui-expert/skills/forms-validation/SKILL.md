@@ -505,3 +505,279 @@ function MultiStepForm() {
 // Use noValidate on form to suppress browser native validation bubbles
 <Box component="form" noValidate onSubmit={handleSubmit}>
 ```
+
+---
+
+## React Hook Form + Zod (Modern Stack)
+
+The recommended modern approach: type-safe, minimal re-renders.
+
+```bash
+npm install react-hook-form @hookform/resolvers zod
+```
+
+### Complete Form with Zod Schema
+
+```tsx
+import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import TextField from '@mui/material/TextField';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import FormHelperText from '@mui/material/FormHelperText';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+
+const userSchema = z.object({
+  name: z.string().min(2, 'Name must be at least 2 characters'),
+  email: z.string().email('Invalid email address'),
+  role: z.enum(['admin', 'editor', 'viewer'], {
+    required_error: 'Please select a role',
+  }),
+  age: z.coerce.number().min(18, 'Must be 18+').max(120),
+  bio: z.string().max(500, 'Bio must be under 500 characters').optional(),
+  password: z.string()
+    .min(8, 'Password must be at least 8 characters')
+    .regex(/[A-Z]/, 'Must contain an uppercase letter')
+    .regex(/[0-9]/, 'Must contain a number'),
+  confirmPassword: z.string(),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: 'Passwords do not match',
+  path: ['confirmPassword'],
+});
+
+type UserFormData = z.infer<typeof userSchema>;
+
+function UserForm({ onSubmit }: { onSubmit: (data: UserFormData) => void }) {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<UserFormData>({
+    resolver: zodResolver(userSchema),
+    defaultValues: { name: '', email: '', role: undefined, bio: '' },
+  });
+
+  return (
+    <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={2} noValidate>
+      <Controller
+        name="name"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label="Full Name"
+            error={!!errors.name}
+            helperText={errors.name?.message}
+            fullWidth
+            required
+          />
+        )}
+      />
+
+      <Controller
+        name="email"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label="Email"
+            type="email"
+            error={!!errors.email}
+            helperText={errors.email?.message}
+            fullWidth
+            required
+          />
+        )}
+      />
+
+      <Controller
+        name="role"
+        control={control}
+        render={({ field }) => (
+          <FormControl fullWidth error={!!errors.role}>
+            <InputLabel id="role-label">Role</InputLabel>
+            <Select {...field} labelId="role-label" label="Role">
+              <MenuItem value="admin">Administrator</MenuItem>
+              <MenuItem value="editor">Editor</MenuItem>
+              <MenuItem value="viewer">Viewer</MenuItem>
+            </Select>
+            {errors.role && <FormHelperText>{errors.role.message}</FormHelperText>}
+          </FormControl>
+        )}
+      />
+
+      <Controller
+        name="age"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label="Age"
+            type="number"
+            error={!!errors.age}
+            helperText={errors.age?.message}
+          />
+        )}
+      />
+
+      <Button type="submit" variant="contained" disabled={isSubmitting}>
+        {isSubmitting ? 'Saving...' : 'Save'}
+      </Button>
+    </Stack>
+  );
+}
+```
+
+### Controller Pattern for MUI Components
+
+`Controller` is needed for MUI components because they don't use native HTML inputs:
+
+```tsx
+// DatePicker with Controller
+<Controller
+  name="startDate"
+  control={control}
+  render={({ field, fieldState: { error } }) => (
+    <DatePicker
+      {...field}
+      label="Start Date"
+      slotProps={{
+        textField: {
+          error: !!error,
+          helperText: error?.message,
+        },
+      }}
+    />
+  )}
+/>
+
+// Autocomplete with Controller
+<Controller
+  name="tags"
+  control={control}
+  render={({ field: { onChange, value, ...field }, fieldState: { error } }) => (
+    <Autocomplete
+      {...field}
+      multiple
+      options={allTags}
+      value={value || []}
+      onChange={(_, newValue) => onChange(newValue)}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          label="Tags"
+          error={!!error}
+          helperText={error?.message}
+        />
+      )}
+    />
+  )}
+/>
+
+// Switch with Controller
+<Controller
+  name="notifications"
+  control={control}
+  render={({ field }) => (
+    <FormControlLabel
+      control={<Switch {...field} checked={field.value} />}
+      label="Enable notifications"
+    />
+  )}
+/>
+```
+
+### Multi-Step Form with Stepper
+
+```tsx
+const stepSchemas = [
+  z.object({ name: z.string().min(1), email: z.string().email() }),
+  z.object({ address: z.string().min(1), city: z.string().min(1) }),
+  z.object({ cardNumber: z.string().regex(/^\d{16}$/) }),
+];
+
+function MultiStepForm() {
+  const [step, setStep] = useState(0);
+  const [formData, setFormData] = useState({});
+
+  const currentSchema = stepSchemas[step];
+  const { control, handleSubmit, formState: { errors } } = useForm({
+    resolver: zodResolver(currentSchema),
+    defaultValues: formData,
+  });
+
+  const onStepSubmit = (data: any) => {
+    const merged = { ...formData, ...data };
+    setFormData(merged);
+    if (step < stepSchemas.length - 1) {
+      setStep(step + 1);
+    } else {
+      submitFinalForm(merged);
+    }
+  };
+
+  return (
+    <>
+      <Stepper activeStep={step} alternativeLabel>
+        <Step><StepLabel>Account</StepLabel></Step>
+        <Step><StepLabel>Address</StepLabel></Step>
+        <Step><StepLabel>Payment</StepLabel></Step>
+      </Stepper>
+      <Box component="form" onSubmit={handleSubmit(onStepSubmit)} sx={{ mt: 3 }}>
+        {step === 0 && <AccountFields control={control} errors={errors} />}
+        {step === 1 && <AddressFields control={control} errors={errors} />}
+        {step === 2 && <PaymentFields control={control} errors={errors} />}
+        <Box sx={{ display: 'flex', gap: 1, mt: 2 }}>
+          {step > 0 && <Button onClick={() => setStep(step - 1)}>Back</Button>}
+          <Button type="submit" variant="contained">
+            {step === stepSchemas.length - 1 ? 'Submit' : 'Next'}
+          </Button>
+        </Box>
+      </Box>
+    </>
+  );
+}
+```
+
+### Conditional Validation
+
+```tsx
+const schema = z.discriminatedUnion('accountType', [
+  z.object({
+    accountType: z.literal('personal'),
+    name: z.string().min(1),
+  }),
+  z.object({
+    accountType: z.literal('business'),
+    name: z.string().min(1),
+    companyName: z.string().min(1),
+    taxId: z.string().regex(/^\d{9}$/, 'Tax ID must be 9 digits'),
+  }),
+]);
+```
+
+### Server-Side Validation Errors
+
+```tsx
+const { setError, handleSubmit } = useForm<FormData>({
+  resolver: zodResolver(schema),
+});
+
+const onSubmit = async (data: FormData) => {
+  try {
+    await api.createUser(data);
+  } catch (err) {
+    if (err.response?.status === 422) {
+      // Map server errors to form fields
+      const serverErrors = err.response.data.errors;
+      Object.entries(serverErrors).forEach(([field, message]) => {
+        setError(field as keyof FormData, { message: message as string });
+      });
+    }
+  }
+};
+```

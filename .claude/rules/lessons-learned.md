@@ -1508,3 +1508,141 @@ First entry keys: not a dict
 - **Input:** `/home/user/claude/plugins/mui-expert/.claude-plugin`
 - **Error:** EISDIR: illegal operation on a directory, read '/home/user/claude/plugins/mui-expert/.claude-plugin'
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-28T12:21:01Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-28T12:21:09Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-28T12:21:09Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-28T12:21:16Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-28T12:21:20Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-28T12:21:26Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-28T12:21:28Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-28T12:21:29Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-28T12:21:38Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-28T12:21:38Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-28T12:21:39Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-28T12:21:50Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-28T12:21:52Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 403
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-28T12:22:13Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 503
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-28T12:22:14Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-28T12:22:16Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-28T12:22:30Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-28T12:22:42Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-28T12:26:33Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/.claude/agent-memory/researcher`
+- **Error:** EISDIR: illegal operation on a directory, read '/home/user/claude/.claude/agent-memory/researcher'
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-28T12:59:13Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-28T12:59:17Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-28T12:59:35Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-28T13:00:19Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 403
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving

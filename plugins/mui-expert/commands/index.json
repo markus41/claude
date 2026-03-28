@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "plugin": "mui-expert",
   "type": "commands",
   "entries": [
@@ -98,6 +98,189 @@
       "risk": "low",
       "cost": "medium",
       "path": "commands/mui-datagrid.md"
+    },
+    {
+      "name": "mui:mui-design-system",
+      "intent": "Scaffold a complete design system with tokens, theme, component overrides, and white-label support",
+      "tags": [
+        "mui-expert",
+        "command",
+        "design-system",
+        "tokens",
+        "white-label"
+      ],
+      "inputs": [
+        "--brand",
+        "--colors",
+        "--font",
+        "--mode",
+        "--css-vars",
+        "--white-label"
+      ],
+      "risk": "low",
+      "cost": "high",
+      "path": "commands/mui-design-system.md"
+    },
+    {
+      "name": "mui:mui-charts",
+      "intent": "Scaffold MUI X Charts with composition API, custom tooltips, and theme integration",
+      "tags": [
+        "mui-expert",
+        "command",
+        "charts",
+        "data-visualization",
+        "MUI-X"
+      ],
+      "inputs": [
+        "--type",
+        "--mode",
+        "--data-source",
+        "--features",
+        "--theme-aware"
+      ],
+      "risk": "low",
+      "cost": "medium",
+      "path": "commands/mui-charts.md"
+    },
+    {
+      "name": "mui:mui-perf",
+      "intent": "Analyze and optimize MUI performance across bundle size, rendering, and SSR",
+      "tags": [
+        "mui-expert",
+        "command",
+        "performance",
+        "optimization",
+        "bundle-size"
+      ],
+      "inputs": [
+        "--scope",
+        "--fix",
+        "--path"
+      ],
+      "risk": "low",
+      "cost": "high",
+      "path": "commands/mui-perf.md"
+    },
+    {
+      "name": "mui:mui-ssr",
+      "intent": "Configure MUI for Next.js SSR with Emotion cache, CSS variables, and flash prevention",
+      "tags": [
+        "mui-expert",
+        "command",
+        "ssr",
+        "next-js",
+        "emotion"
+      ],
+      "inputs": [
+        "--router",
+        "--engine",
+        "--css-vars",
+        "--dark-mode"
+      ],
+      "risk": "low",
+      "cost": "medium",
+      "path": "commands/mui-ssr.md"
+    },
+    {
+      "name": "mui:mui-white-label",
+      "intent": "Generate multi-tenant white-label theme architecture with dynamic tenant branding",
+      "tags": [
+        "mui-expert",
+        "command",
+        "white-label",
+        "multi-tenant",
+        "theming"
+      ],
+      "inputs": [
+        "--tenants",
+        "--base-colors",
+        "--features",
+        "--source"
+      ],
+      "risk": "low",
+      "cost": "high",
+      "path": "commands/mui-white-label.md"
+    },
+    {
+      "name": "mui:mui-slots",
+      "intent": "Customize MUI component internals via slots API or migrate from deprecated patterns",
+      "tags": [
+        "mui-expert",
+        "command",
+        "slots",
+        "customization"
+      ],
+      "inputs": [
+        "--component",
+        "--slot",
+        "--mode"
+      ],
+      "risk": "low",
+      "cost": "medium",
+      "path": "commands/mui-slots.md"
+    },
+    {
+      "name": "mui:mui-setup",
+      "intent": "Set up MUI with packages, MCP server, LSP/editor tooling, starter theme, and framework integration",
+      "tags": [
+        "mui-expert",
+        "command",
+        "setup",
+        "mcp",
+        "installation",
+        "tooling"
+      ],
+      "inputs": [
+        "--scope",
+        "--framework",
+        "--mui-version",
+        "--tier",
+        "--css-engine",
+        "--with-tailwind"
+      ],
+      "risk": "low",
+      "cost": "medium",
+      "path": "commands/mui-setup.md"
+    },
+    {
+      "name": "mui:mui-fingerprint",
+      "intent": "Scan app, ask interactive questions, then build every MUI component needed",
+      "tags": [
+        "mui-expert",
+        "command",
+        "fingerprint",
+        "scan",
+        "scaffold",
+        "interactive"
+      ],
+      "inputs": [
+        "--path",
+        "--dry-run",
+        "--style"
+      ],
+      "risk": "medium",
+      "cost": "high",
+      "path": "commands/mui-fingerprint.md"
+    },
+    {
+      "name": "mui:mui-creative",
+      "intent": "Build highly creative fluid MUI widgets — sparkline grids, heatmaps, live data, AI assistant, animated wizards",
+      "tags": [
+        "mui-expert",
+        "command",
+        "creative",
+        "widgets",
+        "animation",
+        "unique"
+      ],
+      "inputs": [
+        "--widget",
+        "--style",
+        "--with-motion"
+      ],
+      "risk": "low",
+      "cost": "high",
+      "path": "commands/mui-creative.md"
     }
   ]
 }

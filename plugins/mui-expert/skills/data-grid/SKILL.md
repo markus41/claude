@@ -553,3 +553,649 @@ function MyGrid({ data }) {
 
 6. **`keepNonExistentRowsSelected`** prevents selection loss during server-side
    pagination page changes.
+
+---
+
+## Pro / Premium Features Reference
+
+### Column Pinning (Pro)
+
+```tsx
+<DataGridPro
+  initialState={{
+    pinnedColumns: { left: ['id', 'name'], right: ['actions'] },
+  }}
+/>
+
+// Programmatic
+apiRef.current.pinColumn('id', 'left');
+apiRef.current.unpinColumn('id');
+```
+
+### Row Grouping (Premium)
+
+```tsx
+<DataGridPremium
+  initialState={{
+    rowGrouping: { model: ['category', 'status'] },
+  }}
+  groupingColDef={{
+    headerName: 'Group',
+    width: 200,
+  }}
+/>
+```
+
+### Aggregation (Premium)
+
+```tsx
+<DataGridPremium
+  initialState={{
+    aggregation: {
+      model: {
+        revenue: 'sum',
+        rating: 'avg',
+        orders: 'max',
+      },
+    },
+  }}
+/>
+```
+
+Built-in functions: `sum`, `avg`, `min`, `max`, `size` (count).
+
+### Master-Detail (Pro)
+
+```tsx
+<DataGridPro
+  getDetailPanelContent={({ row }) => (
+    <Box sx={{ p: 2 }}>
+      <Typography variant="h6">Orders for {row.name}</Typography>
+      <DataGrid rows={row.orders} columns={orderColumns} autoHeight />
+    </Box>
+  )}
+  getDetailPanelHeight={() => 'auto'}
+/>
+```
+
+### Excel Export (Premium)
+
+```tsx
+// Toolbar button
+<DataGridPremium slots={{ toolbar: GridToolbar }} />
+
+// Programmatic
+apiRef.current.exportDataAsExcel({
+  fileName: 'report',
+  includeHeaders: true,
+  utf8WithBom: true,
+});
+```
+
+### Cell Selection (Premium)
+
+```tsx
+<DataGridPremium
+  cellSelection
+  onCellSelectionModelChange={(model) => {
+    // model: Record<GridRowId, Record<string, boolean>>
+    console.log('Selected cells:', model);
+  }}
+/>
+```
+
+### Clipboard Paste (Premium)
+
+```tsx
+<DataGridPremium
+  cellSelection
+  ignoreValueFormatterDuringExport
+  splitClipboardPastedText={(text) =>
+    text.split('\n').map((row) => row.split('\t'))
+  }
+/>
+```
+
+### Header Filters (Pro)
+
+```tsx
+<DataGridPro
+  headerFilters
+  slots={{
+    headerFilterMenu: null,  // hide filter menu icon
+  }}
+/>
+```
+
+### Custom Filter Operators
+
+```tsx
+const ratingAboveOperator: GridFilterOperator<any, number> = {
+  label: 'Above',
+  value: 'above',
+  getApplyFilterFn: (filterItem) => {
+    if (!filterItem.value) return null;
+    return (value) => Number(value) > Number(filterItem.value);
+  },
+  InputComponent: GridFilterInputValue,
+};
+
+const columns: GridColDef[] = [
+  {
+    field: 'rating',
+    type: 'number',
+    filterOperators: [...getGridNumericOperators(), ratingAboveOperator],
+  },
+];
+```
+
+### Server-Side Data Source (Pro)
+
+The `GridDataSource` API (v7+) replaces manual server-side patterns:
+
+```tsx
+const dataSource: GridDataSource = {
+  getRows: async (params) => {
+    const { paginationModel, sortModel, filterModel } = params;
+    const response = await fetch('/api/data', {
+      method: 'POST',
+      body: JSON.stringify({
+        page: paginationModel.page,
+        pageSize: paginationModel.pageSize,
+        sort: sortModel[0],
+        filters: filterModel.items,
+      }),
+    });
+    const { rows, totalCount } = await response.json();
+    return { rows, rowCount: totalCount };
+  },
+};
+
+<DataGridPro
+  dataSource={dataSource}
+  paginationModel={{ page: 0, pageSize: 25 }}
+  dataSourceCache={null}      // disable caching
+  // or: dataSourceCache={{ ttl: 60_000 }}  // 60s cache
+/>
+```
+
+### Row Reordering (Pro)
+
+```tsx
+<DataGridPro
+  rowReordering
+  onRowOrderChange={(params) => {
+    // params.row, params.oldIndex, params.targetIndex
+    updateOrder(params.row.id, params.targetIndex);
+  }}
+/>
+```
+
+### Tree Data (Pro)
+
+```tsx
+<DataGridPro
+  treeData
+  getTreeDataPath={(row) => row.path}  // e.g., ['Company', 'Engineering', 'Frontend']
+  groupingColDef={{
+    headerName: 'Organization',
+    width: 300,
+  }}
+/>
+```
+
+---
+
+## Tier Quick Reference
+
+| Feature | Community | Pro | Premium |
+|---------|:---------:|:---:|:-------:|
+| Sorting, filtering, pagination | ✓ | ✓ | ✓ |
+| Inline editing | ✓ | ✓ | ✓ |
+| CSV export | ✓ | ✓ | ✓ |
+| Column resizing/reordering | — | ✓ | ✓ |
+| Column pinning | — | ✓ | ✓ |
+| Row reordering | — | ✓ | ✓ |
+| Tree data | — | ✓ | ✓ |
+| Master-detail | — | ✓ | ✓ |
+| Header filters | — | ✓ | ✓ |
+| Lazy loading | — | ✓ | ✓ |
+| Server-side data source | — | ✓ | ✓ |
+| Row grouping | — | — | ✓ |
+| Aggregation | — | — | ✓ |
+| Excel export | — | — | ✓ |
+| Cell selection | — | — | ✓ |
+| Clipboard paste | — | — | ✓ |
+
+---
+
+## Community Tier — Advanced Recipes
+
+These powerful patterns work with the free `@mui/x-data-grid` (MIT).
+
+### Detail Panels — Single Open at a Time
+
+```tsx
+const [expandedRowId, setExpandedRowId] = useState<GridRowId | null>(null);
+
+<DataGrid
+  rows={rows}
+  columns={columns}
+  getDetailPanelContent={({ row }) => (
+    <Box sx={{ p: 2 }}>
+      <Typography variant="h6">{row.name}</Typography>
+      <Typography color="text.secondary">{row.description}</Typography>
+    </Box>
+  )}
+  getDetailPanelHeight={() => 'auto'}
+  detailPanelExpandedRowIds={expandedRowId ? [expandedRowId] : []}
+  onDetailPanelExpandedRowIdsChange={(ids) => {
+    // Only keep the last clicked — single panel open at a time
+    const newId = ids.find((id) => id !== expandedRowId);
+    setExpandedRowId(newId ?? null);
+  }}
+/>
+```
+
+### Expand/Collapse All Detail Panels
+
+```tsx
+const apiRef = useGridApiRef();
+
+<Button onClick={() => {
+  const allIds = rows.map((r) => r.id);
+  apiRef.current.setExpandedDetailPanels(new Set(allIds));
+}}>
+  Expand All
+</Button>
+<Button onClick={() => apiRef.current.setExpandedDetailPanels(new Set())}>
+  Collapse All
+</Button>
+
+<DataGrid apiRef={apiRef} rows={rows} columns={columns} ... />
+```
+
+### Custom Edit Components — Linked Selects
+
+When changing one field should update another's options (e.g., Type → Account):
+
+```tsx
+function LinkedSelectEditCell({ id, field, api, row }: GridRenderEditCellParams) {
+  // Account options depend on the selected Type
+  const typeValue = row.type; // current type in the row
+  const accountOptions = useMemo(
+    () => getAccountsForType(typeValue),
+    [typeValue],
+  );
+
+  return (
+    <Select
+      value={row.account ?? ''}
+      onChange={(e) => api.setEditCellValue({ id, field, value: e.target.value })}
+      fullWidth
+      size="small"
+    >
+      {accountOptions.map((opt) => (
+        <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
+      ))}
+    </Select>
+  );
+}
+
+const columns: GridColDef[] = [
+  {
+    field: 'type',
+    headerName: 'Type',
+    editable: true,
+    type: 'singleSelect',
+    valueOptions: ['Income', 'Expense', 'Transfer'],
+  },
+  {
+    field: 'account',
+    headerName: 'Account',
+    editable: true,
+    renderEditCell: (params) => <LinkedSelectEditCell {...params} />,
+  },
+];
+```
+
+### Bulk Editing — Save/Discard Pattern
+
+Collect edits locally, then batch-commit to the server:
+
+```tsx
+function BulkEditGrid({ rows: initialRows, columns }) {
+  const [pendingChanges, setPendingChanges] = useState<Map<GridRowId, any>>(new Map());
+  const [deletedIds, setDeletedIds] = useState<Set<GridRowId>>(new Set());
+
+  // Merge pending changes into display rows
+  const displayRows = useMemo(
+    () => initialRows
+      .filter((r) => !deletedIds.has(r.id))
+      .map((r) => (pendingChanges.has(r.id) ? { ...r, ...pendingChanges.get(r.id) } : r)),
+    [initialRows, pendingChanges, deletedIds],
+  );
+
+  const processRowUpdate = useCallback((newRow: any, oldRow: any) => {
+    setPendingChanges((prev) => new Map(prev).set(newRow.id, newRow));
+    return newRow; // optimistic — don't call API yet
+  }, []);
+
+  const handleSave = async () => {
+    // Batch all changes to server
+    await fetch('/api/users/bulk', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        updates: Array.from(pendingChanges.values()),
+        deletes: Array.from(deletedIds),
+      }),
+    });
+    setPendingChanges(new Map());
+    setDeletedIds(new Set());
+  };
+
+  const handleDiscard = () => {
+    setPendingChanges(new Map());
+    setDeletedIds(new Set());
+  };
+
+  const hasChanges = pendingChanges.size > 0 || deletedIds.size > 0;
+
+  return (
+    <>
+      <Box sx={{ display: 'flex', gap: 1, mb: 1 }}>
+        <Button variant="contained" disabled={!hasChanges} onClick={handleSave}>
+          Save ({pendingChanges.size} edits, {deletedIds.size} deletes)
+        </Button>
+        <Button disabled={!hasChanges} onClick={handleDiscard}>Discard</Button>
+      </Box>
+      <DataGrid
+        rows={displayRows}
+        columns={columns}
+        editMode="row"
+        processRowUpdate={processRowUpdate}
+      />
+    </>
+  );
+}
+```
+
+### Conditional Row Styling
+
+```tsx
+<DataGrid
+  rows={rows}
+  columns={columns}
+  getRowClassName={(params) => {
+    if (params.row.status === 'overdue') return 'row-overdue';
+    if (params.row.isAggregate) return 'row-aggregate';
+    return '';
+  }}
+  sx={{
+    '& .row-overdue': {
+      bgcolor: 'error.light',
+      '&:hover': { bgcolor: 'error.main', color: 'error.contrastText' },
+    },
+    '& .row-aggregate': {
+      fontWeight: 700,
+      bgcolor: 'action.hover',
+    },
+    // Alternate row backgrounds
+    '& .MuiDataGrid-row:nth-of-type(even)': {
+      bgcolor: 'action.hover',
+    },
+    // Remove focus outline
+    '& .MuiDataGrid-cell:focus, & .MuiDataGrid-columnHeader:focus': {
+      outline: 'none',
+    },
+    // Custom selection color
+    '& .MuiDataGrid-row.Mui-selected': {
+      bgcolor: 'primary.light',
+      '&:hover': { bgcolor: 'primary.main', color: 'primary.contrastText' },
+    },
+  }}
+/>
+```
+
+### Action Column with Row Operations
+
+```tsx
+const columns: GridColDef[] = [
+  // ... data columns
+  {
+    field: 'actions',
+    headerName: 'Actions',
+    type: 'actions',
+    width: 120,
+    getActions: (params) => [
+      <GridActionsCellItem
+        icon={<EditIcon />}
+        label="Edit"
+        onClick={() => handleEdit(params.row)}
+      />,
+      <GridActionsCellItem
+        icon={<DeleteIcon />}
+        label="Delete"
+        onClick={() => handleDelete(params.id)}
+        showInMenu  // moves to "..." overflow menu
+      />,
+      <GridActionsCellItem
+        icon={<ContentCopyIcon />}
+        label="Duplicate"
+        onClick={() => handleDuplicate(params.row)}
+        showInMenu
+      />,
+    ],
+  },
+];
+```
+
+### Custom Filter Operators
+
+```tsx
+// "Overdue by X days" custom operator
+const overdueOperator: GridFilterOperator = {
+  label: 'Overdue by (days)',
+  value: 'overdueByDays',
+  getApplyFilterFn: (filterItem) => {
+    if (!filterItem.value) return null;
+    const days = Number(filterItem.value);
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - days);
+    return (value) => {
+      if (!value) return false;
+      return new Date(value) < cutoff;
+    };
+  },
+  InputComponent: GridFilterInputValue,
+  InputComponentProps: { type: 'number' },
+};
+
+// "Is any of" multi-value operator
+const isAnyOfOperator: GridFilterOperator = {
+  label: 'Is any of',
+  value: 'isAnyOf',
+  getApplyFilterFn: (filterItem) => {
+    if (!filterItem.value?.length) return null;
+    const values = new Set(filterItem.value);
+    return (value) => values.has(value);
+  },
+  InputComponent: MultiValueFilterInput, // your custom multi-select input
+};
+
+const columns: GridColDef[] = [
+  {
+    field: 'dueDate',
+    headerName: 'Due Date',
+    type: 'date',
+    filterOperators: [...getGridDateOperators(), overdueOperator],
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    filterOperators: [...getGridStringOperators(), isAnyOfOperator],
+  },
+];
+```
+
+### "Always Show Selected" Filter Wrapper
+
+Keep selected rows visible even when they don't match the active filter:
+
+```tsx
+function wrapFilterToKeepSelected(
+  operator: GridFilterOperator,
+  selectedIds: Set<GridRowId>,
+): GridFilterOperator {
+  return {
+    ...operator,
+    getApplyFilterFn: (filterItem, column) => {
+      const baseFn = operator.getApplyFilterFn(filterItem, column);
+      if (!baseFn) return null;
+      return (value, row) => {
+        if (selectedIds.has(row.id)) return true; // always show selected
+        return baseFn(value, row);
+      };
+    },
+  };
+}
+```
+
+### Custom Detail Panel Toggle Column (Pro)
+
+Replace the default chevron with your own toggle button:
+
+```tsx
+import {
+  GRID_DETAIL_PANEL_TOGGLE_COL_DEF,
+  useGridApiContext,
+} from '@mui/x-data-grid-pro';
+
+function DetailToggleCell({ id }: { id: GridRowId }) {
+  const apiRef = useGridApiContext();
+  const isExpanded = apiRef.current.getExpandedDetailPanels().has(id);
+
+  return (
+    <IconButton
+      size="small"
+      aria-label={isExpanded ? 'collapse' : 'expand'}
+      onClick={(e) => {
+        e.stopPropagation();
+        const expanded = new Set(apiRef.current.getExpandedDetailPanels());
+        isExpanded ? expanded.delete(id) : expanded.add(id);
+        apiRef.current.setExpandedDetailPanels(expanded);
+      }}
+    >
+      {isExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+    </IconButton>
+  );
+}
+
+const columns: GridColDef[] = [
+  {
+    ...GRID_DETAIL_PANEL_TOGGLE_COL_DEF,
+    renderCell: (params) => <DetailToggleCell id={params.id} />,
+  },
+  // ... other columns
+];
+```
+
+### Toggle Detail on Row Click
+
+```tsx
+<DataGridPro
+  apiRef={apiRef}
+  rows={rows}
+  columns={columns}
+  onRowClick={(params, event) => {
+    // Skip if clicking inside a button or link
+    if ((event.target as HTMLElement).closest('button, a, [data-no-toggle]')) return;
+
+    const expanded = new Set(apiRef.current.getExpandedDetailPanels());
+    expanded.has(params.id) ? expanded.delete(params.id) : expanded.add(params.id);
+    apiRef.current.setExpandedDetailPanels(expanded);
+  }}
+  getDetailPanelContent={({ row }) => <RowDetail row={row} />}
+  getDetailPanelHeight={() => 'auto'}
+/>
+```
+
+### Form Inside Detail Panel (Master-Detail Editing)
+
+Embed a full edit form inside the detail panel instead of inline row editing:
+
+```tsx
+function DetailFormPanel({ row }: { row: any }) {
+  const apiRef = useGridApiContext();
+
+  return (
+    <Box sx={{ p: 2, maxWidth: 600 }}>
+      <EntityForm
+        metadata={userMetadata}
+        initialValues={row}
+        onSubmit={async (data) => {
+          await fetch(`/api/users/${row.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          });
+          apiRef.current.updateRows([data]); // refresh row in grid
+          // Collapse the panel after save
+          const expanded = new Set(apiRef.current.getExpandedDetailPanels());
+          expanded.delete(row.id);
+          apiRef.current.setExpandedDetailPanels(expanded);
+        }}
+        onCancel={() => {
+          const expanded = new Set(apiRef.current.getExpandedDetailPanels());
+          expanded.delete(row.id);
+          apiRef.current.setExpandedDetailPanels(expanded);
+        }}
+      />
+    </Box>
+  );
+}
+
+<DataGridPro
+  apiRef={apiRef}
+  rows={rows}
+  columns={columns}
+  getDetailPanelContent={({ row }) => <DetailFormPanel row={row} />}
+  getDetailPanelHeight={() => 'auto'}
+/>
+```
+
+### Expand/Collapse All from Header
+
+```tsx
+function ExpandAllHeader() {
+  const apiRef = useGridApiContext();
+  const expanded = apiRef.current.getExpandedDetailPanels();
+  const allExpanded = expanded.size === rows.length;
+
+  return (
+    <IconButton
+      size="small"
+      aria-label={allExpanded ? 'collapse all' : 'expand all'}
+      onClick={() => {
+        if (allExpanded) {
+          apiRef.current.setExpandedDetailPanels(new Set());
+        } else {
+          apiRef.current.setExpandedDetailPanels(new Set(rows.map((r) => r.id)));
+        }
+      }}
+    >
+      {allExpanded ? <UnfoldLessIcon /> : <UnfoldMoreIcon />}
+    </IconButton>
+  );
+}
+
+const columns: GridColDef[] = [
+  {
+    ...GRID_DETAIL_PANEL_TOGGLE_COL_DEF,
+    renderHeader: () => <ExpandAllHeader />,
+    renderCell: (params) => <DetailToggleCell id={params.id} />,
+  },
+  // ...
+];
+```

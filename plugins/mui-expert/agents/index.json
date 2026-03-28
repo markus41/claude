@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "plugin": "mui-expert",
   "type": "agents",
   "entries": [
@@ -17,6 +17,70 @@
       "risk": "low",
       "cost": "high",
       "path": "agents/mui-architect.md"
+    },
+    {
+      "name": "mui:mui-design-system-architect",
+      "intent": "Design enterprise design systems with token hierarchies, multi-tenant themes, and Pigment CSS",
+      "tags": [
+        "mui-expert",
+        "agent",
+        "design-system",
+        "tokens",
+        "white-label",
+        "enterprise"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "high",
+      "path": "agents/mui-design-system-architect.md"
+    },
+    {
+      "name": "mui:mui-x-specialist",
+      "intent": "Expert on MUI X premium components — DataGrid Pro/Premium, DatePicker, Charts, TreeView",
+      "tags": [
+        "mui-expert",
+        "agent",
+        "MUI-X",
+        "DataGrid",
+        "DatePicker",
+        "Charts",
+        "TreeView"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "high",
+      "path": "agents/mui-x-specialist.md"
+    },
+    {
+      "name": "mui:mui-performance-optimizer",
+      "intent": "Analyze and optimize MUI bundle size, render performance, DataGrid perf, and SSR efficiency",
+      "tags": [
+        "mui-expert",
+        "agent",
+        "performance",
+        "optimization",
+        "bundle-size"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "high",
+      "path": "agents/mui-performance-optimizer.md"
+    },
+    {
+      "name": "mui:mui-a11y-auditor",
+      "intent": "Audit MUI applications for WCAG 2.1 accessibility compliance with auto-fix",
+      "tags": [
+        "mui-expert",
+        "agent",
+        "accessibility",
+        "a11y",
+        "WCAG",
+        "audit"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "high",
+      "path": "agents/mui-a11y-auditor.md"
     },
     {
       "name": "mui:mui-reviewer",

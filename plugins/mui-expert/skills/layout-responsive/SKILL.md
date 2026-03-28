@@ -464,3 +464,189 @@ import Masonry from '@mui/lab/Masonry';
   ))}
 </Masonry>
 ```
+
+---
+
+## Advanced Layout Patterns
+
+### Responsive AppBar + Drawer Layout
+
+```tsx
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Drawer from '@mui/material/Drawer';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
+
+const DRAWER_WIDTH = 240;
+
+function ResponsiveLayout({ children }: { children: React.ReactNode }) {
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const drawerContent = (
+    <Box sx={{ width: DRAWER_WIDTH }}>
+      <Toolbar /> {/* spacer for AppBar height */}
+      <List>
+        {navItems.map((item) => (
+          <ListItemButton key={item.path} component={RouterLink} to={item.path}>
+            <ListItemIcon>{item.icon}</ListItemIcon>
+            <ListItemText primary={item.label} />
+          </ListItemButton>
+        ))}
+      </List>
+    </Box>
+  );
+
+  return (
+    <Box sx={{ display: 'flex' }}>
+      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+        <Toolbar>
+          {!isDesktop && (
+            <IconButton edge="start" onClick={() => setMobileOpen(true)} aria-label="menu">
+              <MenuIcon />
+            </IconButton>
+          )}
+          <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>App</Typography>
+        </Toolbar>
+      </AppBar>
+
+      {/* Mobile: temporary drawer */}
+      {!isDesktop && (
+        <Drawer
+          variant="temporary"
+          open={mobileOpen}
+          onClose={() => setMobileOpen(false)}
+          ModalProps={{ keepMounted: true }}
+          sx={{ '& .MuiDrawer-paper': { width: DRAWER_WIDTH } }}
+        >
+          {drawerContent}
+        </Drawer>
+      )}
+
+      {/* Desktop: permanent drawer */}
+      {isDesktop && (
+        <Drawer
+          variant="permanent"
+          sx={{
+            width: DRAWER_WIDTH,
+            flexShrink: 0,
+            '& .MuiDrawer-paper': { width: DRAWER_WIDTH, boxSizing: 'border-box' },
+          }}
+        >
+          {drawerContent}
+        </Drawer>
+      )}
+
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          width: { md: `calc(100% - ${DRAWER_WIDTH}px)` },
+        }}
+      >
+        <Toolbar /> {/* spacer */}
+        {children}
+      </Box>
+    </Box>
+  );
+}
+```
+
+### Mini Variant Drawer (Icon-Only Collapsed)
+
+```tsx
+const MINI_WIDTH = 56;
+const FULL_WIDTH = 240;
+
+<Drawer
+  variant="permanent"
+  sx={{
+    width: expanded ? FULL_WIDTH : MINI_WIDTH,
+    transition: (theme) => theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    '& .MuiDrawer-paper': {
+      width: expanded ? FULL_WIDTH : MINI_WIDTH,
+      overflowX: 'hidden',
+      transition: 'inherit',
+    },
+  }}
+>
+  <Toolbar>
+    <IconButton onClick={() => setExpanded(!expanded)}>
+      {expanded ? <ChevronLeftIcon /> : <MenuIcon />}
+    </IconButton>
+  </Toolbar>
+  <List>
+    {navItems.map((item) => (
+      <Tooltip key={item.path} title={expanded ? '' : item.label} placement="right">
+        <ListItemButton sx={{ minHeight: 48, px: 2.5, justifyContent: expanded ? 'initial' : 'center' }}>
+          <ListItemIcon sx={{ minWidth: 0, mr: expanded ? 3 : 'auto', justifyContent: 'center' }}>
+            {item.icon}
+          </ListItemIcon>
+          {expanded && <ListItemText primary={item.label} />}
+        </ListItemButton>
+      </Tooltip>
+    ))}
+  </List>
+</Drawer>
+```
+
+### Sticky Header + Scrollable Content
+
+```tsx
+<Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+  <AppBar position="static">
+    <Toolbar><Typography variant="h6">App</Typography></Toolbar>
+  </AppBar>
+  <Box sx={{ flex: 1, overflow: 'auto', p: 3 }}>
+    {/* Scrollable content area */}
+    {children}
+  </Box>
+  <Paper elevation={3} sx={{ p: 2 }}>
+    {/* Sticky footer */}
+    <Button variant="contained" fullWidth>Save</Button>
+  </Paper>
+</Box>
+```
+
+### Dashboard Grid Layout
+
+```tsx
+<Grid container spacing={3}>
+  {/* Full-width stats row */}
+  <Grid size={12}>
+    <Stack direction="row" spacing={2} sx={{ overflowX: 'auto' }}>
+      {stats.map((stat) => (
+        <Paper key={stat.label} sx={{ p: 2, minWidth: 200, flex: '0 0 auto' }}>
+          <Typography variant="caption" color="text.secondary">{stat.label}</Typography>
+          <Typography variant="h4">{stat.value}</Typography>
+        </Paper>
+      ))}
+    </Stack>
+  </Grid>
+
+  {/* Main chart + sidebar */}
+  <Grid size={{ xs: 12, lg: 8 }}>
+    <Paper sx={{ p: 2, height: 400 }}>
+      <RevenueChart />
+    </Paper>
+  </Grid>
+  <Grid size={{ xs: 12, lg: 4 }}>
+    <Paper sx={{ p: 2, height: 400 }}>
+      <ActivityFeed />
+    </Paper>
+  </Grid>
+
+  {/* Full-width data table */}
+  <Grid size={12}>
+    <Paper sx={{ height: 500 }}>
+      <DataGrid rows={rows} columns={columns} />
+    </Paper>
+  </Grid>
+</Grid>
+```

@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "plugin": "mui-expert",
   "type": "skills",
   "entries": [
@@ -16,6 +16,18 @@
       "path": "skills/theming/SKILL.md"
     },
     {
+      "name": "mui:css-variables-pigment",
+      "intent": "CSS Variables mode (CssVarsProvider), extendTheme, colorSchemes, Pigment CSS zero-runtime engine",
+      "tags": [
+        "mui-expert",
+        "skill",
+        "css-variables",
+        "pigment-css",
+        "CssVarsProvider"
+      ],
+      "path": "skills/css-variables-pigment/SKILL.md"
+    },
+    {
       "name": "mui:sx-styled",
       "intent": "MUI sx prop and styled() API — responsive values, pseudo-selectors, performance",
       "tags": [
@@ -26,6 +38,18 @@
         "CSS-in-JS"
       ],
       "path": "skills/sx-styled/SKILL.md"
+    },
+    {
+      "name": "mui:slots-api",
+      "intent": "MUI slots and slotProps API for deep component customization, replacing internal elements",
+      "tags": [
+        "mui-expert",
+        "skill",
+        "slots",
+        "slotProps",
+        "customization"
+      ],
+      "path": "skills/slots-api/SKILL.md"
     },
     {
       "name": "mui:components",
@@ -54,18 +78,43 @@
     },
     {
       "name": "mui:date-pickers",
-      "intent": "MUI X Date/Time Pickers — DatePicker, TimePicker, DateRangePicker, LocalizationProvider, slots",
+      "intent": "MUI X Date/Time Pickers — DatePicker, TimePicker, DateRangePicker, timezone, validation",
       "tags": [
         "mui-expert",
         "skill",
         "DatePicker",
-        "calendar"
+        "calendar",
+        "timezone"
       ],
       "path": "skills/date-pickers/SKILL.md"
     },
     {
+      "name": "mui:charts",
+      "intent": "MUI X Charts — BarChart, LineChart, PieChart, composition API, custom tooltips, dual axes",
+      "tags": [
+        "mui-expert",
+        "skill",
+        "charts",
+        "data-visualization",
+        "MUI-X"
+      ],
+      "path": "skills/charts/SKILL.md"
+    },
+    {
+      "name": "mui:tree-view",
+      "intent": "MUI X Tree View — SimpleTreeView, RichTreeView, lazy loading, drag-drop, virtualization",
+      "tags": [
+        "mui-expert",
+        "skill",
+        "TreeView",
+        "hierarchical",
+        "MUI-X"
+      ],
+      "path": "skills/tree-view/SKILL.md"
+    },
+    {
       "name": "mui:forms-validation",
-      "intent": "MUI forms — React Hook Form, Formik, Zod/Yup, FormControl, multi-step Stepper, accessibility",
+      "intent": "MUI forms — React Hook Form, Formik, Zod/Yup, FormControl, multi-step Stepper",
       "tags": [
         "mui-expert",
         "skill",
@@ -77,7 +126,7 @@
     },
     {
       "name": "mui:layout-responsive",
-      "intent": "MUI layout — Grid v2, Stack, Container, Box, useMediaQuery, breakpoints, responsive design",
+      "intent": "MUI layout — Grid v2, Stack, Container, Box, useMediaQuery, breakpoints",
       "tags": [
         "mui-expert",
         "skill",
@@ -101,7 +150,7 @@
     },
     {
       "name": "mui:performance",
-      "intent": "MUI performance — tree-shaking, bundle size, sx memoization, SSR, Next.js, virtualization",
+      "intent": "MUI performance — tree-shaking, bundle size, sx memoization, SSR, lazy loading",
       "tags": [
         "mui-expert",
         "skill",
@@ -110,6 +159,104 @@
         "bundle"
       ],
       "path": "skills/performance/SKILL.md"
+    },
+    {
+      "name": "mui:ssr-nextjs",
+      "intent": "MUI SSR with Next.js — App Router, Pages Router, Emotion cache, RSC, Pigment CSS",
+      "tags": [
+        "mui-expert",
+        "skill",
+        "ssr",
+        "next-js",
+        "emotion",
+        "RSC"
+      ],
+      "path": "skills/ssr-nextjs/SKILL.md"
+    },
+    {
+      "name": "mui:animations-transitions",
+      "intent": "MUI transitions — Fade, Grow, Slide, Collapse, Zoom, TransitionGroup, Framer Motion",
+      "tags": [
+        "mui-expert",
+        "skill",
+        "animation",
+        "transition",
+        "motion"
+      ],
+      "path": "skills/animations-transitions/SKILL.md"
+    },
+    {
+      "name": "mui:virtualization",
+      "intent": "MUI virtualization — react-window, react-virtuoso, virtualized Autocomplete, infinite scroll",
+      "tags": [
+        "mui-expert",
+        "skill",
+        "virtualization",
+        "performance",
+        "large-lists"
+      ],
+      "path": "skills/virtualization/SKILL.md"
+    },
+    {
+      "name": "mui:white-label",
+      "intent": "MUI multi-tenant white-label — nested ThemeProvider, dynamic themes, tenant branding",
+      "tags": [
+        "mui-expert",
+        "skill",
+        "white-label",
+        "multi-tenant",
+        "theming"
+      ],
+      "path": "skills/white-label/SKILL.md"
+    },
+    {
+      "name": "mui:base-headless",
+      "intent": "MUI Base headless components — useButton, useInput, useMenu hooks, Tailwind integration",
+      "tags": [
+        "mui-expert",
+        "skill",
+        "headless",
+        "unstyled",
+        "MUI-Base"
+      ],
+      "path": "skills/base-headless/SKILL.md"
+    },
+    {
+      "name": "mui:joy-ui",
+      "intent": "Joy UI — MUI's alternative design system with CSS variables and modern aesthetics",
+      "tags": [
+        "mui-expert",
+        "skill",
+        "joy-ui",
+        "alternative",
+        "design-system"
+      ],
+      "path": "skills/joy-ui/SKILL.md"
+    },
+    {
+      "name": "mui:i18n-rtl",
+      "intent": "MUI internationalization — RTL support, locale customization, bidirectional text",
+      "tags": [
+        "mui-expert",
+        "skill",
+        "i18n",
+        "RTL",
+        "locale"
+      ],
+      "path": "skills/i18n-rtl/SKILL.md"
+    },
+    {
+      "name": "mui:testing",
+      "intent": "Testing MUI components — React Testing Library, portal components, DataGrid, a11y testing",
+      "tags": [
+        "mui-expert",
+        "skill",
+        "testing",
+        "jest",
+        "vitest",
+        "a11y"
+      ],
+      "path": "skills/testing/SKILL.md"
     },
     {
       "name": "mui:migration",
@@ -122,6 +269,78 @@
         "codemod"
       ],
       "path": "skills/migration/SKILL.md"
+    },
+    {
+      "name": "mui:advanced-components",
+      "intent": "Advanced MUI patterns — Autocomplete (async, virtualized, grouped, createFilterOptions), Stepper (non-linear, vertical, mobile), Popover, Popper, Portal, ClickAwayListener, composition",
+      "tags": [
+        "mui-expert",
+        "skill",
+        "Autocomplete",
+        "Stepper",
+        "Popover",
+        "Popper",
+        "advanced"
+      ],
+      "path": "skills/advanced-components/SKILL.md"
+    },
+    {
+      "name": "mui:entity-driven-ui",
+      "intent": "Metadata-driven CRUD — entity metadata model, DataGrid column generation, FormEngine schema generation, shared validation, access control, wizard flows",
+      "tags": [
+        "mui-expert",
+        "skill",
+        "entity",
+        "CRUD",
+        "metadata",
+        "FormEngine",
+        "admin",
+        "server-driven"
+      ],
+      "path": "skills/entity-driven-ui/SKILL.md"
+    },
+    {
+      "name": "mui:ecosystem-integrations",
+      "intent": "MUI ecosystem — FormEngine, react-jsonschema-form, Uniforms, Tailwind interop, Framer Motion, custom themed components, theme-as-rules-engine",
+      "tags": [
+        "mui-expert",
+        "skill",
+        "FormEngine",
+        "schema-forms",
+        "Tailwind",
+        "Framer-Motion",
+        "ecosystem"
+      ],
+      "path": "skills/ecosystem-integrations/SKILL.md"
+    },
+    {
+      "name": "mui:advanced-widgets",
+      "intent": "Top 0.01% MUI patterns — sparkline grid cells, heatmap DataGrids, real-time WebSocket grids, AI assistant, save/restore state, chart+grid sync, pivot tables, creative widgets",
+      "tags": [
+        "mui-expert",
+        "skill",
+        "sparkline",
+        "heatmap",
+        "real-time",
+        "AI",
+        "creative",
+        "advanced"
+      ],
+      "path": "skills/advanced-widgets/SKILL.md"
+    },
+    {
+      "name": "mui:project-management-integrations",
+      "intent": "Gantt charts, Kanban boards, scheduling — SVAR, DHTMLX, Bryntum, Syncfusion, FullCalendar, dnd-kit, and DataGrid+Gantt architecture patterns",
+      "tags": [
+        "mui-expert",
+        "skill",
+        "Gantt",
+        "Kanban",
+        "scheduling",
+        "dnd-kit",
+        "project-management"
+      ],
+      "path": "skills/project-management-integrations/SKILL.md"
     }
   ]
 }
