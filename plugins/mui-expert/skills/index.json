@@ -327,6 +327,20 @@
         "advanced"
       ],
       "path": "skills/advanced-widgets/SKILL.md"
+    },
+    {
+      "name": "mui:project-management-integrations",
+      "intent": "Gantt charts, Kanban boards, scheduling — SVAR, DHTMLX, Bryntum, Syncfusion, FullCalendar, dnd-kit, and DataGrid+Gantt architecture patterns",
+      "tags": [
+        "mui-expert",
+        "skill",
+        "Gantt",
+        "Kanban",
+        "scheduling",
+        "dnd-kit",
+        "project-management"
+      ],
+      "path": "skills/project-management-integrations/SKILL.md"
     }
   ]
 }
