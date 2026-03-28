@@ -1,6 +1,6 @@
 ---
-name: mui-accessibility
-description: MUI Accessibility (a11y) skill. Covers ARIA attributes, keyboard navigation, focus management, WCAG compliance, screen reader patterns, and common a11y violations with MUI and how to fix them.
+name: accessibility
+description: MUI accessibility patterns, ARIA attributes, and WCAG compliance
 triggers:
   - accessibility
   - a11y
@@ -9,430 +9,381 @@ triggers:
   - keyboard navigation
   - WCAG
   - focus
-  - color contrast
-  - aria-label
-  - aria-describedby
-  - focus trap
-  - role
-  - tabIndex
-globs:
-  - "*.tsx"
-  - "*.jsx"
 allowed-tools:
   - Read
   - Glob
   - Grep
   - Write
   - Edit
+globs:
+  - "*.tsx"
+  - "*.jsx"
 ---
 
-# MUI Accessibility (a11y) Skill
+# MUI Accessibility (a11y)
 
-MUI components ship with built-in accessibility support, but correct usage and custom compositions require understanding the underlying patterns.
+MUI ships with many built-in accessibility features. This skill covers what works automatically,
+what you must add manually, common violations, and WCAG compliance patterns.
 
----
+## Built-in Accessibility Features
 
-## WCAG Requirements Summary
+MUI provides these automatically:
 
-| Criterion | Requirement | Notes |
-|-----------|-------------|-------|
-| Text contrast | 4.5:1 (AA) | Use MUI theme contrast checker |
-| Large text contrast | 3:1 (AA) | 18px+ or 14px+ bold |
-| UI component contrast | 3:1 (AA) | Buttons, inputs, icons |
-| Keyboard access | All interactive elements reachable | No mouse-only actions |
-| Focus visible | Visible focus indicator | MUI provides by default |
-| Error identification | Errors described in text | Not color alone |
-| Labels | All inputs have associated labels | Not placeholder only |
+- `role`, `aria-*` attributes on interactive elements (Button, Checkbox, Slider, etc.)
+- Keyboard navigation in menus, selects, dialogs, date pickers, and tabs
+- Focus trapping in Dialog and Drawer (via `FocusTrap`)
+- Color contrast that meets WCAG AA for the default theme palette
+- `aria-expanded`, `aria-selected`, `aria-checked` state attributes
+- `aria-live` regions in Snackbar for announcements
 
----
+## Icon Buttons Need aria-label
 
-## Buttons and Icon Buttons
+Icon-only buttons have no visible text — always add `aria-label`.
 
 ```tsx
-// Text button — accessible by default
-<Button variant="contained">Save Changes</Button>
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
-// Icon-only button — MUST have aria-label
-<IconButton aria-label="Delete item" onClick={handleDelete}>
+// BAD — screen reader announces nothing meaningful
+<IconButton>
   <DeleteIcon />
 </IconButton>
 
-// Icon button with tooltip — tooltip text also serves as accessible name
+// GOOD
+<IconButton aria-label="Delete item">
+  <DeleteIcon />
+</IconButton>
+
+// GOOD — dynamic label
+<IconButton aria-label={`Edit ${item.name}`}>
+  <EditIcon />
+</IconButton>
+
+// GOOD — using Tooltip (tooltip text does NOT replace aria-label for buttons)
 <Tooltip title="Delete item">
-  <IconButton onClick={handleDelete} aria-label="Delete item">
+  <IconButton aria-label="Delete item">
     <DeleteIcon />
   </IconButton>
 </Tooltip>
-
-// Loading state — communicate to screen readers
-<Button
-  variant="contained"
-  loading={isLoading}
-  loadingPosition="start"
-  startIcon={<SaveIcon />}
-  aria-busy={isLoading}
->
-  {isLoading ? 'Saving…' : 'Save'}
-</Button>
-
-// Disabled vs aria-disabled
-// Use disabled to prevent interaction entirely
-<Button disabled>Cannot proceed</Button>
-
-// Use aria-disabled when you want the element focusable but inactive
-// (e.g., for tooltip to explain why it's disabled)
-<Tooltip title="Complete step 1 first">
-  <span>
-    <Button aria-disabled="true" onClick={(e) => e.preventDefault()}>
-      Next Step
-    </Button>
-  </span>
-</Tooltip>
 ```
 
-### Decorative vs Meaningful Icons
+## TextField Accessible Name
+
+TextField with `label` is fully accessible. Without a label, add `aria-label` or `aria-labelledby`.
 
 ```tsx
-// Decorative icon inside button with text — hide from screen reader
-<Button startIcon={<SaveIcon aria-hidden="true" />}>Save</Button>
+// GOOD — label prop creates accessible name + visible label
+<TextField label="Email address" type="email" />
 
-// Meaningful standalone icon — provide accessible text
-<SaveIcon aria-label="Saved successfully" />
-
-// Using titleAccess prop (renders a <title> in the SVG)
-<SaveIcon titleAccess="Document saved" />
-```
-
----
-
-## Forms and TextField
-
-```tsx
-// Correct pattern: label is associated to input via htmlFor/id
-// MUI TextField handles this automatically when you use label prop
+// GOOD — label + helper text
 <TextField
-  id="email-input"
-  label="Email address"         // renders <label for="email-input">
-  type="email"
-  required
-  error={!!errors.email}
-  helperText={errors.email?.message ?? 'We will never share your email'}
-  inputProps={{
-    'aria-required': true,
-    autoComplete: 'email',
-  }}
+  label="Password"
+  type="password"
+  helperText="Minimum 8 characters"
+  inputProps={{ 'aria-describedby': 'password-helper-text' }}
 />
 
-// FormControl + FormLabel + FormHelperText for custom fields
-<FormControl error={!!errors.category} required>
-  <FormLabel id="category-label">Category</FormLabel>
-  <RadioGroup aria-labelledby="category-label" value={value} onChange={onChange}>
-    <FormControlLabel value="a" control={<Radio />} label="Option A" />
-    <FormControlLabel value="b" control={<Radio />} label="Option B" />
-  </RadioGroup>
-  <FormHelperText>{errors.category?.message ?? 'Select one category'}</FormHelperText>
-</FormControl>
+// When label is hidden (search bar)
+<TextField
+  placeholder="Search..."
+  inputProps={{ 'aria-label': 'Search products' }}
+/>
 
-// Error announcement with aria-live
-<Box role="alert" aria-live="assertive" aria-atomic>
-  {submitError && <Alert severity="error">{submitError}</Alert>}
-</Box>
-
-// Live region for non-error status updates
-<Box aria-live="polite" aria-atomic>
-  {successMessage && <Alert severity="success">{successMessage}</Alert>}
-</Box>
+// Associating external label
+<Typography id="name-label">Full name</Typography>
+<TextField inputProps={{ 'aria-labelledby': 'name-label' }} />
 ```
 
-### Select with Accessible Label
+## Dialog — Focus Trap and Labels
+
+Dialog automatically traps focus. Always provide `aria-labelledby` and `aria-describedby`.
 
 ```tsx
-<FormControl fullWidth>
-  <InputLabel id="country-label">Country</InputLabel>
-  <Select
-    labelId="country-label"
-    id="country-select"
-    value={country}
-    label="Country"            // required — renders label gap in outlined variant
-    onChange={(e) => setCountry(e.target.value)}
-  >
-    <MenuItem value="us">United States</MenuItem>
-    <MenuItem value="ca">Canada</MenuItem>
-  </Select>
-</FormControl>
-```
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogActions from '@mui/material/DialogActions';
+import Button from '@mui/material/Button';
 
----
-
-## Dialogs (Modal)
-
-MUI Dialog includes a focus trap and returns focus automatically.
-
-```tsx
-<Dialog
-  open={open}
-  onClose={handleClose}
-  aria-labelledby="dialog-title"
-  aria-describedby="dialog-description"
-  // Prevent closing when clicking backdrop (e.g., destructive action)
-  // disableBackdropClick is removed in v5; use onClose with reason check:
-  onClose={(event, reason) => {
-    if (reason !== 'backdropClick') handleClose();
-  }}
->
-  <DialogTitle id="dialog-title">
-    Confirm Delete
-    <IconButton
-      aria-label="Close dialog"
-      onClick={handleClose}
-      sx={{ position: 'absolute', right: 8, top: 8 }}
+function ConfirmDeleteDialog({ open, onClose, onConfirm, itemName }: Props) {
+  return (
+    <Dialog
+      open={open}
+      onClose={onClose}
+      aria-labelledby="confirm-dialog-title"
+      aria-describedby="confirm-dialog-description"
     >
-      <CloseIcon />
-    </IconButton>
-  </DialogTitle>
-  <DialogContent>
-    <DialogContentText id="dialog-description">
-      Are you sure you want to delete this item? This action cannot be undone.
-    </DialogContentText>
-  </DialogContent>
-  <DialogActions>
-    <Button onClick={handleClose} autoFocus>Cancel</Button>
-    <Button onClick={handleConfirm} color="error">Delete</Button>
-  </DialogActions>
-</Dialog>
+      <DialogTitle id="confirm-dialog-title">
+        Delete {itemName}?
+      </DialogTitle>
+      <DialogContent>
+        <DialogContentText id="confirm-dialog-description">
+          This action cannot be undone. The item will be permanently removed.
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose}>Cancel</Button>
+        {/* Destructive action — autoFocus so keyboard users land here */}
+        <Button onClick={onConfirm} color="error" autoFocus>
+          Delete
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
 ```
 
-Note: `autoFocus` on Cancel ensures the safe action is focused first. For destructive dialogs, focus should land on the non-destructive button.
+## Menu Keyboard Navigation
 
----
-
-## Menus
+Menu handles keyboard navigation automatically. Provide accessible trigger.
 
 ```tsx
-<Menu
-  id="actions-menu"
-  anchorEl={anchorEl}
-  open={Boolean(anchorEl)}
-  onClose={handleClose}
-  // Announce the menu to screen readers
-  MenuListProps={{ 'aria-labelledby': 'actions-button' }}
->
-  <MenuItem onClick={handleEdit}>
-    <ListItemIcon><EditIcon fontSize="small" aria-hidden="true" /></ListItemIcon>
-    <ListItemText>Edit</ListItemText>
-  </MenuItem>
-  <Divider />
-  <MenuItem onClick={handleDelete} sx={{ color: 'error.main' }}>
-    <ListItemIcon><DeleteIcon fontSize="small" color="error" aria-hidden="true" /></ListItemIcon>
-    <ListItemText>Delete</ListItemText>
-  </MenuItem>
-</Menu>
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Button from '@mui/material/Button';
+import { useState } from 'react';
 
-// The trigger button links to the menu
-<Button
-  id="actions-button"
-  aria-controls={open ? 'actions-menu' : undefined}
-  aria-haspopup="true"
-  aria-expanded={open ? 'true' : undefined}
-  onClick={handleOpen}
->
-  Actions
-</Button>
+function ActionMenu() {
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const open = Boolean(anchorEl);
+
+  return (
+    <>
+      <Button
+        id="action-button"
+        aria-controls={open ? 'action-menu' : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        onClick={(e) => setAnchorEl(e.currentTarget)}
+      >
+        Actions
+      </Button>
+      <Menu
+        id="action-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={() => setAnchorEl(null)}
+        MenuListProps={{
+          'aria-labelledby': 'action-button',
+        }}
+      >
+        <MenuItem onClick={() => setAnchorEl(null)}>Edit</MenuItem>
+        <MenuItem onClick={() => setAnchorEl(null)}>Duplicate</MenuItem>
+        <MenuItem onClick={() => setAnchorEl(null)} sx={{ color: 'error.main' }}>
+          Delete
+        </MenuItem>
+      </Menu>
+    </>
+  );
+}
 ```
 
-Keyboard navigation is built in: Arrow keys navigate items, Home/End jump to first/last, typing jumps to item matching the letter (type-ahead).
+**Keyboard behavior (automatic):**
+- Arrow Up/Down: navigate items
+- Enter/Space: select item
+- Escape: close menu and return focus to trigger
+- Home/End: jump to first/last item
 
----
-
-## Tabs
-
-```tsx
-<Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-  <Tabs
-    value={activeTab}
-    onChange={(_, newValue) => setActiveTab(newValue)}
-    aria-label="Product details tabs"
-  >
-    <Tab label="Overview" id="tab-overview" aria-controls="panel-overview" />
-    <Tab label="Specs" id="tab-specs" aria-controls="panel-specs" />
-    <Tab label="Reviews" id="tab-reviews" aria-controls="panel-reviews" />
-  </Tabs>
-</Box>
-
-<TabPanel value={activeTab} index={0} id="panel-overview" aria-labelledby="tab-overview">
-  Overview content
-</TabPanel>
-<TabPanel value={activeTab} index={1} id="panel-specs" aria-labelledby="tab-specs">
-  Specs content
-</TabPanel>
-```
+## Tabs Keyboard Navigation
 
 ```tsx
-// TabPanel component
-function TabPanel({ children, value, index, ...props }: {
-  children: React.ReactNode;
-  value: number;
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box';
+
+interface TabPanelProps {
+  children?: React.ReactNode;
   index: number;
-  id: string;
-  'aria-labelledby': string;
-}) {
+  value: number;
+}
+
+function TabPanel({ children, value, index }: TabPanelProps) {
   return (
     <div
       role="tabpanel"
       hidden={value !== index}
-      {...props}
+      id={`product-tabpanel-${index}`}
+      aria-labelledby={`product-tab-${index}`}
     >
       {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
 }
+
+function ProductTabs() {
+  const [value, setValue] = useState(0);
+
+  return (
+    <Box>
+      <Tabs
+        value={value}
+        onChange={(_, newValue) => setValue(newValue)}
+        aria-label="Product details"
+      >
+        <Tab label="Description" id="product-tab-0" aria-controls="product-tabpanel-0" />
+        <Tab label="Specifications" id="product-tab-1" aria-controls="product-tabpanel-1" />
+        <Tab label="Reviews" id="product-tab-2" aria-controls="product-tabpanel-2" />
+      </Tabs>
+      <TabPanel value={value} index={0}>Description content</TabPanel>
+      <TabPanel value={value} index={1}>Specifications content</TabPanel>
+      <TabPanel value={value} index={2}>Reviews content</TabPanel>
+    </Box>
+  );
+}
 ```
 
----
+**Keyboard behavior (automatic):**
+- Arrow Left/Right: move between tabs
+- Home/End: jump to first/last tab
+- Enter/Space: activate focused tab
 
-## Alerts and Notifications
+## Alert — role="alert" vs role="status"
 
 ```tsx
-// Alert with role — for important messages
-<Alert severity="error" role="alert">      {/* assertive: interrupts */}
+import Alert from '@mui/material/Alert';
+
+// role="alert" — interrupts screen reader immediately (errors, warnings)
+<Alert severity="error" role="alert">
   Payment failed. Please check your card details.
 </Alert>
 
-<Alert severity="success" role="status">   {/* polite: waits for idle */}
-  Your profile has been updated.
+// role="status" (aria-live="polite") — announces when user is idle (success, info)
+<Alert severity="success" role="status">
+  Profile saved successfully.
 </Alert>
 
-// Snackbar — transient message, use polite
+// Snackbar announces automatically via aria-live region
+import Snackbar from '@mui/material/Snackbar';
+
 <Snackbar
   open={open}
-  autoHideDuration={6000}
-  onClose={handleClose}
-  // Accessible position announcement
->
-  <Alert
-    severity="success"
-    role="status"
-    aria-live="polite"
-    onClose={handleClose}
-  >
-    File uploaded successfully.
-  </Alert>
-</Snackbar>
+  autoHideDuration={4000}
+  onClose={() => setOpen(false)}
+  message="Changes saved"
+/>
 ```
 
----
-
-## Tables
+## Form Patterns — FormControl + FormLabel Chain
 
 ```tsx
-<TableContainer component={Paper}>
-  <Table aria-label="Employee roster" aria-describedby="table-description">
-    <caption id="table-description" style={{ captionSide: 'bottom', textAlign: 'left' }}>
-      Showing 10 of 143 employees. Use sort buttons to reorder.
-    </caption>
-    <TableHead>
-      <TableRow>
-        <TableCell>
-          <TableSortLabel
-            active={orderBy === 'name'}
-            direction={orderBy === 'name' ? order : 'asc'}
-            onClick={() => handleSort('name')}
-          >
-            Name
-          </TableSortLabel>
-        </TableCell>
-        <TableCell align="right">
-          <TableSortLabel
-            active={orderBy === 'salary'}
-            direction={orderBy === 'salary' ? order : 'asc'}
-            onClick={() => handleSort('salary')}
-          >
-            Salary
-          </TableSortLabel>
-        </TableCell>
-        <TableCell>Actions</TableCell>
-      </TableRow>
-    </TableHead>
-    <TableBody>
-      {rows.map((row) => (
-        <TableRow key={row.id} hover>
-          <TableCell component="th" scope="row">{row.name}</TableCell>
-          <TableCell align="right">{row.salary}</TableCell>
-          <TableCell>
-            <IconButton aria-label={`Edit ${row.name}`} size="small">
-              <EditIcon fontSize="small" />
-            </IconButton>
-          </TableCell>
-        </TableRow>
-      ))}
-    </TableBody>
-  </Table>
-</TableContainer>
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormHelperText from '@mui/material/FormHelperText';
+import Checkbox from '@mui/material/Checkbox';
+import RadioGroup from '@mui/material/RadioGroup';
+import Radio from '@mui/material/Radio';
+
+// Checkbox group — grouped with fieldset semantics
+function NotificationPrefs() {
+  return (
+    <FormControl component="fieldset">
+      <FormLabel component="legend">Notification preferences</FormLabel>
+      <FormGroup>
+        <FormControlLabel
+          control={<Checkbox name="email" />}
+          label="Email notifications"
+        />
+        <FormControlLabel
+          control={<Checkbox name="sms" />}
+          label="SMS notifications"
+        />
+      </FormGroup>
+      <FormHelperText>Choose at least one option</FormHelperText>
+    </FormControl>
+  );
+}
+
+// Radio group
+function PlanSelector() {
+  const [plan, setPlan] = useState('basic');
+
+  return (
+    <FormControl>
+      <FormLabel id="plan-label">Subscription plan</FormLabel>
+      <RadioGroup
+        aria-labelledby="plan-label"
+        value={plan}
+        onChange={(e) => setPlan(e.target.value)}
+      >
+        <FormControlLabel value="basic" control={<Radio />} label="Basic — $9/mo" />
+        <FormControlLabel value="pro" control={<Radio />} label="Pro — $29/mo" />
+        <FormControlLabel value="enterprise" control={<Radio />} label="Enterprise" />
+      </RadioGroup>
+    </FormControl>
+  );
+}
 ```
 
-Key points: `component="th" scope="row"` for row headers, `aria-label` with row context on action buttons, `aria-sort` is handled by `TableSortLabel`.
-
----
-
-## Tooltip Accessibility
+## Icon Accessibility — Decorative vs Meaningful
 
 ```tsx
-// On a focusable element — accessible by default (shows on focus and hover)
-<Tooltip title="Delete this record">
-  <IconButton aria-label="Delete record">
-    <DeleteIcon />
-  </IconButton>
-</Tooltip>
+import SvgIcon from '@mui/material/SvgIcon';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import WarningIcon from '@mui/icons-material/Warning';
+import Typography from '@mui/material/Typography';
 
-// On a non-focusable element — must add tabIndex or use a wrapper
-<Tooltip title="This feature requires Pro subscription">
-  <span tabIndex={0}>
-    <Chip label="Pro Feature" />
-  </span>
-</Tooltip>
+// Decorative icon — hidden from screen readers
+// (icon next to visible text — the text already conveys the meaning)
+<Button startIcon={<SaveIcon aria-hidden="true" />}>
+  Save changes
+</Button>
 
-// Tooltip as the accessible name (not just supplementary)
-// If the tooltip IS the label, the button still needs aria-label
-<Tooltip title="Save document (Ctrl+S)">
-  <IconButton aria-label="Save document">
-    <SaveIcon />
-  </IconButton>
-</Tooltip>
-```
+// Meaningful icon — conveys unique information without adjacent text
+<CheckCircleIcon
+  aria-label="Verified"
+  sx={{ color: 'success.main' }}
+/>
 
----
-
-## Skip Navigation and Focus Management
-
-```tsx
-// Skip navigation link — first focusable element on page
-<Box
-  component="a"
-  href="#main-content"
-  sx={{
-    position: 'absolute',
-    transform: 'translateY(-100%)',
-    transition: 'transform 0.3s',
-    '&:focus': { transform: 'translateY(0)' },
-    zIndex: 9999,
-    p: 2,
-    backgroundColor: 'primary.main',
-    color: 'white',
-    textDecoration: 'none',
-  }}
->
-  Skip to main content
+// Icon with visible text — hide the icon
+<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+  <WarningIcon aria-hidden="true" sx={{ color: 'warning.main' }} />
+  <Typography>Your session will expire in 5 minutes</Typography>
 </Box>
 
-<Box component="main" id="main-content" tabIndex={-1}>
-  {/* Main content */}
+// Status indicator — use aria-label or visually-hidden text
+<Box sx={{ display: 'flex', alignItems: 'center' }}>
+  <CheckCircleIcon sx={{ color: 'success.main' }} aria-hidden="true" />
+  <Typography component="span" sx={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)' }}>
+    Active
+  </Typography>
 </Box>
 ```
 
+## Color Contrast (WCAG AA)
+
+WCAG AA requires:
+- Normal text: 4.5:1 contrast ratio
+- Large text (18pt+ or 14pt+ bold): 3:1
+- UI components (borders, icons): 3:1
+
 ```tsx
-// Programmatic focus management — focus heading after navigation
+// MUI default theme passes WCAG AA for primary, secondary, error, warning, success, info
+
+// BAD — custom color with insufficient contrast on white background
+<Typography sx={{ color: '#aaa' }}>Light gray text</Typography>
+
+// GOOD — use theme palette tokens which are contrast-tested
+<Typography color="text.primary">Primary text</Typography>
+<Typography color="text.secondary">Secondary text (passes AA on white)</Typography>
+
+// When using custom colors, verify with a contrast checker
+// theme.palette.grey[600] (#757575) has 4.6:1 on white — passes AA
+<Typography sx={{ color: 'grey.700' }}>Safe gray</Typography>
+
+// Disabled state — MUI uses lower contrast intentionally (WCAG exception for disabled)
+<Button disabled>Disabled</Button>
+```
+
+## Focus Management
+
+```tsx
 import { useRef, useEffect } from 'react';
 
+// Move focus to a heading after navigation (SPA route change)
 function PageContent({ title }: { title: string }) {
   const headingRef = useRef<HTMLHeadingElement>(null);
 
@@ -443,184 +394,180 @@ function PageContent({ title }: { title: string }) {
   return (
     <Typography
       variant="h1"
+      tabIndex={-1}       // focusable programmatically, not in tab order
       ref={headingRef}
-      tabIndex={-1}    // focusable programmatically, not by keyboard Tab
-      sx={{ '&:focus': { outline: 'none' } }}  // hide visible outline on h1
+      sx={{ outline: 'none' }}
     >
       {title}
     </Typography>
   );
 }
+
+// Move focus to first error on form submit failure
+function FormWithFocusError() {
+  const firstErrorRef = useRef<HTMLInputElement>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const errors = await validate();
+    if (errors.length) {
+      firstErrorRef.current?.focus();
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <TextField
+        error
+        helperText="Required"
+        inputRef={firstErrorRef}
+        label="Email"
+      />
+    </form>
+  );
+}
 ```
 
----
+## Skip Navigation Link
 
-## Color Contrast with MUI Theme
+For keyboard users to bypass repeated navigation:
 
-```ts
-import { createTheme } from '@mui/material/styles';
-
-const theme = createTheme({
-  palette: {
-    // MUI calculates contrast ratios — test with browser tools
-    primary: {
-      main: '#1976d2',          // 4.6:1 on white — passes AA
-      contrastText: '#ffffff',
-    },
-    error: {
-      main: '#d32f2f',          // 5.8:1 on white — passes AA
-    },
-    // Custom colors must be manually verified
-    // Tool: https://webaim.org/resources/contrastchecker/
-  },
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          // Ensure focus is always visible (some resets remove it)
-          '&:focus-visible': {
-            outline: '3px solid',
-            outlineColor: 'primary.main',
-            outlineOffset: '2px',
-          },
+```tsx
+// Place at the very top of the page, before the app shell
+function SkipNav() {
+  return (
+    <Box
+      component="a"
+      href="#main-content"
+      sx={{
+        position: 'absolute',
+        left: '-9999px',
+        top: 'auto',
+        width: 1,
+        height: 1,
+        overflow: 'hidden',
+        '&:focus': {
+          position: 'static',
+          width: 'auto',
+          height: 'auto',
+          overflow: 'visible',
+          p: 1,
+          backgroundColor: 'primary.main',
+          color: 'primary.contrastText',
+          zIndex: 9999,
         },
-      },
-    },
-  },
-});
+      }}
+    >
+      Skip to main content
+    </Box>
+  );
+}
+
+// In layout:
+<SkipNav />
+<AppBar>...</AppBar>
+<Box component="main" id="main-content" tabIndex={-1}>
+  {children}
+</Box>
 ```
 
----
-
-## Common A11y Violations with MUI
-
-### 1. Missing Input Label (most common)
+## Visually Hidden Text (Screen Reader Only)
 
 ```tsx
-// WRONG — placeholder is not a label
-<TextField placeholder="Enter your email" />
+// Utility sx for visually hidden but screen-reader accessible text
+const srOnly = {
+  position: 'absolute',
+  width: '1px',
+  height: '1px',
+  padding: 0,
+  margin: '-1px',
+  overflow: 'hidden',
+  clip: 'rect(0, 0, 0, 0)',
+  whiteSpace: 'nowrap',
+  border: 0,
+} as const;
 
-// RIGHT — use label prop
-<TextField label="Email address" placeholder="name@example.com" />
-```
-
-### 2. Icon Button Without Label
-
-```tsx
-// WRONG
-<IconButton onClick={handleDelete}><DeleteIcon /></IconButton>
-
-// RIGHT
-<IconButton aria-label="Delete item" onClick={handleDelete}><DeleteIcon /></IconButton>
-```
-
-### 3. Dialog Without aria-labelledby
-
-```tsx
-// WRONG
-<Dialog open={open}><DialogTitle>Confirm</DialogTitle></Dialog>
-
-// RIGHT
-<Dialog open={open} aria-labelledby="confirm-dialog-title">
-  <DialogTitle id="confirm-dialog-title">Confirm</DialogTitle>
-</Dialog>
-```
-
-### 4. Color as Only Error Indicator
-
-```tsx
-// WRONG — error conveyed only by red color
-<TextField sx={{ '& fieldset': { borderColor: 'red' } }} />
-
-// RIGHT — error + text message
-<TextField error helperText="This field is required" />
-```
-
-### 5. Non-descriptive Link/Button Text
-
-```tsx
-// WRONG — "click here" or "read more" is meaningless out of context
-<Button>Read more</Button>
-
-// RIGHT — descriptive
-<Button>Read more about pricing plans</Button>
-// Or visually hidden supplement:
-<Button>
-  Read more <VisuallyHidden>about our pricing plans</VisuallyHidden>
+// Usage: add context for screen readers without showing it visually
+<Button onClick={handleDelete}>
+  Delete
+  <Box component="span" sx={srOnly}> {itemName}</Box>
 </Button>
+// Screen reader: "Delete Product XYZ, button"
+// Visual user sees: "Delete"
 ```
 
-### 6. Menu Trigger Without aria-haspopup
+## Loading States
 
 ```tsx
-// WRONG
-<Button onClick={openMenu}>Actions</Button>
+import CircularProgress from '@mui/material/CircularProgress';
 
-// RIGHT
-<Button
-  aria-haspopup="menu"
-  aria-controls={open ? 'actions-menu' : undefined}
-  aria-expanded={open}
-  onClick={openMenu}
->
-  Actions
-</Button>
-```
+// BAD — spinner with no accessible announcement
+<CircularProgress />
 
----
+// GOOD — role + aria-label for standalone spinners
+<CircularProgress aria-label="Loading products" />
 
-## VisuallyHidden Utility Component
-
-```tsx
-// Visually hidden but readable by screen readers
-const VisuallyHidden = ({ children }: { children: React.ReactNode }) => (
-  <Box
-    component="span"
-    sx={{
-      position: 'absolute',
-      width: '1px',
-      height: '1px',
-      padding: 0,
-      margin: '-1px',
-      overflow: 'hidden',
-      clip: 'rect(0, 0, 0, 0)',
-      whiteSpace: 'nowrap',
-      border: 0,
-    }}
-  >
-    {children}
-  </Box>
-);
-
-// Usage
-<IconButton aria-label="notifications">
-  <NotificationsIcon />
-  {unreadCount > 0 && (
-    <Badge badgeContent={unreadCount} color="error">
-      <VisuallyHidden>{unreadCount} unread notifications</VisuallyHidden>
-    </Badge>
+// GOOD — live region announces to screen reader when loading changes
+<Box aria-live="polite" aria-busy={isLoading}>
+  {isLoading ? (
+    <CircularProgress aria-label="Loading" />
+  ) : (
+    <ProductList products={products} />
   )}
-</IconButton>
+</Box>
+
+// Button loading state (MUI Lab LoadingButton)
+import LoadingButton from '@mui/lab/LoadingButton';
+
+<LoadingButton
+  loading={isSubmitting}
+  loadingIndicator="Saving..."
+  variant="contained"
+>
+  Save
+</LoadingButton>
 ```
 
----
+## Common Violations and Fixes
 
-## Testing A11y
+| Violation | Fix |
+|-----------|-----|
+| Icon button without label | Add `aria-label` to `<IconButton>` |
+| Input without label | Add `label` prop to `<TextField>` or `inputProps={{ 'aria-label': '...' }}` |
+| Dialog without aria-labelledby | Add `aria-labelledby` pointing to `<DialogTitle>` id |
+| Color as the only indicator | Add text, icon, or pattern alongside color |
+| Tab panel not linked to tab | Use matching `id`/`aria-controls` / `aria-labelledby` |
+| Low-contrast custom color | Check ratio; use `theme.palette` tokens |
+| Missing focus outline | Never set `outline: 0` without a `:focus-visible` replacement |
+| Spinner with no announcement | Add `aria-label` or `aria-live` region |
+| Tooltip replacing aria-label | Tooltip is not accessible — add explicit `aria-label` too |
+| Form group without legend | Wrap in `<FormControl component="fieldset">` with `<FormLabel component="legend">` |
+
+## Testing Accessibility
 
 ```bash
-# Install axe-core testing utilities
-npm install --save-dev @axe-core/react jest-axe
+# Automated: axe-core via jest-axe
+npm install --save-dev jest-axe @types/jest-axe
 
-# With jest-axe
+# In tests:
 import { render } from '@testing-library/react';
 import { axe, toHaveNoViolations } from 'jest-axe';
-
 expect.extend(toHaveNoViolations);
 
-test('form has no a11y violations', async () => {
-  const { container } = render(<MyForm />);
+test('DatePicker has no accessibility violations', async () => {
+  const { container } = render(
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <DatePicker label="Date" value={null} onChange={() => {}} />
+    </LocalizationProvider>
+  );
   expect(await axe(container)).toHaveNoViolations();
 });
 ```
 
-Browser tools: Chrome DevTools Accessibility panel, axe DevTools extension, WAVE, Lighthouse (accessibility audit).
+Manual testing checklist:
+- Tab through all interactive elements — focus order must be logical
+- Press Enter/Space to activate buttons and links
+- Press Escape to close dialogs, menus, and pickers
+- Test with screen reader: NVDA+Firefox (Windows), VoiceOver+Safari (macOS/iOS)
+- Zoom to 200% — layout must remain usable
+- Test with keyboard only (unplug mouse)
