@@ -766,3 +766,298 @@ const dataSource: GridDataSource = {
 | Excel export | — | — | ✓ |
 | Cell selection | — | — | ✓ |
 | Clipboard paste | — | — | ✓ |
+
+---
+
+## Community Tier — Advanced Recipes
+
+These powerful patterns work with the free `@mui/x-data-grid` (MIT).
+
+### Detail Panels — Single Open at a Time
+
+```tsx
+const [expandedRowId, setExpandedRowId] = useState<GridRowId | null>(null);
+
+<DataGrid
+  rows={rows}
+  columns={columns}
+  getDetailPanelContent={({ row }) => (
+    <Box sx={{ p: 2 }}>
+      <Typography variant="h6">{row.name}</Typography>
+      <Typography color="text.secondary">{row.description}</Typography>
+    </Box>
+  )}
+  getDetailPanelHeight={() => 'auto'}
+  detailPanelExpandedRowIds={expandedRowId ? [expandedRowId] : []}
+  onDetailPanelExpandedRowIdsChange={(ids) => {
+    // Only keep the last clicked — single panel open at a time
+    const newId = ids.find((id) => id !== expandedRowId);
+    setExpandedRowId(newId ?? null);
+  }}
+/>
+```
+
+### Expand/Collapse All Detail Panels
+
+```tsx
+const apiRef = useGridApiRef();
+
+<Button onClick={() => {
+  const allIds = rows.map((r) => r.id);
+  apiRef.current.setExpandedDetailPanels(new Set(allIds));
+}}>
+  Expand All
+</Button>
+<Button onClick={() => apiRef.current.setExpandedDetailPanels(new Set())}>
+  Collapse All
+</Button>
+
+<DataGrid apiRef={apiRef} rows={rows} columns={columns} ... />
+```
+
+### Custom Edit Components — Linked Selects
+
+When changing one field should update another's options (e.g., Type → Account):
+
+```tsx
+function LinkedSelectEditCell({ id, field, api, row }: GridRenderEditCellParams) {
+  // Account options depend on the selected Type
+  const typeValue = row.type; // current type in the row
+  const accountOptions = useMemo(
+    () => getAccountsForType(typeValue),
+    [typeValue],
+  );
+
+  return (
+    <Select
+      value={row.account ?? ''}
+      onChange={(e) => api.setEditCellValue({ id, field, value: e.target.value })}
+      fullWidth
+      size="small"
+    >
+      {accountOptions.map((opt) => (
+        <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
+      ))}
+    </Select>
+  );
+}
+
+const columns: GridColDef[] = [
+  {
+    field: 'type',
+    headerName: 'Type',
+    editable: true,
+    type: 'singleSelect',
+    valueOptions: ['Income', 'Expense', 'Transfer'],
+  },
+  {
+    field: 'account',
+    headerName: 'Account',
+    editable: true,
+    renderEditCell: (params) => <LinkedSelectEditCell {...params} />,
+  },
+];
+```
+
+### Bulk Editing — Save/Discard Pattern
+
+Collect edits locally, then batch-commit to the server:
+
+```tsx
+function BulkEditGrid({ rows: initialRows, columns }) {
+  const [pendingChanges, setPendingChanges] = useState<Map<GridRowId, any>>(new Map());
+  const [deletedIds, setDeletedIds] = useState<Set<GridRowId>>(new Set());
+
+  // Merge pending changes into display rows
+  const displayRows = useMemo(
+    () => initialRows
+      .filter((r) => !deletedIds.has(r.id))
+      .map((r) => (pendingChanges.has(r.id) ? { ...r, ...pendingChanges.get(r.id) } : r)),
+    [initialRows, pendingChanges, deletedIds],
+  );
+
+  const processRowUpdate = useCallback((newRow: any, oldRow: any) => {
+    setPendingChanges((prev) => new Map(prev).set(newRow.id, newRow));
+    return newRow; // optimistic — don't call API yet
+  }, []);
+
+  const handleSave = async () => {
+    // Batch all changes to server
+    await fetch('/api/users/bulk', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        updates: Array.from(pendingChanges.values()),
+        deletes: Array.from(deletedIds),
+      }),
+    });
+    setPendingChanges(new Map());
+    setDeletedIds(new Set());
+  };
+
+  const handleDiscard = () => {
+    setPendingChanges(new Map());
+    setDeletedIds(new Set());
+  };
+
+  const hasChanges = pendingChanges.size > 0 || deletedIds.size > 0;
+
+  return (
+    <>
+      <Box sx={{ display: 'flex', gap: 1, mb: 1 }}>
+        <Button variant="contained" disabled={!hasChanges} onClick={handleSave}>
+          Save ({pendingChanges.size} edits, {deletedIds.size} deletes)
+        </Button>
+        <Button disabled={!hasChanges} onClick={handleDiscard}>Discard</Button>
+      </Box>
+      <DataGrid
+        rows={displayRows}
+        columns={columns}
+        editMode="row"
+        processRowUpdate={processRowUpdate}
+      />
+    </>
+  );
+}
+```
+
+### Conditional Row Styling
+
+```tsx
+<DataGrid
+  rows={rows}
+  columns={columns}
+  getRowClassName={(params) => {
+    if (params.row.status === 'overdue') return 'row-overdue';
+    if (params.row.isAggregate) return 'row-aggregate';
+    return '';
+  }}
+  sx={{
+    '& .row-overdue': {
+      bgcolor: 'error.light',
+      '&:hover': { bgcolor: 'error.main', color: 'error.contrastText' },
+    },
+    '& .row-aggregate': {
+      fontWeight: 700,
+      bgcolor: 'action.hover',
+    },
+    // Alternate row backgrounds
+    '& .MuiDataGrid-row:nth-of-type(even)': {
+      bgcolor: 'action.hover',
+    },
+    // Remove focus outline
+    '& .MuiDataGrid-cell:focus, & .MuiDataGrid-columnHeader:focus': {
+      outline: 'none',
+    },
+    // Custom selection color
+    '& .MuiDataGrid-row.Mui-selected': {
+      bgcolor: 'primary.light',
+      '&:hover': { bgcolor: 'primary.main', color: 'primary.contrastText' },
+    },
+  }}
+/>
+```
+
+### Action Column with Row Operations
+
+```tsx
+const columns: GridColDef[] = [
+  // ... data columns
+  {
+    field: 'actions',
+    headerName: 'Actions',
+    type: 'actions',
+    width: 120,
+    getActions: (params) => [
+      <GridActionsCellItem
+        icon={<EditIcon />}
+        label="Edit"
+        onClick={() => handleEdit(params.row)}
+      />,
+      <GridActionsCellItem
+        icon={<DeleteIcon />}
+        label="Delete"
+        onClick={() => handleDelete(params.id)}
+        showInMenu  // moves to "..." overflow menu
+      />,
+      <GridActionsCellItem
+        icon={<ContentCopyIcon />}
+        label="Duplicate"
+        onClick={() => handleDuplicate(params.row)}
+        showInMenu
+      />,
+    ],
+  },
+];
+```
+
+### Custom Filter Operators
+
+```tsx
+// "Overdue by X days" custom operator
+const overdueOperator: GridFilterOperator = {
+  label: 'Overdue by (days)',
+  value: 'overdueByDays',
+  getApplyFilterFn: (filterItem) => {
+    if (!filterItem.value) return null;
+    const days = Number(filterItem.value);
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - days);
+    return (value) => {
+      if (!value) return false;
+      return new Date(value) < cutoff;
+    };
+  },
+  InputComponent: GridFilterInputValue,
+  InputComponentProps: { type: 'number' },
+};
+
+// "Is any of" multi-value operator
+const isAnyOfOperator: GridFilterOperator = {
+  label: 'Is any of',
+  value: 'isAnyOf',
+  getApplyFilterFn: (filterItem) => {
+    if (!filterItem.value?.length) return null;
+    const values = new Set(filterItem.value);
+    return (value) => values.has(value);
+  },
+  InputComponent: MultiValueFilterInput, // your custom multi-select input
+};
+
+const columns: GridColDef[] = [
+  {
+    field: 'dueDate',
+    headerName: 'Due Date',
+    type: 'date',
+    filterOperators: [...getGridDateOperators(), overdueOperator],
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    filterOperators: [...getGridStringOperators(), isAnyOfOperator],
+  },
+];
+```
+
+### "Always Show Selected" Filter Wrapper
+
+Keep selected rows visible even when they don't match the active filter:
+
+```tsx
+function wrapFilterToKeepSelected(
+  operator: GridFilterOperator,
+  selectedIds: Set<GridRowId>,
+): GridFilterOperator {
+  return {
+    ...operator,
+    getApplyFilterFn: (filterItem, column) => {
+      const baseFn = operator.getApplyFilterFn(filterItem, column);
+      if (!baseFn) return null;
+      return (value, row) => {
+        if (selectedIds.has(row.id)) return true; // always show selected
+        return baseFn(value, row);
+      };
+    },
+  };
+}
+```
