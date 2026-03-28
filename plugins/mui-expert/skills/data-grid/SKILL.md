@@ -1061,3 +1061,141 @@ function wrapFilterToKeepSelected(
   };
 }
 ```
+
+### Custom Detail Panel Toggle Column (Pro)
+
+Replace the default chevron with your own toggle button:
+
+```tsx
+import {
+  GRID_DETAIL_PANEL_TOGGLE_COL_DEF,
+  useGridApiContext,
+} from '@mui/x-data-grid-pro';
+
+function DetailToggleCell({ id }: { id: GridRowId }) {
+  const apiRef = useGridApiContext();
+  const isExpanded = apiRef.current.getExpandedDetailPanels().has(id);
+
+  return (
+    <IconButton
+      size="small"
+      aria-label={isExpanded ? 'collapse' : 'expand'}
+      onClick={(e) => {
+        e.stopPropagation();
+        const expanded = new Set(apiRef.current.getExpandedDetailPanels());
+        isExpanded ? expanded.delete(id) : expanded.add(id);
+        apiRef.current.setExpandedDetailPanels(expanded);
+      }}
+    >
+      {isExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+    </IconButton>
+  );
+}
+
+const columns: GridColDef[] = [
+  {
+    ...GRID_DETAIL_PANEL_TOGGLE_COL_DEF,
+    renderCell: (params) => <DetailToggleCell id={params.id} />,
+  },
+  // ... other columns
+];
+```
+
+### Toggle Detail on Row Click
+
+```tsx
+<DataGridPro
+  apiRef={apiRef}
+  rows={rows}
+  columns={columns}
+  onRowClick={(params, event) => {
+    // Skip if clicking inside a button or link
+    if ((event.target as HTMLElement).closest('button, a, [data-no-toggle]')) return;
+
+    const expanded = new Set(apiRef.current.getExpandedDetailPanels());
+    expanded.has(params.id) ? expanded.delete(params.id) : expanded.add(params.id);
+    apiRef.current.setExpandedDetailPanels(expanded);
+  }}
+  getDetailPanelContent={({ row }) => <RowDetail row={row} />}
+  getDetailPanelHeight={() => 'auto'}
+/>
+```
+
+### Form Inside Detail Panel (Master-Detail Editing)
+
+Embed a full edit form inside the detail panel instead of inline row editing:
+
+```tsx
+function DetailFormPanel({ row }: { row: any }) {
+  const apiRef = useGridApiContext();
+
+  return (
+    <Box sx={{ p: 2, maxWidth: 600 }}>
+      <EntityForm
+        metadata={userMetadata}
+        initialValues={row}
+        onSubmit={async (data) => {
+          await fetch(`/api/users/${row.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          });
+          apiRef.current.updateRows([data]); // refresh row in grid
+          // Collapse the panel after save
+          const expanded = new Set(apiRef.current.getExpandedDetailPanels());
+          expanded.delete(row.id);
+          apiRef.current.setExpandedDetailPanels(expanded);
+        }}
+        onCancel={() => {
+          const expanded = new Set(apiRef.current.getExpandedDetailPanels());
+          expanded.delete(row.id);
+          apiRef.current.setExpandedDetailPanels(expanded);
+        }}
+      />
+    </Box>
+  );
+}
+
+<DataGridPro
+  apiRef={apiRef}
+  rows={rows}
+  columns={columns}
+  getDetailPanelContent={({ row }) => <DetailFormPanel row={row} />}
+  getDetailPanelHeight={() => 'auto'}
+/>
+```
+
+### Expand/Collapse All from Header
+
+```tsx
+function ExpandAllHeader() {
+  const apiRef = useGridApiContext();
+  const expanded = apiRef.current.getExpandedDetailPanels();
+  const allExpanded = expanded.size === rows.length;
+
+  return (
+    <IconButton
+      size="small"
+      aria-label={allExpanded ? 'collapse all' : 'expand all'}
+      onClick={() => {
+        if (allExpanded) {
+          apiRef.current.setExpandedDetailPanels(new Set());
+        } else {
+          apiRef.current.setExpandedDetailPanels(new Set(rows.map((r) => r.id)));
+        }
+      }}
+    >
+      {allExpanded ? <UnfoldLessIcon /> : <UnfoldMoreIcon />}
+    </IconButton>
+  );
+}
+
+const columns: GridColDef[] = [
+  {
+    ...GRID_DETAIL_PANEL_TOGGLE_COL_DEF,
+    renderHeader: () => <ExpandAllHeader />,
+    renderCell: (params) => <DetailToggleCell id={params.id} />,
+  },
+  // ...
+];
+```
