@@ -329,3 +329,6 @@ Source: github.com/Mathews-Tom/Agentic-Design-Patterns (Gulli & Sauco, 424 pages
 **Cost awareness**: Each agent call + coordination + reflection loop = token expense. Balance quality vs. cost.
 **Success factors**: Clear separation of concerns, well-defined interfaces, error handling, context management, monitoring
 
+## MUI Advanced Patterns & Integration (2026-03-28)
+[MUI_Advanced_Patterns_Research_2026-03-28.md](MUI_Advanced_Patterns_Research_2026-03-28.md) — 10-topic comprehensive research covering Base UI unstyled components (useButton, useInput hooks), Joy UI customization, advanced form patterns (react-hook-form, Zod, Stepper wizards), virtualization for large datasets, Next.js App Router SSR setup, Grid v2 responsive layouts, animations (Collapse, Fade, Grow, Slide, Zoom, TransitionGroup), slots & slotProps API, RTL/i18n support, and React Testing Library patterns for portal components (Dialog, Menu, Popover)
+
