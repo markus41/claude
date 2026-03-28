@@ -475,3 +475,183 @@ Multi-cell selection + `Ctrl+C`/`Ctrl+V` with Excel/Sheets.
 | Excel clipboard copy/paste | — | — | ✓ |
 | Charts + DataGrid sync | — | — | ✓ |
 | AI assistant (NL queries) | — | — | ✓ |
+
+---
+
+## 100+ Custom Widget Ideas Catalog
+
+Exhaustive reference of buildable widgets organized by category. Every cell in a
+DataGrid is a React portal — anything that renders can live there.
+
+### DataGrid Cell Widgets (renderCell)
+
+**Status & State Cells:**
+- Animated status pill — Chip with Framer Motion layout animation between states (Active → Paused → Terminated)
+- Multi-state traffic light — three dots (availability, billing, compliance) each independently green/yellow/red
+- Pulse dot — CSS `@keyframes` radiate animation indicating "live" or "recently updated" rows
+- Countdown timer cell — live deadline countdown; amber at 48h, red at 24h, blinking colon
+- SLA breach indicator — thin bar draining left-to-right as SLA window closes (health bar)
+- Confidence score ring — tiny circular progress arc replacing a plain percentage number
+- Dual-state toggle cell — inline MUI Switch committing directly to API with optimistic rollback
+
+**Data Visualization Cells:**
+- Inline sparkline (trend) — area sparkline with highlighted last point, directional color
+- Bullet chart cell — thin bar against background range band (actual vs target in one cell)
+- Mini bar chart cell — 5-7 vertical SVG bars showing weekly totals with hover tooltip
+- Waterfall delta cell — positive/negative delta with colored arrow and background tint
+- Heatmap cell background — continuous color scale (white → orange → red) with auto-contrast text
+- Radial gauge cell — tiny half-circle gauge arc, fits in 60px column
+- Stacked proportion bar — full-width bar split into 2-4 colored segments (time split: design/dev/review)
+- Trend arrow with magnitude — arrow size scales logarithmically with change magnitude
+- Rating stars cell — interactive half-star rating committing on click
+- Scatter dot cluster — 10-30 tiny dots at x/y positions showing distribution
+
+**Content & Identity Cells:**
+- Avatar stack cell — up to 5 overlapping Avatars with "+N more" chip
+- Tag cloud cell — colored Chips, overflow-hidden with "+3 more" popover on hover
+- File type icon cell — richly styled icon (PDF/XLSX/PNG) with one-click download on hover
+- Image thumbnail cell — 40×40 lazy-loaded thumbnail with Popover zoom on hover
+- Code snippet cell — monospace syntax-highlighted text with popover expansion
+- Flag + country cell — 16×16 flag emoji/SVG beside country name
+- Severity badge cell — rounded square with color-coded left border
+- Priority indicator cell — 3-segment vertical bar like a battery icon for urgency
+
+**Action & Interaction Cells:**
+- One-click action cell — single IconButton for the most common row action
+- Split-button action cell — primary action + chevron opening secondary Menu
+- Inline numeric stepper — `-` / value / `+` for quantity without opening a form
+- Inline date edit cell — click opens DatePicker popover anchored to cell
+- Inline rich text cell — click opens Tiptap editor in Popover anchored to cell
+- Expandable JSON viewer — collapsed `{ ... }` expanding to formatted JSON tree in Collapse
+- Drag handle cell — DragIndicatorIcon enabling manual row reorder, persists on drop
+- Copy-to-clipboard cell — hover reveals clipboard icon, click copies with toast confirmation
+
+### DataGrid Row-Level Widgets
+
+- Detail panel as mini-form — row expansion reveals RHF form pre-populated from row data
+- Detail panel as micro-dashboard — expansion reveals sparklines, stat grid, event timeline
+- Detail panel as nested sub-grid — second DataGrid scoped to row's children (project → tasks)
+- Row-level activity feed — chronological event feed with avatars and timestamps
+- Row comparison mode — select two rows, diff-style view highlights differing cells
+- Pinned summary row — custom footer with aggregated statistics per column
+- Ghost row (drafts) — dashed border + transparent background for unsaved rows
+- Row-level skeleton loader — individual rows animate as skeletons during lazy load
+- Row health score bar — thin colored bar along left edge (like VS Code diagnostic markers)
+- Animated row flash on update — WebSocket-triggered green/red flash with CSS keyframe
+
+### DataGrid Toolbar & Panel Widgets
+
+- Global entity search bar — full-width Autocomplete searching across multiple fields
+- Live row count badge — Badge on filter button: "12 of 450 rows visible"
+- Saved views dropdown — Select restoring named grid state snapshots (filter/sort/columns)
+- Bulk action bar — toolbar morphs with Framer Motion to reveal bulk actions on selection
+- Density slider — Slider controlling row density beyond MUI's three built-in options
+- Column group toggle — toggle buttons showing/hiding logical column groups ("Financial", "Contact")
+- Time travel scrubber — Slider that reloads grid with historical snapshot data for that date
+- Import zone in toolbar — drag-drop CSV zone with column-mapping modal
+- Export format picker — split button for CSV/XLSX/JSON/filtered subset export
+- Active filter chips strip — removable Chips below toolbar showing each active filter
+
+### Form Widgets
+
+**Input Patterns:**
+- Autosave status indicator — floating Chip ("Saving…" / "Saved ✓" / "Error") near form title
+- Field completion progress ring — circular arc above submit button filling as fields complete
+- Smart address field — single TextField with Google Places autocomplete → splits into parts
+- Phone input with flag selector — flag picker Select + formatted phone TextField
+- Segmented control row — large icon+label toggle buttons replacing boring Select
+- Tag input field — type + Enter creates Chip; removable; whitelist or freeform
+- Dual-thumb range slider with histogram — Slider over histogram SVG showing distribution
+- Color picker field — swatch preview → full HSL picker popover with hex/rgb tabs
+- Icon picker field — searchable grid of icons in popover, selected appears as preview
+- Emoji picker field — same pattern for emoji (reactions, category markers, mood selectors)
+- Geolocation picker — embeddable map as form field; click to drop pin, lat/lng populate
+- Star rating input — interactive with keyboard accessibility and ARIA labels
+- Currency input — formats on blur, strips formatting on focus, locale-aware validation
+- Percentage input with live preview — typing shows live proportion bar below field
+
+**Multi-Step & Structural:**
+- Step indicator with completion state — checkmarks on complete, spring animation on current, warning on skipped
+- Accordion form sections — auto-expand next incomplete section after user collapses current
+- Collapsible optional fields — "Show advanced options" button with smooth Collapse
+- Inline validation summary panel — sticky panel listing all errors as clickable scroll-to links
+- Undo/redo form history — Ctrl+Z/Y traversing state snapshots in circular buffer
+- Dependency graph field — locked until upstream fields validate; tooltip explains requirements
+- Signature pad field — canvas Box for mouse/stylus signature → base64 PNG
+- Rich text field with toolbar — Tiptap editor styled with MUI Paper/IconButton
+- File upload with preview grid — thumbnail grid (images) or file type icons with reorder
+- Conditional field reveal animation — motion.div spring entry instead of hard visibility toggle
+
+### Dashboard Widgets
+
+**KPI & Metric:**
+- Flip counter KPI card — digits "flip" with rotateX animation (departures board style)
+- Trend comparison KPI — current + previous + delta with directional arrow and color tint
+- Target progress card — bold number + subtitle + horizontal bar toward target
+- Sparkline KPI card — full-width ghost area chart behind the stat number
+- Multi-metric ticker — horizontal strip cycling 5-10 metrics with slide transition
+- Real-time gauge widget — half-circle SVG gauge with animated needle (D3-free, theme colors)
+- Scorecard with grade — letter grade (A-F) in large bold colored circle + explanation
+- Comparison donut — two-value donut with center text showing change, animated on mount
+
+**Temporal:**
+- Activity heatmap calendar — GitHub-style 52-week contribution grid with hover tooltips
+- Gantt mini-widget — compact horizontal bar chart (tasks with start/end, color by status)
+- Timeline feed widget — vertical timeline with date markers, event icons, descriptions
+- Upcoming events countdown — next 3-5 events with T-minus countdown timers
+- Rolling 7-day bar chart — auto-scoped BarChart with today's bar highlighted
+- SLA tracking grid — mini grid showing entity name, due date, colored urgency bar
+
+**Status & Health:**
+- Service health board — grid of service + status dot + uptime %; click for 30-day sparkline
+- Capacity utilization matrix — 2D grid (team × week) with heatmap cell backgrounds
+- Alert severity stack — stacked Paper with critical/high/medium/low colored bands
+- Pipeline stage funnel — horizontal SVG funnel with counts; click filters main grid
+- Quota usage bar stack — single full-width bar divided into colored quota categories
+- Dependency status tree — RichTreeView showing service dependencies with colored status
+- Data freshness indicator — "Last synced X min ago" with pulsing dot; amber/red thresholds
+
+**Collaboration & Social:**
+- Online presence widget — avatar row with green/gray dots + "last active X min ago" hover
+- Activity feed widget — scrollable recent actions with avatars, infinite scroll
+- Comment thread widget — threaded comments in Card with indent, new comments animate in
+- Leaderboard widget — ranked list with medal icons, animated number changes
+- Recent changes diff widget — last 5 field changes with old → new + timestamp + who
+- Team capacity ring cluster — cluster of small radial gauges per team member
+
+**Content & Navigation:**
+- Quick search command palette — Cmd+K modal with fuzzy search across entities/commands/nav
+- Draggable kanban column — drag-and-drop Paper cards in horizontal scroll with elevation changes
+- File explorer tree widget — RichTreeView as file browser with context menu + inline rename
+- Breadcrumb navigator — clickable breadcrumbs doubling as drill-down navigation
+- Resizable split pane — draggable divider with persisted ratio to localStorage
+- Pinned notes widget — drag-to-reorder, click-to-expand, pin/unpin toggle
+- Shortcut grid widget — configurable 4×3 grid of labeled icon buttons for frequent actions
+
+### Embedded & Overlay Widgets
+
+- Contextual side panel — Drawer from right with full entity context (stats, activity, related)
+- Floating action ring — SpeedDial with spring-animated domain action icons
+- In-app notification center — IconButton badge → Popover feed, grouped by type, dismissable
+- Persistent help tooltip — Tooltip that persists on click with description + "Learn more"
+- Spotlight onboarding overlay — semi-transparent overlay with clip-path circle highlighting elements
+- Inline status banner — thin top Alert sliding in during async operations
+- Right-click context menu — onContextMenu opening styled Menu with row-specific actions
+- Sticky comparison tray — bottom tray slides up showing 2-4 pinned items side-by-side
+- Floating chat bubble — FAB opening embedded chat interface in floating Paper
+- Global progress overlay — top-of-page LinearProgress (YouTube/GitHub style)
+- Toast queue with actions — stacking snackbars with Undo/Retry/View buttons
+- Popover mini-chart — hover any metric opens 120×80 sparkline/bar chart for quick context
+
+### Theme & Global Experience Widgets
+
+- Live theme switcher — floating Fab cycling named themes with CSS variable transition
+- User-configurable layout grid — react-grid-layout + Paper for drag/resize/add/remove dashboards
+- Density mode toggle — icon button toggling "information dense" vs "comfortable" via CSS vars
+- Dark/light mode toggle with transition — clip-path radial wipe animation from click position
+- Keyboard shortcut overlay — `?` opens full-screen modal with two-column shortcut grid
+- Breadcrumb-as-navigation — persistent breadcrumb where each crumb is a dropdown of siblings
+- Per-entity color labeling — user-assigned color as left-border accent across all views
+- Widget loading skeleton system — purpose-built skeletons mirroring actual content shape
+- Empty state illustrations — illustrated empty states with contextual CTAs (not "No data found")
+- Confetti burst on milestone — canvas-confetti beneath celebratory Snackbar on key achievements
