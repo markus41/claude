@@ -774,3 +774,85 @@ function SearchForm() {
 - You want a larger set of ready-made primitives (Radix has Dialog, Popover, Toast, Tooltip, etc.)
 - You prefer the composition/slot pattern over hooks
 - Your project is purely Tailwind-based and you want the tightest Tailwind integration (Headless UI)
+
+---
+
+## Advanced: OwnerState-Driven Slots
+
+Slots receive `ownerState` — the component's internal state plus custom flags you inject.
+
+```tsx
+import Switch from '@mui/base/Switch';
+import { styled } from '@mui/system';
+
+// Extended owner state with custom "critical" flag
+interface AdvancedOwnerState {
+  checked: boolean;
+  disabled: boolean;
+  focusVisible: boolean;
+  critical?: boolean;
+}
+
+const Track = styled('span', {
+  shouldForwardProp: (prop) => prop !== 'ownerState',
+})<{ ownerState: AdvancedOwnerState }>(({ ownerState }) => ({
+  width: 46,
+  height: 24,
+  borderRadius: 999,
+  backgroundColor: ownerState.checked
+    ? ownerState.critical ? 'rgba(239,68,68,0.25)' : 'rgba(56,189,248,0.25)'
+    : 'rgba(15,23,42,0.85)',
+  transition: 'background-color 150ms ease',
+}));
+
+const Thumb = styled('span', {
+  shouldForwardProp: (prop) => prop !== 'ownerState',
+})<{ ownerState: AdvancedOwnerState }>(({ ownerState }) => ({
+  position: 'absolute',
+  top: 2,
+  left: ownerState.checked ? 24 : 2,
+  width: 20,
+  height: 20,
+  borderRadius: '50%',
+  background: 'linear-gradient(135deg, #f9fafb, #e5e7eb)',
+  transition: 'left 150ms cubic-bezier(0.4, 0, 0.2, 1)',
+}));
+
+// Inject custom ownerState via slotProps callback
+<Switch
+  slots={{ track: Track, thumb: Thumb, input: 'input' }}
+  slotProps={{
+    track: (baseOwnerState) => ({
+      ownerState: { ...baseOwnerState, critical: true } as AdvancedOwnerState,
+    }),
+    thumb: (baseOwnerState) => ({
+      ownerState: { ...baseOwnerState, critical: true } as AdvancedOwnerState,
+    }),
+    input: { className: 'sr-only' },
+  }}
+/>
+```
+
+**Pattern applies to all Base UI components** — Tabs, Menus, Comboboxes, Sliders.
+Custom `ownerState` flags let you drive complex visual states from a single prop.
+
+---
+
+## Advanced: Slot Wrappers for Third-Party Libraries
+
+Wrap external components in slot-compatible components that filter ownerState:
+
+```tsx
+// Prevent ownerState from leaking onto DOM of a third-party component
+const ChartSlot = forwardRef<HTMLDivElement, { ownerState?: any; data: number[] }>(
+  ({ ownerState, data, ...props }, ref) => {
+    // Extract only what we need from ownerState
+    const isExpanded = ownerState?.expanded ?? false;
+    return (
+      <div ref={ref} {...props}>
+        <ThirdPartyChart data={data} height={isExpanded ? 400 : 200} />
+      </div>
+    );
+  },
+);
+```

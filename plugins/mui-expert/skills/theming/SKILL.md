@@ -770,3 +770,156 @@ theme = responsiveFontSizes(theme);
 
 export default theme;
 ```
+
+---
+
+## Extensible Theme Packaging
+
+Ship a branded theme as an npm package for multi-app reuse.
+
+```ts
+// @your-org/mui-theme/src/index.ts
+import { createTheme, type ThemeOptions } from '@mui/material/styles';
+import { tokens } from './tokens';
+import { componentOverrides } from './components';
+
+// Base branded theme
+export const brandedThemeOptions: ThemeOptions = {
+  palette: {
+    primary: { main: tokens.color.brand[500] },
+    secondary: { main: tokens.color.brand[700] },
+  },
+  typography: {
+    fontFamily: tokens.typography.fontFamily.sans,
+    button: { textTransform: 'none', fontWeight: 600 },
+  },
+  shape: { borderRadius: 8 },
+  components: componentOverrides,
+};
+
+// Create with optional per-app overrides
+export function createBrandedTheme(...overrides: ThemeOptions[]) {
+  return createTheme(brandedThemeOptions, ...overrides);
+}
+
+// Pre-built themes
+export const lightTheme = createBrandedTheme();
+export const darkTheme = createBrandedTheme({
+  palette: { mode: 'dark' },
+});
+```
+
+Consumer app layers overrides on top:
+
+```ts
+import { createBrandedTheme } from '@your-org/mui-theme';
+
+const appTheme = createBrandedTheme({
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          '&:hover': { transform: 'translateY(-2px)' },
+        },
+      },
+    },
+  },
+});
+```
+
+**Array styleOverrides merging**: When extending, use arrays to preserve base styles:
+```ts
+root: [
+  brandedComponents.MuiButton.styleOverrides.root,
+  { '&:hover': { transform: 'translateY(-2px)' } },
+]
+```
+
+---
+
+## Theme as Rules Engine
+
+Encode design decisions in the theme and enforce at compile time via module augmentation.
+
+### Restrict Allowed Variants
+
+```ts
+// Disable 'text' variant for Buttons in your design system
+declare module '@mui/material/Button' {
+  interface ButtonPropsVariantOverrides {
+    text: false;        // ← compile error if used
+    dashed: true;       // ← new custom variant
+    gradient: true;     // ← new custom variant
+  }
+  interface ButtonPropsColorOverrides {
+    inherit: false;     // ← disable inherit
+    brand: true;        // ← custom brand color
+    neutral: true;      // ← custom neutral color
+  }
+  interface ButtonPropsSizeOverrides {
+    extraLarge: true;   // ← custom size
+  }
+}
+```
+
+Now `<Button variant="text">` is a TypeScript error — design rules enforced at compile time.
+
+### Register Custom Components in Theme
+
+```ts
+// Register MuiStat in the theme like a built-in component
+declare module '@mui/material/styles' {
+  interface Components {
+    MuiStat?: {
+      defaultProps?: Partial<StatProps>;
+      styleOverrides?: {
+        root?: any;
+        value?: any;
+        label?: any;
+      };
+      variants?: Array<{
+        props: Partial<StatProps>;
+        style: any;
+      }>;
+    };
+  }
+}
+
+// Now you can configure it globally via theme
+const theme = createTheme({
+  components: {
+    MuiStat: {
+      defaultProps: { trend: 'flat' },
+      styleOverrides: {
+        root: ({ theme }) => ({
+          backgroundColor: theme.palette.background.paper,
+          '&:hover': { borderColor: theme.palette.primary.main },
+        }),
+      },
+    },
+  },
+});
+```
+
+### Function-Based Variant Props Matching
+
+```ts
+// Complex conditional variant matching
+const theme = createTheme({
+  components: {
+    MuiButton: {
+      variants: [
+        {
+          // Function-based matching for complex rules
+          props: (props) =>
+            props.variant === 'dashed' && props.color !== 'secondary',
+          style: {
+            border: '2px dashed currentColor',
+            backgroundColor: 'transparent',
+          },
+        },
+      ],
+    },
+  },
+});
+```

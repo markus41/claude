@@ -283,6 +283,35 @@
         "advanced"
       ],
       "path": "skills/advanced-components/SKILL.md"
+    },
+    {
+      "name": "mui:entity-driven-ui",
+      "intent": "Metadata-driven CRUD — entity metadata model, DataGrid column generation, FormEngine schema generation, shared validation, access control, wizard flows",
+      "tags": [
+        "mui-expert",
+        "skill",
+        "entity",
+        "CRUD",
+        "metadata",
+        "FormEngine",
+        "admin",
+        "server-driven"
+      ],
+      "path": "skills/entity-driven-ui/SKILL.md"
+    },
+    {
+      "name": "mui:ecosystem-integrations",
+      "intent": "MUI ecosystem — FormEngine, react-jsonschema-form, Uniforms, Tailwind interop, Framer Motion, custom themed components, theme-as-rules-engine",
+      "tags": [
+        "mui-expert",
+        "skill",
+        "FormEngine",
+        "schema-forms",
+        "Tailwind",
+        "Framer-Motion",
+        "ecosystem"
+      ],
+      "path": "skills/ecosystem-integrations/SKILL.md"
     }
   ]
 }
