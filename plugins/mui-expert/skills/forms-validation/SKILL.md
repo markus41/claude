@@ -1,6 +1,6 @@
 ---
-name: mui-forms-validation
-description: MUI forms and validation — controlled patterns, React Hook Form, Formik, Zod/Yup, FormControl, multi-step forms, file upload, and accessibility
+name: forms-validation
+description: MUI form patterns with validation and library integration
 triggers:
   - form
   - validation
@@ -8,16 +8,6 @@ triggers:
   - FormControl
   - react-hook-form
   - formik
-  - input
-  - select
-  - submit
-  - Zod
-  - Yup
-  - schema validation
-  - Stepper
-  - multi-step form
-  - file upload
-  - form accessibility
 allowed-tools:
   - Read
   - Glob
@@ -29,100 +19,82 @@ globs:
   - "*.jsx"
 ---
 
-# MUI Forms & Validation Skill
+# MUI Forms and Validation
 
-## Controlled vs Uncontrolled
+## Controlled vs Uncontrolled Patterns
 
-### Controlled (recommended)
+### Controlled (recommended for most cases)
+
+State lives in React. Every keystroke triggers a re-render; use for small-to-medium forms.
 
 ```tsx
-import { useState } from 'react';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-
 function ControlledForm() {
-  const [values, setValues] = useState({
-    email: '',
-    password: '',
-  });
-  const [errors, setErrors] = useState<Record<string, string>>({});
-
-  const handleChange = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValues((prev) => ({ ...prev, [field]: e.target.value }));
-    if (errors[field]) setErrors((prev) => ({ ...prev, [field]: '' }));
-  };
-
-  const validate = () => {
-    const newErrors: Record<string, string> = {};
-    if (!values.email) newErrors.email = 'Email is required';
-    else if (!/\S+@\S+\.\S+/.test(values.email)) newErrors.email = 'Invalid email';
-    if (!values.password) newErrors.password = 'Password is required';
-    else if (values.password.length < 8) newErrors.password = 'Min 8 characters';
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+  const [name, setName] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [error, setError] = React.useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (validate()) {
-      // submit
+    if (!email.includes('@')) {
+      setError('Enter a valid email address');
+      return;
     }
+    // submit...
   };
 
   return (
     <Box component="form" onSubmit={handleSubmit} noValidate>
       <TextField
+        label="Full name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
         fullWidth
-        label="Email"
-        type="email"
-        value={values.email}
-        onChange={handleChange('email')}
-        error={!!errors.email}
-        helperText={errors.email}
         margin="normal"
-        required
       />
       <TextField
+        label="Email"
+        type="email"
+        value={email}
+        onChange={(e) => {
+          setEmail(e.target.value);
+          setError(null); // clear error on change
+        }}
+        error={!!error}
+        helperText={error}
         fullWidth
-        label="Password"
-        type="password"
-        value={values.password}
-        onChange={handleChange('password')}
-        error={!!errors.password}
-        helperText={errors.password}
         margin="normal"
-        required
       />
       <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
-        Sign In
+        Submit
       </Button>
     </Box>
   );
 }
 ```
 
-### Uncontrolled (with refs)
+### Uncontrolled with refs
+
+Use for very large forms where performance matters, or when integrating with non-React code.
 
 ```tsx
-import { useRef } from 'react';
-
 function UncontrolledForm() {
-  const emailRef = useRef<HTMLInputElement>(null);
-  const nameRef = useRef<HTMLInputElement>(null);
+  const nameRef = React.useRef<HTMLInputElement>(null);
+  const emailRef = React.useRef<HTMLInputElement>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const email = emailRef.current?.value;
-    const name = nameRef.current?.value;
-    console.log({ email, name });
+    const data = {
+      name: nameRef.current?.value,
+      email: emailRef.current?.value,
+    };
+    // submit data
   };
 
   return (
     <Box component="form" onSubmit={handleSubmit}>
-      <TextField inputRef={emailRef} label="Email" defaultValue="" />
-      <TextField inputRef={nameRef} label="Name" defaultValue="" />
-      <Button type="submit">Submit</Button>
+      <TextField label="Name" inputRef={nameRef} fullWidth margin="normal" />
+      <TextField label="Email" type="email" inputRef={emailRef} fullWidth margin="normal" />
+      <Button type="submit" variant="contained">Submit</Button>
     </Box>
   );
 }
@@ -130,488 +102,311 @@ function UncontrolledForm() {
 
 ---
 
-## TextField Validation Patterns
+## TextField Error and Helper Text Patterns
 
 ```tsx
-// Error + helperText pattern
+// error flag turns label and border red; helperText shows message below
 <TextField
-  label="Username"
-  error={!!error}
-  helperText={error || 'Letters and numbers only, 3–20 characters'}
-  inputProps={{
-    minLength: 3,
-    maxLength: 20,
-    pattern: '[A-Za-z0-9]+',
-  }}
+  label="Password"
+  type="password"
+  error={password.length > 0 && password.length < 8}
+  helperText={
+    password.length > 0 && password.length < 8
+      ? 'Password must be at least 8 characters'
+      : 'Use a strong, unique password'
+  }
+  value={password}
+  onChange={(e) => setPassword(e.target.value)}
+  fullWidth
 />
 
-// Real-time validation feedback
-function EmailField() {
-  const [value, setValue] = useState('');
-  const [touched, setTouched] = useState(false);
-
-  const error = touched && !value
-    ? 'Required'
-    : touched && !/\S+@\S+\.\S+/.test(value)
-      ? 'Invalid email address'
-      : '';
-
-  return (
-    <TextField
-      label="Email"
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-      onBlur={() => setTouched(true)}
-      error={!!error}
-      helperText={error || ' '}  // ' ' keeps height stable
-      InputProps={{
-        endAdornment: touched && !error && value
-          ? <CheckCircleIcon color="success" sx={{ mr: 1 }} />
-          : undefined,
-      }}
-    />
-  );
-}
+// Character counter in helperText
+<TextField
+  label="Bio"
+  multiline
+  rows={3}
+  value={bio}
+  onChange={(e) => setBio(e.target.value)}
+  inputProps={{ maxLength: 200 }}
+  helperText={`${bio.length}/200`}
+  FormHelperTextProps={{ sx: { textAlign: 'right' } }}
+  fullWidth
+/>
 ```
 
 ---
 
-## FormControl Building Blocks
+## FormControl / FormLabel / FormHelperText (Non-TextField)
 
-Use raw `FormControl` when you need custom layout or controls that `TextField` does not expose.
+Use these primitives for custom inputs like checkbox groups or radio groups where
+`TextField` does not apply.
 
 ```tsx
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-import FormHelperText from '@mui/material/FormHelperText';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import FormHelperText from '@mui/material/FormHelperText';
 import Checkbox from '@mui/material/Checkbox';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
 
-// FormGroup for checkboxes
-<FormControl component="fieldset" error={!!errors.interests} required>
-  <FormLabel component="legend">Interests</FormLabel>
-  <FormGroup row>
-    {['React', 'TypeScript', 'Node.js', 'Python'].map((item) => (
-      <FormControlLabel
-        key={item}
-        control={
-          <Checkbox
-            checked={interests.includes(item)}
-            onChange={handleInterestChange(item)}
-          />
-        }
-        label={item}
-      />
-    ))}
-  </FormGroup>
-  <FormHelperText>{errors.interests || 'Select at least one'}</FormHelperText>
-</FormControl>
+function NotificationPreferences() {
+  const [prefs, setPrefs] = React.useState({ email: true, sms: false, push: true });
+  const [error, setError] = React.useState(false);
 
-// Custom input with FormControl
-<FormControl fullWidth error={!!errors.amount}>
-  <InputLabel htmlFor="amount-input">Amount</InputLabel>
-  <OutlinedInput
-    id="amount-input"
-    label="Amount"
-    type="number"
-    value={amount}
-    onChange={(e) => setAmount(e.target.value)}
-    startAdornment={<InputAdornment position="start">$</InputAdornment>}
-    endAdornment={<InputAdornment position="end">USD</InputAdornment>}
-  />
-  <FormHelperText>{errors.amount}</FormHelperText>
-</FormControl>
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const updated = { ...prefs, [e.target.name]: e.target.checked };
+    setPrefs(updated);
+    setError(!Object.values(updated).some(Boolean)); // at least one required
+  };
+
+  return (
+    <FormControl error={error} component="fieldset" variant="standard">
+      <FormLabel component="legend">Notification channels</FormLabel>
+      <FormGroup>
+        <FormControlLabel
+          control={<Checkbox checked={prefs.email} onChange={handleChange} name="email" />}
+          label="Email notifications"
+        />
+        <FormControlLabel
+          control={<Checkbox checked={prefs.sms} onChange={handleChange} name="sms" />}
+          label="SMS notifications"
+        />
+        <FormControlLabel
+          control={<Checkbox checked={prefs.push} onChange={handleChange} name="push" />}
+          label="Push notifications"
+        />
+      </FormGroup>
+      {error && <FormHelperText>Select at least one notification channel.</FormHelperText>}
+    </FormControl>
+  );
+}
 ```
 
 ---
 
 ## React Hook Form + MUI
 
-React Hook Form is the recommended validation library for MUI. Use `Controller` to bridge RHF's register model with controlled MUI components.
-
-### Setup with Zod
-
-```bash
-pnpm add react-hook-form @hookform/resolvers zod
-```
+React Hook Form is the recommended library for complex forms. Use the `Controller`
+component to integrate with MUI controlled inputs. Avoid spreading `register()` directly
+on MUI inputs — use `Controller` instead.
 
 ```tsx
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import * as z from 'zod';
 
-// 1. Define schema
 const schema = z.object({
   firstName: z.string().min(1, 'First name is required').max(50),
-  lastName:  z.string().min(1, 'Last name is required').max(50),
-  email:     z.string().email('Invalid email address'),
-  age:       z.number({ invalid_type_error: 'Age must be a number' }).min(18, 'Must be 18+').max(120),
-  role:      z.enum(['admin', 'editor', 'viewer'], { errorMap: () => ({ message: 'Select a role' }) }),
-  bio:       z.string().max(500).optional(),
-  terms:     z.boolean().refine((v) => v, 'You must accept the terms'),
+  email: z.string().email('Enter a valid email address'),
+  role: z.enum(['admin', 'editor', 'viewer'], { required_error: 'Select a role' }),
+  notifications: z.boolean(),
+  tags: z.array(z.string()).min(1, 'Select at least one tag'),
 });
 
-type FormData = z.infer<typeof schema>;
+type FormValues = z.infer<typeof schema>;
 
-// 2. Form component
-function ProfileForm() {
+function UserForm({ onSubmit }: { onSubmit: (data: FormValues) => void }) {
   const {
     control,
     handleSubmit,
-    formState: { errors, isSubmitting, isDirty },
-    reset,
-  } = useForm<FormData>({
+    formState: { errors, isSubmitting },
+  } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
       firstName: '',
-      lastName: '',
       email: '',
-      role: 'viewer',
-      terms: false,
+      notifications: false,
+      tags: [],
     },
   });
 
-  const onSubmit = async (data: FormData) => {
-    await api.saveProfile(data);
-    reset();
-  };
-
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
-      {/* Text input */}
-      <Controller
-        name="firstName"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            fullWidth
-            label="First Name"
-            error={!!errors.firstName}
-            helperText={errors.firstName?.message}
-            margin="normal"
-          />
-        )}
-      />
+      <Stack spacing={2}>
+        {/* Text field */}
+        <Controller
+          name="firstName"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="First name"
+              error={!!errors.firstName}
+              helperText={errors.firstName?.message}
+              fullWidth
+            />
+          )}
+        />
 
-      {/* Number input */}
-      <Controller
-        name="age"
-        control={control}
-        render={({ field: { onChange, ...field } }) => (
-          <TextField
-            {...field}
-            fullWidth
-            label="Age"
-            type="number"
-            onChange={(e) => onChange(e.target.valueAsNumber)}
-            error={!!errors.age}
-            helperText={errors.age?.message}
-            margin="normal"
-          />
-        )}
-      />
+        {/* Email field */}
+        <Controller
+          name="email"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="Email"
+              type="email"
+              error={!!errors.email}
+              helperText={errors.email?.message}
+              fullWidth
+            />
+          )}
+        />
 
-      {/* Select */}
-      <Controller
-        name="role"
-        control={control}
-        render={({ field }) => (
-          <FormControl fullWidth margin="normal" error={!!errors.role}>
-            <InputLabel id="role-label">Role</InputLabel>
-            <Select {...field} labelId="role-label" label="Role">
-              <MenuItem value="admin">Administrator</MenuItem>
-              <MenuItem value="editor">Editor</MenuItem>
-              <MenuItem value="viewer">Viewer</MenuItem>
-            </Select>
-            {errors.role && <FormHelperText>{errors.role.message}</FormHelperText>}
-          </FormControl>
-        )}
-      />
+        {/* Select */}
+        <Controller
+          name="role"
+          control={control}
+          render={({ field }) => (
+            <FormControl error={!!errors.role} fullWidth>
+              <InputLabel>Role</InputLabel>
+              <Select {...field} label="Role">
+                <MenuItem value="admin">Admin</MenuItem>
+                <MenuItem value="editor">Editor</MenuItem>
+                <MenuItem value="viewer">Viewer</MenuItem>
+              </Select>
+              {errors.role && <FormHelperText>{errors.role.message}</FormHelperText>}
+            </FormControl>
+          )}
+        />
 
-      {/* Checkbox */}
-      <Controller
-        name="terms"
-        control={control}
-        render={({ field: { value, onChange, ...field } }) => (
-          <FormControl error={!!errors.terms}>
+        {/* Autocomplete (multi) */}
+        <Controller
+          name="tags"
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <Autocomplete
+              multiple
+              options={availableTags}
+              value={value}
+              onChange={(_, newValue) => onChange(newValue)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Tags"
+                  error={!!errors.tags}
+                  helperText={errors.tags?.message}
+                />
+              )}
+            />
+          )}
+        />
+
+        {/* Checkbox */}
+        <Controller
+          name="notifications"
+          control={control}
+          render={({ field: { onChange, value } }) => (
             <FormControlLabel
               control={
-                <Checkbox
-                  {...field}
-                  checked={value}
-                  onChange={(e) => onChange(e.target.checked)}
-                />
+                <Checkbox checked={value} onChange={(e) => onChange(e.target.checked)} />
               }
-              label="I accept the terms and conditions"
+              label="Receive email notifications"
             />
-            {errors.terms && <FormHelperText>{errors.terms.message}</FormHelperText>}
-          </FormControl>
-        )}
-      />
+          )}
+        />
 
-      <Button
-        type="submit"
-        variant="contained"
-        fullWidth
-        disabled={isSubmitting || !isDirty}
-        sx={{ mt: 3 }}
-      >
-        {isSubmitting ? <CircularProgress size={24} /> : 'Save Profile'}
-      </Button>
+        <LoadingButton
+          type="submit"
+          variant="contained"
+          loading={isSubmitting}
+          fullWidth
+        >
+          Save
+        </LoadingButton>
+      </Stack>
     </Box>
   );
 }
 ```
 
-### Autocomplete with RHF
+### useFieldArray for dynamic lists
 
 ```tsx
-<Controller
-  name="country"
-  control={control}
-  render={({ field: { onChange, value } }) => (
-    <Autocomplete
-      options={countries}
-      getOptionLabel={(opt) => opt.label}
-      isOptionEqualToValue={(opt, val) => opt.code === val.code}
-      value={value ?? null}
-      onChange={(_, newValue) => onChange(newValue)}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          label="Country"
-          error={!!errors.country}
-          helperText={errors.country?.message}
-        />
-      )}
+import { useFieldArray } from 'react-hook-form';
+
+const { fields, append, remove } = useFieldArray({ control, name: 'items' });
+
+{fields.map((field, index) => (
+  <Stack key={field.id} direction="row" spacing={1}>
+    <Controller
+      name={`items.${index}.value`}
+      control={control}
+      render={({ field: f }) => <TextField {...f} label={`Item ${index + 1}`} />}
     />
-  )}
-/>
-```
-
-### DatePicker with RHF
-
-```tsx
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-
-<LocalizationProvider dateAdapter={AdapterDateFns}>
-  <Controller
-    name="birthDate"
-    control={control}
-    render={({ field }) => (
-      <DatePicker
-        {...field}
-        label="Date of Birth"
-        slotProps={{
-          textField: {
-            fullWidth: true,
-            error: !!errors.birthDate,
-            helperText: errors.birthDate?.message,
-          },
-        }}
-      />
-    )}
-  />
-</LocalizationProvider>
+    <IconButton onClick={() => remove(index)}><DeleteIcon /></IconButton>
+  </Stack>
+))}
+<Button onClick={() => append({ value: '' })} startIcon={<AddIcon />}>Add item</Button>
 ```
 
 ---
 
-## Formik + MUI
-
-```bash
-pnpm add formik yup
-```
+## Formik + MUI Integration
 
 ```tsx
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 
 const validationSchema = Yup.object({
-  email:    Yup.string().email('Invalid email').required('Required'),
-  password: Yup.string().min(8, 'Min 8 characters').required('Required'),
-  role:     Yup.string().oneOf(['admin', 'user']).required('Required'),
-  agree:    Yup.boolean().oneOf([true], 'Must accept terms'),
+  name: Yup.string().required('Name is required'),
+  email: Yup.string().email('Invalid email').required('Email is required'),
+  age: Yup.number().min(18, 'Must be 18 or older').required('Age is required'),
 });
 
-function SignUpForm() {
+function FormikForm() {
   return (
     <Formik
-      initialValues={{ email: '', password: '', role: 'user', agree: false }}
+      initialValues={{ name: '', email: '', age: '' }}
       validationSchema={validationSchema}
-      onSubmit={async (values, { setSubmitting, setFieldError }) => {
-        try {
-          await api.register(values);
-        } catch (err) {
-          setFieldError('email', 'Email already taken');
-        } finally {
-          setSubmitting(false);
-        }
+      onSubmit={async (values, { setSubmitting }) => {
+        await submitData(values);
+        setSubmitting(false);
       }}
     >
       {({ values, errors, touched, handleChange, handleBlur, isSubmitting }) => (
-        <Form noValidate>
-          <TextField
-            fullWidth
-            id="email"
-            name="email"
-            label="Email"
-            type="email"
-            value={values.email}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            error={touched.email && !!errors.email}
-            helperText={touched.email && errors.email}
-            margin="normal"
-          />
-
-          <TextField
-            fullWidth
-            id="password"
-            name="password"
-            label="Password"
-            type="password"
-            value={values.password}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            error={touched.password && !!errors.password}
-            helperText={touched.password && errors.password}
-            margin="normal"
-          />
-
-          <FormControl fullWidth margin="normal" error={touched.role && !!errors.role}>
-            <InputLabel id="role-label">Role</InputLabel>
-            <Select
-              labelId="role-label"
-              id="role"
-              name="role"
-              value={values.role}
-              label="Role"
+        <Form>
+          <Stack spacing={2}>
+            <TextField
+              name="name"
+              label="Full name"
+              value={values.name}
               onChange={handleChange}
-            >
-              <MenuItem value="user">User</MenuItem>
-              <MenuItem value="admin">Admin</MenuItem>
-            </Select>
-            {touched.role && errors.role && (
-              <FormHelperText>{errors.role}</FormHelperText>
-            )}
-          </FormControl>
-
-          <FormControlLabel
-            control={
-              <Checkbox
-                id="agree"
-                name="agree"
-                checked={values.agree}
-                onChange={handleChange}
-              />
-            }
-            label="I agree to the Terms of Service"
-          />
-          {touched.agree && errors.agree && (
-            <FormHelperText error>{errors.agree}</FormHelperText>
-          )}
-
-          <Button
-            type="submit"
-            variant="contained"
-            fullWidth
-            disabled={isSubmitting}
-            sx={{ mt: 2 }}
-          >
-            {isSubmitting ? <CircularProgress size={24} /> : 'Sign Up'}
-          </Button>
+              onBlur={handleBlur}
+              error={touched.name && Boolean(errors.name)}
+              helperText={touched.name && errors.name}
+              fullWidth
+            />
+            <TextField
+              name="email"
+              label="Email"
+              type="email"
+              value={values.email}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={touched.email && Boolean(errors.email)}
+              helperText={touched.email && errors.email}
+              fullWidth
+            />
+            <TextField
+              name="age"
+              label="Age"
+              type="number"
+              value={values.age}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={touched.age && Boolean(errors.age)}
+              helperText={touched.age && errors.age}
+              fullWidth
+            />
+            <Button type="submit" variant="contained" disabled={isSubmitting} fullWidth>
+              {isSubmitting ? 'Saving...' : 'Save'}
+            </Button>
+          </Stack>
         </Form>
       )}
     </Formik>
-  );
-}
-```
-
----
-
-## File Upload
-
-```tsx
-import { useRef, useState } from 'react';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import LinearProgress from '@mui/material/LinearProgress';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { styled } from '@mui/material/styles';
-
-// Visually hidden input
-const VisuallyHiddenInput = styled('input')({
-  clip: 'rect(0 0 0 0)',
-  clipPath: 'inset(50%)',
-  height: 1,
-  overflow: 'hidden',
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  whiteSpace: 'nowrap',
-  width: 1,
-});
-
-// File upload button
-<Button
-  component="label"
-  variant="contained"
-  startIcon={<CloudUploadIcon />}
->
-  Upload File
-  <VisuallyHiddenInput
-    type="file"
-    accept="image/*,.pdf"
-    multiple
-    onChange={handleFileChange}
-  />
-</Button>
-
-// Drag-and-drop zone
-function DropZone({ onFiles }: { onFiles: (files: File[]) => void }) {
-  const [isDragging, setIsDragging] = useState(false);
-
-  return (
-    <Box
-      onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-      onDragLeave={() => setIsDragging(false)}
-      onDrop={(e) => {
-        e.preventDefault();
-        setIsDragging(false);
-        onFiles(Array.from(e.dataTransfer.files));
-      }}
-      sx={{
-        border: '2px dashed',
-        borderColor: isDragging ? 'primary.main' : 'divider',
-        borderRadius: 2,
-        p: 4,
-        textAlign: 'center',
-        cursor: 'pointer',
-        bgcolor: isDragging ? 'action.hover' : 'background.paper',
-        transition: 'all 0.2s',
-      }}
-      onClick={() => document.getElementById('file-input')?.click()}
-    >
-      <CloudUploadIcon sx={{ fontSize: 48, color: 'text.secondary', mb: 1 }} />
-      <Typography variant="h6">Drop files here or click to browse</Typography>
-      <Typography variant="body2" color="text.secondary">
-        Supports: JPG, PNG, PDF up to 10MB
-      </Typography>
-      <VisuallyHiddenInput
-        id="file-input"
-        type="file"
-        multiple
-        onChange={(e) => onFiles(Array.from(e.target.files ?? []))}
-      />
-    </Box>
   );
 }
 ```
@@ -624,175 +419,52 @@ function DropZone({ onFiles }: { onFiles: (files: File[]) => void }) {
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
-import StepContent from '@mui/material/StepContent';
 
-const steps = ['Account Info', 'Personal Details', 'Preferences', 'Review'];
+const STEPS = ['Personal info', 'Address', 'Review'];
 
 function MultiStepForm() {
-  const [activeStep, setActiveStep] = useState(0);
-  const [formData, setFormData] = useState({
-    email: '', password: '',          // step 0
-    firstName: '', lastName: '',       // step 1
-    newsletter: false, theme: 'light', // step 2
+  const [activeStep, setActiveStep] = React.useState(0);
+  const [formData, setFormData] = React.useState({
+    personal: { name: '', email: '' },
+    address: { street: '', city: '', zip: '' },
   });
 
-  const handleNext = () => setActiveStep((s) => s + 1);
-  const handleBack = () => setActiveStep((s) => s - 1);
-
-  const updateData = (updates: Partial<typeof formData>) =>
-    setFormData((prev) => ({ ...prev, ...updates }));
-
-  const handleSubmit = async () => {
-    await api.register(formData);
-    handleNext(); // move to success step
+  const handleNext = (stepData: object) => {
+    setFormData((prev) => ({ ...prev, ...stepData }));
+    setActiveStep((s) => s + 1);
   };
 
+  const handleBack = () => setActiveStep((s) => s - 1);
+
   return (
-    <Box>
-      <Stepper activeStep={activeStep} orientation="horizontal" sx={{ mb: 4 }}>
-        {steps.map((label) => (
+    <Box sx={{ maxWidth: 600, mx: 'auto', py: 4 }}>
+      <Stepper activeStep={activeStep} sx={{ mb: 4 }}>
+        {STEPS.map((label) => (
           <Step key={label}>
             <StepLabel>{label}</StepLabel>
           </Step>
         ))}
       </Stepper>
 
-      {/* Step content */}
       {activeStep === 0 && (
-        <AccountStep
-          data={formData}
-          onChange={updateData}
-          onNext={handleNext}
-        />
+        <PersonalInfoStep data={formData.personal} onNext={handleNext} />
       )}
       {activeStep === 1 && (
-        <PersonalStep
-          data={formData}
-          onChange={updateData}
-          onNext={handleNext}
-          onBack={handleBack}
-        />
+        <AddressStep data={formData.address} onNext={handleNext} onBack={handleBack} />
       )}
       {activeStep === 2 && (
-        <PreferencesStep
-          data={formData}
-          onChange={updateData}
-          onNext={handleNext}
-          onBack={handleBack}
-        />
+        <ReviewStep data={formData} onBack={handleBack} onSubmit={handleFinalSubmit} />
       )}
-      {activeStep === 3 && (
-        <ReviewStep
-          data={formData}
-          onBack={handleBack}
-          onSubmit={handleSubmit}
-        />
-      )}
-      {activeStep === steps.length && (
-        <Box sx={{ textAlign: 'center', py: 4 }}>
-          <CheckCircleIcon sx={{ fontSize: 64, color: 'success.main', mb: 2 }} />
-          <Typography variant="h5">Registration Complete!</Typography>
+
+      {activeStep === STEPS.length && (
+        <Box textAlign="center">
+          <CheckCircleIcon color="success" sx={{ fontSize: 64 }} />
+          <Typography variant="h5">All done!</Typography>
         </Box>
       )}
     </Box>
   );
 }
-
-// Per-step navigation buttons (reusable)
-function StepNav({
-  onBack,
-  onNext,
-  isFirst,
-  isLast,
-  isSubmitting,
-  nextLabel = 'Next',
-}: {
-  onBack: () => void;
-  onNext: () => void;
-  isFirst?: boolean;
-  isLast?: boolean;
-  isSubmitting?: boolean;
-  nextLabel?: string;
-}) {
-  return (
-    <Box sx={{ display: 'flex', gap: 1, mt: 3 }}>
-      {!isFirst && (
-        <Button variant="outlined" onClick={onBack}>
-          Back
-        </Button>
-      )}
-      <Box sx={{ flexGrow: 1 }} />
-      <Button
-        variant="contained"
-        onClick={onNext}
-        disabled={isSubmitting}
-      >
-        {isSubmitting ? <CircularProgress size={20} /> : isLast ? 'Submit' : nextLabel}
-      </Button>
-    </Box>
-  );
-}
-```
-
----
-
-## Select, Autocomplete, DatePicker in Forms
-
-### Select in a form
-
-```tsx
-// With react-hook-form
-<Controller
-  name="category"
-  control={control}
-  render={({ field }) => (
-    <FormControl fullWidth error={!!errors.category}>
-      <InputLabel>Category</InputLabel>
-      <Select {...field} label="Category">
-        {categories.map((cat) => (
-          <MenuItem key={cat.id} value={cat.id}>{cat.name}</MenuItem>
-        ))}
-      </Select>
-      <FormHelperText>{errors.category?.message}</FormHelperText>
-    </FormControl>
-  )}
-/>
-```
-
-### DatePicker with validation
-
-```tsx
-import { z } from 'zod';
-
-const schema = z.object({
-  startDate: z.date({ required_error: 'Start date is required' }),
-  endDate: z.date({ required_error: 'End date is required' }),
-}).refine((data) => data.endDate >= data.startDate, {
-  message: 'End date must be after start date',
-  path: ['endDate'],
-});
-
-// In form
-<LocalizationProvider dateAdapter={AdapterDateFns}>
-  <Controller
-    name="startDate"
-    control={control}
-    render={({ field }) => (
-      <DatePicker
-        {...field}
-        label="Start Date"
-        disablePast
-        slotProps={{
-          textField: {
-            fullWidth: true,
-            error: !!errors.startDate,
-            helperText: errors.startDate?.message,
-          },
-        }}
-      />
-    )}
-  />
-</LocalizationProvider>
 ```
 
 ---
@@ -800,225 +472,36 @@ const schema = z.object({
 ## Form Accessibility
 
 ```tsx
-// Rule 1: Every field must have a visible label
-// Use label prop or InputLabel, never placeholder-only
-
-// Rule 2: Associate errors with the input
-// MUI's error + helperText handles this automatically via aria-describedby
-<TextField
-  id="email"
-  label="Email"
-  error
-  helperText="Invalid email"
-  // aria-describedby is set automatically when helperText + id are present
-/>
-
-// Rule 3: Group related fields with fieldset + legend
-<FormControl component="fieldset">
-  <FormLabel component="legend">Notification preferences</FormLabel>
-  <FormGroup>
-    <FormControlLabel control={<Checkbox />} label="Email" />
-    <FormControlLabel control={<Checkbox />} label="SMS" />
-    <FormControlLabel control={<Checkbox />} label="Push" />
-  </FormGroup>
+// Always use htmlFor on labels or the label prop on TextField
+<FormControl>
+  <FormLabel htmlFor="bio-input">Bio</FormLabel>
+  <OutlinedInput id="bio-input" multiline rows={3} aria-describedby="bio-helper" />
+  <FormHelperText id="bio-helper">Maximum 200 characters</FormHelperText>
 </FormControl>
 
-// Rule 4: Mark required fields
-<TextField label="Email" required />  {/* adds asterisk and aria-required */}
+// Group related fields with fieldset + legend
+<FormControl component="fieldset">
+  <FormLabel component="legend">Delivery preference</FormLabel>
+  <RadioGroup>
+    <FormControlLabel value="standard" control={<Radio />} label="Standard (5-7 days)" />
+    <FormControlLabel value="express" control={<Radio />} label="Express (2-3 days)" />
+  </RadioGroup>
+</FormControl>
 
-// Rule 5: Announce validation errors dynamically
-<Box role="alert" aria-live="polite" aria-atomic="true">
-  {Object.values(errors).some(Boolean) && (
-    <Alert severity="error" sx={{ mb: 2 }}>
-      Please fix {Object.values(errors).filter(Boolean).length} error(s) before submitting.
-    </Alert>
-  )}
-</Box>
+// Announce validation errors to screen readers
+<TextField
+  inputProps={{
+    'aria-describedby': emailError ? 'email-error' : undefined,
+    'aria-invalid': !!emailError,
+  }}
+  error={!!emailError}
+/>
+{emailError && (
+  <FormHelperText id="email-error" error role="alert">
+    {emailError}
+  </FormHelperText>
+)}
 
-// Rule 6: Loading state must be communicated
-<Button
-  type="submit"
-  disabled={isSubmitting}
-  aria-busy={isSubmitting}
->
-  {isSubmitting ? (
-    <>
-      <CircularProgress size={18} sx={{ mr: 1 }} aria-hidden="true" />
-      <span>Saving…</span>
-    </>
-  ) : (
-    'Save'
-  )}
-</Button>
-
-// Rule 7: Focus management in multi-step forms
-const stepRefs = [useRef<HTMLDivElement>(), useRef<HTMLDivElement>(), useRef<HTMLDivElement>()];
-useEffect(() => {
-  stepRefs[activeStep]?.current?.focus();
-}, [activeStep]);
-
-// Wrap each step content
-<Box ref={stepRefs[0]} tabIndex={-1} sx={{ outline: 'none' }}>
-  <Step0Fields />
-</Box>
-```
-
----
-
-## Form Performance Tips
-
-```tsx
-// 1. Use React Hook Form — minimal re-renders (register pattern avoids controlled inputs)
-// Use Controller only for components that require controlled behavior (MUI)
-
-// 2. Separate validation schema from component — import from a shared file
-// src/validation/profile.ts
-export const profileSchema = z.object({ ... });
-
-// 3. Avoid inline schema definitions — they recreate the schema on every render
-// BAD:
-const Form = () => {
-  const schema = z.object({ name: z.string() }); // new schema every render
-  const { control } = useForm({ resolver: zodResolver(schema) });
-};
-
-// GOOD:
-const schema = z.object({ name: z.string() }); // defined once at module level
-const Form = () => {
-  const { control } = useForm({ resolver: zodResolver(schema) });
-};
-
-// 4. Debounce async validation
-import { useDebouncedCallback } from 'use-debounce';
-const checkEmail = useDebouncedCallback(async (email: string) => {
-  const taken = await api.checkEmail(email);
-  if (taken) setError('email', { message: 'Email already taken' });
-}, 500);
-
-// 5. Use shouldFocusError to auto-focus first error
-const { handleSubmit } = useForm({
-  shouldFocusError: true,  // default true — focuses first field with error on submit
-});
-```
-
----
-
-## Complete Login Form Example
-
-```tsx
-import { useForm, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Alert from '@mui/material/Alert';
-import CircularProgress from '@mui/material/CircularProgress';
-import Link from '@mui/material/Link';
-import Typography from '@mui/material/Typography';
-
-const loginSchema = z.object({
-  email:    z.string().min(1, 'Email is required').email('Invalid email'),
-  password: z.string().min(1, 'Password is required'),
-  remember: z.boolean().optional(),
-});
-
-type LoginForm = z.infer<typeof loginSchema>;
-
-export function LoginForm() {
-  const [serverError, setServerError] = useState('');
-
-  const {
-    control,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<LoginForm>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: { email: '', password: '', remember: false },
-  });
-
-  const onSubmit = async (data: LoginForm) => {
-    try {
-      setServerError('');
-      await authApi.login(data);
-    } catch (err) {
-      setServerError('Invalid email or password');
-    }
-  };
-
-  return (
-    <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
-      <Typography variant="h5" gutterBottom fontWeight={700}>
-        Sign in
-      </Typography>
-
-      {serverError && (
-        <Alert severity="error" sx={{ mb: 2 }} role="alert">
-          {serverError}
-        </Alert>
-      )}
-
-      <Controller
-        name="email"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            fullWidth
-            label="Email address"
-            type="email"
-            autoComplete="email"
-            error={!!errors.email}
-            helperText={errors.email?.message}
-            margin="normal"
-          />
-        )}
-      />
-
-      <Controller
-        name="password"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            fullWidth
-            label="Password"
-            type="password"
-            autoComplete="current-password"
-            error={!!errors.password}
-            helperText={errors.password?.message}
-            margin="normal"
-          />
-        )}
-      />
-
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 1 }}>
-        <Controller
-          name="remember"
-          control={control}
-          render={({ field: { value, onChange, ...field } }) => (
-            <FormControlLabel
-              control={<Checkbox {...field} checked={value} onChange={(e) => onChange(e.target.checked)} />}
-              label="Remember me"
-            />
-          )}
-        />
-        <Link href="/forgot-password" variant="body2">Forgot password?</Link>
-      </Box>
-
-      <Button
-        type="submit"
-        fullWidth
-        variant="contained"
-        size="large"
-        disabled={isSubmitting}
-        sx={{ mt: 2 }}
-      >
-        {isSubmitting ? <CircularProgress size={24} color="inherit" /> : 'Sign in'}
-      </Button>
-    </Box>
-  );
-}
+// Use noValidate on form to suppress browser native validation bubbles
+<Box component="form" noValidate onSubmit={handleSubmit}>
 ```
