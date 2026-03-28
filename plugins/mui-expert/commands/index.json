@@ -218,6 +218,29 @@
       "risk": "low",
       "cost": "medium",
       "path": "commands/mui-slots.md"
+    },
+    {
+      "name": "mui:mui-setup",
+      "intent": "Set up MUI with packages, MCP server, LSP/editor tooling, starter theme, and framework integration",
+      "tags": [
+        "mui-expert",
+        "command",
+        "setup",
+        "mcp",
+        "installation",
+        "tooling"
+      ],
+      "inputs": [
+        "--scope",
+        "--framework",
+        "--mui-version",
+        "--tier",
+        "--css-engine",
+        "--with-tailwind"
+      ],
+      "risk": "low",
+      "cost": "medium",
+      "path": "commands/mui-setup.md"
     }
   ]
 }

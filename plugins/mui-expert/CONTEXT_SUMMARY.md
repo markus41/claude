@@ -51,6 +51,7 @@ headless components (MUI Base), Joy UI, i18n/RTL, testing, and migration.
 | `/mui-ssr` | Configure MUI for Next.js SSR |
 | `/mui-white-label` | Generate multi-tenant white-label theme architecture |
 | `/mui-slots` | Customize component internals via slots API |
+| `/mui-setup` | Install packages, configure MCP server, LSP, theme, and framework |
 
 ## MUI MCP Server
 
