@@ -413,6 +413,34 @@
         "live-data",
         "embedding"
       ]
+    },
+    {
+      "name": "mui-expert",
+      "description": "Material UI (MUI) expert plugin — theming, components, sx/styled API, MUI X data grid & date pickers, accessibility, performance optimization, and migration guidance for MUI v5/v6. 5 commands, 3 agents, 10 skills.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Claude Code"
+      },
+      "source": "./plugins/mui-expert",
+      "category": "frontend",
+      "tags": [
+        "mui",
+        "material-ui",
+        "react",
+        "theming",
+        "design-system",
+        "data-grid",
+        "date-picker",
+        "sx-prop",
+        "styled",
+        "emotion",
+        "accessibility",
+        "responsive",
+        "dark-mode",
+        "components",
+        "performance",
+        "migration"
+      ]
     }
   ]
 }
