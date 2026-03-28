@@ -553,3 +553,216 @@ function MyGrid({ data }) {
 
 6. **`keepNonExistentRowsSelected`** prevents selection loss during server-side
    pagination page changes.
+
+---
+
+## Pro / Premium Features Reference
+
+### Column Pinning (Pro)
+
+```tsx
+<DataGridPro
+  initialState={{
+    pinnedColumns: { left: ['id', 'name'], right: ['actions'] },
+  }}
+/>
+
+// Programmatic
+apiRef.current.pinColumn('id', 'left');
+apiRef.current.unpinColumn('id');
+```
+
+### Row Grouping (Premium)
+
+```tsx
+<DataGridPremium
+  initialState={{
+    rowGrouping: { model: ['category', 'status'] },
+  }}
+  groupingColDef={{
+    headerName: 'Group',
+    width: 200,
+  }}
+/>
+```
+
+### Aggregation (Premium)
+
+```tsx
+<DataGridPremium
+  initialState={{
+    aggregation: {
+      model: {
+        revenue: 'sum',
+        rating: 'avg',
+        orders: 'max',
+      },
+    },
+  }}
+/>
+```
+
+Built-in functions: `sum`, `avg`, `min`, `max`, `size` (count).
+
+### Master-Detail (Pro)
+
+```tsx
+<DataGridPro
+  getDetailPanelContent={({ row }) => (
+    <Box sx={{ p: 2 }}>
+      <Typography variant="h6">Orders for {row.name}</Typography>
+      <DataGrid rows={row.orders} columns={orderColumns} autoHeight />
+    </Box>
+  )}
+  getDetailPanelHeight={() => 'auto'}
+/>
+```
+
+### Excel Export (Premium)
+
+```tsx
+// Toolbar button
+<DataGridPremium slots={{ toolbar: GridToolbar }} />
+
+// Programmatic
+apiRef.current.exportDataAsExcel({
+  fileName: 'report',
+  includeHeaders: true,
+  utf8WithBom: true,
+});
+```
+
+### Cell Selection (Premium)
+
+```tsx
+<DataGridPremium
+  cellSelection
+  onCellSelectionModelChange={(model) => {
+    // model: Record<GridRowId, Record<string, boolean>>
+    console.log('Selected cells:', model);
+  }}
+/>
+```
+
+### Clipboard Paste (Premium)
+
+```tsx
+<DataGridPremium
+  cellSelection
+  ignoreValueFormatterDuringExport
+  splitClipboardPastedText={(text) =>
+    text.split('\n').map((row) => row.split('\t'))
+  }
+/>
+```
+
+### Header Filters (Pro)
+
+```tsx
+<DataGridPro
+  headerFilters
+  slots={{
+    headerFilterMenu: null,  // hide filter menu icon
+  }}
+/>
+```
+
+### Custom Filter Operators
+
+```tsx
+const ratingAboveOperator: GridFilterOperator<any, number> = {
+  label: 'Above',
+  value: 'above',
+  getApplyFilterFn: (filterItem) => {
+    if (!filterItem.value) return null;
+    return (value) => Number(value) > Number(filterItem.value);
+  },
+  InputComponent: GridFilterInputValue,
+};
+
+const columns: GridColDef[] = [
+  {
+    field: 'rating',
+    type: 'number',
+    filterOperators: [...getGridNumericOperators(), ratingAboveOperator],
+  },
+];
+```
+
+### Server-Side Data Source (Pro)
+
+The `GridDataSource` API (v7+) replaces manual server-side patterns:
+
+```tsx
+const dataSource: GridDataSource = {
+  getRows: async (params) => {
+    const { paginationModel, sortModel, filterModel } = params;
+    const response = await fetch('/api/data', {
+      method: 'POST',
+      body: JSON.stringify({
+        page: paginationModel.page,
+        pageSize: paginationModel.pageSize,
+        sort: sortModel[0],
+        filters: filterModel.items,
+      }),
+    });
+    const { rows, totalCount } = await response.json();
+    return { rows, rowCount: totalCount };
+  },
+};
+
+<DataGridPro
+  dataSource={dataSource}
+  paginationModel={{ page: 0, pageSize: 25 }}
+  dataSourceCache={null}      // disable caching
+  // or: dataSourceCache={{ ttl: 60_000 }}  // 60s cache
+/>
+```
+
+### Row Reordering (Pro)
+
+```tsx
+<DataGridPro
+  rowReordering
+  onRowOrderChange={(params) => {
+    // params.row, params.oldIndex, params.targetIndex
+    updateOrder(params.row.id, params.targetIndex);
+  }}
+/>
+```
+
+### Tree Data (Pro)
+
+```tsx
+<DataGridPro
+  treeData
+  getTreeDataPath={(row) => row.path}  // e.g., ['Company', 'Engineering', 'Frontend']
+  groupingColDef={{
+    headerName: 'Organization',
+    width: 300,
+  }}
+/>
+```
+
+---
+
+## Tier Quick Reference
+
+| Feature | Community | Pro | Premium |
+|---------|:---------:|:---:|:-------:|
+| Sorting, filtering, pagination | ✓ | ✓ | ✓ |
+| Inline editing | ✓ | ✓ | ✓ |
+| CSV export | ✓ | ✓ | ✓ |
+| Column resizing/reordering | — | ✓ | ✓ |
+| Column pinning | — | ✓ | ✓ |
+| Row reordering | — | ✓ | ✓ |
+| Tree data | — | ✓ | ✓ |
+| Master-detail | — | ✓ | ✓ |
+| Header filters | — | ✓ | ✓ |
+| Lazy loading | — | ✓ | ✓ |
+| Server-side data source | — | ✓ | ✓ |
+| Row grouping | — | — | ✓ |
+| Aggregation | — | — | ✓ |
+| Excel export | — | — | ✓ |
+| Cell selection | — | — | ✓ |
+| Clipboard paste | — | — | ✓ |

@@ -666,3 +666,156 @@ const [open, setOpen] = useState(false);
 - For SSR/Next.js, wrap picker in `<NoSsr>` or use `dynamic(() => ..., { ssr: false })` to prevent hydration mismatch.
 - Pro components require a valid license key set via `LicenseInfo.setLicenseKey(...)` before first render.
 - `shouldDisableDate` returning `true` for all days causes an infinite render loop — always leave some dates enabled.
+
+---
+
+## Advanced Patterns
+
+### Timezone Handling
+
+```tsx
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+// Display in user's timezone, store as UTC
+<DateTimePicker
+  value={value}
+  timezone="America/New_York"
+  onChange={(newValue) => {
+    const utcValue = newValue?.utc().toISOString();
+    saveToServer(utcValue);
+  }}
+/>
+
+// System timezone (auto-detect)
+<DateTimePicker timezone="system" />
+
+// UTC
+<DateTimePicker timezone="UTC" />
+```
+
+### Date Range Shortcuts (Pro)
+
+```tsx
+import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
+
+const shortcuts = [
+  { label: 'Today', getValue: () => { const t = dayjs(); return [t, t]; } },
+  { label: 'This Week', getValue: () => [dayjs().startOf('week'), dayjs().endOf('week')] },
+  { label: 'Last 7 Days', getValue: () => [dayjs().subtract(7, 'day'), dayjs()] },
+  { label: 'Last 30 Days', getValue: () => [dayjs().subtract(30, 'day'), dayjs()] },
+  { label: 'This Month', getValue: () => [dayjs().startOf('month'), dayjs().endOf('month')] },
+  { label: 'This Year', getValue: () => [dayjs().startOf('year'), dayjs().endOf('year')] },
+];
+
+<DateRangePicker
+  slotProps={{
+    shortcuts: { items: shortcuts },
+  }}
+/>
+```
+
+### Custom Day Rendering
+
+```tsx
+import { PickersDay, PickersDayProps } from '@mui/x-date-pickers/PickersDay';
+import Badge from '@mui/material/Badge';
+
+function HighlightedDay(props: PickersDayProps<Dayjs> & { highlightedDays?: number[] }) {
+  const { highlightedDays = [], day, outsideCurrentMonth, ...other } = props;
+  const isHighlighted = !outsideCurrentMonth && highlightedDays.includes(day.date());
+
+  return (
+    <Badge
+      key={day.toString()}
+      overlap="circular"
+      badgeContent={isHighlighted ? '🔴' : undefined}
+    >
+      <PickersDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
+    </Badge>
+  );
+}
+
+<DatePicker
+  slots={{ day: HighlightedDay }}
+  slotProps={{ day: { highlightedDays: [1, 5, 15, 22] } as any }}
+/>
+```
+
+### Custom Field Component
+
+Replace the default TextField with a completely custom input:
+
+```tsx
+import { useDateField } from '@mui/x-date-pickers/DateField';
+
+function CustomDateInput(props: any) {
+  const { inputRef, inputProps, ...fieldProps } = useDateField(props);
+
+  return (
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+      <CalendarIcon />
+      <input ref={inputRef} {...inputProps} style={{ border: 'none', outline: 'none' }} />
+    </Box>
+  );
+}
+
+<DatePicker slots={{ field: CustomDateInput }} />
+```
+
+### Digital Clock for Time Picker
+
+```tsx
+import { DigitalClock } from '@mui/x-date-pickers/DigitalClock';
+import { MultiSectionDigitalClock } from '@mui/x-date-pickers/MultiSectionDigitalClock';
+
+// Single-section (scrollable list of times)
+<TimePicker
+  slots={{ mobilePaper: undefined }}
+  slotProps={{ digitalClockItem: { sx: { fontSize: 14 } } }}
+/>
+
+// Multi-section (hours, minutes, AM/PM in columns)
+<TimePicker
+  viewRenderers={{
+    hours: null,
+    minutes: null,
+  }}
+/>
+```
+
+### Business Hours Validation
+
+```tsx
+<TimePicker
+  shouldDisableTime={(value, view) => {
+    if (view === 'hours') {
+      return value.hour() < 9 || value.hour() > 17;
+    }
+    if (view === 'minutes') {
+      // Only allow 15-min intervals
+      return value.minute() % 15 !== 0;
+    }
+    return false;
+  }}
+  minTime={dayjs().set('hour', 9).set('minute', 0)}
+  maxTime={dayjs().set('hour', 17).set('minute', 0)}
+/>
+```
+
+### Action Bar Customization
+
+```tsx
+<DatePicker
+  slotProps={{
+    actionBar: {
+      actions: ['clear', 'today', 'cancel', 'accept'],
+      // Default: ['cancel', 'accept'] on mobile, [] on desktop
+    },
+  }}
+/>
+```

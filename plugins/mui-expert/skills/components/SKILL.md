@@ -701,3 +701,156 @@ import ListSubheader from '@mui/material/ListSubheader';
   ))}
 </List>
 ```
+
+---
+
+## Utility Components
+
+### ClickAwayListener
+
+Detects clicks outside the wrapped element — essential for custom dropdowns and popovers.
+
+```tsx
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+
+<ClickAwayListener onClickAway={handleClose}>
+  <Box sx={{ position: 'relative' }}>
+    <Button onClick={toggleOpen}>Menu</Button>
+    {open && (
+      <Paper sx={{ position: 'absolute', top: '100%', zIndex: 1, width: 200 }}>
+        <MenuItem onClick={handleClose}>Option 1</MenuItem>
+        <MenuItem onClick={handleClose}>Option 2</MenuItem>
+      </Paper>
+    )}
+  </Box>
+</ClickAwayListener>
+```
+
+### Portal
+
+Renders children into `document.body` or a custom container.
+
+```tsx
+import Portal from '@mui/material/Portal';
+
+<Portal>
+  <Box sx={{ position: 'fixed', bottom: 16, right: 16, zIndex: 'tooltip' }}>
+    <Fab color="primary"><AddIcon /></Fab>
+  </Box>
+</Portal>
+```
+
+### NoSsr — Client-Only Rendering
+
+```tsx
+import NoSsr from '@mui/material/NoSsr';
+
+<NoSsr fallback={<Skeleton variant="rectangular" height={300} />}>
+  <MapComponent /> {/* Depends on window — fails on server */}
+</NoSsr>
+```
+
+### useMediaQuery — Responsive Conditional Rendering
+
+```tsx
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
+
+function ResponsiveNav() {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+  return isMobile ? <MobileBottomNav /> : <DesktopSidebar />;
+}
+
+// Without theme — raw media query string
+const prefersDark = useMediaQuery('(prefers-color-scheme: dark)');
+
+// With SSR safety — avoid hydration mismatch
+const isDesktop = useMediaQuery(theme.breakpoints.up('lg'), {
+  noSsr: true,                    // skip server render for this query
+  defaultMatches: true,           // assume true on server
+  // or: ssrMatchMedia for custom server-side matching
+});
+```
+
+---
+
+## Component Prop (Polymorphic Rendering)
+
+Most MUI components accept `component` to change the rendered HTML element or use a router link:
+
+```tsx
+import { Link as RouterLink } from 'react-router-dom';
+
+// Button as router link
+<Button component={RouterLink} to="/dashboard" variant="contained">
+  Dashboard
+</Button>
+
+// ListItemButton as router link
+<ListItemButton component={RouterLink} to="/settings">
+  <ListItemIcon><SettingsIcon /></ListItemIcon>
+  <ListItemText primary="Settings" />
+</ListItemButton>
+
+// Typography as a label
+<Typography component="label" htmlFor="email-input" variant="body2">
+  Email Address
+</Typography>
+
+// Card as semantic article
+<Card component="article">
+  <CardContent>...</CardContent>
+</Card>
+
+// Box as section with semantic HTML
+<Box component="section" aria-labelledby="section-title">
+  <Typography id="section-title" variant="h2">Title</Typography>
+</Box>
+```
+
+---
+
+## Global Configuration via Theme defaultProps
+
+Set defaults for every instance of a component across the app:
+
+```tsx
+const theme = createTheme({
+  components: {
+    MuiButton: {
+      defaultProps: {
+        variant: 'contained',
+        disableElevation: true,
+        size: 'medium',
+      },
+    },
+    MuiTextField: {
+      defaultProps: {
+        variant: 'outlined',
+        size: 'small',
+        fullWidth: true,
+      },
+    },
+    MuiTooltip: {
+      defaultProps: {
+        arrow: true,
+        enterDelay: 500,
+      },
+    },
+    MuiAlert: {
+      defaultProps: {
+        variant: 'filled',
+      },
+    },
+    MuiChip: {
+      defaultProps: {
+        size: 'small',
+      },
+    },
+  },
+});
+```
+
+Now `<Button>Save</Button>` renders as contained by default — no need to repeat `variant="contained"` everywhere.

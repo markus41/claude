@@ -269,6 +269,20 @@
         "codemod"
       ],
       "path": "skills/migration/SKILL.md"
+    },
+    {
+      "name": "mui:advanced-components",
+      "intent": "Advanced MUI patterns — Autocomplete (async, virtualized, grouped, createFilterOptions), Stepper (non-linear, vertical, mobile), Popover, Popper, Portal, ClickAwayListener, composition",
+      "tags": [
+        "mui-expert",
+        "skill",
+        "Autocomplete",
+        "Stepper",
+        "Popover",
+        "Popper",
+        "advanced"
+      ],
+      "path": "skills/advanced-components/SKILL.md"
     }
   ]
 }

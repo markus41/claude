@@ -1,6 +1,6 @@
 # MUI Expert Plugin
 
-Comprehensive Material UI expert for React applications. Covers 22 skill areas:
+Comprehensive Material UI expert for React applications. Covers 23 skill areas:
 theming, CSS variables, Pigment CSS, components, sx/styled API, slots API,
 MUI X (DataGrid, DatePickers, Charts, TreeView), accessibility, performance,
 SSR/Next.js, animations, virtualization, forms, white-label/multi-tenant,
@@ -32,6 +32,7 @@ headless components (MUI Base), Joy UI, i18n/RTL, testing, and migration.
 | i18n & RTL support | `skills/i18n-rtl/SKILL.md` |
 | Testing MUI components | `skills/testing/SKILL.md` |
 | v5 → v6 migration | `skills/migration/SKILL.md` |
+| Advanced components | `skills/advanced-components/SKILL.md` |
 
 ## Commands
 
