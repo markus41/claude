@@ -1622,3 +1622,27 @@ First entry keys: not a dict
 - **Input:** `/home/user/claude/.claude/agent-memory/researcher`
 - **Error:** EISDIR: illegal operation on a directory, read '/home/user/claude/.claude/agent-memory/researcher'
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-28T12:59:13Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-28T12:59:17Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-28T12:59:35Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-28T13:00:19Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 403
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
