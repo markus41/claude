@@ -1478,3 +1478,15 @@ First entry keys: not a dict
 === a8e130b3a07d8fcfd ===
 0
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-28T10:26:07Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/plugins/frontend-design-system/skills/design-system-expert/SKILL.md`
+- **Error:** File does not exist. Note: your current working directory is /home/user/claude.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-28T10:26:07Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/plugins/deployment-pipeline/agents/harness-deployer.md`
+- **Error:** File does not exist. Note: your current working directory is /home/user/claude.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
