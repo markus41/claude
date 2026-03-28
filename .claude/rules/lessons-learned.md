@@ -1646,3 +1646,22 @@ First entry keys: not a dict
 - **Input:** `N/A`
 - **Error:** Request failed with status code 403
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-28T15:07:28Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/plugins/executive-ai/.claude-plugin/plugin.json`
+- **Error:** File does not exist. Note: your current working directory is /home/user/claude.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-28T15:11:22Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/plugins/upgrade-suggestion/CLAUDE.md`
+- **Error:** File does not exist. Note: your current working directory is /home/user/claude.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-03-28T15:14:01Z)
+- **Tool:** Bash
+- **Input:** `git add plugins/*/. claude-plugin/plugin.json plugins/cowork-marketplace/CONTEXT_SUMMARY.md plugins/drawio-diagramming/CONTEXT_SUMMARY.md plugins/upgrade-suggestion/CONTEXT_SUMMARY.md`
+- **Error:** Exit code 128
+fatal: pathspec 'claude-plugin/plugin.json' did not match any files
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
