@@ -416,13 +416,20 @@
     },
     {
       "name": "mui-expert",
-      "description": "Material UI (MUI) expert plugin — theming, components, sx/styled API, MUI X data grid & date pickers, accessibility, performance optimization, and migration guidance for MUI v5/v6. 5 commands, 3 agents, 10 skills.",
-      "version": "1.0.0",
+      "description": "Comprehensive Material UI (MUI) expert — 26 skills, 14 commands, 7 agents. Theming, CSS variables, Pigment CSS, components, slots API, MUI X (DataGrid, DatePickers, Charts, TreeView), SSR/Next.js, accessibility, performance, white-label, entity-driven CRUD with FormEngine + ASP.NET, 200+ creative dashboard widgets, and ecosystem integrations.",
+      "version": "2.1.0",
       "author": {
         "name": "Claude Code"
       },
       "source": "./plugins/mui-expert",
       "category": "frontend",
+      "platforms": [
+        "cli",
+        "desktop",
+        "web",
+        "vscode",
+        "jetbrains"
+      ],
       "tags": [
         "mui",
         "material-ui",
@@ -431,15 +438,36 @@
         "design-system",
         "data-grid",
         "date-picker",
+        "charts",
+        "tree-view",
         "sx-prop",
         "styled",
         "emotion",
+        "pigment-css",
+        "css-variables",
         "accessibility",
         "responsive",
         "dark-mode",
-        "components",
+        "white-label",
+        "multi-tenant",
+        "ssr",
+        "next-js",
+        "slots-api",
+        "headless",
+        "joy-ui",
+        "virtualization",
+        "animations",
+        "i18n",
+        "rtl",
+        "testing",
         "performance",
-        "migration"
+        "migration",
+        "entity-driven",
+        "formengine",
+        "dashboard-widgets",
+        "creative-ui",
+        "aspnet-core",
+        "components"
       ]
     }
   ]

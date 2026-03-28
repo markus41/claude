@@ -130,10 +130,18 @@
       "dependencies": {}
     },
     "mui-expert": {
-      "version": "1.0.0",
+      "version": "2.1.0",
       "path": "../plugins/mui-expert",
       "source": "local",
       "installedAt": "2026-03-28T00:00:00.000Z",
+      "updatedAt": "2026-03-28T13:00:00.000Z",
+      "platforms": [
+        "cli",
+        "desktop",
+        "web",
+        "vscode",
+        "jetbrains"
+      ],
       "dependencies": {}
     }
   },
@@ -383,11 +391,18 @@
     },
     "mui-expert": {
       "name": "mui-expert",
-      "version": "1.0.0",
-      "description": "Material UI (MUI) expert — theming, components, sx/styled API, MUI X DataGrid & DatePickers, accessibility, performance, migration, with official @mui/mcp integration",
+      "version": "2.1.0",
+      "description": "Comprehensive MUI expert — 26 skills, 14 commands, 7 agents. Theming, CSS variables, Pigment CSS, slots API, MUI X (DataGrid/Charts/TreeView/DatePickers), SSR/Next.js, white-label, entity-driven CRUD, 200+ dashboard widgets, ecosystem integrations.",
       "author": {
         "name": "Claude Code"
       },
+      "platforms": [
+        "cli",
+        "desktop",
+        "web",
+        "vscode",
+        "jetbrains"
+      ],
       "keywords": [
         "mui",
         "material-ui",
@@ -395,15 +410,27 @@
         "theming",
         "components",
         "data-grid",
+        "charts",
         "date-picker",
+        "tree-view",
         "accessibility",
         "performance",
         "migration",
-        "mcp"
+        "mcp",
+        "css-variables",
+        "pigment-css",
+        "slots-api",
+        "white-label",
+        "entity-driven",
+        "formengine",
+        "dashboard-widgets",
+        "ssr",
+        "next-js"
       ],
       "categories": [
         "frontend",
-        "design-system"
+        "design-system",
+        "dashboard"
       ]
     }
   },
@@ -428,9 +455,16 @@
       "mui-expert": {
         "path": "../plugins/mui-expert/.claude-plugin/plugin.json",
         "callsign": "Materializer",
-        "version": "1.0.0",
+        "version": "2.1.0",
         "status": "active",
-        "tier": "standard"
+        "tier": "premium",
+        "platforms": [
+          "cli",
+          "desktop",
+          "web",
+          "vscode",
+          "jetbrains"
+        ]
       },
       "react-animation-studio": {
         "path": "../plugins/react-animation-studio/.claude-plugin/plugin.json",

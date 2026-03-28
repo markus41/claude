@@ -655,3 +655,132 @@ DataGrid is a React portal — anything that renders can live there.
 - Widget loading skeleton system — purpose-built skeletons mirroring actual content shape
 - Empty state illustrations — illustrated empty states with contextual CTAs (not "No data found")
 - Confetti burst on milestone — canvas-confetti beneath celebratory Snackbar on key achievements
+
+---
+
+## 100+ Standalone Dashboard Widget Ideas (Net-New)
+
+Self-contained `Paper`/`Card`-based units for drag-resize grid dashboards.
+
+### Financial & Revenue Widgets
+
+- Revenue waterfall card — starting balance → additions/subtractions → ending balance as horizontal segments
+- Invoice aging buckets — four stacked bands (current, 1-30d, 31-60d, 60+d) proportionally sized, green→red
+- Cost-per-unit trend — auto-scaled Y axis emphasizing micro-changes, current value floating at line end
+- Burn rate runway meter — fuel gauge draining left-to-right; orange <6mo, red <3mo
+- Gross margin drift dial — large % number with semicircular arc showing position in trailing 12mo range
+- Revenue concentration risk card — treemap of top 10 clients with % of total; risk score badge
+- Recurring vs one-time split donut — MRR vs one-time; center text = total; segments animate independently
+- Quote-to-cash pipeline — horizontal funnel (Quote→Approved→Invoiced→Paid) with counts + dollar amounts
+- Payment velocity widget — avg days invoice-to-paid as large number + 90-day sparkline + delta badge
+- Multi-currency exchange alert — live rates for invoiced currencies; >1% moves flash amber
+- Commission earned vs target arc — bold arc gauge filling as earned climbs toward monthly goal
+
+### People, Team & Workforce Widgets
+
+- Contractor utilization heatmap — rows=contractors, columns=weeks, cell color=utilization %
+- Bench strength indicator — horizontal bar per skill category showing available (unassigned) count
+- Headcount trajectory line — 12-month active member/contractor count with annotated key events
+- Skills radar — RadarChart with 6-8 skill axes; compare two people as overlapping polygons
+- Onboarding funnel — stages (invited→registered→profile→first assignment) with drop-off %
+- Attrition risk heatmap — 2D grid (role × tenure) with ML-predicted risk intensity per cell
+- Certification expiry timeline — horizontal strip with dots; within 30d=orange, overdue=red
+- Workload balance dial cluster — four half-circle dials per team showing avg workload fill %
+- Availability calendar mini-grid — 4-week grid, rows=contractors, cells=green/yellow/red
+- New vs returning member mix — stacked monthly bars showing acquisition vs retention health
+- Top performer spotlight — rotating card cycling top 3 with avatar + dominant metric every 8s
+
+### Project & Work Tracking Widgets
+
+- Project health scorecard — 4×4 grid of RAG-colored squares with project name + one-line status
+- Blocked items counter — bold count + top 3 blockers with age + CTA to full blocked list
+- Velocity trend — 6-week rolling bar chart with current week highlighted + average dashed line
+- Work type distribution pie — strategic vs operational vs maintenance vs reactive donut
+- Scope creep tracker — original vs current estimate side-by-side with percentage creep badge
+- Time logged vs estimated scatter — inline SVG scatter; dots above diagonal = over-run
+- Project milestone countdown — ordered T-minus list with RAG indicators; overdue shows negative
+- Approval queue depth — single number + 14-day trend sparkline + jump-to-approvals button
+- Rework rate card — % items reopened + 30-day sparkline + industry benchmark dashed reference
+- Resource conflict heatmap — people × project slots; red cells = double-booked; conflict count badge
+
+### Map & Geo Widgets
+
+- Member/contractor location dot map — embedded Leaflet mini-map with entity dots + click popovers
+- Regional coverage ring — choropleth SVG regions with fill intensity = coverage density
+- Revenue-by-region globe — tilted 2D projection with bubble markers proportional to revenue
+- Nearest-member finder — map centered on viewer + concentric rings at 25/50/100 miles + count badges
+- Event location cluster map — clustered dots expanding on zoom for upcoming event locations
+- Address completeness tracker — % of records with verified addresses + bulk geocode button
+
+### Communication & Engagement Widgets
+
+- Email open rate trend — last 10 campaigns line chart + industry benchmark reference line
+- Response time SLA widget — 30-day avg time-to-first-response with green/amber/red SLA bars
+- Engagement score breakdown — horizontal bars showing login/action/content/community contribution
+- NPS trend widget — 12-month rolling NPS line with promoter/neutral/detractor stacked area behind
+- Survey completion funnel — invited→opened→started→completed with drop-off % per stage
+- Last-contact age distribution — member bars bucketed by days-since-contact; 90+ glows red
+
+### Financial Chart Widgets (MUI X Chart Types)
+
+- Sankey flow diagram — money/work flowing between categories; clicking highlights path
+- Range bar chart per project — horizontal bars spanning start→end dates; lightweight Gantt
+- Pyramid chart for funnel — classic marketing funnel with label+count per stage
+- Funnel chart for conversion — vertical with conversion % between trapezoid stages
+- Scatter with regression line — custom SVG best-fit line for cost-vs-output analysis
+- Multi-series radar comparison — 3-4 overlapping polygons comparing entities across axes
+- Stacked area chart with zoom/pan — drag to select date sub-range; axis snaps to selection
+
+### Operational & System Widgets
+
+- API quota consumed ring gauge — ring filling green→amber→red + reset countdown below
+- Integration health grid — name + status dot + "last synced X min ago" + re-sync button
+- Error rate spike detector — 24h line chart; spikes above threshold annotated with red dot + message
+- Queue depth monitor — 30s-refresh bar chart by queue name; red when exceeding thresholds
+- Scheduled job calendar — 7-day view with success/failure blocks at scheduled times
+- Storage usage breakdown — stacked horizontal bar by category (attachments/exports/audit/cache)
+- Database query latency widget — response time histogram + P95/P99 badges
+- Feature flag status board — compact grid of flag names with toggleable on/off chips
+
+### Time Intelligence Widgets
+
+- Business hours coverage clock — 24h radial clock with staffed hours as colored arc
+- Week-over-week comparison bars — grouped bars (current vs prior week) + delta labels
+- Rolling average drift card — 7d/30d/90d averages stacked with tiny sparklines per row
+- Time zone status strip — horizontal strip per team member showing current local time + status
+- Deadline density calendar — 4-week mini calendar; cell intensity = deadline count per day
+- Overtime hours heatmap — day-of-week × person grid showing overtime per cell
+
+### Predictive & AI-Powered Widgets
+
+- Anomaly spotlight card — AI-surfaced top 3 anomalous data points with "Investigate" buttons
+- Churn prediction list — top 5 at-risk by churn probability + last activity + retention action
+- Demand forecast widget — historical actuals + shaded forecast cone with uncertainty bounds
+- Smart goal pacing — progress bar with ghost marker for expected pacing; amber if behind
+- Sentiment trend line — rolling average of LLM-analyzed feedback sentiment over time
+- What-if scenario card — 2-3 slider inputs with live-updating projected metric output
+
+### Member & Association-Specific Widgets
+
+- Membership tier breakdown — horizontal stacked bar by tier (bronze/silver/gold/platinum)
+- Renewal wave calendar — 12-month heatmap showing when renewal pressure peaks
+- Chapter/region tree — RichTreeView hierarchy with member counts + health indicators per node
+- New member welcome queue — recently joined members needing profile/committee/welcome action
+- Committee seat vacancy tracker — committees × seats grid; unfilled glow amber
+- Event RSVP pulse — registered vs capacity radial fill + waitlist count + notify button
+- Member birthday this week — list with "Send greeting" buttons generating pre-drafted emails
+- Benefits usage heatmap — benefit × month grid showing utilization rate per cell
+- Lapsed member re-engagement funnel — targeted→contacted→responded→renewed stages
+- Member engagement score histogram — distribution bars showing community health shape
+- Dues collected vs projected — collected/projected numbers + fill bar + trend vs prior year
+
+### Interaction & Delight Widgets
+
+- Animated world clock mosaic — 2×3 analog clock faces with real-time animated hands per timezone
+- Live visitor/session counter — bold pulsing number + 60-second sparkline updating every 5s
+- Ambient noise widget — soundwave animated bars reflecting real-time API call volume
+- Drag-to-compare toggle — before/after slider revealing two data states (current vs prior)
+- Data storytelling narrative card — LLM-generated one-paragraph summary of key weekly changes
+- "Did you know?" insight rotator — cycling AI-generated insights every 60s with thumbs up/down
+- Confetti milestone card — celebratory animation on threshold crossing with share button
+- Random spotlight card — surfaces one random under-explored record daily as a relationship nudge
