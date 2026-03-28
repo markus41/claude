@@ -9,11 +9,7 @@
   },
   "license": "MIT",
   "homepage": "https://github.com/markus41/claude/tree/main/plugins/mui-expert",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/markus41/claude.git",
-    "directory": "plugins/mui-expert"
-  },
+  "repository": "https://github.com/markus41/claude",
   "keywords": [
     "mui",
     "material-ui",
