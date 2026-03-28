@@ -1,6 +1,6 @@
 # MUI Expert Plugin
 
-Comprehensive Material UI expert for React applications. Covers 25 skill areas:
+Comprehensive Material UI expert for React applications. Covers 26 skill areas:
 theming, CSS variables, Pigment CSS, components, sx/styled API, slots API,
 MUI X (DataGrid, DatePickers, Charts, TreeView), accessibility, performance,
 SSR/Next.js, animations, virtualization, forms, white-label/multi-tenant,
@@ -35,6 +35,7 @@ headless components (MUI Base), Joy UI, i18n/RTL, testing, and migration.
 | Advanced components | `skills/advanced-components/SKILL.md` |
 | Entity-driven CRUD | `skills/entity-driven-ui/SKILL.md` |
 | Ecosystem integrations | `skills/ecosystem-integrations/SKILL.md` |
+| Advanced widgets (0.01%) | `skills/advanced-widgets/SKILL.md` |
 
 ## Commands
 
@@ -52,6 +53,8 @@ headless components (MUI Base), Joy UI, i18n/RTL, testing, and migration.
 | `/mui-white-label` | Generate multi-tenant white-label theme architecture |
 | `/mui-slots` | Customize component internals via slots API |
 | `/mui-setup` | Install packages, configure MCP server, LSP, theme, and framework |
+| `/mui-fingerprint` | Scan app, ask questions, build every component needed |
+| `/mui-creative` | Build creative fluid widgets (sparklines, heatmaps, AI grid, animated wizards) |
 
 ## MUI MCP Server
 

@@ -241,6 +241,46 @@
       "risk": "low",
       "cost": "medium",
       "path": "commands/mui-setup.md"
+    },
+    {
+      "name": "mui:mui-fingerprint",
+      "intent": "Scan app, ask interactive questions, then build every MUI component needed",
+      "tags": [
+        "mui-expert",
+        "command",
+        "fingerprint",
+        "scan",
+        "scaffold",
+        "interactive"
+      ],
+      "inputs": [
+        "--path",
+        "--dry-run",
+        "--style"
+      ],
+      "risk": "medium",
+      "cost": "high",
+      "path": "commands/mui-fingerprint.md"
+    },
+    {
+      "name": "mui:mui-creative",
+      "intent": "Build highly creative fluid MUI widgets — sparkline grids, heatmaps, live data, AI assistant, animated wizards",
+      "tags": [
+        "mui-expert",
+        "command",
+        "creative",
+        "widgets",
+        "animation",
+        "unique"
+      ],
+      "inputs": [
+        "--widget",
+        "--style",
+        "--with-motion"
+      ],
+      "risk": "low",
+      "cost": "high",
+      "path": "commands/mui-creative.md"
     }
   ]
 }

@@ -312,6 +312,21 @@
         "ecosystem"
       ],
       "path": "skills/ecosystem-integrations/SKILL.md"
+    },
+    {
+      "name": "mui:advanced-widgets",
+      "intent": "Top 0.01% MUI patterns — sparkline grid cells, heatmap DataGrids, real-time WebSocket grids, AI assistant, save/restore state, chart+grid sync, pivot tables, creative widgets",
+      "tags": [
+        "mui-expert",
+        "skill",
+        "sparkline",
+        "heatmap",
+        "real-time",
+        "AI",
+        "creative",
+        "advanced"
+      ],
+      "path": "skills/advanced-widgets/SKILL.md"
     }
   ]
 }
