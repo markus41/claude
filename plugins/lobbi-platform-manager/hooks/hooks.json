@@ -3,47 +3,36 @@
   "version": "2.0.0",
   "plugin": "lobbi-platform-manager",
   "description": "",
-  "hooks": [
-    {
-      "id": "pretooluse-1",
-      "event": "PreToolUse",
-      "severity": "advisory",
-      "description": "PreToolUse hook",
-      "trigger": {
-        "scope": "tool",
-        "tools": [
-          "Write|Edit"
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/check-security.sh",
+            "timeout": 10
+          }
         ]
-      },
-      "handlers": [
-        {
-          "type": "prompt",
-          "prompt": "Validate no secrets are committed and security best practices are followed for .env, .json, .js, and .ts files."
-        }
-      ]
-    },
-    {
-      "id": "posttooluse-2",
-      "event": "PostToolUse",
-      "severity": "advisory",
-      "description": "PostToolUse hook",
-      "trigger": {
-        "scope": "tool",
-        "tools": [
-          "Write|Edit"
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/check-health.sh",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/check-keycloak.sh",
+            "timeout": 10
+          }
         ]
-      },
-      "handlers": [
-        {
-          "type": "prompt",
-          "prompt": "Verify service health after deployment-related changes to docker-compose, Dockerfile, or package.json files."
-        },
-        {
-          "type": "prompt",
-          "prompt": "Validate Keycloak configuration changes for files matching keycloak, realm, or theme patterns."
-        }
-      ]
-    }
-  ],
+      }
+    ]
+  },
   "settings": {}
 }

@@ -3,114 +3,53 @@
   "version": "2.0.0",
   "plugin": "team-accelerator",
   "description": "Team accelerator quality and delivery checks",
-  "hooks": [
-    {
-      "id": "security-check",
-      "event": "PreToolUse",
-      "severity": "block",
-      "description": "Security validation for file edits.",
-      "trigger": {
-        "scope": "tool",
-        "tools": [
-          "Write",
-          "Edit"
-        ],
-        "file_patterns": [
-          "**/*.{ts,tsx,js,jsx,py,sql,json,yml,yaml,env}"
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/validate-code.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/notify-deploy.sh",
+            "timeout": 10
+          }
         ]
       },
-      "handlers": [
-        {
-          "type": "prompt",
-          "prompt": "Run the security check for edited files (secrets, injection/XSS risk, validation gaps).",
-          "doc_ref": "docs/hooks/prompt-guidance.md#team-accelerator"
-        }
-      ]
-    },
-    {
-      "id": "formatting-check",
-      "event": "PreToolUse",
-      "severity": "warn",
-      "description": "Formatting and code-quality baseline for edits.",
-      "trigger": {
-        "scope": "tool",
-        "tools": [
-          "Write",
-          "Edit"
-        ],
-        "file_patterns": [
-          "**/*.{ts,tsx,js,jsx,py,md,json,yml,yaml}"
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/docs-sync.sh",
+            "timeout": 10
+          }
         ]
-      },
-      "handlers": [
-        {
-          "type": "prompt",
-          "prompt": "Run formatting/lint/type checks and flag unresolved TODO/FIXME entries.",
-          "doc_ref": "docs/hooks/prompt-guidance.md#team-accelerator"
-        }
-      ]
-    },
-    {
-      "id": "deployment-followup",
-      "event": "PostToolUse",
-      "severity": "warn",
-      "description": "Deployment follow-up for shell actions.",
-      "trigger": {
-        "scope": "tool",
-        "tools": [
-          "Bash"
-        ],
-        "command_patterns": [
-          "(deploy|kubectl|helm|docker (push|build)|npm publish|terraform apply)"
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/analyze-tests.sh",
+            "timeout": 10
+          }
         ]
-      },
-      "handlers": [
-        {
-          "type": "prompt",
-          "prompt": "If deployment-related, require notify + verify + log follow-up checklist.",
-          "doc_ref": "docs/hooks/prompt-guidance.md#team-accelerator"
-        }
-      ]
-    },
-    {
-      "id": "docs-impact-check",
-      "event": "PostToolUse",
-      "severity": "advisory",
-      "description": "Documentation impact review after source changes.",
-      "trigger": {
-        "scope": "tool",
-        "tools": [
-          "Write",
-          "Edit"
-        ],
-        "file_patterns": [
-          "**/*.{ts,tsx,js,jsx,py,go,java,cs,rb,php}"
-        ]
-      },
-      "handlers": [
-        {
-          "type": "prompt",
-          "prompt": "Assess docs/API/knowledge-base impact and list required updates.",
-          "doc_ref": "docs/hooks/prompt-guidance.md#team-accelerator"
-        }
-      ]
-    },
-    {
-      "id": "session-summary",
-      "event": "Stop",
-      "severity": "advisory",
-      "description": "Concise quality summary at task stop.",
-      "trigger": {
-        "scope": "task"
-      },
-      "handlers": [
-        {
-          "type": "prompt",
-          "prompt": "Provide concise session summary: tests, quality deltas, and recommended next actions.",
-          "doc_ref": "docs/hooks/prompt-guidance.md#team-accelerator"
-        }
-      ]
-    }
-  ],
+      }
+    ]
+  },
   "settings": {}
 }
