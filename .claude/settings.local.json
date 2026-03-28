@@ -177,7 +177,8 @@
       "mcp__MCP_DOCKER__jira_get_user_profile",
       "mcp__MCP_DOCKER__jira_search",
       "Bash(powershell -Command:*)",
-      "mcp__firecrawl__firecrawl_search"
+      "mcp__firecrawl__firecrawl_search",
+      "mcp__firecrawl__firecrawl_scrape"
     ],
     "deny": [],
     "ask": []

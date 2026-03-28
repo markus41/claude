@@ -1490,3 +1490,9 @@ First entry keys: not a dict
 - **Input:** `/home/user/claude/plugins/deployment-pipeline/agents/harness-deployer.md`
 - **Error:** File does not exist. Note: your current working directory is /home/user/claude.
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: mcp__firecrawl__firecrawl_scrape failure (2026-03-28T10:45:59Z)
+- **Tool:** mcp__firecrawl__firecrawl_scrape
+- **Input:** `N/A`
+- **Error:** Tool 'firecrawl_scrape' execution failed: Maximum number of redirects exceeded
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
