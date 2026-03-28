@@ -1,0 +1,103 @@
+{
+  "version": 1,
+  "plugin": "mui-expert",
+  "type": "commands",
+  "entries": [
+    {
+      "name": "mui:mui-theme",
+      "intent": "Generate or audit a MUI theme configuration",
+      "tags": [
+        "mui-expert",
+        "command",
+        "theme",
+        "design-system"
+      ],
+      "inputs": [
+        "--mode",
+        "--dark-mode",
+        "--palette",
+        "--typography",
+        "--audit-file"
+      ],
+      "risk": "low",
+      "cost": "medium",
+      "path": "commands/mui-theme.md"
+    },
+    {
+      "name": "mui:mui-component",
+      "intent": "Scaffold a MUI component following best practices",
+      "tags": [
+        "mui-expert",
+        "command",
+        "component",
+        "scaffold"
+      ],
+      "inputs": [
+        "--name",
+        "--type",
+        "--features",
+        "--with-test"
+      ],
+      "risk": "low",
+      "cost": "medium",
+      "path": "commands/mui-component.md"
+    },
+    {
+      "name": "mui:mui-audit",
+      "intent": "Audit MUI usage for best practices, performance, and accessibility",
+      "tags": [
+        "mui-expert",
+        "command",
+        "audit",
+        "a11y",
+        "performance"
+      ],
+      "inputs": [
+        "--scope",
+        "--fix",
+        "--path"
+      ],
+      "risk": "low",
+      "cost": "high",
+      "path": "commands/mui-audit.md"
+    },
+    {
+      "name": "mui:mui-migrate",
+      "intent": "Migrate MUI code between versions (v4→v5, v5→v6)",
+      "tags": [
+        "mui-expert",
+        "command",
+        "migration",
+        "upgrade"
+      ],
+      "inputs": [
+        "--from",
+        "--to",
+        "--path",
+        "--dry-run"
+      ],
+      "risk": "medium",
+      "cost": "high",
+      "path": "commands/mui-migrate.md"
+    },
+    {
+      "name": "mui:mui-datagrid",
+      "intent": "Build or configure MUI X DataGrid with type-safe columns and server-side integration",
+      "tags": [
+        "mui-expert",
+        "command",
+        "data-grid",
+        "MUI-X"
+      ],
+      "inputs": [
+        "--mode",
+        "--features",
+        "--tier",
+        "--data-source"
+      ],
+      "risk": "low",
+      "cost": "medium",
+      "path": "commands/mui-datagrid.md"
+    }
+  ]
+}

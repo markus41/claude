@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "plugin": "mui-expert",
+  "type": "agents",
+  "entries": [
+    {
+      "name": "mui:mui-architect",
+      "intent": "Design MUI theme systems and component library architecture",
+      "tags": [
+        "mui-expert",
+        "agent",
+        "architecture",
+        "theme",
+        "design-system"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "high",
+      "path": "agents/mui-architect.md"
+    },
+    {
+      "name": "mui:mui-reviewer",
+      "intent": "Code review MUI implementations for best practices, accessibility, and performance",
+      "tags": [
+        "mui-expert",
+        "agent",
+        "review",
+        "a11y",
+        "performance"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "medium",
+      "path": "agents/mui-reviewer.md"
+    },
+    {
+      "name": "mui:mui-migration-specialist",
+      "intent": "Analyze and execute MUI version migrations (v4→v5, v5→v6)",
+      "tags": [
+        "mui-expert",
+        "agent",
+        "migration",
+        "upgrade"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "high",
+      "path": "agents/mui-migration-specialist.md"
+    }
+  ]
+}

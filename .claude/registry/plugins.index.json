@@ -128,6 +128,13 @@
       "source": "local",
       "installedAt": "2026-02-23T00:00:00.000Z",
       "dependencies": {}
+    },
+    "mui-expert": {
+      "version": "1.0.0",
+      "path": "../plugins/mui-expert",
+      "source": "local",
+      "installedAt": "2026-03-28T00:00:00.000Z",
+      "dependencies": {}
     }
   },
   "registry": {
@@ -373,6 +380,31 @@
         "documentation",
         "design"
       ]
+    },
+    "mui-expert": {
+      "name": "mui-expert",
+      "version": "1.0.0",
+      "description": "Material UI (MUI) expert — theming, components, sx/styled API, MUI X DataGrid & DatePickers, accessibility, performance, migration, with official @mui/mcp integration",
+      "author": {
+        "name": "Claude Code"
+      },
+      "keywords": [
+        "mui",
+        "material-ui",
+        "react",
+        "theming",
+        "components",
+        "data-grid",
+        "date-picker",
+        "accessibility",
+        "performance",
+        "migration",
+        "mcp"
+      ],
+      "categories": [
+        "frontend",
+        "design-system"
+      ]
     }
   },
   "plugins": {
@@ -390,6 +422,13 @@
         "path": "../plugins/frontend-design-system/.claude-plugin/plugin.json",
         "callsign": "Stylist",
         "version": "2.0.0",
+        "status": "active",
+        "tier": "standard"
+      },
+      "mui-expert": {
+        "path": "../plugins/mui-expert/.claude-plugin/plugin.json",
+        "callsign": "Materializer",
+        "version": "1.0.0",
         "status": "active",
         "tier": "standard"
       },
@@ -560,19 +599,20 @@
     "TestForge": "testforge",
     "Consul": "tvs-microsoft-deploy",
     "Cartographer": "drawio-diagramming",
-    "Expert": "claude-code-expert"
+    "Expert": "claude-code-expert",
+    "Materializer": "mui-expert"
   },
   "stats": {
-    "totalInstalled": 18,
-    "totalPlugins": 24,
+    "totalInstalled": 19,
+    "totalPlugins": 25,
     "totalAvailable": 6,
-    "lastUpdated": "2026-03-26T00:00:00.000Z",
+    "lastUpdated": "2026-03-28T00:00:00.000Z",
     "byTier": {
       "enterprise": 1,
-      "standard": 22
+      "standard": 23
     },
     "byLocation": {
-      "plugins/": 18,
+      "plugins/": 19,
       ".claude/plugins/": 6
     }
   }
