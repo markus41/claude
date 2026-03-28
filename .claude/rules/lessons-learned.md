@@ -1502,3 +1502,9 @@ First entry keys: not a dict
 - **Input:** `ls /home/user/claude/plugins/drawio-diagramming/.claude-plugin/registry/ 2>/dev/null && echo "---" && ls /home/user/claude/plugins/drawio-diagramming/agents/ 2>/dev/null | head -3 && echo "---" && ls /home/user/claude/plugins/drawio-diagramming/commands/ 2>/dev/null | head -3`
 - **Error:** Exit code 2
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-28T11:07:31Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/plugins/mui-expert/.claude-plugin`
+- **Error:** EISDIR: illegal operation on a directory, read '/home/user/claude/plugins/mui-expert/.claude-plugin'
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
