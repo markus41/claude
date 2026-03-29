@@ -216,6 +216,71 @@ This plugin provides comprehensive .NET 10 development expertise across the full
 ### Community Resources (Blazor)
 - Blazor University: https://blazor-university.com/
 
+### MicrosoftDocs GitHub Repos (Official Samples & Source)
+
+#### Blazor Learning Samples
+- Build interactive Blazor components: https://github.com/MicrosoftDocs/mslearn-build-interactive-components-blazor
+- Blazor forms: https://github.com/MicrosoftDocs/mslearn-use-forms-in-blazor-web-apps
+- Blazor data interaction: https://github.com/MicrosoftDocs/mslearn-interact-with-data-blazor-web-apps
+- Blazor navigation: https://github.com/MicrosoftDocs/mslearn-blazor-navigation
+- Aspire doc samples: https://github.com/MicrosoftDocs/aspire-docs-samples
+
+#### .NET Cloud-Native & DevOps
+- Cloud-native .NET: https://github.com/MicrosoftDocs/mslearn-dotnet-cloudnative
+- Cloud-native DevOps: https://github.com/MicrosoftDocs/mslearn-dotnet-cloudnative-devops
+- Pipelines .NET Core: https://github.com/MicrosoftDocs/pipelines-dotnet-core
+- .NET data for beginners: https://github.com/MicrosoftDocs/dotnet-data-for-beginners
+
+#### .NET MAUI (Hybrid/Cross-Platform)
+- MAUI local data storage: https://github.com/MicrosoftDocs/mslearn-dotnetmaui-store-local-data
+- MAUI REST services: https://github.com/MicrosoftDocs/mslearn-dotnetmaui-consume-rest-services
+- MAUI multi-page apps: https://github.com/MicrosoftDocs/mslearn-dotnetmaui-create-multi-page-apps
+- MAUI shared resources: https://github.com/MicrosoftDocs/mslearn-dotnetmaui-use-shared-resources
+- MAUI XAML layout: https://github.com/MicrosoftDocs/mslearn-dotnetmaui-customize-xaml-pages-layout
+- MAUI XAML UI: https://github.com/MicrosoftDocs/mslearn-dotnetmaui-create-user-interface-xaml
+- MAUI data binding: https://github.com/MicrosoftDocs/mslearn-dotnetmaui-databinding1
+- MAUI MVVM: https://github.com/MicrosoftDocs/mslearn-dotnetmaui-mvvm1
+
+#### Azure & Architecture
+- Azure docs: https://github.com/MicrosoftDocs/azure-docs
+- Azure AI docs: https://github.com/MicrosoftDocs/azure-ai-docs
+- Architecture center: https://github.com/MicrosoftDocs/architecture-center
+- Azure databases: https://github.com/MicrosoftDocs/azure-databases-docs
+- Data API Builder: https://github.com/MicrosoftDocs/data-api-builder-docs
+- Azure DevOps .NET SDK: https://github.com/MicrosoftDocs/azure-devops-docs-sdk-dotnet
+
+#### SQL & Data
+- SQL docs: https://github.com/MicrosoftDocs/sql-docs
+- Azure SQL fundamentals: https://github.com/MicrosoftDocs/mslearn-azure-sql-fundamentals
+- OData docs: https://github.com/MicrosoftDocs/OData-docs
+- Community Toolkit (.NET): https://github.com/MicrosoftDocs/community-toolkit-api-ref-dotnet
+
+#### Identity & Auth
+- MSAL Python (reference): https://github.com/MicrosoftDocs/microsoft-authentication-library-for-python
+- Microsoft Graph training: https://github.com/MicrosoftDocs/microsoft-graph-training
+- M365 Graph Razor: https://github.com/MicrosoftDocs/mslearn-m365-microsoftgraph-dotnetcorerazor
+
+#### AI & Agents
+- AI Builder: https://github.com/MicrosoftDocs/ai-builder
+- Agent Skills: https://github.com/MicrosoftDocs/Agent-Skills
+- Teams AI Library: https://github.com/MicrosoftDocs/teams-ai-library
+
+#### Bots & Communication
+- Bot Framework docs: https://github.com/MicrosoftDocs/bot-docs
+- Adaptive Cards: https://github.com/MicrosoftDocs/AdaptiveCards
+- Azure Functions + SignalR: https://github.com/MicrosoftDocs/mslearn-advocates.azure-functions-and-signalr
+
+#### CLI & PowerShell
+- Azure CLI docs: https://github.com/MicrosoftDocs/azure-docs-cli
+- Azure PowerShell docs: https://github.com/MicrosoftDocs/azure-docs-powershell
+- PowerShell docs: https://github.com/MicrosoftDocs/PowerShell-Docs
+- MS Graph PowerShell: https://github.com/MicrosoftDocs/microsoftgraph-docs-powershell
+
+#### Other
+- Static Web Apps: https://github.com/MicrosoftDocs/mslearn-staticwebapp
+- WSL: https://github.com/MicrosoftDocs/WSL
+- Office developer docs: https://github.com/MicrosoftDocs/office-developer-client-docs
+
 ### Microservices Architecture (DDD/CQRS)
 - DDD-oriented microservice: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/ddd-oriented-microservice
 - Domain model design: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/microservice-domain-model
