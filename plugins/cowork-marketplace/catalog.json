@@ -1,7 +1,7 @@
 {
   "version": 1,
   "description": "Cowork marketplace item catalog. All items are backed by real plugin agents, skills, and commands.",
-  "totalItems": 18,
+  "totalItems": 19,
   "items": [
     {
       "id": "fastapi-scaffold",
@@ -779,6 +779,76 @@
           ],
           "commands": [
             "scaffold"
+          ]
+        }
+      }
+    },
+    {
+      "id": "dotnet-blazor-expert",
+      "name": ".NET Blazor Expert",
+      "type": "skill_pack",
+      "category": "engineering",
+      "difficulty": "intermediate",
+      "description": "Full-stack .NET 10 expert with 19 skills, 8 commands, 6 agents. Blazor Web Apps, ASP.NET Core APIs, microservices (DDD/CQRS), Syncfusion UI, .NET Aspire, EF Core, gRPC, SignalR, .NET AI/MCP, Docker, Azure deployment.",
+      "tags": [
+        "dotnet",
+        "blazor",
+        "aspnet-core",
+        "csharp",
+        "syncfusion",
+        "microservices",
+        "aspire",
+        "entity-framework",
+        "grpc",
+        "signalr",
+        "ddd",
+        "docker",
+        "azure",
+        "ai",
+        "mcp"
+      ],
+      "rating": 4.8,
+      "trustGrade": "A",
+      "pluginBindings": {
+        "dotnet-blazor": {
+          "agents": [
+            "blazor-architect",
+            "aspnet-api-engineer",
+            "microservices-designer",
+            "syncfusion-ui-specialist",
+            "dotnet-performance-engineer",
+            "csharp-expert"
+          ],
+          "skills": [
+            "blazor-components",
+            "blazor-forms-validation",
+            "blazor-auth-security",
+            "blazor-performance",
+            "blazor-js-interop",
+            "aspnet-core-apis",
+            "microservices-patterns",
+            "ddd-cqrs-patterns",
+            "dotnet-aspire",
+            "entity-framework",
+            "syncfusion-blazor",
+            "csharp-patterns",
+            "signalr-realtime",
+            "grpc-services",
+            "blazor-testing",
+            "cloud-native-deploy",
+            "docker-containers",
+            "worker-services",
+            "dotnet-ai"
+          ],
+          "commands": [
+            "blazor-new",
+            "blazor-component",
+            "blazor-api",
+            "blazor-microservice",
+            "blazor-deploy",
+            "blazor-test",
+            "blazor-scaffold",
+            "blazor-migrate"
           ]
         }
       }
