@@ -8,6 +8,17 @@
   },
   "license": "MIT",
   "repository": "https://github.com/markus41/claude",
+  "homepage": "https://github.com/markus41/claude/tree/main/plugins/dotnet-blazor",
+  "engines": {
+    "claude-code": ">=2.0.0"
+  },
+  "platforms": [
+    "cli",
+    "desktop",
+    "web",
+    "vscode",
+    "jetbrains"
+  ],
   "keywords": [
     "dotnet",
     "blazor",
