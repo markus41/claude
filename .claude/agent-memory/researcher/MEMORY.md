@@ -199,6 +199,112 @@ This directory maintains structured research findings and documentation knowledg
 
 ---
 
+### ASP.NET Core 10.0 Comprehensive Reference
+- **File**: `aspnet_core_comprehensive_guide.md`
+- **Date**: 2026-03-29
+- **Coverage**:
+  - **Best Practices**: Caching, async patterns, blocking calls, pagination, large object allocation, data access optimization, HttpClientFactory, hot code paths, long-running tasks, client asset minification, response compression
+  - **Performance**: IAsyncEnumerable patterns, HttpContext safety, response headers management, async void anti-pattern, form data handling, Content-Length null safety
+  - **Security**: Authentication vs authorization, managed identities, never-store secrets, XSS prevention, SQL injection prevention, CSRF protection, open redirect prevention
+  - **Localization**: Culture concepts, IStringLocalizer, resource files, culture selection (query string, cookies, Accept-Language), culture fallback, DataAnnotations localization
+  - **Hosting & Deployment**: Publish process, self-contained vs framework-dependent, process managers (IIS, Windows Service, systemd), reverse proxy (Nginx), health checks
+  - **Model Binding**: Binding sources, [FromQuery/FromBody/FromRoute] attributes, complex types, collections, simple type conversion, IParsable<T>, record types, JSON configuration, custom converters
+  - **APIs**: Minimal APIs (recommended), controller-based APIs, routing, handlers, OpenAPI, authorization, custom validation, form data, dependency injection
+
+**Key Code Examples Included**:
+1. Async/await patterns (correct and wrong)
+2. Pagination implementation
+3. Large object and buffer pooling
+4. HttpContext safety patterns
+5. Fire-and-forget tasks with IServiceScopeFactory
+6. Response header management
+7. Authentication flows and secret management
+8. XSS, SQL injection, CSRF, open redirect prevention
+9. Localization setup with multiple cultures
+10. Model binding with complex types and collections
+11. IParsable<T> custom type conversion
+12. Record type binding with validation
+13. Minimal API complete CRUD example
+14. Controller-based API with dependency injection
+15. Health check implementation
+
+**Decision Matrices**:
+- Cache strategies (when to use memory vs distributed)
+- Async patterns (when to use async/await vs Task.Run)
+- Culture selection method (query string vs cookie vs header)
+- API approach (Minimal APIs vs Controllers)
+- Authentication method (managed identities vs OAuth2 vs direct)
+
+**Pitfalls & Prevention**:
+- Performance: Blocking calls, HttpClient creation, sync enumeration, stored HttpContext, large allocations
+- Security: Untrusted ContentLength, unescaped HTML, SQL concatenation, open redirects, password exposure
+- Binding: Null ContentLength, [FromBody] ignoring nested attributes, wrong prefix, missing validation
+
+**Complete Patterns**:
+- Async/pagination for collections
+- HttpContext access during request scope only
+- Background tasks with scoped services
+- Multi-culture request handling
+- Complex model binding with prefixes
+- Minimal API handler patterns with DI
+- Response compression and asset minification
+
+**Use for**: Performance optimization, security hardening, localization implementation, model binding patterns, API design decisions, deployment configuration, best practices reference
+
+---
+
+### Microsoft Azure & .NET Deployment Comprehensive Guide
+- **File**: `microsoft_azure_dotnet_deployment_guide.md`
+- **Date**: 2026-03-29
+- **Coverage**:
+  - **Azure App Service Deployment**: .NET 10 quickstart, Visual Studio/CLI/PowerShell/Portal workflows, publish profiles, port bindings
+  - **Azure SDK for .NET**: Package installation, authentication patterns (DefaultAzureCredential, connection strings), 4-step SDK implementation
+  - **Key Azure Services**: App Service, Container Apps, Functions, SQL, Cosmos DB, Blob Storage, Service Bus, Key Vault, Foundry Tools (AI)
+  - **App Service Migration**: On-premises to cloud, dependency assessment, port binding changes, database migration, AAD integration, configuration mapping
+  - **Cross-Platform Targeting**: Framework selection (net8.0, netstandard2.0, net462), multi-targeting, conditional compilation, NuGet distribution
+  - **Microservices Architecture**: Docker containers, synchronous (HTTP/gRPC) vs asynchronous (queues) communication, Kubernetes/Container Apps/App Service deployments
+  - **Resilience Patterns**: Circuit Breaker, retry with exponential backoff, timeout protection (Polly library)
+  - **Deployment Checklist**: Pre-deployment, configuration, post-deployment verification
+
+**CLI Commands Included**:
+- Azure: login, webapp up, config appsettings set, log tail, group delete
+- .NET: new, restore, build, run, publish, test, add package
+- Docker: build, run, push
+- PowerShell: Connect-AzAccount, New-AzWebApp, Publish-AzWebApp
+
+**Code Examples**:
+1. Blazor Web App creation (CLI & Visual Studio)
+2. Azure SDK client initialization (Blob Storage, Key Vault, Service Bus)
+3. DefaultAzureCredential authentication pattern
+4. WCF binding compatibility checks
+5. App Service migration configuration mapping
+6. Multi-target project files (net8.0;netstandard2.0;net462)
+7. Conditional compilation for platform-specific APIs (#if NET462 patterns)
+8. Docker microservice Dockerfile
+9. Docker Compose multi-service setup
+10. Synchronous & asynchronous service communication patterns
+11. Circuit Breaker/Retry/Timeout resilience patterns
+12. Kubernetes Deployment manifests
+13. Azure Container Apps deployment commands
+
+**Decision Matrices**:
+- Service selection (App Service vs Container Apps vs Functions)
+- Data storage choice (SQL vs Cosmos vs Storage)
+- Communication pattern (sync HTTP vs async queues)
+- Framework targeting (net8.0, net462, netstandard2.0)
+- Deployment orchestration (K8s, Container Apps, App Service)
+
+**Gotchas & Solutions**:
+- Port binding restrictions (80/443 only)
+- Free tier AAD limitations
+- Database connection timeouts
+- Multi-target dependency hell
+- Large deployment slowness
+
+**Use for**: Azure App Service deployment steps, SDK authentication patterns, cross-platform library design, microservices deployment, migration planning, framework selection, resilience pattern implementation, CLI command reference
+
+---
+
 ## How to Use This Memory
 
 When researching .NET/Blazor topics:

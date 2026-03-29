@@ -1695,3 +1695,21 @@ fatal: pathspec 'claude-plugin/plugin.json' did not match any files
 - **Input:** `N/A`
 - **Error:** self signed certificate in certificate chain
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-29T08:02:02Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/.claude/agent-memory/researcher`
+- **Error:** EISDIR: illegal operation on a directory, read '/home/user/claude/.claude/agent-memory/researcher'
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-29T08:02:15Z)
+- **Tool:** Read
+- **Input:** `/root/.claude/projects/-home-user-claude/785421b7-3547-4b42-af85-3c251e06428a/tool-results/toolu_01Hze3hnapQEwwwv2tnFJSHC.json`
+- **Error:** File content (32986 tokens) exceeds maximum allowed tokens (10000). Use offset and limit parameters to read specific portions of the file, or search for specific content instead of reading the whole file.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-29T08:02:18Z)
+- **Tool:** Read
+- **Input:** `/root/.claude/projects/-home-user-claude/785421b7-3547-4b42-af85-3c251e06428a/tool-results/toolu_01Hif7TANcSDYAgacPmxdknC.txt`
+- **Error:** File content (28182 tokens) exceeds maximum allowed tokens (10000). Use offset and limit parameters to read specific portions of the file, or search for specific content instead of reading the whole file.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
