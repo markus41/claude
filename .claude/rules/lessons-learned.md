@@ -1719,3 +1719,33 @@ fatal: pathspec 'claude-plugin/plugin.json' did not match any files
 - **Input:** `N/A`
 - **Error:** Request failed with status code 403
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-29T09:32:59Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/plugins/claude-code-expert`
+- **Error:** EISDIR: illegal operation on a directory, read '/home/user/claude/plugins/claude-code-expert'
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-29T09:32:59Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/plugins/mui-expert`
+- **Error:** EISDIR: illegal operation on a directory, read '/home/user/claude/plugins/mui-expert'
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-29T09:33:00Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/plugins/dotnet-blazor`
+- **Error:** EISDIR: illegal operation on a directory, read '/home/user/claude/plugins/dotnet-blazor'
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-29T09:33:14Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/plugins/mui-expert/README.md`
+- **Error:** File does not exist. Note: your current working directory is /home/user/claude.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-29T09:33:14Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/plugins/mui-expert/CHANGELOG.md`
+- **Error:** File does not exist. Note: your current working directory is /home/user/claude.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
