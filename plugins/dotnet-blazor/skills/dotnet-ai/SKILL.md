@@ -80,26 +80,38 @@ public sealed class ChatService(IChatClient chatClient)
 }
 ```
 
-### Function Calling (Tool Use)
+### Function Calling (Tool Use) - from official docs
 
 ```csharp
-// Define tools as methods
-[Description("Get the current weather for a location")]
-static async Task<string> GetWeather(
-    [Description("The city name")] string city,
-    [Description("Temperature unit")] string unit = "celsius")
-{
-    // Call weather API...
-    return $"Weather in {city}: 22°{unit[0]}, partly cloudy";
-}
+using Microsoft.Extensions.AI;
+using OpenAI;
 
-// Register tools with chat client
-var options = new ChatOptions
+// Build client with function invocation middleware
+IChatClient client =
+    new ChatClientBuilder(new OpenAIClient(key).GetChatClient("gpt-4o").AsIChatClient())
+    .UseFunctionInvocation()  // Auto-invokes local functions
+    .Build();
+
+// Define tools available to the model
+var chatOptions = new ChatOptions
 {
-    Tools = [AIFunctionFactory.Create(GetWeather)]
+    Tools = [AIFunctionFactory.Create((string location, string unit) =>
+    {
+        return "Periods of rain or drizzle, 15 C";
+    },
+    "get_current_weather",
+    "Gets the current weather in a given location")]
 };
 
-var response = await chatClient.GetResponseAsync("What's the weather in Seattle?", options);
+// Conversation with automatic tool invocation
+List<ChatMessage> chatHistory =
+[
+    new(ChatRole.System, "You are a hiking enthusiast who helps discover fun hikes."),
+    new(ChatRole.User, "I live in Montreal. What's the current weather like?")
+];
+
+ChatResponse response = await client.GetResponseAsync(chatHistory, chatOptions);
+Console.WriteLine(response.Text);  // Model auto-called get_current_weather
 ```
 
 ### Embeddings
@@ -151,51 +163,107 @@ var chatService = kernel.GetRequiredService<IChatCompletionService>();
 var response = await chatService.GetChatMessageContentAsync("What time is it in London?", settings, kernel);
 ```
 
-## MCP (Model Context Protocol) in .NET
+## MCP (Model Context Protocol) in .NET - from official docs
 
 ### Build MCP Server
+
+```bash
+# Requires .NET 10.0 SDK
+dotnet new install Microsoft.McpServer.ProjectTemplates
+dotnet new mcpserver -n MyMcpServer
+```
+
 ```csharp
+// Program.cs
 using ModelContextProtocol.Server;
+using System.ComponentModel;
 
-var builder = Host.CreateApplicationBuilder(args);
-builder.Services.AddMcpServer()
-    .WithStdioServerTransport()
-    .WithTools<MyTools>();
-
-var app = builder.Build();
-await app.RunAsync();
-
-[McpServerToolType]
-public sealed class MyTools
-{
-    [McpServerTool, Description("Search products by name")]
-    public async Task<string> SearchProducts(
-        [Description("Search query")] string query,
-        AppDbContext db, CancellationToken ct)
+var hostBuilder = Host.CreateDefaultBuilder(args)
+    .ConfigureServices((context, services) =>
     {
-        var products = await db.Products
-            .Where(p => p.Name.Contains(query))
-            .Take(10)
-            .ToListAsync(ct);
-        return JsonSerializer.Serialize(products);
+        services.AddMcpServer(options =>
+        {
+            options.Name = "SampleMcpServer";
+            options.Version = "1.0";
+        })
+        .WithStdioServerTransport()  // or .WithHttpServerTransport()
+        .AddMcpServerTools();
+    });
+
+var host = hostBuilder.Build();
+await host.RunAsync();
+```
+
+```csharp
+// Tool definitions
+public class RandomNumberTools
+{
+    [McpServerTool]
+    [Description("Gets a random number between min and max")]
+    public string GetRandomNumber(
+        [Description("Minimum value")] int min,
+        [Description("Maximum value")] int max)
+    {
+        return $"Your random number is {Random.Shared.Next(min, max + 1)}.";
     }
+
+    [McpServerTool]
+    [Description("Describes random weather in the provided city")]
+    public string GetCityWeather(
+        [Description("Name of the city")] string city)
+    {
+        var weather = Environment.GetEnvironmentVariable("WEATHER_CHOICES") ?? "balmy,rainy,stormy";
+        var choices = weather.Split(",");
+        return $"The weather in {city} is {choices[Random.Shared.Next(0, choices.Length)]}.";
+    }
+}
+```
+
+### MCP Server Config (.vscode/mcp.json)
+```json
+{
+  "servers": {
+    "MyMcpServer": {
+      "type": "stdio",
+      "command": "dotnet",
+      "args": ["run", "--project", "<path-to-csproj>"],
+      "env": { "WEATHER_CHOICES": "sunny,humid,freezing" }
+    }
+  }
 }
 ```
 
 ### Build MCP Client
 ```csharp
 using ModelContextProtocol.Client;
+using Microsoft.Extensions.AI;
 
-var client = await McpClientFactory.CreateAsync(new McpServerConfig
+// Create MCP client connection
+var transport = new StdioClientTransport(new()
 {
-    Id = "my-server",
-    Name = "My MCP Server",
-    TransportType = TransportTypes.StdIo,
-    TransportOptions = new() { ["command"] = "dotnet", ["args"] = "run --project MyMcpServer" }
+    Command = "dotnet run",
+    Arguments = ["--project", "<path-to-mcp-server>"],
+    Name = "Minimal MCP Server",
 });
+McpClient mcpClient = await McpClient.CreateAsync(transport);
 
-var tools = await client.ListToolsAsync();
-var result = await client.CallToolAsync("SearchProducts", new { query = "widget" });
+// Discover tools
+IList<McpClientTool> tools = await mcpClient.ListToolsAsync();
+foreach (McpClientTool tool in tools)
+    Console.WriteLine(tool);
+
+// Integrate MCP tools with chat client
+IChatClient chatClient = new ChatClientBuilder(baseClient)
+    .UseFunctionInvocation()
+    .Build();
+
+// Use MCP tools in chat
+List<ChatMessage> messages = [new(ChatRole.User, "What's the weather in Paris?")];
+await foreach (var update in chatClient.GetStreamingResponseAsync(
+    messages, new() { Tools = [.. tools] }))
+{
+    Console.Write(update);
+}
 ```
 
 ## Vector Search
@@ -292,17 +360,43 @@ public sealed class VectorSearchService(
 }
 ```
 
-## Key Packages
+## Tokenization (from official docs)
 
-| Package | Purpose |
-|---------|---------|
-| `Microsoft.Extensions.AI` | Unified AI abstraction (IChatClient, IEmbeddingGenerator) |
-| `Microsoft.Extensions.AI.OpenAI` | OpenAI/Azure OpenAI provider |
-| `Microsoft.Extensions.AI.Ollama` | Ollama local model provider |
-| `Microsoft.SemanticKernel` | AI orchestration with plugins and planners |
-| `Microsoft.Extensions.VectorData` | Vector store abstraction |
-| `ModelContextProtocol` | MCP client/server for .NET |
-| `Microsoft.ML.Tokenizers` | Tokenization for token counting |
+```csharp
+using Microsoft.ML.Tokenizers;
+
+// Tiktoken for GPT-4o (requires Microsoft.ML.Tokenizers.Data.O200kBase)
+Tokenizer tokenizer = TiktokenTokenizer.CreateForModel("gpt-4o");
+
+string text = "Hello, how are you?";
+int tokenCount = tokenizer.CountTokens(text);
+
+// Encode to token IDs
+IReadOnlyList<int> ids = tokenizer.EncodeToIds(text);
+
+// Decode back
+string decoded = tokenizer.Decode(ids);
+
+// Trim to max tokens
+int maxTokens = 100;
+int lastIndex = tokenizer.GetIndexByTokenCount(text, maxTokens, out string? normalizedText, out int count);
+string trimmed = text[..lastIndex];
+```
+
+## Key Packages (verified from official docs)
+
+| Package | Purpose | Notes |
+|---------|---------|-------|
+| `Microsoft.Extensions.AI.Abstractions` | Core interfaces (IChatClient, IEmbeddingGenerator) | Base for all providers |
+| `Microsoft.Extensions.AI` | Full library + middleware (caching, telemetry) | Includes Abstractions |
+| `Microsoft.Extensions.AI.OpenAI` | OpenAI/Azure OpenAI provider | `--prerelease` required |
+| `Microsoft.Extensions.VectorData.Abstractions` | Vector store interfaces (CRUD, search) | Interface definitions |
+| `Microsoft.SemanticKernel.Connectors.InMemory` | In-memory vector store | `--prerelease` required |
+| `ModelContextProtocol` | Official MCP C# SDK | `--prerelease`, requires .NET 10 |
+| `Microsoft.ML.Tokenizers` | Tokenization (Tiktoken, BPE, Llama) | Stable, .NET Standard 2.0+ |
+| `Microsoft.ML.Tokenizers.Data.O200kBase` | Tiktoken vocab for GPT-4/5 | Required for Tiktoken |
+| `Azure.AI.OpenAI` | Azure OpenAI SDK | Official Azure package |
+| `Azure.Identity` | Entra ID auth (DefaultAzureCredential) | For Azure services |
 
 ## Reference
 

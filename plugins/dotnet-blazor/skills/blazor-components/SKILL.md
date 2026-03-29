@@ -155,6 +155,101 @@ public sealed class AppState
 </EditForm>
 ```
 
+## Razor Directive Ordering Convention (from official docs)
+
+```razor
+@page "/doctor-who-episodes/{season:int}"
+@rendermode InteractiveWebAssembly
+@using System.Globalization
+@using BlazorSample.Components.Layout
+@attribute [Authorize]
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+@inject ILogger<DoctorWhoEpisodes> Logger
+
+<PageTitle>Doctor Who Episode List</PageTitle>
+```
+
+## Prerendering Control (from official docs)
+
+```razor
+@* Disable prerender for specific component *@
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+
+@* Disable for entire app in App.razor *@
+<Routes @rendermode="new InteractiveServerRenderMode(prerender: false)" />
+
+@* Handle client-only services during prerender *@
+@code {
+    protected override void OnInitialized()
+    {
+        // Check if service exists (null during server prerender)
+        if (Services.GetService<IWebAssemblyHostEnvironment>() is { } env)
+            environmentName = env.Environment;
+    }
+}
+```
+
+## State Management (from official docs)
+
+```csharp
+// State container service
+public class StateContainer
+{
+    private string? savedString;
+    public string Property
+    {
+        get => savedString ?? string.Empty;
+        set { savedString = value; NotifyStateChanged(); }
+    }
+    public event Action? OnChange;
+    private void NotifyStateChanged() => OnChange?.Invoke();
+}
+
+// Register: AddScoped (Server), AddSingleton (WASM)
+```
+
+```razor
+@implements IDisposable
+@inject StateContainer StateContainer
+
+<p>@StateContainer.Property</p>
+
+@code {
+    protected override void OnInitialized() =>
+        StateContainer.OnChange += StateHasChanged;
+
+    public void Dispose() =>
+        StateContainer.OnChange -= StateHasChanged;
+}
+```
+
+## Component Naming Conventions (from official docs)
+
+- Component names **must start with uppercase**: `ProductDetail.razor` (not `productDetail.razor`)
+- File paths use PascalCase: `Components/Pages/ProductDetail.razor`
+- Routable URLs use kebab-case: `@page "/product-detail"`
+- Namespace resolution: `@namespace` directive > `RootNamespace` in csproj > project namespace + folder path
+
+## Partial Class Pattern (from official docs)
+
+```razor
+@* CounterPartialClass.razor *@
+@page "/counter-partial-class"
+<button @onclick="IncrementCount">Click me</button>
+<p>Count: @currentCount</p>
+```
+
+```csharp
+// CounterPartialClass.razor.cs
+namespace BlazorSample.Components.Pages;
+public partial class CounterPartialClass
+{
+    private int currentCount = 0;
+    private void IncrementCount() => currentCount++;
+}
+```
+
 ## Key Patterns
 
 - Use `@key` on repeated elements for efficient diffing
@@ -164,3 +259,5 @@ public sealed class AppState
 - Use `NavigationManager.NavigateTo()` for programmatic navigation
 - Use `IDisposable` to unsubscribe from events
 - Use `ErrorBoundary` to catch component-level errors gracefully
+- Component names must start uppercase (enforced by compiler)
+- Use partial classes to separate markup from logic
