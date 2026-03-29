@@ -469,6 +469,45 @@
         "aspnet-core",
         "components"
       ]
+    },
+    {
+      "name": "dotnet-blazor",
+      "description": "Full-stack .NET 10 expert — 19 skills, 8 commands, 6 agents. Blazor Web Apps (Server/WASM/Auto), ASP.NET Core APIs, microservices with DDD/CQRS, Syncfusion UI (DataGrid, Charts, Scheduler, Agentic UI Builder, MCP), .NET Aspire orchestration, EF Core, gRPC, SignalR, .NET AI/MCP integration, Docker containers, worker services, cloud-native Azure deployment.",
+      "version": "2.0.0",
+      "author": {
+        "name": "Markus Ahling"
+      },
+      "source": "./plugins/dotnet-blazor",
+      "category": "backend",
+      "platforms": [
+        "cli",
+        "desktop",
+        "web",
+        "vscode",
+        "jetbrains"
+      ],
+      "tags": [
+        "dotnet",
+        "blazor",
+        "aspnet-core",
+        "csharp",
+        "syncfusion",
+        "microservices",
+        "aspire",
+        "entity-framework",
+        "grpc",
+        "signalr",
+        "maui",
+        "cloud-native",
+        "ddd",
+        "cqrs",
+        "docker",
+        "ai",
+        "mcp",
+        "azure",
+        "web-api",
+        "minimal-api"
+      ]
     }
   ]
 }
