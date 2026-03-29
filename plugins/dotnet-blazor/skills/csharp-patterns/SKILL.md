@@ -1,6 +1,6 @@
 ---
 name: csharp-patterns
-description: Modern C# 13 patterns, LINQ mastery, async/await, records, pattern matching, and .NET 10 features
+description: Modern C# 13/15 patterns, LINQ mastery, async/await, records, pattern matching, .NET 10/11 features, and .NET AI integration
 allowed-tools:
   - Read
   - Write
@@ -169,3 +169,90 @@ await foreach (var item in channel.Reader.ReadAllAsync(ct))
     await HandleAsync(item, ct);
 }
 ```
+
+## C# 15 New Features
+
+### Extension Members (Extension Everything)
+```csharp
+// Extension properties, methods, and static members
+public static extension StringExtensions for string
+{
+    public bool IsNullOrEmpty => string.IsNullOrEmpty(this);
+    public string Reversed => new(this.Reverse().ToArray());
+}
+
+// Usage: "hello".Reversed → "olleh"
+```
+
+### Field-Backed Properties
+```csharp
+public class Person
+{
+    // 'field' keyword accesses the auto-generated backing field
+    public string Name
+    {
+        get => field;
+        set => field = value?.Trim() ?? throw new ArgumentNullException(nameof(value));
+    }
+}
+```
+
+### Null-Conditional Assignment
+```csharp
+// Only assigns if left side is not null
+object?.Property = value;
+list?.Add(item);
+```
+
+## .NET 10 Key Features
+
+- **AOT improvements**: Faster startup, smaller binaries for cloud-native
+- **Blazor Web App enhancements**: Improved render mode handling, streaming SSR
+- **Minimal API improvements**: Better parameter binding, endpoint filters
+- **EF Core improvements**: Bulk operations, compiled models
+- **Aspire GA**: Production-ready orchestration
+- **.NET AI libraries**: Microsoft.Extensions.AI for unified AI integration
+
+## .NET AI Integration
+
+```csharp
+// Microsoft.Extensions.AI - unified AI abstraction
+using Microsoft.Extensions.AI;
+
+// Register AI chat client (works with OpenAI, Azure OpenAI, Ollama, etc.)
+builder.Services.AddChatClient(new AzureOpenAIClient(
+    new Uri(builder.Configuration["AI:Endpoint"]!),
+    new DefaultAzureCredential())
+    .GetChatClient("gpt-4o"));
+
+// Use in services
+public sealed class SmartSearchService(IChatClient chatClient)
+{
+    public async Task<string> SummarizeAsync(string content, CancellationToken ct)
+    {
+        var response = await chatClient.GetResponseAsync(
+            $"Summarize this: {content}", cancellationToken: ct);
+        return response.Text;
+    }
+}
+```
+
+```csharp
+// Semantic Kernel for AI orchestration
+using Microsoft.SemanticKernel;
+
+var kernel = Kernel.CreateBuilder()
+    .AddAzureOpenAIChatCompletion("gpt-4o", endpoint, credential)
+    .Build();
+
+var result = await kernel.InvokePromptAsync(
+    "Analyze this order data: {{$input}}", new() { ["input"] = orderJson });
+```
+
+## Reference
+
+- C# 15 what's new: https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-15
+- .NET 10 overview: https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-10/overview
+- .NET what's new: https://learn.microsoft.com/en-us/dotnet/whats-new/
+- .NET AI: https://learn.microsoft.com/en-us/dotnet/ai/
+- Semantic Kernel: https://learn.microsoft.com/en-us/semantic-kernel/

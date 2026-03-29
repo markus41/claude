@@ -1,6 +1,6 @@
 # .NET Blazor Expert - Context Summary
 
-Full-stack .NET 10 expert plugin (v1.0.0) with 8 commands, 6 agents, and 15 skills covering Blazor Web Apps, ASP.NET Core APIs, C# microservices, Syncfusion UI, .NET Aspire orchestration, Entity Framework Core, gRPC, SignalR, and cloud-native deployment.
+Full-stack .NET 10 expert plugin (v2.0.0) with 8 commands, 6 agents, and 19 skills covering Blazor Web Apps, ASP.NET Core APIs, C# microservices with DDD/CQRS, Syncfusion UI, .NET Aspire orchestration, Entity Framework Core, gRPC, SignalR, .NET AI/MCP integration, Docker containers, worker services, and cloud-native deployment.
 
 ## What this plugin is best at
 
@@ -42,6 +42,10 @@ Full-stack .NET 10 expert plugin (v1.0.0) with 8 commands, 6 agents, and 15 skil
 - **Data**: Entity Framework Core, Dapper, SQL Server, PostgreSQL, Cosmos DB, Redis caching
 - **UI**: Syncfusion Blazor (100+ components), Fluent UI Blazor, MudBlazor, CSS isolation
 - **Auth**: ASP.NET Core Identity, Entra ID/Azure AD, JWT Bearer, OAuth2/OIDC, policy-based authorization
+- **DDD/CQRS**: Aggregates, value objects, domain events, repository pattern, MediatR, application layer
+- **AI**: Microsoft.Extensions.AI, Semantic Kernel, MCP servers/clients, embeddings, vector search, function calling
+- **Containers**: Multi-stage Dockerfiles, Docker Compose, YARP API gateway, multi-container orchestration
+- **Background**: Worker services, BackgroundService, Channel-based queues, PeriodicTimer
 - **Testing**: xUnit, bUnit, WebApplicationFactory, Testcontainers, Playwright for E2E
 - **Cloud**: .NET Aspire, Azure App Service, Azure Container Apps, Docker, Kubernetes, GitHub Actions
 
@@ -59,3 +63,7 @@ Full-stack .NET 10 expert plugin (v1.0.0) with 8 commands, 6 agents, and 15 skil
 | User deploys | `commands/blazor-deploy.md` + `skills/cloud-native-deploy/SKILL.md` | Aspire, Docker, Azure deployment |
 | User writes tests | `commands/blazor-test.md` + `skills/blazor-testing/SKILL.md` | xUnit, bUnit, integration testing |
 | User migrates | `commands/blazor-migrate.md` | Version upgrades and framework migration |
+| User designs domain model | `skills/ddd-cqrs-patterns/SKILL.md` | Aggregates, value objects, domain events |
+| User needs AI integration | `skills/dotnet-ai/SKILL.md` | Microsoft.Extensions.AI, MCP, Semantic Kernel |
+| User containerizes app | `skills/docker-containers/SKILL.md` | Dockerfile, Docker Compose, multi-container |
+| User needs background jobs | `skills/worker-services/SKILL.md` | BackgroundService, queues, scheduled tasks |

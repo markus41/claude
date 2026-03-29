@@ -156,3 +156,115 @@ builder.Services.AddHealthChecks()
 app.MapHealthChecks("/health/ready", new() { Predicate = check => check.Tags.Contains("ready") });
 app.MapHealthChecks("/health/live", new() { Predicate = _ => false }); // Just checks app is running
 ```
+
+## API Gateway vs Direct Communication
+
+| Pattern | Use when | Trade-offs |
+|---------|----------|------------|
+| **Direct client-to-service** | Few services, internal apps | Simple but couples clients to services |
+| **API Gateway (YARP/Ocelot)** | Many services, external clients | Single entry point, adds latency |
+| **BFF (Backend for Frontend)** | Multiple client types (web, mobile) | Client-optimized APIs, more gateways |
+
+```csharp
+// YARP reverse proxy (Microsoft's recommended API gateway)
+builder.Services.AddReverseProxy()
+    .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
+app.MapReverseProxy();
+```
+
+## Data Sovereignty Per Microservice
+
+Each service owns its data. Cross-service data needs are resolved via:
+- **API calls** for real-time queries
+- **Integration events** for eventual consistency
+- **Materialized views** for read-heavy cross-service queries
+
+```
+Order Service ──(event)──> Catalog Service
+  │ OrderDB                    │ CatalogDB
+  │ (orders, items)            │ (products, stock)
+  │                            │
+  └──(HTTP)──> Payment Service
+                  │ PaymentDB
+                  │ (payments, refunds)
+```
+
+## Asynchronous Message-Based Communication
+
+```csharp
+// Integration events cross service boundaries
+public abstract record IntegrationEvent
+{
+    public Guid Id { get; } = Guid.NewGuid();
+    public DateTime CreatedAt { get; } = DateTime.UtcNow;
+}
+
+public sealed record OrderSubmittedIntegrationEvent(
+    int OrderId, int BuyerId, decimal Total) : IntegrationEvent;
+
+// Publish via outbox pattern for reliability
+public sealed class OutboxPublisher(AppDbContext db, IEventBus bus)
+{
+    public async Task PublishPendingEventsAsync(CancellationToken ct)
+    {
+        var pending = await db.OutboxMessages
+            .Where(m => !m.Published)
+            .OrderBy(m => m.CreatedAt)
+            .Take(50)
+            .ToListAsync(ct);
+
+        foreach (var message in pending)
+        {
+            await bus.PublishAsync(message.Event, ct);
+            message.Published = true;
+            message.PublishedAt = DateTime.UtcNow;
+        }
+        await db.SaveChangesAsync(ct);
+    }
+}
+```
+
+## Composite UI (Micro-Frontends with Blazor)
+
+Each service can own a UI fragment:
+```razor
+@* Main Blazor app composes service-specific components *@
+<CatalogProductList />      @* Owned by Catalog team *@
+<OrderStatusWidget />       @* Owned by Order team *@
+<CartSummary />             @* Owned by Cart team *@
+```
+
+Pattern options:
+- **Server-side composition**: Aggregate HTML from multiple services
+- **Client-side composition**: Load Blazor components from different assemblies
+- **API composition**: BFF aggregates data, single Blazor app renders
+
+## Microservice Security
+
+```csharp
+// JWT validation at API gateway
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = "https://identity-service";
+        options.Audience = "catalog-api";
+    });
+
+// Azure Key Vault for secrets
+builder.Configuration.AddAzureKeyVault(
+    new Uri("https://myvault.vault.azure.net/"),
+    new DefaultAzureCredential());
+```
+
+## Reference Documentation
+
+- Architecture patterns: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/architect-microservice-container-applications/
+- API Gateway pattern: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/architect-microservice-container-applications/direct-client-to-microservice-communication-versus-the-api-gateway-pattern
+- Data sovereignty: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/architect-microservice-container-applications/data-sovereignty-per-microservice
+- Async messaging: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/architect-microservice-container-applications/asynchronous-message-based-communication
+- Resilient apps: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/implement-resilient-applications/
+- Circuit breaker: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/implement-resilient-applications/implement-circuit-breaker-pattern
+- Microservice security: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/secure-net-microservices-web-applications/
+- Key Vault secrets: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/secure-net-microservices-web-applications/azure-key-vault-protects-secrets
+- Composite UI: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/architect-microservice-container-applications/microservice-based-composite-ui-shape-layout
+- DDD no-nonsense guide: https://particular.net/webinars/ddd-design-no-nonsense-implementation-guide

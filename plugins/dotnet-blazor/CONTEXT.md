@@ -108,8 +108,80 @@ This plugin provides comprehensive .NET 10 development expertise across the full
 ### Entity Framework Core
 - EF Core docs: https://learn.microsoft.com/en-us/ef/
 
+### Microservices Architecture (DDD/CQRS)
+- DDD-oriented microservice: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/ddd-oriented-microservice
+- Domain model design: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/microservice-domain-model
+- Application layer design: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/microservice-application-layer-web-api-design
+- Simplified CQRS/DDD: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/apply-simplified-microservice-cqrs-ddd-patterns
+- Domain events: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/domain-events-design-implementation
+- Domain validations: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/domain-model-layer-validations
+- EF Core persistence: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/infrastructure-persistence-layer-implementation-entity-framework-core
+- Persistence layer design: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/infrastructure-persistence-layer-design
+- NoSQL persistence: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/nosql-database-persistence-infrastructure
+- Resilient applications: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/implement-resilient-applications/
+- Circuit breaker pattern: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/implement-resilient-applications/implement-circuit-breaker-pattern
+- Microservice security: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/secure-net-microservices-web-applications/
+- Azure Key Vault secrets: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/secure-net-microservices-web-applications/azure-key-vault-protects-secrets
+- Multi-container apps: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/multi-container-microservice-net-applications/
+- Application design: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/multi-container-microservice-net-applications/microservice-application-design
+- CRUD microservice: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/multi-container-microservice-net-applications/data-driven-crud-microservice
+- Docker Compose: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/multi-container-microservice-net-applications/multi-container-applications-docker-compose
+- Integration events: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/multi-container-microservice-net-applications/integration-event-based-microservice-communications
+- RabbitMQ event bus: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/multi-container-microservice-net-applications/rabbitmq-event-bus-development-test-environment
+- Testing microservices: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/multi-container-microservice-net-applications/test-aspnet-core-services-web-apps
+- Background tasks: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/multi-container-microservice-net-applications/background-tasks-with-ihostedservice
+- API gateways: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/multi-container-microservice-net-applications/implement-api-gateways-with-ocelot
+- API versioning: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/architect-microservice-container-applications/maintain-microservice-apis
+- Composite UI: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/architect-microservice-container-applications/microservice-based-composite-ui-shape-layout
+- Async messaging: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/architect-microservice-container-applications/asynchronous-message-based-communication
+- API Gateway pattern: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/architect-microservice-container-applications/direct-client-to-microservice-communication-versus-the-api-gateway-pattern
+- Data sovereignty: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/architect-microservice-container-applications/data-sovereignty-per-microservice
+- Logical vs physical architecture: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/architect-microservice-container-applications/logical-versus-physical-architecture
+- DDD no-nonsense guide: https://particular.net/webinars/ddd-design-no-nonsense-implementation-guide
+
+### .NET Fundamentals
+- .NET what's new: https://learn.microsoft.com/en-us/dotnet/whats-new/
+- C# 15 what's new: https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-15
+- .NET 10 overview: https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-10/overview
+- .NET 11 libraries: https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-11/libraries
+- ASP.NET Core 11 release notes: https://learn.microsoft.com/en-us/aspnet/core/release-notes/aspnetcore-11?view=aspnetcore-10.0&tabs=minimal-apis
+- .NET app types: https://learn.microsoft.com/en-us/dotnet/core/apps
+- .NET languages: https://learn.microsoft.com/en-us/dotnet/fundamentals/languages
+- Class libraries: https://learn.microsoft.com/en-us/dotnet/standard/class-libraries
+- .NET Standard: https://learn.microsoft.com/en-us/dotnet/standard/net-standard?tabs=net-standard-1-0
+- Common Type System: https://learn.microsoft.com/en-us/dotnet/standard/base-types/common-type-system
+- CLR overview: https://learn.microsoft.com/en-us/dotnet/standard/clr
+- Assemblies: https://learn.microsoft.com/en-us/dotnet/standard/assembly/
+- Reflection: https://learn.microsoft.com/en-us/dotnet/fundamentals/reflection/overview
+- Worker services: https://learn.microsoft.com/en-us/dotnet/core/extensions/workers
+- Runtime config: https://learn.microsoft.com/en-us/dotnet/core/runtime-config/
+- AssemblyLoadContext: https://learn.microsoft.com/en-us/dotnet/core/dependency-loading/understanding-assemblyloadcontext
+- MEF (extensibility): https://learn.microsoft.com/en-us/dotnet/standard/mef/
+- File globbing: https://learn.microsoft.com/en-us/dotnet/core/extensions/file-globbing
+- .NET glossary: https://learn.microsoft.com/en-us/dotnet/standard/glossary
+
 ### AI and ML with .NET
 - .NET AI overview: https://dotnet.microsoft.com/en-us/apps/ai
+- .NET AI docs: https://learn.microsoft.com/en-us/dotnet/ai/
+- .NET AI overview article: https://learn.microsoft.com/en-us/dotnet/ai/overview
+- .NET AI ecosystem: https://learn.microsoft.com/en-us/dotnet/ai/dotnet-ai-ecosystem
+- Microsoft.Extensions.AI: https://learn.microsoft.com/en-us/dotnet/ai/microsoft-extensions-ai
+- .NET Agent Framework: https://learn.microsoft.com/en-us/agent-framework/overview/?toc=%2Fdotnet%2Fai%2Ftoc.json&bc=%2Fdotnet%2Fai%2Ftoc.json&pivots=programming-language-csharp
+- IEmbeddingGenerator: https://learn.microsoft.com/en-us/dotnet/ai/iembeddinggenerator
+- Prompt a model: https://learn.microsoft.com/en-us/dotnet/ai/quickstarts/prompt-model?pivots=openai
+- Function calling: https://learn.microsoft.com/en-us/dotnet/ai/quickstarts/use-function-calling?pivots=openai
+- Vector search app: https://learn.microsoft.com/en-us/dotnet/ai/vector-stores/how-to/build-vector-search-app?pivots=openai
+- How GenAI/LLMs work: https://learn.microsoft.com/en-us/dotnet/ai/conceptual/how-genai-and-llms-work
+- AI Agents concept: https://learn.microsoft.com/en-us/dotnet/ai/conceptual/agents
+- Prompt engineering for .NET: https://learn.microsoft.com/en-us/dotnet/ai/conceptual/prompt-engineering-dotnet
+- Zero-shot learning: https://learn.microsoft.com/en-us/dotnet/ai/conceptual/zero-shot-learning
+- AI tools concept: https://learn.microsoft.com/en-us/dotnet/ai/conceptual/ai-tools
+- Tokenizers: https://learn.microsoft.com/en-us/dotnet/ai/how-to/use-tokenizers
+- Azure AI resources: https://learn.microsoft.com/en-us/dotnet/ai/resources/azure-ai
+- MCP in .NET: https://learn.microsoft.com/en-us/dotnet/ai/get-started-mcp
+- Build MCP client: https://learn.microsoft.com/en-us/dotnet/ai/quickstarts/build-mcp-client
+- Build MCP server: https://learn.microsoft.com/en-us/dotnet/ai/quickstarts/build-mcp-server?pivots=visualstudio
+- MCP servers list: https://learn.microsoft.com/en-us/dotnet/ai/resources/mcp-servers
 - Semantic Kernel docs: https://learn.microsoft.com/en-us/semantic-kernel/
 - Semantic Kernel GitHub: https://github.com/dotnet/semantic-kernel
 - ML.NET docs: https://learn.microsoft.com/en-us/dotnet/machine-learning/
