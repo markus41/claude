@@ -180,6 +180,7 @@ This plugin provides comprehensive .NET 10 development expertise across the full
 - Essential UI Kit blocks: https://blazor.syncfusion.com/essential-ui-kit/blocks
 - Grid blocks: https://blazor.syncfusion.com/essential-ui-kit/blocks/grid
 - ThemeStudio: https://blazor.syncfusion.com/themestudio/
+- Agentic UI Builder (FREE): https://www.syncfusion.com/explore/agentic-ui-builder/
 - MCP AI Coding Assistant: https://blazor.syncfusion.com/documentation/ai-coding-assistant/mcp-server
 - MCP package (npm): @syncfusion/blazor-assistant
 - KB (Blazor): https://support.syncfusion.com/kb/blazor

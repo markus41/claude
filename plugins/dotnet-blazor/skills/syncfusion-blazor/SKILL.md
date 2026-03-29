@@ -162,6 +162,34 @@ Environment.GetEnvironmentVariable("SYNCFUSION_LICENSE_KEY");
 builder.Configuration.AddAzureKeyVault(vaultUri, credential);
 ```
 
+## Syncfusion Agentic UI Builder (FREE)
+
+AI-powered tool that generates complete Blazor UI implementations from natural language prompts.
+Supports **React, Angular, and Blazor**. Completely free - no usage limits, token caps, or charges.
+
+### How it works
+1. **Describe** - "Create a project management dashboard with a grid, charts, and filters"
+2. **AI Analyzes** - Selects appropriate Syncfusion components and layout patterns
+3. **Generate Code** - Produces ready-to-use Blazor code with Syncfusion components
+4. **Customize** - Refine layouts and add custom functionality
+
+### Key capabilities
+- Generates complete dashboards, data grids, charts, responsive pages
+- Works with existing projects (not just greenfield)
+- Code aligns with Syncfusion docs and 1,600+ component APIs
+- 30-50% productivity gain over manual development
+- Privacy-focused: doesn't access project files, prompts not stored
+
+### Activation
+- Use `#sf_blazor_ui_builder` tool command in IDE
+- Or include "Syncfusion" keyword in prompts
+- Recommended models: Claude Sonnet 4.5+, GPT-5, Gemini 3 Pro
+
+### IDE support
+VS Code, Cursor, JetBrains IDEs, Code Studio
+
+URL: https://www.syncfusion.com/explore/agentic-ui-builder/
+
 ## Syncfusion Blazor MCP (AI Coding Assistant)
 
 The official `@syncfusion/blazor-assistant` MCP server provides:
