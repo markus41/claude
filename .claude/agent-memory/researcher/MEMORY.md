@@ -1,334 +1,427 @@
-# Claude Code Complete Documentation Knowledge Base
+---
+name: Researcher Agent Memory Index
+description: Central index of research findings and documentation knowledge bases maintained by the researcher agent
+type: reference
+---
 
-## Date
-2026-03-08
+# Researcher Agent Memory Index
 
-## Status
-COMPREHENSIVE DOCUMENTATION RESEARCH COMPLETE
-**2026-03-08 UPDATE**: Plugin discovery & marketplace architecture documented
+This directory maintains structured research findings and documentation knowledge bases for reuse across sessions.
 
-## What This Contains
-Complete coverage of Claude Code documentation from code.claude.com/docs including:
-- Installation and setup procedures
-- Configuration and settings (all scopes)
-- Memory systems (CLAUDE.md and auto memory)
-- Skills system (creation, invocation, bundled skills)
-- Hooks (lifecycle events, types, configuration)
-- MCP integration (server setup, authentication, management)
-- Permissions system (modes, rules, enforcement)
-- Subagents (built-in and custom)
-- Plugins (structure, manifest, creation, distribution)
-- CLI commands and flags
-- Interactive mode commands
-- Keyboard shortcuts
-- Permission and safety mechanisms
-- Common workflows
-- IDE integrations (VS Code, JetBrains)
-- Desktop and Web interfaces
-- Error handling and troubleshooting
-- Environment variables
+## Knowledge Bases
 
-## Key Documentation Sections Retrieved
-1. **Quickstart** - First steps and basic operations
-2. **Advanced Setup** - System requirements, installation variants, updates
-3. **CLI Reference** - Complete command and flag documentation
-4. **Settings** - Configuration file structure and all settings options
-5. **Memory** - CLAUDE.md, auto memory, rules system
-6. **MCP** - Model Context Protocol integration
-7. **Skills** - Custom skills creation and management
-8. **Hooks** - Lifecycle automation
-9. **How Claude Code Works** - Agentic loop architecture
-10. **Plugins** - Plugin creation and distribution
-11. **Subagents** - Custom agent creation
-12. **Permissions** - Access control and safety
+### Syncfusion Blazor Comprehensive Documentation
+- **File**: `syncfusion_blazor_comprehensive.md`
+- **Date**: 2026-03-29
+- **Version**: 33.1.44
+- **Coverage**:
+  - Installation: NuGet packages, Program.cs setup, theme/script registration
+  - DataGrid (SfGrid): Configuration, column mapping, data binding, event handling, pagination/sorting/filtering
+  - Chart (SfChart): Series types, axes configuration, legends, tooltips, event handling
+  - Scheduler (SfSchedule): Views, appointment data binding, recurrence rules, event handling
+  - Theming: Built-in themes (fluent2, bootstrap5, tailwind, material), CSS variable customization
+  - Performance: Virtual scrolling, lazy loading, optimization best practices
+  - API Reference: Base classes, data management, service registration, enumerations
+  - Complete integration example: Full working Blazor Web App setup
 
-## Critical Configuration Patterns
-- Settings precedence: Managed > Local > Project > User
-- Permission precedence: Deny > Ask > Allow
-- CLAUDE.md locations with priority order
-- Hook event matching and exit codes
-- MCP server scope resolution
-- Subagent tool restrictions and models
-- Plugin directory structure
+**Key Code Examples**:
+1. DataGrid with paging, sorting, filtering
+2. Chart with column series, axes, legend, tooltip
+3. Scheduler with multiple views and recurrence
+4. Custom theming with CSS variables
+5. Performance optimization techniques
 
-## Built-in Skills
-- `/simplify` - Code quality and refactoring
-- `/batch` - Parallel changes across codebase
-- `/debug` - Session troubleshooting
-- `/loop` - Recurring task scheduling
-- `/claude-api` - API reference loading
+**Use for**: Syncfusion Blazor implementation, component setup, configuration patterns, data binding strategies
 
-## Built-in Subagents
-- **Explore**: Read-only, Haiku model, fast analysis
-- **Plan**: Read-only research
-- **General-purpose**: Full capabilities
+---
 
-## Plugin System
-Can create plugins with:
-- `.claude-plugin/plugin.json` manifest
-- `skills/`, `agents/`, `commands/` directories
-- `hooks/hooks.json` configuration
-- `.mcp.json` server definitions
-- `settings.json` defaults
+### .NET/Blazor Comprehensive Documentation
+- **File**: `dotnet_blazor_research.md`
+- **Date**: 2026-03-29
+- **Coverage**:
+  - Blazor Web App render modes (.NET 10): InteractiveServer, InteractiveWebAssembly, InteractiveAuto, Static
+  - Blazor component lifecycle: SetParametersAsync, OnInitialized, OnParametersSet, OnAfterRender, Dispose
+  - ASP.NET Core microservices: gRPC, REST/HTTP, event-driven patterns
+  - .NET Aspire orchestration: service discovery, configuration, health checks
+  - Entity Framework Core: DbContext, relationships, queries, aggregations
+  - Authentication & Authorization: JWT, claims, policies
+  - JavaScript interop: JS modules, FFI patterns
+  - SignalR: real-time hubs, messaging, groups
+  - Syncfusion Blazor components: DataGrid, DatePicker, calendars
+  - Key patterns: DI, cascading parameters, error boundaries, virtualization
+  - Architecture recommendations: enterprise vs public vs hybrid
 
-## Permission System
-- **Modes**: default, acceptEdits, plan, dontAsk, bypassPermissions
-- **Rules**: Tool(specifier) with wildcard support
-- **Scopes**: Managed, User, Project, Local
+**Key Topics Covered**:
+1. Render mode selection matrix (when to use each)
+2. Complete component lifecycle with code examples
+3. Microservices architecture patterns and communication
+4. Resilience patterns (Circuit Breaker, Retry)
+5. Database modeling with EF Core
+6. Authentication flows and authorization policies
+7. Real-time communication with SignalR
+8. Professional UI components with Syncfusion
 
-## Memory Systems
-- **CLAUDE.md**: Persistent instructions (max 200 lines in context)
-- **Auto Memory**: Claude-maintained knowledge at `~/.claude/projects/<project>/memory/`
-- **Rules**: Modular instructions in `.claude/rules/` with optional path scoping
+**Use for**: Architecture decisions, implementation patterns, best practices
 
-## MCP Configuration
-- **Transports**: HTTP, SSE (deprecated), Stdio
-- **Scopes**: Local (default), Project (`.mcp.json`), User
-- **Management**: Via `claude mcp` commands or `/mcp` in session
+---
 
-## Quick Command Reference
-- `claude` - Start session
-- `claude -p "query"` - Non-interactive
-- `claude --model opus` - Set model
-- `/help` - Show commands
-- `/memory` - Manage instructions
-- `/agents` - Manage subagents
-- `/hooks` - Configure lifecycle
-- `/mcp` - Manage servers
-- `/permissions` - Manage access
-- `/context` - Check context usage
+### Domain-Driven Design & CQRS Patterns for .NET Microservices
+- **File**: `ddd_cqrs_microservices.md`
+- **Date**: 2026-03-29
+- **Coverage**:
+  - Domain model patterns: Entities, Value Objects, Aggregates, Aggregate Roots
+  - EF Core persistence: POCO design, private fields, repository pattern, Specification pattern
+  - Hi/Lo key generation, shadow properties, Fluent API configuration
+  - Domain events: Design, implementation, event handlers, publishing strategies
+  - Transactional boundaries: Single transaction vs eventual consistency
+  - Domain validations: Exception-based, Specification, Notification patterns
+  - Application layer: SOLID principles, Dependency Injection patterns
+  - Simplified CQRS: Commands (writes) vs Queries (reads) separation
+  - Layer integration: Request flow, decoupling between layers
 
-## Documentation Links (All Retrieved)
-- [Main Docs](https://code.claude.com/docs)
-- [Quickstart](https://code.claude.com/docs/en/quickstart)
-- [Setup](https://code.claude.com/docs/en/setup)
-- [CLI Reference](https://code.claude.com/docs/en/cli-reference)
-- [Settings](https://code.claude.com/docs/en/settings)
-- [Memory](https://code.claude.com/docs/en/memory)
-- [MCP](https://code.claude.com/docs/en/mcp)
-- [Skills](https://code.claude.com/docs/en/skills)
-- [Hooks Guide](https://code.claude.com/docs/en/hooks-guide)
-- [How Claude Code Works](https://code.claude.com/docs/en/how-claude-code-works)
-- [Plugins](https://code.claude.com/docs/en/plugins)
-- [Subagents](https://code.claude.com/docs/en/sub-agents)
-- [Permissions](https://code.claude.com/docs/en/permissions)
+**Key Topics Covered**:
+1. Rich vs Anemic domain models (when to use each)
+2. Complete entity & aggregate design with code examples
+3. EF Core DDD-compliant patterns (private fields, read-only collections)
+4. Repository & Specification patterns for queries
+5. Domain events: Raising, dispatching, handling across aggregates
+6. Validation strategies at domain vs application boundaries
+7. CQRS separation for read/write optimization
+8. Full request processing flow through all layers
+9. Best practices & anti-patterns checklist
 
-## For Plugins with Deep Claude Code Knowledge
-This documentation base enables building plugins that:
-1. Understand complete Claude Code architecture
-2. Leverage all configuration options
-3. Integrate with hooks, MCP, skills, and subagents
-4. Provide context-aware guidance on features
-5. Offer automation and workflow patterns
-6. Teach best practices for Claude Code usage
+**Use for**: Microservice architecture design, DDD implementation guidance, CQRS patterns, validation strategy
 
-## Session Model Used
-- Claude Haiku 4.5 (fast research)
-- WebFetch tool for documentation retrieval
-- Multiple parallel requests to gather sections efficiently
+---
 
-## Token Usage
-- Approximately 100K tokens used for comprehensive retrieval
-- Organized as single knowledge base document
-- Suitable for building large-scale plugins with complete feature coverage
+### .NET Microservices Architecture & Fundamentals
+- **File**: `dotnet_microservices_fundamentals.md`
+- **Date**: 2026-03-29
+- **Coverage**:
+  - **API Versioning & Backward Compatibility**: Semantic versioning, additive changes, Mediator pattern, Hypermedia
+  - **Composite UI / Micro-Frontends**: Monolithic vs Composite UI, Blazor integration, tradeoffs
+  - **Async Messaging vs Sync Communication**: Single-receiver (commands), multi-receiver (events), event-driven patterns, message idempotence, resilient publishing (Outbox pattern, Event Sourcing)
+  - **API Gateway Pattern**: Direct vs Gateway communication, BFF (Backend for Frontend), features, products (Azure API Management, Ocelot), drawbacks
+  - **Data Sovereignty Per Microservice**: Database per service, Polyglot persistence, Eventual consistency, Bounded Context (DDD), integration event patterns
+  - **Logical vs Physical Architecture**: 1:1, 1:many service mappings, service composition, scaling strategies
+  - **C# 15 Features**: Collection expression arguments, union types, exhaustive matching
+  - **C# 14 Features**: Field-backed properties, nameof for unbound generics, partial constructors, extension blocks, user-defined operators
+  - **.NET 10 Major Features**: JIT improvements, NativeAOT, cryptography (post-quantum), JSON serialization, WebSocketStream, process management, container support
+  - **Assemblies**: Deployment units, manifest, versioning, reference scope, side-by-side execution, for plugin systems
+  - **Common Language Runtime (CLR)**: Type system, garbage collection (Workstation vs Server), metadata, managed code, assembly loading, reflection
+  - **Reflection for Plugin Discovery**: Type/method inspection, attribute discovery, dynamic instantiation, performance considerations, NativeAOT limitations
 
-## Plugin Discovery & Marketplace Architecture (2026-03-08)
+**Key Topics Covered**:
+1. Complete API versioning strategy with Mediator pattern example
+2. Composite UI patterns for Blazor micro-frontends
+3. Decision matrix for async vs sync communication
+4. Event-driven architecture with idempotence and resilient publishing
+5. API Gateway design principles and BFF pattern
+6. Database per service strategy and Bounded Contexts
+7. Multi-service deployment patterns (logical vs physical separation)
+8. C# 15 union types for type-safe plugin contracts
+9. .NET 10 post-quantum cryptography and container support
+10. Reflection techniques for dynamic plugin discovery and instantiation
+11. CLR fundamentals for plugin isolation and versioning
 
-### Plugin File Structure for Discovery
-- **Manifest**: `.claude-plugin/plugin.json` (required field: `name` only, all others optional)
-- **Default locations** (auto-discovered):
-  - `commands/` - skill markdown files (legacy; use skills/ for new)
-  - `agents/` - agent .md files with YAML frontmatter
-  - `skills/` - skill folders with SKILL.md inside
-  - `hooks/hooks.json` - hook configurations
-  - `.mcp.json` - MCP server configs
-  - `.lsp.json` - LSP server configs
-  - `settings.json` - default plugin settings
+**Use for**: Plugin architecture design, microservice patterns, API contract evolution, data management strategy, C# modernization, reflection-based discovery, assembly versioning, cross-version compatibility
 
-### Plugin Manifest Schema (plugin.json)
-**Required**: `name` only (kebab-case, no spaces)
-**Metadata**: version, description, author, homepage, repository, license, keywords
-**Component paths**: commands, agents, skills, hooks, mcpServers, lspServers, outputStyles
-**Key**: Component paths supplement default dirs (don't replace them)
-**Environment variable**: `${CLAUDE_PLUGIN_ROOT}` for absolute paths in hooks/MCP
+---
 
-### Plugin Namespacing
-- Skills in plugins are namespaced: `/plugin-name:skill-name` (prevents conflicts)
-- Standalone config uses short names: `/skill-name`
-- Plugins always namespaced unless part of official marketplace
+### .NET AI Extensions: Chat, Embeddings, MCP, Vector Stores, Tokenization
+- **File**: `dotnet_ai_extensions_comprehensive.md`
+- **Date**: 2026-03-29
+- **Coverage**:
+  - **NuGet Packages**: Microsoft.Extensions.AI, Microsoft.Extensions.AI.OpenAI, Microsoft.Extensions.VectorData, ModelContextProtocol, Microsoft.ML.Tokenizers, Azure.AI.OpenAI
+  - **IChatClient**: OpenAI/Azure OpenAI integration, streaming, function invocation, middleware pipeline
+  - **ChatClientBuilder**: Middleware composition (function invocation, caching, telemetry, OpenTelemetry)
+  - **IEmbeddingGenerator**: Embedding generation, vector creation, rate-limiting middleware, custom implementations
+  - **Vector Stores**: VectorData attributes, CRUD operations, semantic search, distance functions (cosine, euclidean, dot product)
+  - **RAG Implementation**: Complete end-to-end vector search example with OpenAI embeddings
+  - **MCP Protocol**: Server implementation with tools, stdio/HTTP transport, tool discovery, client integration
+  - **MCP Servers**: Tool definition, environment variable configuration, NuGet publishing, server.json schema
+  - **MCP Clients**: StdioClientTransport, McpClient initialization, tool listing, chat client integration
+  - **Tokenization**: Tiktoken (GPT-4/5), Llama, BPE tokenizers; counting, encoding, decoding, trimming text
+  - **Agent Concepts**: Reasoning + decision-making, tool usage, context awareness
+  - **Workflow Orchestration**: Sequential, concurrent, handoff, group chat, magentic patterns
 
-### How Marketplaces Work (marketplace.json)
-**Location**: `.claude-plugin/marketplace.json` in repo root
-**Purpose**: Catalog of plugins with version tracking, auto-updates, multiple sources
+**Key Code Examples Included**:
+1. Basic chat client creation (OpenAI + Azure OpenAI)
+2. Function invocation with AIFunctionFactory
+3. ChatClientBuilder with middleware pipeline
+4. Embedding generation (basic + with caching middleware)
+5. Custom rate-limiting embedding generator
+6. Complete vector search RAG application
+7. MCP server with RandomNumber + Weather tools
+8. MCP client with chat integration
+9. Tiktoken, Llama, and BPE tokenizers with all operations
+10. VectorStore model definitions with attributes
 
-**Marketplace Required Fields**:
-- `name` - marketplace identifier (kebab-case, public-facing)
-- `owner` - object with `name` (required) and optional `email`
-- `plugins` - array of plugin entries
+**Installation Commands**:
+- Minimal chat: `Microsoft.Extensions.AI`, `Microsoft.Extensions.AI.OpenAI --prerelease`
+- Function calling: same as above
+- Vector search: add `Microsoft.SemanticKernel.Connectors.InMemory --prerelease`
+- MCP server: `dotnet new install Microsoft.McpServer.ProjectTemplates` + template generation
+- MCP client: add `ModelContextProtocol --prerelease`
+- Tokenization: `Microsoft.ML.Tokenizers` + `Microsoft.ML.Tokenizers.Data.O200kBase` (for Tiktoken)
 
-**Plugin Entry Fields**:
-- `name` - plugin identifier (kebab-case)
-- `source` - where to fetch plugin (relative path, GitHub, npm, git URL, git-subdir)
+**API Surface Summary**:
+- IChatClient: `GetResponseAsync()`, `GetStreamingResponseAsync()`
+- IEmbeddingGenerator: `GenerateAsync()`, `GenerateVectorAsync()`
+- VectorStore: `UpsertAsync()`, `SearchAsync()`, `GetAsync()`, `DeleteAsync()`
+- MCP: `McpClient.CreateAsync()`, `ListToolsAsync()`, tool invocation via chat middleware
+- Tokenizers: `CountTokens()`, `EncodeToIds()`, `Decode()`, `EncodeToTokens()`, `GetIndexByTokenCount()`
 
-**Plugin Sources Supported**:
-- Relative path: `"./plugins/my-plugin"` (Git-based only)
-- GitHub: `{"source": "github", "repo": "owner/repo", "ref?", "sha?"}`
-- Git URL: `{"source": "url", "url": "https://...", "ref?", "sha?"}`
-- Git subdir: `{"source": "git-subdir", "url": "...", "path": "...", "ref?", "sha?"}`
-- npm: `{"source": "npm", "package": "@org/plugin", "version?", "registry?"}`
-- pip: `{"source": "pip", "package": "name", "version?", "registry?"}`
+**Use for**: Chat client implementation, function calling setup, embedding generation for search, vector database/RAG, MCP server/client development, token counting and management, agent architecture guidance
 
-**Optional Plugin Entry Fields**:
-- description, version, author, homepage, repository, license, keywords, category, tags
-- strict (true=default, plugin.json is authority; false=marketplace entry is authority)
-- Component overrides: commands, agents, hooks, mcpServers, lspServers
+---
 
-### Plugin Installation & Caching
-- Plugins installed from marketplaces are copied to **cache** at `~/.claude/plugins/cache`
-- NOT used in-place from marketplace repo
-- Path traversal limitation: plugins cannot reference files outside their directory (`../` fails)
-- Symlinks honored during copy (workaround for shared files)
+### .NET MAUI & Data API Builder Comprehensive Research
+- **File**: `dotnet_maui_data_api_research.md`
+- **Date**: 2026-03-29
+- **Coverage**:
+  - **.NET MAUI Local Data**: SQLite with sqlite-net-pcl (ORM) or Microsoft.Data.Sqlite (ADO.NET); lazy initialization, async CRUD, repository pattern
+  - **.NET MAUI REST API**: HttpClient setup, JSON serialization, GET/POST/PUT/DELETE patterns, streaming large responses, error handling
+  - **.NET MAUI Shell Navigation**: URI-based routing, absolute/relative routes, query parameters, object navigation, IQueryAttributable, navigation events, deferral
+  - **.NET MAUI MVVM**: INotifyPropertyChanged interface, two-way binding, command binding (ICommand/RelayCommand), interactive examples
+  - **Community Toolkit.Mvvm**: ObservableObject (replaces boilerplate), source generators ([ObservableProperty]), RelayCommand, messaging, IoC
+  - **Data API Builder (DAB)**: Configuration-based REST/GraphQL generator; zero-code APIs; supports SQL/Cosmos/PostgreSQL/MySQL; authentication, security, deployment
+  - **Pattern Overlap**: Identical MVVM in MAUI and Blazor; shared HttpClient API; REST consumption; DI patterns; async-first design
+  - **SQLite Patterns**: Lazy async initialization, ORM object mapping, write-ahead logging, database copying/backup
+  - **Shell Navigation Patterns**: Route hierarchy, contextual navigation, parameter passing (string vs object), navigation interception
+  - **Authentication**: Entra ID, JWT, App Service EasyAuth, simulator for dev
 
-### Installation Scopes
-- **user** (default): `~/.claude/settings.json` - personal, all projects
-- **project**: `.claude/settings.json` - team, shared via git
-- **local**: `.claude/settings.local.json` - project-specific, gitignored
-- **managed**: Read-only, admin-updated
+**Key Code Examples Included**:
+1. SQLite configuration constants and entity models
+2. Database access class with lazy async initialization
+3. Complete CRUD operations (async/await)
+4. REST service class with HttpClient setup
+5. GET/POST/PUT/DELETE with error handling
+6. Large response streaming pattern
+7. Shell route registration and GoToAsync patterns
+8. Query parameter passing and receiving
+9. IQueryAttributable implementation
+10. Navigation event handling and deferral
+11. INotifyPropertyChanged with CallerMemberName
+12. Two-way binding in XAML
+13. ICommand and RelayCommand with CanExecute
+14. ObservableObject with source generators
+15. Data API Builder configuration structure
 
-### Marketplace Distribution
-- Host on GitHub (easiest): users add with `/plugin marketplace add owner/repo`
-- Git services: GitLab, Bitbucket, self-hosted all supported
+**Decision Matrices Included**:
+- SQLite package choice (sqlite-net-pcl vs Microsoft.Data.Sqlite)
+- Navigation approach (absolute vs relative vs contextual)
+- Data passing strategy (query strings vs object navigation vs single-use)
+- MVVM implementation (manual INotifyPropertyChanged vs Community Toolkit)
 
-## draw.io / diagrams.net Research (2026-03-14)
-Full reference: `.claude/agent-memory/researcher/drawio-reference.md`
-Key findings:
-- Official MCP: github.com/jgraph/drawio-mcp (@drawio/mcp on npm); 4 approaches; hosted at https://mcp.draw.io/mcp
-- Community MCP: lgazo/drawio-mcp-server (npx -y drawio-mcp-server --editor); inspector/modifier/layer tools
-- XML format: mxCell (vertex/edge), mxGeometry, object (metadata), placeholder %vars%; uncompressed for AI use
-- Embed: embed.diagrams.net with postMessage protocol; 20+ URL params; lightbox=1 for viewer iframes
-- Export: PNG, SVG, PDF, WebP, XML, HTML, CSV; PDF requires server endpoint
-- Import: Mermaid v11.10.1, CSV, Gliffy, Lucidchart, VSDX; PlantUML deprecated end 2025
-- AI: Sparkle/Generate tool (multi-engine); enableAi config; admin-controlled in Confluence
-- VS Code: hediet.vscode-drawio extension; .drawio/.dio/.drawio.svg/.drawio.png; Code Link feature
-- Integrations: Confluence (Forge-only by Jan 2026), Jira, GitHub, GitLab, Office 365, Notion (Chrome ext), Nextcloud
-- Azure DevOps: no native integration; workarounds exist via marketplace extension or CI/CD pipeline
-- Shape libraries: AWS/Azure/GCP/IBM/Cisco/UML/BPMN/network/etc.; enable via libs URL param
-- Docker: jgraph/drawio image; env vars DRAWIO_SERVER_URL, DRAWIO_CONFIG, etc.
-- Config JSON: 50+ options (fonts, colors, styles, libraries, behavior, AI, collaboration)
+**Use for**: .NET MAUI local data storage, REST API consumption, Shell navigation architecture, MVVM patterns, Data API Builder integration, comparison with Blazor patterns
 
-### Registry/Caching Behavior
-- Plugins are versioned and cached locally
-- Update detection: version in plugin.json must change for update trigger
-- If version in both plugin.json and marketplace.json, plugin.json wins
-- Marketplace entry `strict: false` means no plugin.json needed (marketplace defines all)
+---
 
-### Reserved Marketplace Names
-Cannot use: claude-code-marketplace, claude-code-plugins, claude-plugins-official, anthropic-marketplace, anthropic-plugins, agent-skills, life-sciences
+### Blazor .NET 10 Comprehensive Documentation
+- **File**: `blazor_net10_comprehensive.md`
+- **Date**: 2026-03-29
+- **Coverage**:
+  - Component fundamentals: Structure, naming, implementation patterns (single-file, partial class, base class)
+  - Component parameters: Basic, required, tuple, child content (RenderFragment), component references
+  - Render modes (.NET 8+): InteractiveServer, InteractiveWebAssembly, InteractiveAuto, Static SSR selection matrix
+  - Prerendering: Enable/disable strategies, handling client-side services, state persistence
+  - State management: StateContainer, cascading values, root-level notifications
+  - Routing: Templates, parameters, optional/catch-all, constraints, focus, async navigation events
+  - Web API calls: HttpClient usage, error handling, POST requests with JSON
+  - CSS isolation: Scoped CSS files, child component styling with `::deep`, custom scope identifiers
+  - Blazor Hybrid: MAUI/WPF/Windows Forms integration, BlazorWebView, native interop, unhandled exceptions
+  - Authentication: Microsoft Entra (Azure AD) setup, AuthorizeView, protected components
+  - Progressive Web Apps: Creation, offline support, service workers, manifest, caching strategies
+  - Advanced .NET 10: Static vs interactive routing, multiple assembly routing, lifecycle methods, MarkupString
 
-### Plugin CLI Commands
-- `claude plugin install <name>[@marketplace]` - install plugin
-- `claude plugin uninstall <name>` - remove plugin
-- `claude plugin enable/disable <name>` - toggle without uninstall
-- `claude plugin update <name>` - update to latest version
-- `claude plugin validate .` - validate plugin.json or marketplace.json
-- `--plugin-dir ./path` flag for development/testing (loads directly without cache)
+**Key Topics Covered**:
+1. Component patterns for different code organization styles
+2. Render mode decision matrix with use cases
+3. Prerendering configuration and client service resolution
+4. In-memory state management with change notifications
+5. Routing patterns including catch-all and constraints
+6. HttpClient configuration and error handling
+7. CSS isolation with deep selector for child components
+8. Blazor Hybrid setup for MAUI/WPF/Windows Forms
+9. Azure AD authentication integration
+10. PWA offline-first architecture with cache strategies
+11. Service worker configuration and update mechanisms
 
-### Testing & Validation
-- Use `claude --plugin-dir ./my-plugin` for development
-- Load multiple: `--plugin-dir ./p1 --plugin-dir ./p2`
-- Common errors: manifest syntax, components in `.claude-plugin/` (wrong location)
-- Validation: `claude plugin validate .` or `/plugin validate`
+**Complete Code Examples**:
+- Component structures (single-file, partial class, base class)
+- Parameter patterns (basic, required, tuple, RenderFragment)
+- Component references and lifecycle management
+- All render mode configurations
+- State container with event notifications
+- Routing templates with constraints and catch-all
+- HttpClient GET/POST with error handling
+- CSS isolation with child component styling
+- MAUI/WPF/Windows Forms BlazorWebView setup
+- Azure AD authentication flow
+- PWA manifest and service worker registration
+- Cache-first strategy implementation
 
-## MCP Tools Research (2026-03-19)
+**Use for**: Blazor component design, render mode selection, state management architecture, routing implementation, CSS organization, hybrid mobile/desktop apps, authentication setup, offline-first PWA development, .NET 10 patterns
 
-### Firecrawl MCP vs Perplexity MCP Comparison
-Full reference: `.claude/agent-memory/researcher/mcp_comparison_firecrawl_vs_perplexity.md`
+---
 
-**Key Findings**:
-- **Perplexity**: For Q&A, web search, current events. ~80% cheaper for simple queries. Returns cited sources.
-- **Firecrawl**: For data extraction, crawling, structured JSON. Purpose-built for LLMs. 1 credit per page.
-- **Decision**: Use Perplexity FIRST for any question/search. Use Firecrawl ONLY when structured extraction needed.
-- **Firecrawl Agent**: 100-1,500+ credits per query (unpredictable). Avoid unless multi-page autonomous research essential.
-- **Protected Sites**: Firecrawl fails 83% of time on LinkedIn/Amazon/etc. Use Perplexity to find URLs instead.
+### ASP.NET Core 10.0 Comprehensive Reference
+- **File**: `aspnet_core_comprehensive_guide.md`
+- **Date**: 2026-03-29
+- **Coverage**:
+  - **Best Practices**: Caching, async patterns, blocking calls, pagination, large object allocation, data access optimization, HttpClientFactory, hot code paths, long-running tasks, client asset minification, response compression
+  - **Performance**: IAsyncEnumerable patterns, HttpContext safety, response headers management, async void anti-pattern, form data handling, Content-Length null safety
+  - **Security**: Authentication vs authorization, managed identities, never-store secrets, XSS prevention, SQL injection prevention, CSRF protection, open redirect prevention
+  - **Localization**: Culture concepts, IStringLocalizer, resource files, culture selection (query string, cookies, Accept-Language), culture fallback, DataAnnotations localization
+  - **Hosting & Deployment**: Publish process, self-contained vs framework-dependent, process managers (IIS, Windows Service, systemd), reverse proxy (Nginx), health checks
+  - **Model Binding**: Binding sources, [FromQuery/FromBody/FromRoute] attributes, complex types, collections, simple type conversion, IParsable<T>, record types, JSON configuration, custom converters
+  - **APIs**: Minimal APIs (recommended), controller-based APIs, routing, handlers, OpenAPI, authorization, custom validation, form data, dependency injection
 
-**Pricing**:
-- Firecrawl Standard: $83/yr for 100k credits (~$0.0008/page)
-- Perplexity: ~$0.02 per query; usage-based
-- Recommendation: Perplexity for 80% of tasks; Firecrawl reserved for extraction
+**Key Code Examples Included**:
+1. Async/await patterns (correct and wrong)
+2. Pagination implementation
+3. Large object and buffer pooling
+4. HttpContext safety patterns
+5. Fire-and-forget tasks with IServiceScopeFactory
+6. Response header management
+7. Authentication flows and secret management
+8. XSS, SQL injection, CSRF, open redirect prevention
+9. Localization setup with multiple cultures
+10. Model binding with complex types and collections
+11. IParsable<T> custom type conversion
+12. Record type binding with validation
+13. Minimal API complete CRUD example
+14. Controller-based API with dependency injection
+15. Health check implementation
 
-## Claude Code Memory System Deep Dive (2026-03-19)
+**Decision Matrices**:
+- Cache strategies (when to use memory vs distributed)
+- Async patterns (when to use async/await vs Task.Run)
+- Culture selection method (query string vs cookie vs header)
+- API approach (Minimal APIs vs Controllers)
+- Authentication method (managed identities vs OAuth2 vs direct)
 
-Full research: `.claude/agent-memory/researcher/memory_system_research.md`
+**Pitfalls & Prevention**:
+- Performance: Blocking calls, HttpClient creation, sync enumeration, stored HttpContext, large allocations
+- Security: Untrusted ContentLength, unescaped HTML, SQL concatenation, open redirects, password exposure
+- Binding: Null ContentLength, [FromBody] ignoring nested attributes, wrong prefix, missing validation
 
-### Auto-Memory Architecture
-- **Location**: `~/.claude/projects/<project>/memory/MEMORY.md` (200-line hard limit)
-- **Topic files**: Auto-created when approaching 200 lines (no size limit, on-demand load)
-- **Scope**: Per git repository (all worktrees share one memory)
-- **CLAUDE.md**: Best practice <200 lines but loads fully regardless
-- **Mechanism**: First 200 lines of MEMORY.md injected at session start; topic files load on-demand via file tools
+**Complete Patterns**:
+- Async/pagination for collections
+- HttpContext access during request scope only
+- Background tasks with scoped services
+- Multi-culture request handling
+- Complex model binding with prefixes
+- Minimal API handler patterns with DI
+- Response compression and asset minification
 
-### Context Anchoring Under Compaction
-- **Survives compaction**: CLAUDE.md (full re-injection), first 200 lines of MEMORY.md (fresh load), `.claude/rules/` files
-- **Lost during compaction**: Earlier conversation turns (summarized), content beyond line 200 of MEMORY.md, inline instructions
-- **Hook control**: PreCompact fires before summarization (save state); PostCompact fires after (react to result)
-- **Best practice**: Store critical state in CLAUDE.md or MEMORY.md; implement PreCompact to save important diffs/vars
+**Use for**: Performance optimization, security hardening, localization implementation, model binding patterns, API design decisions, deployment configuration, best practices reference
 
-### Error → Fix → Prevent Loop
-- **Capture**: PostToolUseFailure hook auto-appends error to `.claude/rules/lessons-learned.md`
-- **Fix**: Claude fixes issue in same session
-- **Document**: Update entry: Status: RESOLVED, Fix: description, Prevention: how-to-avoid
-- **Prevent**: Next session loads lessons-learned.md as rule file; Claude avoids repeat
-- **Promote**: When 3+ similar errors appear, create permanent rule in `.claude/rules/` and remove promoted entries
+---
 
-### Compliance Patterns (2026 research)
-- **Focused 30-line rules outperform 200-line comprehensive rules** — Each rule gets more attention
-- **Positive instructions work better than negative** — "Use pnpm" >> "Don't use npm"
-- **Rules + Hooks hybrid optimal** — Combine suggestions (rules) with enforcement (hooks); expect 70-80% compliance
-- **Specificity drives adherence** — "2-space indentation" >> "format code properly"
+### Microsoft Azure & .NET Deployment Comprehensive Guide
+- **File**: `microsoft_azure_dotnet_deployment_guide.md`
+- **Date**: 2026-03-29
+- **Coverage**:
+  - **Azure App Service Deployment**: .NET 10 quickstart, Visual Studio/CLI/PowerShell/Portal workflows, publish profiles, port bindings
+  - **Azure SDK for .NET**: Package installation, authentication patterns (DefaultAzureCredential, connection strings), 4-step SDK implementation
+  - **Key Azure Services**: App Service, Container Apps, Functions, SQL, Cosmos DB, Blob Storage, Service Bus, Key Vault, Foundry Tools (AI)
+  - **App Service Migration**: On-premises to cloud, dependency assessment, port binding changes, database migration, AAD integration, configuration mapping
+  - **Cross-Platform Targeting**: Framework selection (net8.0, netstandard2.0, net462), multi-targeting, conditional compilation, NuGet distribution
+  - **Microservices Architecture**: Docker containers, synchronous (HTTP/gRPC) vs asynchronous (queues) communication, Kubernetes/Container Apps/App Service deployments
+  - **Resilience Patterns**: Circuit Breaker, retry with exponential backoff, timeout protection (Polly library)
+  - **Deployment Checklist**: Pre-deployment, configuration, post-deployment verification
 
-### Memory Scoping for Agents
-Four types for `~/.claude/agent-memory/<agent-name>/`:
-1. **user** — Agent understanding of user role/expertise
-2. **feedback** — Corrections ("don't do X") and validated patterns ("keep doing Y")
-3. **project** — Ongoing work, deadlines, stakeholders (use absolute dates, not relative)
-4. **reference** — External system pointers (Linear projects, Slack channels, Grafana boards)
+**CLI Commands Included**:
+- Azure: login, webapp up, config appsettings set, log tail, group delete
+- .NET: new, restore, build, run, publish, test, add package
+- Docker: build, run, push
+- PowerShell: Connect-AzAccount, New-AzWebApp, Publish-AzWebApp
 
-Format: `<type>_<topic>.md` with frontmatter specifying type. Index up to 200 lines in MEMORY.md.
+**Code Examples**:
+1. Blazor Web App creation (CLI & Visual Studio)
+2. Azure SDK client initialization (Blob Storage, Key Vault, Service Bus)
+3. DefaultAzureCredential authentication pattern
+4. WCF binding compatibility checks
+5. App Service migration configuration mapping
+6. Multi-target project files (net8.0;netstandard2.0;net462)
+7. Conditional compilation for platform-specific APIs (#if NET462 patterns)
+8. Docker microservice Dockerfile
+9. Docker Compose multi-service setup
+10. Synchronous & asynchronous service communication patterns
+11. Circuit Breaker/Retry/Timeout resilience patterns
+12. Kubernetes Deployment manifests
+13. Azure Container Apps deployment commands
 
-### MCP-Backed Memory
-- **Package**: `@modelcontextprotocol/server-memory`
-- **Storage**: SQLite database (local, machine-local)
-- **Transport**: Stdio
-- **Use case**: Semantic knowledge graphs shared across sessions; tool-based (not markdown) memory
+**Decision Matrices**:
+- Service selection (App Service vs Container Apps vs Functions)
+- Data storage choice (SQL vs Cosmos vs Storage)
+- Communication pattern (sync HTTP vs async queues)
+- Framework targeting (net8.0, net462, netstandard2.0)
+- Deployment orchestration (K8s, Container Apps, App Service)
 
-## Agentic Design Patterns Research (2026-03-27)
-Full reference: `.claude/agent-memory/researcher/agentic_design_patterns.md` (comprehensive deep dive)
-Also: `.claude/agent-memory/researcher/agentic-patterns-research.md` (quick summary)
-Source: github.com/Mathews-Tom/Agentic-Design-Patterns (Gulli & Sauco, 424 pages, MIT)
+**Gotchas & Solutions**:
+- Port binding restrictions (80/443 only)
+- Free tier AAD limitations
+- Database connection timeouts
+- Multi-target dependency hell
+- Large deployment slowness
 
-**4 Core Patterns (Andrew Ng)**:
-- **Reflection** — LLM critiques own output, iterates to improve (15.6% accuracy gain)
-- **Tool Use** — LLM decides which functions/APIs to call for tasks
-- **Planning** — Agent breaks goals into subtasks, identifies dependencies, sequences execution
-- **Multi-Agent** — Specialized agents collaborate toward complex goals
+**Use for**: Azure App Service deployment steps, SDK authentication patterns, cross-platform library design, microservices deployment, migration planning, framework selection, resilience pattern implementation, CLI command reference
 
-**21 patterns organized in 4 parts:**
-- **Part 1 (Foundational)**: Prompt chaining, routing, parallelization, reflection, tool use, planning, multi-agent
-- **Part 2 (Advanced Systems)**: Memory management, learning/adaptation, MCP, goal setting
-- **Part 3 (Production)**: Exception handling, human-in-loop, RAG
-- **Part 4 (Multi-Agent)**: A2A communication, resource optimization, reasoning, guardrails, evaluation, prioritization, discovery
+---
 
-**Additional Key Patterns**:
-- **Prompt Chaining** — Sequential steps with intermediate validation (15.6% vs monolithic)
-- **Routing** — Direct requests to specialized handlers by intent/domain
-- **Parallelization** — Run independent tasks concurrently, combine results
-- **Evaluator-Optimizer** — Generator + evaluator agent in feedback loop
+### MicrosoftDocs Learning Sample Repository Catalog
+- **File**: `microsoftdocs_learning_samples.md`
+- **Date**: 2026-03-29
+- **Coverage**:
+  - Blazor interactive components (BlazingPizza pizza-ordering app)
+  - Blazor forms, validation, and state management patterns
+  - Data access and Entity Framework Core integration
+  - Routing, navigation, and layout in Blazor
+  - .NET Aspire service orchestration (SupportTicketApi, migrations)
+  - Cloud-native microservices patterns (.NET)
+  - DevOps, CI/CD, Kubernetes deployment (GitHub Actions, AKS, Helm)
 
-**Frameworks**: LangGraph (recommended), CrewAI, AutoGen, DSPy, Smolagents
-**Implementation guidance**: Start with single pattern. Combine 2-3 patterns for production. Multi-agent costs 25x single-agent.
-**Cost awareness**: Each agent call + coordination + reflection loop = token expense. Balance quality vs. cost.
-**Success factors**: Clear separation of concerns, well-defined interfaces, error handling, context management, monitoring
+**Key Repository Inventory**:
+1. `mslearn-build-interactive-components-blazor` — Component architecture (27.5% C#, 32.6% HTML, 39.9% CSS)
+2. `mslearn-use-forms-in-blazor-web-apps` — Form binding, validation, OrderState, Controllers
+3. `mslearn-interact-with-data-blazor-web-apps` — EF Core integration, model-based access
+4. `mslearn-blazor-navigation` — Routing, pages, layouts (28.9% C#, 20.6% HTML, 50.5% CSS)
+5. `aspire-docs-samples` — Service orchestration, migration pattern (SupportTicketApi)
+6. `mslearn-dotnet-cloudnative` — Microservices architecture learning path
+7. `mslearn-dotnet-cloudnative-devops` — GitHub Actions, AKS, Helm, CI/CD patterns
 
-## MUI Advanced Patterns & Integration (2026-03-28)
-[MUI_Advanced_Patterns_Research_2026-03-28.md](MUI_Advanced_Patterns_Research_2026-03-28.md) — 10-topic comprehensive research covering Base UI unstyled components (useButton, useInput hooks), Joy UI customization, advanced form patterns (react-hook-form, Zod, Stepper wizards), virtualization for large datasets, Next.js App Router SSR setup, Grid v2 responsive layouts, animations (Collapse, Fade, Grow, Slide, Zoom, TransitionGroup), slots & slotProps API, RTL/i18n support, and React Testing Library patterns for portal components (Dialog, Menu, Popover)
+**Common Pattern**: Pizza store application used across multiple repos for consistent domain model
+**Technology Stack**: C#, Razor, SQLite, EF Core, ASP.NET Core, Helm, Azure Kubernetes Service
+**Learning Sequence**: Components → Navigation → Forms → Data → Orchestration → Microservices → DevOps
+
+**Use for**: Understanding official Microsoft learning samples, Blazor component patterns, service orchestration architecture, microservices deployment strategies
+
+---
+
+## How to Use This Memory
+
+When researching .NET/Blazor topics:
+1. Check if topic is in `dotnet_blazor_research.md`
+2. If found, use the documented patterns and examples
+3. If new patterns discovered, add to the knowledge base
+4. Keep examples focused and practical
+
+When recommending approaches:
+- Cite the specific section (e.g., "Render Mode Selection Matrix")
+- Quote or reference the code pattern
+- Explain why it applies to the user's scenario
+
+---
+
+## Future Research Priorities
+
+- [ ] Advanced Blazor patterns (custom components, form validation, state management)
+- [ ] .NET 10 performance optimizations
+- [ ] Cloud deployment (Azure App Service, Azure Container Apps)
+- [ ] Testing strategies (unit, integration, E2E)
+- [ ] Security hardening (HTTPS, CORS, CSP, rate limiting)
+- [ ] Observability (OpenTelemetry, Application Insights)
 

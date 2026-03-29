@@ -143,6 +143,20 @@
         "jetbrains"
       ],
       "dependencies": {}
+    },
+    "dotnet-blazor": {
+      "version": "2.0.0",
+      "path": "../plugins/dotnet-blazor",
+      "source": "local",
+      "installedAt": "2026-03-29T00:00:00.000Z",
+      "platforms": [
+        "cli",
+        "desktop",
+        "web",
+        "vscode",
+        "jetbrains"
+      ],
+      "dependencies": {}
     }
   },
   "registry": {
@@ -432,6 +446,45 @@
         "design-system",
         "dashboard"
       ]
+    },
+    "dotnet-blazor": {
+      "name": "dotnet-blazor",
+      "version": "2.0.0",
+      "description": "Full-stack .NET 10 expert — 19 skills, 8 commands, 6 agents. Blazor Web Apps, ASP.NET Core APIs, microservices with DDD/CQRS, Syncfusion UI, .NET Aspire, EF Core, gRPC, SignalR, .NET AI/MCP, Docker, worker services, cloud-native deployment.",
+      "author": {
+        "name": "Markus Ahling"
+      },
+      "platforms": [
+        "cli",
+        "desktop",
+        "web",
+        "vscode",
+        "jetbrains"
+      ],
+      "keywords": [
+        "dotnet",
+        "blazor",
+        "aspnet-core",
+        "csharp",
+        "syncfusion",
+        "microservices",
+        "aspire",
+        "entity-framework",
+        "grpc",
+        "signalr",
+        "maui",
+        "cloud-native",
+        "ddd",
+        "cqrs",
+        "docker",
+        "ai",
+        "mcp"
+      ],
+      "categories": [
+        "backend",
+        "full-stack",
+        "dotnet"
+      ]
     }
   },
   "plugins": {
@@ -543,6 +596,20 @@
         "status": "active",
         "tier": "standard"
       },
+      "dotnet-blazor": {
+        "path": "../plugins/dotnet-blazor/.claude-plugin/plugin.json",
+        "callsign": "Blazor",
+        "version": "2.0.0",
+        "status": "active",
+        "tier": "standard",
+        "platforms": [
+          "cli",
+          "desktop",
+          "web",
+          "vscode",
+          "jetbrains"
+        ]
+      },
       "team-accelerator": {
         "path": "../plugins/team-accelerator/.claude-plugin/plugin.json",
         "version": "2.0.0",
@@ -634,19 +701,20 @@
     "Consul": "tvs-microsoft-deploy",
     "Cartographer": "drawio-diagramming",
     "Expert": "claude-code-expert",
-    "Materializer": "mui-expert"
+    "Materializer": "mui-expert",
+    "Blazor": "dotnet-blazor"
   },
   "stats": {
-    "totalInstalled": 19,
-    "totalPlugins": 25,
+    "totalInstalled": 20,
+    "totalPlugins": 26,
     "totalAvailable": 6,
-    "lastUpdated": "2026-03-28T00:00:00.000Z",
+    "lastUpdated": "2026-03-29T00:00:00.000Z",
     "byTier": {
       "enterprise": 1,
       "standard": 23
     },
     "byLocation": {
-      "plugins/": 19,
+      "plugins/": 20,
       ".claude/plugins/": 6
     }
   }

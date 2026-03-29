@@ -1,0 +1,122 @@
+{
+  "$schema": "https://claude.local/schemas/plugin.schema.json",
+  "name": "dotnet-blazor",
+  "version": "2.0.0",
+  "description": "Comprehensive .NET 10, Blazor, ASP.NET Core, C#, and Syncfusion expert plugin for building modern web apps, microservices, and cloud-native solutions",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/markus41/claude",
+  "homepage": "https://github.com/markus41/claude/tree/main/plugins/dotnet-blazor",
+  "engines": {
+    "claude-code": ">=2.0.0"
+  },
+  "platforms": [
+    "cli",
+    "desktop",
+    "web",
+    "vscode",
+    "jetbrains"
+  ],
+  "keywords": [
+    "dotnet",
+    "blazor",
+    "aspnet-core",
+    "csharp",
+    "syncfusion",
+    "microservices",
+    "aspire",
+    "entity-framework",
+    "grpc",
+    "signalr",
+    "maui",
+    "cloud-native"
+  ],
+  "permissions": {
+    "requires": [
+      "read",
+      "write",
+      "bash",
+      "glob",
+      "grep"
+    ],
+    "optional": [
+      "agent",
+      "mcp",
+      "network"
+    ]
+  },
+  "capabilities": {
+    "provides": [
+      "blazor-web-app-development",
+      "aspnet-core-api-development",
+      "microservices-architecture",
+      "syncfusion-ui-components",
+      "dotnet-aspire-orchestration",
+      "entity-framework-data-access",
+      "csharp-expert-patterns",
+      "grpc-service-development",
+      "signalr-realtime",
+      "blazor-auth-security",
+      "cloud-native-deployment",
+      "ddd-cqrs-patterns",
+      "docker-containers",
+      "worker-services",
+      "dotnet-ai-integration"
+    ],
+    "requires": []
+  },
+  "contextEntry": "CONTEXT_SUMMARY.md",
+  "context": {
+    "entry": "CONTEXT_SUMMARY.md",
+    "title": ".NET Blazor Expert",
+    "summary": "Full-stack .NET 10 expert: Blazor Web Apps, ASP.NET Core APIs, microservices with DDD/CQRS, Syncfusion UI, .NET Aspire, EF Core, gRPC, SignalR, .NET AI/MCP, Docker, worker services, cloud-native deployment",
+    "tags": [
+      "dotnet",
+      "blazor",
+      "aspnet",
+      "csharp",
+      "syncfusion",
+      "microservices",
+      "aspire"
+    ],
+    "bootstrapFiles": [
+      "CONTEXT_SUMMARY.md"
+    ],
+    "maxTokens": 800,
+    "excludeGlobs": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/bin/**",
+      "**/obj/**"
+    ],
+    "lazyLoadSections": [
+      "CLAUDE.md",
+      "CONTEXT.md",
+      "commands/blazor-new.md",
+      "commands/blazor-component.md",
+      "commands/blazor-api.md",
+      "commands/blazor-microservice.md",
+      "commands/blazor-deploy.md",
+      "commands/blazor-test.md",
+      "commands/blazor-scaffold.md",
+      "commands/blazor-migrate.md",
+      "agents/blazor-architect.md",
+      "agents/aspnet-api-engineer.md",
+      "agents/microservices-designer.md",
+      "agents/syncfusion-ui-specialist.md",
+      "agents/dotnet-performance-engineer.md",
+      "agents/csharp-expert.md",
+      "skills/blazor-components/SKILL.md",
+      "skills/aspnet-core-apis/SKILL.md",
+      "skills/microservices-patterns/SKILL.md",
+      "skills/syncfusion-blazor/SKILL.md",
+      "skills/dotnet-aspire/SKILL.md",
+      "skills/ddd-cqrs-patterns/SKILL.md",
+      "skills/worker-services/SKILL.md",
+      "skills/docker-containers/SKILL.md",
+      "skills/dotnet-ai/SKILL.md"
+    ]
+  }
+}

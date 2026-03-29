@@ -1,0 +1,21 @@
+{
+  "$schema": "../../../schemas/hooks.schema.json",
+  "version": "1.0.0",
+  "plugin": "dotnet-blazor",
+  "description": "Validates C# and Razor file conventions for .NET 10 Blazor projects",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/scripts/validate-dotnet.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
+  "settings": {}
+}
