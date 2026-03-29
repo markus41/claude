@@ -47,24 +47,96 @@ This plugin provides comprehensive .NET 10 development expertise across the full
 ## Documentation Reference URLs
 
 ### Official Blazor Documentation
-- Blazor overview: https://dotnet.microsoft.com/en-us/apps/aspnet/web-apps/blazor
+- Blazor overview: https://learn.microsoft.com/en-us/aspnet/core/blazor/?view=aspnetcore-10.0
+- Blazor product page: https://dotnet.microsoft.com/en-us/apps/aspnet/web-apps/blazor
 - Blazor tutorials: https://learn.microsoft.com/en-us/aspnet/core/blazor/tutorials/?view=aspnetcore-10.0
-- Blazor fundamentals: https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/?view=aspnetcore-10.0
-- Blazor forms: https://learn.microsoft.com/en-us/aspnet/core/blazor/forms/?view=aspnetcore-10.0
-- Blazor security: https://learn.microsoft.com/en-us/aspnet/core/blazor/security/?view=aspnetcore-10.0
-- Blazor performance: https://learn.microsoft.com/en-us/aspnet/core/blazor/performance/?view=aspnetcore-10.0
-- Blazor JS interop: https://learn.microsoft.com/en-us/aspnet/core/blazor/javascript-interoperability/?view=aspnetcore-10.0
+- Blazor tooling: https://learn.microsoft.com/en-us/aspnet/core/blazor/tooling?view=aspnetcore-10.0
+- Hosting models: https://learn.microsoft.com/en-us/aspnet/core/blazor/hosting-models?view=aspnetcore-10.0
+- WASM build tools & AOT: https://learn.microsoft.com/en-us/aspnet/core/blazor/webassembly-build-tools-and-aot?view=aspnetcore-10.0
 - First Blazor app tutorial: https://dotnet.microsoft.com/en-us/learn/aspnet/blazor-tutorial/intro
 - Blazor learning path: https://learn.microsoft.com/en-us/training/paths/build-web-apps-with-blazor/
 
-### ASP.NET Core
+### Blazor Fundamentals
+- Fundamentals overview: https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/?view=aspnetcore-10.0
+- Routing: https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/routing?view=aspnetcore-10.0
+- Navigation: https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/navigation?view=aspnetcore-10.0
+- Dependency injection: https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/dependency-injection?view=aspnetcore-10.0
+- Logging: https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/logging?view=aspnetcore-10.0
+- Static files: https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/static-files?view=aspnetcore-10.0
+
+### Blazor Components
+- Components overview: https://learn.microsoft.com/en-us/aspnet/core/blazor/components/?view=aspnetcore-10.0
+- Prerendering: https://learn.microsoft.com/en-us/aspnet/core/blazor/components/prerender?view=aspnetcore-10.0
+- HttpContext access: https://learn.microsoft.com/en-us/aspnet/core/blazor/components/httpcontext?view=aspnetcore-10.0
+- Generic type support: https://learn.microsoft.com/en-us/aspnet/core/blazor/components/generic-type-support?view=aspnetcore-10.0
+- Splat attributes: https://learn.microsoft.com/en-us/aspnet/core/blazor/components/splat-attributes-and-arbitrary-parameters?view=aspnetcore-10.0
+- Layouts: https://learn.microsoft.com/en-us/aspnet/core/blazor/components/layouts?view=aspnetcore-10.0
+- CSS isolation: https://learn.microsoft.com/en-us/aspnet/core/blazor/components/css-isolation?view=aspnetcore-10.0
+
+### Blazor Forms & Data
+- Input components: https://learn.microsoft.com/en-us/aspnet/core/blazor/forms/input-components?view=aspnetcore-10.0
+- Blazor forms: https://learn.microsoft.com/en-us/aspnet/core/blazor/forms/?view=aspnetcore-10.0
+- File uploads: https://learn.microsoft.com/en-us/aspnet/core/blazor/file-uploads?view=aspnetcore-10.0
+- Call web API: https://learn.microsoft.com/en-us/aspnet/core/blazor/call-web-api?view=aspnetcore-10.0
+- Images and documents: https://learn.microsoft.com/en-us/aspnet/core/blazor/images-and-documents?view=aspnetcore-10.0
+
+### Blazor JS Interop
+- JS interop overview: https://learn.microsoft.com/en-us/aspnet/core/blazor/javascript-interoperability/?view=aspnetcore-10.0
+- JS interop with static SSR: https://learn.microsoft.com/en-us/aspnet/core/blazor/javascript-interoperability/static-server-rendering?view=aspnetcore-10.0
+
+### Blazor Security
+- Security overview: https://learn.microsoft.com/en-us/aspnet/core/blazor/security/?view=aspnetcore-10.0
+- WASM security: https://learn.microsoft.com/en-us/aspnet/core/blazor/security/webassembly/?view=aspnetcore-10.0
+- WASM with Microsoft accounts: https://learn.microsoft.com/en-us/aspnet/core/blazor/security/webassembly/standalone-with-microsoft-accounts?view=aspnetcore-10.0
+- Blazor Web App with Entra: https://learn.microsoft.com/en-us/aspnet/core/blazor/security/blazor-web-app-with-entra?view=aspnetcore-10.0
+- Windows authentication: https://learn.microsoft.com/en-us/aspnet/core/blazor/security/blazor-web-app-with-windows-authentication?view=aspnetcore-10.0
+
+### Blazor Advanced
+- State management: https://learn.microsoft.com/en-us/aspnet/core/blazor/state-management/?view=aspnetcore-10.0
+- Lazy load assemblies: https://learn.microsoft.com/en-us/aspnet/core/blazor/webassembly-lazy-load-assemblies?view=aspnetcore-10.0
+- .NET on web workers: https://learn.microsoft.com/en-us/aspnet/core/blazor/blazor-with-dotnet-on-web-workers?view=aspnetcore-10.0
+- Blazor performance: https://learn.microsoft.com/en-us/aspnet/core/blazor/performance/?view=aspnetcore-10.0
+- Testing: https://learn.microsoft.com/en-us/aspnet/core/blazor/test?view=aspnetcore-10.0
+- PWA: https://learn.microsoft.com/en-us/aspnet/core/blazor/progressive-web-app/?view=aspnetcore-10.0
+- Host and deploy: https://learn.microsoft.com/en-us/aspnet/core/blazor/host-and-deploy/?view=aspnetcore-10.0
+- WASM deployment: https://learn.microsoft.com/en-us/aspnet/core/blazor/host-and-deploy/webassembly/?view=aspnetcore-10.0
+
+### Blazor Hybrid (MAUI)
+- Hybrid overview: https://learn.microsoft.com/en-us/aspnet/core/blazor/hybrid/?view=aspnetcore-10.0
+- Hybrid routing: https://learn.microsoft.com/en-us/aspnet/core/blazor/hybrid/routing?view=aspnetcore-10.0&pivots=maui
+- Hybrid dev tools: https://learn.microsoft.com/en-us/aspnet/core/blazor/hybrid/developer-tools?view=aspnetcore-10.0
+- Reuse Razor components: https://learn.microsoft.com/en-us/aspnet/core/blazor/hybrid/reuse-razor-components?view=aspnetcore-10.0
+- Class libraries: https://learn.microsoft.com/en-us/aspnet/core/blazor/hybrid/class-libraries?view=aspnetcore-10.0
+- Class library best practices: https://learn.microsoft.com/en-us/aspnet/core/blazor/hybrid/class-libraries-best-practices?view=aspnetcore-10.0
+- Root component parameters: https://learn.microsoft.com/en-us/aspnet/core/blazor/hybrid/root-component-parameters?view=aspnetcore-10.0
+
+### ASP.NET Core Fundamentals
 - ASP.NET Core 10 docs: https://learn.microsoft.com/en-us/aspnet/core/?view=aspnetcore-10.0
+- ASP.NET Core overview: https://learn.microsoft.com/en-us/aspnet/core/overview?view=aspnetcore-10.0
 - ASP.NET overview: https://dotnet.microsoft.com/en-us/apps/aspnet
+- Fundamentals: https://learn.microsoft.com/en-us/aspnet/core/fundamentals/?view=aspnetcore-10.0&tabs=windows
+- Dependency injection: https://learn.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-10.0
+- Middleware: https://learn.microsoft.com/en-us/aspnet/core/fundamentals/middleware/?view=aspnetcore-10.0
+- Routing: https://learn.microsoft.com/en-us/aspnet/core/fundamentals/routing?view=aspnetcore-10.0
+- Configuration/Options pattern: https://learn.microsoft.com/en-us/aspnet/core/fundamentals/configuration/options?view=aspnetcore-10.0
+- Environments: https://learn.microsoft.com/en-us/aspnet/core/fundamentals/environments?view=aspnetcore-10.0
+- Native AOT: https://learn.microsoft.com/en-us/aspnet/core/fundamentals/native-aot?view=aspnetcore-10.0
+- Minimal APIs middleware: https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/middleware?view=aspnetcore-10.0
+- WebApplication: https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/webapplication?view=aspnetcore-10.0
+- Rate limiting: https://learn.microsoft.com/en-us/aspnet/core/performance/rate-limit?view=aspnetcore-10.0
+- Rate limit samples: https://learn.microsoft.com/en-us/aspnet/core/performance/rate-limit-samples?view=aspnetcore-10.0
+- Razor Pages: https://learn.microsoft.com/en-us/aspnet/core/razor-pages/?view=aspnetcore-10.0
+- Get started: https://learn.microsoft.com/en-us/aspnet/core/get-started?view=aspnetcore-10.0
+
+### ASP.NET Core MVC
+- MVC overview: https://learn.microsoft.com/en-us/aspnet/core/mvc/overview?view=aspnetcore-10.0
+- Controller actions: https://learn.microsoft.com/en-us/aspnet/core/mvc/controllers/actions?view=aspnetcore-10.0
+- Controller DI: https://learn.microsoft.com/en-us/aspnet/core/mvc/controllers/dependency-injection?view=aspnetcore-10.0
+- View DI: https://learn.microsoft.com/en-us/aspnet/core/mvc/views/dependency-injection?view=aspnetcore-10.0
 - ASP.NET APIs: https://dotnet.microsoft.com/en-us/apps/aspnet/apis
 - ASP.NET MVC: https://dotnet.microsoft.com/en-us/apps/aspnet/mvc
 - Microservices: https://dotnet.microsoft.com/en-us/apps/aspnet/microservices
 - Architecture guides: https://dotnet.microsoft.com/en-us/learn/dotnet/architecture-guides
-- Get started: https://learn.microsoft.com/en-us/aspnet/core/get-started?view=aspnetcore-10.0
 
 ### .NET Core and C#
 - .NET documentation hub: https://learn.microsoft.com/en-us/dotnet/?WT.mc_id=dotnet-35129-website
@@ -107,6 +179,18 @@ This plugin provides comprehensive .NET 10 development expertise across the full
 
 ### Entity Framework Core
 - EF Core docs: https://learn.microsoft.com/en-us/ef/
+- EF Core API reference: https://learn.microsoft.com/en-us/dotnet/api/?view=efcore-9.0
+
+### .NET API References
+- .NET 10 API: https://learn.microsoft.com/en-us/dotnet/api/?view=net-10.0
+- ASP.NET Core 10 API: https://learn.microsoft.com/en-us/dotnet/api/?view=aspnetcore-10.0
+- .NET Framework 4.8.1 API: https://learn.microsoft.com/en-us/dotnet/api/?view=netframework-4.8.1
+- ML.NET API: https://learn.microsoft.com/en-us/dotnet/api/?view=ml-dotnet
+
+### Additional .NET Platforms
+- .NET Orleans (distributed actors): https://learn.microsoft.com/en-us/dotnet/orleans/
+- .NET Aspire: https://aspire.dev/
+- Azure for .NET developers: https://learn.microsoft.com/en-us/dotnet/azure/
 
 ### Microservices Architecture (DDD/CQRS)
 - DDD-oriented microservice: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/ddd-oriented-microservice
