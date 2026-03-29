@@ -121,8 +121,15 @@ This plugin provides comprehensive .NET 10 development expertise across the full
 - Azure Developer CLI: https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/overview
 - azd templates: https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/azd-templates
 
+### NuGet Package Management
+- NuGet documentation: https://learn.microsoft.com/en-us/nuget/
+- NuGet package search: https://www.nuget.org/
+- Central package management: https://learn.microsoft.com/en-us/nuget/consume-packages/Central-Package-Management
+
 ### Community Resources
-- Awesome Blazor (GitHub): https://github.com/AdrienTorris/awesome-blazor?WT.mc_id=dotnet-35129-website#libraries--extensions
+- Awesome Blazor (curated list): https://github.com/AdrienTorris/awesome-blazor
+- Awesome Blazor libraries & extensions: https://github.com/AdrienTorris/awesome-blazor?WT.mc_id=dotnet-35129-website#libraries--extensions
+- Blazor Extensions ChartJS: https://github.com/BlazorExtensions/ChartJS
 - Fluent UI Blazor: https://www.fluentui-blazor.net/InputFile
 - Aspire deep dive blog: https://codewithmukesh.com/blog/aspire-for-dotnet-developers-deep-dive/
 - Cloud design patterns with Aspire: https://developersvoice.com/blog/cloud-design-patterns/dotnet-aspire-cloud-native/
