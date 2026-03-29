@@ -1683,3 +1683,15 @@ fatal: pathspec 'claude-plugin/plugin.json' did not match any files
 - **Input:** `/home/user/claude/.claude/agent-memory/researcher`
 - **Error:** EISDIR: illegal operation on a directory, read '/home/user/claude/.claude/agent-memory/researcher'
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-29T07:26:15Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** self signed certificate in certificate chain
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-29T07:26:18Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** self signed certificate in certificate chain
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving

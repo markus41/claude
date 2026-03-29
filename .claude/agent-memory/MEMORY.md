@@ -6,6 +6,7 @@ This directory contains cross-session knowledge for the researcher agent. Memory
 ## Memory Files
 
 ### Reference Materials
+- [dotnet_microservices_comprehensive.md](./dotnet_microservices_comprehensive.md) — Complete .NET microservices architecture patterns from 13 Microsoft Learn pages. Covers: Circuit Breaker/Polly, Auth (Identity/JWT/OIDC/IdentityServer), Azure Key Vault, Docker Compose multi-environment, EF Core CRUD, RabbitMQ event-driven patterns, IHostedService background tasks, Ocelot API Gateways, testing strategies, microservice design, Dockerfile optimization, K8s Ingress. Includes code examples, configuration templates, testing patterns, and scenario checklists.
 - [context7_mcp_research.md](./context7_mcp_research.md) — Complete Context7 MCP capabilities, supported libraries (9000+), documentation retrieval, integration patterns for quality audits and planning agents. Key findings: two-tool system (resolve-library-id + query-docs), 100x performance improvement with caching, best practices for audit/planning/review workflows.
 
 ## How to Use This Memory
@@ -17,9 +18,10 @@ This directory contains cross-session knowledge for the researcher agent. Memory
 
 ## Research Topics Covered
 
-- Context7 MCP: Complete research on capabilities, integration, performance
+- **.NET Microservices Architecture**: 13 Microsoft Learn pages covering resilience patterns, security, Docker Compose, EF Core, event-driven communication, RabbitMQ, background tasks, API Gateways, testing, and Kubernetes
+- **Context7 MCP**: Complete research on capabilities, integration, performance
 - (More topics will be added as research expands)
 
 ## Last Updated
-2026-03-19 — Initial researcher memory structure created with Context7 MCP research
+2026-03-29 — Added comprehensive .NET microservices research from 13 Microsoft Learn pages with complete code examples, configuration templates, and architectural patterns
 
