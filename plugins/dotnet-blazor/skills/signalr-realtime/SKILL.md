@@ -134,3 +134,68 @@ public sealed class OrderService(IHubContext<NotificationHub, INotificationClien
 builder.Services.AddSignalR()
     .AddStackExchangeRedis(builder.Configuration.GetConnectionString("Redis")!);
 ```
+
+## Hub Methods Reference (from official docs)
+
+```csharp
+public class ChatHub : Hub
+{
+    // Broadcast to ALL connected clients
+    await Clients.All.SendAsync("ReceiveMessage", user, message);
+
+    // Send to specific client by connection ID
+    await Clients.Client(targetConnectionId).SendAsync("ReceivePrivateMessage", message);
+
+    // Send to all EXCEPT caller
+    await Clients.Others.SendAsync("ReceiveMessage", message);
+
+    // Group operations
+    await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+    await Clients.Group(groupName).SendAsync("ReceiveGroupMessage", message);
+    await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
+
+    // Send to group except caller
+    await Clients.GroupExcept(groupName, Context.ConnectionId)
+        .SendAsync("ReceiveMessage", message);
+}
+```
+
+## JavaScript Client (from official docs)
+
+```javascript
+const connection = new signalR.HubConnectionBuilder()
+    .withUrl("/chatHub")
+    .withAutomaticReconnect()
+    .build();
+
+// Server calls this method on client
+connection.on("ReceiveMessage", (user, message) => {
+    document.getElementById("messages").innerHTML += `<li>${user}: ${message}</li>`;
+});
+
+// Client calls server method
+await connection.invoke("SendMessage", user, message);
+
+// Connection lifecycle
+connection.onreconnecting((error) => console.log("Reconnecting..."));
+connection.onreconnected((connectionId) => console.log("Reconnected:", connectionId));
+connection.onclose((error) => console.log("Connection closed"));
+
+connection.start().catch(err => console.error(err));
+```
+
+## Transport Fallback (from official docs)
+
+SignalR automatically negotiates the best transport:
+1. **WebSockets** (preferred) - full-duplex, lowest latency
+2. **Server-Sent Events** - server-to-client only, widely supported
+3. **Long Polling** - fallback for restricted environments
+
+## Best Use Cases (from official docs)
+
+- **Gaming**: Real-time game state, player positions
+- **Dashboards**: Live metrics, alerts, status changes
+- **Collaborative apps**: Shared whiteboards, document editing
+- **Notifications**: Real-time alerts, chat messages
+- **Stock tickers**: Live price feeds, market data
+- **Auctions**: Real-time bid updates
