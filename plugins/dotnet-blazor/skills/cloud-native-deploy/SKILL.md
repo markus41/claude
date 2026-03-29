@@ -156,3 +156,90 @@ builder.Configuration
 // Health check endpoint for load balancer
 app.MapHealthChecks("/health");
 ```
+
+## Azure App Service Deployment (from official docs)
+
+### Azure CLI (one command)
+```bash
+az login
+az webapp up --sku F1 --name <app-name> --os-type linux
+# --sku: F1 (free), B1 (basic), S1 (standard), P1v3 (premium)
+# app-name must be globally unique (a-z, 0-9, -)
+```
+
+### Azure Developer CLI (fastest)
+```bash
+azd init --template https://github.com/Azure-Samples/quickstart-deploy-aspnet-core-app-service.git
+azd up      # Provisions + deploys
+azd down    # Cleanup all resources
+```
+
+### PowerShell Deployment
+```powershell
+Connect-AzAccount
+dotnet publish --configuration Release
+Compress-Archive -Path bin\Release\net10.0\publish\* -DestinationPath deploy.zip
+Publish-AzWebApp -ResourceGroupName myRG -Name <app-name> -ArchivePath deploy.zip -Force
+```
+
+## Azure SDK Pattern (from official docs)
+
+```csharp
+// 4-step pattern: Locate → Install → Create client → Call methods
+
+// Blob Storage
+using Azure.Storage.Blobs;
+var client = new BlobContainerClient(
+    new Uri("https://<account>.blob.core.windows.net/<container>"),
+    new DefaultAzureCredential());
+await client.UploadBlobAsync("file.txt", File.OpenRead("local.txt"));
+
+// Key Vault
+using Azure.Security.KeyVault.Secrets;
+var kvClient = new SecretClient(
+    new Uri("https://<vault>.vault.azure.net/"),
+    new DefaultAzureCredential());
+var secret = await kvClient.GetSecretAsync("my-secret");
+
+// Service Bus
+using Azure.Messaging.ServiceBus;
+var sbClient = new ServiceBusClient("<connection-string>");
+var sender = sbClient.CreateSender("queue-name");
+await sender.SendMessageAsync(new ServiceBusMessage("Hello"));
+```
+
+## Key Azure Services for .NET (from official docs)
+
+| Use Case | Azure Service | NuGet Package |
+|----------|--------------|---------------|
+| Web apps, APIs | App Service | - |
+| Serverless microservices | Container Apps | - |
+| Event-driven functions | Azure Functions | Azure.Functions |
+| Relational data | Azure SQL | Microsoft.Data.SqlClient |
+| Global NoSQL | Cosmos DB | Azure.Cosmos |
+| File/blob storage | Blob Storage | Azure.Storage.Blobs |
+| Messaging queues | Service Bus | Azure.Messaging.ServiceBus |
+| Secrets management | Key Vault | Azure.Security.KeyVault.Secrets |
+| Authentication | Entra ID | Microsoft.Identity.Web |
+| Caching | Redis | StackExchange.Redis |
+
+## App Service Migration Gotchas (from official docs)
+
+- Only HTTP (80) and HTTPS (443) ports supported - remove custom ports
+- No GAC support - deploy dependencies in `\bin` folder
+- No COM/COM+ - rewrite in managed code
+- No physical filesystem - use Azure Files (SMB) or Blob Storage
+- Azure AD requires paid tier (Basic+) - free tier doesn't support it
+- Move connection strings to Azure Key Vault in production
+
+## Cross-Platform Targeting (from official docs)
+
+```xml
+<!-- Single target (recommended for apps) -->
+<TargetFramework>net10.0</TargetFramework>
+
+<!-- Multi-target (for NuGet libraries needing broad reach) -->
+<TargetFrameworks>net10.0;netstandard2.0;net462</TargetFrameworks>
+```
+
+**Anti-pattern**: Don't target `netstandard1.x` - creates massive dependency graph.
