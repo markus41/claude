@@ -305,6 +305,35 @@ This directory maintains structured research findings and documentation knowledg
 
 ---
 
+### MicrosoftDocs Learning Sample Repository Catalog
+- **File**: `microsoftdocs_learning_samples.md`
+- **Date**: 2026-03-29
+- **Coverage**:
+  - Blazor interactive components (BlazingPizza pizza-ordering app)
+  - Blazor forms, validation, and state management patterns
+  - Data access and Entity Framework Core integration
+  - Routing, navigation, and layout in Blazor
+  - .NET Aspire service orchestration (SupportTicketApi, migrations)
+  - Cloud-native microservices patterns (.NET)
+  - DevOps, CI/CD, Kubernetes deployment (GitHub Actions, AKS, Helm)
+
+**Key Repository Inventory**:
+1. `mslearn-build-interactive-components-blazor` — Component architecture (27.5% C#, 32.6% HTML, 39.9% CSS)
+2. `mslearn-use-forms-in-blazor-web-apps` — Form binding, validation, OrderState, Controllers
+3. `mslearn-interact-with-data-blazor-web-apps` — EF Core integration, model-based access
+4. `mslearn-blazor-navigation` — Routing, pages, layouts (28.9% C#, 20.6% HTML, 50.5% CSS)
+5. `aspire-docs-samples` — Service orchestration, migration pattern (SupportTicketApi)
+6. `mslearn-dotnet-cloudnative` — Microservices architecture learning path
+7. `mslearn-dotnet-cloudnative-devops` — GitHub Actions, AKS, Helm, CI/CD patterns
+
+**Common Pattern**: Pizza store application used across multiple repos for consistent domain model
+**Technology Stack**: C#, Razor, SQLite, EF Core, ASP.NET Core, Helm, Azure Kubernetes Service
+**Learning Sequence**: Components → Navigation → Forms → Data → Orchestration → Microservices → DevOps
+
+**Use for**: Understanding official Microsoft learning samples, Blazor component patterns, service orchestration architecture, microservices deployment strategies
+
+---
+
 ## How to Use This Memory
 
 When researching .NET/Blazor topics:
