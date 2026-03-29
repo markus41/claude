@@ -103,6 +103,102 @@ This directory maintains structured research findings and documentation knowledg
 
 ---
 
+### .NET AI Extensions: Chat, Embeddings, MCP, Vector Stores, Tokenization
+- **File**: `dotnet_ai_extensions_comprehensive.md`
+- **Date**: 2026-03-29
+- **Coverage**:
+  - **NuGet Packages**: Microsoft.Extensions.AI, Microsoft.Extensions.AI.OpenAI, Microsoft.Extensions.VectorData, ModelContextProtocol, Microsoft.ML.Tokenizers, Azure.AI.OpenAI
+  - **IChatClient**: OpenAI/Azure OpenAI integration, streaming, function invocation, middleware pipeline
+  - **ChatClientBuilder**: Middleware composition (function invocation, caching, telemetry, OpenTelemetry)
+  - **IEmbeddingGenerator**: Embedding generation, vector creation, rate-limiting middleware, custom implementations
+  - **Vector Stores**: VectorData attributes, CRUD operations, semantic search, distance functions (cosine, euclidean, dot product)
+  - **RAG Implementation**: Complete end-to-end vector search example with OpenAI embeddings
+  - **MCP Protocol**: Server implementation with tools, stdio/HTTP transport, tool discovery, client integration
+  - **MCP Servers**: Tool definition, environment variable configuration, NuGet publishing, server.json schema
+  - **MCP Clients**: StdioClientTransport, McpClient initialization, tool listing, chat client integration
+  - **Tokenization**: Tiktoken (GPT-4/5), Llama, BPE tokenizers; counting, encoding, decoding, trimming text
+  - **Agent Concepts**: Reasoning + decision-making, tool usage, context awareness
+  - **Workflow Orchestration**: Sequential, concurrent, handoff, group chat, magentic patterns
+
+**Key Code Examples Included**:
+1. Basic chat client creation (OpenAI + Azure OpenAI)
+2. Function invocation with AIFunctionFactory
+3. ChatClientBuilder with middleware pipeline
+4. Embedding generation (basic + with caching middleware)
+5. Custom rate-limiting embedding generator
+6. Complete vector search RAG application
+7. MCP server with RandomNumber + Weather tools
+8. MCP client with chat integration
+9. Tiktoken, Llama, and BPE tokenizers with all operations
+10. VectorStore model definitions with attributes
+
+**Installation Commands**:
+- Minimal chat: `Microsoft.Extensions.AI`, `Microsoft.Extensions.AI.OpenAI --prerelease`
+- Function calling: same as above
+- Vector search: add `Microsoft.SemanticKernel.Connectors.InMemory --prerelease`
+- MCP server: `dotnet new install Microsoft.McpServer.ProjectTemplates` + template generation
+- MCP client: add `ModelContextProtocol --prerelease`
+- Tokenization: `Microsoft.ML.Tokenizers` + `Microsoft.ML.Tokenizers.Data.O200kBase` (for Tiktoken)
+
+**API Surface Summary**:
+- IChatClient: `GetResponseAsync()`, `GetStreamingResponseAsync()`
+- IEmbeddingGenerator: `GenerateAsync()`, `GenerateVectorAsync()`
+- VectorStore: `UpsertAsync()`, `SearchAsync()`, `GetAsync()`, `DeleteAsync()`
+- MCP: `McpClient.CreateAsync()`, `ListToolsAsync()`, tool invocation via chat middleware
+- Tokenizers: `CountTokens()`, `EncodeToIds()`, `Decode()`, `EncodeToTokens()`, `GetIndexByTokenCount()`
+
+**Use for**: Chat client implementation, function calling setup, embedding generation for search, vector database/RAG, MCP server/client development, token counting and management, agent architecture guidance
+
+---
+
+### Blazor .NET 10 Comprehensive Documentation
+- **File**: `blazor_net10_comprehensive.md`
+- **Date**: 2026-03-29
+- **Coverage**:
+  - Component fundamentals: Structure, naming, implementation patterns (single-file, partial class, base class)
+  - Component parameters: Basic, required, tuple, child content (RenderFragment), component references
+  - Render modes (.NET 8+): InteractiveServer, InteractiveWebAssembly, InteractiveAuto, Static SSR selection matrix
+  - Prerendering: Enable/disable strategies, handling client-side services, state persistence
+  - State management: StateContainer, cascading values, root-level notifications
+  - Routing: Templates, parameters, optional/catch-all, constraints, focus, async navigation events
+  - Web API calls: HttpClient usage, error handling, POST requests with JSON
+  - CSS isolation: Scoped CSS files, child component styling with `::deep`, custom scope identifiers
+  - Blazor Hybrid: MAUI/WPF/Windows Forms integration, BlazorWebView, native interop, unhandled exceptions
+  - Authentication: Microsoft Entra (Azure AD) setup, AuthorizeView, protected components
+  - Progressive Web Apps: Creation, offline support, service workers, manifest, caching strategies
+  - Advanced .NET 10: Static vs interactive routing, multiple assembly routing, lifecycle methods, MarkupString
+
+**Key Topics Covered**:
+1. Component patterns for different code organization styles
+2. Render mode decision matrix with use cases
+3. Prerendering configuration and client service resolution
+4. In-memory state management with change notifications
+5. Routing patterns including catch-all and constraints
+6. HttpClient configuration and error handling
+7. CSS isolation with deep selector for child components
+8. Blazor Hybrid setup for MAUI/WPF/Windows Forms
+9. Azure AD authentication integration
+10. PWA offline-first architecture with cache strategies
+11. Service worker configuration and update mechanisms
+
+**Complete Code Examples**:
+- Component structures (single-file, partial class, base class)
+- Parameter patterns (basic, required, tuple, RenderFragment)
+- Component references and lifecycle management
+- All render mode configurations
+- State container with event notifications
+- Routing templates with constraints and catch-all
+- HttpClient GET/POST with error handling
+- CSS isolation with child component styling
+- MAUI/WPF/Windows Forms BlazorWebView setup
+- Azure AD authentication flow
+- PWA manifest and service worker registration
+- Cache-first strategy implementation
+
+**Use for**: Blazor component design, render mode selection, state management architecture, routing implementation, CSS organization, hybrid mobile/desktop apps, authentication setup, offline-first PWA development, .NET 10 patterns
+
+---
+
 ## How to Use This Memory
 
 When researching .NET/Blazor topics:
