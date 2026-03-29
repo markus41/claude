@@ -1665,3 +1665,21 @@ First entry keys: not a dict
 - **Error:** Exit code 128
 fatal: pathspec 'claude-plugin/plugin.json' did not match any files
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-29T06:44:34Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/plugins/frontend-design-system/agents/design-system-generator.md`
+- **Error:** File does not exist. Note: your current working directory is /home/user/claude.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-29T06:45:35Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 404
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-29T06:48:08Z)
+- **Tool:** Read
+- **Input:** `/home/user/claude/.claude/agent-memory/researcher`
+- **Error:** EISDIR: illegal operation on a directory, read '/home/user/claude/.claude/agent-memory/researcher'
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
