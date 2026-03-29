@@ -71,6 +71,16 @@
       "env": {
         "CLAUDE_PROJECT_DIR": "."
       }
+    },
+    "syncfusion-blazor": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@syncfusion/blazor-assistant@latest"
+      ],
+      "env": {
+        "SYNCFUSION_API_KEY": "${SYNCFUSION_API_KEY}"
+      }
     }
   }
 }

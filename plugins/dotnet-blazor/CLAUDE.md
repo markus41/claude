@@ -65,7 +65,8 @@ When researching .NET topics:
 - Use `mcp__de6582f3__microsoft_docs_search` for Microsoft Learn articles
 - Use `mcp__de6582f3__microsoft_code_sample_search` for C# code samples
 - Use `mcp__de6582f3__microsoft_docs_fetch` for full doc page content
-- Check Syncfusion Blazor docs at blazor.syncfusion.com for UI components
+- Use `mcp__syncfusion-blazor__*` for Syncfusion Blazor component code generation, docs, and troubleshooting (official @syncfusion/blazor-assistant MCP)
+- Use Firecrawl to scrape Syncfusion KB articles at support.syncfusion.com
 
 ## Context budget
 

@@ -173,9 +173,17 @@ This plugin provides comprehensive .NET 10 development expertise across the full
 - Cloud apps with .NET: https://dotnet.microsoft.com/en-us/apps/cloud
 
 ### Syncfusion Blazor
+- Introduction: https://blazor.syncfusion.com/documentation/introduction
+- API reference: https://help.syncfusion.com/cr/blazor/Syncfusion.Blazor.html
+- ASP.NET Core JS2 data API: https://help.syncfusion.com/cr/aspnetcore-js2/Syncfusion.Data.html
+- ASP.NET MVC JS2 data API: https://help.syncfusion.com/cr/aspnetmvc-js2/Syncfusion.Data.html
 - Essential UI Kit blocks: https://blazor.syncfusion.com/essential-ui-kit/blocks
 - Grid blocks: https://blazor.syncfusion.com/essential-ui-kit/blocks/grid
 - ThemeStudio: https://blazor.syncfusion.com/themestudio/
+- MCP AI Coding Assistant: https://blazor.syncfusion.com/documentation/ai-coding-assistant/mcp-server
+- MCP package (npm): @syncfusion/blazor-assistant
+- KB (Blazor): https://support.syncfusion.com/kb/blazor
+- KB (ASP.NET Core): https://support.syncfusion.com/kb/aspnet-core
 
 ### Entity Framework Core
 - EF Core docs: https://learn.microsoft.com/en-us/ef/

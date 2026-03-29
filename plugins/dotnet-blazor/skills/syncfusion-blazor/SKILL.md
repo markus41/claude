@@ -161,3 +161,53 @@ Environment.GetEnvironmentVariable("SYNCFUSION_LICENSE_KEY");
 // 3. Azure Key Vault (production)
 builder.Configuration.AddAzureKeyVault(vaultUri, credential);
 ```
+
+## Syncfusion Blazor MCP (AI Coding Assistant)
+
+The official `@syncfusion/blazor-assistant` MCP server provides:
+- Component code generation from natural language
+- 80+ Blazor component documentation access
+- Troubleshooting and configuration guidance
+- Theme and styling assistance
+
+**Configured in `.mcp.json`**:
+```json
+{
+  "syncfusion-blazor": {
+    "command": "npx",
+    "args": ["-y", "@syncfusion/blazor-assistant@latest"],
+    "env": { "SYNCFUSION_API_KEY": "${SYNCFUSION_API_KEY}" }
+  }
+}
+```
+
+Use `mcp__syncfusion-blazor__*` tools when:
+- Generating Syncfusion component code
+- Looking up component APIs and properties
+- Troubleshooting Syncfusion-specific issues
+- Getting theme/styling guidance
+
+## Syncfusion Knowledge Base (Common Issues)
+
+### Blazor KB Articles
+- Rich Text Editor resizing in Dialogs: https://support.syncfusion.com/kb/article/20438/
+- Image pasting in Rich Text Editor: https://support.syncfusion.com/kb/article/20116/
+- ListBox with ObservableCollection: https://support.syncfusion.com/kb/article/15943/
+- DropDownList in DropDownMenu popup: https://support.syncfusion.com/kb/article/15053/
+- Custom doughnut chart hole view: https://support.syncfusion.com/kb/article/14060/
+- Dynamic markers in Maps: https://support.syncfusion.com/kb/article/14780/
+- HeatMap color customization: https://support.syncfusion.com/kb/article/14558/
+
+### ASP.NET Core KB Articles
+- Detect blank PDF pages: https://support.syncfusion.com/kb/article/22713/
+- Extract .p7m PDF content: https://support.syncfusion.com/kb/article/18720/
+- Digital signature in rotated PDFs: https://support.syncfusion.com/kb/article/18963/
+- Rich Text Editor toolbar on focus: https://support.syncfusion.com/kb/article/19910/
+- Multi-page PDF Grid margins: https://support.syncfusion.com/kb/article/18800/
+- Auto-fit text in PDF Grid cells: https://support.syncfusion.com/kb/article/18787/
+
+### Documentation References
+- Blazor introduction: https://blazor.syncfusion.com/documentation/introduction
+- Blazor API reference: https://help.syncfusion.com/cr/blazor/Syncfusion.Blazor.html
+- ASP.NET Core JS2 API: https://help.syncfusion.com/cr/aspnetcore-js2/Syncfusion.Data.html
+- Blazor MCP server docs: https://blazor.syncfusion.com/documentation/ai-coding-assistant/mcp-server
