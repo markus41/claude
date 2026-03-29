@@ -151,6 +151,48 @@ This directory maintains structured research findings and documentation knowledg
 
 ---
 
+### .NET MAUI & Data API Builder Comprehensive Research
+- **File**: `dotnet_maui_data_api_research.md`
+- **Date**: 2026-03-29
+- **Coverage**:
+  - **.NET MAUI Local Data**: SQLite with sqlite-net-pcl (ORM) or Microsoft.Data.Sqlite (ADO.NET); lazy initialization, async CRUD, repository pattern
+  - **.NET MAUI REST API**: HttpClient setup, JSON serialization, GET/POST/PUT/DELETE patterns, streaming large responses, error handling
+  - **.NET MAUI Shell Navigation**: URI-based routing, absolute/relative routes, query parameters, object navigation, IQueryAttributable, navigation events, deferral
+  - **.NET MAUI MVVM**: INotifyPropertyChanged interface, two-way binding, command binding (ICommand/RelayCommand), interactive examples
+  - **Community Toolkit.Mvvm**: ObservableObject (replaces boilerplate), source generators ([ObservableProperty]), RelayCommand, messaging, IoC
+  - **Data API Builder (DAB)**: Configuration-based REST/GraphQL generator; zero-code APIs; supports SQL/Cosmos/PostgreSQL/MySQL; authentication, security, deployment
+  - **Pattern Overlap**: Identical MVVM in MAUI and Blazor; shared HttpClient API; REST consumption; DI patterns; async-first design
+  - **SQLite Patterns**: Lazy async initialization, ORM object mapping, write-ahead logging, database copying/backup
+  - **Shell Navigation Patterns**: Route hierarchy, contextual navigation, parameter passing (string vs object), navigation interception
+  - **Authentication**: Entra ID, JWT, App Service EasyAuth, simulator for dev
+
+**Key Code Examples Included**:
+1. SQLite configuration constants and entity models
+2. Database access class with lazy async initialization
+3. Complete CRUD operations (async/await)
+4. REST service class with HttpClient setup
+5. GET/POST/PUT/DELETE with error handling
+6. Large response streaming pattern
+7. Shell route registration and GoToAsync patterns
+8. Query parameter passing and receiving
+9. IQueryAttributable implementation
+10. Navigation event handling and deferral
+11. INotifyPropertyChanged with CallerMemberName
+12. Two-way binding in XAML
+13. ICommand and RelayCommand with CanExecute
+14. ObservableObject with source generators
+15. Data API Builder configuration structure
+
+**Decision Matrices Included**:
+- SQLite package choice (sqlite-net-pcl vs Microsoft.Data.Sqlite)
+- Navigation approach (absolute vs relative vs contextual)
+- Data passing strategy (query strings vs object navigation vs single-use)
+- MVVM implementation (manual INotifyPropertyChanged vs Community Toolkit)
+
+**Use for**: .NET MAUI local data storage, REST API consumption, Shell navigation architecture, MVVM patterns, Data API Builder integration, comparison with Blazor patterns
+
+---
+
 ### Blazor .NET 10 Comprehensive Documentation
 - **File**: `blazor_net10_comprehensive.md`
 - **Date**: 2026-03-29
