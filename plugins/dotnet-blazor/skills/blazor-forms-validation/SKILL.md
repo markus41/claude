@@ -166,3 +166,103 @@ For static SSR pages, use `[SupplyParameterFromForm]`:
     }
 }
 ```
+
+## Data Binding Patterns (from official docs)
+
+### Basic @bind
+```razor
+@* Two-way binding - updates on element blur by default *@
+<input @bind="inputValue" />
+<input @bind="InputValue" />
+
+@code {
+    private string? inputValue;
+    private string? InputValue { get; set; }
+}
+```
+
+### @bind:event - Change trigger
+```razor
+@* Update on every keystroke instead of blur *@
+<input @bind="searchText" @bind:event="oninput" />
+
+@code {
+    private string? searchText;
+}
+```
+
+### @bind:get / @bind:set - Proper two-way binding with logic
+```razor
+@* CORRECT: Use @bind:get/@bind:set for two-way binding with custom logic *@
+<input @bind:get="inputValue" @bind:set="OnInput" />
+
+@code {
+    private string? inputValue;
+
+    private void OnInput(string? value)
+    {
+        var newValue = value ?? string.Empty;
+        inputValue = newValue.Length > 4 ? "Long!" : newValue;
+    }
+}
+```
+
+**Important**: Do NOT use `value="@x" @oninput="handler"` for two-way binding - Blazor won't sync the value back. Always use `@bind:get`/`@bind:set`.
+
+### @bind:after - Run async logic after binding
+```razor
+<input @bind="searchText" @bind:after="PerformSearch" />
+
+@code {
+    private string? searchText;
+
+    private async Task PerformSearch()
+    {
+        // Runs after searchText is updated
+        results = await SearchService.SearchAsync(searchText);
+    }
+}
+```
+
+### @bind:format - Date formatting
+```razor
+<input @bind="startDate" @bind:format="yyyy-MM-dd" />
+
+@code {
+    private DateTime startDate = new(2020, 1, 1);
+}
+```
+
+### Child component two-way binding
+```razor
+@* Parent *@
+<YearSelector @bind-Year="selectedYear" />
+
+@code {
+    private int selectedYear = 2024;
+}
+```
+
+```razor
+@* Child: YearSelector.razor *@
+<input @bind:get="Year" @bind:set="YearChanged" />
+
+@code {
+    [Parameter] public int Year { get; set; }
+    [Parameter] public EventCallback<int> YearChanged { get; set; }
+    @* Convention: parameter + "Changed" suffix *@
+}
+```
+
+### Multiple select binding
+```razor
+<select @bind="SelectedCities" multiple>
+    <option value="bal">Baltimore</option>
+    <option value="la">Los Angeles</option>
+    <option value="sea">Seattle</option>
+</select>
+
+@code {
+    public string[] SelectedCities { get; set; } = Array.Empty<string>();
+}
+```

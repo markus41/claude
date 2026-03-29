@@ -191,6 +191,30 @@ This plugin provides comprehensive .NET 10 development expertise across the full
 - .NET Orleans (distributed actors): https://learn.microsoft.com/en-us/dotnet/orleans/
 - .NET Aspire: https://aspire.dev/
 - Azure for .NET developers: https://learn.microsoft.com/en-us/dotnet/azure/
+- Azure SDK for .NET: https://learn.microsoft.com/en-us/dotnet/azure/sdk/azure-sdk-for-dotnet
+- Key Azure services for .NET: https://learn.microsoft.com/en-us/dotnet/azure/key-azure-services
+- Azure App Service migration: https://learn.microsoft.com/en-us/dotnet/azure/migration/app-service
+- Azure App Service quickstart (.NET 10): https://learn.microsoft.com/en-us/azure/app-service/quickstart-dotnetcore?tabs=net10
+- Cross-platform targeting: https://learn.microsoft.com/en-us/dotnet/standard/library-guidance/cross-platform-targeting
+- Microservices architecture e-book: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/
+- Modern web apps with Azure: https://learn.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/choose-between-traditional-web-and-single-page-apps
+
+### ASP.NET Core Additional Topics
+- Best practices: https://learn.microsoft.com/en-us/aspnet/core/fundamentals/best-practices?view=aspnetcore-10.0
+- Security overview: https://learn.microsoft.com/en-us/aspnet/core/security/?view=aspnetcore-10.0
+- Localization: https://learn.microsoft.com/en-us/aspnet/core/fundamentals/localization?view=aspnetcore-10.0
+- Host and deploy: https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/?view=aspnetcore-10.0
+- Model binding: https://learn.microsoft.com/en-us/aspnet/core/mvc/models/model-binding?view=aspnetcore-10.0
+- API overview: https://learn.microsoft.com/en-us/aspnet/core/fundamentals/apis?view=aspnetcore-10.0
+- gRPC overview: https://learn.microsoft.com/en-us/aspnet/core/grpc/?view=aspnetcore-10.0
+- SignalR introduction: https://learn.microsoft.com/en-us/aspnet/core/signalr/introduction?view=aspnetcore-10.0
+- Razor Pages tutorial: https://learn.microsoft.com/en-us/aspnet/core/tutorials/razor-pages/razor-pages-start?view=aspnetcore-10.0
+- Razor Pages tests: https://learn.microsoft.com/en-us/aspnet/core/test/razor-pages-tests?view=aspnetcore-10.0
+- Blazor data binding: https://learn.microsoft.com/en-us/aspnet/core/blazor/components/data-binding?view=aspnetcore-10.0
+- Build AI chat app (.NET): https://learn.microsoft.com/en-us/dotnet/ai/quickstarts/build-chat-app?pivots=openai
+
+### Community Resources (Blazor)
+- Blazor University: https://blazor-university.com/
 
 ### Microservices Architecture (DDD/CQRS)
 - DDD-oriented microservice: https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/ddd-oriented-microservice
