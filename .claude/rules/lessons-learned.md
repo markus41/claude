@@ -1713,3 +1713,9 @@ fatal: pathspec 'claude-plugin/plugin.json' did not match any files
 - **Input:** `/root/.claude/projects/-home-user-claude/785421b7-3547-4b42-af85-3c251e06428a/tool-results/toolu_01Hif7TANcSDYAgacPmxdknC.txt`
 - **Error:** File content (28182 tokens) exceeds maximum allowed tokens (10000). Use offset and limit parameters to read specific portions of the file, or search for specific content instead of reading the whole file.
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: WebFetch failure (2026-03-29T09:21:12Z)
+- **Tool:** WebFetch
+- **Input:** `N/A`
+- **Error:** Request failed with status code 403
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
