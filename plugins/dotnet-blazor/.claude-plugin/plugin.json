@@ -89,7 +89,11 @@
       "**/node_modules/**",
       "**/dist/**",
       "**/bin/**",
-      "**/obj/**"
+      "**/obj/**",
+      "**/build/**",
+      "**/coverage/**",
+      "**/*.zip",
+      "**/*.tar*"
     ],
     "lazyLoadSections": [
       "CLAUDE.md",
