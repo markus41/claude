@@ -509,3 +509,309 @@ Agent A error → captured in lessons-learned.md
   → Pattern promoted to .claude/rules/{topic}.md
   → All agents inherit the permanent rule
 ```
+
+---
+
+## Layered Memory Deployment
+
+For projects that need fine-grained context control, `/cc-memory` provides subcommands
+to deploy a full 5-layer memory hierarchy rather than the basic 3-tier setup above.
+
+### Additional Sub-commands
+
+```bash
+/cc-memory --deploy-layered        # Generate full layered memory system from repo scan
+/cc-memory --subdirs               # Add CLAUDE.md files to key subdirectories
+/cc-memory --exclusions            # Configure memory exclusions (what NOT to load)
+/cc-memory --auto-conventions      # Enable auto-memory capture conventions
+/cc-memory --scan [path]           # Scan project structure and propose path-scoped rules
+```
+
+---
+
+## The 5-Layer Memory Hierarchy
+
+```
+Layer 1  Root CLAUDE.md          ← Always loaded, routing only (≤150 lines)
+Layer 2  .claude/rules/*.md      ← Always loaded, behavioral rules + memory split files
+Layer 3  Subdirectory CLAUDE.md  ← Loaded when editing files in that directory
+Layer 4  Path-scoped rules       ← Loaded for matching file types only
+Layer 5  .claude/skills/*.md     ← Frontmatter always loaded; body loaded on activation
+```
+
+### Layer 1 — Root CLAUDE.md (≤150 lines)
+
+The root `CLAUDE.md` is a **routing file**, not a documentation file. Keep it under
+150 lines. It should answer: where is the code? what stack? what are the key commands?
+what must never be touched?
+
+Contents:
+- Build commands, dev server commands, test commands
+- Tech stack summary (one line each)
+- Key directory paths
+- Decision trees for common tasks
+- "Don't touch" list
+- Pointers to Layer 2 files for details
+
+Do not put ADRs, patterns, or preferences here — those belong in Layer 2.
+
+### Layer 2 — `.claude/rules/*.md` (Always Loaded)
+
+Files in `.claude/rules/` are loaded every session with no line cap per file.
+Split by concern:
+
+| File | Contents |
+|------|----------|
+| `memory-profile.md` | Project name, owner, stack summary, scale |
+| `memory-preferences.md` | Workflow prefs, model choices, package manager, git conventions |
+| `memory-decisions.md` | Architecture Decision Records detected from git history and docs |
+| `memory-patterns.md` | Common code patterns, anti-patterns, recurring solutions |
+| `code-style.md` | Code style rules — scoped with `paths: ["**/*.ts", "**/*.tsx"]` |
+| `testing.md` | Testing rules — scoped with `paths: ["**/*.test.*", "**/*.spec.*"]` |
+| `lessons-learned.md` | Auto-captured errors and fixes (managed by hooks) |
+
+### Layer 3 — Subdirectory `CLAUDE.md` (Loaded for Path-Relevant Work)
+
+Place a `CLAUDE.md` in any major subdirectory. Claude loads it automatically when
+editing files inside that directory. Each file provides per-module context that would
+otherwise crowd the root file.
+
+Examples:
+- `src/auth/CLAUDE.md` — explains the auth module, its OIDC flow, which files are entry points
+- `packages/api/CLAUDE.md` — explains the API package, its route structure, error conventions
+- `src/components/CLAUDE.md` — explains component conventions, which primitives to prefer
+
+Each subdirectory `CLAUDE.md` should be 30–80 lines maximum. Describe purpose, key files,
+and local conventions — nothing else.
+
+### Layer 4 — Path-Scoped Rules (Loaded for Matching File Types)
+
+Rules with a `paths` frontmatter block activate only when Claude edits matching files.
+They do not consume context during unrelated work.
+
+```markdown
+---
+paths:
+  - "**/*.ts"
+  - "**/*.tsx"
+---
+# TypeScript Style Rules
+...
+```
+
+Use path-scoped rules for:
+- Language-specific style constraints (TypeScript, Python, Go)
+- Framework conventions (React component rules, API handler rules)
+- Security rules for sensitive file types (`**/migrations/**`, `**/auth/**`)
+
+### Layer 5 — `.claude/skills/*.md` Frontmatter (Always Loaded, Body on Activation)
+
+Skills are the deepest layer. The YAML frontmatter of each `SKILL.md` is always
+visible to Claude (description, model, allowed-tools). The body (instructions) is
+only loaded when the skill is activated for a task.
+
+This means skills provide zero-cost discoverability — Claude knows what skills are
+available without paying the token cost of loading all skill bodies simultaneously.
+
+---
+
+## `--deploy-layered` Workflow
+
+When `/cc-memory --deploy-layered` is run:
+
+**Step 1 — Scan**
+Inspect repo structure: top-level directories, `package.json` / `pyproject.toml` /
+`go.mod`, `tsconfig.json`, `.gitignore`, detected frameworks (React, Next.js, Django,
+FastAPI, etc.), monorepo layout.
+
+**Step 2 — Generate Root CLAUDE.md**
+If absent or over 150 lines, generate a lean routing version:
+- Maximum 150 lines
+- Routing-only: build commands, stack summary, key paths, decision trees, don't-touch list
+- No ADRs, patterns, or preferences
+
+**Step 3 — Generate `.claude/rules/` Split Files**
+
+| File | Detection Method |
+|------|-----------------|
+| `memory-profile.md` | `package.json` name/description, git remote URL, top-level README |
+| `memory-preferences.md` | Lock file type (pnpm/yarn/npm), detected editor config, commit history style |
+| `memory-decisions.md` | Scan `docs/`, `ADR/`, git commit messages for decision language ("decided to", "switched from") |
+| `memory-patterns.md` | Scan `src/` for repeated patterns: file structure, import conventions, naming |
+
+**Step 4 — Generate Path-Scoped Rules**
+
+| Condition | Rule Created |
+|-----------|-------------|
+| TypeScript detected (`tsconfig.json`) | `code-style.md` with `paths: ["**/*.ts", "**/*.tsx"]` |
+| Python detected (`pyproject.toml` / `*.py`) | `python-style.md` with `paths: ["**/*.py"]` |
+| Test files detected (`*.test.*` / `*.spec.*`) | `testing.md` with `paths: ["**/*.test.*", "**/*.spec.*", "**/tests/**"]` |
+| Go detected (`go.mod`) | `go-style.md` with `paths: ["**/*.go"]` |
+| Docker detected (`Dockerfile`) | `docker.md` with `paths: ["**/Dockerfile*", "**/docker-compose*.yml"]` |
+
+**Step 5 — Report**
+
+```
+=== Layered Memory Deployment ===
+
+Created:
+  CLAUDE.md                              (routing file, 87 lines)
+  .claude/rules/memory-profile.md        (project identity, 18 lines)
+  .claude/rules/memory-preferences.md    (workflow prefs, 22 lines)
+  .claude/rules/memory-decisions.md      (3 ADRs detected from git, 34 lines)
+  .claude/rules/memory-patterns.md       (5 patterns detected from src/, 42 lines)
+  .claude/rules/code-style.md            (TypeScript rules, paths-scoped, 28 lines)
+  .claude/rules/testing.md               (test rules, paths-scoped, 24 lines)
+
+Estimated per-session token cost: ~5,200 tokens
+Run /cc-memory --subdirs to add per-directory context files.
+```
+
+---
+
+## `--subdirs` Workflow
+
+Scans the project for subdirectories with significant content (more than 5 source files
+in `.ts`, `.py`, `.go`, or `.js`). For each qualifying directory, generates a `CLAUDE.md`
+stub.
+
+Stub template:
+```markdown
+# {dirname}
+
+{auto-detected purpose from file names and imports}
+
+## Key files
+- {file_1}: {detected role}
+- {file_2}: {detected role}
+- {file_3}: {detected role}
+- {file_4}: {detected role}
+- {file_5}: {detected role}
+
+## Conventions
+- {detected naming patterns}
+- {detected import patterns}
+- {detected export patterns}
+```
+
+Detection strategy:
+- Directory name (`auth`, `payments`, `api`) → infer domain
+- `index.ts` exports → infer public API surface
+- Import statements → infer dependencies
+- File names → infer roles (e.g., `*.service.ts`, `*.controller.ts`, `*.router.ts`)
+
+Output:
+```
+=== Subdirectory CLAUDE.md Generation ===
+
+Qualifying directories (>5 source files):
+  src/auth/         → Created CLAUDE.md (auth module, OIDC, 5 key files)
+  src/components/   → Created CLAUDE.md (React components, 12 key files)
+  src/api/          → Created CLAUDE.md (REST endpoints, 8 key files)
+  packages/ui/      → Created CLAUDE.md (component library, 9 key files)
+  src/store/        → Skipped (3 files, below threshold)
+
+4 files created. Total added: ~1,200 tokens (loaded only when relevant).
+```
+
+---
+
+## `--exclusions` Workflow
+
+Generates `.claude/memory-exclusions.md` listing glob patterns for what Claude should
+not load or index. Prevents context pollution from large generated or irrelevant files.
+
+Default exclusions generated:
+```markdown
+# Memory Exclusions
+
+Claude should not read or index these paths unless explicitly asked.
+
+## Generated / build artifacts
+- node_modules/**
+- dist/**
+- build/**
+- coverage/**
+- .next/**
+- .nuxt/**
+- __pycache__/**
+- *.pyc
+
+## Large lock files
+- pnpm-lock.yaml
+- package-lock.json
+- yarn.lock
+- poetry.lock
+- Cargo.lock
+
+## Minified / bundled output
+- *.min.js
+- *.min.css
+- *.bundle.js
+- *.chunk.js
+
+## Auto-generated from .gitignore
+{patterns detected from .gitignore that are not already above}
+
+## Binary and media
+- *.png, *.jpg, *.gif, *.ico, *.woff, *.woff2, *.ttf
+- *.pdf, *.zip, *.tar.gz
+```
+
+---
+
+## `--scan` Workflow
+
+Runs a stack-aware scan and proposes path-scoped rules based on detected project structure.
+Outputs a table of findings before writing anything:
+
+```
+=== Project Structure Scan ===
+
+Stack detected: TypeScript + React 18 + Vite + Vitest + Playwright
+
+Directory         | Detected Purpose        | Rule Proposed
+-----------------------------------------------------------------------
+src/auth/         | Authentication/OIDC     | auth-module.md (paths: src/auth/**)
+src/api/          | REST API endpoints      | api-module.md (paths: src/api/**)
+src/components/   | React component library | components.md (paths: src/components/**)
+packages/ui/      | Shared UI package       | ui-package.md (paths: packages/ui/**)
+src/store/        | Zustand state stores    | state-management.md (paths: src/store/**)
+src/hooks/        | Custom React hooks      | hooks-conventions.md (paths: src/hooks/**)
+src/test/         | Test utilities          | (absorbed into testing.md)
+.github/          | CI/CD workflows         | ci-cd.md (paths: .github/**)
+
+8 rules proposed. Run /cc-memory --scan --apply to create them.
+Estimated token cost if all applied: +3,400 tokens (path-scoped, load on match only).
+```
+
+Run with `--apply` to write the proposed files. Run without `--apply` to preview only.
+
+---
+
+## Token Budget Guidance
+
+The 5-layer system is designed so total session context stays under ~8,000 tokens for
+a typical working session. Path-scoped rules and subdirectory files are not loaded
+unless Claude is actively working on matching files.
+
+| Layer | Approx Tokens | Loaded When |
+|-------|--------------|-------------|
+| Root CLAUDE.md | 800–1,200 | Always |
+| `.claude/rules/*.md` (5 files) | 2,000–4,000 | Always |
+| Subdirectory CLAUDE.md | 200–400 each | When editing files in that directory |
+| Path-scoped rules | 300–600 each | When editing matching file type |
+| Skills (frontmatter only) | ~50 each | Always (body loads on activation) |
+| **Total (typical session)** | **~5,000–8,000** | — |
+
+**Warning thresholds:**
+- Above 10,000 always-loaded tokens: run `/cc-memory --audit` to find bloat
+- Above 20,000 always-loaded tokens: context pressure significantly degrades performance
+- Rule of thumb: if a rule is not consulted in most sessions, make it path-scoped or convert it to a skill
+
+**Optimization levers:**
+1. Move language-specific rules from global to path-scoped (`paths:` frontmatter)
+2. Move per-module context to subdirectory `CLAUDE.md` files
+3. Convert rarely-used knowledge to skills (zero always-loaded cost for the body)
+4. Rotate `memory-sessions.md` regularly with `/cc-memory --rotate`
+5. Resolve and archive `lessons-learned.md` entries with `/cc-memory --lessons`

@@ -5,6 +5,7 @@ Use this plugin when the task needs unusually strong code intelligence: deep rep
 
 ## Fast routing
 - Need full repository setup or audit? Open `commands/cc-setup.md`.
+- Need to update/sync an existing setup, propagate to sub-repos, or scaffold docs? Open `commands/cc-sync.md`.
 - Need orchestration or review council? Open `commands/cc-orchestrate.md` and `commands/cc-council.md`.
 - Need the highest reasoning depth for a coding problem? Open `commands/cc-intel.md`, `skills/deep-code-intelligence/SKILL.md`, and `agents/principal-engineer-strategist.md`.
 - Need debugging or recovery? Open `commands/cc-debug.md`, `commands/cc-troubleshoot.md`, and `skills/self-healing-advanced/SKILL.md`.

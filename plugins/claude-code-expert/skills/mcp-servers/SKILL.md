@@ -489,3 +489,136 @@ claude --verbose
 - Prefer official `@modelcontextprotocol/server-*` packages
 - Review server source code before adding third-party servers
 - Use project-scoped config over user-scoped for sensitive servers
+
+## MCP Prompts — The Most Overlooked Primitive
+
+> **Most engineers only use MCP Tools and miss this entirely. MCP Prompts are the highest-leverage primitive in the MCP spec.**
+
+MCP has three primitives: **Tools** (Claude invokes), **Resources** (data sources), and **Prompts** (pre-built conversation starters). Prompts are server-defined templates that prime Claude with everything needed for complex workflows — available via slash commands in the UI or programmatic invocation.
+
+### What Prompts Can Do
+
+A Prompt is a structured message template that a server exposes. When invoked, it injects a complete, expert-quality system message into the conversation. Unlike Tools (which Claude calls to get data), Prompts set up *how Claude should think and act* for the entire workflow.
+
+**Prompts vs Tools:**
+
+| | Prompts | Tools |
+|-|---------|-------|
+| When invoked | At conversation start or via slash command | During conversation as needed |
+| What they provide | Structured messages that prime the agent | Data or action results |
+| Best for | Workflow setup, expertise injection, complex multi-step tasks | Data retrieval, actions, side effects |
+| Visibility | Appear as `/server:prompt-name` in UI | Called by Claude internally |
+
+### Implementing Prompts in a Custom Server
+
+```typescript
+import { Server } from "@modelcontextprotocol/sdk/server/index.js";
+import {
+  ListPromptsRequestSchema,
+  GetPromptRequestSchema,
+} from "@modelcontextprotocol/sdk/types.js";
+
+const server = new Server(
+  { name: "my-server", version: "1.0.0" },
+  { capabilities: { prompts: {}, tools: {} } }  // declare prompts capability
+);
+
+// List available prompts
+server.setRequestHandler(ListPromptsRequestSchema, async () => ({
+  prompts: [
+    {
+      name: "deploy-checklist",
+      description: "Run full pre-deployment verification checklist",
+      arguments: [
+        {
+          name: "environment",
+          description: "Target environment (staging/production)",
+          required: true
+        }
+      ]
+    },
+    {
+      name: "security-review",
+      description: "Deep security audit of recent changes",
+      arguments: []
+    }
+  ]
+}));
+
+// Return prompt messages when invoked
+server.setRequestHandler(GetPromptRequestSchema, async (request) => {
+  const { name, arguments: args } = request.params;
+
+  if (name === "deploy-checklist") {
+    const env = args?.environment ?? "staging";
+    return {
+      messages: [
+        {
+          role: "user",
+          content: {
+            type: "text",
+            text: `You are a deployment safety engineer. Run a complete pre-deployment checklist for the ${env} environment:
+1. Check all tests pass
+2. Verify no .env files are staged
+3. Confirm version bump in package.json
+4. Review last 3 commits for accidental secrets
+5. Check docker image tags are not :latest
+6. Verify rollback plan is documented
+
+Report each item as PASS/FAIL/WARN with a one-line reason.`
+          }
+        }
+      ]
+    };
+  }
+
+  if (name === "security-review") {
+    return {
+      messages: [
+        {
+          role: "user",
+          content: {
+            type: "text",
+            text: `You are a security engineer. Review the recent git diff for:
+- Hardcoded credentials or API keys
+- SQL injection vulnerabilities
+- XSS attack surfaces
+- Insecure deserialization
+- Path traversal vulnerabilities
+- Missing auth checks on new endpoints
+
+Run git diff HEAD~3 and analyze every changed file.`
+          }
+        }
+      ]
+    };
+  }
+
+  throw new Error(`Unknown prompt: ${name}`);
+});
+```
+
+### Why Prompts Beat Mega-CLAUDE.md
+
+Instead of loading 500 lines of deployment instructions into every session, expose a `deploy-checklist` prompt. It loads zero tokens at session start and activates only when needed.
+
+**Pattern:** One Prompt = one expert persona + one workflow. Keep Prompts focused.
+
+### Real-World Prompt Ideas
+
+| Prompt Name | What It Primes |
+|-------------|----------------|
+| `deploy-checklist` | Pre-deployment verification workflow |
+| `security-audit` | OWASP-aware code review persona |
+| `architecture-review` | System design review with ADR output |
+| `incident-response` | On-call SRE persona for outage triage |
+| `db-migration-review` | Database change safety checklist |
+| `api-review` | REST/GraphQL API design reviewer |
+| `pr-summary` | Auto-generate PR descriptions from diff |
+| `test-strategy` | Test coverage analysis and planning |
+
+### Cost Impact
+
+Prompts inject messages only when invoked. A Prompt with 500 tokens of expert instructions costs nothing until used, vs CLAUDE.md where those tokens load every session.
+
+**Rough math:** 10 Prompts × 500 tokens each = 5,000 tokens available on demand vs 5,000 tokens consumed per session if put in CLAUDE.md.

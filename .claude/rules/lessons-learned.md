@@ -1264,6 +1264,10 @@ First entry keys: not a dict
 - **Error:** File does not exist. Note: your current working directory is /home/user/claude.
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
 
+### Error: Read failure (2026-03-20T02:24:45Z)
+- **Tool:** Read
+- **Input:** `c:\Users\MarkusAhling\pro\claude\CLAUDE.md`
+- **Error:** File does not exist. Note: your current working directory is C:\Users\MarkusAhling\pro\claude.
 ### Error: WebFetch failure (2026-03-26T03:54:30Z)
 - **Tool:** WebFetch
 - **Input:** `N/A`
@@ -1666,86 +1670,91 @@ First entry keys: not a dict
 fatal: pathspec 'claude-plugin/plugin.json' did not match any files
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
 
-### Error: Read failure (2026-03-29T06:44:34Z)
+### Error: Bash failure (2026-03-28T16:19:59Z)
+- **Tool:** Bash
+- **Input:** `cd "c:/Users/MarkusAhling/pro/claude" && git stash pop 2>&1`
+- **Error:** Exit code 1
+Auto-merging .claude/rules/lessons-learned.md
+CONFLICT (content): Merge conflict in .claude/rules/lessons-learned.md
+Auto-merging plugins/claude-code-expert/.claude-plugin/plugin.json
+CONFLICT (content): Merge conflict in plugins/claude-code-expert/.claude-plugin/plugin.json
+Auto-merging plugins/claude-code-expert/CONTEXT_SUMMARY.md
+CONFLICT (content): Merge conflict in plugins/claude-code-expert/CONTEXT_SUMMARY.md
+Auto-merging plugins/claude-code-expert/commands/cc-setup.md
+CONFLICT (content): Merge conflict in plugins/claude-code-expert/commands/cc-setup.md
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	modified:   .claude/CLAUDE.md
+	new file:   .claude/rules/infra.md
+	new file:   .claude/rules/memory-decisions.md
+	new file:   .claude/rules/memory-patterns.md
+	new file:   .claude/rules/memory-preferences.md
+	new file:   .claude/rules/memory-profile.md
+	new file:   .claude/rules/product.md
+	new file:   .claude/rules/review.md
+	new file:   .claude/rules/security.md
+	new file:   .claude/sync-state.json
+	new file:   .claude/templates/design-doc.md
+	new file:   .claude/templates/incident-report.md
+	new file:   .claude/templates/pr-description.md
+	new file:   .claude/templates/test-plan.md
+	modified:   .gitignore
+	modified:   README.md
+	new file:   docs/context/api-contracts.md
+	new file:   docs/context/api-guidelines.md
+	new file:   docs/context/architecture-deployment.md
+	new file:   docs/context/architecture-runtime.md
+	new file:   docs/context/architecture.md
+	new file:   docs/context/changelog.md
+	new file:   docs/context/compliance.md
+	new file:   docs/context/constraints.md
+	new file:   docs/context/data-migrations.md
+	new file:   docs/context/data-model.md
+	new file:   docs/context/decisions/adr-template.md
+	new file:   docs/context/domain-glossary.md
+	new file:   docs/context/ops-and-runbooks.md
+	new file:   docs/context/performance.md
+	new file:   docs/context/personas-and-use-cases.md
+	new file:   docs/context/plan.md
+	new file:   docs/context/project-overview.md
+	new file:   docs/context/security-rules.md
+	new file:   docs/context/test-inventory.md
+	new file:   docs/context/testing-strategy.md
+	new file:   docs/context/ux-flows.md
+	new file:   docs/context/ux-principles.md
+	new file:   docs/context/vision-and-roadmap.md
+	modified:   plugins/claude-code-expert/CHANGELOG.md
+	modified:   plugins/claude-code-expert/CLAUDE.md
+	modified:   plugins/claude-code-expert/README.md
+	new file:   plugins/claude-code-expert/commands/cc-sync.md
+	new file:   plugins/claude-code-expert/skills/project-sync/SKILL.md
+
+Unmerged paths:
+  (use "git restore --staged <file>..." to unstage)
+  (use "git add <file>..." to mark resolution)
+	both modified:   .claude/rules/lessons-learned.md
+	both modified:   plugins/claude-code-expert/.claude-plugin/plugin.json
+	both modified:   plugins/claude-code-expert/CONTEXT_SUMMARY.md
+	both modified:   plugins/claude-code-expert/commands/cc-setup.md
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	.claude/worktrees/
+
+The stash entry is kept in case you need it again.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Read failure (2026-03-31T05:00:30Z)
 - **Tool:** Read
-- **Input:** `/home/user/claude/plugins/frontend-design-system/agents/design-system-generator.md`
-- **Error:** File does not exist. Note: your current working directory is /home/user/claude.
+- **Input:** `C:\Users\MarkusAhling\.claude\projects\C--Users-MarkusAhling-pro-claude\memory\MEMORY.md`
+- **Error:** File does not exist. Note: your current working directory is C:\Users\MarkusAhling\pro\claude.
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
 
-### Error: WebFetch failure (2026-03-29T06:45:35Z)
-- **Tool:** WebFetch
-- **Input:** `N/A`
-- **Error:** Request failed with status code 404
-- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
-
-### Error: Read failure (2026-03-29T06:48:08Z)
+### Error: Read failure (2026-03-31T07:27:35Z)
 - **Tool:** Read
-- **Input:** `/home/user/claude/.claude/agent-memory/researcher`
-- **Error:** EISDIR: illegal operation on a directory, read '/home/user/claude/.claude/agent-memory/researcher'
-- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
-
-### Error: WebFetch failure (2026-03-29T07:26:15Z)
-- **Tool:** WebFetch
-- **Input:** `N/A`
-- **Error:** self signed certificate in certificate chain
-- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
-
-### Error: WebFetch failure (2026-03-29T07:26:18Z)
-- **Tool:** WebFetch
-- **Input:** `N/A`
-- **Error:** self signed certificate in certificate chain
-- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
-
-### Error: Read failure (2026-03-29T08:02:02Z)
-- **Tool:** Read
-- **Input:** `/home/user/claude/.claude/agent-memory/researcher`
-- **Error:** EISDIR: illegal operation on a directory, read '/home/user/claude/.claude/agent-memory/researcher'
-- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
-
-### Error: Read failure (2026-03-29T08:02:15Z)
-- **Tool:** Read
-- **Input:** `/root/.claude/projects/-home-user-claude/785421b7-3547-4b42-af85-3c251e06428a/tool-results/toolu_01Hze3hnapQEwwwv2tnFJSHC.json`
-- **Error:** File content (32986 tokens) exceeds maximum allowed tokens (10000). Use offset and limit parameters to read specific portions of the file, or search for specific content instead of reading the whole file.
-- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
-
-### Error: Read failure (2026-03-29T08:02:18Z)
-- **Tool:** Read
-- **Input:** `/root/.claude/projects/-home-user-claude/785421b7-3547-4b42-af85-3c251e06428a/tool-results/toolu_01Hif7TANcSDYAgacPmxdknC.txt`
-- **Error:** File content (28182 tokens) exceeds maximum allowed tokens (10000). Use offset and limit parameters to read specific portions of the file, or search for specific content instead of reading the whole file.
-- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
-
-### Error: WebFetch failure (2026-03-29T09:21:12Z)
-- **Tool:** WebFetch
-- **Input:** `N/A`
-- **Error:** Request failed with status code 403
-- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
-
-### Error: Read failure (2026-03-29T09:32:59Z)
-- **Tool:** Read
-- **Input:** `/home/user/claude/plugins/claude-code-expert`
-- **Error:** EISDIR: illegal operation on a directory, read '/home/user/claude/plugins/claude-code-expert'
-- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
-
-### Error: Read failure (2026-03-29T09:32:59Z)
-- **Tool:** Read
-- **Input:** `/home/user/claude/plugins/mui-expert`
-- **Error:** EISDIR: illegal operation on a directory, read '/home/user/claude/plugins/mui-expert'
-- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
-
-### Error: Read failure (2026-03-29T09:33:00Z)
-- **Tool:** Read
-- **Input:** `/home/user/claude/plugins/dotnet-blazor`
-- **Error:** EISDIR: illegal operation on a directory, read '/home/user/claude/plugins/dotnet-blazor'
-- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
-
-### Error: Read failure (2026-03-29T09:33:14Z)
-- **Tool:** Read
-- **Input:** `/home/user/claude/plugins/mui-expert/README.md`
-- **Error:** File does not exist. Note: your current working directory is /home/user/claude.
-- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
-
-### Error: Read failure (2026-03-29T09:33:14Z)
-- **Tool:** Read
-- **Input:** `/home/user/claude/plugins/mui-expert/CHANGELOG.md`
-- **Error:** File does not exist. Note: your current working directory is /home/user/claude.
+- **Input:** `C:\Users\MarkusAhling\pro\claude\plugins\claude-code-expert\commands\cc-setup.md`
+- **Error:** File content (13228 tokens) exceeds maximum allowed tokens (10000). Use offset and limit parameters to read specific portions of the file, or search for specific content instead of reading the whole file.
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving

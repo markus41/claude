@@ -419,8 +419,298 @@ function compareDocuments(ids) {
   return [header, divider, typeRow, summaryRow, costRow, riskRow, modelRow].join("\n");
 }
 
+// --- Autonomy advisor data ---
+
+const AUTONOMY_SHAPES = {
+  main: {
+    label: "Main session (interactive)",
+    when: "Task requires steering, < 30 min, no parallelism needed",
+    hooks: ["inject-context.sh", "on-stop.sh"],
+    memory: [".claude/rules/lessons-learned.md"],
+  },
+  subagent: {
+    label: "Subagent (research/isolated)",
+    when: "Research, web fetching, or context-heavy investigation that would pollute main window",
+    hooks: ["inject-context.sh"],
+    memory: [],
+  },
+  "agent-team": {
+    label: "Agent team (orchestrated)",
+    when: "Multi-file changes, parallel review, specialized domains, > 1 hr estimated",
+    hooks: ["inject-context.sh", "on-stop.sh", "session-init.sh"],
+    memory: [".claude/rules/memory-patterns.md", ".claude/rules/memory-decisions.md"],
+  },
+};
+
+const TASK_AUTONOMY_MAP = [
+  { patterns: ["research", "find", "search", "look up", "investigate", "gather"], shape: "subagent", reason: "Isolated context prevents pollution of main session" },
+  { patterns: ["refactor", "migrate", "rewrite", "overhaul", "rename across"], shape: "agent-team", reason: "Broad changes benefit from parallel specialist agents" },
+  { patterns: ["review pr", "code review", "audit", "security scan"], shape: "agent-team", reason: "Multi-perspective review requires multiple specialized agents" },
+  { patterns: ["fix bug", "debug", "trace error", "root cause"], shape: "main", reason: "Interactive debugging requires tight feedback loop" },
+  { patterns: ["implement", "add feature", "build", "create"], shape: "main", reason: "Feature development is best steered interactively" },
+  { patterns: ["generate tests", "write tests", "test coverage"], shape: "agent-team", reason: "Test generation parallelizes well across modules" },
+  { patterns: ["document", "write docs", "update readme", "changelog"], shape: "subagent", reason: "Documentation tasks are self-contained and high-token" },
+];
+
+const SESSION_TYPE_MAP = [
+  { patterns: ["schedule", "daily", "weekly", "overnight", "recurring", "cron"], type: "scheduled", note: "Use /cc-schedule to generate the right blueprint" },
+  { patterns: ["ci", "pipeline", "pr trigger", "on push", "github action"], type: "headless-ci", note: "Use GitHub Actions with claude-code-action" },
+  { patterns: ["monitor", "watch", "alert", "detect"], type: "scheduled", note: "Cloud task for off-machine; Desktop task for local access" },
+];
+
+function planAutonomy(task, repoSignals = {}) {
+  const normalized = task.toLowerCase();
+
+  // Determine execution shape
+  let shape = "main";
+  let shapeReason = "Default: interactive session for focused tasks";
+  for (const entry of TASK_AUTONOMY_MAP) {
+    if (entry.patterns.some((p) => normalized.includes(p))) {
+      shape = entry.shape;
+      shapeReason = entry.reason;
+      break;
+    }
+  }
+
+  // Override for large repos or big teams
+  if (repoSignals.projectScale === "large" && shape === "main") {
+    shape = "agent-team";
+    shapeReason = "Large codebase: agent team ensures focused, parallel analysis";
+  }
+
+  // Determine session type
+  let sessionType = "interactive";
+  let sessionNote = "";
+  for (const entry of SESSION_TYPE_MAP) {
+    if (entry.patterns.some((p) => normalized.includes(p))) {
+      sessionType = entry.type;
+      sessionNote = entry.note;
+      break;
+    }
+  }
+
+  // Model recommendation
+  const modelResult = recommendModel(task, null);
+
+  const config = AUTONOMY_SHAPES[shape];
+  const hookPacks = [...config.hooks];
+  const languages = repoSignals.languages || [];
+  if (languages.includes("typescript") || languages.includes("javascript")) hookPacks.push("auto-format.sh (prettier)");
+  if (languages.includes("python")) hookPacks.push("auto-format-py.sh (black/ruff)");
+  if (repoSignals.hasGit !== false) hookPacks.push("no-env-commit.sh");
+  if (repoSignals.hasDocker) hookPacks.push("no-latest-tag.sh");
+
+  return {
+    task,
+    shape,
+    shapeLabel: config.label,
+    shapeReason,
+    sessionType,
+    sessionNote,
+    model: modelResult.recommended,
+    modelId: modelResult.id,
+    modelReason: modelResult.reason,
+    hookPacks: [...new Set(hookPacks)],
+    memoryFiles: config.memory,
+    when: config.when,
+  };
+}
+
+// --- Workflow pack advisor ---
+
+const WORKFLOW_PACKS = [
+  { id: "codebase-understanding", triggers: ["understand", "explore", "map", "orient", "new repo", "onboard", "first time"], label: "Understand a Codebase", skill: "common-workflows" },
+  { id: "bug-fix", triggers: ["fix bug", "error", "exception", "crash", "broken", "trace", "stack trace", "failing test"], label: "Fix Bug from Error Trace", skill: "common-workflows" },
+  { id: "refactor", triggers: ["refactor", "clean up", "simplify", "restructure", "extract", "rename"], label: "Refactor Safely", skill: "common-workflows" },
+  { id: "tdd", triggers: ["tdd", "test-driven", "write tests first", "red green", "test coverage", "implement with tests"], label: "TDD Implementation", skill: "common-workflows" },
+  { id: "pr-review", triggers: ["review pr", "pull request", "code review", "before merge", "diff review"], label: "Repo Review Before Merge", skill: "common-workflows" },
+  { id: "generate-claudemd", triggers: ["generate claude.md", "setup claude", "initialize", "bootstrap config", "first setup"], label: "Generate CLAUDE.md for Existing Repo", skill: "common-workflows" },
+  { id: "migration-plan", triggers: ["migrate", "upgrade", "migration plan", "major change", "before editing"], label: "Migration Plan Before Edits", skill: "common-workflows" },
+];
+
+function recommendWorkflowPacks(task) {
+  const normalized = task.toLowerCase();
+  const matches = WORKFLOW_PACKS.filter((pack) => pack.triggers.some((t) => normalized.includes(t)));
+  if (matches.length === 0) {
+    // fallback: return top 2 most general
+    return [WORKFLOW_PACKS[0], WORKFLOW_PACKS[1]];
+  }
+  return matches.slice(0, 3);
+}
+
+// --- Hook pack advisor ---
+
+const HOOK_PACK_MATRIX = [
+  { signal: "typescript", event: "PostToolUse", hook: "auto-format.sh", description: "Auto-format TypeScript/JavaScript with Prettier after every write" },
+  { signal: "python", event: "PostToolUse", hook: "auto-format-py.sh", description: "Auto-format Python with Black/Ruff after every write" },
+  { signal: "rust", event: "PostToolUse", hook: "auto-clippy.sh", description: "Run rustfmt + clippy after every Rust file write" },
+  { signal: "go", event: "PostToolUse", hook: "auto-format-go.sh", description: "Run gofmt after every Go file write" },
+  { signal: "git", event: "PreToolUse", hook: "no-env-commit.sh", description: "Block .env and credential files from git add" },
+  { signal: "docker", event: "PreToolUse", hook: "no-latest-tag.sh", description: "Block :latest Docker image tags" },
+  { signal: "any", event: "PreToolUse", hook: "security-guard.sh", description: "Block destructive shell commands (rm -rf /, sudo rm, etc.)" },
+  { signal: "any", event: "PostToolUseFailure", hook: "lessons-learned-capture.sh", description: "Auto-capture tool failures into lessons-learned.md" },
+  { signal: "any", event: "UserPromptSubmit", hook: "inject-context.sh", description: "Inject date, branch, and uncommitted file count into every prompt" },
+  { signal: "any", event: "SessionStart", hook: "session-init.sh", description: "Print branch, last commit, and memory rotation warnings at session start" },
+  { signal: "any", event: "Stop", hook: "on-stop.sh", description: "Remind about uncommitted files when Claude finishes a turn" },
+];
+
+function recommendHookPacks(signals = {}) {
+  const languages = (signals.languages || []).map((l) => l.toLowerCase());
+  const recommended = HOOK_PACK_MATRIX.filter((entry) => {
+    if (entry.signal === "any") return true;
+    if (entry.signal === "git") return signals.hasGit !== false;
+    if (entry.signal === "docker") return signals.hasDocker === true;
+    return languages.includes(entry.signal);
+  });
+
+  const byEvent = {};
+  for (const entry of recommended) {
+    if (!byEvent[entry.event]) byEvent[entry.event] = [];
+    byEvent[entry.event].push({ hook: entry.hook, description: entry.description });
+  }
+  return byEvent;
+}
+
+// --- Team topology advisor ---
+
+const TEAM_TOPOLOGIES = [
+  {
+    id: "builder-validator",
+    label: "Builder + Validator",
+    complexity: "low",
+    taskTypes: ["feature", "implement", "build", "add"],
+    agents: 2,
+    description: "One agent builds, one validates. Best for focused feature implementation.",
+    cost: "low",
+  },
+  {
+    id: "qa-swarm",
+    label: "QA Swarm",
+    complexity: "medium",
+    taskTypes: ["test", "qa", "quality", "coverage"],
+    agents: 4,
+    description: "Parallel test writers targeting different modules. Best for coverage gaps.",
+    cost: "medium",
+  },
+  {
+    id: "feature-squad",
+    label: "Feature Squad",
+    complexity: "medium",
+    taskTypes: ["feature", "fullstack", "end-to-end", "cross-cutting"],
+    agents: 4,
+    description: "Frontend + backend + test + doc agents. Best for multi-layer features.",
+    cost: "medium",
+  },
+  {
+    id: "research-council",
+    label: "Research Council",
+    complexity: "medium",
+    taskTypes: ["research", "investigate", "compare", "evaluate", "spike"],
+    agents: 3,
+    description: "Multiple research agents synthesized by a coordinator. Best for decision-making.",
+    cost: "medium",
+  },
+  {
+    id: "refactor-pipeline",
+    label: "Refactor Pipeline",
+    complexity: "high",
+    taskTypes: ["refactor", "migrate", "rename", "restructure"],
+    agents: 3,
+    description: "Sequential refactor → verify → document pipeline with checkpoints.",
+    cost: "medium",
+  },
+  {
+    id: "pr-review-board",
+    label: "PR Review Board",
+    complexity: "medium",
+    taskTypes: ["review", "audit", "security", "pr"],
+    agents: 4,
+    description: "Security, performance, correctness, and style agents review in parallel.",
+    cost: "medium",
+  },
+  {
+    id: "docs-sprint",
+    label: "Docs Sprint",
+    complexity: "low",
+    taskTypes: ["document", "docs", "readme", "api docs", "changelog"],
+    agents: 3,
+    description: "Parallel doc writers for different sections. Best for docs coverage.",
+    cost: "low",
+  },
+  {
+    id: "continuous-monitor",
+    label: "Continuous Monitor",
+    complexity: "high",
+    taskTypes: ["monitor", "watch", "alert", "schedule", "loop"],
+    agents: 1,
+    description: "Single long-running agent with scheduled re-invocation. Best for maintenance.",
+    cost: "variable",
+  },
+];
+
+function recommendTeamTopology(task, complexity, teamSize) {
+  const normalized = task.toLowerCase();
+  const matches = TEAM_TOPOLOGIES.filter((t) => {
+    const taskMatch = t.taskTypes.some((type) => normalized.includes(type));
+    const complexityMatch = !complexity || t.complexity === complexity ||
+      (complexity === "high" && t.complexity !== "low") ||
+      (complexity === "low" && t.complexity !== "high");
+    return taskMatch && complexityMatch;
+  });
+
+  if (matches.length === 0) return [TEAM_TOPOLOGIES[0]]; // default: builder-validator
+
+  // If team size is given, prefer topologies with matching agent count
+  if (teamSize) {
+    const n = parseInt(teamSize, 10);
+    const sized = matches.filter((t) => t.agents <= n);
+    if (sized.length > 0) return sized.slice(0, 2);
+  }
+
+  return matches.slice(0, 2);
+}
+
+// --- Schedule advisor ---
+
+const SCHEDULE_BLUEPRINTS_ADVISOR = [
+  { id: "pr-review", triggers: ["pr review", "pull request review", "review prs", "code review"], profile: "cloud", cron: "0 9 * * 1-5", description: "Daily PR review across open PRs" },
+  { id: "ci-triage", triggers: ["ci", "build failure", "failing builds", "pipeline triage"], profile: "cloud", cron: "0 */2 * * *", description: "Bi-hourly CI failure triage" },
+  { id: "dep-audit", triggers: ["dependency", "dependencies", "npm audit", "vulnerability", "cve"], profile: "cloud", cron: "0 8 * * 1", description: "Weekly dependency audit with auto-fix PR" },
+  { id: "docs-drift", triggers: ["docs drift", "documentation drift", "stale docs", "outdated docs"], profile: "cloud", cron: "0 10 * * 1", description: "Weekly docs drift detection with fix PR" },
+  { id: "release-check", triggers: ["release", "release ready", "pre-release", "ship"], profile: "cloud", cron: "0 9 * * *", description: "Daily release readiness checklist" },
+  { id: "branch-hygiene", triggers: ["branch cleanup", "stale branches", "merged branches", "hygiene"], profile: "desktop", cron: "0 17 * * 5", description: "Weekly stale branch cleanup" },
+];
+
+function recommendSchedule(task, requiresLocalFiles) {
+  const normalized = task.toLowerCase();
+  const matches = SCHEDULE_BLUEPRINTS_ADVISOR.filter((bp) => bp.triggers.some((t) => normalized.includes(t)));
+
+  if (matches.length === 0) {
+    return {
+      recommendation: "No matching blueprint — use /cc-schedule --dry-run to customize",
+      profile: requiresLocalFiles ? "desktop" : "cloud",
+      cron: null,
+    };
+  }
+
+  const best = matches[0];
+  const profile = requiresLocalFiles ? "desktop" : best.profile;
+  const warning = requiresLocalFiles && best.profile === "cloud"
+    ? "⚠️  This blueprint normally runs as a cloud task but you flagged local file access — use Desktop task instead."
+    : null;
+
+  return {
+    recommendation: best.id,
+    profile,
+    cron: best.cron,
+    description: best.description,
+    command: `/cc-schedule ${best.id} --target ${profile}`,
+    warning,
+  };
+}
+
 const server = new Server(
-  { name: "claude-code-docs", version: "3.0.0" },
+  { name: "claude-code-docs", version: "4.0.0" },
   { capabilities: { tools: {} } }
 );
 
@@ -551,6 +841,108 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
           },
         },
         required: ["items"],
+      },
+    },
+    {
+      name: "cc_docs_autonomy_plan",
+      description:
+        "Given a task description and optional repo signals, recommend the optimal execution shape: main session, subagent, or agent team. Returns model, hook packs, memory files, and session type.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          task: {
+            type: "string",
+            description: "Natural-language description of what you want to accomplish.",
+          },
+          repo_signals: {
+            type: "object",
+            description: "Optional metadata about the repo: languages (array), projectScale (small/medium/large), hasDocker (bool), hasGit (bool), hasCI (bool), teamSize (number).",
+            properties: {
+              languages: { type: "array", items: { type: "string" } },
+              projectScale: { type: "string", enum: ["small", "medium", "large"] },
+              hasDocker: { type: "boolean" },
+              hasGit: { type: "boolean" },
+              hasCI: { type: "boolean" },
+              teamSize: { type: "number" },
+            },
+          },
+        },
+        required: ["task"],
+      },
+    },
+    {
+      name: "cc_docs_workflow_pack_recommend",
+      description:
+        "Recommend which common workflow packs to load for a given task. Packs cover: codebase understanding, bug fix, refactor, TDD, PR review, CLAUDE.md generation, migration planning.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          task: {
+            type: "string",
+            description: "Natural-language task description, e.g. 'fix a flaky test' or 'refactor the auth module'.",
+          },
+        },
+        required: ["task"],
+      },
+    },
+    {
+      name: "cc_docs_hook_pack_recommend",
+      description:
+        "Recommend which hook scripts to enable for a given tech stack. Returns a settings.json-ready hook configuration grouped by lifecycle event.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          languages: {
+            type: "array",
+            items: { type: "string" },
+            description: "Languages in the project, e.g. ['typescript', 'python', 'go'].",
+          },
+          has_docker: { type: "boolean", description: "Whether the project uses Docker." },
+          has_git: { type: "boolean", description: "Whether the project uses Git (almost always true)." },
+        },
+      },
+    },
+    {
+      name: "cc_docs_team_topology_recommend",
+      description:
+        "Recommend an agent team topology (builder-validator, qa-swarm, feature-squad, etc.) based on task type and complexity.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          task: {
+            type: "string",
+            description: "Description of the work, e.g. 'implement a new auth flow' or 'review PR for security issues'.",
+          },
+          complexity: {
+            type: "string",
+            enum: ["low", "medium", "high"],
+            description: "Estimated task complexity.",
+          },
+          team_size: {
+            type: "number",
+            description: "Maximum number of parallel agents to use. If omitted, returns best match regardless of size.",
+          },
+        },
+        required: ["task"],
+      },
+    },
+    {
+      name: "cc_docs_schedule_recommend",
+      description:
+        "Recommend a /cc-schedule blueprint and deployment profile (desktop/cloud/loop) for a recurring or autonomous task.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          task: {
+            type: "string",
+            description: "Description of the recurring task, e.g. 'clean up stale branches weekly' or 'audit dependencies for CVEs'.",
+          },
+          requires_local_files: {
+            type: "boolean",
+            description: "Whether the task needs access to local files or local MCP servers. Cloud tasks cannot access local files.",
+          },
+        },
+        required: ["task"],
       },
     },
   ],
@@ -719,6 +1111,149 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       return {
         content: [{ type: "text", text: `# Comparison: ${items.join(" vs ")}\n\n${table}` }],
       };
+    }
+
+    case "cc_docs_autonomy_plan": {
+      const plan = planAutonomy(args.task || "", args.repo_signals || {});
+      const lines = [
+        `# Autonomy Plan`,
+        ``,
+        `**Task:** ${plan.task}`,
+        `**Execution shape:** ${plan.shapeLabel}`,
+        `**Reason:** ${plan.shapeReason}`,
+        `**When to use this shape:** ${plan.when}`,
+        ``,
+        `## Session`,
+        `- **Type:** ${plan.sessionType}`,
+        plan.sessionNote ? `- **Note:** ${plan.sessionNote}` : null,
+        ``,
+        `## Model`,
+        `- **Recommended:** ${plan.model} (\`${plan.modelId}\`)`,
+        `- **Reason:** ${plan.modelReason}`,
+        ``,
+        `## Hook Packs to Enable`,
+        ...plan.hookPacks.map((h) => `- ${h}`),
+        ``,
+        `## Memory Files to Touch`,
+        ...(plan.memoryFiles.length > 0 ? plan.memoryFiles.map((f) => `- \`${f}\``) : ["- None required"]),
+        ``,
+        `## Next Step`,
+        plan.sessionType === "scheduled"
+          ? `Run \`/cc-schedule\` to generate the blueprint prompt for this task.`
+          : plan.shapeLabel.includes("team")
+          ? `Run \`/cc-orchestrate\` and choose a team topology. Use \`cc_docs_team_topology_recommend\` to pick the right one.`
+          : `Start a ${plan.sessionType} Claude Code session with the recommended model and hook configuration.`,
+      ].filter((l) => l !== null);
+      return { content: [{ type: "text", text: lines.join("\n") }] };
+    }
+
+    case "cc_docs_workflow_pack_recommend": {
+      const packs = recommendWorkflowPacks(args.task || "");
+      const lines = [
+        `# Workflow Pack Recommendations`,
+        ``,
+        `**Task:** ${args.task}`,
+        ``,
+        `## Recommended Packs`,
+        ...packs.map((p) => `- **${p.label}** (\`${p.id}\`) — from skill \`${p.skill}\``),
+        ``,
+        `## How to Load`,
+        `Use \`cc_docs_full_reference\` with topic \`common-workflows\` to get the full workflow instructions.`,
+        `Or read the skill directly: \`plugins/claude-code-expert/skills/common-workflows/SKILL.md\``,
+      ];
+      return { content: [{ type: "text", text: lines.join("\n") }] };
+    }
+
+    case "cc_docs_hook_pack_recommend": {
+      const signals = {
+        languages: args.languages || [],
+        hasDocker: args.has_docker === true,
+        hasGit: args.has_git !== false,
+      };
+      const byEvent = recommendHookPacks(signals);
+      const lines = [
+        `# Hook Pack Recommendations`,
+        ``,
+        `**Detected signals:** languages=[${signals.languages.join(", ")}], docker=${signals.hasDocker}, git=${signals.hasGit}`,
+        ``,
+        `## Recommended Hooks by Event`,
+      ];
+      for (const [event, hooks] of Object.entries(byEvent)) {
+        lines.push(``, `### ${event}`);
+        for (const h of hooks) {
+          lines.push(`- **${h.hook}** — ${h.description}`);
+        }
+      }
+      lines.push(``, `## settings.json Registration`, ``, `\`\`\`json`, `{`, `  "hooks": {`);
+      for (const [event, hooks] of Object.entries(byEvent)) {
+        lines.push(`    "${event}": [`);
+        lines.push(`      { "matcher": "*", "hooks": [`);
+        for (const h of hooks) {
+          lines.push(`        { "type": "command", "command": "bash .claude/hooks/${h.hook}" },`);
+        }
+        lines.push(`      ]}`);
+        lines.push(`    ],`);
+      }
+      lines.push(`  }`, `}`, `\`\`\``);
+      lines.push(``, `See \`hook-script-library\` skill for the full script implementations.`);
+      return { content: [{ type: "text", text: lines.join("\n") }] };
+    }
+
+    case "cc_docs_team_topology_recommend": {
+      const topologies = recommendTeamTopology(args.task || "", args.complexity, args.team_size);
+      const lines = [
+        `# Team Topology Recommendation`,
+        ``,
+        `**Task:** ${args.task}`,
+        args.complexity ? `**Complexity:** ${args.complexity}` : null,
+        args.team_size ? `**Max agents:** ${args.team_size}` : null,
+        ``,
+        `## Recommended Topologies`,
+      ].filter(Boolean);
+
+      for (const t of topologies) {
+        lines.push(``, `### ${t.label} (\`${t.id}\`)`);
+        lines.push(`- **Agents:** ${t.agents}`);
+        lines.push(`- **Cost:** ${t.cost}`);
+        lines.push(`- **Complexity:** ${t.complexity}`);
+        lines.push(`- **When:** ${t.description}`);
+      }
+
+      lines.push(``, `## How to Launch`);
+      lines.push(`Run \`/cc-orchestrate --template ${topologies[0].id}\` to start with the recommended topology.`);
+      lines.push(`Use \`cc_docs_full_reference\` with topic \`cc-orchestrate\` for full orchestration documentation.`);
+      return { content: [{ type: "text", text: lines.join("\n") }] };
+    }
+
+    case "cc_docs_schedule_recommend": {
+      const result = recommendSchedule(args.task || "", args.requires_local_files === true);
+      const lines = [
+        `# Schedule Recommendation`,
+        ``,
+        `**Task:** ${args.task}`,
+        `**Local files required:** ${args.requires_local_files === true ? "yes" : "no"}`,
+        ``,
+        `## Recommendation`,
+        `- **Blueprint:** ${result.recommendation}`,
+        `- **Profile:** ${result.profile}`,
+        result.cron ? `- **Cron:** \`${result.cron}\`` : null,
+        result.description ? `- **Description:** ${result.description}` : null,
+        result.command ? `- **Command:** \`${result.command}\`` : null,
+        result.warning ? ``, result.warning ? result.warning : null,
+        ``,
+        `## Profile Notes`,
+        result.profile === "cloud"
+          ? `Cloud tasks run on Anthropic-managed infrastructure. No local files. Minimum 1-hour interval. Use GitHub connector for repo access.`
+          : result.profile === "desktop"
+          ? `Desktop tasks run on your machine. Full local file access. Local MCP servers available. Requires Desktop app to be open.`
+          : `In-session loop requires an active Claude session. Use \`/loop\` command. Stops when session ends.`,
+        ``,
+        `## Next Step`,
+        result.command
+          ? `Run \`${result.command}\` to generate the full task prompt.`
+          : `Run \`/cc-schedule --list\` to see all available blueprints, then customize with \`--target ${result.profile}\`.`,
+      ].filter((l) => l !== null);
+      return { content: [{ type: "text", text: lines.join("\n") }] };
     }
 
     default:

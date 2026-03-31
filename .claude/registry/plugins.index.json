@@ -1,7 +1,7 @@
 {
   "$schema": "./schema/plugins.schema.json",
   "version": "3.0.0",
-  "lastUpdated": "2026-03-26",
+  "lastUpdated": "2026-03-31T09:37:45Z",
   "description": "Plugin registry for Claude Code orchestration plugins - upgraded with Agentic Design Patterns (Gulli & Sauco, 2025)",
   "installed": {
     "aws-eks-helm-keycloak": {
@@ -116,7 +116,7 @@
       "dependencies": {}
     },
     "claude-code-expert": {
-      "version": "7.0.0",
+      "version": "7.6.0",
       "path": "../plugins/claude-code-expert",
       "source": "local",
       "installedAt": "2026-03-08T00:00:00.000Z",
@@ -355,8 +355,8 @@
     },
     "claude-code-expert": {
       "name": "claude-code-expert",
-      "version": "7.0.0",
-      "description": "High-intelligence Claude Code copilot with deep code reasoning, orchestration, CI/CD, enterprise security, and MCP documentation server",
+      "version": "7.6.0",
+      "description": "High-intelligence Claude Code copilot with deep code reasoning, evidence-driven planning, orchestration-first execution, model routing, context budgeting, CI/CD integration, enterprise security, plugin development, prompt engineering, performance profiling, agent teams, channels, hook policy engine (8 packs), layered memory deployment, role-based subagent packs, 5 agent-team topology kits, autonomy operating mode (4 profiles + 3 gate agents), and a queryable 15-tool MCP documentation server with autonomy advisor.",
       "author": {
         "name": "Markus Ahling"
       },
@@ -406,7 +406,7 @@
     "mui-expert": {
       "name": "mui-expert",
       "version": "2.1.0",
-      "description": "Comprehensive MUI expert — 26 skills, 14 commands, 7 agents. Theming, CSS variables, Pigment CSS, slots API, MUI X (DataGrid/Charts/TreeView/DatePickers), SSR/Next.js, white-label, entity-driven CRUD, 200+ dashboard widgets, ecosystem integrations.",
+      "description": "Comprehensive MUI expert \u00e2\u20ac\u201d 26 skills, 14 commands, 7 agents. Theming, CSS variables, Pigment CSS, slots API, MUI X (DataGrid/Charts/TreeView/DatePickers), SSR/Next.js, white-label, entity-driven CRUD, 200+ dashboard widgets, ecosystem integrations.",
       "author": {
         "name": "Claude Code"
       },

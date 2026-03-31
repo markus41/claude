@@ -915,6 +915,168 @@ Scoring rubric:
 
 ---
 
+## Phase 10A: Sub-Repository Discovery & Propagation
+
+After configuring the root project, scan for nested git repositories and propagate
+`.claude/` configuration into each one.
+
+### 10A.1 Discovery
+
+Scan up to 2 levels deep for directories containing `.git/`, excluding standard
+non-project directories (node_modules, vendor, dist, build, coverage, etc.).
+
+### 10A.2 Per Sub-Repo Actions
+
+For each discovered sub-repository:
+
+| Asset | Action |
+|-------|--------|
+| `.claude/` directory | Create if missing |
+| `CLAUDE.md` | Generate with sub-project context if missing |
+| `.claude/rules/` | Copy root rules (skip if sub-repo has its own) |
+| `.claude/rules/lessons-learned.md` | Create empty if missing |
+| `.claude/settings.json` | Inherit root permissions, add sub-repo specifics |
+| `.claude/hooks/` | Copy session-init.sh and error capture hooks |
+
+Sub-repo CLAUDE.md inherits the root project identity and references the parent:
+
+```markdown
+# {Sub-Repo Name}
+> Part of {root_project}. Root instructions: `../../CLAUDE.md`
+```
+
+### 10A.3 Sub-Repo Sync Report
+
+List each sub-repo with status: created, updated, or skipped.
+
+---
+
+## Phase 10B: Documentation Scaffold — docs/context/
+
+Create the `docs/context/` knowledge base with starter templates for comprehensive
+project documentation. Files are only created if they don't exist.
+
+### 10B.1 Generated Structure
+
+```text
+docs/context/
+  project-overview.md          # What, who, capabilities, non-goals
+  vision-and-roadmap.md        # Direction — informs suggestions and refactors
+  domain-glossary.md           # Canonical definitions for domain terms
+  personas-and-use-cases.md    # Key user types and primary use cases
+  architecture.md              # Top-level system diagram and narrative
+  architecture-runtime.md      # Runtime view (calls, queues, batch jobs)
+  architecture-deployment.md   # Environments, regions, scaling
+  data-model.md                # Entities, relationships, invariants
+  data-migrations.md           # Safe data evolution playbooks
+  api-contracts.md             # Endpoints, formats, status codes
+  api-guidelines.md            # REST/GraphQL patterns, pagination, errors
+  ux-flows.md                  # Main user flows as step-by-step narratives
+  ux-principles.md             # Design principles to protect during changes
+  security-rules.md            # Auth rules, PII handling, tenant isolation
+  compliance.md                # HIPAA/GDPR/other obligations
+  testing-strategy.md          # Test organization and coverage targets
+  test-inventory.md            # Pointers to major test suites
+  constraints.md               # Platform support, SLAs/SLOs, hard limits
+  performance.md               # Budgets, hotspots, benchmarks
+  ops-and-runbooks.md          # Operational procedures, incident handling
+  changelog.md                 # Human-readable change history
+  plan.md                      # Current work plan / scratchpad
+  decisions/
+    adr-template.md            # Starter template for new ADRs
+```
+
+Each template is auto-populated with detected stack info where possible (tech stack,
+component list, build commands, test frameworks).
+
+### 10B.2 .claude/ Enrichment
+
+Also scaffold these `.claude/` assets if missing:
+
+```text
+.claude/
+  templates/
+    pr-description.md          # PR template for Claude to fill
+    design-doc.md              # RFC/ADR skeleton
+    test-plan.md               # Test description template
+    incident-report.md         # Postmortem template
+  skills/
+    code-review/SKILL.md       # Structured review workflow
+    release-notes/SKILL.md     # Changelog from diffs/PRs
+    migration-planner/SKILL.md # Safe migration planning
+    bug-triage/SKILL.md        # Bug categorization and prioritization
+  agents/
+    backend-architect.md       # Backend/infra heuristics persona
+    frontend-specialist.md     # UI/UX specialist persona
+    infra-guardian.md          # Conservative, safety-first infra persona
+    qa-analyst.md              # Test design and bug-hunting focus
+```
+
+### 10B.3 README.md Enhancement
+
+Generate or update `README.md` with comprehensive nested structure including:
+Table of Contents, Overview, Getting Started, Architecture, Development, Testing,
+Deployment, Claude Code Integration, Documentation index, and Contributing guide.
+Uses section-aware merging — existing sections are preserved, missing sections are added.
+
+### 10B.4 CLAUDE.md Cross-References
+
+Update root `CLAUDE.md` to reference all generated assets:
+- `@docs/context/` files for deep context
+- `@.claude/rules/` files for conventions
+- `@.claude/skills/` for capability packs
+- `.claude/templates/` for output formats
+- Decision trees linking task types to relevant context files
+
+---
+
+## Phase 10C: LSP Auto-Installation
+
+Detect missing language servers and install them:
+
+| Language | LSP | Install |
+|----------|-----|---------|
+| TypeScript | typescript-language-server | `npm i -g typescript-language-server typescript` |
+| Python | pyright | `npm i -g pyright` |
+| Go | gopls | `go install golang.org/x/tools/gopls@latest` |
+| Rust | rust-analyzer | `rustup component add rust-analyzer` |
+| Svelte | svelte-language-server | `npm i -g svelte-language-server` |
+| Vue | vue-language-server | `npm i -g @vue/language-server` |
+| Tailwind | tailwindcss-language-server | `npm i -g @tailwindcss/language-server` |
+| YAML | yaml-language-server | `npm i -g yaml-language-server` |
+| Bash | bash-language-server | `npm i -g bash-language-server` |
+| Dockerfile | dockerfile-language-server | `npm i -g dockerfile-language-server-nodejs` |
+
+Report installed, already-present, and skipped LSPs.
+
+---
+
+## Phase 10D: .gitignore & Sync State
+
+Ensure `.gitignore` includes Claude Code local files:
+- `.claude/settings.local.json`
+- `.claude/CLAUDE.local.md`
+- `.claude/rules/memory-sessions.md`
+
+Save sync state to `.claude/sync-state.json` for future `/cc-sync` runs.
+
+---
+
+## Post-Setup: Ongoing Updates
+
+After initial setup, use **`/cc-sync`** to keep configuration current:
+
+```bash
+/cc-sync                  # Re-scan, update everything, propagate to sub-repos
+/cc-sync --dry-run        # Preview changes
+/cc-sync --docs-only      # Only update docs/context/
+/cc-sync --subrepos-only  # Only propagate to sub-repos
+```
+
+`/cc-sync` is idempotent, delta-aware, and preserves user customizations.
+See `commands/cc-sync.md` for full documentation.
+
+
 ## Phase 11: Agentic Pattern Wiring
 
 Wire agentic design patterns into the 4-layer stack based on project complexity and preset.
@@ -1052,6 +1214,10 @@ When `/cc-setup` is invoked:
 11. **Apply cost optimizations** — Model cascading, context rules (Phase 9)
 12. **Wire agentic patterns** — Deploy pattern artifacts per project scale (Phase 11)
 13. **Verify & score** — Audit everything, output report (Phase 10)
+14. **Discover sub-repos** — Propagate .claude/ to nested repositories (Phase 10A)
+15. **Scaffold docs/context/** — Create documentation knowledge base (Phase 10B)
+16. **Install LSPs** — Detect and install missing language servers (Phase 10C)
+17. **Finalize** — Update .gitignore, save sync state, print full report (Phase 10D)
 
 ---
 

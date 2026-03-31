@@ -143,9 +143,83 @@ Set `CLAUDE_CODE_DISABLE_CRON=1` to disable the scheduler entirely. Tools and `/
 - No persistence across restarts
 - Session-scoped only (max 50 tasks)
 
+## Cloud Scheduled Tasks
+
+Cloud tasks run on Anthropic's infrastructure without your machine. They get a fresh repo clone via GitHub connector.
+
+**Minimum interval:** 1 hour. **No local files.** Requires connector per task.
+
+```bash
+# Create via API
+POST https://api.anthropic.com/v1/scheduled_tasks
+{
+  "name": "Weekly dep audit",
+  "schedule": "0 8 * * 1",
+  "model": "claude-sonnet-4-6",
+  "prompt": "Audit npm dependencies for vulnerabilities...",
+  "connectors": [{ "type": "github", "repo": "owner/repo" }]
+}
+```
+
+**Best for:** Nightly/weekly jobs that run unattended. GitHub-native workflows. Tasks that must survive machine off.
+
+## Desktop Scheduled Tasks
+
+Desktop tasks run on your local machine via the Claude Desktop app. Full local file + MCP access. Require Desktop open.
+
+**Minimum interval:** 1 minute. **Full local access.** Config files + connectors.
+
+```
+In Claude Desktop → Settings → Scheduled Tasks → New Task
+Name: Daily PR Review
+Schedule: 0 9 * * 1-5
+Prompt: {your prompt}
+Working directory: /path/to/repo
+```
+
+**Best for:** Daily dev workflows, tasks needing local filesystem, git, or local MCP servers.
+
+## Use /cc-schedule for Blueprint Prompts
+
+`/cc-schedule` generates optimized, guardrailed prompts for 6 common maintenance workflows, pre-configured for each target:
+
+```bash
+/cc-schedule pr-review --target desktop     # Daily PR review → Desktop task
+/cc-schedule ci-triage --target loop        # CI triage → /loop command
+/cc-schedule dep-audit --target cloud       # Dep audit → Cloud task
+/cc-schedule docs-drift                     # Docs drift check
+/cc-schedule release-check                  # Release readiness
+/cc-schedule branch-hygiene                 # Branch cleanup
+```
+
+Each blueprint includes skip conditions, guardrails, branch naming policy, and a verification block. See `commands/cc-schedule.md` for full specifications.
+
+## Prompt Guardrails for Scheduled Tasks
+
+Every effective scheduled prompt needs these four sections:
+
+```
+SKIP CONDITIONS:
+- If [condition], output "[message]" and stop.
+
+STEPS:
+1. [action]
+2. [action]
+
+GUARDRAILS:
+- Never [dangerous action]
+- Maximum [N] operations per run
+
+VERIFICATION:
+Output: {N} items processed, {M} actions taken, {K} skipped.
+```
+
+**Why:** Without skip conditions, tasks run wastefully. Without guardrails, autonomous tasks cause incidents.
+
 ## See Also
 
 - [Cloud Scheduled Tasks](https://code.claude.com/docs/en/web-scheduled-tasks) — Durable cloud-based scheduling
 - [Desktop Scheduled Tasks](https://code.claude.com/docs/en/desktop) — Local persistent scheduling
 - [GitHub Actions](https://code.claude.com/docs/en/github-actions) — CI/CD schedule triggers
 - [Channels](../channels-user-guide/SKILL.md) — Push events instead of polling
+- [cc-schedule command](../../commands/cc-schedule.md) — Blueprint generator for 6 maintenance workflows

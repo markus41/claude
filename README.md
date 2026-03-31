@@ -315,10 +315,37 @@ Plugin templates: `full`, `agent-pack`, `skill-pack`, `workflow-pack`.
 | Code editor | Monaco Editor |
 | Testing | Vitest 1, Playwright, Testing Library |
 
+## Claude Code Integration
+
+This project is configured with the full 4-layer Claude Code extension stack:
+
+| Layer | Status | Files |
+|-------|--------|-------|
+| CLAUDE.md | Active | `.claude/CLAUDE.md` + `.claude/rules/*.md` (12 rule files) |
+| Skills | Active | `.claude/skills/` (54 skill packs) |
+| Hooks | Active | `.claude/hooks/` (11 lifecycle scripts) |
+| Agents | Active | `.claude/agents/` (37 specialized agents) |
+
+### Key Commands
+| Command | Purpose |
+|---------|---------|
+| `/cc-setup` | Full repo analysis and initial 4-layer deployment |
+| `/cc-sync` | Update configuration after project changes (idempotent) |
+| `/cc-intel` | Deep code analysis for complex tasks |
+| `/cc-council` | Multi-agent council review |
+
+### Configuration
+- Project settings: `.claude/settings.json`
+- MCP servers: `.mcp.json` (7 servers: perplexity, firecrawl, deploy-intelligence, lessons-learned, project-metrics, code-quality-gate, workflow-bridge)
+- Rules: `.claude/rules/` (code style, testing, security, git, Docker/K8s, infra, review, product)
+- Lessons learned: `.claude/rules/lessons-learned.md` (auto-captured error knowledge base)
+- Templates: `.claude/templates/` (PR description, design doc, test plan, incident report)
+
 ## Documentation
 
 | Directory | Contents |
 |-----------|---------|
+| `docs/context/` | Project knowledge base — architecture, data model, API, security, testing, ADRs |
 | `docs/architecture/` | Architecture quality review, improvement roadmap |
 | `docs/security/` | Security review report, implementation guide, quick reference |
 | `docs/testing/` | Test strategy, implementation guide, execution quick reference |

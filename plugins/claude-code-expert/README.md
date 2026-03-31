@@ -1,19 +1,12 @@
-# Claude Code Expert Plugin v6.0
+# Claude Code Expert Plugin v6.1
 
-A high-intelligence Claude Code copilot with **16 commands**, **33 skills**, **16 agents**, and a **10-tool MCP server**. Features deep code reasoning, evidence-driven planning, orchestration-first execution, model routing, CI/CD integration, enterprise security, context budgeting, plugin development guidance, prompt engineering, performance profiling, and interactive tutorials.
+A high-intelligence Claude Code copilot with **17 commands**, **34 skills**, **16 agents**, and a **10-tool MCP server**. Features deep code reasoning, evidence-driven planning, orchestration-first execution, model routing, CI/CD integration, enterprise security, context budgeting, plugin development guidance, prompt engineering, performance profiling, interactive tutorials, and idempotent project sync with sub-repo propagation and docs/context scaffolding.
 
-**New in v6.0:**
-- **Model Router Intelligence** — `model-routing` skill with decision matrices, cost tables, and budget-aware model selection
-- **Context Budget Mastery** — `/cc-budget` command + `context-budgeting` skill for token arithmetic, anchor budgets, and compact strategies
-- **CI/CD Integration** — `/cc-cicd` command + `cicd-integration` skill for GitHub Actions, headless mode, automated PR reviews
-- **Plugin Development Guide** — `plugin-development` skill + `plugin-architect` agent for building Claude Code plugins
-- **Prompt Engineering** — `prompt-engineering` skill for crafting effective CLAUDE.md, rules, agent prompts, and task instructions
-- **Performance Profiling** — `/cc-perf` command + `session-analytics` skill for token tracking and cost optimization
-- **Enterprise Security** — `enterprise-security` skill + `security-compliance-advisor` agent for SOC2, HIPAA, GDPR compliance
-- **Worked Examples** — `/cc-learn` command + 8 step-by-step tutorials covering setup through CI/CD
-- **Advanced Agent Teams** — `agent-teams-advanced` skill + `teams-architect` agent for topology design and coordination
-- **MCP Server v3.0** — 3 new tools: `cc_docs_model_recommend`, `cc_docs_checklist`, `cc_docs_compare`
+**New in v6.1:**
+- **Project Sync** — `/cc-sync` command for idempotent setup updates: re-fingerprint, propagate `.claude/` to sub-repos, scaffold `docs/context/` knowledge base, section-merge README/CLAUDE.md, auto-install LSPs, and delta-tracked scoring
+- **Enhanced cc-setup** — Phases 10A-10D: sub-repo discovery, docs/context scaffolding (22 templates), `.claude/` enrichment (templates, skills, agents), comprehensive README generation, CLAUDE.md cross-references, LSP auto-install, sync state persistence
 
+**From v6.0:** Model routing, context budgeting, CI/CD integration, enterprise security, plugin development, prompt engineering, performance profiling, interactive tutorials, advanced agent teams, MCP server v3.0.
 **From v5.0:** Deep Code Intelligence, Principal Engineer Strategist, smarter MCP retrieval, bootstrap context.
 **From v4.x:** Research routing, context anchoring, self-healing, orchestration-first, agent lifecycle, council review.
 
@@ -52,7 +45,7 @@ Power users use all four layers together for transformative productivity gains:
 | **`security-compliance-advisor`** | Enterprise security audit, SOC2/HIPAA/GDPR compliance, remediation planning |
 | **`teams-architect`** | Agent Team topology design, sizing, cost estimation, coordination optimization |
 
-### Skills (33)
+### Skills (34)
 | Skill | Coverage |
 |-------|----------|
 | `cli-reference` | Every CLI flag, argument, and environment variable |
@@ -88,11 +81,14 @@ Power users use all four layers together for transformative productivity gains:
 | **`enterprise-security`** | Audit logging, SOC2/HIPAA/GDPR compliance, secrets management, permission hardening |
 | **`worked-examples`** | 8 end-to-end tutorials: setup, hooks, review, agents, optimization, debugging, memory, CI/CD |
 | **`agent-teams-advanced`** | Agent Teams topology design, worktree coordination, failure handling, custom templates |
+| **`project-sync`** | Reusable sync workflow: sub-repo discovery, docs/context scaffolding, config drift detection, section-aware merging |
 
-### Commands (16)
+### Commands (17)
+
 | Command | Purpose |
 |---------|---------|
-| `/cc-setup` | **Full repo analysis & 4-layer deployment** — detect stack, deploy all layers, install MCP, configure memory |
+| `/cc-setup` | **Full repo analysis & 4-layer deployment** — detect stack, deploy all layers, install MCP, configure memory, propagate to sub-repos, scaffold docs |
+| **`/cc-sync`** | **Idempotent setup sync** — re-fingerprint, update config, propagate `.claude/` to sub-repos, scaffold `docs/context/`, section-merge README/CLAUDE.md, install LSPs |
 | `/cc-memory` | **Hybrid memory architecture** — split rule files, MCP-backed long-term memory, rotation, audit |
 | `/cc-orchestrate` | **Agent team templates** — builder-validator, QA swarm, feature squad, research council, and more |
 | `/cc-intel` | Deep code intelligence mode — repo fingerprinting, hypothesis trees, option scoring, validation strategy |

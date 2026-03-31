@@ -78,6 +78,102 @@ Manual changes outside Claude Code and edits from other concurrent sessions are 
 - Think of checkpoints as "local undo" and Git as "permanent history"
 - Checkpoints complement but don't replace Git
 
+## Context Survival Pack — Resilience for Long-Running Work
+
+For tasks that span multiple sessions or risk context loss from `/compact`, deploy this resilience system.
+
+### Active Task Summary File
+
+Create `.claude/active-task.md` at the start of any long-running task:
+
+```markdown
+# Active Task
+
+**Started:** {date}
+**Goal:** {one-sentence goal}
+**Branch:** {branch name}
+
+## Current Phase
+{phase name + what's being done right now}
+
+## Completed Phases
+- [x] Phase 1: {description} — {outcome}
+- [ ] Phase 2: {current}
+
+## Modified Files
+- `src/auth/middleware.ts` — added token refresh logic
+- `src/auth/types.ts` — added RefreshToken type
+
+## Verification Ledger
+| File | Test | Status |
+|------|------|--------|
+| auth/middleware.ts | auth.test.ts | PASS |
+| auth/types.ts | N/A (types only) | N/A |
+
+## Next Action
+{exact next step, specific enough to resume without context}
+
+## Restart Prompt
+If this session is lost, start the next session with:
+"Continue the auth token refresh implementation. Read .claude/active-task.md first."
+```
+
+### Post-Compact Restoration Hook
+
+Register this hook to re-inject task state after `/compact` runs:
+
+```bash
+#!/usr/bin/env bash
+# .claude/hooks/post-compact-restore.sh
+# Registered on: PreCompact or UserPromptSubmit
+set -euo pipefail
+
+TASK_FILE=".claude/active-task.md"
+if [ -f "$TASK_FILE" ]; then
+  echo "=== ACTIVE TASK CONTEXT ===" >&2
+  head -30 "$TASK_FILE" >&2
+  echo "=== END ACTIVE TASK ===" >&2
+fi
+
+echo '{"decision": "approve"}'
+```
+
+### Verification Ledger Protocol
+
+Before compacting or ending a session, update the verification ledger in `active-task.md`:
+
+```bash
+# Quick ledger update command
+for file in $(git diff --name-only HEAD); do
+  echo "- \`$file\` — {purpose} — {test status}"
+done
+```
+
+### Session Restart Prompt Template
+
+When resuming after compaction or restart:
+
+```
+Continue where we left off. Before doing anything else:
+1. Read .claude/active-task.md
+2. Check git log --oneline -5 to see what was committed
+3. Run {test_cmd} to verify current state
+4. Report: what phase are we in? What is the exact next step?
+Then continue.
+```
+
+### When to Create vs. Update active-task.md
+
+| Event | Action |
+|-------|--------|
+| Starting a task > 30 min estimated | Create active-task.md |
+| Completing a phase | Update Completed Phases |
+| Writing or modifying a file | Add to Modified Files |
+| Running tests | Update Verification Ledger |
+| About to run /compact | Update Next Action |
+| Session about to end | Update Restart Prompt |
+| Task complete | Delete active-task.md |
+
 ## See Also
 
 - [Interactive Mode](https://code.claude.com/docs/en/interactive-mode) — Keyboard shortcuts and session controls
