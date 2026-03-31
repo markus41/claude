@@ -1,0 +1,1658 @@
+Top 25 Claude Code changes for agentic coding
+All URLs below are shown as raw visible URLs so they remain obvious when copied and pasted.
+
+1. PermissionDenied hook retry loop
+Version: 2.1.88
+
+Change: Added PermissionDenied hook that fires after auto mode classifier denials — return {retry: true} to tell the model it can retry
+
+URLs:
+
+https://code.claude.com/docs/en/hooks
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+How it best helps Claude Code in development: Best for self-healing approval workflows. Claude can detect an auto-mode denial, let your hook enrich context or change policy hints, and retry instead of abandoning the task. In development this is useful for guarded git commands, deployment helpers, and sensitive tools that need a policy-aware second attempt.
+
+Prompt to use with Claude Code: Implement a PermissionDenied hook that retries only safe commands, logs the denial reason, and shows a minimal working example for guarded git and deployment commands.
+
+Documentation details:
+
+https://code.claude.com/docs/en/hooks
+
+No direct snippet extracted from the local copy, but this is the closest official page for the feature.
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+No direct snippet extracted from the local copy, but this is the closest official page for the feature.
+
+2. PreToolUse updatedInput for AskUserQuestion
+Version: 2.1.85
+
+Change: PreToolUse hooks can now satisfy AskUserQuestion by returning updatedInput alongside permissionDecision: "allow"
+
+URLs:
+
+https://code.claude.com/docs/en/hooks
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+How it best helps Claude Code in development: Best for headless or custom-UI orchestration. You can intercept a question, answer it from your own app, and keep the run moving. In development this helps when Claude runs inside CI, a web dashboard, VS Code extension, or a terminal wrapper that wants to own human approvals.
+
+Prompt to use with Claude Code: Show a working PreToolUse hook that answers AskUserQuestion from an external UI and returns updatedInput plus permissionDecision: allow.
+
+Documentation details:
+
+https://code.claude.com/docs/en/hooks
+
+} The script reads the JSON input from stdin, extracts the command, and returns a permissionDecision of "deny" if it contains rm -rf
+
+hookSpecificOutput: { hookEventName: "PreToolUse", permissionDecision: "deny", permissionDecisionReason: "Destructive command blocked by hook" } }' else
+
+hookEventName: "PreToolUse", permissionDecision: "deny", permissionDecisionReason: "Destructive command blocked by hook" } }' else exit
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+No direct snippet extracted from the local copy, but this is the closest official page for the feature.
+
+3. MCP elicitation support
+Version: 2.1.76
+
+Change: Added MCP elicitation support — MCP servers can now request structured input mid-task via an interactive dialog
+
+URLs:
+
+https://code.claude.com/docs/en/mcp
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+How it best helps Claude Code in development: Best for turning MCP servers into real interactive agents. Instead of failing when a tool needs missing context, the server can ask for structured input and continue. In development this helps with release tooling, ticket triage, codegen wizards, environment setup, and internal platform flows.
+
+Prompt to use with Claude Code: Build a minimal MCP server example that uses elicitation to request structured input mid-task and then continues the workflow.
+
+Documentation details:
+
+https://code.claude.com/docs/en/mcp
+
+Use Claude Code as an MCP server MCP output limits and warnings Respond to MCP elicitation requests Use MCP resources Reference MCP resources Scale with MCP Tool Search How it works
+
+If you frequently encounter output warnings with specific MCP servers, consider increasing the limit or configuring the server to paginate or filter its responses. ​ Respond to MCP elicitation requests MCP servers can request structured input from you mid-task using elicitation. When a server needs information it can’t get on its own, Claude Code displays an interactive dialog and passes your response back to the server. No configuration is required on your side: elicitation dialogs appear automatically when a server requests them. Servers can request input in two ways: Form mode : Claude Code shows a dialog with form fields defined by the server (for example, a username and password prompt). Fill in the fields and submit.
+
+​ Respond to MCP elicitation requests MCP servers can request structured input from you mid-task using elicitation. When a server needs information it can’t get on its own, Claude Code displays an interactive dialog and passes your response back to the server. No configuration is required on your side: elicitation dialogs appear automatically when a server requests them. Servers can request input in two ways: Form mode : Claude Code shows a dialog with form fields defined by the server (for example, a username and password prompt). Fill in the fields and submit. URL mode
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+No direct snippet extracted from the local copy, but this is the closest official page for the feature.
+
+4. Elicitation and ElicitationResult hooks
+Version: 2.1.76
+
+Change: Added new Elicitation and ElicitationResult hooks to intercept and override responses before they are sent back
+
+URLs:
+
+https://code.claude.com/docs/en/hooks
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+How it best helps Claude Code in development: Best for policy control and auditability. You can inspect or override elicitation requests and answers before they reach the MCP server. In development this is useful for redacting secrets, normalizing user selections, or enforcing enterprise rules around production actions.
+
+Prompt to use with Claude Code: Create Elicitation and ElicitationResult hooks that validate user input, redact secrets, and normalize answers before the MCP server receives them.
+
+Documentation details:
+
+https://code.claude.com/docs/en/hooks
+
+SessionEnd SessionEnd input Elicitation Elicitation input Elicitation output ElicitationResult ElicitationResult input
+
+SessionEnd input Elicitation Elicitation input Elicitation output ElicitationResult ElicitationResult input ElicitationResult output
+
+Elicitation Elicitation input Elicitation output ElicitationResult ElicitationResult input ElicitationResult output Prompt-based hooks
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+No direct snippet extracted from the local copy, but this is the closest official page for the feature.
+
+5. Conditional if field on hooks
+Version: 2.1.85
+
+Change: Added conditional if field for hooks using permission rule syntax (e.g., Bash(git *)) to filter when they run
+
+URLs:
+
+https://code.claude.com/docs/en/hooks
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+How it best helps Claude Code in development: Best for keeping automations cheap and precise. Hooks only run when relevant commands or tools are involved. In development this reduces latency and noise in large repos where global hooks would otherwise fire constantly.
+
+Prompt to use with Claude Code: Show a hook config that only runs for Bash(git *), Edit, and TaskCreate operations so overhead stays low in a large repo.
+
+Documentation details:
+
+https://code.claude.com/docs/en/hooks
+
+Channels reference On this page Hook lifecycle How a hook resolves Configuration Hook locations Matcher patterns
+
+Configuration Hook locations Matcher patterns Match MCP tools Hook handler fields Common fields Command hook fields
+
+PostToolUseFailure input PostToolUseFailure decision control Notification Notification input SubagentStart SubagentStart input SubagentStop
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+No direct snippet extracted from the local copy, but this is the closest official page for the feature.
+
+6. CwdChanged and FileChanged hooks
+Version: 2.1.83
+
+Change: Added CwdChanged and FileChanged hook events for reactive environment management
+
+URLs:
+
+https://code.claude.com/docs/en/hooks-guide
+
+https://code.claude.com/docs/en/hooks
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+How it best helps Claude Code in development: Best for monorepos and polyrepo workspaces. Claude can react when it moves into a package or when a watched config file changes. In development this helps reload env vars, activate language toolchains, refresh secrets, and keep package-specific rules in sync.
+
+Prompt to use with Claude Code: Build CwdChanged and FileChanged hooks for a monorepo that reload environment variables and package-specific toolchains automatically.
+
+Documentation details:
+
+https://code.claude.com/docs/en/hooks-guide
+
+do this automatically in your shell, but Claude’s Bash tool does not pick up those changes on its own. A CwdChanged hook fixes this: it runs each time Claude changes directory, so you can reload the correct variables for the new location. The hook writes the updated values to CLAUDE_ENV_FILE , which Claude Code applies before each Bash command. Add this to ~/.claude/settings.json
+
+"hooks" : { "CwdChanged" : [ { "hooks" : [
+
+} To react to specific files instead of every directory change, use FileChanged with a matcher listing the filenames to watch (pipe-separated). The matcher
+
+https://code.claude.com/docs/en/hooks
+
+ConfigChange input ConfigChange decision control CwdChanged CwdChanged input CwdChanged output FileChanged FileChanged input
+
+ConfigChange decision control CwdChanged CwdChanged input CwdChanged output FileChanged FileChanged input FileChanged output
+
+CwdChanged CwdChanged input CwdChanged output FileChanged FileChanged input FileChanged output WorktreeCreate
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+No direct snippet extracted from the local copy, but this is the closest official page for the feature.
+
+7. TaskCreated hook
+Version: 2.1.84
+
+Change: Added TaskCreated hook that fires when a task is created via TaskCreate
+
+URLs:
+
+https://code.claude.com/docs/en/hooks
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+How it best helps Claude Code in development: Best for supervising parallel work. You can validate, enrich, or block tasks before background execution begins. In development this helps enforce naming, testing requirements, risk labels, or dependency ordering across agent work items.
+
+Prompt to use with Claude Code: Create a TaskCreated hook that enforces task naming, adds testing requirements, and blocks risky background work until dependencies are met.
+
+Documentation details:
+
+https://code.claude.com/docs/en/hooks
+
+HTTP response handling JSON output Decision control Hook events SessionStart SessionStart input SessionStart decision control
+
+SessionStart SessionStart input SessionStart decision control Persist environment variables InstructionsLoaded InstructionsLoaded input InstructionsLoaded decision control
+
+InstructionsLoaded InstructionsLoaded input InstructionsLoaded decision control UserPromptSubmit UserPromptSubmit input UserPromptSubmit decision control PreToolUse
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+No direct snippet extracted from the local copy, but this is the closest official page for the feature.
+
+8. PostCompact hook
+Version: 2.1.76
+
+Change: Added PostCompact hook that fires after compaction completes
+
+URLs:
+
+https://code.claude.com/docs/en/hooks
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+How it best helps Claude Code in development: Best for long-lived sessions. After compaction, you can persist summaries or rebuild sidecar state. In development this helps keep architecture notes, issue state, or memory indexes synchronized after context compression.
+
+Prompt to use with Claude Code: Create a PostCompact hook that stores compacted summaries in a sidecar file and updates an engineering memory index.
+
+Documentation details:
+
+https://code.claude.com/docs/en/hooks
+
+PreCompact PreCompact input PostCompact PostCompact input SessionEnd SessionEnd input Elicitation
+
+PreCompact input PostCompact PostCompact input SessionEnd SessionEnd input Elicitation Elicitation input
+
+PreCompact Before context compaction PostCompact After context compaction completes Elicitation When an MCP server requests user input during a tool call ElicitationResult
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+No direct snippet extracted from the local copy, but this is the closest official page for the feature.
+
+9. --channels message push into the session
+Version: 2.1.80
+
+Change: Added --channels — allow MCP servers to push messages into your session
+
+URLs:
+
+https://code.claude.com/docs/en/cli-reference
+
+https://code.claude.com/docs/en/channels-reference
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+How it best helps Claude Code in development: Best for event-driven workflows. External systems can push alerts, build results, webhook events, or ticket updates into Claude Code. In development this enables chatops-style coding loops where the session reacts to real-time system events.
+
+Prompt to use with Claude Code: Show how to wire a channel-enabled MCP server that pushes CI results and ticket updates directly into a Claude Code session.
+
+Documentation details:
+
+https://code.claude.com/docs/en/cli-reference
+
+Hooks reference Plugins reference Channels reference On this page CLI commands CLI flags System prompt flags
+
+Beta headers to include in API requests (API key users only) claude --betas interleaved-thinking --channels (Research preview) MCP servers whose channel notifications Claude should listen for in this session. Space-separated list of plugin:<name>@<marketplace>
+
+--channels (Research preview) MCP servers whose channel notifications Claude should listen for in this session. Space-separated list of plugin:<name>@<marketplace> entries. Requires Claude.ai authentication claude --channels plugin:my-notifier@my-marketplace
+
+https://code.claude.com/docs/en/channels-reference
+
+https://code.claude.com/docs/en/channels-reference Channels reference - Claude Code Docs Channels reference - Claude Code Docs Skip to main content
+
+https://code.claude.com/docs/en/channels-reference Channels reference - Claude Code Docs Channels reference - Claude Code Docs Skip to main content Claude Code Docs
+
+Channels reference - Claude Code Docs Channels reference - Claude Code Docs Skip to main content Claude Code Docs home page English
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+No direct snippet extracted from the local copy, but this is the closest official page for the feature.
+
+10. Permission relay over channels
+Version: 2.1.81
+
+Change: Added --channels permission relay — channel servers can forward tool approval prompts to your phone
+
+URLs:
+
+https://code.claude.com/docs/en/channels-reference
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+How it best helps Claude Code in development: Best for safe unattended runs. Approval prompts can be sent to a remote device or channel instead of blocking the terminal. In development this is ideal for overnight agent runs, remote containers, and long background tasks.
+
+Prompt to use with Claude Code: Build a minimal permission relay example that forwards approval prompts to a remote device or chat channel and returns the verdict.
+
+Documentation details:
+
+https://code.claude.com/docs/en/channels-reference
+
+Channels reference Copy page Build an MCP server that pushes webhooks, alerts, and chat messages into a Claude Code session. Reference for the channel contract: capability declaration, notification events, reply tools, sender gating, and permission relay. Copy page Channels are in research preview and require Claude Code v2.1.80 or later. They require claude.ai login. Console and API key authentication is not supported. Team and Enterprise organizations must
+
+Optional. Always {} . Declares that this channel can receive permission relay requests. When declared, Claude Code forwards tool approval prompts to your channel so you can approve or deny them remotely. See Relay permission prompts . capabilities.tools object
+
+​ Relay permission prompts Permission relay requires Claude Code v2.1.81 or later. Earlier versions ignore the claude/channel/permission capability. When Claude calls a tool that needs approval, the local terminal dialog opens and the session waits. A two-way channel can opt in to receive the same prompt in parallel and relay it to you on another device. Both stay live: you can answer in the terminal or on your phone, and Claude Code applies whichever answer arrives first and closes the other. Relay covers tool-use approvals like
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+No direct snippet extracted from the local copy, but this is the closest official page for the feature.
+
+11. --bare for scripted -p calls
+Version: 2.1.81
+
+Change: Added --bare flag for scripted -p calls
+
+URLs:
+
+https://code.claude.com/docs/en/cli-reference
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+How it best helps Claude Code in development: Best for deterministic automation. Bare mode strips most dynamic discovery behavior so wrapper scripts and CI jobs are simpler and faster. In development this is useful for reproducible code review, lint-fix, and transformation pipelines.
+
+Prompt to use with Claude Code: Show the best patterns for using claude --bare -p inside CI and wrapper scripts for deterministic code review and code transformation jobs.
+
+Documentation details:
+
+https://code.claude.com/docs/en/cli-reference
+
+Load additional system prompt text from a file and append to the default prompt claude --append-system-prompt-file ./extra-rules.txt --bare Minimal mode: skip auto-discovery of hooks, skills, plugins, MCP servers, auto memory, and CLAUDE.md so scripted calls start faster. Claude has access to Bash, file read, and file edit tools. Sets CLAUDE_CODE_SIMPLE . See bare mode
+
+claude --append-system-prompt-file ./extra-rules.txt --bare Minimal mode: skip auto-discovery of hooks, skills, plugins, MCP servers, auto memory, and CLAUDE.md so scripted calls start faster. Claude has access to Bash, file read, and file edit tools. Sets CLAUDE_CODE_SIMPLE . See bare mode claude --bare -p "query"
+
+. See bare mode claude --bare -p "query" --betas Beta headers to include in API requests (API key users only) claude --betas interleaved-thinking --channels
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+No direct snippet extracted from the local copy, but this is the closest official page for the feature.
+
+12. Inline plugin marketplace via source: 'settings'
+Version: 2.1.80
+
+Change: Added source: 'settings' plugin marketplace source — declare plugin entries inline in settings.json
+
+URLs:
+
+https://code.claude.com/docs/en/settings
+
+https://code.claude.com/docs/en/plugins-reference
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+How it best helps Claude Code in development: Best for enterprise rollout. Teams can define plugin sources directly in settings instead of managing a separate marketplace repo. In development this helps standardize internal plugins across engineers and environments with less setup friction.
+
+Prompt to use with Claude Code: Show how to declare internal plugins inline in settings.json and roll them out consistently across a team.
+
+Documentation details:
+
+https://code.claude.com/docs/en/settings
+
+) Use source: 'settings' to declare a small set of plugins inline without setting up a hosted marketplace repository. Plugins listed here must reference external sources such as GitHub or npm. You still need to enable each plugin separately in enabledPlugins . {
+
+Use source: 'settings' to declare a small set of plugins inline without setting up a hosted marketplace repository. Plugins listed here must reference external sources such as GitHub or npm. You still need to enable each plugin separately in enabledPlugins . { "extraKnownMarketplaces"
+
+https://code.claude.com/docs/en/plugins-reference
+
+No direct snippet extracted from the local copy, but this is the closest official page for the feature.
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+No direct snippet extracted from the local copy, but this is the closest official page for the feature.
+
+13. External plugin options with manifest.userConfig
+Version: 2.1.83
+
+Change: Plugin options (manifest.userConfig) now available externally
+
+URLs:
+
+https://code.claude.com/docs/en/plugins-reference
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+How it best helps Claude Code in development: Best for reusable internal tooling. Plugins can ask for configuration at enable time. In development this helps package environment-specific behavior, endpoints, tokens, and feature flags without forking the plugin.
+
+Prompt to use with Claude Code: Create a plugin manifest using userConfig for environment-specific options and sensitive values, with a practical enterprise example.
+
+Documentation details:
+
+https://code.claude.com/docs/en/plugins-reference
+
+userConfig object User-configurable values prompted at enable time. See User configuration See below channels array
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+No direct snippet extracted from the local copy, but this is the closest official page for the feature.
+
+14. Persistent plugin state with ${CLAUDE_PLUGIN_DATA}
+Version: 2.1.78
+
+Change: Added ${CLAUDE_PLUGIN_DATA} variable for plugin persistent state that survives plugin updates
+
+URLs:
+
+https://code.claude.com/docs/en/plugins-reference
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+How it best helps Claude Code in development: Best for durable local plugin runtime state. Plugins can cache dependencies, indexes, or metadata across upgrades. In development this helps build smarter repo analyzers, local search indexes, and persistent workflow assistants.
+
+Prompt to use with Claude Code: Build a plugin example that stores a persistent repo index or dependency cache in ${CLAUDE_PLUGIN_DATA}.
+
+Documentation details:
+
+https://code.claude.com/docs/en/plugins-reference
+
+${CLAUDE_PLUGIN_ROOT} : the absolute path to your plugin’s installation directory. Use this to reference scripts, binaries, and config files bundled with the plugin. This path changes when the plugin updates, so files you write here do not survive an update. ${CLAUDE_PLUGIN_DATA} : a persistent directory for plugin state that survives updates. Use this for installed dependencies such as node_modules or Python virtual environments, generated code, caches, and any other files that should persist across plugin versions. The directory is created automatically the first time this variable is referenced. {
+
+: the absolute path to your plugin’s installation directory. Use this to reference scripts, binaries, and config files bundled with the plugin. This path changes when the plugin updates, so files you write here do not survive an update. ${CLAUDE_PLUGIN_DATA} : a persistent directory for plugin state that survives updates. Use this for installed dependencies such as node_modules or Python virtual environments, generated code, caches, and any other files that should persist across plugin versions. The directory is created automatically the first time this variable is referenced. { "hooks"
+
+Persistent data directory The ${CLAUDE_PLUGIN_DATA} directory resolves to ~/.claude/plugins/data/{id}/ , where {id}
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+No direct snippet extracted from the local copy, but this is the closest official page for the feature.
+
+15. initialPrompt for agents
+Version: 2.1.83
+
+Change: Agents can now declare initialPrompt in frontmatter to auto-submit a first turn
+
+URLs:
+
+https://code.claude.com/docs/en/sub-agents
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+How it best helps Claude Code in development: Best for composable subagent roles. Agents can boot into a predefined tasking pattern immediately. In development this helps standardize reviewer, planner, tester, migration, and release-helper agents.
+
+Prompt to use with Claude Code: Create subagent frontmatter examples that use initialPrompt for reviewer, tester, and planner agents.
+
+Documentation details:
+
+https://code.claude.com/docs/en/sub-agents
+
+skills , initialPrompt , memory , effort
+
+git worktree , giving it an isolated copy of the repository. The worktree is automatically cleaned up if the subagent makes no changes initialPrompt No Auto-submitted as the first user turn when this agent runs as the main session agent (via --agent or the
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+No direct snippet extracted from the local copy, but this is the closest official page for the feature.
+
+16. SendMessage auto-resume for stopped agents
+Version: 2.1.77
+
+Change: SendMessage now auto-resumes stopped agents in the background
+
+URLs:
+
+https://code.claude.com/docs/en/sub-agents
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+How it best helps Claude Code in development: Best for supervisor orchestration. A stopped agent can be resumed by messaging it instead of recreating it. In development this is useful for iterative code review loops, resumable investigations, and staged implementation pipelines.
+
+Prompt to use with Claude Code: Show a supervisor workflow that resumes stopped agents with SendMessage instead of spawning replacements.
+
+Documentation details:
+
+https://code.claude.com/docs/en/sub-agents
+
+Resumed subagents retain their full conversation history, including all previous tool calls, results, and reasoning. The subagent picks up exactly where it stopped rather than starting fresh. When a subagent completes, Claude receives its agent ID. Claude uses the SendMessage tool with the agent’s ID as the to field to resume it. To resume a subagent, ask Claude to continue the previous work: Use the code-reviewer subagent to review the authentication module
+
+[Claude resumes the subagent with full context from previous conversation] If a stopped subagent receives a SendMessage , it auto-resumes in the background without requiring a new Agent invocation. You can also ask Claude for the agent ID if you want to reference it explicitly, or find IDs in the transcript files at
+
+If a stopped subagent receives a SendMessage , it auto-resumes in the background without requiring a new Agent invocation. You can also ask Claude for the agent ID if you want to reference it explicitly, or find IDs in the transcript files at ~/.claude/projects/{project}/{sessionId}/subagents/
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+No direct snippet extracted from the local copy, but this is the closest official page for the feature.
+
+17. worktree.sparsePaths
+Version: 2.1.76
+
+Change: Added worktree.sparsePaths setting for claude --worktree in large monorepos
+
+URLs:
+
+https://code.claude.com/docs/en/settings
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+How it best helps Claude Code in development: Best for huge monorepos. Agents can work in isolated worktrees that materialize only the paths they need. In development this speeds up startup, reduces disk churn, and makes parallel agents more practical.
+
+Prompt to use with Claude Code: Show how to configure sparse worktrees for a large monorepo so different agents only materialize the packages they need.
+
+Documentation details:
+
+https://code.claude.com/docs/en/settings
+
+Directories to symlink from the main repository into each worktree to avoid duplicating large directories on disk. No directories are symlinked by default ["node_modules", ".cache"] worktree.sparsePaths Directories to check out in each worktree via git sparse-checkout (cone mode). Only the listed paths are written to disk, which is faster in large monorepos ["packages/my-app", "shared/utils"] To copy gitignored files like .env
+
+["node_modules", ".cache"] worktree.sparsePaths Directories to check out in each worktree via git sparse-checkout (cone mode). Only the listed paths are written to disk, which is faster in large monorepos ["packages/my-app", "shared/utils"] To copy gitignored files like .env into new worktrees, use a
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+No direct snippet extracted from the local copy, but this is the closest official page for the feature.
+
+18. sandbox.failIfUnavailable
+Version: 2.1.83
+
+Change: Added sandbox.failIfUnavailable setting to exit with an error when sandbox is enabled but cannot start
+
+URLs:
+
+https://code.claude.com/docs/en/sandboxing
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+How it best helps Claude Code in development: Best for safety-critical environments. If the sandbox cannot start, Claude fails instead of quietly running with broader access. In development this protects CI, production-adjacent scripts, and regulated environments from unsafe fallback behavior.
+
+Prompt to use with Claude Code: Show the safest sandbox configuration for CI and production-adjacent development, including failIfUnavailable.
+
+Documentation details:
+
+https://code.claude.com/docs/en/sandboxing
+
+socat on Linux), the menu displays installation instructions for your platform. By default, if the sandbox cannot start (missing dependencies, unsupported platform, or platform restrictions), Claude Code shows a warning and runs commands without sandboxing. To make this a hard failure instead, set sandbox.failIfUnavailable to true . This is intended for managed deployments that require sandboxing as a security gate.
+
+on Linux), the menu displays installation instructions for your platform. By default, if the sandbox cannot start (missing dependencies, unsupported platform, or platform restrictions), Claude Code shows a warning and runs commands without sandboxing. To make this a hard failure instead, set sandbox.failIfUnavailable to true . This is intended for managed deployments that require sandboxing as a security gate. ​
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+No direct snippet extracted from the local copy, but this is the closest official page for the feature.
+
+19. allowRead sandbox overrides
+Version: 2.1.77
+
+Change: Added allowRead sandbox filesystem setting to re-allow read access within denyRead regions
+
+URLs:
+
+https://code.claude.com/docs/en/sandboxing
+
+https://code.claude.com/docs/en/settings
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+How it best helps Claude Code in development: Best for least-privilege agent access. You can deny broad filesystem regions and selectively re-allow specific reads. In development this helps expose only the config, schema, or source files Claude actually needs.
+
+Prompt to use with Claude Code: Create a least-privilege sandbox example that denies broad paths and selectively re-allows only the files Claude needs to read.
+
+Documentation details:
+
+https://code.claude.com/docs/en/sandboxing
+
+denyRead / allowRead ) is defined in multiple settings scopes , the arrays are merged
+
+and Read(...) permission rules. To re-allow reading specific paths within a denied region, use sandbox.filesystem.allowRead , which takes precedence over denyRead . When
+
+Read(...) permission rules. To re-allow reading specific paths within a denied region, use sandbox.filesystem.allowRead , which takes precedence over denyRead . When allowManagedReadPathsOnly
+
+https://code.claude.com/docs/en/settings
+
+deny permission rules. ["~/.aws/credentials"] filesystem.allowRead Paths to re-allow reading within denyRead regions. Takes precedence over denyRead
+
+filesystem.allowManagedReadPathsOnly (Managed settings only) Only allowRead paths from managed settings are respected. allowRead entries from user, project, and local settings are ignored. Default: false true
+
+allowRead paths from managed settings are respected. allowRead entries from user, project, and local settings are ignored. Default: false true network.allowUnixSockets Unix socket paths accessible in sandbox (for SSH agents, etc.)
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+No direct snippet extracted from the local copy, but this is the closest official page for the feature.
+
+20. 1M context window default for Opus 4.6 plans
+Version: 2.1.75
+
+Change: Added 1M context window for Opus 4.6 by default for Max, Team, and Enterprise plans
+
+URLs:
+
+https://code.claude.com/docs/en/model-config
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+How it best helps Claude Code in development: Best for repo-wide reasoning. Claude can keep much more code and documentation in context at once. In development this is valuable for architecture review, large refactors, dependency audits, and multi-package migrations.
+
+Prompt to use with Claude Code: Show how to restructure repo-wide review and refactor workflows to take advantage of the 1M context window.
+
+Documentation details:
+
+https://code.claude.com/docs/en/model-config
+
+Uses the latest Sonnet model (currently Sonnet 4.6) for daily coding tasks opus Uses the latest Opus model (currently Opus 4.6) for complex reasoning tasks haiku Uses the fast and efficient Haiku model for simple tasks sonnet[1m] Uses Sonnet with a
+
+depends on your account type: Max and Team Premium : defaults to Opus 4.6 Pro and Team Standard : defaults to Sonnet 4.6 Enterprise : Opus 4.6 is available but not the default
+
+: defaults to Sonnet 4.6 Enterprise : Opus 4.6 is available but not the default Claude Code may automatically fall back to Sonnet if you hit a usage threshold with Opus. ​ opusplan model setting
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+No direct snippet extracted from the local copy, but this is the closest official page for the feature.
+
+21. autoMemoryDirectory
+Version: 2.1.74
+
+Change: Added autoMemoryDirectory setting to configure a custom directory for auto-memory storage
+
+URLs:
+
+https://code.claude.com/docs/en/memory
+
+https://code.claude.com/docs/en/settings
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+How it best helps Claude Code in development: Best for portable and controllable memory. You choose where auto-memory lives. In development this helps when you want repo-local memory, environment-specific memory isolation, or easier backup and inspection.
+
+Prompt to use with Claude Code: Show how to configure autoMemoryDirectory for repo-local or environment-specific memory separation.
+
+Documentation details:
+
+https://code.claude.com/docs/en/memory
+
+Claude Code in Slack On this page CLAUDE.md vs auto memory CLAUDE.md files Choose where to put CLAUDE.md files Set up a project CLAUDE.md Write effective instructions
+
+Deploy organization-wide CLAUDE.md Exclude specific CLAUDE.md files Auto memory Enable or disable auto memory Storage location How it works Audit and edit your memory
+
+Exclude specific CLAUDE.md files Auto memory Enable or disable auto memory Storage location How it works Audit and edit your memory View and edit with /memory
+
+https://code.claude.com/docs/en/settings
+
+headers for model requests /bin/generate_temp_api_key.sh autoMemoryDirectory Custom directory for auto memory storage. Accepts ~/
+
+autoMemoryDirectory Custom directory for auto memory storage. Accepts ~/ -expanded paths. Not accepted in project settings ( .claude/settings.json
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+No direct snippet extracted from the local copy, but this is the closest official page for the feature.
+
+22. Actionable /context suggestions
+Version: 2.1.74
+
+Change: Added actionable suggestions to /context command — identifies context-heavy tools, memory bloat, and capacity warnings
+
+URLs:
+
+https://code.claude.com/docs/en/commands
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+How it best helps Claude Code in development: Best for maintaining healthy long sessions. Claude surfaces concrete warnings about context-heavy tools and memory bloat. In development this helps you keep large debugging or implementation sessions from degrading silently.
+
+Prompt to use with Claude Code: Show a workflow for checking /context proactively during long implementation sessions and acting on its warnings.
+
+Documentation details:
+
+https://code.claude.com/docs/en/commands
+
+, and other preferences. Alias: /settings /context Visualize current context usage as a colored grid. Shows optimization suggestions for context-heavy tools, memory bloat, and capacity warnings /copy [N] Copy the last assistant response to clipboard. Pass a number N
+
+/settings /context Visualize current context usage as a colored grid. Shows optimization suggestions for context-heavy tools, memory bloat, and capacity warnings /copy [N] Copy the last assistant response to clipboard. Pass a number N to copy the Nth-latest response:
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+No direct snippet extracted from the local copy, but this is the closest official page for the feature.
+
+23. rate_limits in statusline scripts
+Version: 2.1.80
+
+Change: Added rate_limits field to statusline scripts for displaying Claude.ai rate limit usage
+
+URLs:
+
+https://code.claude.com/docs/en/statusline
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+How it best helps Claude Code in development: Best for adaptive automation and operator visibility. Statusline scripts can surface rate consumption and reset windows. In development this helps teams pace expensive workflows and avoid surprise throttling.
+
+Prompt to use with Claude Code: Create a statusline script that displays rate usage and teaches the operator when to slow down or switch workflows.
+
+Documentation details:
+
+https://code.claude.com/docs/en/statusline
+
+(.model.display_name)] \ (.context_window.used_percentage // 0)% context " '" } }
+
+jq -r '.context_window.used_percentage // 0' | cut -d. -f1
+
+context_window.context_window_size Maximum context window size in tokens. 200000 by default, or 1000000 for models with extended context. context_window.used_percentage Pre-calculated percentage of context window used context_window.remaining_percentage Pre-calculated percentage of context window remaining context_window.current_usage
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+No direct snippet extracted from the local copy, but this is the closest official page for the feature.
+
+24. PowerShell tool preview
+Version: 2.1.84
+
+Change: Added PowerShell tool for Windows as an opt-in preview
+
+URLs:
+
+https://code.claude.com/docs/en/tools-reference
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+How it best helps Claude Code in development: Best for Microsoft-heavy shops. Claude can use native PowerShell instead of depending on Git Bash patterns. In development this helps with Windows automation, Azure, Entra, Graph, and admin tooling.
+
+Prompt to use with Claude Code: Show how to enable the PowerShell tool and use it for Windows-native development and Azure automation tasks.
+
+Documentation details:
+
+https://code.claude.com/docs/en/tools-reference
+
+On this page Bash tool behavior PowerShell tool Enable the PowerShell tool Shell selection in settings, hooks, and skills Preview limitations See also
+
+Bash tool behavior PowerShell tool Enable the PowerShell tool Shell selection in settings, hooks, and skills Preview limitations See also Reference
+
+Yes PowerShell Executes PowerShell commands on Windows. Opt-in preview. See PowerShell tool Yes Read Reads the contents of files
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+No direct snippet extracted from the local copy, but this is the closest official page for the feature.
+
+25. X-Claude-Code-Session-Id header
+Version: 2.1.86
+
+Change: Added X-Claude-Code-Session-Id header to API requests so proxies can aggregate requests by session
+
+URLs:
+
+https://code.claude.com/docs/en/cli-reference
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+How it best helps Claude Code in development: Best for observability. API requests can be correlated by session at the proxy layer. In development this helps debugging, tracing, governance, and per-session performance analysis.
+
+Prompt to use with Claude Code: Show how to capture X-Claude-Code-Session-Id in a gateway or proxy and correlate logs and metrics by Claude session.
+
+Documentation details:
+
+https://code.claude.com/docs/en/cli-reference
+
+No direct snippet extracted from the local copy, but this is the closest official page for the feature.
+
+https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md
+
+No direct snippet extracted from the local copy, but this is the closest official page for the feature.  
+
+Claude Code Expert advanced agentic coding upgrade brief
+User repo: https://github.com/markus41/claude
+Plugin focus: https://github.com/markus41/claude/tree/main/plugins/claude-code-expert
+
+This report turns the pasted notes, the prior thread research, the current Claude Code docs, and the actual markus41/claude repository structure into concrete upgrade items for the Claude Code Expert plugin.
+
+What already exists in your repo
+The current plugin manifest already positions claude-code-expert as a very broad Claude Code extension with orchestration, model routing, context budgeting, CI/CD, enterprise security, channels, scheduled tasks, checkpointing, and a queryable MCP docs server.
+
+Raw repo URLs:
+
+https://github.com/markus41/claude/blob/main/plugins/claude-code-expert/.claude-plugin/plugin.json
+
+https://github.com/markus41/claude/blob/main/plugins/claude-code-expert/README.md
+
+https://github.com/markus41/claude/blob/main/plugins/claude-code-expert/CLAUDE.md
+
+https://github.com/markus41/claude/tree/main/plugins/claude-code-expert/skills
+
+https://github.com/markus41/claude/tree/main/plugins/claude-code-expert/agents
+
+https://github.com/markus41/claude/tree/main/plugins/claude-code-expert/mcp-server
+
+Repo-confirmed implementation status:
+
+Plugin manifest claims v7.2.0 with context bootstrap, lazy loading, orchestration, channels, scheduled tasks, and checkpointing support.
+
+The plugin already has many skills, including agent-teams, agent-teams-advanced, channels, channels-user-guide, hooks-system, memory-instructions, context-budgeting, cicd-integration, and deep-code-intelligence.
+
+The plugin already has multiple agents and a dedicated MCP server directory.
+
+The main repo also already includes a project-level .claude directory and .mcp.json, which means you already have the right control-plane shape for advanced Claude Code behavior.
+
+Conclusion: you do not need a greenfield design. You need a targeted next-wave upgrade pass that makes the plugin more autonomous, more event-driven, more repeatable, and more implementation-real rather than documentation-heavy.
+
+Core design shift
+The most important insight from the newer Claude Code docs is that advanced agentic coding is no longer one feature. It is an operating system made of five layers:
+
+Persistent memory and routing
+
+Repeatable workflows
+
+Specialized workers
+
+Event-driven execution
+
+Recurring and remote execution
+
+The official pages that matter most here are:
+
+https://code.claude.com/docs/en/features-overview
+
+https://code.claude.com/docs/en/claude-directory
+
+https://code.claude.com/docs/en/common-workflows
+
+https://code.claude.com/docs/en/best-practices
+
+https://code.claude.com/docs/en/memory
+
+https://code.claude.com/docs/en/sub-agents
+
+https://code.claude.com/docs/en/agent-teams
+
+https://code.claude.com/docs/en/hooks-guide
+
+https://code.claude.com/docs/en/channels
+
+https://code.claude.com/docs/en/scheduled-tasks
+
+https://code.claude.com/docs/en/headless
+
+https://code.claude.com/docs/en/web-scheduled-tasks
+
+https://code.claude.com/docs/en/desktop#schedule-recurring-tasks
+
+https://code.claude.com/docs/en/desktop-quickstart
+
+https://code.claude.com/docs/en/permission-modes#eliminate-prompts-with-auto-mode
+
+Your plugin already touches most of these topics. The next step is to convert them into concrete upgrade items.
+
+Ranked upgrade backlog
+1. Add a true autonomy operating mode
+Priority: Critical
+
+What to add:
+
+A first-class “autonomy mode” that combines memory, workflow, orchestration, hooks, and verification into one opinionated operating profile.
+
+This should be more than documentation. It should include a command, preset files, and enforcement hooks.
+
+Why it matters:
+
+Claude Code now clearly supports plan-first workflows, stronger context management, persistent memory, subagents, agent teams, remote tasks, and auto mode. The missing product layer in your plugin is a single path that composes them into one deployable autonomy system.
+
+Official docs to ground this:
+
+https://code.claude.com/docs/en/common-workflows
+
+https://code.claude.com/docs/en/best-practices
+
+https://code.claude.com/docs/en/memory
+
+https://code.claude.com/docs/en/sub-agents
+
+https://code.claude.com/docs/en/permission-modes#eliminate-prompts-with-auto-mode
+
+Repo surface to extend:
+
+https://github.com/markus41/claude/tree/main/plugins/claude-code-expert/commands
+
+https://github.com/markus41/claude/tree/main/plugins/claude-code-expert/skills
+
+https://github.com/markus41/claude/tree/main/plugins/claude-code-expert/agents
+
+Concrete implementation:
+
+Add /cc-autonomy command.
+
+Generate a repo-local package including:
+
+CLAUDE.md autonomy section
+
+.claude/rules/autonomy.md
+
+.claude/settings.json hook and permission patterns
+
+subagents for planner, implementer, verifier, reviewer
+
+optional agent-team preset for large tasks
+
+Offer profiles like:
+
+conservative
+
+balanced
+
+aggressive
+
+unattended-review
+
+Best prompt to Claude Code:
+
+Build a /cc-autonomy command that deploys a full autonomy profile for a repository, including memory rules, workflow playbooks, subagents, hooks, verification gates, and optional team orchestration.
+
+2. Turn your existing skills into runnable workflow packs
+Priority: Critical
+
+What to add:
+
+Convert documentation-heavy skills into executable workflow packs with templates, scripts, checklists, and expected outputs.
+
+Why it matters:
+
+The latest skills docs emphasize that skills can bundle scripts, dynamic context injection, subagent execution, and workflow logic. Right now your plugin appears rich in knowledge, but the next jump is operational packaging.
+
+Official docs:
+
+https://code.claude.com/docs/en/skills
+
+https://code.claude.com/docs/en/common-workflows
+
+Repo surface to extend:
+
+https://github.com/markus41/claude/tree/main/plugins/claude-code-expert/skills
+
+Concrete implementation:
+
+For each core skill, add one or more of:
+
+template.md
+
+examples/
+
+scripts/validate.sh
+
+scripts/report.py
+
+structured output expectations
+
+Highest value targets:
+
+agent-teams-advanced
+
+channels
+
+hooks-system
+
+memory-instructions
+
+cicd-integration
+
+deep-code-intelligence
+
+Use context: fork and explicit agent: where the skill should always run as an isolated worker.
+
+Best prompt to Claude Code:
+
+Upgrade the top 10 Claude Code Expert skills from reference guides into executable workflow packs with templates, scripts, and forked subagent execution where appropriate.
+
+3. Build an event-driven channels layer for real autonomous reaction
+Priority: Critical
+
+What to add:
+
+A real channels implementation guide plus starter channel server patterns inside the plugin.
+
+Include webhook receiver, chat bridge, permission relay, and CI result ingestion patterns.
+
+Why it matters:
+
+Channels are one of the biggest autonomy multipliers because they let a running Claude Code session react to external events instead of waiting for the human to prompt again.
+
+Official docs:
+
+https://code.claude.com/docs/en/channels
+
+https://code.claude.com/docs/en/channels-reference#test-during-the-research-preview
+
+Repo surface to extend:
+
+https://github.com/markus41/claude/tree/main/plugins/claude-code-expert/mcp-server
+
+https://github.com/markus41/claude/tree/main/plugins/claude-code-expert/skills/channels
+
+https://github.com/markus41/claude/tree/main/plugins/claude-code-expert/skills/channels-user-guide
+
+Concrete implementation:
+
+Add starter assets for:
+
+webhook channel for CI/build/deploy events
+
+mobile approval relay pattern
+
+Discord or Telegram response bridge
+
+local fakechat dev channel profile
+
+Add a command like /cc-channels bootstrap that writes a sample .mcp.json, startup commands, pairing instructions, and security settings.
+
+Add explicit guidance around sender allowlists and trusted-sender approval flow.
+
+Best prompt to Claude Code:
+
+Create a channels bootstrap package for Claude Code Expert with webhook, CI, remote approval, and mobile chat bridge examples, including setup commands and sender-allowlist security guidance.
+
+4. Add scheduled-task blueprints for ongoing autonomous maintenance
+Priority: Critical
+
+What to add:
+
+A dedicated scheduled-task framework with ready-made prompts for recurring engineering work.
+
+Why it matters:
+
+Scheduled tasks and cloud scheduled tasks turn Claude from an on-demand coding assistant into a recurring operator. This is exactly the kind of “advanced agentic coding” move your plugin should own.
+
+Official docs:
+
+https://code.claude.com/docs/en/scheduled-tasks
+
+https://code.claude.com/docs/en/web-scheduled-tasks
+
+https://code.claude.com/docs/en/desktop#schedule-recurring-tasks
+
+https://code.claude.com/docs/en/desktop-quickstart
+
+Concrete implementation:
+
+Add /cc-schedule command with preset prompt generators for:
+
+daily PR review
+
+nightly CI failure triage
+
+weekly dependency audit
+
+docs drift check after merges
+
+release-readiness review
+
+branch hygiene and stale PR follow-up
+
+Add separate profiles for:
+
+local desktop task
+
+remote cloud task
+
+in-session /loop
+
+Include prompt guardrails such as branch naming, verification, and skip conditions.
+
+Repo surface to extend:
+
+https://github.com/markus41/claude/tree/main/plugins/claude-code-expert/commands
+
+https://github.com/markus41/claude/tree/main/plugins/claude-code-expert/skills
+
+Best prompt to Claude Code:
+
+Add a /cc-schedule command that generates optimized scheduled-task prompts for desktop, cloud, and loop-based automation, with guardrails for branching, verification, and skip conditions.
+
+5. Add headless and CI execution as a first-class product path
+Priority: High
+
+What to add:
+
+A “headless operations” layer that treats claude -p, --bare, --output-format json, and schema-constrained output as first-class plugin capabilities.
+
+Why it matters:
+
+Headless mode is how Claude Code becomes programmable infrastructure. If your plugin is meant for serious power users, this should be one of the clearest product surfaces.
+
+Official docs:
+
+https://code.claude.com/docs/en/headless
+
+Concrete implementation:
+
+Add /cc-headless command to generate:
+
+CI snippets
+
+bash wrappers
+
+JSON schema output examples
+
+safe --allowedTools presets
+
+--bare profiles
+
+Add workflow examples for:
+
+PR review jobs
+
+test-and-fix loops
+
+migration runs
+
+repo audit pipelines
+
+issue triage summaries
+
+Repo surface to extend:
+
+https://github.com/markus41/claude/tree/main/plugins/claude-code-expert/skills/cicd-integration
+
+https://github.com/markus41/claude/tree/main/plugins/claude-code-expert/commands
+
+Best prompt to Claude Code:
+
+Create a headless automation module for Claude Code Expert with CI-ready claude -p patterns, JSON schema outputs, safe allowed-tools presets, and --bare deployment profiles.
+
+6. Upgrade hooks from examples into a policy engine
+Priority: High
+
+What to add:
+
+A proper hook policy engine with composable templates for verification, safety, context recovery, teammate quality gates, and permission automation.
+
+Why it matters:
+
+Hooks are how autonomy becomes governed instead of reckless. The newest docs show a much more advanced hook surface than older Claude Code setups had.
+
+Official docs:
+
+https://code.claude.com/docs/en/hooks-guide
+
+Concrete implementation:
+
+Add reusable hook packs:
+
+protect-sensitive-files
+
+auto-format-after-edit
+
+stop-until-tests-pass
+
+post-compact-context-restoration
+
+direnv-reload-on-cwd-change
+
+task-created governance
+
+task-completed quality gate
+
+teammate-idle enforcement
+
+Include if-based filtering for targeted execution.
+
+Add a generator command like /cc-hooks install <pack>.
+
+Repo surface to extend:
+
+https://github.com/markus41/claude/tree/main/plugins/claude-code-expert/skills/hooks-system
+
+https://github.com/markus41/claude/tree/main/plugins/claude-code-expert/commands
+
+Best prompt to Claude Code:
+
+Turn the hooks system in Claude Code Expert into an installable hook policy engine with reusable packs for safety, verification, context restoration, and teammate quality gates.
+
+7. Add memory architecture deployment for real long-horizon work
+Priority: High
+
+What to add:
+
+A stronger repo memory deployment system aligned to the official memory model.
+
+Why it matters:
+
+Memory is what keeps autonomous work aligned over time. Your plugin already covers memory, but the official docs now make it clear that path-scoped rules and layered CLAUDE.md structure should be treated as core architecture.
+
+Official docs:
+
+https://code.claude.com/docs/en/memory
+
+https://code.claude.com/docs/en/claude-directory
+
+Concrete implementation:
+
+Expand /cc-memory to generate:
+
+root CLAUDE.md
+
+.claude/rules/ path-scoped files
+
+subdirectory CLAUDE.md files where needed
+
+exclusions config
+
+optional auto-memory conventions
+
+Add repo scanner logic that proposes folder-specific rules based on stack and layout.
+
+Repo surface to extend:
+
+https://github.com/markus41/claude/tree/main/plugins/claude-code-expert/skills/memory-instructions
+
+https://github.com/markus41/claude/tree/main/plugins/claude-code-expert/commands
+
+Best prompt to Claude Code:
+
+Upgrade /cc-memory so it generates a layered memory system using root CLAUDE.md, path-scoped rules, subdirectory instructions, exclusions, and stack-aware recommendations.
+
+8. Add subagent packs that map to actual engineering labor
+Priority: High
+
+What to add:
+
+Explicit subagent packs designed around real software roles.
+
+Why it matters:
+
+The sub-agents docs now make it clear that specialization, tool limits, background execution, and resumability are core to scalable autonomy.
+
+Official docs:
+
+https://code.claude.com/docs/en/sub-agents
+
+Concrete implementation:
+
+Add or refine agents for:
+
+planner
+
+implementer
+
+verifier
+
+reviewer
+
+debugger
+
+migration lead
+
+dependency auditor
+
+release coordinator
+
+Add starter YAML frontmatter patterns for:
+
+tool restrictions
+
+initialPrompt
+
+background guidance
+
+low-cost model routing for narrow roles
+
+Distinguish clearly between subagents and agent teams in the docs and commands.
+
+Repo surface to extend:
+
+https://github.com/markus41/claude/tree/main/plugins/claude-code-expert/agents
+
+Best prompt to Claude Code:
+
+Build a role-based subagent pack for Claude Code Expert with planner, implementer, verifier, reviewer, debugger, migration lead, and release coordinator definitions, including tool restrictions and startup prompts.
+
+9. Add real agent-team topology kits
+Priority: High
+
+What to add:
+
+Agent-team topology kits that go beyond templates and include operational advice, task decomposition guidance, and quality-gate hooks.
+
+Why it matters:
+
+Agent Teams are one of the clearest “truly autonomous” surfaces now available. Your repo already has agent-teams coverage, but this is an area where power users will want very concrete prebuilt designs.
+
+Official docs:
+
+https://code.claude.com/docs/en/agent-teams
+
+Concrete implementation:
+
+Add topology kits such as:
+
+frontend-backend-test squad
+
+architect-implementer-reviewer trio
+
+competing-hypotheses debug council
+
+security-performance-test PR board
+
+docs migration sprint team
+
+Each kit should define:
+
+ideal team size
+
+task splitting strategy
+
+file ownership strategy
+
+permission mode guidance
+
+when to use worktrees
+
+when to fall back to subagents instead
+
+Repo surface to extend:
+
+https://github.com/markus41/claude/tree/main/plugins/claude-code-expert/skills/agent-teams
+
+https://github.com/markus41/claude/tree/main/plugins/claude-code-expert/skills/agent-teams-advanced
+
+Best prompt to Claude Code:
+
+Add production-ready agent-team topology kits to Claude Code Expert with team size guidance, task decomposition rules, file ownership strategies, and hooks-based quality gates.
+
+10. Add common-workflow packs instead of generic guidance
+Priority: High
+
+What to add:
+
+A workflow pack library that mirrors the official common-workflows page.
+
+Why it matters:
+
+The official docs show that strong Claude Code usage is workflow-based, not just knowledge-based.
+
+Official docs:
+
+https://code.claude.com/docs/en/common-workflows
+
+https://code.claude.com/docs/en/best-practices
+
+Concrete implementation:
+
+Add packs for:
+
+understand codebase
+
+fix bug from error trace
+
+refactor safely
+
+TDD implementation
+
+repo review before merge
+
+generate CLAUDE.md for existing repo
+
+create migration plan before edits
+
+Each pack should define:
+
+start prompt
+
+verification steps
+
+subagent opportunities
+
+common failure modes
+
+completion checklist
+
+Best prompt to Claude Code:
+
+Create workflow packs for common Claude Code tasks such as codebase exploration, bug fixing, safe refactoring, TDD, and review-before-merge, with verification and delegation guidance built in.
+
+11. Upgrade the MCP docs server from documentation search to autonomy advisor
+Priority: High
+
+What to add:
+
+A more opinionated MCP server layer that does not just answer docs questions but recommends execution shapes.
+
+Why it matters:
+
+Your MCP server already looks useful. The next step is to make it advisory and orchestration-aware.
+
+Repo surface to extend:
+
+https://github.com/markus41/claude/tree/main/plugins/claude-code-expert/mcp-server
+
+Concrete implementation:
+
+Add tools like:
+
+cc_docs_autonomy_plan
+
+cc_docs_workflow_pack_recommend
+
+cc_docs_hook_pack_recommend
+
+cc_docs_team_topology_recommend
+
+cc_docs_schedule_recommend
+
+Inputs should be natural-language tasks plus repo metadata.
+
+Outputs should recommend:
+
+main session vs subagent vs agent team
+
+hook packs to enable
+
+memory files to touch
+
+whether scheduled or channel-driven execution fits
+
+Best prompt to Claude Code:
+
+Extend the Claude Code Expert MCP server with advisory tools that recommend workflows, hooks, teams, schedules, and autonomy patterns based on the user’s engineering task.
+
+12. Add a desktop and web execution strategy guide
+Priority: Medium
+
+What to add:
+
+A surface that clearly helps the user choose between local code tab, cowork, remote sessions, web execution, and SSH sessions.
+
+Why it matters:
+
+The desktop quickstart makes it clear that Claude now has multiple execution environments. Advanced users need help deciding where each task should run.
+
+Official docs:
+
+https://code.claude.com/docs/en/desktop-quickstart
+
+https://code.claude.com/docs/en/claude-code-on-the-web
+
+Concrete implementation:
+
+Add /cc-runtime choose.
+
+Decision matrix dimensions:
+
+local files needed
+
+long-running background work
+
+GUI testing needed
+
+cloud persistence needed
+
+local secrets/toolchains needed
+
+human steering frequency
+
+Best prompt to Claude Code:
+
+Add a runtime selection module to Claude Code Expert that helps users choose between local, remote, SSH, desktop, web, and cowork execution paths for a given task.
+
+13. Add a computer-use and GUI automation pack
+Priority: Medium
+
+What to add:
+
+A guidance and task-pack layer for GUI-only workflows.
+
+Why it matters:
+
+Computer use extends Claude into surfaces that shell-only automation cannot handle, which is important for “advanced agentic engineering” in real businesses.
+
+Official docs:
+
+https://code.claude.com/docs/en/computer-use
+
+Concrete implementation:
+
+Add patterns for:
+
+native app validation
+
+visual regression checks
+
+GUI-only admin tools
+
+local simulator flows
+
+Strongly distinguish when MCP, shell, browser, or computer use should be preferred.
+
+Best prompt to Claude Code:
+
+Add a computer-use workflow pack to Claude Code Expert that teaches when to use GUI automation, how to verify results visually, and how to avoid using it when a more precise tool exists.
+
+14. Add checkpointing and context-recovery operations
+Priority: Medium
+
+What to add:
+
+A dedicated context survival layer.
+
+Why it matters:
+
+Your manifest already mentions checkpointing and rewind. This should be expanded into a concrete resilience system so long-running work survives compaction and interruption.
+
+Official docs:
+
+https://code.claude.com/docs/en/best-practices
+
+https://code.claude.com/docs/en/scheduled-tasks
+
+https://code.claude.com/docs/en/hooks-guide
+
+Concrete implementation:
+
+Add a checkpoint pack that creates:
+
+active task summary file
+
+verification ledger
+
+modified-files ledger
+
+restart prompt template
+
+post-compact restoration hooks
+
+Best prompt to Claude Code:
+
+Build a checkpointing and context-recovery pack for Claude Code Expert that preserves active tasks, modified files, verification state, and restart prompts across compaction and interruption.
+
+15. Add a repo scanner that outputs a deployable advanced .claude architecture
+Priority: Medium
+
+What to add:
+
+A scanner that inspects any repo and generates a high-quality .claude structure automatically.
+
+Why it matters:
+
+This aligns closely with the broader work you have been doing around CLAUDE.md generation and repo-specific context design.
+
+Official docs:
+
+https://code.claude.com/docs/en/memory
+
+https://code.claude.com/docs/en/claude-directory
+
+https://code.claude.com/docs/en/features-overview
+
+Concrete implementation:
+
+Add /cc-bootstrap repo-os.
+
+Generate:
+
+CLAUDE.md
+
+.claude/rules/*.md
+
+.claude/agents/*.md
+
+.claude/skills/*
+
+.claude/settings.json
+
+.mcp.json suggestions
+
+docs/context starter set
+
+Best prompt to Claude Code:
+
+Create a repo operating system bootstrapper that scans a repository and generates the best possible CLAUDE.md, rules, agents, hooks, and context files for advanced agentic coding.
+
+Best near-term implementation order
+If you want the highest leverage sequence for the plugin, build in this order:
+
+/cc-autonomy profile system
+
+channels bootstrap package
+
+scheduled-task package
+
+headless automation package
+
+hooks policy engine
+
+memory deployment upgrade
+
+subagent role pack
+
+agent-team topology kits
+
+workflow packs
+
+autonomy-advisor MCP tools
+
+Most strategic product framing
+If you want the plugin to feel meaningfully ahead of ordinary Claude Code extensions, position it like this:
+
+Claude Code Expert should not just explain Claude Code. It should deploy an advanced agentic coding operating system.
+
+That operating system should help a user:
+
+structure memory
+
+choose the right execution runtime
+
+launch specialized workers
+
+react to external events
+
+run unattended on schedules
+
+recover from context loss
+
+verify work before completion
+
+scale from one repo to recurring engineering operations
+
+Single strongest build prompt
+Use the claude-code-expert plugin directory as the implementation target. Build the next major version around a real autonomy operating system, not just reference content. Add a /cc-autonomy command, workflow packs, a channels bootstrap system, a scheduled-task generator, headless automation support, a hooks policy engine, memory deployment, subagent role packs, agent-team topology kits, and advisory MCP tools that recommend the right execution pattern for each engineering task.
+
+Source URLs
+Official Claude Code docs used here:
+
+https://code.claude.com/docs/en/agent-teams
+
+https://code.claude.com/docs/en/skills
+
+https://code.claude.com/docs/en/hooks-guide
+
+https://code.claude.com/docs/en/channels
+
+https://code.claude.com/docs/en/scheduled-tasks
+
+https://code.claude.com/docs/en/headless
+
+https://code.claude.com/docs/en/desktop#schedule-recurring-tasks
+
+https://code.claude.com/docs/en/desktop-quickstart
+
+https://code.claude.com/docs/en/web-scheduled-tasks
+
+https://code.claude.com/docs/en/common-workflows
+
+https://code.claude.com/docs/en/best-practices
+
+https://code.claude.com/docs/en/memory
+
+https://code.claude.com/docs/en/sub-agents
+
+https://code.claude.com/docs/en/features-overview
+
+https://code.claude.com/docs/en/claude-directory
+
+https://code.claude.com/docs/en/permission-modes#eliminate-prompts-with-auto-mode
+
+https://code.claude.com/docs/en/claude-code-on-the-web
+
+https://code.claude.com/docs/en/computer-use
+
+GitHub sources used here:
+
+https://github.com/markus41/claude
+
+https://github.com/markus41/claude/tree/main/plugins/claude-code-expert
+
+https://github.com/markus41/claude/blob/main/plugins/claude-code-expert/.claude-plugin/plugin.json
+
+https://github.com/markus41/claude/blob/main/plugins/claude-code-expert/README.md
+
+https://github.com/markus41/claude/blob/main/plugins/claude-code-expert/CLAUDE.md
+
+
+
+
+\

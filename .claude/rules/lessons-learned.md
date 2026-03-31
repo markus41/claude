@@ -1758,3 +1758,24 @@ The stash entry is kept in case you need it again.
 - **Input:** `C:\Users\MarkusAhling\pro\claude\plugins\claude-code-expert\commands\cc-setup.md`
 - **Error:** File content (13228 tokens) exceeds maximum allowed tokens (10000). Use offset and limit parameters to read specific portions of the file, or search for specific content instead of reading the whole file.
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-03-31T10:00:51Z)
+- **Tool:** Bash
+- **Input:** `cd C:/Users/MarkusAhling/pro/claude && git push origin main 2>&1`
+- **Error:** Exit code 1
+To https://github.com/markus41/claude.git
+ ! [rejected]        main -> main (non-fast-forward)
+error: failed to push some refs to 'https://github.com/markus41/claude.git'
+hint: Updates were rejected because the tip of your current branch is behind
+hint: its remote counterpart. If you want to integrate the remote changes,
+hint: use 'git pull' before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-03-31T10:01:14Z)
+- **Tool:** Bash
+- **Input:** `cd C:/Users/MarkusAhling/pro/claude && git pull --rebase origin main 2>&1`
+- **Error:** Exit code 128
+error: cannot pull with rebase: You have unstaged changes.
+error: Please commit or stash them.
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
