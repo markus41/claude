@@ -15,7 +15,7 @@ export type NodeLabel =
 export type EdgeType =
   | 'PART_OF' | 'DEFINED_IN' | 'BELONGS_TO' | 'CALLS' | 'INHERITS'
   | 'SEE_ALSO' | 'HAS_EXAMPLE' | 'SUPERSEDES' | 'USES_ALGO'
-  | 'IMPLEMENTS' | 'RELATED_ALGO';
+  | 'IMPLEMENTS' | 'RELATED_ALGO' | 'SAME_AS' | 'DERIVED_FROM';
 
 export interface SymbolNode {
   id: string;

@@ -21,6 +21,7 @@ export interface ScrapinConfig {
     defaultRetryAttempts: number;
     defaultBackoff: 'exponential' | 'linear';
     maxResponseTokens: number;
+    summaryTargetTokens: number;
   };
   graph: {
     backend: 'kuzu' | 'neo4j';
@@ -59,6 +60,7 @@ export const DEFAULT_CONFIG: ScrapinConfig = {
     defaultRetryAttempts: 3,
     defaultBackoff: 'exponential',
     maxResponseTokens: 4096,
+    summaryTargetTokens: 1024,
   },
   graph: {
     backend: 'kuzu',

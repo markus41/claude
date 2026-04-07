@@ -89,8 +89,15 @@ function makeId(sourceId: string, pageId: string, name: string): string {
   return `${sourceId}::${pageId}::${name}`;
 }
 
-function classifyCodeSymbol(line: string): { name: string; kind: SymbolKind } | null {
-  for (const pattern of FUNCTION_PATTERNS) {
+function classifyCodeSymbol(line: string, languageHint = ''): { name: string; kind: SymbolKind } | null {
+  const language = languageHint.toLowerCase();
+  const patterns = FUNCTION_PATTERNS.filter((pattern) => {
+    const source = String(pattern);
+    if (language.includes('python')) return source.includes('def\\s+');
+    if (language.includes('ts') || language.includes('javascript') || language.includes('js')) return !source.includes('def\\s+');
+    return true;
+  });
+  for (const pattern of patterns) {
     const match = pattern.exec(line);
     if (match?.[1]) {
       return { name: match[1], kind: 'function' };
@@ -270,7 +277,7 @@ function extractFromCodeBlocks(
     let foundSymbolInBlock = false;
 
     for (const codeLine of blockLines) {
-      const classified = classifyCodeSymbol(codeLine);
+      const classified = classifyCodeSymbol(codeLine, block.language);
       if (!classified || seenNames.has(classified.name)) continue;
 
       seenNames.add(classified.name);
