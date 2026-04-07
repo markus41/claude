@@ -1,0 +1,121 @@
+{
+  "name": "scrapin-aint-easy",
+  "version": "1.0.0",
+  "description": "Documentation intelligence engine, algorithm library, and codebase/agent drift detection system for Claude Code",
+  "author": "Markus Ahling",
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/claude/tree/main/plugins/scrapin-aint-easy",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/markus41/claude.git",
+    "directory": "plugins/scrapin-aint-easy"
+  },
+  "category": "developer-tools",
+  "tags": [
+    "documentation",
+    "algorithms",
+    "drift-detection",
+    "knowledge-graph",
+    "mcp",
+    "lsp",
+    "interview-setup",
+    "code-intelligence"
+  ],
+  "marketplace": {
+    "featured": true,
+    "icon": "brain",
+    "color": "#7C3AED",
+    "shortDescription": "Graph-based doc intelligence + algorithm library + codebase & agent drift detection",
+    "longDescription": "Drop into any repo for live, graph-traversable API docs, an indexed algorithm library (TheAlgorithms, Refactoring Guru, NeetCode), automated codebase drift detection for missing/deprecated/stale docs, agent prompt drift monitoring with cross-agent contradiction detection, and an interview-driven project setup that generates tailored Claude Code configuration.",
+    "screenshots": [],
+    "minClaudeCodeVersion": "1.0.0",
+    "pricing": "free",
+    "support": "https://github.com/markus41/claude/issues"
+  },
+  "commands": [
+    {
+      "name": "scrapin-search",
+      "description": "Search documentation knowledge graph",
+      "file": "commands/scrapin-search.md"
+    },
+    {
+      "name": "scrapin-crawl",
+      "description": "Trigger documentation crawl",
+      "file": "commands/scrapin-crawl.md"
+    },
+    {
+      "name": "scrapin-diff",
+      "description": "Show doc changes since last crawl",
+      "file": "commands/scrapin-diff.md"
+    },
+    {
+      "name": "scrapin-algo",
+      "description": "Query algorithm library",
+      "file": "commands/scrapin-algo.md"
+    },
+    {
+      "name": "scrapin-drift",
+      "description": "Run drift detection",
+      "file": "commands/scrapin-drift.md"
+    },
+    {
+      "name": "scrapin-status",
+      "description": "System health dashboard",
+      "file": "commands/scrapin-status.md"
+    },
+    {
+      "name": "scrapin-setup",
+      "description": "Interactive project setup — thorough interview then generates Claude Code config",
+      "file": "commands/scrapin-setup.md"
+    }
+  ],
+  "agents": [
+    {
+      "name": "doc-crawler",
+      "file": "agents/doc-crawler.md"
+    },
+    {
+      "name": "doc-graph-builder",
+      "file": "agents/doc-graph-builder.md"
+    },
+    {
+      "name": "doc-lsp-resolver",
+      "file": "agents/doc-lsp-resolver.md"
+    },
+    {
+      "name": "doc-diff-watcher",
+      "file": "agents/doc-diff-watcher.md"
+    },
+    {
+      "name": "doc-cron-runner",
+      "file": "agents/doc-cron-runner.md"
+    },
+    {
+      "name": "algo-indexer",
+      "file": "agents/algo-indexer.md"
+    },
+    {
+      "name": "code-drift-detector",
+      "file": "agents/code-drift-detector.md"
+    },
+    {
+      "name": "agent-drift-detector",
+      "file": "agents/agent-drift-detector.md"
+    }
+  ],
+  "skills": [
+    {
+      "name": "scrapin-aint-easy",
+      "file": "SKILL.md"
+    }
+  ],
+  "mcpServer": {
+    "command": "node",
+    "args": [
+      "dist/cli.js",
+      "--mcp"
+    ],
+    "env": {}
+  },
+  "contextEntry": "CLAUDE.md"
+}
