@@ -6,8 +6,8 @@
     "name": "Markus Ahling"
   },
   "license": "MIT",
-  "homepage": "https://github.com/markus41/claude/tree/main/plugins/scrapin-aint-easy",
   "repository": "https://github.com/markus41/claude",
+  "homepage": "https://github.com/markus41/claude/tree/main/plugins/scrapin-aint-easy",
   "keywords": [
     "documentation",
     "algorithms",
@@ -15,16 +15,6 @@
     "knowledge-graph",
     "mcp",
     "lsp",
-    "interview-setup",
     "code-intelligence"
-  ],
-  "mcpServers": {
-    "scrapin-aint-easy": {
-      "command": "node",
-      "args": [
-        "${CLAUDE_PLUGIN_ROOT}/dist/cli.js",
-        "--mcp"
-      ]
-    }
-  }
+  ]
 }
