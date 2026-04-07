@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import pino from 'pino';
+import { createHash } from 'node:crypto';
 import { type GraphAdapter } from '../core/graph.js';
 import { type VectorStore } from '../core/vector.js';
 import { type EventBus } from '../core/event-bus.js';
@@ -14,11 +15,16 @@ const logger = pino({ name: 'mcp:tools' });
 
 // ── Tool input schemas ──
 
+const PaginationInput = z.object({
+  cursor: z.string().optional().describe('Opaque cursor from a previous paginated response'),
+  page_size: z.number().int().min(1).max(100).default(10).describe('Rows to return per page'),
+});
+
 const SearchInput = z.object({
   query: z.string().describe('Natural language or symbol name to search for'),
   limit: z.coerce.number().min(1).max(50).default(10),
   label_filter: z.enum(['Source', 'Page', 'Symbol', 'Module', 'Example', 'AlgoNode', 'Pattern', 'AgentDef']).optional(),
-});
+}).merge(PaginationInput);
 
 const GraphQueryInput = z.object({
   start_id: z.string().describe('Node ID to start traversal from'),
@@ -46,7 +52,7 @@ const CrawlSourceInput = z.object({
 const DiffInput = z.object({
   source_key: z.string(),
   page_id: z.string().optional(),
-});
+}).merge(PaginationInput);
 
 const LspHoverInput = z.object({
   symbol: z.string(),
@@ -74,7 +80,7 @@ const CodeDriftScanInput = z.object({
   project_root: z.string().optional(),
 });
 
-const AgentDriftStatusInput = z.object({});
+const AgentDriftStatusInput = z.object({}).merge(PaginationInput);
 
 const AgentDriftDetailInput = z.object({
   agent_id: z.string(),
@@ -107,6 +113,21 @@ interface ToolResponse {
   isError?: boolean;
 }
 
+interface CursorPayload {
+  tool: string;
+  offset: number;
+  queryHash: string;
+  ts: number;
+}
+
+interface PaginationResult<T> {
+  rows: T[];
+  offset: number;
+  pageSize: number;
+  totalRows: number;
+  nextCursor?: string;
+}
+
 function makeMetadata(source: string, cacheHit: boolean, ttlRemaining?: number): string {
   return [
     `**Source:** ${source}`,
@@ -116,15 +137,79 @@ function makeMetadata(source: string, cacheHit: boolean, ttlRemaining?: number):
   ].filter(Boolean).join(' | ');
 }
 
-function textResponse(text: string, truncated = false, continueToken?: string): ToolResponse {
-  const parts = [text];
-  if (truncated) {
-    parts.push('\n\n---\n*Response truncated. Use `continue_token` for next page.*');
-    if (continueToken) parts.push(`\n\`continue_token: ${continueToken}\``);
-  }
-  const joined = parts.join('');
+function textResponse(text: string, pagination?: Omit<PaginationResult<unknown>, 'rows'>): ToolResponse {
+  const paginationBlock = pagination
+    ? [
+      '',
+      '## Pagination',
+      `- offset: ${pagination.offset}`,
+      `- page_size: ${pagination.pageSize}`,
+      `- returned: ${Math.max(0, Math.min(pagination.totalRows - pagination.offset, pagination.pageSize))}`,
+      `- total_rows: ${pagination.totalRows}`,
+      `- next_cursor: ${pagination.nextCursor ? `\`${pagination.nextCursor}\`` : 'null'}`,
+    ].join('\n')
+    : '';
+  const joined = `${text}${paginationBlock}`;
   return {
     content: [{ type: 'text', text: joined.slice(0, 16384) }],
+  };
+}
+
+function hashQuery(tool: string, query: Record<string, unknown>): string {
+  return createHash('sha256').update(JSON.stringify({ tool, query })).digest('hex');
+}
+
+function encodeCursor(payload: CursorPayload): string {
+  return Buffer.from(JSON.stringify(payload), 'utf-8').toString('base64');
+}
+
+function decodeCursor(cursor: string): CursorPayload {
+  try {
+    const parsed = JSON.parse(Buffer.from(cursor, 'base64').toString('utf-8')) as Partial<CursorPayload>;
+    if (
+      typeof parsed.tool !== 'string'
+      || typeof parsed.offset !== 'number'
+      || !Number.isFinite(parsed.offset)
+      || parsed.offset < 0
+      || typeof parsed.queryHash !== 'string'
+      || typeof parsed.ts !== 'number'
+    ) {
+      throw new Error('Malformed cursor payload');
+    }
+    return { tool: parsed.tool, offset: parsed.offset, queryHash: parsed.queryHash, ts: parsed.ts };
+  } catch {
+    throw new Error('Invalid cursor encoding');
+  }
+}
+
+export function paginateRows<T>(
+  tool: string,
+  rows: T[],
+  params: { cursor?: string; page_size: number },
+  query: Record<string, unknown>,
+): PaginationResult<T> {
+  const queryHash = hashQuery(tool, query);
+  let offset = 0;
+  if (params.cursor) {
+    const payload = decodeCursor(params.cursor);
+    if (payload.tool !== tool) throw new Error(`Cursor is for tool "${payload.tool}", not "${tool}"`);
+    if (payload.queryHash !== queryHash) throw new Error('Cursor does not match current query parameters');
+    offset = payload.offset;
+  }
+
+  const pageSize = params.page_size;
+  const slice = rows.slice(offset, offset + pageSize);
+  const nextOffset = offset + slice.length;
+  const nextCursor = nextOffset < rows.length
+    ? encodeCursor({ tool, offset: nextOffset, queryHash, ts: Date.now() })
+    : undefined;
+
+  return {
+    rows: slice,
+    offset,
+    pageSize,
+    totalRows: rows.length,
+    nextCursor,
   };
 }
 
@@ -196,13 +281,26 @@ export function createTools(
           return scoreB - scoreA;
         });
         const top = merged.slice(0, input.limit);
+        let page: PaginationResult<typeof top[number]>;
+        try {
+          page = paginateRows('scrapin_search', top, input, {
+            query: input.query,
+            limit: input.limit,
+            label_filter: input.label_filter,
+          });
+        } catch (err) {
+          return errorResponse(`Invalid cursor: ${err instanceof Error ? err.message : String(err)}`);
+        }
 
         const meta = makeMetadata('scrapin_search', false);
-        const lines = top.map((r, i) =>
-          `${i + 1}. **${r.name}** (${r.label}, score: ${r.score.toFixed(2)})\n   ${r.snippet}`,
+        const lines = page.rows.map((r, i) =>
+          `${page.offset + i + 1}. **${r.name}** (${r.label}, score: ${r.score.toFixed(2)})\n   ${r.snippet}`,
         );
 
-        return textResponse(`${meta}\n\n## Search Results (${top.length})\n\n${lines.join('\n\n')}`);
+        return textResponse(
+          `${meta}\n\n## Search Results (${top.length})\n\n${lines.join('\n\n')}`,
+          page,
+        );
       },
     },
 
@@ -225,17 +323,35 @@ export function createTools(
           siblings = await graph.siblings(input.start_id);
         }
 
-        const meta = makeMetadata('scrapin_graph_query', false);
-        const nodeLines = subgraph.nodes.map((n) => `- **${n.id}** (${n.label}): ${JSON.stringify(n.props).slice(0, 150)}`);
-        const edgeLines = subgraph.edges.map((e) => `- ${e.from} --[${e.type}]--> ${e.to}`);
-        const siblingLines = siblings.map((s) => `- ${s.name} (${s.kind})`);
+        const allRows = [
+          ...subgraph.nodes.map((n) => ({ kind: 'node' as const, line: `- **${n.id}** (${n.label}): ${JSON.stringify(n.props).slice(0, 150)}` })),
+          ...subgraph.edges.map((e) => ({ kind: 'edge' as const, line: `- ${e.from} --[${e.type}]--> ${e.to}` })),
+          ...siblings.map((s) => ({ kind: 'sibling' as const, line: `- ${s.name} (${s.kind})` })),
+        ];
 
-        let text = `${meta}\n\n## Graph Traversal\n\n### Nodes (${subgraph.nodes.length})\n${nodeLines.join('\n')}\n\n### Edges (${subgraph.edges.length})\n${edgeLines.join('\n')}`;
-        if (siblingLines.length > 0) {
-          text += `\n\n### Siblings (${siblingLines.length})\n${siblingLines.join('\n')}`;
+        let page: PaginationResult<typeof allRows[number]>;
+        try {
+          page = paginateRows('scrapin_graph_query', allRows, input, {
+            start_id: input.start_id,
+            hops: input.hops,
+            edge_types: input.edge_types,
+            include_siblings: input.include_siblings,
+          });
+        } catch (err) {
+          return errorResponse(`Invalid cursor: ${err instanceof Error ? err.message : String(err)}`);
         }
 
-        return textResponse(text, text.length > 16000);
+        const nodeLines = page.rows.filter((r) => r.kind === 'node').map((r) => r.line);
+        const edgeLines = page.rows.filter((r) => r.kind === 'edge').map((r) => r.line);
+        const siblingLines = page.rows.filter((r) => r.kind === 'sibling').map((r) => r.line);
+
+        const meta = makeMetadata('scrapin_graph_query', false);
+        let text = `${meta}\n\n## Graph Traversal\n\n### Nodes (${subgraph.nodes.length})\n${nodeLines.join('\n') || '- (none on this page)'}\n\n### Edges (${subgraph.edges.length})\n${edgeLines.join('\n') || '- (none on this page)'}`;
+        if (siblings.length > 0) {
+          text += `\n\n### Siblings (${siblings.length})\n${siblingLines.join('\n') || '- (none on this page)'}`;
+        }
+
+        return textResponse(text, page);
       },
     },
 
@@ -252,11 +368,22 @@ export function createTools(
           input.limit,
           'AlgoNode',
         );
+        let page: PaginationResult<typeof results[number]>;
+        try {
+          page = paginateRows('scrapin_algo_search', results, input, {
+            query: input.query,
+            category: input.category,
+            language: input.language,
+            limit: input.limit,
+          });
+        } catch (err) {
+          return errorResponse(`Invalid cursor: ${err instanceof Error ? err.message : String(err)}`);
+        }
 
         const meta = makeMetadata('scrapin_algo_search', false);
-        const lines = results.map((r, i) => `${i + 1}. **${r.id}** (score: ${r.score.toFixed(2)})\n   ${r.text.slice(0, 300)}`);
+        const lines = page.rows.map((r, i) => `${page.offset + i + 1}. **${r.id}** (score: ${r.score.toFixed(2)})\n   ${r.text.slice(0, 300)}`);
 
-        return textResponse(`${meta}\n\n## Algorithm Search Results (${results.length})\n\n${lines.join('\n\n')}`);
+        return textResponse(`${meta}\n\n## Algorithm Search Results (${results.length})\n\n${lines.join('\n\n')}`, page);
       },
     },
 
@@ -300,7 +427,7 @@ export function createTools(
           }
         }
 
-        return textResponse(text, text.length > 16000);
+        return textResponse(text);
       },
     },
 
@@ -341,14 +468,24 @@ export function createTools(
         text += `**Total pages:** ${sourcePages.length}\n`;
         text += `**Stale pages:** ${stale.length}\n\n`;
 
+        let page: PaginationResult<typeof stale[number]>;
+        try {
+          page = paginateRows('scrapin_diff', stale, input, {
+            source_key: input.source_key,
+            page_id: input.page_id,
+          });
+        } catch (err) {
+          return errorResponse(`Invalid cursor: ${err instanceof Error ? err.message : String(err)}`);
+        }
+
         if (stale.length > 0) {
           text += `### Stale Pages\n`;
-          for (const page of stale.slice(0, 20)) {
-            text += `- ${page.props['title'] ?? page.id} (${page.props['url'] ?? 'no url'})\n`;
+          for (const stalePage of page.rows) {
+            text += `- ${stalePage.props['title'] ?? stalePage.id} (${stalePage.props['url'] ?? 'no url'})\n`;
           }
         }
 
-        return textResponse(text);
+        return textResponse(text, page);
       },
     },
 
@@ -378,9 +515,17 @@ export function createTools(
     {
       name: 'scrapin_cron_status',
       description: 'Get status of all cron jobs including drift detection information',
-      inputSchema: z.object({}),
-      handler: async () => {
+      inputSchema: CronStatusInput,
+      handler: async (raw) => {
+        const input = CronStatusInput.parse(raw);
         logger.info('scrapin_cron_status');
+        const allJobs = ['full-sweep', 'staleness-check', 'missing-doc-scan', 'openapi-sync', 'embedding-rebuild', 'algo-sweep', 'code-drift-scan', 'agent-drift-scan'];
+        let page: PaginationResult<string>;
+        try {
+          page = paginateRows('scrapin_cron_status', allJobs, input, {});
+        } catch (err) {
+          return errorResponse(`Invalid cursor: ${err instanceof Error ? err.message : String(err)}`);
+        }
         const meta = makeMetadata('scrapin_cron_status', false);
         const status = config.crawlQueue.status();
         return textResponse(`${meta}\n\n${JSON.stringify(status, null, 2)}`);
@@ -496,7 +641,8 @@ export function createTools(
       name: 'scrapin_agent_drift_status',
       description: 'List all agents with their drift scores and summaries',
       inputSchema: AgentDriftStatusInput,
-      handler: async () => {
+      handler: async (raw) => {
+        const input = AgentDriftStatusInput.parse(raw);
         logger.info('scrapin_agent_drift_status');
 
         try {
@@ -504,8 +650,15 @@ export function createTools(
           const detector = new AgentDriftDetector(graph, join(config.projectRoot, '.claude', 'agents'), config.configDir);
           const reports = await detector.scan();
 
+          let page: PaginationResult<typeof reports[number]>;
+          try {
+            page = paginateRows('scrapin_agent_drift_status', reports, input, {});
+          } catch (err) {
+            return errorResponse(`Invalid cursor: ${err instanceof Error ? err.message : String(err)}`);
+          }
+
           const meta = makeMetadata('scrapin_agent_drift_status', false);
-          const lines = reports.map((r) =>
+          const lines = page.rows.map((r) =>
             `| ${r.agent_id} | ${r.drift_type} | ${r.drift_score}/10 | ${r.changed_sections.join(', ') || 'none'} |`,
           );
 
@@ -519,7 +672,7 @@ export function createTools(
             await emitWebhook('drift.agent.high', { count: reports.filter((r) => r.drift_score > 7).length });
           }
 
-          return textResponse(text);
+          return textResponse(text, page);
         } catch (err) {
           return errorResponse(`Agent drift scan failed: ${err instanceof Error ? err.message : String(err)}`);
         }

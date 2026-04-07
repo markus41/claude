@@ -149,6 +149,15 @@ Or run standalone: `pnpm start:lsp`
 | `scrapin_source_health` | A-F source health dashboard |
 | `scrapin_codex_bootstrap` | Generate Codex MCP/AGENTS bootstrap |
 
+### MCP Pagination
+
+Large-list tools support deterministic pagination inputs:
+
+- `cursor` (optional): opaque base64 cursor from previous response
+- `page_size` (optional, default `10`): rows to return per page
+
+Paginated responses include a `Pagination` metadata block and `next_cursor` when more rows are available.
+
 ## Adding Documentation Sources
 
 Edit `config/sources.yaml`:
