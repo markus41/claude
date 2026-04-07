@@ -22,6 +22,8 @@ Documentation intelligence engine, algorithm library, and codebase/agent drift d
 ```
 # Semantic search across all indexed content
 scrapin_search(query: "useQuery mutation", limit: 10, label_filter: "Symbol")
+# For long result sets, page deterministically:
+scrapin_search(query: "useQuery mutation", page_size: 5, cursor: "<next_cursor>")
 
 # Graph traversal from a known node
 scrapin_graph_query(start_id: "react-query:useQuery", hops: 2, include_siblings: true)
@@ -68,7 +70,7 @@ scrapin_code_drift_scan(project_root: "/path/to/project")
 scrapin_code_drift_report()
 
 # Check all agents for drift
-scrapin_agent_drift_status()
+scrapin_agent_drift_status(page_size: 20)
 
 # Get detail for one agent
 scrapin_agent_drift_detail(agent_id: "backend-architect")
