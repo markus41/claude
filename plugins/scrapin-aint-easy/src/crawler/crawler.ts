@@ -105,7 +105,6 @@ export class DocCrawler {
    * Full crawl of a documentation source: discover URLs, scrape, extract, index.
    */
   async crawlSource(sourceKey: string, sourceConfig: SourceConfig): Promise<CrawlStats> {
-    const startTime = Date.now();
     const sourceId = toSourceId(sourceKey);
     const stats: CrawlStats = {
       pagesProcessed: 0,
@@ -113,11 +112,6 @@ export class DocCrawler {
       symbolsExtracted: 0,
       errors: 0,
     };
-
-    await this._eventBus.emit('crawl:start', {
-      sourceKey,
-      url: sourceConfig.base_url,
-    });
 
     logger.info({ sourceKey, baseUrl: sourceConfig.base_url }, 'Starting source crawl');
 
@@ -154,18 +148,9 @@ export class DocCrawler {
 
     await Promise.allSettled(crawlPromises);
 
-    const durationMs = Date.now() - startTime;
-
-    await this._eventBus.emit('crawl:complete', {
-      sourceKey,
-      pagesProcessed: stats.pagesProcessed,
-      durationMs,
-    });
-
     logger.info({
       sourceKey,
       ...stats,
-      durationMs,
     }, 'Source crawl complete');
 
     return stats;

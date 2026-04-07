@@ -4,6 +4,7 @@
  */
 
 export interface ScrapinEvents {
+  'crawl:queued': { sourceKey: string; jobId: string; force: boolean };
   'crawl:start': { sourceKey: string; url: string };
   'crawl:complete': { sourceKey: string; pagesProcessed: number; durationMs: number };
   'crawl:error': { sourceKey: string; url: string; error: string };
