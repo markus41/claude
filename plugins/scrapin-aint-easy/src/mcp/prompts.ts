@@ -101,5 +101,47 @@ ${args['project_type'] ? `The user hinted this is a "${args['project_type']}" pr
         }];
       },
     },
+
+    {
+      name: 'scrapin_codex_onboarding',
+      description: 'Codex-native onboarding workflow for scrapin setup and first crawl',
+      arguments: [],
+      handler: async () => [{
+        role: 'user',
+        content: `Set up scrapin for Codex in this repo:
+1. Call scrapin_codex_bootstrap
+2. Register at least one documentation source with scrapin_add_source
+3. Run scrapin_crawl_source
+4. Verify with scrapin_source_health and scrapin_graph_stats
+5. Summarize next actions to improve coverage and freshness`,
+      }],
+    },
+    {
+      name: 'scrapin_stale_doc_cleanup',
+      description: 'Codex workflow to find and clean stale documentation references',
+      arguments: [],
+      handler: async () => [{
+        role: 'user',
+        content: `Run stale documentation cleanup:
+1. call scrapin_code_drift_scan
+2. identify stale_docs entries
+3. call scrapin_diff for impacted sources
+4. queue targeted crawls with scrapin_crawl_source
+5. provide prioritized remediation checklist`,
+      }],
+    },
+    {
+      name: 'scrapin_deprecation_sweep',
+      description: 'Codex workflow for deprecated API replacement',
+      arguments: [],
+      handler: async () => [{
+        role: 'user',
+        content: `Run a deprecation sweep:
+1. call scrapin_code_drift_scan
+2. for each deprecated_usage entry, call scrapin_graph_query with edge_types [\"SUPERSEDES\"]
+3. propose replacement changes ordered by risk
+4. produce a migration plan with rollback notes`,
+      }],
+    },
   ];
 }

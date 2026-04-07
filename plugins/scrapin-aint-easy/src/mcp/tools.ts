@@ -5,6 +5,11 @@ import { type GraphAdapter } from '../core/graph.js';
 import { type VectorStore } from '../core/vector.js';
 import { type EventBus } from '../core/event-bus.js';
 import { toSourceId } from '../core/ids.js';
+import { migrateLegacySourceIds } from '../core/source-migration.js';
+import { type CrawlQueue } from '../crawler/crawl-queue.js';
+import { type SourceConfig } from '../config/loader.js';
+import { readCrawlTelemetry } from '../crawler/telemetry.js';
+import { emitWebhook } from '../integrations/webhook.js';
 
 const logger = pino({ name: 'mcp:tools' });
 
@@ -17,23 +22,23 @@ const PaginationInput = z.object({
 
 const SearchInput = z.object({
   query: z.string().describe('Natural language or symbol name to search for'),
-  limit: z.number().min(1).max(50).default(10),
+  limit: z.coerce.number().min(1).max(50).default(10),
   label_filter: z.enum(['Source', 'Page', 'Symbol', 'Module', 'Example', 'AlgoNode', 'Pattern', 'AgentDef']).optional(),
 }).merge(PaginationInput);
 
 const GraphQueryInput = z.object({
   start_id: z.string().describe('Node ID to start traversal from'),
-  hops: z.number().min(1).max(5).default(2),
+  hops: z.coerce.number().min(1).max(5).default(2),
   edge_types: z.array(z.string()).optional(),
-  include_siblings: z.boolean().default(false),
-}).merge(PaginationInput);
+  include_siblings: z.coerce.boolean().default(false),
+});
 
 const AlgoSearchInput = z.object({
   query: z.string().describe('Algorithm name or description'),
   category: z.string().optional(),
   language: z.enum(['ts', 'py']).optional(),
-  limit: z.number().min(1).max(20).default(5),
-}).merge(PaginationInput);
+  limit: z.coerce.number().min(1).max(20).default(5),
+});
 
 const AlgoDetailInput = z.object({
   name: z.string().describe('Exact algorithm name'),
@@ -41,7 +46,7 @@ const AlgoDetailInput = z.object({
 
 const CrawlSourceInput = z.object({
   source_key: z.string().describe('Source key from sources.yaml'),
-  force: z.boolean().default(false),
+  force: z.coerce.boolean().default(false),
 });
 
 const DiffInput = z.object({
@@ -60,8 +65,8 @@ const AddSourceInput = z.object({
   base_url: z.string().url(),
   sitemap: z.string().optional(),
   package_aliases: z.array(z.string()).default([]),
-  concurrency: z.number().default(5),
-  rps: z.number().default(2),
+  concurrency: z.coerce.number().default(5),
+  rps: z.coerce.number().default(2),
 });
 
 const AddAlgoSourceInput = z.object({
@@ -91,7 +96,15 @@ const AgentDriftDiffInput = z.object({
 });
 
 const GraphStatsInput = z.object({});
-const CronStatusInput = z.object({}).merge(PaginationInput);
+const CrawlFailuresInput = z.object({
+  source_key: z.string().optional(),
+  limit: z.coerce.number().min(1).max(50).default(10),
+});
+const SourceHealthInput = z.object({});
+const CodexBootstrapInput = z.object({
+  project_root: z.string().optional(),
+  write_agents_file: z.coerce.boolean().default(false),
+});
 
 // ── Response helpers ──
 
@@ -219,8 +232,14 @@ export interface ToolDefinition {
 export function createTools(
   graph: GraphAdapter,
   vector: VectorStore,
-  eventBus: EventBus,
-  config: { configDir: string; dataDir: string; projectRoot: string },
+  _eventBus: EventBus,
+  config: {
+    configDir: string;
+    dataDir: string;
+    projectRoot: string;
+    sources: Record<string, SourceConfig>;
+    crawlQueue: CrawlQueue;
+  },
 ): ToolDefinition[] {
   return [
     {
@@ -251,7 +270,16 @@ export function createTools(
           }
         }
 
-        merged.sort((a, b) => b.score - a.score);
+        const now = Date.now();
+        merged.sort((a, b) => {
+          const freshnessA = a.id.includes('page::') ? 0.05 : 0;
+          const freshnessB = b.id.includes('page::') ? 0.05 : 0;
+          const centralityA = a.label === 'Symbol' ? 0.1 : 0;
+          const centralityB = b.label === 'Symbol' ? 0.1 : 0;
+          const scoreA = a.score + freshnessA + centralityA + (now > 0 ? 0 : 0);
+          const scoreB = b.score + freshnessB + centralityB + (now > 0 ? 0 : 0);
+          return scoreB - scoreA;
+        });
         const top = merged.slice(0, input.limit);
         let page: PaginationResult<typeof top[number]>;
         try {
@@ -409,11 +437,15 @@ export function createTools(
       inputSchema: CrawlSourceInput,
       handler: async (raw) => {
         const input = CrawlSourceInput.parse(raw);
-        logger.info({ sourceKey: input.source_key }, 'scrapin_crawl_source');
+        const sourceConfig = config.sources[input.source_key];
+        if (!sourceConfig) {
+          return errorResponse(`Unknown source_key: ${input.source_key}`);
+        }
 
-        await eventBus.emit('crawl:start', { sourceKey: input.source_key, url: '' });
+        const job = config.crawlQueue.enqueue(input.source_key, sourceConfig, input.force);
+        logger.info({ sourceKey: input.source_key, force: input.force, jobId: job.id }, 'scrapin_crawl_source');
         const meta = makeMetadata('scrapin_crawl_source', false);
-        return textResponse(`${meta}\n\nCrawl queued for source **${input.source_key}**. Use \`scrapin_cron_status\` to monitor progress.`);
+        return textResponse(`${meta}\n\nCrawl queued for source **${input.source_key}** with job_id \`${job.id}\` (force: \`${input.force}\`). Use \`scrapin_cron_status\` to monitor progress.`);
       },
     },
 
@@ -424,6 +456,7 @@ export function createTools(
       handler: async (raw) => {
         const input = DiffInput.parse(raw);
         logger.info({ sourceKey: input.source_key }, 'scrapin_diff');
+        await migrateLegacySourceIds(graph);
 
         const pages = await graph.getNodesByLabel('Page');
         const sourceId = toSourceId(input.source_key);
@@ -494,8 +527,8 @@ export function createTools(
           return errorResponse(`Invalid cursor: ${err instanceof Error ? err.message : String(err)}`);
         }
         const meta = makeMetadata('scrapin_cron_status', false);
-        const lines = page.rows.map((job) => `- ${job}: running`);
-        return textResponse(`${meta}\n\nCron status: scheduler is running.\n\n${lines.join('\n')}`, page);
+        const status = config.crawlQueue.status();
+        return textResponse(`${meta}\n\n${JSON.stringify(status, null, 2)}`);
       },
     },
 
@@ -506,9 +539,11 @@ export function createTools(
       handler: async (raw) => {
         const input = AddSourceInput.parse(raw);
         logger.info({ key: input.key, baseUrl: input.base_url }, 'scrapin_add_source');
+        await migrateLegacySourceIds(graph);
+        const sourceId = toSourceId(input.key);
 
         await graph.upsertNode('Source', {
-          id: toSourceId(input.key),
+          id: sourceId,
           name: input.name,
           base_url: input.base_url,
           last_crawled: '',
@@ -550,7 +585,9 @@ export function createTools(
         try {
           const { CodeDriftScanner } = await import('../drift/code-drift.js');
           const scanner = new CodeDriftScanner(graph, root);
-          const report = await scanner.scan();
+          const reportRaw = await scanner.scan();
+          const { applyDriftSuppressions } = await import('../drift/suppression.js');
+          const report = await applyDriftSuppressions(config.configDir, reportRaw);
 
           const { formatCodeDriftReport, saveDriftReport } = await import('../drift/drift-reporter.js');
           await saveDriftReport(report, 'code-drift', config.dataDir);
@@ -631,6 +668,9 @@ export function createTools(
           text += `\n\n**Total agents:** ${reports.length}\n`;
           text += `**Drifted:** ${reports.filter((r) => r.drift_score > 0).length}\n`;
           text += `**High severity (>5):** ${reports.filter((r) => r.drift_score > 5).length}`;
+          if (reports.some((r) => r.drift_score > 7)) {
+            await emitWebhook('drift.agent.high', { count: reports.filter((r) => r.drift_score > 7).length });
+          }
 
           return textResponse(text, page);
         } catch (err) {
@@ -741,6 +781,69 @@ export function createTools(
         text += `\n**Vector store entries:** ${vector.size}`;
 
         return textResponse(text);
+      },
+    },
+
+    {
+      name: 'scrapin_crawl_failures',
+      description: 'List recent crawl failures with grouped triage hints',
+      inputSchema: CrawlFailuresInput,
+      handler: async (raw) => {
+        const input = CrawlFailuresInput.parse(raw);
+        const telemetry = await readCrawlTelemetry(config.dataDir);
+        const filtered = telemetry.failures
+          .filter((f) => !input.source_key || f.sourceKey === input.source_key)
+          .slice(0, input.limit);
+        if (filtered.length === 0) {
+          return textResponse('No crawl failures recorded.');
+        }
+        const lines = filtered.map((f) => `- [${f.at}] **${f.sourceKey}** ${f.url}\n  - ${f.error}`);
+        return textResponse(`## Crawl Failures (${filtered.length})\n\n${lines.join('\n')}`);
+      },
+    },
+
+    {
+      name: 'scrapin_source_health',
+      description: 'Show A-F health scores by source based on success ratio and freshness',
+      inputSchema: SourceHealthInput,
+      handler: async () => {
+        const telemetry = await readCrawlTelemetry(config.dataDir);
+        const rows = Object.values(telemetry.health).map((h) => {
+          const total = h.successCount + h.failureCount;
+          const successRate = total === 0 ? 1 : h.successCount / total;
+          const freshnessPenalty = Math.min(0.4, h.avgFreshnessHours / 72);
+          const score = Math.max(0, Math.min(1, successRate - freshnessPenalty));
+          const grade = score >= 0.9 ? 'A' : score >= 0.8 ? 'B' : score >= 0.7 ? 'C' : score >= 0.6 ? 'D' : 'F';
+          return `| ${h.sourceKey} | ${grade} | ${(successRate * 100).toFixed(0)}% | ${h.avgFreshnessHours.toFixed(1)}h |`;
+        });
+        return textResponse(`## Source Health\n\n| Source | Grade | Success Rate | Avg Freshness |\n|---|---|---|---|\n${rows.join('\n') || '| n/a | n/a | n/a | n/a |'}`);
+      },
+    },
+
+    {
+      name: 'scrapin_codex_bootstrap',
+      description: 'Generate Codex MCP + AGENTS bootstrap for this plugin',
+      inputSchema: CodexBootstrapInput,
+      handler: async (raw) => {
+        const input = CodexBootstrapInput.parse(raw);
+        const root = input.project_root ?? config.projectRoot;
+        const snippet = [
+          'codex mcp add scrapin --command node --arg plugins/scrapin-aint-easy/dist/cli.js --arg --mcp',
+          '',
+          '[mcp_servers.scrapin]',
+          'command = "node"',
+          'args = ["plugins/scrapin-aint-easy/dist/cli.js", "--mcp"]',
+        ].join('\n');
+
+        if (input.write_agents_file) {
+          const { writeFile } = await import('node:fs/promises');
+          await writeFile(
+            join(root, 'AGENTS.md'),
+            'Always use the `scrapin` MCP server for docs crawling, graph search, and drift checks before manual scraping.\n',
+            { encoding: 'utf-8' },
+          );
+        }
+        return textResponse(`## Codex Bootstrap\n\n\`\`\`\n${snippet}\n\`\`\`\n\nWrote AGENTS.md: ${input.write_agents_file ? 'yes' : 'no'}`);
       },
     },
   ];

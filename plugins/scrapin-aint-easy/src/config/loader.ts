@@ -19,6 +19,14 @@ const SourceSchema = z.object({
   rps: z.number().min(0.1).max(100).default(2),
   retry_attempts: z.number().min(0).max(10).default(3),
   backoff: z.enum(['exponential', 'linear']).default('exponential'),
+  retry_policy: z.object({
+    timeout_attempts: z.number().min(0).max(10).optional(),
+    rate_limit_attempts: z.number().min(0).max(10).optional(),
+    server_error_attempts: z.number().min(0).max(10).optional(),
+    backoff: z.enum(['exponential', 'linear']).optional(),
+  }).optional(),
+  openapi_first: z.boolean().default(true),
+  openapi_only: z.boolean().default(false),
   auth_env: z.string().optional(),
 });
 

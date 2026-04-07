@@ -1,4 +1,4 @@
-import { createHash } from 'node:crypto';
+import { createHash, createHmac } from 'node:crypto';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { join, dirname } from 'node:path';
 import { existsSync } from 'node:fs';
@@ -24,6 +24,18 @@ function snapshotPath(dataDir: string, sourceKey: string, pageId: string): strin
   return join(dataDir, 'snapshots', safeSource, `${safePageId}.md`);
 }
 
+function signaturePath(dataDir: string, sourceKey: string, pageId: string): string {
+  const safeSource = sourceKey.replace(/[^a-zA-Z0-9_-]/g, '_');
+  const safePageId = pageId.replace(/[^a-zA-Z0-9_.-]/g, '_');
+  return join(dataDir, 'snapshots', safeSource, `${safePageId}.sig`);
+}
+
+function signContent(content: string): string | null {
+  const key = process.env['SCRAPIN_SNAPSHOT_SIGNING_KEY'];
+  if (!key) return null;
+  return createHmac('sha256', key).update(content, 'utf-8').digest('hex');
+}
+
 /**
  * Save a page snapshot to disk.
  * @returns The content hash (SHA-256 hex) of the saved content.
@@ -43,8 +55,12 @@ export async function saveSnapshot(
 
   await writeFile(filePath, content, 'utf-8');
   const hash = contentHash(content);
+  const signature = signContent(content);
+  if (signature) {
+    await writeFile(signaturePath(dataDir, sourceKey, pageId), signature, 'utf-8');
+  }
 
-  logger.debug({ sourceKey, pageId, hash }, 'Snapshot saved');
+  logger.debug({ sourceKey, pageId, hash, signed: Boolean(signature) }, 'Snapshot saved');
   return hash;
 }
 

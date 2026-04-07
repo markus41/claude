@@ -71,6 +71,54 @@ describe('source id normalization', () => {
     expect(text).toContain('Stale pages:** 1');
   });
 
+  it('migrates legacy source/page IDs and keeps diff stale detection stable', async () => {
+    await graph.upsertNode('Source', {
+      id: 'legacy-docs',
+      name: 'Legacy Docs',
+      base_url: 'https://example.com',
+    });
+    await graph.upsertNode('Page', {
+      id: 'page::legacy-docs::intro',
+      title: 'Intro',
+      url: 'https://example.com/intro',
+      source_id: 'legacy-docs',
+      stale: true,
+    });
+    await graph.upsertEdge('PART_OF', 'page::legacy-docs::intro', 'legacy-docs');
+
+    const tools = createTools(
+      graph,
+      {
+        search: async () => [],
+        add: async () => {},
+        size: 0,
+      } as never,
+      {
+        emit: async () => {},
+      } as never,
+      { configDir: '', dataDir: '', projectRoot: '' },
+    );
+    const diff = tools.find((tool) => tool.name === 'scrapin_diff');
+    expect(diff).toBeDefined();
+
+    const response = await diff!.handler({ source_key: 'legacy-docs' });
+    const text = response.content[0]?.text ?? '';
+    expect(text).toContain('Total pages:** 1');
+    expect(text).toContain('Stale pages:** 1');
+
+    const canonicalSource = await graph.getNode(toSourceId('legacy-docs'));
+    const legacySource = await graph.getNode('legacy-docs');
+    expect(canonicalSource).toBeDefined();
+    expect(legacySource).toBeUndefined();
+
+    const pages = await graph.getNodesByLabel('Page');
+    expect(pages[0]?.props['source_id']).toBe(toSourceId('legacy-docs'));
+
+    const edges = await graph.getEdges();
+    expect(edges.some((edge) => edge.type === 'PART_OF' && edge.to === toSourceId('legacy-docs'))).toBe(true);
+    expect(edges.some((edge) => edge.type === 'PART_OF' && edge.to === 'legacy-docs')).toBe(false);
+  });
+
   it('openapi sync writes normalized source_id and diff finds pages by source key', async () => {
     const configDir = await mkdtemp(join(tmpdir(), 'scrapin-openapi-config-'));
     const dataDir = await mkdtemp(join(tmpdir(), 'scrapin-openapi-data-'));

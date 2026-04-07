@@ -15,7 +15,7 @@ export type NodeLabel =
 export type EdgeType =
   | 'PART_OF' | 'DEFINED_IN' | 'BELONGS_TO' | 'CALLS' | 'INHERITS'
   | 'SEE_ALSO' | 'HAS_EXAMPLE' | 'SUPERSEDES' | 'USES_ALGO'
-  | 'IMPLEMENTS' | 'RELATED_ALGO';
+  | 'IMPLEMENTS' | 'RELATED_ALGO' | 'SAME_AS' | 'DERIVED_FROM';
 
 export interface SymbolNode {
   id: string;
@@ -57,6 +57,13 @@ interface StoredNode {
 }
 
 interface StoredEdge {
+  type: EdgeType;
+  from: string;
+  to: string;
+  props: Record<string, unknown>;
+}
+
+export interface GraphEdge {
   type: EdgeType;
   from: string;
   to: string;
@@ -299,6 +306,39 @@ export class GraphAdapter {
       }
     }
     return results;
+  }
+
+  async getEdges(): Promise<GraphEdge[]> {
+    return this.edges.map((edge) => ({ ...edge, props: { ...edge.props } }));
+  }
+
+  async deleteNode(id: string): Promise<void> {
+    if (this.kuzuConn) {
+      const conn = this.kuzuConn as { execute: (q: string) => Promise<unknown> };
+      try {
+        await conn.execute(`MATCH (n {id: '${id}'}) DETACH DELETE n`);
+      } catch {
+        this.nodes.delete(id);
+      }
+      return;
+    }
+
+    this.nodes.delete(id);
+    this.edges = this.edges.filter((edge) => edge.from !== id && edge.to !== id);
+  }
+
+  async deleteEdge(type: EdgeType, fromId: string, toId: string): Promise<void> {
+    if (this.kuzuConn) {
+      const conn = this.kuzuConn as { execute: (q: string) => Promise<unknown> };
+      try {
+        await conn.execute(`MATCH (a {id: '${fromId}'})-[r:${type}]->(b {id: '${toId}'}) DELETE r`);
+      } catch {
+        this.edges = this.edges.filter((edge) => !(edge.type === type && edge.from === fromId && edge.to === toId));
+      }
+      return;
+    }
+
+    this.edges = this.edges.filter((edge) => !(edge.type === type && edge.from === fromId && edge.to === toId));
   }
 
   async stats(): Promise<Record<string, number>> {
