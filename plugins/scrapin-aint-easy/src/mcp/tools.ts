@@ -4,6 +4,7 @@ import { type GraphAdapter } from '../core/graph.js';
 import { type VectorStore } from '../core/vector.js';
 import { type EventBus } from '../core/event-bus.js';
 import { toSourceId } from '../core/ids.js';
+import { migrateLegacySourceIds } from '../core/source-migration.js';
 import { type CrawlQueue } from '../crawler/crawl-queue.js';
 import { type SourceConfig } from '../config/loader.js';
 
@@ -308,6 +309,7 @@ export function createTools(
       handler: async (raw) => {
         const input = DiffInput.parse(raw);
         logger.info({ sourceKey: input.source_key }, 'scrapin_diff');
+        await migrateLegacySourceIds(graph);
 
         const pages = await graph.getNodesByLabel('Page');
         const sourceId = toSourceId(input.source_key);
@@ -372,9 +374,11 @@ export function createTools(
       handler: async (raw) => {
         const input = AddSourceInput.parse(raw);
         logger.info({ key: input.key, baseUrl: input.base_url }, 'scrapin_add_source');
+        await migrateLegacySourceIds(graph);
+        const sourceId = toSourceId(input.key);
 
         await graph.upsertNode('Source', {
-          id: toSourceId(input.key),
+          id: sourceId,
           name: input.name,
           base_url: input.base_url,
           last_crawled: '',
