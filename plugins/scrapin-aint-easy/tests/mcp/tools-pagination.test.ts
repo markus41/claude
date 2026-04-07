@@ -30,6 +30,13 @@ describe('paginateRows', () => {
     expect(() => paginateRows('scrapin_algo_search', [1, 2, 3], { page_size: 1, cursor: page.nextCursor }, { query: 'x' }))
       .toThrow(/Cursor is for tool/);
   });
+
+  it('generates deterministic next_cursor for the same input', () => {
+    const rows = ['a', 'b', 'c'];
+    const first = paginateRows('scrapin_search', rows, { page_size: 2 }, { query: 'abc' });
+    const second = paginateRows('scrapin_search', rows, { page_size: 2 }, { query: 'abc' });
+    expect(first.nextCursor).toBe(second.nextCursor);
+  });
 });
 
 describe('scrapin_search pagination integration', () => {

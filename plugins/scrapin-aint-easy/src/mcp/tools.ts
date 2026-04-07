@@ -150,6 +150,10 @@ function encodeCursor(payload: CursorPayload): string {
   return Buffer.from(JSON.stringify(payload), 'utf-8').toString('base64');
 }
 
+function deterministicTs(queryHash: string): number {
+  return Number.parseInt(queryHash.slice(0, 12), 16);
+}
+
 function decodeCursor(cursor: string): CursorPayload {
   try {
     const parsed = JSON.parse(Buffer.from(cursor, 'base64').toString('utf-8')) as Partial<CursorPayload>;
@@ -188,7 +192,7 @@ export function paginateRows<T>(
   const slice = rows.slice(offset, offset + pageSize);
   const nextOffset = offset + slice.length;
   const nextCursor = nextOffset < rows.length
-    ? encodeCursor({ tool, offset: nextOffset, queryHash, ts: Date.now() })
+    ? encodeCursor({ tool, offset: nextOffset, queryHash, ts: deterministicTs(queryHash) })
     : undefined;
 
   return {
