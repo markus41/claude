@@ -36,71 +36,71 @@
     {
       "name": "scrapin-search",
       "description": "Search documentation knowledge graph",
-      "file": "commands/scrapin-search.md"
+      "file": ".claude/commands/scrapin-search.md"
     },
     {
       "name": "scrapin-crawl",
       "description": "Trigger documentation crawl",
-      "file": "commands/scrapin-crawl.md"
+      "file": ".claude/commands/scrapin-crawl.md"
     },
     {
       "name": "scrapin-diff",
       "description": "Show doc changes since last crawl",
-      "file": "commands/scrapin-diff.md"
+      "file": ".claude/commands/scrapin-diff.md"
     },
     {
       "name": "scrapin-algo",
       "description": "Query algorithm library",
-      "file": "commands/scrapin-algo.md"
+      "file": ".claude/commands/scrapin-algo.md"
     },
     {
       "name": "scrapin-drift",
       "description": "Run drift detection",
-      "file": "commands/scrapin-drift.md"
+      "file": ".claude/commands/scrapin-drift.md"
     },
     {
       "name": "scrapin-status",
       "description": "System health dashboard",
-      "file": "commands/scrapin-status.md"
+      "file": ".claude/commands/scrapin-status.md"
     },
     {
       "name": "scrapin-setup",
       "description": "Interactive project setup — thorough interview then generates Claude Code config",
-      "file": "commands/scrapin-setup.md"
+      "file": ".claude/commands/scrapin-setup.md"
     }
   ],
   "agents": [
     {
       "name": "doc-crawler",
-      "file": "agents/doc-crawler.md"
+      "file": ".claude/agents/doc-crawler.md"
     },
     {
       "name": "doc-graph-builder",
-      "file": "agents/doc-graph-builder.md"
+      "file": ".claude/agents/doc-graph-builder.md"
     },
     {
       "name": "doc-lsp-resolver",
-      "file": "agents/doc-lsp-resolver.md"
+      "file": ".claude/agents/doc-lsp-resolver.md"
     },
     {
       "name": "doc-diff-watcher",
-      "file": "agents/doc-diff-watcher.md"
+      "file": ".claude/agents/doc-diff-watcher.md"
     },
     {
       "name": "doc-cron-runner",
-      "file": "agents/doc-cron-runner.md"
+      "file": ".claude/agents/doc-cron-runner.md"
     },
     {
       "name": "algo-indexer",
-      "file": "agents/algo-indexer.md"
+      "file": ".claude/agents/algo-indexer.md"
     },
     {
       "name": "code-drift-detector",
-      "file": "agents/code-drift-detector.md"
+      "file": ".claude/agents/code-drift-detector.md"
     },
     {
       "name": "agent-drift-detector",
-      "file": "agents/agent-drift-detector.md"
+      "file": ".claude/agents/agent-drift-detector.md"
     }
   ],
   "skills": [
