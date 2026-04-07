@@ -20,7 +20,9 @@ import { createFullSweepJob } from './scheduler/jobs/full-sweep.js';
 import { createStalenessCheckJob } from './scheduler/jobs/staleness-check.js';
 import { createMissingDocScanJob } from './scheduler/jobs/missing-doc-scan.js';
 import { createEmbeddingRebuildJob } from './scheduler/jobs/embedding-rebuild.js';
-import { loadConfig } from './config/loader.js';
+import { loadConfig, loadSources, type SourceConfig } from './config/loader.js';
+import { DocCrawler } from './crawler/crawler.js';
+import { CrawlQueue } from './crawler/crawl-queue.js';
 
 const logger = pino({ name: 'scrapin-mcp' });
 
@@ -43,19 +45,28 @@ export async function createScrapinServer(options: ScrapinServerOptions = {}): P
   const dataDir = options.dataDir ?? 'data';
 
   const config = await loadConfig(configDir);
+  const sources = await loadSources(configDir);
 
   // Initialize core services
   const eventBus = new EventBus();
   const graph = new GraphAdapter(dataDir, configDir);
   const vector = new VectorStore(dataDir);
+  const crawlQueue = new CrawlQueue(eventBus);
+  const crawler = new DocCrawler(graph, vector, config, eventBus);
 
   await graph.initialize();
   await vector.initialize();
+  await crawler.initialize();
+
+  crawlQueue.attachWorker(async ({ sourceKey, sourceConfig }) => {
+    const stats = await crawler.crawlSource(sourceKey, sourceConfig);
+    return { pagesProcessed: stats.pagesProcessed };
+  });
 
   logger.info('Core services initialized');
 
   // Create MCP tools, resources, prompts
-  const toolConfig = { configDir, dataDir, projectRoot };
+  const toolConfig = { configDir, dataDir, projectRoot, sources, crawlQueue };
   const tools = createTools(graph, vector, eventBus, toolConfig);
   const resources = createResources(graph, vector, { dataDir, configDir });
   const prompts = createPrompts();
@@ -159,8 +170,9 @@ export async function createScrapinServer(options: ScrapinServerOptions = {}): P
   );
 
   if (options.enableCron !== false) {
-    const noopCrawl = async (_key: string, _config: Record<string, unknown>) => {
-      logger.info({ key: _key }, 'Crawl triggered by cron');
+    const queueCrawl = async (key: string, sourceConfig: SourceConfig) => {
+      const job = crawlQueue.enqueue(key, sourceConfig, false);
+      logger.info({ key, jobId: job.id }, 'Crawl enqueued by cron');
     };
 
     scheduler.registerJobWithDef({
@@ -168,7 +180,7 @@ export async function createScrapinServer(options: ScrapinServerOptions = {}): P
       schedule: '0 3 * * *',
       description: 'Full documentation sweep (daily 3am)',
       expectedIntervalMs: 24 * 60 * 60 * 1000,
-      handler: createFullSweepJob(graph, vector, configDir, noopCrawl),
+      handler: createFullSweepJob(graph, vector, configDir, queueCrawl),
     });
 
     scheduler.registerJobWithDef({

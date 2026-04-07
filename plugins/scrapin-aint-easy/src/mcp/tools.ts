@@ -4,6 +4,8 @@ import { type GraphAdapter } from '../core/graph.js';
 import { type VectorStore } from '../core/vector.js';
 import { type EventBus } from '../core/event-bus.js';
 import { toSourceId } from '../core/ids.js';
+import { type CrawlQueue } from '../crawler/crawl-queue.js';
+import { type SourceConfig } from '../config/loader.js';
 
 const logger = pino({ name: 'mcp:tools' });
 
@@ -133,8 +135,14 @@ export interface ToolDefinition {
 export function createTools(
   graph: GraphAdapter,
   vector: VectorStore,
-  eventBus: EventBus,
-  config: { configDir: string; dataDir: string; projectRoot: string },
+  _eventBus: EventBus,
+  config: {
+    configDir: string;
+    dataDir: string;
+    projectRoot: string;
+    sources: Record<string, SourceConfig>;
+    crawlQueue: CrawlQueue;
+  },
 ): ToolDefinition[] {
   return [
     {
@@ -281,11 +289,15 @@ export function createTools(
       inputSchema: CrawlSourceInput,
       handler: async (raw) => {
         const input = CrawlSourceInput.parse(raw);
-        logger.info({ sourceKey: input.source_key }, 'scrapin_crawl_source');
+        const sourceConfig = config.sources[input.source_key];
+        if (!sourceConfig) {
+          return errorResponse(`Unknown source_key: ${input.source_key}`);
+        }
 
-        await eventBus.emit('crawl:start', { sourceKey: input.source_key, url: '' });
+        const job = config.crawlQueue.enqueue(input.source_key, sourceConfig, input.force);
+        logger.info({ sourceKey: input.source_key, force: input.force, jobId: job.id }, 'scrapin_crawl_source');
         const meta = makeMetadata('scrapin_crawl_source', false);
-        return textResponse(`${meta}\n\nCrawl queued for source **${input.source_key}**. Use \`scrapin_cron_status\` to monitor progress.`);
+        return textResponse(`${meta}\n\nCrawl queued for source **${input.source_key}** with job_id \`${job.id}\` (force: \`${input.force}\`). Use \`scrapin_cron_status\` to monitor progress.`);
       },
     },
 
@@ -348,7 +360,8 @@ export function createTools(
       handler: async () => {
         logger.info('scrapin_cron_status');
         const meta = makeMetadata('scrapin_cron_status', false);
-        return textResponse(`${meta}\n\nCron status: scheduler is running. Use startup logs for detailed job status.`);
+        const status = config.crawlQueue.status();
+        return textResponse(`${meta}\n\n${JSON.stringify(status, null, 2)}`);
       },
     },
 

@@ -1,7 +1,7 @@
 import pino from 'pino';
 import { type GraphAdapter } from '../../core/graph.js';
 import { type VectorStore } from '../../core/vector.js';
-import { loadSources } from '../../config/loader.js';
+import { loadSources, type SourceConfig } from '../../config/loader.js';
 
 const logger = pino({ name: 'job:full-sweep' });
 
@@ -9,7 +9,7 @@ export function createFullSweepJob(
   graph: GraphAdapter,
   vector: VectorStore,
   configDir: string,
-  crawlSource: (key: string, config: Record<string, unknown>) => Promise<void>,
+  crawlSource: (key: string, config: SourceConfig) => Promise<void>,
 ): () => Promise<void> {
   return async () => {
     logger.info('Starting full documentation sweep');
@@ -19,7 +19,7 @@ export function createFullSweepJob(
 
     for (const [key, config] of Object.entries(sources)) {
       try {
-        await crawlSource(key, config as unknown as Record<string, unknown>);
+        await crawlSource(key, config);
         processed++;
       } catch (err) {
         errors++;
