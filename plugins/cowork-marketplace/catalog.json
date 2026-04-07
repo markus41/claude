@@ -1,7 +1,7 @@
 {
   "version": 1,
   "description": "Cowork marketplace item catalog. All items are backed by real plugin agents, skills, and commands.",
-  "totalItems": 19,
+  "totalItems": 20,
   "items": [
     {
       "id": "fastapi-scaffold",
@@ -849,6 +849,52 @@
             "blazor-test",
             "blazor-scaffold",
             "blazor-migrate"
+          ]
+        }
+      }
+    },
+    {
+      "id": "scrapin-aint-easy",
+      "name": "Scrapin' Ain't Easy",
+      "type": "skill_pack",
+      "category": "engineering",
+      "difficulty": "intermediate",
+      "description": "Documentation intelligence engine with graph-based doc crawling, algorithm library (TheAlgorithms, Refactoring Guru, NeetCode), codebase drift detection, agent prompt drift monitoring, and interview-driven project setup.",
+      "tags": [
+        "documentation",
+        "algorithms",
+        "drift-detection",
+        "knowledge-graph",
+        "mcp",
+        "lsp",
+        "code-intelligence",
+        "interview-setup"
+      ],
+      "rating": 4.7,
+      "trustGrade": "A",
+      "pluginBindings": {
+        "scrapin-aint-easy": {
+          "agents": [
+            "doc-crawler",
+            "doc-graph-builder",
+            "doc-lsp-resolver",
+            "doc-diff-watcher",
+            "doc-cron-runner",
+            "algo-indexer",
+            "code-drift-detector",
+            "agent-drift-detector"
+          ],
+          "skills": [
+            "scrapin-aint-easy"
+          ],
+          "commands": [
+            "scrapin-search",
+            "scrapin-crawl",
+            "scrapin-diff",
+            "scrapin-algo",
+            "scrapin-drift",
+            "scrapin-status",
+            "scrapin-setup"
           ]
         }
       }
