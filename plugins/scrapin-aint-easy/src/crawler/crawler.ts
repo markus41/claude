@@ -14,10 +14,13 @@ import { extractSymbols } from './symbol-extractor.js';
 import { saveSnapshot, loadSnapshot, diffSnapshots } from './snapshot.js';
 import { toSourceId } from '../core/ids.js';
 import { migrateLegacySourceIds } from '../core/source-migration.js';
+import { recordCrawlFailure, recordCrawlRun } from './telemetry.js';
+import { emitWebhook } from '../integrations/webhook.js';
 
 const logger = pino({ name: 'crawler' });
 
 interface CrawlStats {
+  runId: string;
   pagesProcessed: number;
   pagesSkipped: number;
   symbolsExtracted: number;
@@ -64,6 +67,14 @@ async function withRetry<T>(
   throw lastError ?? new Error(`Failed after ${attempts} attempts: ${label}`);
 }
 
+function classifyRetryBucket(error: unknown): 'timeout' | 'rate_limit' | 'server_error' | 'other' {
+  const message = (error instanceof Error ? error.message : String(error)).toLowerCase();
+  if (message.includes('timeout') || message.includes('timed out')) return 'timeout';
+  if (message.includes('429') || message.includes('rate')) return 'rate_limit';
+  if (message.includes('500') || message.includes('502') || message.includes('503') || message.includes('504')) return 'server_error';
+  return 'other';
+}
+
 export class DocCrawler {
   private readonly firecrawl: FirecrawlAdapter;
   private readonly puppeteer: PuppeteerAdapter;
@@ -107,9 +118,10 @@ export class DocCrawler {
   /**
    * Full crawl of a documentation source: discover URLs, scrape, extract, index.
    */
-  async crawlSource(sourceKey: string, sourceConfig: SourceConfig): Promise<CrawlStats> {
+  async crawlSource(sourceKey: string, sourceConfig: SourceConfig, force = false): Promise<CrawlStats> {
     const sourceId = toSourceId(sourceKey);
     const stats: CrawlStats = {
+      runId: `${sourceKey}-${Date.now()}`,
       pagesProcessed: 0,
       pagesSkipped: 0,
       symbolsExtracted: 0,
@@ -126,14 +138,26 @@ export class DocCrawler {
       last_crawled: new Date().toISOString(),
     });
 
+    // Handle OpenAPI spec if configured
+    if (sourceConfig.openapi_spec && sourceConfig.openapi_first !== false) {
+      await this.processOpenApiSpec(sourceKey, sourceConfig.openapi_spec, stats);
+    }
+    if (sourceConfig.openapi_spec && sourceConfig.openapi_only) {
+      await recordCrawlRun(this.config.dataDir, {
+        runId: stats.runId,
+        sourceKey,
+        startedAt: new Date(Date.now() - 1).toISOString(),
+        completedAt: new Date().toISOString(),
+        pagesProcessed: stats.pagesProcessed,
+        pagesSkipped: stats.pagesSkipped,
+        errors: stats.errors,
+      });
+      return stats;
+    }
+
     // Discover URLs
     const urls = await this.discoverUrls(sourceKey, sourceConfig);
     logger.info({ sourceKey, urlCount: urls.length }, 'URLs discovered');
-
-    // Handle OpenAPI spec if configured
-    if (sourceConfig.openapi_spec) {
-      await this.processOpenApiSpec(sourceKey, sourceConfig.openapi_spec, stats);
-    }
 
     // Set up concurrency and rate limiting
     const concurrency = sourceConfig.concurrency ?? this.config.crawl.defaultConcurrency;
@@ -145,11 +169,20 @@ export class DocCrawler {
     const crawlPromises = urls.map((url) =>
       semaphore.run(async () => {
         await bucket.consume();
-        await this.processUrl(url, sourceKey, sourceConfig, stats);
+        await this.processUrl(url, sourceKey, sourceConfig, stats, force);
       }),
     );
 
     await Promise.allSettled(crawlPromises);
+    await recordCrawlRun(this.config.dataDir, {
+      runId: stats.runId,
+      sourceKey,
+      startedAt: new Date(Date.now() - 1).toISOString(),
+      completedAt: new Date().toISOString(),
+      pagesProcessed: stats.pagesProcessed,
+      pagesSkipped: stats.pagesSkipped,
+      errors: stats.errors,
+    });
 
     logger.info({
       sourceKey,
@@ -162,7 +195,7 @@ export class DocCrawler {
   /**
    * Crawl a single URL, scrape it, extract symbols, and index.
    */
-  async crawlUrl(url: string, sourceKey: string): Promise<void> {
+  async crawlUrl(url: string, sourceKey: string, force = false): Promise<void> {
     const sourceId = toSourceId(sourceKey);
     const retryAttempts = this.config.crawl.defaultRetryAttempts;
     const backoff = this.config.crawl.defaultBackoff;
@@ -184,7 +217,7 @@ export class DocCrawler {
 
     if (previousContent !== null) {
       const diff = diffSnapshots(previousContent, markdown);
-      if (!diff.changed) {
+      if (!force && !diff.changed) {
         logger.debug({ url }, 'Content unchanged, skipping re-index');
         return;
       }
@@ -234,6 +267,14 @@ export class DocCrawler {
         symbol.id,
         `page::${sourceKey}::${pageId}`,
       );
+
+      const canonicalId = `${symbol.name.toLowerCase()}::${symbol.kind}`;
+      await this.graph.upsertNode('Module', {
+        id: `canonical::${canonicalId}`,
+        name: symbol.name,
+        kind: symbol.kind,
+      });
+      await this.graph.upsertEdge('SAME_AS', symbol.id, `canonical::${canonicalId}`);
     }
 
     // Upsert example nodes
@@ -253,7 +294,7 @@ export class DocCrawler {
     }
 
     // Add to vector store for semantic search
-    const vectorText = buildVectorText(markdown, extraction.symbols.length);
+    const vectorText = buildVectorText(markdown, extraction.symbols.length, this.config.crawl.summaryTargetTokens);
     await this.vectorStore.add(
       `page::${sourceKey}::${pageId}`,
       'Page',
@@ -335,19 +376,42 @@ export class DocCrawler {
     sourceKey: string,
     sourceConfig: SourceConfig,
     stats: CrawlStats,
+    force: boolean,
   ): Promise<void> {
+    const retryPolicy = sourceConfig.retry_policy;
+    const defaultAttempts = sourceConfig.retry_attempts ?? this.config.crawl.defaultRetryAttempts;
+    const defaultBackoff = sourceConfig.backoff ?? this.config.crawl.defaultBackoff;
     try {
-      await withRetry(
-        () => this.crawlUrl(url, sourceKey),
-        sourceConfig.retry_attempts ?? this.config.crawl.defaultRetryAttempts,
-        sourceConfig.backoff ?? this.config.crawl.defaultBackoff,
-        url,
-      );
+      const exec = async () => this.crawlUrl(url, sourceKey, force);
+      try {
+        await withRetry(exec, defaultAttempts, defaultBackoff, url);
+      } catch (err) {
+        const bucket = classifyRetryBucket(err);
+        const bucketAttempts = bucket === 'timeout'
+          ? retryPolicy?.timeout_attempts
+          : bucket === 'rate_limit'
+            ? retryPolicy?.rate_limit_attempts
+            : bucket === 'server_error'
+              ? retryPolicy?.server_error_attempts
+              : undefined;
+        if (bucketAttempts && bucketAttempts > defaultAttempts) {
+          await withRetry(exec, bucketAttempts, retryPolicy?.backoff ?? defaultBackoff, `${url}:${bucket}`);
+        } else {
+          throw err;
+        }
+      }
       stats.pagesProcessed++;
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
       stats.errors++;
       logger.error({ url, sourceKey, error: message }, 'Failed to crawl URL');
+      await recordCrawlFailure(this.config.dataDir, {
+        sourceKey,
+        url,
+        error: message,
+        at: new Date().toISOString(),
+      });
+      await emitWebhook('crawl.error', { sourceKey, url, error: message });
       await this._eventBus.emit('crawl:error', { sourceKey, url, error: message });
     }
   }
@@ -401,8 +465,8 @@ export class DocCrawler {
  * Build a text suitable for vector embedding from page markdown.
  * Truncates to a reasonable size and adds symbol count context.
  */
-function buildVectorText(markdown: string, symbolCount: number): string {
-  const maxChars = 8000;
+function buildVectorText(markdown: string, symbolCount: number, targetTokens: number): string {
+  const maxChars = Math.max(2000, targetTokens * 4);
   const truncated = markdown.length > maxChars
     ? markdown.slice(0, maxChars) + '...'
     : markdown;

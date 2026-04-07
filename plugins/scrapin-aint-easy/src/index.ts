@@ -59,8 +59,8 @@ export async function createScrapinServer(options: ScrapinServerOptions = {}): P
   await vector.initialize();
   await crawler.initialize();
 
-  crawlQueue.attachWorker(async ({ sourceKey, sourceConfig }) => {
-    const stats = await crawler.crawlSource(sourceKey, sourceConfig);
+  crawlQueue.attachWorker(async ({ sourceKey, sourceConfig, force }) => {
+    const stats = await crawler.crawlSource(sourceKey, sourceConfig, force);
     return { pagesProcessed: stats.pagesProcessed };
   });
 
@@ -89,7 +89,7 @@ export async function createScrapinServer(options: ScrapinServerOptions = {}): P
 
   const toolMap = new Map<string, ToolDefinition>(tools.map((t) => [t.name, t]));
 
-  server.setRequestHandler(CallToolRequestSchema, async (request) => {
+  server.setRequestHandler(CallToolRequestSchema, async (request: any): Promise<any> => {
     const toolName = request.params.name;
     const tool = toolMap.get(toolName);
     if (!tool) {

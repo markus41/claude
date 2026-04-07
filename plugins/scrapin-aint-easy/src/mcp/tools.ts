@@ -7,6 +7,8 @@ import { toSourceId } from '../core/ids.js';
 import { migrateLegacySourceIds } from '../core/source-migration.js';
 import { type CrawlQueue } from '../crawler/crawl-queue.js';
 import { type SourceConfig } from '../config/loader.js';
+import { readCrawlTelemetry } from '../crawler/telemetry.js';
+import { emitWebhook } from '../integrations/webhook.js';
 
 const logger = pino({ name: 'mcp:tools' });
 
@@ -88,6 +90,15 @@ const AgentDriftDiffInput = z.object({
 });
 
 const GraphStatsInput = z.object({});
+const CrawlFailuresInput = z.object({
+  source_key: z.string().optional(),
+  limit: z.coerce.number().min(1).max(50).default(10),
+});
+const SourceHealthInput = z.object({});
+const CodexBootstrapInput = z.object({
+  project_root: z.string().optional(),
+  write_agents_file: z.coerce.boolean().default(false),
+});
 
 // ── Response helpers ──
 
@@ -174,7 +185,16 @@ export function createTools(
           }
         }
 
-        merged.sort((a, b) => b.score - a.score);
+        const now = Date.now();
+        merged.sort((a, b) => {
+          const freshnessA = a.id.includes('page::') ? 0.05 : 0;
+          const freshnessB = b.id.includes('page::') ? 0.05 : 0;
+          const centralityA = a.label === 'Symbol' ? 0.1 : 0;
+          const centralityB = b.label === 'Symbol' ? 0.1 : 0;
+          const scoreA = a.score + freshnessA + centralityA + (now > 0 ? 0 : 0);
+          const scoreB = b.score + freshnessB + centralityB + (now > 0 ? 0 : 0);
+          return scoreB - scoreA;
+        });
         const top = merged.slice(0, input.limit);
 
         const meta = makeMetadata('scrapin_search', false);
@@ -420,7 +440,9 @@ export function createTools(
         try {
           const { CodeDriftScanner } = await import('../drift/code-drift.js');
           const scanner = new CodeDriftScanner(graph, root);
-          const report = await scanner.scan();
+          const reportRaw = await scanner.scan();
+          const { applyDriftSuppressions } = await import('../drift/suppression.js');
+          const report = await applyDriftSuppressions(config.configDir, reportRaw);
 
           const { formatCodeDriftReport, saveDriftReport } = await import('../drift/drift-reporter.js');
           await saveDriftReport(report, 'code-drift', config.dataDir);
@@ -493,6 +515,9 @@ export function createTools(
           text += `\n\n**Total agents:** ${reports.length}\n`;
           text += `**Drifted:** ${reports.filter((r) => r.drift_score > 0).length}\n`;
           text += `**High severity (>5):** ${reports.filter((r) => r.drift_score > 5).length}`;
+          if (reports.some((r) => r.drift_score > 7)) {
+            await emitWebhook('drift.agent.high', { count: reports.filter((r) => r.drift_score > 7).length });
+          }
 
           return textResponse(text);
         } catch (err) {
@@ -603,6 +628,69 @@ export function createTools(
         text += `\n**Vector store entries:** ${vector.size}`;
 
         return textResponse(text);
+      },
+    },
+
+    {
+      name: 'scrapin_crawl_failures',
+      description: 'List recent crawl failures with grouped triage hints',
+      inputSchema: CrawlFailuresInput,
+      handler: async (raw) => {
+        const input = CrawlFailuresInput.parse(raw);
+        const telemetry = await readCrawlTelemetry(config.dataDir);
+        const filtered = telemetry.failures
+          .filter((f) => !input.source_key || f.sourceKey === input.source_key)
+          .slice(0, input.limit);
+        if (filtered.length === 0) {
+          return textResponse('No crawl failures recorded.');
+        }
+        const lines = filtered.map((f) => `- [${f.at}] **${f.sourceKey}** ${f.url}\n  - ${f.error}`);
+        return textResponse(`## Crawl Failures (${filtered.length})\n\n${lines.join('\n')}`);
+      },
+    },
+
+    {
+      name: 'scrapin_source_health',
+      description: 'Show A-F health scores by source based on success ratio and freshness',
+      inputSchema: SourceHealthInput,
+      handler: async () => {
+        const telemetry = await readCrawlTelemetry(config.dataDir);
+        const rows = Object.values(telemetry.health).map((h) => {
+          const total = h.successCount + h.failureCount;
+          const successRate = total === 0 ? 1 : h.successCount / total;
+          const freshnessPenalty = Math.min(0.4, h.avgFreshnessHours / 72);
+          const score = Math.max(0, Math.min(1, successRate - freshnessPenalty));
+          const grade = score >= 0.9 ? 'A' : score >= 0.8 ? 'B' : score >= 0.7 ? 'C' : score >= 0.6 ? 'D' : 'F';
+          return `| ${h.sourceKey} | ${grade} | ${(successRate * 100).toFixed(0)}% | ${h.avgFreshnessHours.toFixed(1)}h |`;
+        });
+        return textResponse(`## Source Health\n\n| Source | Grade | Success Rate | Avg Freshness |\n|---|---|---|---|\n${rows.join('\n') || '| n/a | n/a | n/a | n/a |'}`);
+      },
+    },
+
+    {
+      name: 'scrapin_codex_bootstrap',
+      description: 'Generate Codex MCP + AGENTS bootstrap for this plugin',
+      inputSchema: CodexBootstrapInput,
+      handler: async (raw) => {
+        const input = CodexBootstrapInput.parse(raw);
+        const root = input.project_root ?? config.projectRoot;
+        const snippet = [
+          'codex mcp add scrapin --command node --arg plugins/scrapin-aint-easy/dist/cli.js --arg --mcp',
+          '',
+          '[mcp_servers.scrapin]',
+          'command = "node"',
+          'args = ["plugins/scrapin-aint-easy/dist/cli.js", "--mcp"]',
+        ].join('\n');
+
+        if (input.write_agents_file) {
+          const { writeFile } = await import('node:fs/promises');
+          await writeFile(
+            join(root, 'AGENTS.md'),
+            'Always use the `scrapin` MCP server for docs crawling, graph search, and drift checks before manual scraping.\n',
+            { encoding: 'utf-8' },
+          );
+        }
+        return textResponse(`## Codex Bootstrap\n\n\`\`\`\n${snippet}\n\`\`\`\n\nWrote AGENTS.md: ${input.write_agents_file ? 'yes' : 'no'}`);
       },
     },
   ];

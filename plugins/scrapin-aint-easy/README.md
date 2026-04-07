@@ -48,6 +48,41 @@ Add to your project's `.mcp.json`:
 }
 ```
 
+## Codex Integration
+
+`scrapin-ain't-easy` also works with Codex through MCP.
+
+### 1) Register MCP server
+
+```bash
+codex mcp add scrapin --command node --arg plugins/scrapin-aint-easy/dist/cli.js --arg --mcp
+codex mcp list
+```
+
+### 2) Optional static config (`~/.codex/config.toml`)
+
+```toml
+[mcp_servers.scrapin]
+command = "node"
+args = ["plugins/scrapin-aint-easy/dist/cli.js", "--mcp"]
+```
+
+### 3) Add AGENTS guidance (recommended)
+
+Create or update `AGENTS.md` in your repo with:
+
+```md
+Always use the `scrapin` MCP server for documentation crawling, graph search, and drift checks before suggesting manual web scraping.
+```
+
+### 4) Build + run
+
+```bash
+cd plugins/scrapin-aint-easy
+pnpm install
+pnpm build
+```
+
 Or for `claude_desktop_config.json`:
 
 ```json
@@ -110,6 +145,9 @@ Or run standalone: `pnpm start:lsp`
 | `scrapin_agent_drift_acknowledge` | Mark drift as intentional |
 | `scrapin_agent_drift_diff` | Markdown diff since baseline |
 | `scrapin_graph_stats` | Node/edge counts, index health |
+| `scrapin_crawl_failures` | Triage recent crawl failures |
+| `scrapin_source_health` | A-F source health dashboard |
+| `scrapin_codex_bootstrap` | Generate Codex MCP/AGENTS bootstrap |
 
 ## Adding Documentation Sources
 
@@ -198,6 +236,8 @@ MCP Server (stdio) ──── Claude Code
 | `NEO4J_URI` | Optional | Switch to Neo4j instead of Kùzu |
 | `NEO4J_USER` | With Neo4j | Neo4j username |
 | `NEO4J_PASSWORD` | With Neo4j | Neo4j password |
+| `SCRAPIN_SNAPSHOT_SIGNING_KEY` | Optional | HMAC key for signed snapshots |
+| `SCRAPIN_ALERT_WEBHOOK_URL` | Optional | Webhook endpoint for critical crawl/drift alerts |
 
 ## Development
 
@@ -207,6 +247,12 @@ pnpm test         # Run tests
 pnpm test:watch   # Watch mode tests
 pnpm build        # Build with tsup
 ```
+
+## Upgrade Backlog (15 proposals)
+
+A prioritized 15-item upgrade plan (including Codex-native improvements) is maintained here:
+
+- [`docs/context/codex-upgrade-plan.md`](docs/context/codex-upgrade-plan.md)
 
 ## License
 
