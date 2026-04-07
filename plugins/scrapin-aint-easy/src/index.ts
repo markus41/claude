@@ -15,6 +15,7 @@ import { EventBus } from './core/event-bus.js';
 import { createTools, type ToolDefinition } from './mcp/tools.js';
 import { createResources, type ResourceDefinition } from './mcp/resources.js';
 import { createPrompts, type PromptDefinition } from './mcp/prompts.js';
+import { zodToJsonSchema } from './mcp/zod-json-schema.js';
 import { CronScheduler } from './scheduler/cron.js';
 import { createFullSweepJob } from './scheduler/jobs/full-sweep.js';
 import { createStalenessCheckJob } from './scheduler/jobs/staleness-check.js';
@@ -82,15 +83,7 @@ export async function createScrapinServer(options: ScrapinServerOptions = {}): P
     tools: tools.map((t) => ({
       name: t.name,
       description: t.description,
-      inputSchema: {
-        type: 'object' as const,
-        properties: Object.fromEntries(
-          Object.entries((t.inputSchema as { shape?: Record<string, unknown> }).shape ?? {}).map(([key]) => [
-            key,
-            { type: 'string' },
-          ]),
-        ),
-      },
+      inputSchema: zodToJsonSchema(t.inputSchema),
     })),
   }));
 

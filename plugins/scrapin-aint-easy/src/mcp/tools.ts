@@ -13,22 +13,22 @@ const logger = pino({ name: 'mcp:tools' });
 
 const SearchInput = z.object({
   query: z.string().describe('Natural language or symbol name to search for'),
-  limit: z.number().min(1).max(50).default(10),
+  limit: z.coerce.number().min(1).max(50).default(10),
   label_filter: z.enum(['Source', 'Page', 'Symbol', 'Module', 'Example', 'AlgoNode', 'Pattern', 'AgentDef']).optional(),
 });
 
 const GraphQueryInput = z.object({
   start_id: z.string().describe('Node ID to start traversal from'),
-  hops: z.number().min(1).max(5).default(2),
+  hops: z.coerce.number().min(1).max(5).default(2),
   edge_types: z.array(z.string()).optional(),
-  include_siblings: z.boolean().default(false),
+  include_siblings: z.coerce.boolean().default(false),
 });
 
 const AlgoSearchInput = z.object({
   query: z.string().describe('Algorithm name or description'),
   category: z.string().optional(),
   language: z.enum(['ts', 'py']).optional(),
-  limit: z.number().min(1).max(20).default(5),
+  limit: z.coerce.number().min(1).max(20).default(5),
 });
 
 const AlgoDetailInput = z.object({
@@ -37,7 +37,7 @@ const AlgoDetailInput = z.object({
 
 const CrawlSourceInput = z.object({
   source_key: z.string().describe('Source key from sources.yaml'),
-  force: z.boolean().default(false),
+  force: z.coerce.boolean().default(false),
 });
 
 const DiffInput = z.object({
@@ -56,8 +56,8 @@ const AddSourceInput = z.object({
   base_url: z.string().url(),
   sitemap: z.string().optional(),
   package_aliases: z.array(z.string()).default([]),
-  concurrency: z.number().default(5),
-  rps: z.number().default(2),
+  concurrency: z.coerce.number().default(5),
+  rps: z.coerce.number().default(2),
 });
 
 const AddAlgoSourceInput = z.object({
