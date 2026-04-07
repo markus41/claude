@@ -2418,3 +2418,33 @@ AssertionError: expected [ { type: 'CALLS', …(3) } ] to have a length of +0 bu
 - **Input:** `ls /home/user/claude/plugins/scrapin-aint-easy/commands/ 2>/dev/null && echo "---" && ls /home/user/claude/plugins/scrapin-aint-easy/agents/ 2>/dev/null`
 - **Error:** Exit code 2
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-04-07T04:51:53Z)
+- **Tool:** Bash
+- **Input:** `node scripts/check-plugin-context.mjs 2>&1`
+- **Error:** Exit code 1
+❌ aws-eks-helm-keycloak: context.excludeGlobs is missing defaults: **/coverage/**, **/*.tar*
+❌ claude-code-expert: CONTEXT_SUMMARY.md estimated 2920 tokens (max 750)
+❌ claude-code-templating-plugin: context.excludeGlobs is missing defaults: **/coverage/**, **/*.tar*
+❌ cowork-marketplace: context.excludeGlobs is missing defaults: **/coverage/**, **/*.tar*
+❌ cowork-marketplace: CONTEXT_SUMMARY.md must include a "when to open deeper docs" decision table
+❌ deployment-pipeline: context.excludeGlobs is missing defaults: **/coverage/**, **/*.tar*
+❌ drawio-diagramming: context.excludeGlobs is missing defaults: **/coverage/**, **/*.tar*
+❌ drawio-diagramming: CONTEXT_SUMMARY.md must include a "when to open deeper docs" decision table
+❌ exec-automator: context.excludeGlobs is missing defaults: **/coverage/**, **/*.tar*
+❌ fastapi-backend: context.excludeGlobs is missing defaults: **/coverage/**, **/*.tar*
+❌ frontend-design-system: context.excludeGlobs is missing defaults: **/coverage/**, **/*.tar*
+❌ fullstack-iac: context.excludeGlobs is missing defaults: **/coverage/**, **/*.tar*
+❌ home-assistant-architect: context.excludeGlobs is missing defaults: **/coverage/**, **/*.tar*
+❌ jira-orchestrator: context.excludeGlobs is missing defaults: **/coverage/**, **/*.tar*
+❌ lobbi-platform-manager: context.excludeGlobs is missing defaults: **/coverage/**, **/*.tar*
+❌ marketplace-pro: context.excludeGlobs is missing defaults: **/coverage/**, **/*.tar*
+❌ mui-expert: context.excludeGlobs is missing defaults: **/coverage/**, **/*.tar*
+❌ mui-expert: CONTEXT_SUMMARY.md must include a "when to open deeper docs" decision table
+❌ mui-expert: CONTEXT_SUMMARY.md estimated 977 tokens (max 750)
+❌ react-animation-studio: context.excludeGlobs is missing defaults: **/coverage/**, **/*.tar*
+❌ scrapin-aint-easy: plugin manifest is missing required "contextEntry" field
+❌ team-accelerator: context.excludeGlobs is missing defaults: **/coverage/**, **/*.tar*
+❌ tvs-microsoft-deploy: context.excludeGlobs is missing defaults: **/coverage/**, **/*.tar*
+❌ upgrade-suggestion: plugin cannot be published without CLAUDE.md
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
