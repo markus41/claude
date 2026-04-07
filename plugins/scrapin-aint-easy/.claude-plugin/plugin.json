@@ -18,12 +18,6 @@
     "interview-setup",
     "code-intelligence"
   ],
-  "commands": "./.claude/commands/",
-  "agents": "./.claude/agents/",
-  "skills": [
-    "./skills/",
-    "./.claude/skills/"
-  ],
   "mcpServers": {
     "scrapin-aint-easy": {
       "command": "node",
