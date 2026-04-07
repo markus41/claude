@@ -2412,3 +2412,9 @@ AssertionError: expected [ { type: 'CALLS', …(3) } ] to have a length of +0 bu
 - **Status:** RESOLVED
 - **Fix:** Two separate test correctness issues: (1) `slugify()` in `pattern-extractor.ts` splits camelCase via `/([a-z])([A-Z])/g` — `insertionSort` becomes `insertion-sort` not `insertionsort`. Test assertion corrected to match actual behaviour. (2) `GraphAdapter.traverse()` pushes edges speculatively when scanning a node's neighbours, even at hops=0. The edge is added before the neighbour is dequeued and depth-checked. Test corrected to assert only on nodes, not edges, for the hops=0 boundary case.
 - **Prevention:** Read the implementation of slugify/traverse before writing assertions about their output. For traversal edge cases, understand whether edge collection is eager (before depth pruning) or lazy.
+
+### Error: Bash failure (2026-04-07T04:33:57Z)
+- **Tool:** Bash
+- **Input:** `ls /home/user/claude/plugins/scrapin-aint-easy/commands/ 2>/dev/null && echo "---" && ls /home/user/claude/plugins/scrapin-aint-easy/agents/ 2>/dev/null`
+- **Error:** Exit code 2
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
