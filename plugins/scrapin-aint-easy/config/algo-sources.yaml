@@ -1,0 +1,32 @@
+algo_sources:
+  - key: the-algorithms-ts
+    url: https://github.com/TheAlgorithms/TypeScript
+    type: github_repo
+    paths: ["src/**/*.ts"]
+    extract_mode: code_analysis
+
+  - key: the-algorithms-python
+    url: https://github.com/TheAlgorithms/Python
+    type: github_repo
+    paths: ["**/*.py"]
+    extract_mode: code_analysis
+
+  - key: algorithm-visualizer
+    url: https://algorithm-visualizer.org
+    type: sitemap_crawl
+
+  - key: neetcode-patterns
+    url: https://neetcode.io/roadmap
+    type: sitemap_crawl
+
+  - key: refactoring-guru-patterns
+    url: https://refactoring.guru/design-patterns
+    type: sitemap_crawl
+
+  - key: patterns-dev
+    url: https://www.patterns.dev
+    type: sitemap_crawl
+
+  - key: bigocheatsheet
+    url: https://www.bigocheatsheet.com
+    type: single_page

@@ -1,0 +1,52 @@
+nodes:
+  - label: Source
+    properties: [id, name, base_url, last_crawled, crawl_config]
+  - label: Page
+    properties: [id, url, title, content_md, content_hash, etag, last_crawled, stale, deleted, source_id]
+  - label: Symbol
+    properties: [id, name, kind, description, signature, deprecated, deleted, source_id, page_id, last_crawled]
+  - label: Module
+    properties: [id, name, package, source_id]
+  - label: Example
+    properties: [id, title, language, code, symbol_id]
+  - label: AlgoNode
+    properties: [id, name, category, complexity_time, complexity_space, description, source_url, code_ts, code_py, tags, last_crawled]
+  - label: Pattern
+    properties: [id, name, category, description, example_ts, example_py, use_cases, tags]
+  - label: AgentDef
+    properties: [id, agent_id, file_path, content_hash, last_checked, drift_score, last_drift_detected]
+
+edges:
+  - type: PART_OF
+    from: Page
+    to: Source
+  - type: DEFINED_IN
+    from: Symbol
+    to: Page
+  - type: BELONGS_TO
+    from: Symbol
+    to: Module
+  - type: CALLS
+    from: Symbol
+    to: Symbol
+  - type: INHERITS
+    from: Symbol
+    to: Symbol
+  - type: SEE_ALSO
+    from: Symbol
+    to: Symbol
+  - type: HAS_EXAMPLE
+    from: Symbol
+    to: Example
+  - type: SUPERSEDES
+    from: Symbol
+    to: Symbol
+  - type: USES_ALGO
+    from: Symbol
+    to: AlgoNode
+  - type: IMPLEMENTS
+    from: Symbol
+    to: Pattern
+  - type: RELATED_ALGO
+    from: AlgoNode
+    to: AlgoNode

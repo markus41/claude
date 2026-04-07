@@ -1,0 +1,69 @@
+sources:
+  stripe:
+    name: Stripe API
+    base_url: https://docs.stripe.com
+    sitemap: https://docs.stripe.com/sitemap.xml
+    package_aliases: ["stripe", "@stripe/stripe-js"]
+    concurrency: 5
+    rps: 2
+    retry_attempts: 3
+    backoff: exponential
+
+  github-rest:
+    name: GitHub REST API
+    base_url: https://docs.github.com/en/rest
+    openapi_spec: https://raw.githubusercontent.com/github/rest-api-description/main/descriptions/api.github.com/api.github.com.json
+    package_aliases: ["@octokit/rest", "octokit"]
+    concurrency: 10
+    rps: 5
+    auth_env: GITHUB_TOKEN
+
+  react-query:
+    name: TanStack Query
+    base_url: https://tanstack.com/query/latest/docs
+    sitemap: https://tanstack.com/query/sitemap.xml
+    package_aliases: ["@tanstack/react-query", "@tanstack/vue-query"]
+    concurrency: 8
+    rps: 3
+
+  effect-ts:
+    name: Effect-TS
+    base_url: https://effect.website/docs
+    sitemap: https://effect.website/sitemap.xml
+    package_aliases: ["effect", "@effect/platform"]
+    concurrency: 8
+    rps: 3
+
+  anthropic:
+    name: Anthropic API
+    base_url: https://docs.anthropic.com
+    sitemap: https://docs.anthropic.com/sitemap.xml
+    package_aliases: ["@anthropic-ai/sdk", "@anthropic-ai/claude-agent-sdk"]
+    concurrency: 5
+    rps: 2
+
+  mcp-sdk:
+    name: Model Context Protocol SDK
+    base_url: https://modelcontextprotocol.io/docs
+    sitemap: https://modelcontextprotocol.io/sitemap.xml
+    package_aliases: ["@modelcontextprotocol/sdk"]
+    concurrency: 5
+    rps: 2
+
+  azure:
+    name: Azure SDK for JavaScript
+    base_url: https://learn.microsoft.com/en-us/javascript/azure
+    sitemap: https://learn.microsoft.com/sitemap.xml
+    sitemap_filter: "/javascript/azure"
+    package_aliases: ["@azure/identity", "@azure/storage-blob", "@azure/cosmos"]
+    concurrency: 5
+    rps: 2
+
+  dotnet:
+    name: .NET API Browser
+    base_url: https://learn.microsoft.com/en-us/dotnet/api
+    sitemap: https://learn.microsoft.com/sitemap.xml
+    sitemap_filter: "/dotnet/api"
+    package_aliases: ["System", "Microsoft.Extensions", "Microsoft.AspNetCore"]
+    concurrency: 5
+    rps: 2

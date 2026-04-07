@@ -1,0 +1,53 @@
+{
+  "name": "scrapin-aint-easy",
+  "version": "1.0.0",
+  "description": "Documentation intelligence engine, algorithm library, and codebase drift detection system for Claude Code",
+  "type": "module",
+  "main": "dist/cli.js",
+  "bin": {
+    "scrapin-aint-easy": "dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsx watch src/cli.ts --mcp",
+    "start": "node dist/cli.js --mcp",
+    "start:lsp": "node dist/cli.js --lsp",
+    "start:all": "node dist/cli.js --mcp --lsp --cron",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "cron:run": "node dist/cli.js --cron-only",
+    "drift:agents": "node dist/cli.js --run-job agent-drift-scan",
+    "drift:code": "node dist/cli.js --run-job code-drift-scan",
+    "algo:index": "node dist/cli.js --run-job algo-sweep",
+    "graph:stats": "node dist/cli.js --graph-stats"
+  },
+  "dependencies": {
+    "@mendable/firecrawl-js": "^4.18.0",
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "@readme/openapi-parser": "^2.6.0",
+    "@typescript-eslint/typescript-estree": "^8.0.0",
+    "@xenova/transformers": "^2.17.0",
+    "hnswlib-node": "^3.0.0",
+    "ignore": "^5.3.0",
+    "js-yaml": "^4.1.0",
+    "kuzu": "^0.7.0",
+    "node-cron": "^3.0.0",
+    "node-fetch": "^3.3.0",
+    "pino": "^9.0.0",
+    "puppeteer": "^23.0.0",
+    "vscode-languageserver-protocol": "^3.17.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "20",
+    "@types/node-cron": "^3.0.0",
+    "tsup": "^8.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
