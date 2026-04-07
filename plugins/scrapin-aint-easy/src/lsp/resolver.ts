@@ -1,6 +1,7 @@
 import pino from 'pino';
 import { type GraphAdapter, type SymbolNode, type SearchResult } from '../core/graph.js';
 import { type VectorStore, type VectorSearchResult } from '../core/vector.js';
+import { toSourceKey } from '../core/ids.js';
 
 const logger = pino({ name: 'lsp-resolver' });
 
@@ -217,7 +218,7 @@ export class SymbolResolver {
   }
 
   private buildCanonicalUrl(sourceId: string, pageId: string): string {
-    const sourceConfig = this.sources[sourceId];
+    const sourceConfig = this.sources[toSourceKey(sourceId)];
     if (!sourceConfig) return '';
 
     const baseUrl = sourceConfig['base_url'] as string | undefined;

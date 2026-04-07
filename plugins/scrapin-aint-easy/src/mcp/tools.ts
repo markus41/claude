@@ -3,6 +3,7 @@ import pino from 'pino';
 import { type GraphAdapter } from '../core/graph.js';
 import { type VectorStore } from '../core/vector.js';
 import { type EventBus } from '../core/event-bus.js';
+import { toSourceId } from '../core/ids.js';
 
 const logger = pino({ name: 'mcp:tools' });
 
@@ -297,7 +298,8 @@ export function createTools(
         logger.info({ sourceKey: input.source_key }, 'scrapin_diff');
 
         const pages = await graph.getNodesByLabel('Page');
-        const sourcePages = pages.filter((p) => p.props['source_id'] === input.source_key);
+        const sourceId = toSourceId(input.source_key);
+        const sourcePages = pages.filter((p) => toSourceId(String(p.props['source_id'] ?? '')) === sourceId);
         const stale = sourcePages.filter((p) => p.props['stale'] === true);
 
         const meta = makeMetadata('scrapin_diff', false);
@@ -359,7 +361,7 @@ export function createTools(
         logger.info({ key: input.key, baseUrl: input.base_url }, 'scrapin_add_source');
 
         await graph.upsertNode('Source', {
-          id: input.key,
+          id: toSourceId(input.key),
           name: input.name,
           base_url: input.base_url,
           last_crawled: '',
