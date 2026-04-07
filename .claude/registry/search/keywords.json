@@ -2,338 +2,973 @@
   "$schema": "../schema/search.schema.json",
   "version": "4.0.0",
   "description": "Comprehensive keyword-to-resource mapping for agents, skills, MCPs, tools, and workflows",
-
   "keywordMap": {
     "deploy": {
-      "agents": ["k8s-deployer", "docker-builder", "helm-specialist", "cicd-engineer"],
-      "skills": ["kubernetes", "helm", "docker"],
-      "commands": ["deploy", "rollback", "scale"],
-      "workflows": ["ci-cd-workflow", "feature-development"],
-      "mcps": ["vercel"],
-      "tools": ["Bash"]
+      "agents": [
+        "k8s-deployer",
+        "docker-builder",
+        "helm-specialist",
+        "cicd-engineer"
+      ],
+      "skills": [
+        "kubernetes",
+        "helm",
+        "docker"
+      ],
+      "commands": [
+        "deploy",
+        "rollback",
+        "scale"
+      ],
+      "workflows": [
+        "ci-cd-workflow",
+        "feature-development"
+      ],
+      "mcps": [
+        "vercel"
+      ],
+      "tools": [
+        "Bash"
+      ]
     },
     "test": {
-      "agents": ["tester", "qa-engineer", "e2e-tester", "load-tester"],
-      "skills": ["testing", "debugging"],
-      "commands": ["test", "generate-tests"],
-      "workflows": ["code-review", "ci-cd-workflow"],
-      "mcps": ["playwright"],
-      "tools": ["Bash", "Task"]
+      "agents": [
+        "tester",
+        "qa-engineer",
+        "e2e-tester",
+        "load-tester"
+      ],
+      "skills": [
+        "testing",
+        "debugging"
+      ],
+      "commands": [
+        "test",
+        "generate-tests"
+      ],
+      "workflows": [
+        "code-review",
+        "ci-cd-workflow"
+      ],
+      "mcps": [
+        "playwright"
+      ],
+      "tools": [
+        "Bash",
+        "Task"
+      ]
     },
     "review": {
-      "agents": ["reviewer", "security-auditor", "code-analyzer", "code-review-swarm"],
-      "skills": ["git-workflows"],
-      "commands": ["review", "review-all", "security-scan"],
-      "workflows": ["code-review"],
-      "mcps": ["github"],
-      "tools": ["Read", "Grep"]
+      "agents": [
+        "reviewer",
+        "security-auditor",
+        "code-analyzer",
+        "code-review-swarm"
+      ],
+      "skills": [
+        "git-workflows"
+      ],
+      "commands": [
+        "review",
+        "review-all",
+        "security-scan"
+      ],
+      "workflows": [
+        "code-review"
+      ],
+      "mcps": [
+        "github"
+      ],
+      "tools": [
+        "Read",
+        "Grep"
+      ]
     },
     "debug": {
-      "agents": ["debugger", "incident-responder", "observability"],
-      "skills": ["debugging"],
-      "commands": ["debug", "logs"],
-      "workflows": ["incident-response"],
-      "mcps": ["supabase", "vercel"],
-      "tools": ["Bash", "Read", "Grep"]
+      "agents": [
+        "debugger",
+        "incident-responder",
+        "observability"
+      ],
+      "skills": [
+        "debugging"
+      ],
+      "commands": [
+        "debug",
+        "logs"
+      ],
+      "workflows": [
+        "incident-response"
+      ],
+      "mcps": [
+        "supabase",
+        "vercel"
+      ],
+      "tools": [
+        "Bash",
+        "Read",
+        "Grep"
+      ]
     },
     "security": {
-      "agents": ["security-auditor", "penetration-tester", "compliance-checker", "secrets-manager"],
-      "skills": ["authentication"],
-      "commands": ["security-scan", "secure-audit", "security-fortress"],
-      "workflows": ["ci-cd-workflow"],
+      "agents": [
+        "security-auditor",
+        "penetration-tester",
+        "compliance-checker",
+        "secrets-manager"
+      ],
+      "skills": [
+        "authentication"
+      ],
+      "commands": [
+        "security-scan",
+        "secure-audit",
+        "security-fortress"
+      ],
+      "workflows": [
+        "ci-cd-workflow"
+      ],
       "mcps": [],
-      "tools": ["Grep", "Read"]
+      "tools": [
+        "Grep",
+        "Read"
+      ]
     },
     "api": {
-      "agents": ["api-designer", "backend-dev"],
-      "skills": ["rest-api", "graphql", "flask-api", "fastapi"],
-      "commands": ["document-api"],
-      "workflows": ["feature-development"],
-      "mcps": ["supabase", "context7"],
-      "tools": ["Read", "Edit", "Write"]
+      "agents": [
+        "api-designer",
+        "backend-dev"
+      ],
+      "skills": [
+        "rest-api",
+        "graphql",
+        "flask-api",
+        "fastapi"
+      ],
+      "commands": [
+        "document-api"
+      ],
+      "workflows": [
+        "feature-development"
+      ],
+      "mcps": [
+        "supabase",
+        "context7"
+      ],
+      "tools": [
+        "Read",
+        "Edit",
+        "Write"
+      ]
     },
     "database": {
-      "agents": ["database-specialist", "data-engineer"],
-      "skills": ["database", "redis", "vector-db"],
+      "agents": [
+        "database-specialist",
+        "data-engineer"
+      ],
+      "skills": [
+        "database",
+        "redis",
+        "vector-db"
+      ],
       "commands": [],
-      "workflows": ["data-processing-workflow"],
-      "mcps": ["supabase", "upstash"],
-      "tools": ["mcp__supabase__execute_sql", "mcp__supabase__apply_migration"]
+      "workflows": [
+        "data-processing-workflow"
+      ],
+      "mcps": [
+        "supabase",
+        "upstash"
+      ],
+      "tools": [
+        "mcp__supabase__execute_sql",
+        "mcp__supabase__apply_migration"
+      ]
     },
     "sprint": {
-      "agents": ["scrum-master", "product-owner", "sprint-analyst", "jira-specialist"],
-      "skills": ["scrum", "jira"],
-      "commands": ["sprint-plan", "standup", "retro", "backlog-groom"],
-      "workflows": ["sprint-management", "scrum-ceremonies"],
-      "mcps": ["atlassian"],
+      "agents": [
+        "scrum-master",
+        "product-owner",
+        "sprint-analyst",
+        "jira-specialist"
+      ],
+      "skills": [
+        "scrum",
+        "jira"
+      ],
+      "commands": [
+        "sprint-plan",
+        "standup",
+        "retro",
+        "backlog-groom"
+      ],
+      "workflows": [
+        "sprint-management",
+        "scrum-ceremonies"
+      ],
+      "mcps": [
+        "atlassian"
+      ],
       "tools": []
     },
     "documentation": {
-      "agents": ["docs-writer", "api-documenter", "runbook-writer", "confluence-specialist"],
-      "skills": ["confluence"],
-      "commands": ["confluence-publish", "update-documentation", "document-api"],
-      "workflows": ["atlassian-integration", "documentation-lifecycle", "adr-workflow", "repository-documentation"],
-      "mcps": ["atlassian", "context7", "obsidian"],
-      "tools": ["Write", "Read"]
+      "agents": [
+        "docs-writer",
+        "api-documenter",
+        "runbook-writer",
+        "confluence-specialist",
+        "doc-crawler",
+        "doc-graph-builder"
+      ],
+      "skills": [
+        "confluence",
+        "scrapin-aint-easy"
+      ],
+      "commands": [
+        "confluence-publish",
+        "update-documentation",
+        "document-api",
+        "scrapin:search",
+        "scrapin:crawl",
+        "scrapin:diff"
+      ],
+      "workflows": [
+        "atlassian-integration",
+        "documentation-lifecycle",
+        "adr-workflow",
+        "repository-documentation"
+      ],
+      "mcps": [
+        "atlassian",
+        "context7",
+        "obsidian"
+      ],
+      "tools": [
+        "Write",
+        "Read"
+      ]
     },
     "vault": {
-      "agents": ["docs-writer"],
+      "agents": [
+        "docs-writer"
+      ],
       "skills": [],
-      "commands": ["update-documentation"],
-      "workflows": ["documentation-lifecycle", "adr-workflow", "repository-documentation"],
-      "mcps": ["obsidian"],
-      "tools": ["mcp__obsidian__list_files_in_vault", "mcp__obsidian__get_file_contents", "mcp__obsidian__simple_search", "mcp__obsidian__append_content"]
+      "commands": [
+        "update-documentation"
+      ],
+      "workflows": [
+        "documentation-lifecycle",
+        "adr-workflow",
+        "repository-documentation"
+      ],
+      "mcps": [
+        "obsidian"
+      ],
+      "tools": [
+        "mcp__obsidian__list_files_in_vault",
+        "mcp__obsidian__get_file_contents",
+        "mcp__obsidian__simple_search",
+        "mcp__obsidian__append_content"
+      ]
     },
     "workflow": {
-      "agents": ["cicd-engineer", "gitops-specialist"],
+      "agents": [
+        "cicd-engineer",
+        "gitops-specialist"
+      ],
       "skills": [],
       "commands": [],
-      "workflows": ["ci-cd-workflow", "data-processing-workflow"],
-      "mcps": ["n8n", "github"],
-      "tools": ["Task", "Bash"]
+      "workflows": [
+        "ci-cd-workflow",
+        "data-processing-workflow"
+      ],
+      "mcps": [
+        "n8n",
+        "github"
+      ],
+      "tools": [
+        "Task",
+        "Bash"
+      ]
     },
     "automation": {
-      "agents": ["cicd-engineer", "sre-engineer"],
+      "agents": [
+        "cicd-engineer",
+        "sre-engineer"
+      ],
       "skills": [],
       "commands": [],
-      "workflows": ["ci-cd-workflow"],
-      "mcps": ["n8n", "github", "upstash"],
-      "tools": ["Bash", "Task"]
+      "workflows": [
+        "ci-cd-workflow"
+      ],
+      "mcps": [
+        "n8n",
+        "github",
+        "upstash"
+      ],
+      "tools": [
+        "Bash",
+        "Task"
+      ]
     },
     "integration": {
-      "agents": ["backend-dev", "api-designer"],
-      "skills": ["rest-api", "graphql"],
+      "agents": [
+        "backend-dev",
+        "api-designer"
+      ],
+      "skills": [
+        "rest-api",
+        "graphql"
+      ],
       "commands": [],
-      "workflows": ["atlassian-integration", "data-processing-workflow"],
-      "mcps": ["n8n", "supabase", "vercel"],
-      "tools": ["Task", "Read"]
+      "workflows": [
+        "atlassian-integration",
+        "data-processing-workflow"
+      ],
+      "mcps": [
+        "n8n",
+        "supabase",
+        "vercel"
+      ],
+      "tools": [
+        "Task",
+        "Read"
+      ]
     },
     "webhook": {
-      "agents": ["backend-dev", "api-designer"],
-      "skills": ["rest-api", "fastapi", "flask-api"],
+      "agents": [
+        "backend-dev",
+        "api-designer"
+      ],
+      "skills": [
+        "rest-api",
+        "fastapi",
+        "flask-api"
+      ],
       "commands": [],
       "workflows": [],
-      "mcps": ["n8n", "upstash"],
-      "tools": ["Edit", "Write"]
+      "mcps": [
+        "n8n",
+        "upstash"
+      ],
+      "tools": [
+        "Edit",
+        "Write"
+      ]
     },
     "architecture": {
-      "agents": ["system-architect", "api-designer"],
+      "agents": [
+        "system-architect",
+        "api-designer"
+      ],
       "skills": [],
-      "commands": ["migrate-architecture"],
-      "workflows": ["feature-development"],
+      "commands": [
+        "migrate-architecture"
+      ],
+      "workflows": [
+        "feature-development"
+      ],
       "mcps": [],
-      "tools": ["Read", "Task"]
+      "tools": [
+        "Read",
+        "Task"
+      ]
     },
     "ml": {
-      "agents": ["ml-engineer", "data-engineer", "rag-specialist", "llm-engineer"],
-      "skills": ["llm-integration", "vector-db"],
+      "agents": [
+        "ml-engineer",
+        "data-engineer",
+        "rag-specialist",
+        "llm-engineer"
+      ],
+      "skills": [
+        "llm-integration",
+        "vector-db"
+      ],
       "commands": [],
-      "workflows": ["data-processing-workflow"],
-      "mcps": ["upstash"],
-      "tools": ["Task"]
+      "workflows": [
+        "data-processing-workflow"
+      ],
+      "mcps": [
+        "upstash"
+      ],
+      "tools": [
+        "Task"
+      ]
     },
     "cloud": {
-      "agents": ["aws-specialist", "gcp-specialist", "azure-specialist", "terraform-specialist"],
-      "skills": ["aws", "gcp", "terraform"],
+      "agents": [
+        "aws-specialist",
+        "gcp-specialist",
+        "azure-specialist",
+        "terraform-specialist"
+      ],
+      "skills": [
+        "aws",
+        "gcp",
+        "terraform"
+      ],
       "commands": [],
-      "workflows": ["ci-cd-workflow"],
-      "mcps": ["vercel"],
-      "tools": ["Bash"]
+      "workflows": [
+        "ci-cd-workflow"
+      ],
+      "mcps": [
+        "vercel"
+      ],
+      "tools": [
+        "Bash"
+      ]
     },
     "container": {
-      "agents": ["docker-builder", "k8s-deployer"],
-      "skills": ["docker", "kubernetes"],
-      "commands": ["build-agent"],
-      "workflows": ["ci-cd-workflow"],
+      "agents": [
+        "docker-builder",
+        "k8s-deployer"
+      ],
+      "skills": [
+        "docker",
+        "kubernetes"
+      ],
+      "commands": [
+        "build-agent"
+      ],
+      "workflows": [
+        "ci-cd-workflow"
+      ],
       "mcps": [],
-      "tools": ["Bash"]
+      "tools": [
+        "Bash"
+      ]
     },
     "incident": {
-      "agents": ["incident-responder", "observability", "sre-engineer"],
-      "skills": ["debugging"],
-      "commands": ["logs", "debug", "disaster-recovery"],
-      "workflows": ["incident-response"],
-      "mcps": ["supabase", "vercel"],
-      "tools": ["Bash", "Read", "Grep"]
+      "agents": [
+        "incident-responder",
+        "observability",
+        "sre-engineer"
+      ],
+      "skills": [
+        "debugging"
+      ],
+      "commands": [
+        "logs",
+        "debug",
+        "disaster-recovery"
+      ],
+      "workflows": [
+        "incident-response"
+      ],
+      "mcps": [
+        "supabase",
+        "vercel"
+      ],
+      "tools": [
+        "Bash",
+        "Read",
+        "Grep"
+      ]
     },
     "performance": {
-      "agents": ["performance-engineer", "load-tester", "observability"],
+      "agents": [
+        "performance-engineer",
+        "load-tester",
+        "observability"
+      ],
       "skills": [],
-      "commands": ["performance-surge", "optimize-code"],
-      "workflows": ["code-review"],
+      "commands": [
+        "performance-surge",
+        "optimize-code"
+      ],
+      "workflows": [
+        "code-review"
+      ],
       "mcps": [],
-      "tools": ["Task", "Bash"]
+      "tools": [
+        "Task",
+        "Bash"
+      ]
     },
     "frontend": {
-      "agents": ["react-specialist", "ui-designer", "vue-specialist", "nextjs-specialist", "accessibility-expert"],
-      "skills": ["react", "nextjs"],
+      "agents": [
+        "react-specialist",
+        "ui-designer",
+        "vue-specialist",
+        "nextjs-specialist",
+        "accessibility-expert"
+      ],
+      "skills": [
+        "react",
+        "nextjs"
+      ],
       "commands": [],
-      "workflows": ["feature-development"],
-      "mcps": ["playwright", "vercel", "context7"],
-      "tools": ["Read", "Edit", "Write"]
+      "workflows": [
+        "feature-development"
+      ],
+      "mcps": [
+        "playwright",
+        "vercel",
+        "context7"
+      ],
+      "tools": [
+        "Read",
+        "Edit",
+        "Write"
+      ]
     },
     "release": {
-      "agents": ["release-manager", "cicd-engineer"],
-      "skills": ["git-workflows"],
-      "commands": ["deploy", "rollback"],
-      "workflows": ["ci-cd-workflow"],
-      "mcps": ["github", "vercel"],
-      "tools": ["Bash"]
+      "agents": [
+        "release-manager",
+        "cicd-engineer"
+      ],
+      "skills": [
+        "git-workflows"
+      ],
+      "commands": [
+        "deploy",
+        "rollback"
+      ],
+      "workflows": [
+        "ci-cd-workflow"
+      ],
+      "mcps": [
+        "github",
+        "vercel"
+      ],
+      "tools": [
+        "Bash"
+      ]
     },
     "git": {
-      "agents": ["pr-manager", "release-manager", "code-review-swarm"],
-      "skills": ["git-workflows"],
+      "agents": [
+        "pr-manager",
+        "release-manager",
+        "code-review-swarm"
+      ],
+      "skills": [
+        "git-workflows"
+      ],
       "commands": [],
-      "workflows": ["code-review"],
-      "mcps": ["github"],
-      "tools": ["Bash"]
+      "workflows": [
+        "code-review"
+      ],
+      "mcps": [
+        "github"
+      ],
+      "tools": [
+        "Bash"
+      ]
     },
     "browser": {
-      "agents": ["e2e-tester"],
+      "agents": [
+        "e2e-tester"
+      ],
       "skills": [],
       "commands": [],
       "workflows": [],
-      "mcps": ["playwright"],
-      "tools": ["mcp__playwright__*"]
+      "mcps": [
+        "playwright"
+      ],
+      "tools": [
+        "mcp__playwright__*"
+      ]
     },
     "cache": {
       "agents": [],
-      "skills": ["redis"],
+      "skills": [
+        "redis"
+      ],
       "commands": [],
       "workflows": [],
-      "mcps": ["upstash"],
-      "tools": ["mcp__upstash__redis_*"]
+      "mcps": [
+        "upstash"
+      ],
+      "tools": [
+        "mcp__upstash__redis_*"
+      ]
     },
     "queue": {
       "agents": [],
       "skills": [],
       "commands": [],
       "workflows": [],
-      "mcps": ["upstash"],
-      "tools": ["mcp__upstash__qstash_*"]
+      "mcps": [
+        "upstash"
+      ],
+      "tools": [
+        "mcp__upstash__qstash_*"
+      ]
     },
     "types": {
-      "agents": ["typescript-specialist"],
+      "agents": [
+        "typescript-specialist"
+      ],
       "skills": [],
       "commands": [],
       "workflows": [],
-      "mcps": ["supabase"],
-      "tools": ["mcp__supabase__generate_typescript_types"]
+      "mcps": [
+        "supabase"
+      ],
+      "tools": [
+        "mcp__supabase__generate_typescript_types"
+      ]
     },
     "migration": {
-      "agents": ["database-specialist"],
-      "skills": ["database"],
+      "agents": [
+        "database-specialist"
+      ],
+      "skills": [
+        "database"
+      ],
       "commands": [],
       "workflows": [],
-      "mcps": ["supabase"],
-      "tools": ["mcp__supabase__apply_migration", "mcp__supabase__list_migrations"]
+      "mcps": [
+        "supabase"
+      ],
+      "tools": [
+        "mcp__supabase__apply_migration",
+        "mcp__supabase__list_migrations"
+      ]
     },
     "edge-function": {
       "agents": [],
       "skills": [],
       "commands": [],
       "workflows": [],
-      "mcps": ["supabase"],
-      "tools": ["mcp__supabase__deploy_edge_function", "mcp__supabase__list_edge_functions"]
+      "mcps": [
+        "supabase"
+      ],
+      "tools": [
+        "mcp__supabase__deploy_edge_function",
+        "mcp__supabase__list_edge_functions"
+      ]
     },
     "think": {
-      "agents": ["system-architect", "code-analyzer", "security-auditor"],
-      "skills": ["extended-thinking", "complex-reasoning", "deep-analysis"],
+      "agents": [
+        "system-architect",
+        "code-analyzer",
+        "security-auditor"
+      ],
+      "skills": [
+        "extended-thinking",
+        "complex-reasoning",
+        "deep-analysis"
+      ],
       "commands": [],
       "workflows": [],
       "mcps": [],
-      "tools": ["Task"]
+      "tools": [
+        "Task"
+      ]
     },
     "analyze": {
-      "agents": ["code-analyzer", "security-auditor", "performance-engineer"],
-      "skills": ["extended-thinking", "complex-reasoning", "deep-analysis", "debugging"],
-      "commands": ["review-all", "security-scan", "optimize-code"],
-      "workflows": ["code-review"],
+      "agents": [
+        "code-analyzer",
+        "security-auditor",
+        "performance-engineer"
+      ],
+      "skills": [
+        "extended-thinking",
+        "complex-reasoning",
+        "deep-analysis",
+        "debugging"
+      ],
+      "commands": [
+        "review-all",
+        "security-scan",
+        "optimize-code"
+      ],
+      "workflows": [
+        "code-review"
+      ],
       "mcps": [],
-      "tools": ["Read", "Grep", "Task"]
+      "tools": [
+        "Read",
+        "Grep",
+        "Task"
+      ]
     },
     "reason": {
-      "agents": ["system-architect"],
-      "skills": ["extended-thinking", "complex-reasoning"],
+      "agents": [
+        "system-architect"
+      ],
+      "skills": [
+        "extended-thinking",
+        "complex-reasoning"
+      ],
       "commands": [],
       "workflows": [],
       "mcps": [],
-      "tools": ["Task"]
+      "tools": [
+        "Task"
+      ]
     },
     "audit": {
-      "agents": ["security-auditor", "compliance-checker", "code-analyzer"],
-      "skills": ["deep-analysis", "extended-thinking", "authentication"],
-      "commands": ["security-scan", "secure-audit", "compliance-audit"],
-      "workflows": ["code-review", "infrastructure-audit"],
+      "agents": [
+        "security-auditor",
+        "compliance-checker",
+        "code-analyzer"
+      ],
+      "skills": [
+        "deep-analysis",
+        "extended-thinking",
+        "authentication"
+      ],
+      "commands": [
+        "security-scan",
+        "secure-audit",
+        "compliance-audit"
+      ],
+      "workflows": [
+        "code-review",
+        "infrastructure-audit"
+      ],
       "mcps": [],
-      "tools": ["Read", "Grep"]
+      "tools": [
+        "Read",
+        "Grep"
+      ]
     },
     "caching": {
-      "agents": ["performance-engineer", "backend-dev"],
-      "skills": ["prompt-caching", "redis"],
+      "agents": [
+        "performance-engineer",
+        "backend-dev"
+      ],
+      "skills": [
+        "prompt-caching",
+        "redis"
+      ],
       "commands": [],
       "workflows": [],
-      "mcps": ["upstash"],
-      "tools": ["Read", "Edit"]
+      "mcps": [
+        "upstash"
+      ],
+      "tools": [
+        "Read",
+        "Edit"
+      ]
     },
     "vision": {
-      "agents": ["ml-engineer", "data-engineer"],
-      "skills": ["vision-multimodal", "llm-integration"],
+      "agents": [
+        "ml-engineer",
+        "data-engineer"
+      ],
+      "skills": [
+        "vision-multimodal",
+        "llm-integration"
+      ],
       "commands": [],
       "workflows": [],
       "mcps": [],
-      "tools": ["Read", "Task"]
+      "tools": [
+        "Read",
+        "Task"
+      ]
     },
     "image": {
-      "agents": ["ml-engineer", "ui-designer"],
-      "skills": ["vision-multimodal"],
+      "agents": [
+        "ml-engineer",
+        "ui-designer"
+      ],
+      "skills": [
+        "vision-multimodal"
+      ],
       "commands": [],
       "workflows": [],
-      "mcps": ["playwright"],
-      "tools": ["Read", "mcp__playwright__browser_take_screenshot"]
+      "mcps": [
+        "playwright"
+      ],
+      "tools": [
+        "Read",
+        "mcp__playwright__browser_take_screenshot"
+      ]
     },
     "streaming": {
-      "agents": ["backend-dev", "api-designer"],
-      "skills": ["streaming", "llm-integration"],
+      "agents": [
+        "backend-dev",
+        "api-designer"
+      ],
+      "skills": [
+        "streaming",
+        "llm-integration"
+      ],
       "commands": [],
       "workflows": [],
       "mcps": [],
-      "tools": ["Read", "Edit", "Write"]
+      "tools": [
+        "Read",
+        "Edit",
+        "Write"
+      ]
     },
     "batch": {
-      "agents": ["data-engineer", "ml-engineer"],
-      "skills": ["batch-processing", "llm-integration"],
+      "agents": [
+        "data-engineer",
+        "ml-engineer"
+      ],
+      "skills": [
+        "batch-processing",
+        "llm-integration"
+      ],
       "commands": [],
-      "workflows": ["data-processing-workflow"],
+      "workflows": [
+        "data-processing-workflow"
+      ],
       "mcps": [],
-      "tools": ["Bash", "Task"]
+      "tools": [
+        "Bash",
+        "Task"
+      ]
     },
     "citation": {
-      "agents": ["rag-specialist", "docs-writer"],
-      "skills": ["citations-retrieval", "llm-integration", "vector-db"],
+      "agents": [
+        "rag-specialist",
+        "docs-writer"
+      ],
+      "skills": [
+        "citations-retrieval",
+        "llm-integration",
+        "vector-db"
+      ],
       "commands": [],
       "workflows": [],
-      "mcps": ["context7"],
-      "tools": ["Read", "Task"]
+      "mcps": [
+        "context7"
+      ],
+      "tools": [
+        "Read",
+        "Task"
+      ]
     },
     "rag": {
-      "agents": ["rag-specialist", "ml-engineer", "llm-engineer"],
-      "skills": ["citations-retrieval", "vector-db", "llm-integration"],
+      "agents": [
+        "rag-specialist",
+        "ml-engineer",
+        "llm-engineer"
+      ],
+      "skills": [
+        "citations-retrieval",
+        "vector-db",
+        "llm-integration"
+      ],
       "commands": [],
       "workflows": [],
-      "mcps": ["context7", "upstash"],
-      "tools": ["Task"]
+      "mcps": [
+        "context7",
+        "upstash"
+      ],
+      "tools": [
+        "Task"
+      ]
     },
     "tool-use": {
-      "agents": ["api-designer", "backend-dev"],
-      "skills": ["tool-use", "llm-integration"],
+      "agents": [
+        "api-designer",
+        "backend-dev"
+      ],
+      "skills": [
+        "tool-use",
+        "llm-integration"
+      ],
       "commands": [],
       "workflows": [],
       "mcps": [],
-      "tools": ["Task", "Read", "Write"]
+      "tools": [
+        "Task",
+        "Read",
+        "Write"
+      ]
+    },
+    "scrapin": {
+      "agents": [
+        "doc-crawler",
+        "doc-graph-builder",
+        "doc-lsp-resolver",
+        "algo-indexer",
+        "code-drift-detector",
+        "agent-drift-detector"
+      ],
+      "skills": [
+        "scrapin-aint-easy"
+      ],
+      "commands": [
+        "scrapin:search",
+        "scrapin:crawl",
+        "scrapin:diff",
+        "scrapin:algo",
+        "scrapin:drift",
+        "scrapin:status",
+        "scrapin:setup"
+      ],
+      "workflows": [],
+      "mcps": [],
+      "tools": [
+        "Read",
+        "Grep",
+        "Bash"
+      ],
+      "plugin": "scrapin-aint-easy"
+    },
+    "algorithm": {
+      "agents": [
+        "algo-indexer"
+      ],
+      "skills": [
+        "scrapin-aint-easy"
+      ],
+      "commands": [
+        "scrapin:algo"
+      ],
+      "workflows": [],
+      "mcps": [],
+      "tools": [],
+      "plugin": "scrapin-aint-easy"
+    },
+    "drift": {
+      "agents": [
+        "code-drift-detector",
+        "agent-drift-detector"
+      ],
+      "skills": [
+        "scrapin-aint-easy"
+      ],
+      "commands": [
+        "scrapin:drift"
+      ],
+      "workflows": [],
+      "mcps": [],
+      "tools": [],
+      "plugin": "scrapin-aint-easy"
+    },
+    "crawl": {
+      "agents": [
+        "doc-crawler"
+      ],
+      "skills": [
+        "scrapin-aint-easy"
+      ],
+      "commands": [
+        "scrapin:crawl"
+      ],
+      "workflows": [],
+      "mcps": [
+        "firecrawl"
+      ],
+      "tools": [],
+      "plugin": "scrapin-aint-easy"
+    },
+    "knowledge-graph": {
+      "agents": [
+        "doc-graph-builder"
+      ],
+      "skills": [
+        "scrapin-aint-easy"
+      ],
+      "commands": [
+        "scrapin:search"
+      ],
+      "workflows": [],
+      "mcps": [],
+      "tools": [],
+      "plugin": "scrapin-aint-easy"
     }
   },
-
   "synonyms": {
     "ultrathink": "think",
     "extended-thinking": "think",
@@ -391,7 +1026,7 @@
     "ts": "types",
     "playwright": "browser",
     "e2e": "browser",
-    "screenshot": "browser",
+    "screenshot": "vision",
     "supabase": "database",
     "vercel": "deploy",
     "github": "git",
@@ -405,7 +1040,6 @@
     "multimodal": "vision",
     "base64": "vision",
     "ocr": "vision",
-    "screenshot": "vision",
     "pdf": "vision",
     "sse": "streaming",
     "server-sent-events": "streaming",
@@ -423,189 +1057,422 @@
     "tool_use": "tool-use",
     "tool_choice": "tool-use",
     "function-calling": "tool-use",
-    "structured-output": "tool-use"
+    "structured-output": "tool-use",
+    "scrape": "crawl",
+    "spider": "crawl",
+    "index": "scrapin",
+    "graph": "knowledge-graph",
+    "stale-docs": "drift",
+    "doc-drift": "drift",
+    "agent-drift": "drift",
+    "code-drift": "drift",
+    "algo": "algorithm",
+    "sorting": "algorithm",
+    "data-structure": "algorithm"
   },
-
   "compoundQueries": {
     "deploy to kubernetes": {
-      "agents": ["k8s-deployer", "helm-specialist"],
-      "skills": ["kubernetes", "helm", "docker"],
-      "workflows": ["ci-cd-workflow"],
+      "agents": [
+        "k8s-deployer",
+        "helm-specialist"
+      ],
+      "skills": [
+        "kubernetes",
+        "helm",
+        "docker"
+      ],
+      "workflows": [
+        "ci-cd-workflow"
+      ],
       "mcps": []
     },
     "deploy to vercel": {
-      "agents": ["cicd-engineer"],
+      "agents": [
+        "cicd-engineer"
+      ],
       "skills": [],
-      "workflows": ["ci-cd-workflow"],
-      "mcps": ["vercel"]
+      "workflows": [
+        "ci-cd-workflow"
+      ],
+      "mcps": [
+        "vercel"
+      ]
     },
     "fix bug": {
-      "agents": ["debugger", "tester"],
-      "skills": ["debugging", "testing"],
-      "workflows": ["incident-response"],
+      "agents": [
+        "debugger",
+        "tester"
+      ],
+      "skills": [
+        "debugging",
+        "testing"
+      ],
+      "workflows": [
+        "incident-response"
+      ],
       "mcps": []
     },
     "create api": {
-      "agents": ["api-designer", "backend-dev", "coder"],
-      "skills": ["rest-api", "flask-api"],
-      "workflows": ["feature-development"],
-      "mcps": ["supabase"]
+      "agents": [
+        "api-designer",
+        "backend-dev",
+        "coder"
+      ],
+      "skills": [
+        "rest-api",
+        "flask-api"
+      ],
+      "workflows": [
+        "feature-development"
+      ],
+      "mcps": [
+        "supabase"
+      ]
     },
     "write tests": {
-      "agents": ["tester", "coder"],
-      "skills": ["testing"],
-      "workflows": ["code-review"],
-      "mcps": ["playwright"]
+      "agents": [
+        "tester",
+        "coder"
+      ],
+      "skills": [
+        "testing"
+      ],
+      "workflows": [
+        "code-review"
+      ],
+      "mcps": [
+        "playwright"
+      ]
     },
     "security audit": {
-      "agents": ["security-auditor", "compliance-checker"],
-      "skills": ["authentication"],
-      "workflows": ["code-review"],
+      "agents": [
+        "security-auditor",
+        "compliance-checker"
+      ],
+      "skills": [
+        "authentication"
+      ],
+      "workflows": [
+        "code-review"
+      ],
       "mcps": []
     },
     "plan sprint": {
-      "agents": ["scrum-master", "product-owner"],
-      "skills": ["scrum", "jira"],
-      "commands": ["sprint-plan"],
-      "workflows": ["sprint-management"],
-      "mcps": ["atlassian"]
+      "agents": [
+        "scrum-master",
+        "product-owner"
+      ],
+      "skills": [
+        "scrum",
+        "jira"
+      ],
+      "commands": [
+        "sprint-plan"
+      ],
+      "workflows": [
+        "sprint-management"
+      ],
+      "mcps": [
+        "atlassian"
+      ]
     },
     "run standup": {
-      "agents": ["scrum-master"],
-      "skills": ["scrum", "jira"],
-      "commands": ["standup"],
-      "workflows": ["scrum-ceremonies"],
-      "mcps": ["atlassian"]
+      "agents": [
+        "scrum-master"
+      ],
+      "skills": [
+        "scrum",
+        "jira"
+      ],
+      "commands": [
+        "standup"
+      ],
+      "workflows": [
+        "scrum-ceremonies"
+      ],
+      "mcps": [
+        "atlassian"
+      ]
     },
     "database migration": {
-      "agents": ["database-specialist"],
-      "skills": ["database"],
+      "agents": [
+        "database-specialist"
+      ],
+      "skills": [
+        "database"
+      ],
       "workflows": [],
-      "mcps": ["supabase"],
-      "tools": ["mcp__supabase__apply_migration"]
+      "mcps": [
+        "supabase"
+      ],
+      "tools": [
+        "mcp__supabase__apply_migration"
+      ]
     },
     "generate types": {
-      "agents": ["typescript-specialist"],
+      "agents": [
+        "typescript-specialist"
+      ],
       "skills": [],
       "workflows": [],
-      "mcps": ["supabase"],
-      "tools": ["mcp__supabase__generate_typescript_types"]
+      "mcps": [
+        "supabase"
+      ],
+      "tools": [
+        "mcp__supabase__generate_typescript_types"
+      ]
     },
     "browser test": {
-      "agents": ["e2e-tester"],
-      "skills": ["testing"],
+      "agents": [
+        "e2e-tester"
+      ],
+      "skills": [
+        "testing"
+      ],
       "workflows": [],
-      "mcps": ["playwright"]
+      "mcps": [
+        "playwright"
+      ]
     },
     "fetch docs": {
       "agents": [],
       "skills": [],
       "workflows": [],
-      "mcps": ["context7"],
-      "tools": ["mcp__context7__get-library-docs"]
+      "mcps": [
+        "context7"
+      ],
+      "tools": [
+        "mcp__context7__get-library-docs"
+      ]
     },
     "create issue": {
-      "agents": ["jira-specialist"],
-      "skills": ["jira"],
+      "agents": [
+        "jira-specialist"
+      ],
+      "skills": [
+        "jira"
+      ],
       "workflows": [],
-      "mcps": ["github", "atlassian"]
+      "mcps": [
+        "github",
+        "atlassian"
+      ]
     },
     "deploy edge function": {
       "agents": [],
       "skills": [],
       "workflows": [],
-      "mcps": ["supabase"],
-      "tools": ["mcp__supabase__deploy_edge_function"]
+      "mcps": [
+        "supabase"
+      ],
+      "tools": [
+        "mcp__supabase__deploy_edge_function"
+      ]
     },
     "think harder": {
-      "agents": ["system-architect", "code-analyzer"],
-      "skills": ["extended-thinking", "complex-reasoning", "deep-analysis"],
+      "agents": [
+        "system-architect",
+        "code-analyzer"
+      ],
+      "skills": [
+        "extended-thinking",
+        "complex-reasoning",
+        "deep-analysis"
+      ],
       "workflows": [],
       "mcps": []
     },
     "deep analysis": {
-      "agents": ["code-analyzer", "security-auditor"],
-      "skills": ["deep-analysis", "extended-thinking"],
-      "workflows": ["code-review"],
+      "agents": [
+        "code-analyzer",
+        "security-auditor"
+      ],
+      "skills": [
+        "deep-analysis",
+        "extended-thinking"
+      ],
+      "workflows": [
+        "code-review"
+      ],
       "mcps": []
     },
     "comprehensive review": {
-      "agents": ["code-analyzer", "reviewer"],
-      "skills": ["deep-analysis", "extended-thinking", "complex-reasoning"],
-      "workflows": ["code-review"],
+      "agents": [
+        "code-analyzer",
+        "reviewer"
+      ],
+      "skills": [
+        "deep-analysis",
+        "extended-thinking",
+        "complex-reasoning"
+      ],
+      "workflows": [
+        "code-review"
+      ],
       "mcps": []
     },
     "enable caching": {
-      "agents": ["performance-engineer", "backend-dev"],
-      "skills": ["prompt-caching", "llm-integration"],
+      "agents": [
+        "performance-engineer",
+        "backend-dev"
+      ],
+      "skills": [
+        "prompt-caching",
+        "llm-integration"
+      ],
       "workflows": [],
       "mcps": []
     },
     "analyze image": {
-      "agents": ["ml-engineer"],
-      "skills": ["vision-multimodal", "llm-integration"],
+      "agents": [
+        "ml-engineer"
+      ],
+      "skills": [
+        "vision-multimodal",
+        "llm-integration"
+      ],
       "workflows": [],
       "mcps": []
     },
     "stream response": {
-      "agents": ["backend-dev", "api-designer"],
-      "skills": ["streaming", "llm-integration"],
+      "agents": [
+        "backend-dev",
+        "api-designer"
+      ],
+      "skills": [
+        "streaming",
+        "llm-integration"
+      ],
       "workflows": [],
       "mcps": []
     },
     "batch process": {
-      "agents": ["data-engineer", "ml-engineer"],
-      "skills": ["batch-processing", "llm-integration"],
-      "workflows": ["data-processing-workflow"],
+      "agents": [
+        "data-engineer",
+        "ml-engineer"
+      ],
+      "skills": [
+        "batch-processing",
+        "llm-integration"
+      ],
+      "workflows": [
+        "data-processing-workflow"
+      ],
       "mcps": []
     },
     "add citations": {
-      "agents": ["rag-specialist", "docs-writer"],
-      "skills": ["citations-retrieval", "llm-integration"],
+      "agents": [
+        "rag-specialist",
+        "docs-writer"
+      ],
+      "skills": [
+        "citations-retrieval",
+        "llm-integration"
+      ],
       "workflows": [],
-      "mcps": ["context7"]
+      "mcps": [
+        "context7"
+      ]
     },
     "build rag": {
-      "agents": ["rag-specialist", "ml-engineer"],
-      "skills": ["citations-retrieval", "vector-db", "llm-integration"],
+      "agents": [
+        "rag-specialist",
+        "ml-engineer"
+      ],
+      "skills": [
+        "citations-retrieval",
+        "vector-db",
+        "llm-integration"
+      ],
       "workflows": [],
-      "mcps": ["context7", "upstash"]
+      "mcps": [
+        "context7",
+        "upstash"
+      ]
     },
     "define tools": {
-      "agents": ["api-designer", "backend-dev"],
-      "skills": ["tool-use", "llm-integration"],
+      "agents": [
+        "api-designer",
+        "backend-dev"
+      ],
+      "skills": [
+        "tool-use",
+        "llm-integration"
+      ],
       "workflows": [],
       "mcps": []
     },
     "eks": {
-      "agents": ["setup-orchestrator", "deployment-strategist", "pipeline-architect", "dev-assistant"],
-      "skills": ["kubernetes", "helm", "aws"],
-      "commands": ["eks:setup", "eks:dev-up", "eks:ship", "eks:preview", "eks:debug", "eks:service-onboard", "eks:pipeline-scaffold"],
-      "workflows": ["ci-cd-workflow"],
+      "agents": [
+        "setup-orchestrator",
+        "deployment-strategist",
+        "pipeline-architect",
+        "dev-assistant"
+      ],
+      "skills": [
+        "kubernetes",
+        "helm",
+        "aws"
+      ],
+      "commands": [
+        "eks:setup",
+        "eks:dev-up",
+        "eks:ship",
+        "eks:preview",
+        "eks:debug",
+        "eks:service-onboard",
+        "eks:pipeline-scaffold"
+      ],
+      "workflows": [
+        "ci-cd-workflow"
+      ],
       "mcps": [],
-      "tools": ["Bash", "Task"],
+      "tools": [
+        "Bash",
+        "Task"
+      ],
       "plugin": "aws-eks-helm-keycloak"
     },
     "keycloak auth": {
-      "agents": ["setup-orchestrator", "dev-assistant"],
-      "skills": ["keycloak", "authentication"],
-      "commands": ["eks:setup", "keycloak-admin"],
+      "agents": [
+        "setup-orchestrator",
+        "dev-assistant"
+      ],
+      "skills": [
+        "keycloak",
+        "authentication"
+      ],
+      "commands": [
+        "eks:setup",
+        "keycloak-admin"
+      ],
       "workflows": [],
       "mcps": [],
-      "tools": ["Bash"],
+      "tools": [
+        "Bash"
+      ],
       "plugin": "aws-eks-helm-keycloak"
     },
     "harness deploy": {
-      "agents": ["pipeline-architect", "deployment-strategist"],
+      "agents": [
+        "pipeline-architect",
+        "deployment-strategist"
+      ],
       "skills": [],
-      "commands": ["eks:ship", "eks:pipeline-scaffold"],
-      "workflows": ["ci-cd-workflow"],
+      "commands": [
+        "eks:ship",
+        "eks:pipeline-scaffold"
+      ],
+      "workflows": [
+        "ci-cd-workflow"
+      ],
       "mcps": [],
-      "tools": ["Bash"],
+      "tools": [
+        "Bash"
+      ],
       "plugin": "aws-eks-helm-keycloak"
     }
   },
-
   "mcpToolShortcuts": {
     "db": "mcp__supabase__execute_sql",
     "migrate": "mcp__supabase__apply_migration",
