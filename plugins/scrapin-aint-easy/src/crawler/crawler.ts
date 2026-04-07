@@ -12,6 +12,7 @@ import { parseSitemap } from './sitemap-parser.js';
 import { parseOpenApiSpec } from './openapi-parser.js';
 import { extractSymbols } from './symbol-extractor.js';
 import { saveSnapshot, loadSnapshot, diffSnapshots } from './snapshot.js';
+import { toSourceId } from '../core/ids.js';
 
 const logger = pino({ name: 'crawler' });
 
@@ -105,6 +106,7 @@ export class DocCrawler {
    */
   async crawlSource(sourceKey: string, sourceConfig: SourceConfig): Promise<CrawlStats> {
     const startTime = Date.now();
+    const sourceId = toSourceId(sourceKey);
     const stats: CrawlStats = {
       pagesProcessed: 0,
       pagesSkipped: 0,
@@ -121,7 +123,7 @@ export class DocCrawler {
 
     // Upsert Source node in graph
     await this.graph.upsertNode('Source', {
-      id: `source::${sourceKey}`,
+      id: sourceId,
       name: sourceConfig.name,
       base_url: sourceConfig.base_url,
       last_crawled: new Date().toISOString(),
@@ -210,14 +212,14 @@ export class DocCrawler {
       id: `page::${sourceKey}::${pageId}`,
       name: String(metadata['title'] ?? pageId),
       url,
-      source_id: `source::${sourceKey}`,
+      source_id: toSourceId(sourceKey),
       last_crawled: new Date().toISOString(),
     });
 
     await this.graph.upsertEdge(
       'PART_OF',
       `page::${sourceKey}::${pageId}`,
-      `source::${sourceKey}`,
+      toSourceId(sourceKey),
     );
 
     // Extract symbols
@@ -233,7 +235,7 @@ export class DocCrawler {
         description: symbol.description,
         deprecated: symbol.deprecated,
         deleted: false,
-        source_id: sourceKey,
+        source_id: toSourceId(sourceKey),
         page_id: `page::${sourceKey}::${pageId}`,
         last_crawled: new Date().toISOString(),
       });
@@ -376,7 +378,7 @@ export class DocCrawler {
           id: `page::${sourceKey}::${pageId}`,
           name: `${page.method} ${page.path}`,
           url: specUrlOrPath,
-          source_id: `source::${sourceKey}`,
+          source_id: toSourceId(sourceKey),
           kind: 'openapi-endpoint',
           last_crawled: new Date().toISOString(),
         });
@@ -384,7 +386,7 @@ export class DocCrawler {
         await this.graph.upsertEdge(
           'PART_OF',
           `page::${sourceKey}::${pageId}`,
-          `source::${sourceKey}`,
+          toSourceId(sourceKey),
         );
 
         await this.vectorStore.add(

@@ -2,6 +2,7 @@ import pino from 'pino';
 import { type GraphAdapter } from '../../core/graph.js';
 import { type VectorStore } from '../../core/vector.js';
 import { loadSources } from '../../config/loader.js';
+import { toSourceId } from '../../core/ids.js';
 
 const logger = pino({ name: 'job:openapi-sync' });
 
@@ -30,7 +31,7 @@ export function createOpenApiSyncJob(
             url: `${config.base_url}${page.path}`,
             title: `${page.method.toUpperCase()} ${page.path}`,
             content_md: page.markdown,
-            source_id: key,
+            source_id: toSourceId(key),
             last_crawled: new Date().toISOString(),
             stale: false,
           });
