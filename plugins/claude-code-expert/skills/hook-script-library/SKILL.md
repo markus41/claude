@@ -311,3 +311,96 @@ bash -n .claude/hooks/lessons-learned-capture.sh && echo "OK"
 | Rust | `auto-clippy.sh` | PostToolUse | `Write\|Edit` | `cargo clippy` |
 
 See `skills/lsp-integration/SKILL.md` for TypeScript, Python, and Rust diagnostics hook implementations.
+
+---
+
+## New Hook Features (v2.1.83–v2.1.101)
+
+### Conditional Hooks (`if` field)
+
+Scope a hook to specific tool calls using permission rule syntax. Reduces process overhead on busy sessions — your pre-commit check only spawns for git commits, not every Bash call.
+
+```json
+{
+  "hooks": {
+    "PreToolUse": [{
+      "hooks": [{
+        "if": "Bash(git commit *)",
+        "type": "command",
+        "command": ".claude/hooks/lint-staged.sh"
+      }]
+    }]
+  }
+}
+```
+
+More `if` examples:
+```
+"if": "Bash(git push *)"          # only git push
+"if": "Bash(rm *)"               # only rm commands
+"if": "Write(src/**)"            # only writes inside src/
+"if": "Edit(*.ts)"               # only TypeScript edits
+"if": "Bash(* --force *)"        # any command with --force
+```
+
+### CwdChanged and FileChanged Events
+
+New hook events for reactive setups (direnv-style auto-loading, per-directory tool activation):
+
+```json
+{
+  "hooks": {
+    "CwdChanged": [{
+      "hooks": [{ "type": "command", "command": ".claude/hooks/direnv-reload.sh" }]
+    }],
+    "FileChanged": [{
+      "hooks": [{ "type": "command", "command": ".claude/hooks/file-watcher.sh" }]
+    }]
+  }
+}
+```
+
+`CwdChanged` fires when the working directory changes. Use it to reload environment variables, switch tool configs, or update the CLAUDE.md context.
+
+`FileChanged` fires when a file on disk changes externally. Use it for live reload triggers or invalidating caches.
+
+### PermissionDenied Event
+
+Fires when the auto mode classifier blocks an action. Return `retry: true` to let Claude try an alternative approach, or log the denial for audit purposes.
+
+```json
+{
+  "hooks": {
+    "PermissionDenied": [{
+      "hooks": [{ "type": "command", "command": ".claude/hooks/permission-denied.sh" }]
+    }]
+  }
+}
+```
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+INPUT=$(cat)
+TOOL=$(echo "$INPUT" | jq -r '.tool_name // "unknown"')
+printf '%s\t%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$TOOL" >> .claude/logs/denied.log
+echo '{"retry": true}'
+```
+
+### UserPromptSubmit: Setting Session Title
+
+`UserPromptSubmit` hooks can now set the session title by returning `hookSpecificOutput.sessionTitle`. Useful for labeling sessions with the task context so they're identifiable in history.
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+INPUT=$(cat)
+PROMPT=$(echo "$INPUT" | jq -r '.prompt // ""')
+# Extract first ~50 chars for session title
+TITLE=$(echo "$PROMPT" | head -c 50 | tr '\n' ' ' | sed 's/[[:space:]]*$//')
+jq -n --arg t "$TITLE" '{"hookSpecificOutput": {"sessionTitle": $t}}'
+```
+
+### Hook Output Size Limit
+
+Hook output over 50K characters is automatically saved to disk with a path reference + preview, instead of being injected into context. Design hooks to return minimal, structured output — not full logs.

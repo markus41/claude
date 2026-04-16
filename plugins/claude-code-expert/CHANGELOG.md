@@ -1,5 +1,58 @@
 # Changelog
 
+## v7.8.0 (2026-04-16)
+
+### New Skills (+3)
+
+- **`auto-mode`** — Classifier-based auto permission handling. Covers the three permission modes (default/auto/bypassPermissions), Shift+Tab cycling, `defaultMode: "auto"` setting, how the classifier scores actions, `PermissionDenied` hook (with `retry: true`), and `defer` permissionDecision for SDK/headless workflows.
+- **`monitor-tool`** — Monitor tool for streaming background events into conversations without Bash sleep loops. Covers tailing logs, watching CI, auto-fixing dev server crashes, `/loop` self-pacing, and pairing Monitor with PreToolUse hooks.
+- **`ultraplan`** — Ultraplan cloud planning. Kick off plan mode in the cloud from your terminal, review sections in the browser, request revisions, then execute remotely or send back to CLI. Includes decision table, cost notes, and `/autofix-pr` integration.
+
+### Updated Skills
+
+- **`computer-use`** — Fixed stale "Desktop-only" claim. Computer use is now available in the CLI (v2.1.86+, research preview) via the `computer-use` MCP. Added CLI enablement steps. Added PowerShell tool section for Windows users: `CLAUDE_CODE_USE_POWERSHELL_TOOL=1`, cmdlet use cases, and when to prefer it over Bash.
+- **`hook-script-library`** — Added: conditional hooks (`if` field with permission rule syntax), `CwdChanged`/`FileChanged` events, `PermissionDenied` event with audit logging, `UserPromptSubmit` sessionTitle output, and 50K hook output size limit behavior.
+- **`mcp-servers`** — Added per-tool result size override: `anthropic/maxResultSizeChars` in `tools/list` `_meta`, up to 500K chars. Includes TypeScript server example.
+- **`plugin-development`** — Added: plugin `bin/` executables on PATH (v2.1.91), `userConfig` for prompting at enable time with keychain-backed secrets (v2.1.83), `initialPrompt` in agent frontmatter, `disableSkillShellExecution` setting, and `managed-settings.d/` drop-in directory for enterprise policy layering.
+
+### Totals
+
+| Category | v7.7.0 | v7.8.0 | Delta |
+|----------|--------|--------|-------|
+| Commands | 21 | 21 | — |
+| Skills | 50 | 53 | +3 |
+| Agents | 26 | 26 | — |
+| MCP Tools | 15 | 15 | — |
+
+---
+
+## v7.7.0 (2026-04-16)
+
+### New Skills (+1)
+
+- **`worktree-management`** — Git worktree patterns for parallel agent isolation. Covers `EnterWorktree`/`ExitWorktree` Claude Code tools, `isolation: "worktree"` agent parameter, branch-per-worktree naming, fan-out orchestration, safe removal checklist, conflict avoidance rules, and decision table for when worktrees beat in-context subagents.
+
+### Updated Skills
+
+- **`model-routing`** — Corrected model family to Opus 4.7 (`claude-opus-4-7`). All decision matrix entries and the model switching code example updated to the current model ID.
+
+### Marketplace Sync (cowork-marketplace v2.1.0)
+
+- `catalog.json` claude-code-mastery item updated to reflect v7.6.0 reality: 49 skills, 26 agents, 21 commands (was stale at 19/8/11)
+- `bundles/registry.json` claude-code-expert-suite totals corrected to 49 skills, 26 agents, 21 commands
+- `CLAUDE.md` catalog count corrected: 20 items (was 18)
+
+### Totals
+
+| Category | v7.6.0 | v7.7.0 | Delta |
+|----------|--------|--------|-------|
+| Commands | 21 | 21 | — |
+| Skills | 49 | 50 | +1 |
+| Agents | 26 | 26 | — |
+| MCP Tools | 15 | 15 | — |
+
+---
+
 ## v7.6.0 (2026-03-31)
 
 ### New Commands (+1)

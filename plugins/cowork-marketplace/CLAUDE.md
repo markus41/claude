@@ -25,17 +25,17 @@ Browse, install, update, launch, and export cowork marketplace items backed by r
 
 ## Skills
 
-- **plugin-catalog** - Catalog knowledge (18 items, 18 plugins, 136+ agents)
+- **plugin-catalog** - Catalog knowledge (20 items, 20 plugins, 160+ agents)
 - **cowork-sessions** - Session lifecycle and agent coordination
 - **plugin-packaging** - Cowork plugin format and distribution
 
 ## Catalog
 
-18 items across 5 types, backed by 18 installed plugins:
+20 items across 5 types, backed by 20 installed plugins:
 - 3 Templates (FastAPI, Fullstack, Home Assistant)
 - 4 Workflows (Jira-to-PR, EKS Deploy, Microsoft Platform, Sprint Planning)
 - 3 Agent Configs (Code Reviewer, Nonprofit Director, Design Architect)
-- 4 Skill Packs (Claude Code Mastery, DevOps, React Animation, Marketplace Intelligence)
+- 6 Skill Packs (Claude Code Mastery, DevOps, React Animation, Marketplace Intelligence, Draw.io Diagramming, .NET Blazor Expert, Scrapin' Ain't Easy)
 - 3 Blueprints (Enterprise Release, Keycloak Multi-Tenant, Project Scaffolder)
 
 ## Plugin Bundles
@@ -51,7 +51,7 @@ Browse, install, update, launch, and export cowork marketplace items backed by r
 | Smart Home Pro | 1 | 9 | 15 | 8 |
 | Nonprofit Command Center | 2 | 21 | 15 | 3 |
 | Microsoft Enterprise Platform | 1 | 18 | 19 | 0 |
-| Claude Code Expert Suite | 1 | 11 | 8 | 19 |
+| Claude Code Expert Suite | 1 | 21 | 26 | 49 |
 | Plugin Marketplace Toolkit | 2 | 19 | 4 | 8 |
 
 Use `/cowork-marketplace:bundle-export <bundle-id>` to create a ZIP for Claude Desktop upload.

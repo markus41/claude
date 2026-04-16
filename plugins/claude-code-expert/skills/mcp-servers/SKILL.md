@@ -622,3 +622,38 @@ Instead of loading 500 lines of deployment instructions into every session, expo
 Prompts inject messages only when invoked. A Prompt with 500 tokens of expert instructions costs nothing until used, vs CLAUDE.md where those tokens load every session.
 
 **Rough math:** 10 Prompts × 500 tokens each = 5,000 tokens available on demand vs 5,000 tokens consumed per session if put in CLAUDE.md.
+
+---
+
+## Per-Tool Result Size Override (v2.1.91)
+
+MCP servers can raise the truncation cap on a specific tool by annotating it in `tools/list`. The default cap is global; per-tool overrides let schema-heavy tools (database schemas, full file trees) return inline results instead of being written to disk with a file reference.
+
+Hard ceiling: **500,000 characters** per tool.
+
+```json
+{
+  "name": "get_schema",
+  "description": "Returns the full database schema",
+  "_meta": {
+    "anthropic/maxResultSizeChars": 500000
+  }
+}
+```
+
+TypeScript server example:
+
+```typescript
+server.setRequestHandler(ListToolsRequestSchema, async () => ({
+  tools: [
+    {
+      name: "get_schema",
+      description: "Returns the full database schema",
+      inputSchema: { type: "object", properties: {} },
+      _meta: { "anthropic/maxResultSizeChars": 500000 },
+    },
+  ],
+}));
+```
+
+When to use: tools that return database schemas, directory trees, large config files, or any payload that's inherently large but needs to stay in context for Claude to reason about it.
