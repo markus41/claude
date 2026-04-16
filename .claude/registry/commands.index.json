@@ -117,6 +117,13 @@
     "drawio:layers",
     "drawio:mcp-setup",
     "drawio:style",
-    "drawio:template"
+    "drawio:template",
+    "scrapin:search",
+    "scrapin:crawl",
+    "scrapin:diff",
+    "scrapin:algo",
+    "scrapin:drift",
+    "scrapin:status",
+    "scrapin:setup"
   ]
 }

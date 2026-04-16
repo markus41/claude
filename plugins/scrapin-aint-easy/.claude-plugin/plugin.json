@@ -1,0 +1,30 @@
+{
+  "name": "scrapin-aint-easy",
+  "version": "1.0.0",
+  "description": "Documentation intelligence engine, algorithm library, and codebase/agent drift detection system for Claude Code",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/markus41/claude/tree/main/plugins/scrapin-aint-easy",
+  "repository": "https://github.com/markus41/claude",
+  "keywords": [
+    "documentation",
+    "algorithms",
+    "drift-detection",
+    "knowledge-graph",
+    "mcp",
+    "lsp",
+    "interview-setup",
+    "code-intelligence"
+  ],
+  "mcpServers": {
+    "scrapin-aint-easy": {
+      "command": "node",
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/dist/cli.js",
+        "--mcp"
+      ]
+    }
+  }
+}

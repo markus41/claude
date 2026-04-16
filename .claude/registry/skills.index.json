@@ -79,6 +79,12 @@
     "claude-code-expert:channels-user-guide": "../plugins/claude-code-expert/skills/channels-user-guide/SKILL.md",
     "claude-code-expert:agent-teams": "../plugins/claude-code-expert/skills/agent-teams/SKILL.md",
     "claude-code-expert:scheduled-tasks": "../plugins/claude-code-expert/skills/scheduled-tasks/SKILL.md",
-    "claude-code-expert:checkpointing": "../plugins/claude-code-expert/skills/checkpointing/SKILL.md"
+    "claude-code-expert:checkpointing": "../plugins/claude-code-expert/skills/checkpointing/SKILL.md",
+    "scrapin-aint-easy": "../plugins/scrapin-aint-easy/SKILL.md",
+    "scrapin-aint-easy:project-setup": "../plugins/scrapin-aint-easy/.claude/skills/project-setup/SKILL.md",
+    "scrapin-aint-easy:bug-triage": "../plugins/scrapin-aint-easy/.claude/skills/bug-triage/SKILL.md",
+    "scrapin-aint-easy:code-review": "../plugins/scrapin-aint-easy/.claude/skills/code-review/SKILL.md",
+    "scrapin-aint-easy:migration-planner": "../plugins/scrapin-aint-easy/.claude/skills/migration-planner/SKILL.md",
+    "scrapin-aint-easy:release-notes": "../plugins/scrapin-aint-easy/.claude/skills/release-notes/SKILL.md"
   }
 }

@@ -1,0 +1,25 @@
+rate_limits:
+  - source: stripe
+    concurrency: 5
+    rps: 2
+  - source: github-rest
+    concurrency: 10
+    rps: 5
+  - source: react-query
+    concurrency: 8
+    rps: 3
+  - source: effect-ts
+    concurrency: 8
+    rps: 3
+  - source: anthropic
+    concurrency: 5
+    rps: 2
+  - source: mcp-sdk
+    concurrency: 5
+    rps: 2
+  - source: azure
+    concurrency: 5
+    rps: 2
+  - source: dotnet
+    concurrency: 5
+    rps: 2

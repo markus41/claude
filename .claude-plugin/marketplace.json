@@ -508,6 +508,30 @@
         "web-api",
         "minimal-api"
       ]
+    },
+    {
+      "name": "scrapin-aint-easy",
+      "description": "Documentation intelligence engine with graph-based doc crawling, algorithm library (TheAlgorithms, Refactoring Guru, NeetCode), codebase drift detection, agent prompt drift monitoring, and interview-driven project setup. 7 commands, 12 agents, 6 skills, 17 MCP tools.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Markus Ahling"
+      },
+      "source": "./plugins/scrapin-aint-easy",
+      "category": "developer-tools",
+      "tags": [
+        "documentation",
+        "algorithms",
+        "drift-detection",
+        "knowledge-graph",
+        "mcp",
+        "lsp",
+        "code-intelligence",
+        "interview-setup",
+        "crawling",
+        "vector-search",
+        "agent-drift",
+        "cron-jobs"
+      ]
     }
   ]
 }

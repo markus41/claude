@@ -1,0 +1,22 @@
+# Post-Refactor: Run Tests
+# Triggered after large refactoring operations to catch regressions
+
+trigger: post-refactor
+description: Run relevant test suite after refactoring changes
+
+steps:
+  - name: Identify changed files
+    command: git diff --name-only HEAD~1
+    capture: changed_files
+
+  - name: Run affected tests
+    command: pnpm test -- --changed
+    on_failure: report
+
+  - name: Run drift check
+    command: scrapin_agent_drift_status
+    description: Verify agent definitions are still consistent after refactor
+
+  - name: Type check
+    command: npx tsc --noEmit
+    on_failure: report

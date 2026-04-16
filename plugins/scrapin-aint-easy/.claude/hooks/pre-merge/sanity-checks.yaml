@@ -1,0 +1,24 @@
+# Pre-Merge: Sanity Checks
+# Run before calling a change "done"
+
+trigger: pre-merge
+description: Final verification before merging changes
+
+steps:
+  - name: Type check
+    command: npx tsc --noEmit
+    required: true
+
+  - name: Run tests
+    command: pnpm test
+    required: true
+
+  - name: Check for drift
+    command: scrapin_code_drift_scan
+    required: false
+    description: Optional but recommended — check for undocumented changes
+
+  - name: Check agent consistency
+    command: scrapin_agent_drift_status
+    required: false
+    description: Verify no cross-agent contradictions introduced

@@ -1,0 +1,17 @@
+# Post-Refactor: Update Documentation
+# Triggered after refactoring to keep documentation in sync
+
+trigger: post-refactor
+description: Check for documentation that may need updating after refactor
+
+steps:
+  - name: Check for stale docs
+    command: scrapin_code_drift_scan
+    description: Scan for symbols that changed but docs didn't
+
+  - name: Check agent drift
+    command: scrapin_agent_drift_status
+    description: Verify agent definitions still match codebase reality
+
+  - name: Suggest updates
+    description: If drift detected, suggest specific documentation updates to the user

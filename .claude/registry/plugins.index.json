@@ -157,6 +157,13 @@
         "jetbrains"
       ],
       "dependencies": {}
+    },
+    "scrapin-aint-easy": {
+      "version": "1.0.0",
+      "path": "../plugins/scrapin-aint-easy",
+      "source": "local",
+      "installedAt": "2026-04-07T00:00:00.000Z",
+      "dependencies": {}
     }
   },
   "registry": {
@@ -406,7 +413,7 @@
     "mui-expert": {
       "name": "mui-expert",
       "version": "2.1.0",
-      "description": "Comprehensive MUI expert \u00e2\u20ac\u201d 26 skills, 14 commands, 7 agents. Theming, CSS variables, Pigment CSS, slots API, MUI X (DataGrid/Charts/TreeView/DatePickers), SSR/Next.js, white-label, entity-driven CRUD, 200+ dashboard widgets, ecosystem integrations.",
+      "description": "Comprehensive MUI expert â€” 26 skills, 14 commands, 7 agents. Theming, CSS variables, Pigment CSS, slots API, MUI X (DataGrid/Charts/TreeView/DatePickers), SSR/Next.js, white-label, entity-driven CRUD, 200+ dashboard widgets, ecosystem integrations.",
       "author": {
         "name": "Claude Code"
       },
@@ -484,6 +491,29 @@
         "backend",
         "full-stack",
         "dotnet"
+      ]
+    },
+    "scrapin-aint-easy": {
+      "name": "scrapin-aint-easy",
+      "version": "1.0.0",
+      "description": "Documentation intelligence engine, algorithm library, and codebase/agent drift detection system for Claude Code",
+      "author": {
+        "name": "Markus Ahling"
+      },
+      "keywords": [
+        "documentation",
+        "algorithms",
+        "drift-detection",
+        "knowledge-graph",
+        "mcp",
+        "lsp",
+        "interview-setup",
+        "code-intelligence"
+      ],
+      "categories": [
+        "developer-tools",
+        "documentation",
+        "code-intelligence"
       ]
     }
   },
@@ -624,6 +654,13 @@
         "version": "7.0.0",
         "status": "active",
         "tier": "standard"
+      },
+      "scrapin-aint-easy": {
+        "path": "../plugins/scrapin-aint-easy/.claude-plugin/plugin.json",
+        "callsign": "Scrapin",
+        "version": "1.0.0",
+        "status": "active",
+        "tier": "standard"
       }
     },
     "marketplace-ecosystem": {
@@ -702,19 +739,20 @@
     "Cartographer": "drawio-diagramming",
     "Expert": "claude-code-expert",
     "Materializer": "mui-expert",
-    "Blazor": "dotnet-blazor"
+    "Blazor": "dotnet-blazor",
+    "Scrapin": "scrapin-aint-easy"
   },
   "stats": {
-    "totalInstalled": 20,
-    "totalPlugins": 26,
+    "totalInstalled": 21,
+    "totalPlugins": 27,
     "totalAvailable": 6,
-    "lastUpdated": "2026-03-29T00:00:00.000Z",
+    "lastUpdated": "2026-04-07T00:00:00.000Z",
     "byTier": {
       "enterprise": 1,
-      "standard": 23
+      "standard": 24
     },
     "byLocation": {
-      "plugins/": 20,
+      "plugins/": 21,
       ".claude/plugins/": 6
     }
   }
