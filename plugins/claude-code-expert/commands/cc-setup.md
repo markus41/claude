@@ -9,12 +9,32 @@ MCP servers, LSP hints, memory architecture, and cost optimization.
 
 ```bash
 /cc-setup                        # Full interactive setup
-/cc-setup --auto                 # Non-interactive, best-guess defaults
-/cc-setup --dry-run              # Show what would be configured without writing
+/cc-setup --auto                 # Preview-first: best-guess defaults, shows diff, needs --confirm to write
+/cc-setup --auto --confirm       # Apply the best-guess defaults (irreversible on existing .claude/)
+/cc-setup --dry-run              # Same as --auto without --confirm (explicit synonym)
 /cc-setup --mcp-only             # Only detect and install MCP servers
 /cc-setup --audit                # Audit existing setup, score it, suggest improvements
-/cc-setup --preset power-user    # Use a curated preset
+/cc-setup --preset power-user    # Use a curated preset (still requires --confirm to write)
 ```
+
+## Safety: `--auto` is preview-only by default
+
+Historically `/cc-setup --auto` wrote files to `.claude/` immediately with no preview, which
+made it dangerous on repos that already had hand-crafted configuration. Per the 7-agent
+upgrade council UX finding C8, `--auto` now behaves like `--dry-run` by default: it produces
+the full file list + a diff of every intended change and prints a one-line "to apply, add
+`--confirm`" instructions. Writes only happen when `--confirm` is explicitly passed.
+
+Implementation requirement for Claude when handling `/cc-setup --auto`:
+
+1. Run the Phase-1 analysis (read-only).
+2. Compute all files that would be written / overwritten.
+3. For each file, produce a unified diff against the current content (or "new file" marker).
+4. Print the diff, the file count, and the line `Pass --confirm to apply these changes.`
+5. Do NOT call `Write` / `Edit` / `Bash(mkdir)` etc. unless `--confirm` is in the invocation.
+
+This mirrors the `terraform plan` → `terraform apply` pattern. `--audit` and `--mcp-only`
+remain read-only. `--preset` follows the same preview-first rule.
 
 ---
 
