@@ -42,6 +42,21 @@ function telemetryPath(dataDir: string): string {
   return join(dataDir, 'telemetry', 'crawl-telemetry.json');
 }
 
+// Serialize all telemetry writes per-dataDir so concurrent cron jobs cannot
+// race on read-modify-write and drop records. The original implementation
+// had no lock; up to 3 jobs could run in parallel and the last writer won.
+const writeQueues = new Map<string, Promise<unknown>>();
+
+async function serialized<T>(dataDir: string, fn: () => Promise<T>): Promise<T> {
+  const prev = writeQueues.get(dataDir) ?? Promise.resolve();
+  const next = prev.then(fn, fn);
+  writeQueues.set(
+    dataDir,
+    next.catch(() => undefined),
+  );
+  return next;
+}
+
 async function readState(dataDir: string): Promise<TelemetryState> {
   const path = telemetryPath(dataDir);
   if (!existsSync(path)) {
@@ -64,46 +79,50 @@ async function writeState(dataDir: string, state: TelemetryState): Promise<void>
 }
 
 export async function recordCrawlFailure(dataDir: string, failure: CrawlFailureRecord): Promise<void> {
-  const state = await readState(dataDir);
-  state.failures.unshift(failure);
-  state.failures = state.failures.slice(0, MAX_FAILURES);
+  await serialized(dataDir, async () => {
+    const state = await readState(dataDir);
+    state.failures.unshift(failure);
+    state.failures = state.failures.slice(0, MAX_FAILURES);
 
-  const health = state.health[failure.sourceKey] ?? {
-    sourceKey: failure.sourceKey,
-    successCount: 0,
-    failureCount: 0,
-    avgFreshnessHours: 0,
-  };
-  health.failureCount += 1;
-  health.lastFailureAt = failure.at;
-  state.health[failure.sourceKey] = health;
+    const health = state.health[failure.sourceKey] ?? {
+      sourceKey: failure.sourceKey,
+      successCount: 0,
+      failureCount: 0,
+      avgFreshnessHours: 0,
+    };
+    health.failureCount += 1;
+    health.lastFailureAt = failure.at;
+    state.health[failure.sourceKey] = health;
 
-  await writeState(dataDir, state);
+    await writeState(dataDir, state);
+  });
 }
 
 export async function recordCrawlRun(dataDir: string, run: CrawlRunRecord): Promise<void> {
-  const state = await readState(dataDir);
-  state.runs.unshift(run);
-  state.runs = state.runs.slice(0, MAX_RUNS);
+  await serialized(dataDir, async () => {
+    const state = await readState(dataDir);
+    state.runs.unshift(run);
+    state.runs = state.runs.slice(0, MAX_RUNS);
 
-  const health = state.health[run.sourceKey] ?? {
-    sourceKey: run.sourceKey,
-    successCount: 0,
-    failureCount: 0,
-    avgFreshnessHours: 0,
-  };
-  if (run.errors === 0) {
-    health.successCount += 1;
-    health.lastSuccessAt = run.completedAt;
-  }
+    const health = state.health[run.sourceKey] ?? {
+      sourceKey: run.sourceKey,
+      successCount: 0,
+      failureCount: 0,
+      avgFreshnessHours: 0,
+    };
+    if (run.errors === 0) {
+      health.successCount += 1;
+      health.lastSuccessAt = run.completedAt;
+    }
 
-  const freshnessHours = Math.max(0, (Date.now() - Date.parse(run.completedAt)) / 36e5);
-  health.avgFreshnessHours = health.avgFreshnessHours === 0
-    ? freshnessHours
-    : ((health.avgFreshnessHours * 0.8) + (freshnessHours * 0.2));
-  state.health[run.sourceKey] = health;
+    const freshnessHours = Math.max(0, (Date.now() - Date.parse(run.completedAt)) / 36e5);
+    health.avgFreshnessHours = health.avgFreshnessHours === 0
+      ? freshnessHours
+      : ((health.avgFreshnessHours * 0.8) + (freshnessHours * 0.2));
+    state.health[run.sourceKey] = health;
 
-  await writeState(dataDir, state);
+    await writeState(dataDir, state);
+  });
 }
 
 export async function readCrawlTelemetry(dataDir: string): Promise<TelemetryState> {

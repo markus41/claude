@@ -1,7 +1,7 @@
-import pino from 'pino';
+import { createLogger } from '../core/logger.js';
 import { isPublicHttpsUrl } from '../core/url-guard.js';
 
-const logger = pino({ name: 'webhook' });
+const logger = createLogger('webhook');
 
 let cachedValidatedUrl: string | undefined;
 let urlChecked = false;

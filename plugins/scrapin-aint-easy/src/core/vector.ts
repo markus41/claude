@@ -346,7 +346,12 @@ export class VectorStore {
     try {
       const hnswlib = await import('hnswlib-node');
       const index = new hnswlib.default.HierarchicalNSW('cosine', EMBEDDING_DIMENSION) as HnswIndex;
-      index.initIndex(Math.max(1024, this.entries.length * 2 + 1));
+      // When entries already exist, `rebuildHnswFromEntries` will call
+      // `initIndex` with the correct final size. Pre-allocating here would
+      // just be abandoned — so only init the empty-corpus fast path.
+      if (this.entries.length === 0) {
+        index.initIndex(1024);
+      }
       return index;
     } catch {
       logger.info('hnswlib-node not available; using brute-force vector search');
