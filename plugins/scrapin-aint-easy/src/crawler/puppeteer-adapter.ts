@@ -51,9 +51,20 @@ export class PuppeteerAdapter {
       throw new Error('PuppeteerAdapter not initialized — call initialize() first');
     }
     if (!this.browser) {
+      // SECURITY: Chromium's sandbox contains renderer compromises. Default to
+      // sandbox ON; only disable when the operator explicitly opts in via env
+      // (e.g. running as root in a container where user-namespace sandboxing
+      // is unavailable). Document this in deployment guides.
+      const disableSandbox = process.env['SCRAPIN_PUPPETEER_NO_SANDBOX'] === '1';
+      const launchArgs: string[] = disableSandbox
+        ? ['--no-sandbox', '--disable-setuid-sandbox']
+        : [];
+      if (disableSandbox) {
+        logger.warn('Launching Puppeteer with --no-sandbox per SCRAPIN_PUPPETEER_NO_SANDBOX=1');
+      }
       this.browser = await this.puppeteer.launch({
         headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        args: launchArgs,
       });
       logger.debug('Browser launched');
     }

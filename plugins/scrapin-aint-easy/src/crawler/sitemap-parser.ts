@@ -1,4 +1,5 @@
 import pino from 'pino';
+import { isSafeFetchUrl } from '../core/url-guard.js';
 
 const logger = pino({ name: 'sitemap-parser' });
 
@@ -29,6 +30,12 @@ function extractSitemapUrls(xml: string): string[] {
 }
 
 async function fetchText(url: string): Promise<string> {
+  // SECURITY: A sitemap hosted on a public domain can embed `<loc>` entries
+  // pointing at internal networks, loopback, or cloud IMDS. Reject them
+  // before the HTTP request so we cannot be steered into SSRF.
+  if (!isSafeFetchUrl(url, true)) {
+    throw new Error(`Refusing to fetch non-public URL: ${url}`);
+  }
   const fetchMod = await import('node-fetch');
   const fetchFn = fetchMod.default;
   const response = await fetchFn(url, {

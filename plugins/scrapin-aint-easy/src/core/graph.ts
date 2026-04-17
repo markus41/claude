@@ -6,6 +6,47 @@ import { eventBus } from './event-bus.js';
 
 const logger = pino({ name: 'graph' });
 
+// ── Cypher safety helpers ──
+//
+// Kuzu's node.js bindings in use here do not expose parameterized statements
+// through a stable typed interface, so the Cypher we send is a string
+// template. To prevent injection via user-controlled values we:
+//   1. Restrict identifiers (labels, edge types, property keys) to a safe
+//      regex — these are interpolated without quotes and must never contain
+//      metacharacters.
+//   2. Route every value through formatCypherValue() which quotes and
+//      escapes strings (single-quote, backslash, newline, carriage return),
+//      emits booleans/numbers as literals, and stringifies anything else.
+//
+// This is defense-in-depth; a future upgrade should switch to prepared
+// statements when the Kuzu driver exposes them in TypeScript.
+
+const SAFE_IDENT_RE = /^[A-Za-z_][A-Za-z0-9_]*$/;
+
+function isSafeIdentifier(s: string): boolean {
+  return SAFE_IDENT_RE.test(s);
+}
+
+function assertSafeIdentifier(s: string, kind: string): void {
+  if (!isSafeIdentifier(s)) {
+    throw new Error(`Refusing unsafe ${kind} identifier: ${JSON.stringify(s)}`);
+  }
+}
+
+function formatCypherValue(v: unknown): string {
+  if (v === null || v === undefined) return 'NULL';
+  if (typeof v === 'boolean') return v ? 'true' : 'false';
+  if (typeof v === 'number' && Number.isFinite(v)) return String(v);
+  // everything else: stringify + quote + escape
+  const s = typeof v === 'string' ? v : JSON.stringify(v);
+  const escaped = s
+    .replace(/\\/g, '\\\\')
+    .replace(/'/g, "\\'")
+    .replace(/\r/g, '\\r')
+    .replace(/\n/g, '\\n');
+  return `'${escaped}'`;
+}
+
 // ── Type definitions ──
 
 export type NodeLabel =
@@ -171,11 +212,13 @@ export class GraphAdapter {
 
     if (this.kuzuConn) {
       const conn = this.kuzuConn as { execute: (q: string) => Promise<unknown> };
+      assertSafeIdentifier(label, 'label');
       const entries = Object.entries(props)
-        .map(([k, v]) => `${k}: ${typeof v === 'string' ? `'${v.replace(/'/g, "''")}'` : v}`)
+        .filter(([k]) => isSafeIdentifier(k))
+        .map(([k, v]) => `${k}: ${formatCypherValue(v)}`)
         .join(', ');
       try {
-        await conn.execute(`MERGE (n:${label} {id: '${id}'}) SET ${entries}`);
+        await conn.execute(`MERGE (n:${label} {id: ${formatCypherValue(id)}}) SET ${entries}`);
       } catch {
         // Fallback to in-memory
         this.nodes.set(id, { label, props });
@@ -190,9 +233,10 @@ export class GraphAdapter {
   async upsertEdge(type: EdgeType, fromId: string, toId: string, props?: Record<string, unknown>): Promise<void> {
     if (this.kuzuConn) {
       const conn = this.kuzuConn as { execute: (q: string) => Promise<unknown> };
+      assertSafeIdentifier(type, 'edge type');
       try {
         await conn.execute(
-          `MATCH (a {id: '${fromId}'}), (b {id: '${toId}'}) MERGE (a)-[:${type}]->(b)`,
+          `MATCH (a {id: ${formatCypherValue(fromId)}}), (b {id: ${formatCypherValue(toId)}}) MERGE (a)-[:${type}]->(b)`,
         );
       } catch {
         this.edges.push({ type, from: fromId, to: toId, props: props ?? {} });
