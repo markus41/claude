@@ -1,5 +1,71 @@
 # Changelog
 
+## v8.0.0 (2026-04-16) — Second-Brain Redesign
+
+**Major rewrite.** Consolidates v7's 49 skills / 21 commands / 26 agents into a modern, progressively-disclosed architecture with true three-tier memory.
+
+### Breaking changes (shims in v8.0, removed in v8.1)
+
+- 10 commands renamed/absorbed: `cc-bootstrap` → `cc-setup --audit`, `cc-config` → `cc-sync --fix-drift`, `cc-troubleshoot` → `cc-debug`, `cc-budget`/`cc-cicd`/`cc-learn`/`cc-mcp`/`cc-perf`/`cc-schedule`/`cc-agent` deleted (covered by MCP tools or native skills).
+- 35 skills consolidated into 14 behavior-triggering skills.
+- 9 agents removed (roles folded into survivors).
+
+### New in v8.0
+
+- **Three-tier memory system**: engram (tier 1, working) + Obsidian vault (tier 2, durable) + plugin `memory/rules/` (tier 3, baseline). Bridged by new `memory-consolidator` agent with strict write discipline (read-only on engram; respects user-protection invariant on Obsidian notes).
+- **MCP server v5.0.0**: 22 tools (15 existing `cc_docs_*` + 7 new `cc_kb_*` for hooks / topologies / workflows / channels / LSP / patterns / autonomy). Every KB artifact ≤ 2 KB, lazy-loaded.
+- **`cc-second-brain` skill** (new): three-tier routing + CC `topic_key` taxonomy.
+- **`/cc-memory` command** (refit): search / consolidate / export / edit-always / review / status — wraps engram with CC-scope, never mutates engram.
+- **14 skills** (down from 49): pushy descriptions with ≥3 specific triggers, bodies ≤500 lines per skill-creator spec, heavy reference content in `references/` or MCP KB.
+- **11 commands** (down from 21): single-intent each, 40-90 lines.
+- **18 agents** (from 26): role-consolidated. New: `memory-consolidator` (Opus, read-only engram).
+- **Obsidian vault integration**: consumer repos get a `Knowledge Library` routing block in CLAUDE.md that points to `C:/Users/MarkusAhling/obsidian/Repositories/{org}/{repo}.md`.
+
+### Migration
+
+- `archive/v7.6.0/` preserves the full v7 tree for one minor version.
+- `migrations/v7-to-v8.md` maps every v7 asset → v8 destination.
+- `docs/MIGRATION.md` documents user-facing changes.
+
+### Metrics
+
+| Metric | v7.6.0 | v8.0.0 |
+|---|---|---|
+| Skills | 49 | 14 (−71%) |
+| Commands | 21 | 11 (−48%) |
+| Agents | 26 | 18 (−31%) |
+| MCP tools | 15 | 22 (+47%) |
+| Median skill length | 550 lines | 110 lines |
+| Max skill length | 971 | 169 |
+| Frontmatter rot | 22/49 | 0/14 |
+| Plugin-internal memory infrastructure | 0 | 3-tier with engram bridge |
+
+### Preserved from v7.9.0 (merged in at PR time)
+
+The v7.9.0 orchestration infrastructure that landed on main after the v8 branch point is carried forward:
+
+- `/cc-skills` command — browsable skill index (still ≤14 skills after v8 consolidation)
+- `skills/orchestration-blackboard/SKILL.md` — multi-round blackboard usage
+- `skills/prompt-budget-preflight/SKILL.md` — minimum-viable-prompt template + preflight
+- `skills/verify-between-waves/SKILL.md` — tsc/test/commit cadence
+- `hooks/capture-agent-telemetry.sh` — SubagentStop JSONL telemetry
+- `docs/upstream-asks.md` — 5 core-change asks
+
+**NOT yet carried forward in v8.0 (deferred to v8.1):**
+
+- 4 v7.9.0 MCP tools: `cc_blackboard_append`, `cc_blackboard_read`, `cc_blackboard_list_runs`, `cc_telemetry_recent_agents`
+- 2 v7.9.0 MCP resources: `cc://blackboard/<run_id>`, `cc://telemetry/agents`
+- `agents/pattern-router.md` Decision Protocol dimension 4 (specialist availability)
+- `skills/agentic-patterns/SKILL.md` Part 4 "specialist-first" reliability override
+- `commands/cc-orchestrate.md` Template 13 "Specialist Fan-Out"
+- `commands/cc-memory.md` `--graduate` subcommand
+- `commands/cc-setup.md` `--auto` preview-first behavior
+- `mcp-server/src/index.js` drive-by fix for `cc_docs_schedule_recommend` ternary
+
+These need manual integration into v8's restructured files. Tracked as v8.1 work.
+
+---
+
 ## v7.9.0 (2026-04-17)
 
 ### Orchestration Infrastructure (new category)

@@ -1,36 +1,56 @@
-# Claude Code Expert
+# Claude Code Expert v8 — Routing
 
-## Purpose
-Use this plugin when the task needs unusually strong code intelligence: deep repo understanding, evidence-backed planning, architecture tradeoff analysis, root-cause debugging, multi-agent orchestration, or Claude Code setup guidance.
+Modern second brain for Claude Code. Five-layer stack deploy + three-tier memory + 22-tool MCP reference spine.
 
 ## Fast routing
-- Need full repository setup or audit? Open `commands/cc-setup.md`.
-- Need to update/sync an existing setup, propagate to sub-repos, or scaffold docs? Open `commands/cc-sync.md`.
-- Need orchestration or review council? Open `commands/cc-orchestrate.md` and `commands/cc-council.md`.
-- Need the highest reasoning depth for a coding problem? Open `commands/cc-intel.md`, `skills/deep-code-intelligence/SKILL.md`, and `agents/principal-engineer-strategist.md`.
-- Need debugging or recovery? Open `commands/cc-debug.md`, `commands/cc-troubleshoot.md`, and `skills/self-healing-advanced/SKILL.md`.
-- Need research or library verification? Open `skills/research-routing/SKILL.md` and `agents/research-orchestrator.md`.
-- Need auto mode, PermissionDenied hook, or defer pattern? Open `skills/auto-mode/SKILL.md`.
-- Need to stream background events or self-pace a loop? Open `skills/monitor-tool/SKILL.md`.
-- Need cloud-based planning? Open `skills/ultraplan/SKILL.md`.
-- Need CI auto-fix from the terminal (`/autofix-pr`)? Open `skills/cicd-integration/SKILL.md`.
-- Need cost/quality tradeoffs, `/effort` control, or thinking summaries? Open `skills/model-routing/SKILL.md`.
 
-## New CLI commands (w13–w15, 2026)
+| Intent | Open |
+|---|---|
+| Set up or audit a repo's CC stack | [`commands/cc-setup.md`](commands/cc-setup.md) |
+| Update an existing setup | [`commands/cc-sync.md`](commands/cc-sync.md) |
+| Deep analysis of a hard problem | [`commands/cc-intel.md`](commands/cc-intel.md) + [`skills/deep-code-intelligence/SKILL.md`](skills/deep-code-intelligence/SKILL.md) |
+| Multi-agent review | [`commands/cc-council.md`](commands/cc-council.md) |
+| Launch a pattern-based workflow | [`commands/cc-orchestrate.md`](commands/cc-orchestrate.md) |
+| Enable autonomous mode | [`commands/cc-autonomy.md`](commands/cc-autonomy.md) + [`skills/autonomy/SKILL.md`](skills/autonomy/SKILL.md) |
+| Hooks install/list/debug | [`commands/cc-hooks.md`](commands/cc-hooks.md) |
+| Event-driven channels | [`commands/cc-channels.md`](commands/cc-channels.md) |
+| Memory operations (search/consolidate/export) | [`commands/cc-memory.md`](commands/cc-memory.md) + [`skills/cc-second-brain/SKILL.md`](skills/cc-second-brain/SKILL.md) |
+| Diagnose a CC setup issue | [`commands/cc-debug.md`](commands/cc-debug.md) |
+| Plugin help / routing table | [`commands/cc-help.md`](commands/cc-help.md) |
 
-| Command | What it does |
-|---------|-------------|
-| `/autofix-pr` | Enable PR auto-fix loop for current branch's open PR (CLI, v2.1.92) |
-| `/ultraplan` | Cloud planning session via browser, execute or send back to CLI (v2.1.92) |
-| `/powerup` | Interactive in-terminal feature lessons with animated demos (v2.1.90) |
-| `/team-onboarding` | Generate teammate ramp-up guide from local Claude Code usage (v2.1.101) |
-| `/effort [low\|medium\|high]` | Control reasoning depth; default is now `high` for paid users (v2.1.101) |
+## Three-tier memory
 
-**Transcript search** (v2.1.83): Press `Ctrl+O` to open transcript, then `/` to search. Use `n`/`N` to step through matches. Find any command or output from earlier in long sessions.
+Claude in this plugin works with **three memory tiers**:
+
+1. **engram** (tier 1, working) — ALWAYS ACTIVE globally. Save decisions/bugs/discoveries proactively with CC `topic_key` prefix (`cc/hooks/*`, `cc/autonomy/*`, etc.).
+2. **Obsidian vault** at `C:/Users/MarkusAhling/obsidian/` (tier 2, durable) — user's central knowledge hub. Write reusable patterns to `Research/Claude-Code/Patterns/`, repo docs to `Repositories/{org}/{repo}.md`, ADRs to `Decisions/NNNN-title.md`.
+3. **Plugin rules** in `memory/rules/` (tier 3, baseline) — auto-copied into consumer repos by `/cc-setup`.
+
+Details and write discipline: [`memory/conventions.md`](memory/conventions.md).
 
 ## Operating rules
-1. Build an evidence table before making major claims.
-2. Prefer repo-specific facts over generic best practices.
-3. For non-trivial work, decompose into constraints, hypotheses, validation steps, and rollback paths.
-4. Use orchestration for breadth; use `cc-intel` for depth.
-5. If a framework or library is involved, validate against official docs before finalizing recommendations.
+
+1. **Evidence before advice** — build an evidence table for non-trivial claims.
+2. **Repo facts beat generic best practices** — read the code first.
+3. **Route to the right layer** — reference material lives in MCP KB tools; behavior lives in skills; knowledge lives in Obsidian.
+4. **Memory discipline** — engram writes are free (proactive); Obsidian writes only with `auto_generated: false` unless you are the consolidator; `memory/rules/cc-always.md` is user-only.
+5. **Cost awareness** — Opus for reasoning gates, Sonnet for implementation, Haiku for retrieval. See [`skills/model-routing/SKILL.md`](skills/model-routing/SKILL.md).
+
+## MCP reference spine
+
+Plugin MCP server exposes 22 tools. Use them instead of loading heavy reference content into skills.
+
+- `cc_docs_*` — 15 tools for search, topics, model recommendations, autonomy planning, topology recommendations.
+- `cc_kb_*` — 7 tools for hook recipes, topology kits, workflow packs, channel servers, LSP configs, pattern templates, autonomy profiles.
+
+Full reference in [`docs/MCP_TOOLS.md`](docs/MCP_TOOLS.md).
+
+## Plugin architecture
+
+- `skills/` (14) — behavior-triggering, ≤ 500 lines each, `references/` for heavy content.
+- `commands/` (11) — single-intent, route to skills and MCP tools.
+- `agents/` (18) — role-scoped, model-deliberate, tool-restricted.
+- `memory/` — three-tier baseline rules + consolidator audit.
+- `mcp-server/` — 22-tool reference server (port via stdio).
+- `hooks/` — (consumer-repo hooks are in `memory/rules/cc-always.md` and MCP KB).
+- `archive/v7.6.0/` — pre-redesign snapshot, kept through v8.1.

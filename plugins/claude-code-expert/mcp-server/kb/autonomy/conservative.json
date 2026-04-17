@@ -1,0 +1,20 @@
+{
+  "name": "conservative",
+  "summary": "High-scrutiny autonomy — approval required for every write, every commit, every bash command beyond a small safe list.",
+  "when_to_use": "Production codepaths, security-sensitive modules, first session on an unfamiliar codebase.",
+  "permissions": {
+    "allow": ["Read", "Glob", "Grep", "Bash(git status)", "Bash(git diff*)", "Bash(git log*)", "Bash(ls *)", "Bash(cat *)"],
+    "deny": ["Bash(rm *)", "Bash(sudo *)", "Bash(curl * | sh)", "Bash(curl * | bash)", "Bash(git push *)", "Bash(git reset*)", "Bash(npm publish*)"],
+    "ask": ["Write", "Edit", "Bash(git commit*)", "Bash(npm *)", "Bash(pnpm *)", "Bash(pytest*)", "WebFetch"]
+  },
+  "gates": {
+    "planner": { "enabled": true, "writes": ".claude/active-task.md" },
+    "verifier": { "enabled": true, "checks": ["tsc", "eslint", "tests", "git-diff-sanity", "secret-scan"] },
+    "reviewer": { "enabled": true, "block_criteria_count": 10 }
+  },
+  "session_init_command": "claude --permission-mode ask",
+  "memory_rules": [
+    "Save every single decision — including rejected options with reasoning.",
+    "Conservative profile assumes high-stakes work; session summary must include a risk section."
+  ]
+}

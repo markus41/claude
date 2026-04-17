@@ -1,0 +1,33 @@
+{
+  "name": "migration-plan-before-edits",
+  "summary": "Before non-trivial migrations (framework version, DB schema, API contract), write a plan — risks, phases, rollback.",
+  "when_to_use": "Framework major bumps, DB schema changes, auth swaps, brand renames across many files.",
+  "phases": [
+    {
+      "name": "Scope",
+      "steps": ["List files, modules, deps affected.", "Estimate LOC.", "Identify external consumers (APIs, events, public interfaces) — these drive backcompat decisions."]
+    },
+    {
+      "name": "Risks",
+      "steps": ["What can break and at what blast radius?", "Data loss scenarios?", "Any window where system is inconsistent (dual-write during DB migration)?"]
+    },
+    {
+      "name": "Phases",
+      "steps": ["Break into deployable phases. Each: isolated, reversible.", "Identify 'point of no return' — after which rollback becomes expensive.", "Typical shape: add new → migrate data → switch traffic → remove old."]
+    },
+    {
+      "name": "Rollback",
+      "steps": ["Per phase: what reverts it?", "What data loss could rollback introduce?", "Window before rollback becomes impossible — state it."]
+    },
+    {
+      "name": "Verify",
+      "steps": ["Per phase: tests confirming success.", "Golden dataset for data migrations.", "Acceptance criteria written pre-work."]
+    },
+    {
+      "name": "Execute",
+      "steps": ["agents/migration-lead runs plan (Opus, writes plan before code).", "Phase-by-phase: implement, test, deploy, verify, commit, proceed.", "User confirmation at every point of no return."]
+    }
+  ],
+  "exit_criteria": "Plan exists, rollback tested, phases atomic up to point of no return.",
+  "anti_patterns": ["Skipping plan on 'just a version bump'.", "No rollback — recovery becomes hope.", "Merging phases to save time — couples failures."]
+}

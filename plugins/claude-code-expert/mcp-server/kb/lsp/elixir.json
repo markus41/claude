@@ -1,0 +1,8 @@
+{
+  "language": "elixir",
+  "server": "elixir-ls",
+  "install": "Install from https://github.com/elixir-lsp/elixir-ls/releases; add to PATH",
+  "verify": "elixir-ls --version",
+  "diagnostics_hook": "#!/bin/bash\nINPUT=$(head -c 65536); FILE=$(printf '%s' \"$INPUT\" | jq -r '.tool_input.file_path // \"\"')\n[[ \"$FILE\" != *.ex && \"$FILE\" != *.exs ]] && { echo '{\"decision\":\"approve\"}'; exit 0; }\nERRORS=$(mix compile --warnings-as-errors --no-deps-check 2>&1 | tail -10)\necho \"$ERRORS\" | grep -qE 'error|warning' && echo \"$ERRORS\" >&2\necho '{\"decision\":\"approve\"}'",
+  "notes": "mix compile is the authoritative check. elixir-ls handles IDE features; relies on mix.exs."
+}

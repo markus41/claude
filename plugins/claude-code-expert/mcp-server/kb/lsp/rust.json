@@ -1,0 +1,8 @@
+{
+  "language": "rust",
+  "server": "rust-analyzer",
+  "install": "rustup component add rust-analyzer",
+  "verify": "rust-analyzer --version",
+  "diagnostics_hook": "#!/bin/bash\nINPUT=$(head -c 65536); FILE=$(printf '%s' \"$INPUT\" | jq -r '.tool_input.file_path // \"\"')\n[[ \"$FILE\" != *.rs ]] && { echo '{\"decision\":\"approve\"}'; exit 0; }\nERRORS=$(cargo check --message-format=short 2>&1 | grep -E 'error|warning' | head -10)\n[ -n \"$ERRORS\" ] && echo \"$ERRORS\" >&2\necho '{\"decision\":\"approve\"}'",
+  "notes": "Use cargo check (fast) or cargo clippy (more lints) for diagnostics. rust-analyzer handles IDE features."
+}

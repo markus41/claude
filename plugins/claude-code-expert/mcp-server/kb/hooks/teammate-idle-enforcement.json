@@ -1,0 +1,13 @@
+{
+  "name": "teammate-idle-enforcement",
+  "event": "Stop",
+  "matcher": "",
+  "summary": "Kill or warn about teammate agents that have been idle > N minutes. Prevents token-wasting zombie processes.",
+  "when_to_use": "Projects using agent teams. Tunes the idle threshold via TEAMMATE_IDLE_MINUTES env var (default 15).",
+  "script_path": ".claude/hooks/teammate-idle-enforcement.sh",
+  "script": "#!/usr/bin/env bash\nset -euo pipefail\nTHRESHOLD_MIN=\"${TEAMMATE_IDLE_MINUTES:-15}\"\nSTATE=.claude/teammates.jsonl\n[ ! -f \"$STATE\" ] && { echo '{\"decision\":\"approve\"}'; exit 0; }\nNOW=$(date -u +%s)\nIDLE_CUTOFF=$((NOW - THRESHOLD_MIN * 60))\nWARN=0\nwhile IFS= read -r LINE; do\n  LAST=$(jq -r '.last_active_ts // 0' <<<\"$LINE\" 2>/dev/null || echo 0)\n  NAME=$(jq -r '.name // \"?\"' <<<\"$LINE\" 2>/dev/null || echo '?')\n  if [ \"$LAST\" -lt \"$IDLE_CUTOFF\" ] && [ \"$LAST\" -gt 0 ]; then\n    printf 'Idle teammate: %s (last active: %s)\\n' \"$NAME\" \"$(date -r $LAST 2>/dev/null || echo ?)\" >&2\n    WARN=$((WARN+1))\n  fi\ndone < \"$STATE\"\n[ \"$WARN\" -gt 0 ] && printf 'Consider cleanup via team-orchestrator.\\n' >&2\necho '{\"decision\":\"approve\"}'\n",
+  "settings_snippet": {
+    "hooks": { "Stop": [{ "matcher": "", "hooks": [{ "type": "command", "command": "bash .claude/hooks/teammate-idle-enforcement.sh" }] }] }
+  },
+  "verify": "Populate .claude/teammates.jsonl with a stale entry; confirm warning in stderr on Stop."
+}

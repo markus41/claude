@@ -13,12 +13,11 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import {
   ListToolsRequestSchema,
   CallToolRequestSchema,
-  ListResourcesRequestSchema,
-  ReadResourceRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
-import { readFileSync, readdirSync, existsSync, writeFileSync, mkdirSync } from "fs";
+import { readFileSync, readdirSync, existsSync } from "fs";
 import { join, dirname, basename } from "path";
 import { fileURLToPath } from "url";
+import { getKb, listKb, formatKb, notFoundMessage } from "./kb.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PLUGIN_ROOT = join(__dirname, "../..");
@@ -711,144 +710,9 @@ function recommendSchedule(task, requiresLocalFiles) {
   };
 }
 
-// --- Blackboard storage (orchestration sharing) ---
-//
-// Parallel subagents can append findings for a given run-id; subsequent
-// rounds read them back. Storage is filesystem-local so it survives across
-// subagents without a shared message bus. Per-agent-per-round files are
-// append-only; refusing overwrites keeps rounds auditable.
-
-const BLACKBOARD_ROOT = join(
-  process.cwd(),
-  ".claude",
-  "orchestration",
-  "blackboard",
-);
-const TELEMETRY_LOG = join(
-  process.cwd(),
-  ".claude",
-  "orchestration",
-  "telemetry",
-  "agents.jsonl",
-);
-
-function blackboardRunDir(runId) {
-  if (!/^[A-Za-z0-9_.-]+$/.test(runId)) {
-    throw new Error(
-      `Invalid run_id "${runId}" — only [A-Za-z0-9_.-] allowed (path traversal guard).`,
-    );
-  }
-  return join(BLACKBOARD_ROOT, runId);
-}
-
-function blackboardEntryPath(runId, round, role) {
-  if (!Number.isInteger(round) || round < 0 || round > 999) {
-    throw new Error(`Invalid round ${round} — must be integer 0..999.`);
-  }
-  if (!/^[A-Za-z0-9_.-]+$/.test(role)) {
-    throw new Error(
-      `Invalid role "${role}" — only [A-Za-z0-9_.-] allowed (path traversal guard).`,
-    );
-  }
-  return join(blackboardRunDir(runId), `${round}-${role}.yaml`);
-}
-
-function blackboardAppend(runId, round, role, findings) {
-  const dir = blackboardRunDir(runId);
-  if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
-  const path = blackboardEntryPath(runId, round, role);
-  if (existsSync(path)) {
-    throw new Error(
-      `Blackboard entry already exists at ${path} — entries are append-only per (run, round, role) triple.`,
-    );
-  }
-  // Serialize as YAML-ish; we keep the emitter minimal to avoid a dep.
-  const ts = new Date().toISOString();
-  const body = [
-    `run_id: ${JSON.stringify(runId)}`,
-    `round: ${round}`,
-    `role: ${JSON.stringify(role)}`,
-    `ts: ${JSON.stringify(ts)}`,
-    `findings: |`,
-    ...String(
-      typeof findings === "string" ? findings : JSON.stringify(findings, null, 2),
-    )
-      .split("\n")
-      .map((l) => `  ${l}`),
-    ``,
-  ].join("\n");
-  writeFileSync(path, body, "utf-8");
-  return { path, bytes: Buffer.byteLength(body, "utf-8") };
-}
-
-function blackboardRead(runId, round, role) {
-  const dir = blackboardRunDir(runId);
-  if (!existsSync(dir)) return { entries: [] };
-  const names = readdirSync(dir).filter((n) => n.endsWith(".yaml"));
-  const entries = [];
-  for (const name of names) {
-    const m = name.match(/^(\d+)-(.+)\.yaml$/);
-    if (!m) continue;
-    const entryRound = Number(m[1]);
-    const entryRole = m[2];
-    if (round !== undefined && round !== null && entryRound !== Number(round)) continue;
-    if (role && entryRole !== role) continue;
-    const body = readFileSync(join(dir, name), "utf-8");
-    entries.push({
-      round: entryRound,
-      role: entryRole,
-      path: join(dir, name),
-      body,
-    });
-  }
-  entries.sort((a, b) => a.round - b.round || a.role.localeCompare(b.role));
-  return { entries };
-}
-
-function blackboardListRuns() {
-  if (!existsSync(BLACKBOARD_ROOT)) return [];
-  return readdirSync(BLACKBOARD_ROOT).filter((n) => !n.startsWith("."));
-}
-
-// --- Agent telemetry reader ---
-
-function readTelemetryAgents(limit = 100) {
-  if (!existsSync(TELEMETRY_LOG)) return [];
-  const raw = readFileSync(TELEMETRY_LOG, "utf-8");
-  const lines = raw.split("\n").filter((l) => l.trim());
-  const records = [];
-  for (const line of lines) {
-    try {
-      records.push(JSON.parse(line));
-    } catch {
-      // skip malformed line
-    }
-  }
-  return records.slice(-limit).reverse(); // newest first
-}
-
-function summarizeTelemetry(records) {
-  if (records.length === 0) {
-    return { total: 0, rejectRate: 0, meanDurationMs: null };
-  }
-  const rejected = records.filter((r) => r.status === "rejected").length;
-  const durations = records
-    .filter((r) => typeof r.duration_ms === "number")
-    .map((r) => r.duration_ms);
-  const meanDurationMs = durations.length
-    ? Math.round(durations.reduce((a, b) => a + b, 0) / durations.length)
-    : null;
-  return {
-    total: records.length,
-    rejected,
-    rejectRate: records.length ? rejected / records.length : 0,
-    meanDurationMs,
-  };
-}
-
 const server = new Server(
-  { name: "claude-code-docs", version: "4.0.0" },
-  { capabilities: { tools: {}, resources: {} } }
+  { name: "claude-code-docs", version: "5.0.0" },
+  { capabilities: { tools: {} } }
 );
 
 server.setRequestHandler(ListToolsRequestSchema, async () => ({
@@ -1083,124 +947,77 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
       },
     },
     {
-      name: "cc_blackboard_append",
+      name: "cc_kb_hook_recipe",
       description:
-        "Append a finding to the orchestration blackboard for a multi-agent run. Call this from any subagent that produces a finding you want peers (in subsequent rounds) to see. Entries are append-only per (run_id, round, role) triple — the second write for the same triple fails.",
+        "Fetch one security-hardened hook script by name. Returns the script, event, matcher, settings.json snippet, and verify steps. Call cc_docs_hook_pack_recommend first to get candidate names.",
       inputSchema: {
         type: "object",
-        properties: {
-          run_id: {
-            type: "string",
-            description: "Caller-chosen identifier for this orchestration run. Reuse across all agents in the same run. Only [A-Za-z0-9_.-] allowed.",
-          },
-          round: {
-            type: "integer",
-            description: "Round number (0-indexed). 0 = opening positions; 1 = cross-critique; etc.",
-          },
-          role: {
-            type: "string",
-            description: "The agent's role/lens (e.g. 'architecture', 'performance', 'security'). Only [A-Za-z0-9_.-] allowed.",
-          },
-          findings: {
-            description: "The finding content — a string, structured object, or array. Serialized to a literal YAML block.",
-          },
-        },
-        required: ["run_id", "round", "role", "findings"],
+        properties: { name: { type: "string", description: "Hook pack name, e.g. 'protect-sensitive-files', 'auto-format-after-edit'." } },
+        required: ["name"],
       },
     },
     {
-      name: "cc_blackboard_read",
+      name: "cc_kb_topology_kit",
       description:
-        "Read blackboard entries for a given run. Filter by round and/or role. Subsequent-round agents call this to see what prior rounds produced without the orchestrator having to paste everything into their prompt.",
+        "Fetch one agent-team topology kit by name. Returns composition, file ownership, coordination protocol, cost estimate, anti-patterns.",
       inputSchema: {
         type: "object",
-        properties: {
-          run_id: {
-            type: "string",
-            description: "Run identifier (must match what cc_blackboard_append used).",
-          },
-          round: {
-            type: "integer",
-            description: "Optional. If provided, only return entries for this round.",
-          },
-          role: {
-            type: "string",
-            description: "Optional. If provided, only return entries for this role.",
-          },
-        },
-        required: ["run_id"],
+        properties: { name: { type: "string", description: "Topology name, e.g. 'architect-implementer-reviewer', 'competing-hypotheses-debug'." } },
+        required: ["name"],
       },
     },
     {
-      name: "cc_blackboard_list_runs",
+      name: "cc_kb_workflow_pack",
       description:
-        "List all blackboard runs present in .claude/orchestration/blackboard/. Use when you need to discover run_ids without pre-knowing them (e.g. resuming an orchestration or auditing recent activity).",
+        "Fetch one engineering workflow pack by name. Returns phased playbook (phases, steps, exit criteria, anti-patterns).",
       inputSchema: {
         type: "object",
-        properties: {},
+        properties: { name: { type: "string", description: "Workflow name, e.g. 'tdd-implementation', 'fix-bug-from-trace'." } },
+        required: ["name"],
       },
     },
     {
-      name: "cc_telemetry_recent_agents",
+      name: "cc_kb_channel_server",
       description:
-        "Read the most recent Agent-tool telemetry records (populated by the capture-agent-telemetry SubagentStop hook). Use to compute reject rates, identify slow-agent outliers, and feed orchestration adaptations.",
+        "Fetch one channel server TypeScript implementation by pattern name (CI webhook, mobile approval relay, Discord bridge, fakechat).",
       inputSchema: {
         type: "object",
-        properties: {
-          limit: {
-            type: "integer",
-            description: "Max records to return (newest first). Defaults to 50.",
-          },
-          summarize: {
-            type: "boolean",
-            description: "If true, return summary stats (total, reject rate, mean duration) alongside records.",
-          },
-        },
+        properties: { name: { type: "string", description: "Pattern name, e.g. 'ci-webhook', 'mobile-approval', 'discord-bridge', 'fakechat'." } },
+        required: ["name"],
+      },
+    },
+    {
+      name: "cc_kb_lsp_config",
+      description:
+        "Fetch LSP server config for a language: install command, verify command, diagnostics hook script, notes.",
+      inputSchema: {
+        type: "object",
+        properties: { language: { type: "string", description: "Language key, e.g. 'typescript', 'python', 'rust', 'go'." } },
+        required: ["language"],
+      },
+    },
+    {
+      name: "cc_kb_pattern_template",
+      description:
+        "Fetch one agentic pattern template (reflection, prompt-chaining, routing, parallelization, orchestrator-workers, eval-optimizer, ReAct, etc). Returns 5-layer wiring guidance.",
+      inputSchema: {
+        type: "object",
+        properties: { name: { type: "string", description: "Pattern name, e.g. 'reflection', 'prompt-chaining', 'eval-optimizer'." } },
+        required: ["name"],
+      },
+    },
+    {
+      name: "cc_kb_autonomy_profile",
+      description:
+        "Fetch one autonomy profile (conservative, balanced, aggressive, unattended-review). Returns permission block, gates, session init command, memory rules.",
+      inputSchema: {
+        type: "object",
+        properties: { profile: { type: "string", description: "Profile name, e.g. 'conservative', 'balanced', 'aggressive', 'unattended-review'." } },
+        required: ["profile"],
       },
     },
   ],
 }));
-
-// --- Resources ---
-
-server.setRequestHandler(ListResourcesRequestSchema, async () => {
-  const runs = blackboardListRuns();
-  const resources = runs.map((runId) => ({
-    uri: `cc://blackboard/${runId}`,
-    name: `blackboard: ${runId}`,
-    description: "Entries appended by agents during a multi-agent orchestration run.",
-    mimeType: "text/yaml",
-  }));
-  resources.push({
-    uri: "cc://telemetry/agents",
-    name: "agent-telemetry",
-    description:
-      "Recent Agent-tool telemetry — wall-clock, tokens, tool-uses, reject state per spawn.",
-    mimeType: "application/jsonl",
-  });
-  return { resources };
-});
-
-server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
-  const uri = request.params.uri;
-  if (uri === "cc://telemetry/agents") {
-    if (!existsSync(TELEMETRY_LOG)) {
-      return {
-        contents: [{ uri, mimeType: "application/jsonl", text: "" }],
-      };
-    }
-    const text = readFileSync(TELEMETRY_LOG, "utf-8");
-    return { contents: [{ uri, mimeType: "application/jsonl", text }] };
-  }
-  const m = uri.match(/^cc:\/\/blackboard\/([A-Za-z0-9_.-]+)$/);
-  if (m) {
-    const runId = m[1];
-    const { entries } = blackboardRead(runId);
-    const text = entries.map((e) => `# ${basename(e.path)}\n${e.body}`).join("\n");
-    return { contents: [{ uri, mimeType: "text/yaml", text }] };
-  }
-  throw new Error(`Unknown resource: ${uri}`);
-});
 
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name, arguments: args = {} } = request.params;
@@ -1479,6 +1296,35 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       return { content: [{ type: "text", text: lines.join("\n") }] };
     }
 
+    case "cc_kb_hook_recipe": {
+      const art = getKb("hooks", args.name || "");
+      return { content: [{ type: "text", text: art ? formatKb(art) : notFoundMessage("hooks", args.name) }] };
+    }
+    case "cc_kb_topology_kit": {
+      const art = getKb("topologies", args.name || "");
+      return { content: [{ type: "text", text: art ? formatKb(art) : notFoundMessage("topologies", args.name) }] };
+    }
+    case "cc_kb_workflow_pack": {
+      const art = getKb("workflows", args.name || "");
+      return { content: [{ type: "text", text: art ? formatKb(art) : notFoundMessage("workflows", args.name) }] };
+    }
+    case "cc_kb_channel_server": {
+      const art = getKb("channels", args.name || "");
+      return { content: [{ type: "text", text: art ? formatKb(art) : notFoundMessage("channels", args.name) }] };
+    }
+    case "cc_kb_lsp_config": {
+      const art = getKb("lsp", args.language || "");
+      return { content: [{ type: "text", text: art ? formatKb(art) : notFoundMessage("lsp", args.language) }] };
+    }
+    case "cc_kb_pattern_template": {
+      const art = getKb("patterns", args.name || "");
+      return { content: [{ type: "text", text: art ? formatKb(art) : notFoundMessage("patterns", args.name) }] };
+    }
+    case "cc_kb_autonomy_profile": {
+      const art = getKb("autonomy", args.profile || "");
+      return { content: [{ type: "text", text: art ? formatKb(art) : notFoundMessage("autonomy", args.profile) }] };
+    }
+
     case "cc_docs_schedule_recommend": {
       const result = recommendSchedule(args.task || "", args.requires_local_files === true);
       const lines = [
@@ -1493,8 +1339,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         result.cron ? `- **Cron:** \`${result.cron}\`` : null,
         result.description ? `- **Description:** ${result.description}` : null,
         result.command ? `- **Command:** \`${result.command}\`` : null,
-        result.warning ? `` : null,
-        result.warning ? `> **Warning:** ${result.warning}` : null,
+        result.warning ? ``, result.warning ? result.warning : null,
         ``,
         `## Profile Notes`,
         result.profile === "cloud"
@@ -1508,138 +1353,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           ? `Run \`${result.command}\` to generate the full task prompt.`
           : `Run \`/cc-schedule --list\` to see all available blueprints, then customize with \`--target ${result.profile}\`.`,
       ].filter((l) => l !== null);
-      return { content: [{ type: "text", text: lines.join("\n") }] };
-    }
-
-    case "cc_blackboard_append": {
-      if (!args.run_id || typeof args.run_id !== "string") {
-        throw new Error("run_id is required");
-      }
-      if (typeof args.round !== "number") {
-        throw new Error("round is required (integer)");
-      }
-      if (!args.role || typeof args.role !== "string") {
-        throw new Error("role is required");
-      }
-      const result = blackboardAppend(args.run_id, args.round, args.role, args.findings);
-      return {
-        content: [
-          {
-            type: "text",
-            text:
-              `Appended to blackboard.\n` +
-              `Path: ${result.path}\n` +
-              `Size: ${result.bytes} bytes\n\n` +
-              `Peers on subsequent rounds can read via:\n` +
-              `  cc_blackboard_read({ run_id: "${args.run_id}" })\n` +
-              `Or via the MCP resource: cc://blackboard/${args.run_id}`,
-          },
-        ],
-      };
-    }
-    case "cc_blackboard_read": {
-      if (!args.run_id || typeof args.run_id !== "string") {
-        throw new Error("run_id is required");
-      }
-      const round =
-        args.round === undefined || args.round === null ? undefined : Number(args.round);
-      const role = typeof args.role === "string" ? args.role : undefined;
-      const { entries } = blackboardRead(args.run_id, round, role);
-      if (entries.length === 0) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `No blackboard entries for run "${args.run_id}"${
-                round !== undefined ? ` (round=${round})` : ""
-              }${role ? ` (role=${role})` : ""}.`,
-            },
-          ],
-        };
-      }
-      const blocks = entries.map(
-        (e) => `# Round ${e.round} · ${e.role}\n# (${e.path})\n${e.body}`,
-      );
-      return {
-        content: [
-          {
-            type: "text",
-            text: `Found ${entries.length} entries:\n\n${blocks.join("\n\n")}`,
-          },
-        ],
-      };
-    }
-    case "cc_blackboard_list_runs": {
-      const runs = blackboardListRuns();
-      if (runs.length === 0) {
-        return {
-          content: [
-            {
-              type: "text",
-              text:
-                "No blackboard runs found.\n" +
-                "Blackboard root: " + BLACKBOARD_ROOT + "\n" +
-                "Start a run by calling cc_blackboard_append from any agent.",
-            },
-          ],
-        };
-      }
-      const lines = [
-        `## Blackboard runs (${runs.length})`,
-        `Root: ${BLACKBOARD_ROOT}`,
-        ``,
-      ];
-      for (const runId of runs) {
-        const runDir = join(BLACKBOARD_ROOT, runId);
-        let entryCount = 0;
-        try {
-          entryCount = readdirSync(runDir).filter((n) => n.endsWith(".yaml")).length;
-        } catch {
-          // ignore
-        }
-        lines.push(`- ${runId}  (${entryCount} ${entryCount === 1 ? "entry" : "entries"})`);
-      }
-      lines.push(
-        ``,
-        `Read a specific run via: cc_blackboard_read({ run_id: "<one of the above>" })`,
-        `Or the MCP resource: cc://blackboard/<run_id>`,
-      );
-      return { content: [{ type: "text", text: lines.join("\n") }] };
-    }
-
-    case "cc_telemetry_recent_agents": {
-      const limit = typeof args.limit === "number" && args.limit > 0 ? args.limit : 50;
-      const records = readTelemetryAgents(limit);
-      const summary = args.summarize ? summarizeTelemetry(records) : null;
-      const lines = [];
-      if (summary) {
-        lines.push(
-          `## Summary`,
-          `- Records: ${summary.total}`,
-          `- Rejected: ${summary.rejected} (${(summary.rejectRate * 100).toFixed(1)}%)`,
-          `- Mean duration: ${
-            summary.meanDurationMs !== null ? summary.meanDurationMs + "ms" : "n/a"
-          }`,
-          ``,
-        );
-      }
-      lines.push(`## Recent agents (${records.length})`);
-      if (records.length === 0) {
-        lines.push(
-          ``,
-          `No telemetry yet. Install the SubagentStop hook at ` +
-            `plugins/claude-code-expert/hooks/capture-agent-telemetry.sh to start capturing.`,
-        );
-      } else {
-        for (const r of records) {
-          lines.push(
-            `- ${r.ts || "?"} · ${r.subagent_type || "?"} · ${r.status || "?"}` +
-              (typeof r.duration_ms === "number" ? ` · ${r.duration_ms}ms` : "") +
-              (typeof r.tool_uses === "number" ? ` · ${r.tool_uses} tool uses` : "") +
-              (r.reject_reason ? ` · reject: ${r.reject_reason}` : ""),
-          );
-        }
-      }
       return { content: [{ type: "text", text: lines.join("\n") }] };
     }
 

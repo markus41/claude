@@ -1,0 +1,27 @@
+{
+  "name": "competing-hypotheses-debug",
+  "summary": "3 parallel investigators pursue different root-cause hypotheses; an Opus synthesizer picks the winner.",
+  "when_to_use": "Tricky bugs where the cause is genuinely unclear and multiple theories are plausible. Not for straightforward bugs.",
+  "composition": [
+    { "role": "investigator-a", "model": "claude-sonnet-4-6", "tools": ["Read", "Grep", "Glob", "Bash"], "hypothesis": "primary suspicion (e.g. race condition)" },
+    { "role": "investigator-b", "model": "claude-sonnet-4-6", "tools": ["Read", "Grep", "Glob", "Bash"], "hypothesis": "secondary suspicion (e.g. cache staleness)" },
+    { "role": "investigator-c", "model": "claude-sonnet-4-6", "tools": ["Read", "Grep", "Glob", "Bash"], "hypothesis": "outside-the-box (e.g. env-config divergence)" },
+    { "role": "synthesizer", "model": "claude-opus-4-6", "tools": ["Read"], "writes": false }
+  ],
+  "file_ownership": {
+    "investigators": "each writes to .claude/investigations/{role}.md — evidence table, ruled-in/ruled-out, proposed fix",
+    "synthesizer": "reads all three; writes .claude/investigations/VERDICT.md with winning hypothesis + confidence + fix sketch"
+  },
+  "coordination": [
+    "1. User states the bug + 2-3 plausible hypotheses.",
+    "2. Launch 3 investigators in parallel (one Agent tool call per hypothesis).",
+    "3. After all 3 finish, synthesizer reads the 3 investigation files and picks a winner.",
+    "4. User decides whether to proceed to implementation or dig deeper."
+  ],
+  "worktree_guidance": "3 parallel worktrees — investigators must not observe each other's findings during investigation.",
+  "cost_estimate": "~$2-4. Parallel investigator passes are cheap; synthesizer pass is the expensive one.",
+  "anti_patterns": [
+    "Do not let investigators talk to each other — the independence is the point.",
+    "Do not pre-seed a hypothesis with 'probably X' — bias defeats the approach."
+  ]
+}

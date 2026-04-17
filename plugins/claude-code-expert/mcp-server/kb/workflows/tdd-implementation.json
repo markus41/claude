@@ -1,0 +1,39 @@
+{
+  "name": "tdd-implementation",
+  "summary": "Red-green-refactor discipline: write a failing test before writing the production code, then refactor with tests green.",
+  "when_to_use": "New behavior with a clear specification. Skip when specification is emergent or when reproducing an existing bug (use fix-bug-from-trace instead).",
+  "phases": [
+    {
+      "name": "Red",
+      "steps": [
+        "Identify one atomic unit of new behavior (one test case).",
+        "Write the test using the project's existing test patterns (check jest/vitest/pytest config).",
+        "Run the test and confirm it fails for the expected reason (not a compile error).",
+        "Commit the failing test as a separate commit with message 'test: add failing test for {behavior}'."
+      ]
+    },
+    {
+      "name": "Green",
+      "steps": [
+        "Implement the minimum code required to make the test pass.",
+        "Resist the urge to generalize — that's the next phase.",
+        "Run the full test suite; no other tests may regress.",
+        "Commit with message 'feat: {behavior}'."
+      ]
+    },
+    {
+      "name": "Refactor",
+      "steps": [
+        "Improve the code structure: naming, extraction, dedup.",
+        "No new behavior — tests still pass without changes.",
+        "Commit with message 'refactor: {what-was-improved}' if refactor was substantive."
+      ]
+    }
+  ],
+  "exit_criteria": "All target behaviors covered; test suite green; coverage metrics meet the project's threshold.",
+  "anti_patterns": [
+    "Writing multiple tests at once — breaks the red-green signal.",
+    "Generalizing in the Green phase — hides design pressure.",
+    "Skipping Refactor because tests are green — accrues debt."
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "name": "repo-review-before-merge",
+  "summary": "Pre-merge review pass — correctness, tests, security, style, docs. Can be solo or multi-agent (via /cc-council).",
+  "when_to_use": "Before any PR merges to protected branches. Especially main/master.",
+  "phases": [
+    {
+      "name": "Context",
+      "steps": ["Read PR description + linked issues.", "Read the diff in full (not just changed-file names).", "Identify the blast radius: what consumers of the changed code exist?"]
+    },
+    {
+      "name": "Correctness",
+      "steps": ["Does the change do what the PR description claims?", "Any off-by-one, null/undefined, async race conditions?", "Any state mutation that could leak across requests/users?"]
+    },
+    {
+      "name": "Tests",
+      "steps": ["New tests cover the new behavior?", "Existing tests still make sense (not just tweaked to pass)?", "Test data doesn't leak real secrets?"]
+    },
+    {
+      "name": "Security",
+      "steps": ["Any new external input? Is it validated/sanitized?", "Any auth/authz changes? Checked on the right boundary?", "Any secrets in diff (keys, tokens, credentials)?"]
+    },
+    {
+      "name": "Style",
+      "steps": ["Consistent with existing patterns in the codebase?", "Any dead code or commented-out blocks?", "Comments explain WHY, not WHAT?"]
+    },
+    {
+      "name": "Docs",
+      "steps": ["If public API changed: reference docs updated?", "If behavior changed: CHANGELOG entry?", "If config schema changed: settings docs updated?"]
+    }
+  ],
+  "exit_criteria": "Either [OK] with green across all phases, or a list of [BLOCK]/[NIT] findings with specific file:line references.",
+  "anti_patterns": ["Rubber-stamping — LGTM without reading.", "Only reading the diff without repo context — misses cross-cutting impact.", "Nit-only reviews — let real bugs through."]
+}

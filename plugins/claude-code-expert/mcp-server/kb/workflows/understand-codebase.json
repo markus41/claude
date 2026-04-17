@@ -1,0 +1,29 @@
+{
+  "name": "understand-codebase",
+  "summary": "Build a repo fingerprint before touching code — entry points, architecture, invariants, conventions.",
+  "when_to_use": "First session on an unfamiliar repo. Before any non-trivial change to an unfamiliar subsystem.",
+  "phases": [
+    {
+      "name": "Orient",
+      "steps": ["Read README, CLAUDE.md, and docs/architecture if present.", "List top-level directories with one-line descriptions of what each holds.", "Identify the package manager, build tool, test runner from lockfile + config files."]
+    },
+    {
+      "name": "Entry points",
+      "steps": ["Find all entry points: main/index files, CLI binaries, HTTP handlers, background workers.", "For each: trace the first level of imports — what does it immediately depend on?"]
+    },
+    {
+      "name": "Invariants",
+      "steps": ["What must always be true in this codebase? Data integrity, auth required, schema versions.", "Grep for assertions, invariant comments, type guards.", "Check tests for invariant assertions."]
+    },
+    {
+      "name": "Conventions",
+      "steps": ["Naming patterns (camelCase, snake_case, PascalCase per file type).", "Error-handling style (exceptions, Result types, error codes).", "Test co-location (alongside source or separate dir?).", "File organization (by-feature, by-layer, by-module)."]
+    },
+    {
+      "name": "Produce fingerprint",
+      "steps": ["Write a 1-page summary: what this repo is, how it's structured, what matters, what to avoid.", "Save to engram with topic_key cc/repo/{slug}/fingerprint.", "Optionally write to Obsidian Repositories/{org}/{repo}.md."]
+    }
+  ],
+  "exit_criteria": "You can answer: what does this repo do, what are its invariants, what conventions will I follow, what's off-limits?",
+  "anti_patterns": ["Skipping this pack on unfamiliar repos.", "Reading one file and assuming the rest follows.", "Not writing the fingerprint down — context dies at session end."]
+}

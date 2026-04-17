@@ -1,0 +1,8 @@
+{
+  "language": "prisma",
+  "server": "prisma-language-server",
+  "install": "npm i -g @prisma/language-server",
+  "verify": "prisma-language-server --version",
+  "diagnostics_hook": "#!/bin/bash\nINPUT=$(head -c 65536); FILE=$(printf '%s' \"$INPUT\" | jq -r '.tool_input.file_path // \"\"')\n[[ \"$FILE\" != *schema.prisma ]] && { echo '{\"decision\":\"approve\"}'; exit 0; }\nERRORS=$(npx prisma validate 2>&1 | head -10)\necho \"$ERRORS\" | grep -qE 'Error|error' && echo \"$ERRORS\" >&2\necho '{\"decision\":\"approve\"}'",
+  "notes": "Use `npx prisma validate` (authoritative) or `prisma format` for diagnostics. Language server provides IDE features."
+}

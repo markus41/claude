@@ -1,0 +1,13 @@
+{
+  "name": "task-created-governance",
+  "event": "Notification",
+  "matcher": "",
+  "summary": "Log new task creation to .claude/task-log.jsonl for governance / audit trail.",
+  "when_to_use": "Enterprise environments needing an audit trail of what Claude was asked to do.",
+  "script_path": ".claude/hooks/task-created-governance.sh",
+  "script": "#!/usr/bin/env bash\nset -euo pipefail\nI=$(head -c 65536)\njq -e . >/dev/null 2>&1 <<<\"$I\" || { echo '{\"decision\":\"approve\"}'; exit 0; }\nMSG=$(jq -r '.message // \"\"' <<<\"$I\" | head -c 500)\nT=$(date -u +%Y-%m-%dT%H:%M:%SZ)\nmkdir -p .claude\n(flock -x 200; jq -n --arg t \"$T\" --arg m \"$MSG\" '{ts:$t,type:\"notification\",message:$m}' >> .claude/task-log.jsonl) 200>/tmp/cc-task-log.lock\necho '{\"decision\":\"approve\"}'\n",
+  "settings_snippet": {
+    "hooks": { "Notification": [{ "matcher": "", "hooks": [{ "type": "command", "command": "bash .claude/hooks/task-created-governance.sh" }] }] }
+  },
+  "verify": "Trigger any notification; confirm a JSON line appended to .claude/task-log.jsonl."
+}

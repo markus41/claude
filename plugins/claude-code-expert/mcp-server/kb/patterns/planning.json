@@ -1,0 +1,17 @@
+{
+  "name": "planning",
+  "summary": "Decompose a complex goal into a dependency-ordered plan, then execute. Unlike prompt-chaining (which has fixed phases), planning produces the plan at runtime.",
+  "when_to_use": "Multi-day or multi-component work where the breakdown itself is part of the intelligence needed.",
+  "layers": {
+    "CLAUDE.md": "Add rule: 'For work over 1 hour: write a plan first. Plan includes constraints, phases, exit criteria per phase, rollback.'",
+    "skill": "skills/deep-code-intelligence enforces plan-first for non-trivial work.",
+    "hook": "Optional: PreToolUse hook that blocks Write operations until .claude/active-task.md exists (same pattern as autonomy-planner).",
+    "agent": "agents/autonomy-planner writes the plan to .claude/active-task.md. agents/principal-engineer-strategist is the higher-reasoning variant."
+  },
+  "cost": "~1.2× (one extra upfront pass). Usually pays back 5-10× by avoiding wasted work.",
+  "anti_patterns": [
+    "Plans that don't include exit criteria per phase — you can't tell when a phase is done.",
+    "Plans without rollback — recovery becomes guesswork when something breaks.",
+    "Writing a plan then ignoring it — plan-as-theater."
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "blackboard",
+  "summary": "Multiple agents read and write to a shared 'blackboard' file, evolving a solution collaboratively. Coordinator synthesizes at the end.",
+  "when_to_use": "Multi-agent review where specialists need to see each other's findings (vs pure parallelization where they don't).",
+  "layers": {
+    "CLAUDE.md": "No rule needed.",
+    "skill": "skills/agent-teams documents blackboard as a coordination protocol option.",
+    "hook": "Optional: PostToolUse Write hook that notifies other agents when the blackboard file changes.",
+    "agent": "agents/council-coordinator implements blackboard protocol. Specialists write to .claude/reviews/{specialist}.md; coordinator synthesizes VERDICT.md."
+  },
+  "cost": "~3–6× normal. Expensive because each agent reads the full blackboard on each pass.",
+  "anti_patterns": [
+    "Blackboard with fewer than 3 agents — overhead not justified.",
+    "No write discipline on blackboard — agents overwrite each other's notes.",
+    "Coordinator also writes to blackboard during synthesis — confuses the state model."
+  ]
+}

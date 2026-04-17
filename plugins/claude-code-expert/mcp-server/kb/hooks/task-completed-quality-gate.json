@@ -1,0 +1,13 @@
+{
+  "name": "task-completed-quality-gate",
+  "event": "Stop",
+  "matcher": "",
+  "summary": "Enforce lint + typecheck + (optional) test before allowing Stop. Like stop-until-tests-pass but broader.",
+  "when_to_use": "Repos with both linter and type-checker; want a single enforcement point before turn completion.",
+  "script_path": ".claude/hooks/task-completed-quality-gate.sh",
+  "script": "#!/usr/bin/env bash\nset -euo pipefail\nF=()\nif [ -f package.json ]; then\n  LINT=$(jq -r '.scripts.lint // \"\"' package.json)\n  if [ -n \"$LINT\" ] && [ \"$LINT\" != null ]; then\n    R=$(timeout 60 npm run -s lint 2>&1 || true)\n    echo \"$R\" | grep -qiE 'error|fail' && F+=(\"lint: $(echo \\\"$R\\\" | tail -5)\")\n  fi\n  TC=$(jq -r '.scripts.typecheck // .scripts[\"type-check\"] // \"\"' package.json)\n  if [ -n \"$TC\" ] && [ \"$TC\" != null ]; then\n    R=$(timeout 60 npm run -s typecheck 2>&1 || true)\n    echo \"$R\" | grep -qiE 'error' && F+=(\"typecheck: $(echo \\\"$R\\\" | tail -5)\")\n  fi\nfi\nif [ ${#F[@]} -gt 0 ]; then\n  S=$(printf '%s\\n' \"${F[@]}\")\n  jq -n --arg s \"$S\" '{\"decision\":\"block\",\"reason\":(\"Quality gate failed:\\n\"+$s)}'\n  exit 0\nfi\necho '{\"decision\":\"approve\"}'\n",
+  "settings_snippet": {
+    "hooks": { "Stop": [{ "matcher": "", "hooks": [{ "type": "command", "command": "bash .claude/hooks/task-completed-quality-gate.sh" }] }] }
+  },
+  "verify": "Introduce a lint or type error; Stop gets blocked."
+}

@@ -1,0 +1,13 @@
+{
+  "name": "on-stop",
+  "event": "Stop",
+  "matcher": "",
+  "summary": "End-of-turn reminders — surface uncommitted count, last touched file, optional memory-session-summary nudge.",
+  "when_to_use": "Projects where you want end-of-turn visibility without blocking. Lighter than task-completed-quality-gate.",
+  "script_path": ".claude/hooks/on-stop.sh",
+  "script": "#!/usr/bin/env bash\nset -euo pipefail\nprintf 'Turn end: %s\\n' \"$(date '+%H:%M')\" >&2\nU=$(git status --porcelain 2>/dev/null | wc -l | tr -d ' ' || echo 0)\n[ \"$U\" -gt 0 ] && printf 'Reminder: %s uncommitted files\\n' \"$U\" >&2\nL=$(git diff --name-only 2>/dev/null | head -1 || true)\n[ -n \"$L\" ] && printf 'Last touched: %s\\n' \"$L\" >&2\necho '{\"decision\":\"approve\"}'\n",
+  "settings_snippet": {
+    "hooks": { "Stop": [{ "matcher": "", "hooks": [{ "type": "command", "command": "bash .claude/hooks/on-stop.sh" }] }] }
+  },
+  "verify": "Finish a turn with uncommitted changes; reminder appears in stderr."
+}

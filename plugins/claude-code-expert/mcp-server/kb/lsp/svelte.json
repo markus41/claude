@@ -1,0 +1,8 @@
+{
+  "language": "svelte",
+  "server": "svelte-language-server",
+  "install": "npm i -g svelte-language-server",
+  "verify": "svelte-language-server --version",
+  "diagnostics_hook": "#!/bin/bash\nINPUT=$(head -c 65536); FILE=$(printf '%s' \"$INPUT\" | jq -r '.tool_input.file_path // \"\"')\n[[ \"$FILE\" != *.svelte ]] && { echo '{\"decision\":\"approve\"}'; exit 0; }\nif command -v svelte-check >/dev/null 2>&1; then\n  ERRORS=$(npx svelte-check --threshold warning 2>&1 | tail -15)\n  [ -n \"$ERRORS\" ] && echo \"$ERRORS\" >&2\nfi\necho '{\"decision\":\"approve\"}'",
+  "notes": "Use svelte-check (ships with svelte-language-tools) for project-wide diagnostics."
+}

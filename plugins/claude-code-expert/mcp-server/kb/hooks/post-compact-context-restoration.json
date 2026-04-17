@@ -1,0 +1,14 @@
+{
+  "name": "post-compact-context-restoration",
+  "event": "PostToolUse",
+  "matcher": "Compact",
+  "summary": "After /compact, re-inject the active task description from .claude/active-task.md so Claude doesn't lose the thread.",
+  "when_to_use": "Any long session that uses /compact. Especially important in autonomy modes.",
+  "script_path": ".claude/hooks/post-compact-context-restoration.sh",
+  "script": "#!/usr/bin/env bash\nset -euo pipefail\nTF=.claude/active-task.md\nif [ -f \"$TF\" ]; then\n  C=$(cat \"$TF\")\n  T=$(date -u +%Y-%m-%dT%H:%M:%SZ)\n  printf '\\n[CONTEXT RESTORED AFTER COMPACT — %s]\\n%s\\n[END]\\n' \"$T\" \"$C\" >&2\nfi\nNF=.claude/work-in-progress.md\n[ -f \"$NF\" ] && printf '\\n[WIP]\\n%s\\n[END WIP]\\n' \"$(cat \"$NF\")\" >&2\necho '{\"decision\":\"approve\"}'\n",
+  "settings_snippet": {
+    "hooks": { "PostToolUse": [{ "matcher": "Compact", "hooks": [{ "type": "command", "command": "bash .claude/hooks/post-compact-context-restoration.sh" }] }] }
+  },
+  "companion_file": ".claude/active-task.md — user maintains current task description; hook re-injects it after every /compact.",
+  "verify": "Create .claude/active-task.md with a task; trigger /compact; confirm content re-appears in context."
+}

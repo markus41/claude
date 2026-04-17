@@ -1,0 +1,20 @@
+{
+  "name": "balanced",
+  "summary": "Middle-of-the-road autonomy — Claude writes freely within the project but requires approval for network, secrets, git push, destructive git, and shell commands matching a denylist.",
+  "when_to_use": "Default for day-to-day feature work on a project you trust the test suite on.",
+  "permissions": {
+    "allow": ["Read", "Write", "Edit", "Glob", "Grep", "Bash(npm *)", "Bash(pnpm *)", "Bash(git *)", "Bash(node *)", "Bash(python *)", "Bash(pytest *)"],
+    "deny": ["Bash(rm -rf /)", "Bash(sudo *)", "Bash(curl * | sh)", "Bash(curl * | bash)", "Bash(git push --force*)", "Bash(git reset --hard origin/*)"],
+    "ask": ["Bash(git push *)", "Bash(npm publish *)", "Bash(docker push *)", "WebFetch", "WebSearch"]
+  },
+  "gates": {
+    "planner": { "enabled": true, "writes": ".claude/active-task.md" },
+    "verifier": { "enabled": true, "checks": ["tsc", "eslint", "tests", "git-diff-sanity", "secret-scan"] },
+    "reviewer": { "enabled": false, "note": "Enable for higher-risk branches." }
+  },
+  "session_init_command": "claude --permission-mode acceptEdits --dangerously-skip-permissions=false",
+  "memory_rules": [
+    "Save every design decision via engram mem_save.",
+    "Always call mem_session_summary before declaring done."
+  ]
+}

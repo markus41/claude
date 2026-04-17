@@ -1,0 +1,17 @@
+{
+  "name": "parallelization",
+  "summary": "Fan out the same or related subtasks to parallel agents, then merge. Two variants: sectioning (different pieces) and voting (same piece, multiple opinions).",
+  "when_to_use": "Subtasks are independent (sectioning) or you want multiple perspectives on the same question (voting). Fast; parallelism dominates serial cost.",
+  "layers": {
+    "CLAUDE.md": "No rule needed.",
+    "skill": "skills/council-review (in agent-teams skill) covers council patterns; skills/agent-teams topology table.",
+    "hook": "Optional: Stop hook that waits for all parallel agents to complete before closing the turn.",
+    "agent": "agents/council-coordinator orchestrates fan-out/fan-in with structured merge."
+  },
+  "cost": "Wall-clock: ~1×. Total tokens: N× where N = parallel count. Compare to serial: same tokens, N× slower.",
+  "anti_patterns": [
+    "Parallelizing tasks that share mutable state — merge conflicts and hallucinated consistency.",
+    "No merge protocol — each agent reports separately; user has to synthesize.",
+    "Voting with fewer than 3 agents — not a vote, just a chain."
+  ]
+}

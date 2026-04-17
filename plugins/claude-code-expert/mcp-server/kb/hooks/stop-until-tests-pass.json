@@ -1,0 +1,13 @@
+{
+  "name": "stop-until-tests-pass",
+  "event": "Stop",
+  "matcher": "",
+  "summary": "Block Stop events while the test suite is failing. Forces fix-tests-first discipline.",
+  "when_to_use": "Repos with a working test script. Skip on greenfield projects with no tests yet.",
+  "script_path": ".claude/hooks/stop-until-tests-pass.sh",
+  "script": "#!/usr/bin/env bash\nset -euo pipefail\n[ ! -f package.json ] && { echo '{\"decision\":\"approve\"}'; exit 0; }\nTS=$(jq -r '.scripts.test // \"\"' package.json 2>/dev/null)\n[ -z \"$TS\" ] || [ \"$TS\" = null ] && { echo '{\"decision\":\"approve\"}'; exit 0; }\nCNT=$(find . \\( -name '*.test.ts' -o -name '*.test.js' -o -name '*.spec.ts' -o -name '*.spec.js' \\) -not -path '*/node_modules/*' 2>/dev/null | wc -l)\n[ \"$CNT\" -eq 0 ] && { echo '{\"decision\":\"approve\"}'; exit 0; }\nR=$(timeout 120 npm test --silent 2>&1 || true)\nF=$(printf '%s' \"$R\" | grep -cE 'FAIL |failed|✗|× |Error:|AssertionError' 2>/dev/null || true)\nif [ \"$F\" -gt 0 ]; then\n  S=$(printf '%s' \"$R\" | tail -10)\n  jq -n --arg s \"$S\" '{\"decision\":\"block\",\"reason\":(\"Tests failing — fix first:\\n\\n\"+$s)}'\n  exit 0\nfi\necho '{\"decision\":\"approve\"}'\n",
+  "settings_snippet": {
+    "hooks": { "Stop": [{ "matcher": "", "hooks": [{ "type": "command", "command": "bash .claude/hooks/stop-until-tests-pass.sh" }] }] }
+  },
+  "verify": "Introduce a failing test; Stop gets blocked with the failure summary."
+}

@@ -1,0 +1,8 @@
+{
+  "language": "php",
+  "server": "intelephense",
+  "install": "npm i -g intelephense",
+  "verify": "intelephense --version",
+  "diagnostics_hook": "#!/bin/bash\nINPUT=$(head -c 65536); FILE=$(printf '%s' \"$INPUT\" | jq -r '.tool_input.file_path // \"\"')\n[[ \"$FILE\" != *.php ]] && { echo '{\"decision\":\"approve\"}'; exit 0; }\nERRORS=$(php -l \"$FILE\" 2>&1)\n[[ \"$ERRORS\" != *'No syntax errors'* ]] && echo \"$ERRORS\" >&2\necho '{\"decision\":\"approve\"}'",
+  "notes": "php -l is the quick syntax check. Use phpstan or psalm for deeper static analysis."
+}

@@ -1,0 +1,38 @@
+// Discord Bridge — Two-way Discord ↔ Claude, allowlist-gated polling.
+// Env: DISCORD_BOT_TOKEN, DISCORD_ALLOWLIST (csv of channel IDs), PAIRED_CHANNEL_FILE.
+import { Client, GatewayIntentBits, Events, Message } from "discord.js";
+import { readFileSync, writeFileSync, existsSync } from "node:fs";
+
+const T = process.env.DISCORD_BOT_TOKEN;
+if (!T) throw new Error("DISCORD_BOT_TOKEN required");
+const ALLOW = (process.env.DISCORD_ALLOWLIST || "").split(",").map(s=>s.trim()).filter(Boolean);
+const PF = process.env.PAIRED_CHANNEL_FILE || ".claude/paired-channel.txt";
+
+const client = new Client({
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent]
+});
+let paired: string | null = existsSync(PF) ? readFileSync(PF, "utf8").trim() : null;
+const inbox: Message[] = [];
+
+client.on(Events.MessageCreate, (m) => {
+  if (m.author.bot) return;
+  if (ALLOW.length && !ALLOW.includes(m.channelId)) return;
+  if (paired && m.channelId !== paired) return;
+  inbox.push(m);
+});
+client.login(T);
+
+export function nextMessage() {
+  const m = inbox.shift();
+  return m ? { id: m.id, author: m.author.username, content: m.content, channelId: m.channelId } : null;
+}
+
+export async function reply(text: string) {
+  if (!paired) throw new Error("No paired channel");
+  const ch = await client.channels.fetch(paired);
+  if (!ch?.isTextBased()) throw new Error("not text-based");
+  for (let i = 0; i < text.length; i += 2000) await ch.send(text.slice(i, i + 2000));
+}
+
+export function pair(chId: string) { paired = chId; writeFileSync(PF, chId); }
+// MCP tools: discord_next_message, discord_reply, discord_pair.

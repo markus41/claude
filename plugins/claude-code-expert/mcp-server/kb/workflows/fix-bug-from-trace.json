@@ -1,0 +1,33 @@
+{
+  "name": "fix-bug-from-trace",
+  "summary": "Reproduce-first bug fix: repro → localize → hypothesis → test-that-reproduces → fix → verify.",
+  "when_to_use": "Any reported bug with a stack trace or reproducible symptom where the cause isn't obvious from reading the trace.",
+  "phases": [
+    {
+      "name": "Reproduce",
+      "steps": ["Get exact repro: inputs, env, version, action sequence.", "Run locally. Do not proceed until you see the bug.", "If you can't reproduce, go back to reporter — not-reproducible = comms gap."]
+    },
+    {
+      "name": "Localize",
+      "steps": ["Read top frame of stack trace — identify module and line.", "Read that file and its direct callers.", "Verify the trace points where you think; don't assume."]
+    },
+    {
+      "name": "Hypothesize",
+      "steps": ["State 2-3 candidate root causes first.", "For each: what evidence confirms or refutes?", "Gather evidence before committing to one."]
+    },
+    {
+      "name": "Test-that-reproduces",
+      "steps": ["Write a test that reproduces the bug (it must fail).", "This test is the regression guard.", "Commit the failing test before the fix."]
+    },
+    {
+      "name": "Fix",
+      "steps": ["Minimum fix that makes the test pass.", "Don't bundle refactors — land them separately.", "Run full suite; no regressions."]
+    },
+    {
+      "name": "Verify",
+      "steps": ["Reproduce original bug manually with fix applied — confirm gone.", "Related-path sweep: are there similar inputs that trigger same root cause?", "If yes, add tests for those too."]
+    }
+  ],
+  "exit_criteria": "Bug reproduced and fixed; regression test in place; no suite regressions; related-path sweep done.",
+  "anti_patterns": ["Fixing symptom not root cause.", "Skipping the reproducing test.", "Fix + refactor in same commit."]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "evaluation-monitoring",
+  "summary": "Continuous evaluation of agent output against metrics — success rate, latency, cost, quality. Feedback loop informs prompt and pattern refinement.",
+  "when_to_use": "Production or semi-production agents where regression is costly. Also for tuning prompts, skills, agents before shipping.",
+  "layers": {
+    "CLAUDE.md": "No rule needed.",
+    "skill": "skills/context-budgeting covers session analytics. skills/plugin-development has test and eval scaffolding.",
+    "hook": "PostToolUse / Stop hooks can log metrics to .claude/metrics.jsonl.",
+    "agent": "No dedicated agent; part of the dev loop — use plugin-architect during authoring."
+  },
+  "cost": "~5% overhead during normal runs. Evaluation runs are explicit and batched.",
+  "anti_patterns": [
+    "Only evaluating after deploy — regressions ship.",
+    "Metrics without context — raw numbers without rubric miss quality regressions.",
+    "Not logging the rubric version alongside scores — scores become non-comparable over time."
+  ]
+}

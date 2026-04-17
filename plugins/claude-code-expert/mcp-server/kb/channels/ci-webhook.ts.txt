@@ -1,0 +1,35 @@
+// CI Webhook channel — HMAC-verified GitHub Actions receiver.
+// Env: WEBHOOK_SECRET, PORT (default 3100), ALLOWLIST (csv of repo full_names).
+import express from "express";
+import crypto from "node:crypto";
+
+const SECRET = process.env.WEBHOOK_SECRET;
+if (!SECRET) throw new Error("WEBHOOK_SECRET required");
+const PORT = Number(process.env.PORT || 3100);
+const ALLOW = (process.env.ALLOWLIST || "").split(",").map(s=>s.trim()).filter(Boolean);
+const events = [];
+
+function verify(body, sig) {
+  if (!sig) return false;
+  const exp = "sha256=" + crypto.createHmac("sha256", SECRET).update(body).digest("hex");
+  try { return crypto.timingSafeEqual(Buffer.from(exp), Buffer.from(sig)); } catch { return false; }
+}
+function severity(ev, p) {
+  if (ev === "workflow_run" && p.workflow_run?.conclusion === "failure") return "high";
+  if (ev === "deployment_status" && p.deployment_status?.state === "failure") return "high";
+  if (ev === "push" && p.ref === "refs/heads/main") return "medium";
+  return "low";
+}
+
+const app = express();
+app.use(express.raw({ type: "application/json" }));
+app.post("/webhook", (req, res) => {
+  const raw = req.body.toString("utf8");
+  if (!verify(raw, req.header("x-hub-signature-256"))) return res.status(401).send("bad sig");
+  const ev = req.header("x-github-event"), p = JSON.parse(raw);
+  if (ALLOW.length && !ALLOW.includes(p.repository?.full_name)) return res.status(403).end();
+  events.push({ ts: Date.now(), event: ev, severity: severity(ev, p), payload: p });
+  res.send("ok");
+});
+app.listen(PORT);
+// MCP side exposes `ci_next_event` and `ci_drain` tools over StdioServerTransport.
