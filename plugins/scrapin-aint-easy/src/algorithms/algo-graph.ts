@@ -5,7 +5,7 @@
 
 import pino from 'pino';
 import { type GraphAdapter, type EdgeType, type SearchResult, type SubGraph } from '../core/graph.js';
-import { type VectorStore, type VectorSearchResult } from '../core/vector.js';
+import { type VectorStore } from '../core/vector.js';
 import { ALGO_CATEGORIES, type AlgoCategory, type AlgoNodeData } from './algo-sources.js';
 
 const logger = pino({ name: 'algo-graph' });

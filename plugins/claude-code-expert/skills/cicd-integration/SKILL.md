@@ -731,3 +731,31 @@ jobs:
           body: 'Auto-generated documentation updates'
           branch: auto-docs-update
 ```
+
+---
+
+## /autofix-pr — CLI PR Auto-Fix (v2.1.92)
+
+Enable Claude's PR auto-fix loop without leaving the terminal. Claude watches CI results and review comments, pushes fixes, and repeats until the PR is green.
+
+```text
+> /autofix-pr
+```
+
+Claude infers the open PR for your current branch and enables auto-fix for it on Claude Code web in one step. Walk away; Claude handles the CI/review iteration loop.
+
+**When to use:**
+- After pushing a branch with expected CI failures (lint, types, test)
+- When addressing PR review nits — Claude applies suggestions and pushes
+- During overnight runs — PR auto-fix is fully unattended
+
+**Prerequisites:**
+- Branch must have an open PR
+- Must be authenticated to Claude Code web (same account)
+
+**Workflow:**
+```bash
+git push origin my-feature
+/autofix-pr
+# Claude enables auto-fix on the web PR — CI loop runs unattended
+```

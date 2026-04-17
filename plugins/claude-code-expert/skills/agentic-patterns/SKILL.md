@@ -484,6 +484,24 @@ Does input vary widely in type/complexity?
 └── NO → Direct to appropriate pattern
 ```
 
+### Reliability override: specialist-first
+
+After the pattern is chosen, for each subagent the pattern requires:
+
+1. **Does a named specialist exist for the role/lens?** (architecture, performance,
+   security, dx, ux, code-reviewer, researcher, principal-engineer-strategist, etc.)
+2. **If yes**: use it. Your user-prompt can be ~300 words.
+3. **If no**: use a generic (`Explore`, `general-purpose`) AND run the
+   `prompt-budget-preflight` skill first.
+
+Rationale is empirical: in one session, generic-agent spawns with 900-word prompts
+rejected 2/2 with "Prompt is too long"; named-specialist spawns with 200-400-word
+prompts on the same task succeeded 7/7. The named specialist carries the scaffolding
+in its system prompt, which frees budget for your actual task description.
+
+See `agents/pattern-router.md` Decision Protocol §4 and
+`skills/prompt-budget-preflight/SKILL.md` for the preflight checklist.
+
 ## Part 5: Anti-Patterns (What NOT to Do)
 
 | Anti-Pattern | Why It Fails | Fix |
@@ -495,6 +513,9 @@ Does input vary widely in type/complexity?
 | **Infinite loops** | Agent retries forever on permanent errors | Max iterations + error classification |
 | **Monolithic agent** | Context overflow on complex tasks | Decompose into chain or orchestrator-workers |
 | **No HITL gates** | Destructive action without approval | Add gates before commits, deploys, destructive ops |
+| **Prompt bloat → subagent rejection** | Agent tool rejects "Prompt is too long" after forwarding full context — wastes ~2.7s + a decision turn per reject. Observed 22% reject rate when using `Explore` with 900-word prompts. | 1) Prefer named specialists (they carry the scaffolding in their system prompt). 2) Cap user-prompts at ~400 words via `skills/prompt-budget-preflight/SKILL.md`. 3) Tell the agent to grep for facts rather than pasting them. |
+| **Faked multi-round deliberation** | Orchestrator synthesizes "Round 2" in-context because parallel agents can't see each other's outputs. Looks like deliberation; isn't. | Use the blackboard primitive (`skills/orchestration-blackboard/SKILL.md`) — Round-2 agents call `cc_blackboard_read` to see Round-1 findings and respond to them. |
+| **No wave-wise verification** | Edit-compound failures — wave 3 breaks something in wave 1; by wave 5 tsc output is unreadable. | `skills/verify-between-waves/SKILL.md`: `tsc --noEmit && test` after each wave; commit only on green. |
 
 ## Quick Reference: Pattern → 4-Layer Mapping
 

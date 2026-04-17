@@ -183,6 +183,12 @@
             "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/subagent-results-log.sh",
             "async": true,
             "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/plugins/claude-code-expert/hooks/capture-agent-telemetry.sh",
+            "async": true,
+            "timeout": 5
           }
         ]
       }

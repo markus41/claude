@@ -13,6 +13,8 @@
 .claude/orchestration/locks/
 .claude/orchestration/messages/
 .claude/orchestration/.session_env
+.claude/orchestration/blackboard/
+.claude/orchestration/telemetry/
 
 # Test artifacts
 test-metrics/

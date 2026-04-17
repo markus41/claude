@@ -4,12 +4,11 @@
  * and upserts into the graph + vector store.
  */
 
-import { exec } from 'node:child_process';
+import { spawn } from 'node:child_process';
 import { readFile, readdir, rm, stat } from 'node:fs/promises';
 import { join, extname, relative } from 'node:path';
 import { tmpdir } from 'node:os';
 import { randomUUID } from 'node:crypto';
-import { promisify } from 'node:util';
 import pino from 'pino';
 import { type GraphAdapter } from '../core/graph.js';
 import { type VectorStore } from '../core/vector.js';
@@ -22,8 +21,44 @@ import {
   extractAlgoFromSourceFile,
 } from './pattern-extractor.js';
 
-const execAsync = promisify(exec);
 const logger = pino({ name: 'algo-indexer' });
+
+// Safe URL allowlist for git clone — reject anything that could embed shell
+// metacharacters OR SSRF-style local targets. Only permit https URLs to known
+// public git hosts. Additional hosts can be added via SCRAPIN_GIT_HOSTS env.
+const DEFAULT_GIT_HOSTS = ['github.com', 'gitlab.com', 'bitbucket.org', 'codeberg.org'];
+function isSafeGitUrl(url: string): boolean {
+  try {
+    const u = new URL(url);
+    if (u.protocol !== 'https:') return false;
+    const extra = (process.env['SCRAPIN_GIT_HOSTS'] ?? '').split(',').map((s) => s.trim()).filter(Boolean);
+    const hosts = new Set([...DEFAULT_GIT_HOSTS, ...extra]);
+    return hosts.has(u.hostname);
+  } catch {
+    return false;
+  }
+}
+
+function runCommand(cmd: string, args: string[], opts: { timeoutMs?: number } = {}): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const child = spawn(cmd, args, { stdio: 'ignore', shell: false });
+    const timer = opts.timeoutMs
+      ? setTimeout(() => {
+          child.kill('SIGKILL');
+          reject(new Error(`${cmd} timed out after ${opts.timeoutMs}ms`));
+        }, opts.timeoutMs)
+      : undefined;
+    child.on('error', (err) => {
+      if (timer) clearTimeout(timer);
+      reject(err);
+    });
+    child.on('exit', (code) => {
+      if (timer) clearTimeout(timer);
+      if (code === 0) resolve();
+      else reject(new Error(`${cmd} exited with code ${code}`));
+    });
+  });
+}
 
 // ── Sitemap parsing helpers ──
 
@@ -124,8 +159,8 @@ export class AlgoIndexer {
   private readonly manager: AlgoGraphManager;
 
   constructor(
-    private readonly graph: GraphAdapter,
-    private readonly vectors: VectorStore,
+    graph: GraphAdapter,
+    vectors: VectorStore,
     private readonly events: EventBus,
   ) {
     this.manager = new AlgoGraphManager(graph, vectors);
@@ -167,15 +202,19 @@ export class AlgoIndexer {
    * Index all configured sources sequentially, then link related algos.
    */
   async indexAllSources(sources: AlgoSourceConfig[]): Promise<void> {
+    // Index sources concurrently — each source has its own rate limits, so
+    // parallelism across sources does not violate per-source RPS budgets.
+    const results = await Promise.allSettled(
+      sources.map((source) => this.indexSource(source)),
+    );
     let total = 0;
-    for (const source of sources) {
-      try {
-        const count = await this.indexSource(source);
-        total += count;
-      } catch (err) {
-        logger.error({ key: source.key, err }, 'Failed to index source');
+    results.forEach((r, i) => {
+      if (r.status === 'fulfilled') {
+        total += r.value;
+      } else {
+        logger.error({ key: sources[i]?.key, err: r.reason }, 'Failed to index source');
       }
-    }
+    });
 
     // After all sources are indexed, compute relationship edges
     if (total > 0) {
@@ -196,11 +235,16 @@ export class AlgoIndexer {
     let count = 0;
 
     try {
-      // Shallow clone (depth 1) to minimize bandwidth
+      // Shallow clone (depth 1) to minimize bandwidth.
+      // SECURITY: spawn with args array (no shell), and allowlist the host to
+      // prevent command injection via user-supplied source.url values.
       const cloneUrl = normalizeGitUrl(source.url);
+      if (!isSafeGitUrl(cloneUrl)) {
+        throw new Error(`Refusing to clone untrusted URL: ${cloneUrl}`);
+      }
       logger.debug({ cloneUrl, cloneDir }, 'Shallow cloning repo');
-      await execAsync(`git clone --depth 1 "${cloneUrl}" "${cloneDir}"`, {
-        timeout: 120_000,
+      await runCommand('git', ['clone', '--depth', '1', cloneUrl, cloneDir], {
+        timeoutMs: 120_000,
       });
 
       // Walk the repo for matching files

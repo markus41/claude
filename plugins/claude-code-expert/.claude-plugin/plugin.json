@@ -1,8 +1,8 @@
 {
   "$schema": "https://claude.local/schemas/plugin.schema.json",
   "name": "claude-code-expert",
-  "version": "7.6.0",
-  "description": "High-intelligence Claude Code copilot with deep code reasoning, evidence-driven planning, orchestration-first execution, model routing, context budgeting, CI/CD integration, enterprise security, plugin development, prompt engineering, performance profiling, agent teams, channels (event-driven autonomy with CI webhook, mobile approval relay, Discord bridge, and fakechat dev profile), interactive tutorials, LSP integration, security-hardened hook script library, MCP Prompts coverage, common workflow packs, runtime selection guide, computer-use patterns, checkpointing, scheduled-task blueprints, repo bootstrap scanner, hook policy engine (8 installable packs), layered memory deployment, role-based subagent packs (implementer, debugger, migration-lead, dependency-auditor, release-coordinator), 5 agent-team topology kits, autonomy operating mode (4 profiles + 3 gates), and a queryable 15-tool MCP documentation server with autonomy advisor.",
+  "version": "7.9.0",
+  "description": "High-intelligence Claude Code copilot with deep code reasoning, evidence-driven planning, orchestration-first execution, model routing, context budgeting, CI/CD integration, enterprise security, plugin development, prompt engineering, performance profiling, agent teams, channels (event-driven autonomy with CI webhook, mobile approval relay, Discord bridge, and fakechat dev profile), interactive tutorials, LSP integration, security-hardened hook script library, MCP Prompts coverage, common workflow packs, runtime selection guide, computer-use patterns (CLI + Desktop), checkpointing, scheduled-task blueprints, repo bootstrap scanner, hook policy engine (8 installable packs), layered memory deployment, role-based subagent packs (implementer, debugger, migration-lead, dependency-auditor, release-coordinator), 5 agent-team topology kits, autonomy operating mode (4 profiles + 3 gates), git worktree management for parallel agent isolation (EnterWorktree/ExitWorktree, branch-per-worktree, safe cleanup lifecycle), auto mode permission handling (classifier-based approvals, PermissionDenied hook, defer), Monitor tool for background event streaming and /loop self-pacing, Ultraplan cloud planning, and a queryable 15-tool MCP documentation server with autonomy advisor.",
   "author": {
     "name": "Markus Ahling"
   },
@@ -110,7 +110,7 @@
   "context": {
     "entry": "CONTEXT_SUMMARY.md",
     "title": "Claude Code Expert",
-    "summary": "Bootstrap context for a high-intelligence Claude Code expert plugin (v7.6.0) with 21 commands, 49 skills, 26 agents, and a 15-tool MCP server covering deep code reasoning, agentic design patterns, orchestration, CI/CD, enterprise security, model routing, context budgeting, LSP integration, hook script library, MCP Prompts, common workflow packs, runtime selection, computer-use patterns, checkpointing, scheduled-task blueprints, repo bootstrap scanner, autonomy operating mode (4 profiles + 3 gate agents), hook policy engine (8 packs), layered memory deployment, role-based subagent packs, 5 agent-team topology kits, autonomy advisor, and event-driven channels (CI webhook, mobile approval relay, Discord bridge, fakechat dev profile).",
+    "summary": "Bootstrap context for a high-intelligence Claude Code expert plugin (v7.8.0) with 21 commands, 53 skills, 26 agents, and a 15-tool MCP server covering deep code reasoning, agentic design patterns, orchestration, CI/CD, enterprise security, model routing, context budgeting, LSP integration, hook script library, MCP Prompts, common workflow packs, runtime selection, computer-use patterns (CLI + Desktop), checkpointing, scheduled-task blueprints, repo bootstrap scanner, autonomy operating mode (4 profiles + 3 gate agents), hook policy engine (8 packs), layered memory deployment, role-based subagent packs, 5 agent-team topology kits, autonomy advisor, event-driven channels, git worktree management, auto mode permission handling, Monitor tool with /loop self-pacing, and Ultraplan cloud planning.",
     "tags": [
       "claude-code",
       "expert",
@@ -166,7 +166,11 @@
       "skills/hook-policy-engine/SKILL.md",
       "skills/agent-team-topologies/SKILL.md",
       "skills/autonomy-profiles/SKILL.md",
-      "commands/cc-autonomy.md"
+      "commands/cc-autonomy.md",
+      "skills/worktree-management/SKILL.md",
+      "skills/auto-mode/SKILL.md",
+      "skills/monitor-tool/SKILL.md",
+      "skills/ultraplan/SKILL.md"
     ]
   }
 }

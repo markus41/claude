@@ -1,6 +1,6 @@
 # Claude Code Expert Context Summary
 
-High-intelligence Claude Code expert plugin (v7.6.0) with 21 commands, 49 skills, 26 agents, and a 15-tool MCP server for deep code reasoning, agentic design patterns, orchestrated execution, model routing, CI/CD integration, enterprise security, context budgeting, LSP integration, hook script library, MCP Prompts, common workflow packs, runtime selection, computer-use patterns, checkpointing, scheduled-task blueprints, repo bootstrap scanner, autonomy operating mode (4 profiles + 3 gate agents), hook policy engine (8 installable packs), layered memory deployment, role-based subagent packs, 5 agent-team topology kits, autonomy advisor, and event-driven channels (CI webhook, mobile approval relay, Discord bridge, fakechat).
+High-intelligence Claude Code expert plugin (v7.8.0) with 21 commands, 53 skills, 26 agents, and a 15-tool MCP server for deep code reasoning, agentic design patterns, orchestrated execution, model routing, CI/CD integration, enterprise security, context budgeting, LSP integration, hook script library, MCP Prompts, common workflow packs, runtime selection, computer-use patterns (CLI + Desktop), checkpointing, scheduled-task blueprints, repo bootstrap scanner, autonomy operating mode (4 profiles + 3 gate agents), hook policy engine (8 installable packs), layered memory deployment, role-based subagent packs, 5 agent-team topology kits, autonomy advisor, event-driven channels (CI webhook, mobile approval relay, Discord bridge, fakechat), git worktree management for parallel agent isolation, auto mode permission handling (classifier-based approvals, PermissionDenied hook, defer), Monitor tool for background event streaming and /loop self-pacing, and Ultraplan cloud planning.
 
 ## What this plugin is best at
 - Turning vague engineering requests into evidence-backed plans.
@@ -15,6 +15,23 @@ High-intelligence Claude Code expert plugin (v7.6.0) with 21 commands, 49 skills
 - `agents/principal-engineer-strategist.md`: senior reviewer for architecture, tradeoffs, and hidden-risk detection.
 - `skills/deep-code-intelligence/SKILL.md`: reusable reasoning workflow for hard coding tasks.
 - `mcp-server/src/index.js`: 10-tool searchable docs index with model recommendations, checklists, and comparisons.
+
+## v7.8.0 additions
+
+- **Auto Mode Permission Handling**: `skills/auto-mode/SKILL.md` — covers three permission modes (default/auto/bypass), how the classifier scores tool calls, PermissionDenied hook (bash example with `retry: true` for audit logging), defer permissionDecision pattern for SDK/headless workflows (`{"permissionDecision": "defer"}`), and mode comparison table. Use when configuring headless pipelines or enterprise approval gates.
+- **Monitor Tool**: `skills/monitor-tool/SKILL.md` — streams background watcher events into the active conversation; replaces Bash sleep polling loops. Covers tail-log, watch-CI, auto-fix-crash, and training-run use cases. Documents `/loop` self-pacing with `ScheduleWakeup` (270s for warm cache, 1200s+ for long idle). Decision table: Monitor vs ScheduleWakeup vs Bash sleep.
+- **Ultraplan**: `skills/ultraplan/SKILL.md` — cloud planning from the terminal. Run `/ultraplan "..."` to open a browser planning session powered by Opus 4.7; revise interactively; execute remotely or send the plan back to CLI. Covers when to prefer over local `/plan`, step-by-step flow, cost/model info.
+
+### Updated skills (v7.8.0)
+- **`computer-use`** — Corrected stale "Desktop-only" claim. CLI now available as of v2.1.86 (research preview, enable via `/mcp` toggle). Added PowerShell tool section for Windows (`CLAUDE_CODE_USE_POWERSHELL_TOOL=1`).
+- **`hook-script-library`** — Added: conditional hooks via `if` field (scope to specific commands e.g. `"Bash(git commit *)"`), `CwdChanged`/`FileChanged` events for reactive setups, `PermissionDenied` event with audit-log example, `UserPromptSubmit` sessionTitle output, 50K hook output size limit note.
+- **`mcp-servers`** — Added per-tool result size override: annotate tool in `tools/list` with `_meta: { "anthropic/maxResultSizeChars": 500000 }` for schema-heavy tools (ceiling 500K chars).
+- **`plugin-development`** — Added: `bin/` directory executables added to Bash PATH automatically, `userConfig` for prompting API keys at enable time (keychain-backed), `initialPrompt` in agent frontmatter for auto-submitting first turn, `disableSkillShellExecution` flag, `managed-settings.d/` lexical merge for enterprise policy layering.
+
+## v7.7.0 additions
+
+- **Worktree Management**: `skills/worktree-management/SKILL.md` — `EnterWorktree`/`ExitWorktree` tools, `isolation: "worktree"` agent parameter, branch-per-worktree naming convention, fan-out orchestration patterns, safe removal checklist (status check → remove → branch delete), conflict avoidance rules, decision table for worktree vs in-context subagents.
+- **Model routing corrected**: `skills/model-routing/SKILL.md` — Opus 4.7 (`claude-opus-4-7`) is the current flagship model. All decision matrix entries and code examples updated.
 
 ## v7.6.0 additions
 
@@ -86,3 +103,7 @@ High-intelligence Claude Code expert plugin (v7.6.0) with 21 commands, 49 skills
 | Need CI/CD integration | `commands/cc-cicd.md` | GitHub Actions, pre-commit, headless mode patterns. |
 | Need enterprise security patterns | `skills/enterprise-security/SKILL.md` | Compliance, audit logging, permission hardening. |
 | Need task routing across plugin docs | `CLAUDE.md` and `mcp-server/src/index.js` | Fast path and queryable retrieval model. |
+| Need parallel agents or worktree isolation | `skills/worktree-management/SKILL.md` | EnterWorktree/ExitWorktree, branch-per-worktree, cleanup lifecycle. |
+| Need auto vs manual permission mode or PermissionDenied hook | `skills/auto-mode/SKILL.md` | Classifier-based approvals, defer pattern for SDK/headless, audit logging. |
+| Need to stream background process events or self-pace a loop | `skills/monitor-tool/SKILL.md` | Monitor tool vs Bash sleep, /loop with ScheduleWakeup, cache-warm timing. |
+| Need cloud-based planning session for complex tasks | `skills/ultraplan/SKILL.md` | Ultraplan via /ultraplan, browser review/revise, remote or send-to-CLI execution. |

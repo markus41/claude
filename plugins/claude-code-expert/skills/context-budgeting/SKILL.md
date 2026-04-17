@@ -221,12 +221,25 @@ Each subagent gets its own 200k context window. Only summaries return to main co
 ### Context health check
 
 ```
-/cost           → see current token usage
+/cost           → see current token usage (subscription: per-model + cache-hit breakdown)
 /compact        → manually compact context
 /memory         → see what CLAUDE.md/rules are loaded
 /mcp            → see MCP server token costs
 /model          → check/change current model
 ```
+
+### /cost per-model breakdown (v2.1.101)
+
+For subscription users, `/cost` now shows a per-model and cache-hit breakdown — not just totals. This lets you see exactly which models are driving cost and how much is hitting the cache.
+
+```
+Model             Input    Cache Read   Output    Total
+claude-opus-4-7   12,400   8,200        1,800     $0.42
+claude-sonnet-4-6 45,200   31,000       8,100     $0.18
+                                        Cache savings: $0.08
+```
+
+Use this to verify that prompt caching is working (cache reads should be 30-60% of input for repeat sessions) and to identify which agent or skill is the most expensive consumer.
 
 ### Rule of thumb targets
 

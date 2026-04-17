@@ -1,4 +1,4 @@
-import pino from 'pino';
+import { createLogger } from '../core/logger.js';
 import { AsyncSemaphore } from '../core/semaphore.js';
 import { TokenBucket } from '../core/token-bucket.js';
 import { type GraphAdapter } from '../core/graph.js';
@@ -17,7 +17,7 @@ import { migrateLegacySourceIds } from '../core/source-migration.js';
 import { recordCrawlFailure, recordCrawlRun } from './telemetry.js';
 import { emitWebhook } from '../integrations/webhook.js';
 
-const logger = pino({ name: 'crawler' });
+const logger = createLogger('crawler');
 
 interface CrawlStats {
   runId: string;

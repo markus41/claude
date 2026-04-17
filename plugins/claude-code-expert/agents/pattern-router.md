@@ -38,6 +38,42 @@ For every incoming task, classify it along these dimensions:
 - **Medium**: Production code, standard PR → Standard review
 - **High**: Security-critical, public API, data migration → Eval-optimizer loop
 
+### 4. Specialist Availability (reliability dimension)
+
+Before selecting a pattern that spawns subagents, check whether a **named specialist**
+exists for the lens/role, or whether you're about to fall back to a generic
+(`Explore`, `general-purpose`). **Prefer the named specialist every time** — it is the
+single largest lever on reliability.
+
+Rationale: named specialists have focused system prompts, so your user-prompt can be
+~200-400 words. Generics carry no system prompt, so the same task forces the caller into
+800+ words. When the total forwarded context (inherited CLAUDE.md chain + rules +
+plugin CLAUDE.md + prompt) crosses the subagent budget, the spawn rejects with "Prompt
+is too long" before any work happens.
+
+**Observed telemetry from one session (n=9 spawns)**:
+
+| Strategy | Prompt size | Reject rate |
+|---|---|---|
+| Named specialists (architecture / perf / security / dx / ux / researcher / code-reviewer) | ~200-400 words | 0 / 7 |
+| `Explore` generic | ~900 words | 2 / 2 (100%) |
+
+Target household reject rate: **< 5%**. See `skills/prompt-budget-preflight/SKILL.md`
+for the preflight checklist to run before any borderline spawn.
+
+**Routing rule**:
+
+```
+For each planned subagent:
+  matching_specialist = lookup(lens_or_role)
+  if matching_specialist exists:
+    use it  — write a 5-section minimum-viable prompt (<400 words)
+  else:
+    use a generic (Explore / general-purpose)
+    invoke the prompt-budget-preflight checklist first
+    if the forwarded-context estimate + your prompt > ~4k tokens: split / shrink before spawning
+```
+
 ## Pattern Selection Matrix
 
 | Decomposable? | Complexity | Quality | Pattern | Agent(s) |

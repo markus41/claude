@@ -1,6 +1,6 @@
-import pino from 'pino';
+import { createLogger } from '../core/logger.js';
 
-const logger = pino({ name: 'firecrawl-adapter' });
+const logger = createLogger('firecrawl-adapter');
 
 interface FirecrawlScrapeResult {
   markdown: string;

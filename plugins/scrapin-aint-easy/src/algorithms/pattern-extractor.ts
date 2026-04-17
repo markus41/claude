@@ -4,7 +4,7 @@
  * ingestion.
  */
 
-import { ALGO_CATEGORIES, type AlgoCategory, type AlgoNodeData } from './algo-sources.js';
+import { type AlgoCategory, type AlgoNodeData } from './algo-sources.js';
 
 // ── Complexity parsing ──
 
@@ -278,7 +278,6 @@ interface ExtractedSymbol {
 
 function extractTsSymbols(code: string): ExtractedSymbol[] {
   const symbols: ExtractedSymbol[] = [];
-  const lines = code.split('\n');
 
   // Collect docblocks indexed by end-line
   const docblocks = new Map<number, string>();

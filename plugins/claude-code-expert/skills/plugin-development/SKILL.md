@@ -821,3 +821,98 @@ Plugins are published to the Claude Code marketplace:
 | Unknown permission | Typo in permissions | Use: read, write, bash, agent, mcp, network |
 | Too many tokens | CONTEXT_SUMMARY too long | Trim to essentials, use lazyLoadSections |
 | Tool not available | Tool not in `allowed-tools` | Add tool to skill frontmatter |
+
+---
+
+## New Plugin Features (v2.1.83–v2.1.101)
+
+### Plugin Executables on PATH (v2.1.91)
+
+Place an executable in `bin/` at the plugin root. Claude Code adds that directory to the Bash tool's `PATH` while the plugin is enabled. Claude can invoke the binary as a bare command from any Bash tool call — no absolute path or wrapper script needed.
+
+```
+my-plugin/
+├── .claude-plugin/
+│   └── plugin.json
+├── bin/
+│   └── my-tool          ← chmod +x required
+├── commands/
+└── agents/
+```
+
+After enabling the plugin:
+```bash
+# Works in any Bash tool call — no path prefix
+my-tool --analyze src/
+```
+
+Handy for packaging CLI helpers (code generators, validators, formatters) next to the commands, agents, and hooks that call them.
+
+### Plugin userConfig — Prompting for Settings (v2.1.83)
+
+Plugins can declare `userConfig` in `plugin.json` to prompt for settings at enable time. Values are stored in the system keychain for secrets, or in the user config for non-secret values.
+
+```json
+{
+  "name": "my-plugin",
+  "userConfig": {
+    "apiKey": {
+      "description": "Your API key",
+      "secret": true,
+      "required": true
+    },
+    "region": {
+      "description": "Default region (e.g. us-east-1)",
+      "secret": false,
+      "required": false,
+      "default": "us-east-1"
+    }
+  }
+}
+```
+
+Inside scripts and commands, read them via environment variables:
+```bash
+echo "$PLUGIN_API_KEY"
+echo "$PLUGIN_REGION"
+```
+
+### Agents: initialPrompt in Frontmatter (v2.1.83)
+
+Agents can declare `initialPrompt` in their YAML frontmatter to auto-submit a first turn when the agent starts. Useful for agents that always need to run an inventory step before accepting user input:
+
+```markdown
+---
+name: dependency-auditor
+description: Audits package dependencies for vulnerabilities
+model: haiku
+initialPrompt: "Run pnpm audit and report findings."
+allowed-tools:
+  - Bash
+  - Read
+---
+```
+
+### disableSkillShellExecution Setting (v2.1.90)
+
+Set `disableSkillShellExecution: true` in `plugin.json` to block inline shell execution from skills and slash commands in this plugin's scope. Use for read-only analysis plugins that should never modify the environment:
+
+```json
+{
+  "name": "readonly-analyzer",
+  "disableSkillShellExecution": true
+}
+```
+
+### managed-settings.d/ Drop-In Directory (v2.1.83)
+
+Enterprise deployments can layer policy fragments into `managed-settings.d/`:
+
+```
+~/.claude/managed-settings.d/
+  10-network-policy.json
+  20-permission-policy.json
+  30-tool-allowlist.json
+```
+
+Files are merged in lexical order. Plugin developers should document which settings their plugin reads so admins can layer overrides cleanly.

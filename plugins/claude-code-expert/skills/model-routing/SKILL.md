@@ -32,9 +32,9 @@ Eliminate wasted spend by routing tasks to the cheapest model that produces acce
 
 | Task Type | Recommended Model | Reasoning |
 |-----------|-------------------|-----------|
-| Architecture decisions | Opus 4.6 | Needs deep multi-step reasoning, hidden coupling detection |
-| Complex debugging | Opus 4.6 | Root cause analysis requires holding many hypotheses |
-| Security review | Opus 4.6 | Must not miss subtle vulnerabilities |
+| Architecture decisions | Opus 4.7 | Needs deep multi-step reasoning, hidden coupling detection |
+| Complex debugging | Opus 4.7 | Root cause analysis requires holding many hypotheses |
+| Security review | Opus 4.7 | Must not miss subtle vulnerabilities |
 | Standard implementation | Sonnet 4.6 | Best balance of speed, quality, and cost for code generation |
 | Code review | Sonnet 4.6 | Good pattern recognition at reasonable cost |
 | Refactoring | Sonnet 4.6 | Mechanical transformations with quality checks |
@@ -67,7 +67,7 @@ Use these signals to downgrade from Sonnet to Haiku:
 
 | Model | Input | Output | Cache Write | Cache Read |
 |-------|------:|-------:|------------:|-----------:|
-| Opus 4.6 | $15.00 | $75.00 | $18.75 | $1.50 |
+| Opus 4.7 | $15.00 | $75.00 | $18.75 | $1.50 |
 | Sonnet 4.6 | $3.00 | $15.00 | $3.75 | $0.30 |
 | Haiku 4.5 | $0.80 | $4.00 | $1.00 | $0.08 |
 
@@ -159,7 +159,7 @@ Before starting a task, estimate cost:
 # "Implement the new auth middleware based on the research above"
 
 # Switch to Opus for the tricky part
-/model claude-opus-4-6
+/model claude-opus-4-7
 # "Review the session handling for race conditions and edge cases"
 ```
 
@@ -188,3 +188,34 @@ The `smallFastModel` is used for internal operations like skill matching and con
 - Not using subagents — research in main context inflates token count for every subsequent turn
 - Re-reading large files — each read costs tokens; anchor important content instead
 - Ignoring cache hits — restructure prompts to maximize cache read tokens (10% of input cost)
+
+---
+
+## Effort Control (v2.1.101)
+
+Claude's default effort level is now **`high`** for API-key, Bedrock, Vertex, Team, and Enterprise users. High effort means more extended thinking tokens and more thorough tool use before responding.
+
+### Changing effort level
+
+```text
+/effort low      → faster, fewer thinking tokens, good for quick lookups
+/effort medium   → balanced (old default)
+/effort high     → thorough reasoning, more tool calls (current default for paid)
+```
+
+Use `/effort low` for: refactoring mechanical tasks, documentation rewrites, simple file edits.
+Use `/effort high` for: architecture reviews, debugging complex failures, security audits.
+
+---
+
+## Thinking Summaries (v2.1.90)
+
+Extended thinking summaries are **off by default** in interactive sessions to reduce visual noise. Re-enable in settings:
+
+```json
+{
+  "showThinkingSummaries": true
+}
+```
+
+When enabled, Claude displays a collapsible summary of its reasoning chain before each response. Useful when debugging why Claude made a particular decision.

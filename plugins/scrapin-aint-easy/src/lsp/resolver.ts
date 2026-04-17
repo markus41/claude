@@ -1,5 +1,5 @@
 import pino from 'pino';
-import { type GraphAdapter, type SymbolNode, type SearchResult } from '../core/graph.js';
+import { type GraphAdapter, type SearchResult } from '../core/graph.js';
 import { type VectorStore, type VectorSearchResult } from '../core/vector.js';
 import { toSourceKey } from '../core/ids.js';
 

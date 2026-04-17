@@ -8,7 +8,7 @@ export class TokenBucket {
   private readonly maxTokens: number;
   private readonly refillRate: number; // tokens per ms
 
-  constructor(private readonly rps: number) {
+  constructor(rps: number) {
     if (rps <= 0) {
       throw new Error('rps must be > 0');
     }
