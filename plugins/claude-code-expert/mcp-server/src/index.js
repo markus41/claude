@@ -1132,6 +1132,15 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
       },
     },
     {
+      name: "cc_blackboard_list_runs",
+      description:
+        "List all blackboard runs present in .claude/orchestration/blackboard/. Use when you need to discover run_ids without pre-knowing them (e.g. resuming an orchestration or auditing recent activity).",
+      inputSchema: {
+        type: "object",
+        properties: {},
+      },
+    },
+    {
       name: "cc_telemetry_recent_agents",
       description:
         "Read the most recent Agent-tool telemetry records (populated by the capture-agent-telemetry SubagentStop hook). Use to compute reject rates, identify slow-agent outliers, and feed orchestration adaptations.",
@@ -1560,6 +1569,44 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         ],
       };
     }
+    case "cc_blackboard_list_runs": {
+      const runs = blackboardListRuns();
+      if (runs.length === 0) {
+        return {
+          content: [
+            {
+              type: "text",
+              text:
+                "No blackboard runs found.\n" +
+                "Blackboard root: " + BLACKBOARD_ROOT + "\n" +
+                "Start a run by calling cc_blackboard_append from any agent.",
+            },
+          ],
+        };
+      }
+      const lines = [
+        `## Blackboard runs (${runs.length})`,
+        `Root: ${BLACKBOARD_ROOT}`,
+        ``,
+      ];
+      for (const runId of runs) {
+        const runDir = join(BLACKBOARD_ROOT, runId);
+        let entryCount = 0;
+        try {
+          entryCount = readdirSync(runDir).filter((n) => n.endsWith(".yaml")).length;
+        } catch {
+          // ignore
+        }
+        lines.push(`- ${runId}  (${entryCount} ${entryCount === 1 ? "entry" : "entries"})`);
+      }
+      lines.push(
+        ``,
+        `Read a specific run via: cc_blackboard_read({ run_id: "<one of the above>" })`,
+        `Or the MCP resource: cc://blackboard/<run_id>`,
+      );
+      return { content: [{ type: "text", text: lines.join("\n") }] };
+    }
+
     case "cc_telemetry_recent_agents": {
       const limit = typeof args.limit === "number" && args.limit > 0 ? args.limit : 50;
       const records = readTelemetryAgents(limit);
