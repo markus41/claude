@@ -1038,6 +1038,90 @@ config:
   estimated_cost: "$0.05-0.30"
 ```
 
+### Template 13: Specialist Fan-Out (Subagent Pattern)
+
+**When**: You need N distinct lenses on the same target (upgrade audit, architecture review,
+multi-perspective triage). Lightweight version of the Blackboard Council (Template 11) — use
+this when Round-1 findings are enough and cross-round critique is not worth the extra spawn cost.
+
+**Pattern**: Spawn N named specialists in parallel in a single message. Each returns structured
+findings for one lens. Orchestrator (the main session) reads all outputs and synthesizes
+in-context.
+
+**Critical reliability rule**: use **named specialists** (architecture-specialist,
+performance-specialist, security-specialist, dx-specialist, ux-specialist, researcher,
+code-reviewer). Do not fall back to `Explore` / `general-purpose` — those carry no scaffolding
+system prompt and your user-prompt would have to grow 2-3x to compensate, landing in the
+Agent-tool's prompt-budget reject zone. See `skills/prompt-budget-preflight/SKILL.md`.
+
+```yaml
+name: specialist-fanout
+type: subagent
+pattern: parallelization  # from agentic-patterns skill
+agents:
+  architecture-specialist:
+    role: Architecture, coupling, invariants, blast radius
+    model: opus
+    prompt_budget_words: 400
+  performance-specialist:
+    role: Latency, memory, throughput, cache hits, startup time
+    model: opus
+    prompt_budget_words: 400
+  security-specialist:
+    role: Threat modeling, credential leakage, SSRF, supply chain
+    model: opus
+    prompt_budget_words: 400
+  dx-specialist:
+    role: Error messages, observability, tooling, iteration speed
+    model: sonnet
+    prompt_budget_words: 400
+  ux-specialist:
+    role: Discoverability, flows, progressive disclosure, first-use
+    model: sonnet
+    prompt_budget_words: 400
+  researcher:
+    role: Innovation lens — LLM-in-the-loop / frontier patterns
+    model: sonnet
+    prompt_budget_words: 400
+  code-reviewer:
+    role: Junior / obvious-wins — duplication, naming, dead code
+    model: sonnet
+    prompt_budget_words: 400
+
+coordination:
+  round_1: parallel_spawn  # single message, all 7 Agent tool calls
+  round_2: in_context_synthesis  # orchestrator reads all outputs
+  upgrade_path: >
+    For real Round-2 critique where agents react to each others' findings,
+    use Template 11 (blackboard-council) instead — the blackboard MCP primitive
+    gives agents a way to read peer findings without the orchestrator having
+    to forward them.
+
+config:
+  spawn_mode: parallel
+  reject_rate_budget: 0.05  # target < 5% after specialist-first routing
+  estimated_cost: "$0.50-1.50"
+  observed_wall_clock: >
+    One session's 7-specialist run: 58s / 129s / 251s / 288s / 302s / 329s / 490s.
+    Bounded by slowest (architecture outlier at 8 min, 43 tool uses). Mean ~264s.
+    Total across 7 agents: ~680k tokens.
+```
+
+**Step-by-step orchestrator script**:
+
+1. Pick a scope and a stable `run_id` (e.g. `20260417-council-X`).
+2. Compose a 5-section minimum-viable prompt per specialist using the template in
+   `skills/prompt-budget-preflight/SKILL.md`. Each prompt under ~400 words.
+3. Spawn all N in ONE message with parallel `Agent` tool calls.
+4. Wait for completion notifications. Do not poll; do not tail output files.
+5. For each result: skim the structured findings. Optionally call
+   `cc_blackboard_append` to persist for the upgrade-to-Template-11 path.
+6. Synthesize in-context: dedupe, rank, bundle complementary items.
+
+**Escalation path**: if any single agent's prompt exceeds ~400 words, or a second round of
+agent-to-agent critique is needed, switch to Template 11 (Blackboard Council) and use the
+`cc_blackboard_append` / `cc_blackboard_read` MCP tools (`skills/orchestration-blackboard`).
+
 ---
 
 ## Pattern Selection Guide
@@ -1080,6 +1164,7 @@ What kind of task is it?
 | **orchestrator-workers** | Subagent | Orchestrator-Workers | 1+N | Variable | Lead audit | Dynamic task decomposition |
 | **blackboard-council** | Team | Blackboard | 4 | High | Architect resolves | Cross-domain deep analysis |
 | **react-debugger** | Subagent | ReAct | 1 | Low | Trace log | Investigation & debugging |
+| **specialist-fanout** | Subagent | Parallelization | 5-7 | Medium-High | In-context synthesis | Multi-lens upgrade audit / review |
 
 ---
 

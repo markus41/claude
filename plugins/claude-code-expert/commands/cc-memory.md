@@ -510,6 +510,100 @@ Agent A error → captured in lessons-learned.md
   → All agents inherit the permanent rule
 ```
 
+### `--graduate` — Operational Rule Promotion
+
+The rotation and pattern-detection concepts above become concrete via
+`/cc-memory --graduate`:
+
+```bash
+/cc-memory --graduate                  # scan + propose; writes nothing without --apply
+/cc-memory --graduate --dry-run        # same as above (explicit synonym)
+/cc-memory --graduate --apply          # execute the proposals
+/cc-memory --graduate --report         # print the latest graduation report
+```
+
+**Why this exists**: without graduation, `.claude/rules/lessons-learned.md`
+grows unbounded. One observed repo: 189 `### Error` entries at ~51k tokens,
+loaded on every session — pure context tax. Target ceiling after graduation:
+15k tokens.
+
+#### Graduation algorithm
+
+```
+1. SCAN
+   Parse `.claude/rules/lessons-learned.md` into entries. Each entry has
+   tool, error-message prefix, status, date, fix, prevention.
+
+2. GROUP by (tool, error_signature)
+   error_signature = first 80 chars of the error message, minus paths /
+   numerics / uuids. Collapse "not a directory /home/x" and
+   "not a directory /home/y" into the same signature.
+
+3. CLASSIFY
+   - signature.count >= 3 AND >= 2 entries are RESOLVED  → graduation candidate
+   - signature.count >= 5 of any status                   → auto-graduation
+   - entry.age > 30 days AND status == RESOLVED           → archive candidate
+   - entry.status == NEEDS_FIX AND entry.age > 14 days    → prune candidate
+
+4. PROPOSE (dry-run default)
+   For each graduation candidate:
+     - Draft a one-liner rule from the most-complete Prevention field.
+     - Pick the target rule file by signature:
+       · git-related → .claude/rules/git-workflow.md
+       · path/readdir/EISDIR → .claude/rules/self-healing.md
+       · Python heredoc / shell quoting → .claude/rules/code-style.md
+       · Task resume / agent lifecycle → .claude/rules/architecture.md
+       · default → .claude/rules/self-healing.md
+     - Print the proposed rule file + proposed insertion.
+   For each archive candidate: propose move to
+     .claude/rules/lessons-learned-archive.md (append YYYY-MM summary line).
+   For each prune candidate: propose move to the archive with a
+     "never resolved — pruned" note.
+
+5. APPLY (--apply only)
+   - Append drafted rule lines to target rule files (idempotent: skip if
+     rule text already present by exact-match).
+   - Mark graduated entries in-place: change Status line from RESOLVED to
+     `GRADUATED → <rule-file>#<anchor>` with the timestamp.
+   - Move archive / prune candidates to
+     `.claude/rules/lessons-learned-archive.md`, one heading per month.
+   - After apply: re-measure file size; report before/after token estimate.
+
+6. REPORT
+   Emit a graduation report at
+   `.claude/reports/cc-memory-graduate-YYYYMMDD.md` listing promotions,
+   archives, prunes, and the token delta.
+```
+
+#### Verification recipe
+
+```bash
+# 1. Dry-run against the current file — should propose >= 5 graduations
+/cc-memory --graduate --dry-run
+
+# 2. Apply
+/cc-memory --graduate --apply
+
+# 3. Measure: file should be under 15k tokens, ≤ 30% of prior size
+wc -l .claude/rules/lessons-learned.md
+
+# 4. Inspect the archive — one monthly section per graduated window
+ls -la .claude/rules/lessons-learned-archive.md
+
+# 5. Confirm graduated entries carry GRADUATED status pointer
+grep -c '^- \*\*Status:\*\* GRADUATED' .claude/rules/lessons-learned.md
+```
+
+#### Safety rails
+
+- `--apply` refuses to run if the file is unreadable, is not under a git
+  repo, or contains more than 500 entries (above that, operator must chunk).
+- Never removes an entry that another agent is currently writing to
+  (detected by `flock` on the target path — concurrent hook + command
+  invocations are safe).
+- Always writes the graduation report BEFORE the destructive apply step so
+  the operator has a rollback plan.
+
 ---
 
 ## Layered Memory Deployment
