@@ -11,7 +11,6 @@ import { type SourceConfig } from '../config/loader.js';
 import { readCrawlTelemetry } from '../crawler/telemetry.js';
 import { emitWebhook } from '../integrations/webhook.js';
 import {
-  PaginationInput,
   SearchInput,
   GraphQueryInput,
   AlgoSearchInput,
@@ -33,11 +32,10 @@ import {
   CodexBootstrapInput,
 } from './schemas.js';
 
-const logger = pino({ name: 'mcp:tools' });
-
 // Tool input schemas live in `./schemas.js` — keep all Zod shapes there so
 // new tools cannot accidentally reference undeclared schemas.
-void PaginationInput;
+
+const logger = pino({ name: 'mcp:tools' });
 
 // ── Response helpers ──
 

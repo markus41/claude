@@ -105,7 +105,9 @@ export class GraphAdapter {
       // For now we fall through to in-memory + Kùzu
     }
 
-    // Try to load Kùzu
+    // Try to load Kùzu. Distinguish between "module not installed" (benign —
+    // optional native dep) and any other failure (suspicious — surface in logs
+    // so a broken install or schema error is not silently masked by the fallback).
     try {
       const kuzu = await import('kuzu');
       const dbPath = join(this.dataDir, 'graph.db');
@@ -113,8 +115,14 @@ export class GraphAdapter {
       this.kuzuConn = new kuzu.default.Connection(this.kuzuDb as InstanceType<typeof kuzu.default.Database>);
       logger.info('Kùzu graph database initialized');
       await this.migrateSchema();
-    } catch {
-      logger.info('Kùzu not available, using in-memory graph store');
+    } catch (err) {
+      const code = err && typeof err === 'object' && 'code' in err ? String((err as { code: unknown }).code) : '';
+      if (code === 'MODULE_NOT_FOUND' || code === 'ERR_MODULE_NOT_FOUND') {
+        logger.info('Kùzu not available, using in-memory graph store');
+      } else {
+        const msg = err instanceof Error ? err.message : String(err);
+        logger.warn({ err: msg, code }, 'Kùzu initialization failed, falling back to in-memory graph store');
+      }
     }
 
     this.initialized = true;
