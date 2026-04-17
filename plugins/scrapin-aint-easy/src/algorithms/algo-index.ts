@@ -124,8 +124,8 @@ export class AlgoIndexer {
   private readonly manager: AlgoGraphManager;
 
   constructor(
-    private readonly graph: GraphAdapter,
-    private readonly vectors: VectorStore,
+    graph: GraphAdapter,
+    vectors: VectorStore,
     private readonly events: EventBus,
   ) {
     this.manager = new AlgoGraphManager(graph, vectors);

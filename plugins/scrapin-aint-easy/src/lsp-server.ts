@@ -1,5 +1,4 @@
 import { createServer, type Socket } from 'node:net';
-import { createInterface } from 'node:readline';
 import pino from 'pino';
 import { type GraphAdapter } from './core/graph.js';
 import { type VectorStore } from './core/vector.js';
@@ -131,7 +130,6 @@ class LspDispatcher {
   private readonly fileCache = new Map<string, string>();
   private readonly crawler: unknown;
   private readonly algoManager: unknown;
-  private initialized = false;
 
   constructor(deps: ServerDependencies) {
     this.graphAdapter = deps.graphAdapter;
@@ -183,8 +181,6 @@ class LspDispatcher {
   private handleInitialize(
     id: number | string | undefined,
   ): JsonRpcResponse {
-    this.initialized = true;
-
     return makeResult(id ?? null, {
       capabilities: {
         hoverProvider: true,
@@ -293,7 +289,6 @@ class LspDispatcher {
     id: number | string | undefined,
   ): JsonRpcResponse {
     logger.info('LSP shutdown requested');
-    this.initialized = false;
     return makeResult(id ?? null, null);
   }
 
@@ -361,7 +356,7 @@ function makeError(
 function startStdioTransport(dispatcher: LspDispatcher): void {
   logger.info('Starting LSP server on stdio');
 
-  let buffer = Buffer.alloc(0);
+  let buffer: Buffer<ArrayBufferLike> = Buffer.alloc(0);
 
   process.stdin.on('data', (chunk: Buffer) => {
     buffer = Buffer.concat([buffer, chunk]);
@@ -398,7 +393,7 @@ function startTcpTransport(
         'LSP TCP client connected',
       );
 
-      let buffer = Buffer.alloc(0);
+      let buffer: Buffer<ArrayBufferLike> = Buffer.alloc(0);
 
       socket.on('data', (chunk: Buffer) => {
         buffer = Buffer.concat([buffer, chunk]);

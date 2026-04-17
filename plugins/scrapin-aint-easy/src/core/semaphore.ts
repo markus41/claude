@@ -6,7 +6,7 @@ export class AsyncSemaphore {
   private readonly waiters: Array<() => void> = [];
   private currentCount: number;
 
-  constructor(private readonly maxConcurrency: number) {
+  constructor(maxConcurrency: number) {
     if (maxConcurrency < 1) {
       throw new Error('maxConcurrency must be >= 1');
     }

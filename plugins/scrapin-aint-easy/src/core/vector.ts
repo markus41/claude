@@ -59,9 +59,9 @@ export interface VectorSearchResult {
 
 class LocalTransformersProvider implements EmbeddingProvider {
   readonly name = 'local-transformers';
-  private pipelinePromise:
-    | Promise<(text: string, opts: Record<string, unknown>) => Promise<{ data: Float32Array }>>
-    | null = null;
+  // Vendor types for @xenova/transformers are fragile across versions; use `any`
+  // on the pipeline seam and narrow at the call site via Array.from on .data.
+  private pipelinePromise: Promise<unknown> | null = null;
 
   constructor(private readonly modelName: string) {}
 
@@ -72,7 +72,11 @@ class LocalTransformersProvider implements EmbeddingProvider {
       );
     }
     const pipe = await this.pipelinePromise;
-    const result = await pipe(text, { pooling: 'mean', normalize: true });
+    if (!pipe) throw new Error('LocalTransformersProvider: pipeline not initialized');
+    const result = await (pipe as (t: string, o: Record<string, unknown>) => Promise<{ data: ArrayLike<number> }>)(
+      text,
+      { pooling: 'mean', normalize: true },
+    );
     return Array.from(result.data);
   }
 }
