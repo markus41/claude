@@ -1,190 +1,100 @@
 ---
 name: model-routing
-description: Intelligent model selection for Claude Code — decision matrices, cost tables, budget planning, and subagent model assignment for optimal cost/quality tradeoffs
-allowed-tools:
-  - Read
-  - Grep
-  - Glob
-  - Bash
-triggers:
-  - model selection
-  - which model
-  - cost estimate
-  - token budget
-  - routing
-  - haiku vs sonnet
-  - sonnet vs opus
-  - model recommendation
-  - expensive session
+description: Pick the right Claude model (Opus, Sonnet, Haiku) for a task and manage cost — decision matrix, cost tables, budget planning, cascading strategy. Use this skill whenever choosing a model, setting a token budget, optimizing session cost, or deciding whether to upgrade/downgrade mid-task. Triggers on: "which model", "cost", "budget", "haiku vs sonnet", "opus for this", "save tokens", "model cascading", "/cc-budget".
 ---
 
-# Model Routing Intelligence
+# Model Routing
 
-Select the right Claude model for each task to optimize the cost/quality tradeoff.
+Claude model choice is the biggest cost lever in Claude Code. Match the model to the work.
 
-## Goal
+## Decision matrix
 
-Eliminate wasted spend by routing tasks to the cheapest model that produces acceptable quality, while ensuring complex tasks get the reasoning depth they need.
+| Task type | Model | Why |
+|---|---|---|
+| Architecture decision | Opus | Multi-step reasoning; hidden-cost detection |
+| Root-cause debugging (hard) | Opus | Hypothesis trees, multi-source evidence |
+| Security review | Opus | Risk sensitivity; knowledge of OWASP/CWE |
+| Feature implementation | Sonnet | Standard generation; good reasoning |
+| Code review (routine PR) | Sonnet | Fast; catches most issues |
+| Test writing | Sonnet | Pattern-based |
+| Research / docs lookup | Haiku | Fast; cheap; sufficient for retrieval |
+| Bulk file edits (rename, reformat) | Haiku | Mechanical work |
+| Dependency audit | Haiku | Running commands, parsing output |
+| Simple Q&A | Haiku | One-shot factual answers |
 
-## Decision Matrix
+## Cost table (approximate, check `cc_docs_model_recommend` for current)
 
-### Task → Model mapping
+| Model | Input $/M | Output $/M | Relative |
+|---|---|---|---|
+| Opus 4.7 | ~$15 | ~$75 | 5× |
+| Sonnet 4.6 | ~$3 | ~$15 | 1× |
+| Haiku 4.5 | ~$0.80 | ~$4 | 0.3× |
 
-| Task Type | Recommended Model | Reasoning |
-|-----------|-------------------|-----------|
-| Architecture decisions | Opus 4.6 | Needs deep multi-step reasoning, hidden coupling detection |
-| Complex debugging | Opus 4.6 | Root cause analysis requires holding many hypotheses |
-| Security review | Opus 4.6 | Must not miss subtle vulnerabilities |
-| Standard implementation | Sonnet 4.6 | Best balance of speed, quality, and cost for code generation |
-| Code review | Sonnet 4.6 | Good pattern recognition at reasonable cost |
-| Refactoring | Sonnet 4.6 | Mechanical transformations with quality checks |
-| Test writing | Sonnet 4.6 | Formulaic but needs understanding of code under test |
-| File search / grep | Haiku 4.5 | Simple lookup, no deep reasoning needed |
-| Documentation lookup | Haiku 4.5 | Reading and summarizing existing content |
-| Commit message generation | Haiku 4.5 | Short, formulaic output |
-| Simple Q&A | Haiku 4.5 | Direct answers, no complex analysis |
-| Research subagents | Haiku 4.5 | Exploration tasks that return summaries |
+Output tokens are the dominant cost in most Claude Code sessions. Opus is ~5× the cost but ~2× the capability on hard tasks — use it where the capability matters.
 
-### Complexity signals
+## Model cascading
 
-Use these signals to decide when to escalate from Sonnet to Opus:
-- Multiple interacting systems or modules
-- Non-obvious failure modes
-- "Why does this work?" questions
-- Tasks where a wrong answer is expensive to fix
-- Cross-cutting concerns (auth, caching, observability)
-- Migration or backward-compatibility requirements
+The high-leverage pattern: start with a cheap model for planning, delegate implementation to cheap, reserve Opus for review gates.
 
-Use these signals to downgrade from Sonnet to Haiku:
-- Single-file changes
-- Mechanical transformations (rename, reformat)
-- Reading and summarizing (no generation)
-- Answering factual questions about code
+| Phase | Model |
+|---|---|
+| Plan mode (Shift+Tab) | Opus |
+| Implementation | Sonnet |
+| Subagent research | Haiku |
+| Code review gate | Opus |
+| Final sign-off | Opus |
 
-## Cost Tables
+Net effect: most tokens are on Sonnet/Haiku; Opus tokens are where they matter most.
 
-### Per-token pricing (USD per million tokens)
+## Budget planning
 
-| Model | Input | Output | Cache Write | Cache Read |
-|-------|------:|-------:|------------:|-----------:|
-| Opus 4.6 | $15.00 | $75.00 | $18.75 | $1.50 |
-| Sonnet 4.6 | $3.00 | $15.00 | $3.75 | $0.30 |
-| Haiku 4.5 | $0.80 | $4.00 | $1.00 | $0.08 |
+For a task estimated at N turns:
 
-### Cost multipliers
+- Rough floor: 2k input + 2k output per turn = 4k tokens.
+- Sonnet cost: 4k × $3/M = $0.012 per turn.
+- 20-turn session on Sonnet: ~$0.24.
+- Add 3 Opus review passes: +$0.45.
+- Total: ~$0.70.
 
-| Comparison | Input | Output |
-|-----------|------:|-------:|
-| Opus vs Sonnet | 5x | 5x |
-| Sonnet vs Haiku | 3.75x | 3.75x |
-| Opus vs Haiku | 18.75x | 18.75x |
+Use `cc_docs_model_recommend(task, budget)` to get a specific recommendation with cost projection.
 
-### Typical session costs
+## Downgrade/upgrade triggers
 
-| Task | Model | Est. Tokens (in/out) | Est. Cost |
-|------|-------|---------------------:|----------:|
-| Simple bug fix | Sonnet | 50k/10k | ~$0.30 |
-| Feature implementation | Sonnet | 200k/50k | ~$1.35 |
-| Architecture review | Opus | 200k/30k | ~$5.25 |
-| Quick lookup | Haiku | 20k/2k | ~$0.02 |
-| Research subagent | Haiku | 80k/10k | ~$0.10 |
-| Full code review (council) | Mixed | 500k/100k | ~$3-8 |
+**Downgrade to Haiku when**:
+- Doing pure retrieval (grep results, file reads).
+- Running a known command and parsing output.
+- Rate-limited on Sonnet budget.
 
-## Subagent Model Assignment
+**Upgrade to Opus when**:
+- Sonnet gets it wrong twice on the same subtask.
+- Task is security-critical.
+- Stakeholder cost of error is ≥ days of engineer time.
+- You're designing something new (vs. implementing something known).
 
-### Orchestration patterns
+## /plan mode
 
-When using `cc-orchestrate` or spawning subagents, assign models by role:
+`Shift+Tab` toggles plan mode — uses Opus to think deeper without producing code. Use for:
+- New feature scoping
+- Debugging a tough bug before trying fixes
+- Architecture choice before committing
 
-```
-Research agents     → Haiku (cheap exploration, summary return)
-Implementation agents → Sonnet (code generation quality)
-Review/audit agents → Sonnet or Opus (depends on risk)
-Architecture agents → Opus (deep reasoning required)
-```
+Don't use plan mode for: known patterns, mechanical work, small tweaks.
 
-### Example: builder-validator template
+## MCP delegation
 
-```
-builder agent   → Sonnet 4.6 (writes code)
-validator agent → Sonnet 4.6 (reviews code)
-```
-
-### Example: research-council template
-
-```
-researcher agents (3x) → Haiku 4.5 (parallel exploration)
-synthesizer agent      → Sonnet 4.6 (combines findings)
-```
-
-## Budget Planning
-
-### Setting a session budget
-
-Before starting a task, estimate cost:
-
-1. **Classify the task** using the decision matrix above
-2. **Estimate token volume** based on file count and task scope
-3. **Calculate cost** using the pricing table
-4. **Set model** with `/model` or `claude -m`
-
-### Token estimation rules of thumb
-
-| Content Type | Tokens per Line |
-|-------------|----------------:|
-| TypeScript/JavaScript | ~10 |
-| Python | ~8 |
-| JSON/YAML | ~6 |
-| Markdown | ~5 |
-| Minified code | ~15 |
-
-### Cost control techniques
-
-1. **Start with Haiku for research**, switch to Sonnet for implementation
-2. **Use subagents** to isolate expensive research from main context
-3. **Compact early** at 60-70% context to avoid expensive re-reads
-4. **Limit tool output** — avoid `cat`-ing entire large files; use Grep with limits
-5. **Batch related tasks** to benefit from prompt caching (cache read = 10% of input cost)
-6. **Use `--max-turns`** in headless mode to cap automated sessions
-
-### Model switching workflow
-
-```bash
-# Start with research on Haiku
-/model claude-haiku-4-5-20251001
-# "Find all files related to auth, summarize the architecture"
-
-# Switch to Sonnet for implementation
-/model claude-sonnet-4-6
-# "Implement the new auth middleware based on the research above"
-
-# Switch to Opus for the tricky part
-/model claude-opus-4-6
-# "Review the session handling for race conditions and edge cases"
-```
-
-## Environment Variables
-
-```bash
-CLAUDE_MODEL=claude-sonnet-4-6          # Default model for sessions
-ANTHROPIC_MODEL=claude-sonnet-4-6       # Alternative env var
-```
-
-## Settings Configuration
-
-```json
-{
-  "model": "claude-sonnet-4-6",
-  "smallFastModel": "claude-haiku-4-5-20251001"
-}
-```
-
-The `smallFastModel` is used for internal operations like skill matching and context compression. Keep it on Haiku for cost efficiency.
+| Need | Tool |
+|---|---|
+| Model recommendation for a task | `cc_docs_model_recommend(task, budget?)` |
+| Compare two model choices | `cc_docs_compare(["opus", "sonnet"])` |
+| Check cost of an autonomy profile | `cc_kb_autonomy_profile(profile)` |
 
 ## Anti-patterns
 
-- Using Opus for everything — 5x the cost of Sonnet with marginal quality improvement on simple tasks
-- Using Haiku for complex implementation — saves money but produces lower-quality code that needs more iterations
-- Not using subagents — research in main context inflates token count for every subsequent turn
-- Re-reading large files — each read costs tokens; anchor important content instead
-- Ignoring cache hits — restructure prompts to maximize cache read tokens (10% of input cost)
+- Defaulting to Opus everywhere → 5× cost, rarely 5× value.
+- Haiku on hard tasks → gets it wrong, then you re-run on Opus = 6× cost.
+- Ignoring `/plan` on new work → code-first on unfamiliar problems wastes tokens.
+- Not estimating budget → costs creep; you notice on the monthly bill.
+
+## Reference
+
+- [cost-table.md](references/cost-table.md) — detailed cost breakdown by task type

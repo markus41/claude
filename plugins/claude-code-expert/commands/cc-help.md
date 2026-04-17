@@ -1,62 +1,90 @@
-# /cc-help — Claude Code Documentation Lookup
+---
+description: Plugin help — task-routing table that maps "I want to X" to the right command, skill, or agent in the claude-code-expert plugin.
+---
 
-Interactive documentation lookup for any Claude Code feature.
+# /cc-help — Plugin Routing
 
-## Usage
-```
-/cc-help [topic]
-```
+Which `/cc-*` command, skill, or agent to use.
 
-## Arguments
-- `topic` — The feature, setting, or concept to look up (optional — interactive if omitted)
+## By task
 
-## Topics
+| I want to... | Run this |
+|---|---|
+| Set up Claude Code on a new repo | `/cc-setup` (add `--auto` for non-interactive) |
+| Audit an existing Claude Code setup | `/cc-setup --audit` |
+| Update an existing setup | `/cc-sync` (add `--fix-drift` to repair drift) |
+| Analyze a hard coding problem | `/cc-intel <question>` |
+| Run multi-agent review (PR, architecture) | `/cc-council <topic>` |
+| Launch a multi-agent workflow by pattern | `/cc-orchestrate <task>` |
+| Enable autonomous execution | `/cc-autonomy enable <profile>` |
+| Install / list / debug hooks | `/cc-hooks` |
+| Install event-driven channels | `/cc-channels` |
+| Search / consolidate / export memory | `/cc-memory` |
+| Diagnose a CC setup issue | `/cc-debug` |
 
-### Core
-- `cli` — CLI flags, arguments, and usage
-- `config` / `configuration` — All configuration files and settings
-- `settings` — settings.json deep dive
-- `claude-md` / `instructions` — CLAUDE.md format and hierarchy
-- `rules` — Rules system in .claude/rules/
+## By problem
 
-### Features
-- `hooks` — Hook system (PreToolUse, PostToolUse, etc.)
-- `mcp` — MCP server configuration
-- `permissions` / `security` — Permission model and security
-- `tools` — Built-in tools reference
-- `commands` / `slash-commands` — Slash commands list
-- `shortcuts` / `keyboard` — Keyboard shortcuts
-- `memory` — Auto-memory and /memory commands
-- `context` — Context window management
-- `thinking` / `extended-thinking` — Extended thinking modes
-- `models` — Model selection and routing
+| Symptom | Starting point |
+|---|---|
+| "I don't know where to start" | `/cc-setup --dry-run` |
+| "Claude keeps making the same mistake" | `/cc-memory edit-always` to add a rule |
+| "My plugin/hook/MCP isn't working" | `/cc-debug` |
+| "I'm burning too many tokens" | [`skills-v8/context-budgeting`](../skills-v8/context-budgeting/SKILL.md) + [`skills-v8/model-routing`](../skills-v8/model-routing/SKILL.md) |
+| "Security review before this PR lands" | `/cc-council --scope security` |
+| "Want to scale agents for a big task" | `/cc-orchestrate --pattern orchestrator-workers` |
+| "Need to consolidate memory" | `/cc-memory consolidate` |
 
-### Development
-- `sdk` / `agent-sdk` — Claude Agent SDK
-- `agents` / `sub-agents` — Sub-agent types and spawning
-- `git` — Git integration features
-- `testing` — Testing workflows
-- `ide` — IDE integrations
-- `ci-cd` — CI/CD integration
+## By concept (skills)
 
-### Operations
-- `cost` — Cost tracking and optimization
-- `teams` — Team features and collaboration
-- `enterprise` — Enterprise managed settings
-- `troubleshooting` / `debug` — Debugging Claude Code issues
-- `env-vars` — Environment variables reference
-- `providers` — Bedrock, Vertex, direct API
+| Concept | Skill |
+|---|---|
+| Claude Code stack deploy | `claude-code-setup` |
+| Idempotent updates | `claude-code-sync` |
+| Three-tier memory (engram + Obsidian + plugin rules) | `cc-second-brain` |
+| Evidence-driven deep analysis | `deep-code-intelligence` |
+| Agentic design patterns | `agentic-patterns` |
+| Multi-agent teams | `agent-teams` |
+| Hooks system | `hooks` |
+| MCP servers + channels | `mcp` |
+| Autonomy + gates | `autonomy` |
+| Model + cost | `model-routing` |
+| Context discipline | `context-budgeting` |
+| Permissions + compliance | `security-compliance` |
+| Plugin authoring | `plugin-development` |
+| Prompt/CLAUDE.md/rules | `prompt-engineering` |
 
-## Implementation
+## By role (agents)
 
-When invoked:
+| Role | Agent | Model |
+|---|---|---|
+| Deep analysis, architecture | `principal-engineer-strategist` | Opus |
+| Evaluator-optimizer loop | `evaluator-optimizer` | Opus |
+| Pattern selector | `pattern-router` | Sonnet |
+| Council coordinator | `council-coordinator` | Opus |
+| Team orchestrator | `team-orchestrator` | Opus |
+| Memory consolidator | `memory-consolidator` | Opus |
+| Auditor (second-round) | `audit-reviewer` | Opus |
+| Security + compliance | `security-compliance-advisor` | Opus |
+| Debugger | `debugger` | Opus |
+| Implementer | `implementer` | Sonnet |
+| Migration lead | `migration-lead` | Opus |
+| Dependency auditor | `dependency-auditor` | Haiku |
+| Release coordinator | `release-coordinator` | Sonnet |
+| Research orchestrator | `research-orchestrator` | Sonnet |
+| Plugin architect | `plugin-architect` | Sonnet |
+| Autonomy planner/verifier/reviewer | `autonomy-*` | Opus / Sonnet / Opus |
 
-1. If a topic is provided, load the corresponding skill from this plugin's skills directory
-2. Present the relevant documentation section
-3. Offer to dive deeper into sub-topics
-4. Provide actionable examples
+## Deprecated commands (shims until v8.1)
 
-If no topic:
-1. Show the topics list above
-2. Ask what the user wants to learn about
-3. Navigate to the right documentation
+If you remember a command that no longer exists, run it anyway — a shim will redirect you:
+
+- `/cc-bootstrap` → `/cc-setup --audit`
+- `/cc-config` → `/cc-sync --fix-drift`
+- `/cc-troubleshoot` → `/cc-debug`
+- `/cc-budget` → `/cc-intel` + `cc_docs_compare`
+- `/cc-cicd` → `cc_kb_workflow_pack`
+- `/cc-learn` → `cc_kb_workflow_pack`
+- `/cc-mcp` → `/cc-setup --mcp-only`
+- `/cc-perf` → `/cc-intel`
+- `/cc-schedule` → native `schedule` skill + `cc_docs_schedule_recommend`
+- `/cc-agent` → `Agent` tool + `/cc-council`

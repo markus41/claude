@@ -1,96 +1,46 @@
-# /cc-debug — Claude Code Setup Debugger
+---
+description: Diagnose Claude Code issues — plugin load failures, MCP connection problems, hook misfiring, permission denials, skill/agent not triggering. Absorbs legacy cc-troubleshoot.
+---
 
-Comprehensive debugger for Claude Code configuration and setup issues.
+# /cc-debug — Diagnose CC Setup Issues
+
+Systematic diagnostics for the Claude Code stack itself (not for debugging application code — for that, use `/cc-intel` or the `debugger` agent).
 
 ## Usage
+
+```bash
+/cc-debug                     # Interactive: ask what's wrong
+/cc-debug plugin <name>       # Plugin load/runtime issues
+/cc-debug mcp <server>        # MCP server connection or tool calls
+/cc-debug hook <event>        # Hook not firing, wrong matcher
+/cc-debug perm                # Permission denied errors
+/cc-debug skill <name>        # Skill not triggering on expected phrases
+/cc-debug agent <name>        # Agent not invoking or wrong output
 ```
-/cc-debug                         # Full debug scan
-/cc-debug --fix                   # Scan and auto-fix issues
-/cc-debug --report                # Generate debug report
-```
 
-## What It Checks
+## Approach
 
-### 1. Installation Health
-- Claude Code CLI version and installation
-- Node.js version (requires 18+)
-- npm/pnpm/yarn availability
-- Global vs local installation
-- PATH configuration
+Runs the `debugger` agent (Opus) with the CC-setup playbook. Hypothesis-driven:
 
-### 2. Authentication
-- API key presence and format
-- Provider configuration (Direct, Bedrock, Vertex)
-- Token validity (basic connectivity test)
-- Proxy settings affecting auth
+1. **Frame** the symptom: what was expected vs observed.
+2. **Locate** the likely layer: plugin manifest, settings.json, MCP config, skill frontmatter, agent system prompt.
+3. **Hypothesize** 2–3 causes with verification steps (read files, run tests).
+4. **Verify** cheapest first.
+5. **Fix** the confirmed cause; write regression check if applicable.
+6. **Report** with: root cause, fix applied, how to prevent.
 
-### 3. Project Configuration
-- CLAUDE.md presence and readability
-- settings.json syntax and schema validation
-- settings.local.json syntax
-- .mcp.json syntax and server configs
-- Rules files syntax and path patterns
-- .gitignore entries for sensitive files
+## Common diagnostic paths
 
-### 4. MCP Servers
-- Each server: command exists, env vars set, starts successfully
-- Tool listing from each server
-- Timeout and connectivity issues
-- Duplicate server names
+| Symptom | First check |
+|---|---|
+| Plugin not loading | `plugin.json` schema valid? Referenced files exist? |
+| Skill not triggering | Frontmatter description too vague — use `skill-reviewer` agent |
+| Hook blocking unexpectedly | `bash .claude/hooks/X.sh < fixture.json` — read stderr |
+| MCP tool missing | Server running? `capabilities.tools` declared? |
+| Permission denied | `.claude/settings.json` → permissions section |
+| Agent invokes but wrong output | Agent system prompt missing output format template |
+| After /compact everything forgotten | `post-compact-context-restoration` hook installed? |
 
-### 5. Hooks
-- Each hook: script exists, is executable, produces valid JSON
-- Matcher patterns are valid
-- No circular dependencies
-- Timeout configuration
+## MCP support
 
-### 6. Plugins
-- Plugin manifest validation
-- Resource file existence
-- Registry consistency
-- Version compatibility
-
-### 7. Permissions
-- Allow/deny list syntax
-- Pattern matching validation
-- Conflicting rules detection
-- Enterprise settings conflicts
-
-### 8. Known Issues
-- Check lessons-learned.md for NEEDS_FIX entries
-- Check for known error patterns
-- Compare against common fixes database
-
-## Implementation
-
-When invoked:
-
-1. Activate the `claude-code-debugger` agent
-2. Run all diagnostic checks systematically
-3. Categorize findings: PASS, WARN, FAIL
-4. For each FAIL: provide specific fix command/steps
-5. If `--fix` flag: automatically apply safe fixes
-6. If `--report` flag: save full report to `.claude/debug-report.md`
-
-### Auto-Fix Capabilities
-The debugger can automatically fix:
-- Non-executable hook scripts → `chmod +x`
-- Invalid JSON → attempt repair and backup original
-- Missing directories → create them
-- Missing .gitignore entries → append
-- Outdated Claude Code → suggest update command
-- Missing jq dependency → suggest install
-
-### Cannot Auto-Fix (Requires User Input)
-- Missing API keys
-- Wrong provider selection
-- Business logic in hooks
-- Permission policy decisions
-- MCP server credentials
-
-## Exit Codes (for scripting)
-```
-0 — All checks passed
-1 — Warnings found but no failures
-2 — Failures found
-```
+Uses `cc_docs_troubleshoot(issue)` for symptom → section lookup. Uses `cc_docs_full_reference(topic)` for authoritative config syntax.

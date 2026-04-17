@@ -1,104 +1,89 @@
 ---
 name: deep-code-intelligence
-description: Evidence-driven workflow for hard coding problems, architecture decisions, root-cause analysis, and high-stakes implementation planning in Claude Code
-allowed-tools:
-  - Read
-  - Glob
-  - Grep
-  - Bash
-  - Agent
-triggers:
-  - hard bug
-  - deep analysis
-  - root cause
-  - architecture decision
-  - smartest approach
-  - evidence driven
-  - principal engineer
+description: Evidence-driven deep analysis for hard coding problems — architecture decisions, root-cause investigation, high-stakes refactor planning, performance bottleneck isolation. Use this skill whenever the user asks for "the best approach", a "deep analysis", "root cause", "principal engineer review", or runs /cc-intel. Also triggers on hard debugging questions, major architectural choices, tricky performance problems, or any task where a hypothesis tree and evidence table matter more than a fast answer.
 ---
 
 # Deep Code Intelligence
 
-Use this skill when the task is too important, ambiguous, or coupled for a fast “implement first” approach.
+The workflow for problems where speed kills quality — architecture, root cause, high-stakes refactor. Evidence first, recommendation second.
 
-## Goal
-Increase solution quality by forcing Claude to gather evidence, expose hidden assumptions, and compare multiple paths before changing code.
+## Workflow
 
-## Core loop
+### 1. Frame the problem
 
-### 1. Build a repo fingerprint
-Collect only the facts that change the decision:
-- key modules and ownership boundaries
-- hot paths and integration seams
-- build/test entrypoints
-- persistence and migration surfaces
-- feature flags / config gates
+Restate in one paragraph: what is the goal, what is the constraint, what is the hidden cost of being wrong? Write it down even if the user already said it — framing shifts under scrutiny.
 
-### 2. Extract constraints
-Split into:
-- **explicit constraints** — user asks, tests, types, configs, docs
-- **implicit constraints** — backward compatibility, ordering, idempotency, auth, observability, performance envelopes
+### 2. Build an evidence table
 
-### 3. Create a hypothesis ladder
-Do not settle on one explanation early.
-Generate:
-- most likely explanation,
-- strongest competing explanation,
-- weird but costly explanation.
+```
+| Claim | Source | Confidence | Counter-evidence |
+|-------|--------|-----------|------------------|
+| X calls Y synchronously | src/a/b.ts:42-58 | high | ... |
+```
 
-Prefer the next step that invalidates bad theories quickly.
+No recommendation without this table. If you can't fill it, you don't know enough yet — go read more before synthesizing.
 
-### 4. Build an evidence matrix
-Use a compact table:
+### 3. Identify invariants and constraints
 
-| Topic | Evidence | Confidence | Next check |
-|---|---|---:|---|
-| Cause of failure | stack trace + source path + failing test | 0.78 | reproduce with logging |
+- Invariants the code must preserve (data integrity, ordering, idempotency).
+- Constraints from the environment (runtime version, db version, budget, timeline).
+- Assumptions Claude is making (mark explicitly — these are the hypothesis branches).
 
-If confidence is low, say so plainly.
+### 4. Hypothesis tree
 
-### 5. Compare options
-Every serious recommendation should beat at least one credible alternative.
-Score options on:
-- correctness
-- complexity
-- blast radius
-- reversibility
-- validation speed
-- long-term maintainability
+For debugging/diagnosis: root-cause tree with ≥3 branches. Each branch:
+- Claim
+- Evidence-for count
+- Evidence-against count
+- Verification step (the cheapest check that confirms or refutes)
 
-### 6. Stage validation
-Front-load cheap validation:
-1. static checks / grep / type clues
-2. unit or focused tests
-3. integration checks
-4. runtime observation
-5. broad regression sweep
+For design: alternatives tree with ≥3 options. Each option:
+- Sketch
+- Cost (effort, runtime, operational)
+- Reversibility (can we undo?)
+- Who wins / who loses (not everything is net-positive)
 
-### 7. Capture residual risk
-End with what is still unknown and what would change the recommendation.
+### 5. Synthesize recommendation
 
-## Heuristics
-- Prefer narrow fixes when system understanding is weak.
-- Prefer structural fixes when the same class of defect is likely to recur.
-- Prefer observability improvements when certainty is low.
-- Prefer reversible migrations over one-shot transformations.
-- Prefer behavior-oriented tests over implementation snapshots.
+Only now. Recommendation has:
+- Chosen path with one-sentence rationale
+- What was rejected and why
+- Risks and mitigations
+- Rollback plan if the recommendation fails in production
 
-## Escalation guide
-| Situation | Escalate to | Why |
-|---|---|---|
-| Need repo-wide synthesis | `principal-engineer-strategist` | Better architectural judgement and option scoring. |
-| Need multi-track execution | `team-orchestrator` | Handles parallel work and audit loops. |
-| Need library or framework truth | `research-orchestrator` + Context7 | Reduces hallucination risk and validates API usage. |
-| Need final pressure-test | `audit-reviewer` or `/cc-council` | Catches blind spots before delivery. |
+### 6. Signal certainty honestly
 
-## Minimal output standard
-A good response should include:
-- problem frame,
-- evidence summary,
-- constraints,
-- at least 2 options,
-- recommendation,
-- validation plan,
-- residual risk.
+- "High confidence" — evidence is multi-source, counter-evidence addressed.
+- "Medium" — some evidence, but a few assumptions.
+- "Low" — more research needed; here's the next best step.
+
+Never upgrade certainty to sound confident. A low-confidence answer clearly labeled is more useful than a high-confidence guess.
+
+## When to invoke `principal-engineer-strategist` agent
+
+Route to the agent when:
+- The decision affects multiple teams.
+- The cost of being wrong is ≥ days of work.
+- There are hidden stakeholders (security, compliance, ops) whose concerns aren't obvious.
+- The task requires deep repo context that exceeds working memory.
+
+Agent runs the same workflow with more depth and less context pressure.
+
+## MCP delegation
+
+| Need | Tool |
+|---|---|
+| Task resolution → starting docs | `cc_docs_resolve_task(task)` |
+| Compare two approaches side by side | `cc_docs_compare(["approach-a", "approach-b"])` |
+| Check pattern fit | `cc_kb_pattern_template(name)` |
+
+## Anti-patterns
+
+- Recommending before the evidence table → advice isn't grounded; often wrong in subtle ways.
+- Single-branch hypothesis tree → not actually a tree; confirmation bias.
+- Ignoring counter-evidence → the one line that breaks the claim is the one that matters.
+- "Move fast" framing on high-stakes work → that's the definition of getting it wrong.
+
+## Reference
+
+- [evidence-table-format.md](references/evidence-table-format.md) — evidence table column schema + examples
