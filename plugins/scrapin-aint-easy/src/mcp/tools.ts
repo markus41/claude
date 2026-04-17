@@ -120,6 +120,26 @@ function decodeCursor(cursor: string): CursorPayload {
   }
 }
 
+// Safe wrapper around paginateRows — collapses the `try { page = ... }
+// catch { return errorResponse(...) }` block that was copy-pasted into 5+
+// handlers.
+type PaginateOutcome<T> =
+  | { ok: true; page: PaginationResult<T> }
+  | { ok: false; response: ToolResponse };
+
+export function safePaginate<T>(
+  tool: string,
+  rows: T[],
+  params: { cursor?: string; page_size: number },
+  query: Record<string, unknown>,
+): PaginateOutcome<T> {
+  try {
+    return { ok: true, page: paginateRows(tool, rows, params, query) };
+  } catch (err) {
+    return { ok: false, response: errorResponse(`Invalid cursor: ${errMsg(err)}`) };
+  }
+}
+
 export function paginateRows<T>(
   tool: string,
   rows: T[],
@@ -238,16 +258,13 @@ export function createTools(
           return scoreB - scoreA;
         });
         const top = merged.slice(0, input.limit);
-        let page: PaginationResult<typeof top[number]>;
-        try {
-          page = paginateRows('scrapin_search', top, input, {
-            query: input.query,
-            limit: input.limit,
-            label_filter: input.label_filter,
-          });
-        } catch (err) {
-          return errorResponse(`Invalid cursor: ${errMsg(err)}`);
-        }
+        const pp = safePaginate('scrapin_search', top, input, {
+          query: input.query,
+          limit: input.limit,
+          label_filter: input.label_filter,
+        });
+        if (!pp.ok) return pp.response;
+        const page = pp.page;
 
         const meta = makeMetadata('scrapin_search', false);
         const lines = page.rows.map((r, i) =>
@@ -286,17 +303,14 @@ export function createTools(
           ...siblings.map((s) => ({ kind: 'sibling' as const, line: `- ${s.name} (${s.kind})` })),
         ];
 
-        let page: PaginationResult<typeof allRows[number]>;
-        try {
-          page = paginateRows('scrapin_graph_query', allRows, input, {
-            start_id: input.start_id,
-            hops: input.hops,
-            edge_types: input.edge_types,
-            include_siblings: input.include_siblings,
-          });
-        } catch (err) {
-          return errorResponse(`Invalid cursor: ${errMsg(err)}`);
-        }
+        const pp = safePaginate('scrapin_graph_query', allRows, input, {
+          start_id: input.start_id,
+          hops: input.hops,
+          edge_types: input.edge_types,
+          include_siblings: input.include_siblings,
+        });
+        if (!pp.ok) return pp.response;
+        const page = pp.page;
 
         const nodeLines = page.rows.filter((r) => r.kind === 'node').map((r) => r.line);
         const edgeLines = page.rows.filter((r) => r.kind === 'edge').map((r) => r.line);
@@ -325,17 +339,14 @@ export function createTools(
           input.limit,
           'AlgoNode',
         );
-        let page: PaginationResult<typeof results[number]>;
-        try {
-          page = paginateRows('scrapin_algo_search', results, input, {
-            query: input.query,
-            category: input.category,
-            language: input.language,
-            limit: input.limit,
-          });
-        } catch (err) {
-          return errorResponse(`Invalid cursor: ${errMsg(err)}`);
-        }
+        const pp = safePaginate('scrapin_algo_search', results, input, {
+          query: input.query,
+          category: input.category,
+          language: input.language,
+          limit: input.limit,
+        });
+        if (!pp.ok) return pp.response;
+        const page = pp.page;
 
         const meta = makeMetadata('scrapin_algo_search', false);
         const lines = page.rows.map((r, i) => `${page.offset + i + 1}. **${r.id}** (score: ${r.score.toFixed(2)})\n   ${r.text.slice(0, 300)}`);
@@ -425,15 +436,12 @@ export function createTools(
         text += `**Total pages:** ${sourcePages.length}\n`;
         text += `**Stale pages:** ${stale.length}\n\n`;
 
-        let page: PaginationResult<typeof stale[number]>;
-        try {
-          page = paginateRows('scrapin_diff', stale, input, {
-            source_key: input.source_key,
-            page_id: input.page_id,
-          });
-        } catch (err) {
-          return errorResponse(`Invalid cursor: ${errMsg(err)}`);
-        }
+        const pp = safePaginate('scrapin_diff', stale, input, {
+          source_key: input.source_key,
+          page_id: input.page_id,
+        });
+        if (!pp.ok) return pp.response;
+        const page = pp.page;
 
         if (stale.length > 0) {
           text += `### Stale Pages\n`;
@@ -602,12 +610,9 @@ export function createTools(
           const detector = await getDetector();
           const reports = await detector.scan();
 
-          let page: PaginationResult<typeof reports[number]>;
-          try {
-            page = paginateRows('scrapin_agent_drift_status', reports, input, {});
-          } catch (err) {
-            return errorResponse(`Invalid cursor: ${errMsg(err)}`);
-          }
+          const pp = safePaginate('scrapin_agent_drift_status', reports, input, {});
+          if (!pp.ok) return pp.response;
+          const page = pp.page;
 
           const meta = makeMetadata('scrapin_agent_drift_status', false);
           const lines = page.rows.map((r) =>

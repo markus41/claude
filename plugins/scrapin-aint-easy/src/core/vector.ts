@@ -131,6 +131,11 @@ class DeterministicTestProvider implements EmbeddingProvider {
 
 export class VectorStore {
   private entries: VectorEntry[] = [];
+  // Tracks whether entries have changed since the last full rebuild. Set in
+  // add/remove; cleared at the end of rebuild(). Lets full-sweep's trailing
+  // rebuild skip work when nothing changed (e.g. the separate weekly
+  // embedding-rebuild job has already done it).
+  private dirty = false;
   private readonly modelName: string;
   private embeddingProvider: EmbeddingProvider | null = null;
   private hnswIndex: HnswIndex | null = null;
@@ -187,6 +192,7 @@ export class VectorStore {
     const entry: VectorEntry = { id, label, text, embedding };
     this.entries.push(entry);
     this.addToHnsw(entry);
+    this.dirty = true;
     await this.saveEntries();
   }
 
@@ -248,15 +254,21 @@ export class VectorStore {
 
     this.entries = this.entries.filter((entry) => entry.id !== id);
     this.deleteFromHnsw(id);
+    this.dirty = true;
     await this.saveEntries();
   }
 
   async rebuild(): Promise<void> {
+    if (!this.dirty) {
+      logger.debug({ entries: this.entries.length }, 'Vector index clean — skipping rebuild');
+      return;
+    }
     if (this.hnswIndex) {
       this.rebuildHnswFromEntries();
       await this.persistHnswIndex();
     }
     await this.saveEntries();
+    this.dirty = false;
     logger.info({ entries: this.entries.length }, 'Vector index rebuilt');
   }
 
