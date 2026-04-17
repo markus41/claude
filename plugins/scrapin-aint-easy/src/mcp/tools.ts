@@ -6,10 +6,17 @@ import { type VectorStore } from '../core/vector.js';
 import { type EventBus } from '../core/event-bus.js';
 import { toSourceId } from '../core/ids.js';
 import { migrateLegacySourceIds } from '../core/source-migration.js';
+import type { AgentDriftDetector } from '../drift/agent-drift.js';
 import { type CrawlQueue } from '../crawler/crawl-queue.js';
 import { type SourceConfig } from '../config/loader.js';
 import { readCrawlTelemetry } from '../crawler/telemetry.js';
 import { emitWebhook } from '../integrations/webhook.js';
+
+// Shared helper — collapses 11 copies of the same ternary scattered through
+// the tool handlers.
+function errMsg(e: unknown): string {
+  return e instanceof Error ? e.message : String(e);
+}
 import {
   SearchInput,
   GraphQueryInput,
@@ -172,6 +179,24 @@ export function createTools(
     crawlQueue: CrawlQueue;
   },
 ): ToolDefinition[] {
+  // Lazily load and cache a single AgentDriftDetector per createTools scope.
+  // Collapses what was previously four verbatim `new AgentDriftDetector(...)`
+  // constructions across agent-drift-related handlers.
+  let detectorPromise: Promise<AgentDriftDetector> | undefined;
+  const getDetector = async (): Promise<AgentDriftDetector> => {
+    if (!detectorPromise) {
+      detectorPromise = (async () => {
+        const { AgentDriftDetector } = await import('../drift/agent-drift.js');
+        return new AgentDriftDetector(
+          graph,
+          join(config.projectRoot, '.claude', 'agents'),
+          config.configDir,
+        );
+      })();
+    }
+    return detectorPromise;
+  };
+
   return [
     {
       name: 'scrapin_search',
@@ -201,14 +226,15 @@ export function createTools(
           }
         }
 
-        const now = Date.now();
         merged.sort((a, b) => {
           const freshnessA = a.id.includes('page::') ? 0.05 : 0;
           const freshnessB = b.id.includes('page::') ? 0.05 : 0;
           const centralityA = a.label === 'Symbol' ? 0.1 : 0;
           const centralityB = b.label === 'Symbol' ? 0.1 : 0;
-          const scoreA = a.score + freshnessA + centralityA + (now > 0 ? 0 : 0);
-          const scoreB = b.score + freshnessB + centralityB + (now > 0 ? 0 : 0);
+          // Freshness decay keyed off `now` is a planned extension; for now
+          // the score is just base + modifiers.
+          const scoreA = a.score + freshnessA + centralityA;
+          const scoreB = b.score + freshnessB + centralityB;
           return scoreB - scoreA;
         });
         const top = merged.slice(0, input.limit);
@@ -220,7 +246,7 @@ export function createTools(
             label_filter: input.label_filter,
           });
         } catch (err) {
-          return errorResponse(`Invalid cursor: ${err instanceof Error ? err.message : String(err)}`);
+          return errorResponse(`Invalid cursor: ${errMsg(err)}`);
         }
 
         const meta = makeMetadata('scrapin_search', false);
@@ -269,7 +295,7 @@ export function createTools(
             include_siblings: input.include_siblings,
           });
         } catch (err) {
-          return errorResponse(`Invalid cursor: ${err instanceof Error ? err.message : String(err)}`);
+          return errorResponse(`Invalid cursor: ${errMsg(err)}`);
         }
 
         const nodeLines = page.rows.filter((r) => r.kind === 'node').map((r) => r.line);
@@ -308,7 +334,7 @@ export function createTools(
             limit: input.limit,
           });
         } catch (err) {
-          return errorResponse(`Invalid cursor: ${err instanceof Error ? err.message : String(err)}`);
+          return errorResponse(`Invalid cursor: ${errMsg(err)}`);
         }
 
         const meta = makeMetadata('scrapin_algo_search', false);
@@ -406,7 +432,7 @@ export function createTools(
             page_id: input.page_id,
           });
         } catch (err) {
-          return errorResponse(`Invalid cursor: ${err instanceof Error ? err.message : String(err)}`);
+          return errorResponse(`Invalid cursor: ${errMsg(err)}`);
         }
 
         if (stale.length > 0) {
@@ -450,14 +476,9 @@ export function createTools(
       handler: async (raw) => {
         const input = CronStatusInput.parse(raw);
         logger.info('scrapin_cron_status');
-        const allJobs = ['full-sweep', 'staleness-check', 'missing-doc-scan', 'openapi-sync', 'embedding-rebuild', 'algo-sweep', 'code-drift-scan', 'agent-drift-scan'];
-        let page: PaginationResult<string>;
-        try {
-          page = paginateRows('scrapin_cron_status', allJobs, input, {});
-        } catch (err) {
-          return errorResponse(`Invalid cursor: ${err instanceof Error ? err.message : String(err)}`);
-        }
-        void page;
+        // The cron status response is a fixed 8-row summary; pagination is
+        // only exposed for API uniformity and is a no-op here.
+        void input;
         const meta = makeMetadata('scrapin_cron_status', false);
         const status = config.crawlQueue.status();
         return textResponse(`${meta}\n\n${JSON.stringify(status, null, 2)}`);
@@ -527,7 +548,7 @@ export function createTools(
           const meta = makeMetadata('scrapin_code_drift_scan', false);
           return textResponse(`${meta}\n\n${formatCodeDriftReport(report)}`);
         } catch (err) {
-          return errorResponse(`Code drift scan failed: ${err instanceof Error ? err.message : String(err)}`);
+          return errorResponse(`Code drift scan failed: ${errMsg(err)}`);
         }
       },
     },
@@ -578,15 +599,14 @@ export function createTools(
         logger.info('scrapin_agent_drift_status');
 
         try {
-          const { AgentDriftDetector } = await import('../drift/agent-drift.js');
-          const detector = new AgentDriftDetector(graph, join(config.projectRoot, '.claude', 'agents'), config.configDir);
+          const detector = await getDetector();
           const reports = await detector.scan();
 
           let page: PaginationResult<typeof reports[number]>;
           try {
             page = paginateRows('scrapin_agent_drift_status', reports, input, {});
           } catch (err) {
-            return errorResponse(`Invalid cursor: ${err instanceof Error ? err.message : String(err)}`);
+            return errorResponse(`Invalid cursor: ${errMsg(err)}`);
           }
 
           const meta = makeMetadata('scrapin_agent_drift_status', false);
@@ -606,7 +626,7 @@ export function createTools(
 
           return textResponse(text, page);
         } catch (err) {
-          return errorResponse(`Agent drift scan failed: ${err instanceof Error ? err.message : String(err)}`);
+          return errorResponse(`Agent drift scan failed: ${errMsg(err)}`);
         }
       },
     },
@@ -620,8 +640,7 @@ export function createTools(
         logger.info({ agentId: input.agent_id }, 'scrapin_agent_drift_detail');
 
         try {
-          const { AgentDriftDetector } = await import('../drift/agent-drift.js');
-          const detector = new AgentDriftDetector(graph, join(config.projectRoot, '.claude', 'agents'), config.configDir);
+          const detector = await getDetector();
           const reports = await detector.scan();
           const report = reports.find((r) => r.agent_id === input.agent_id);
 
@@ -649,7 +668,7 @@ export function createTools(
 
           return textResponse(text);
         } catch (err) {
-          return errorResponse(`Failed: ${err instanceof Error ? err.message : String(err)}`);
+          return errorResponse(`Failed: ${errMsg(err)}`);
         }
       },
     },
@@ -663,14 +682,13 @@ export function createTools(
         logger.info({ agentId: input.agent_id }, 'scrapin_agent_drift_acknowledge');
 
         try {
-          const { AgentDriftDetector } = await import('../drift/agent-drift.js');
-          const detector = new AgentDriftDetector(graph, join(config.projectRoot, '.claude', 'agents'), config.configDir);
+          const detector = await getDetector();
           await detector.acknowledgeAgentDrift(input.agent_id, input.notes);
 
           const meta = makeMetadata('scrapin_agent_drift_acknowledge', false);
           return textResponse(`${meta}\n\nAgent **${input.agent_id}** drift acknowledged. Baseline updated.`);
         } catch (err) {
-          return errorResponse(`Failed: ${err instanceof Error ? err.message : String(err)}`);
+          return errorResponse(`Failed: ${errMsg(err)}`);
         }
       },
     },
@@ -684,14 +702,13 @@ export function createTools(
         logger.info({ agentId: input.agent_id }, 'scrapin_agent_drift_diff');
 
         try {
-          const { AgentDriftDetector } = await import('../drift/agent-drift.js');
-          const detector = new AgentDriftDetector(graph, join(config.projectRoot, '.claude', 'agents'), config.configDir);
+          const detector = await getDetector();
           const diff = await detector.getAgentDiff(input.agent_id);
 
           const meta = makeMetadata('scrapin_agent_drift_diff', false);
           return textResponse(`${meta}\n\n## Diff for ${input.agent_id}\n\n\`\`\`diff\n${diff}\n\`\`\``);
         } catch (err) {
-          return errorResponse(`Failed: ${err instanceof Error ? err.message : String(err)}`);
+          return errorResponse(`Failed: ${errMsg(err)}`);
         }
       },
     },

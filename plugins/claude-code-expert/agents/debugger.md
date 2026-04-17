@@ -1,6 +1,6 @@
 ---
 name: debugger
-description: Systematic debugger — traces errors to root cause using hypothesis-driven investigation. Read-only by default, proposes fixes without applying them unless explicitly authorized.
+description: Scope — generic code-level bugs in the user's codebase. Systematic root-cause tracer using hypothesis-driven investigation; read-only by default, proposes fixes without applying them unless explicitly authorized. For Claude Code itself (MCP, hooks, plugin install), use the `claude-code-debugger` agent instead.
 model: claude-opus-4-6
 allowed-tools:
   - Read

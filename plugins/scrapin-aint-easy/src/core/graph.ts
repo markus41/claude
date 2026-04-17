@@ -174,8 +174,13 @@ export class GraphAdapter {
 
     const conn = this.kuzuConn as { execute: (q: string) => Promise<unknown> };
 
-    // Create node tables (idempotent via CREATE ... IF NOT EXISTS)
+    // Create node tables (idempotent via CREATE ... IF NOT EXISTS). Surface
+    // DDL failures at warn-level so a schema regression is visible — the
+    // previous `debug` level hid the failure while subsequent writes silently
+    // split across kuzu and the in-memory fallback with no divergence signal.
     for (const node of this.schema.nodes) {
+      assertSafeIdentifier(node.label, 'schema node label');
+      for (const p of node.properties) assertSafeIdentifier(p, 'schema node property');
       const props = node.properties
         .map((p) => {
           if (p === 'id') return 'id STRING';
@@ -188,7 +193,7 @@ export class GraphAdapter {
       try {
         await conn.execute(`CREATE NODE TABLE IF NOT EXISTS ${node.label}(${props}, PRIMARY KEY(id))`);
       } catch (err) {
-        logger.debug({ label: node.label, err }, 'Schema migration note');
+        logger.warn({ label: node.label, err }, 'Schema migration — node table DDL failed');
       }
     }
 
