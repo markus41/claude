@@ -1,6 +1,6 @@
 {
   "name": "cowork-marketplace",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Browse, install, and manage cowork marketplace items backed by real plugin agents, skills, and commands",
   "author": {
     "name": "Markus Ahling",
@@ -30,7 +30,7 @@
   "context": {
     "entry": "CONTEXT_SUMMARY.md",
     "title": "Cowork Marketplace",
-    "summary": "Browse, install, and manage cowork marketplace items backed by real plugin agents, skills, and commands. 18 catalog items, 9 bundles, dual Claude Code and Cowork compatibility. 10 commands, 3 agents, 3 skills.",
+    "summary": "Browse, install, and manage cowork marketplace items backed by real plugin agents, skills, and commands. 20 catalog items, 9 bundles, dual Claude Code and Cowork compatibility. 10 commands, 3 agents, 3 skills.",
     "tags": [
       "cowork",
       "marketplace",

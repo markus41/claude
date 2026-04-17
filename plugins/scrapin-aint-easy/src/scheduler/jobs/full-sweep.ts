@@ -6,7 +6,7 @@ import { loadSources, type SourceConfig } from '../../config/loader.js';
 const logger = pino({ name: 'job:full-sweep' });
 
 export function createFullSweepJob(
-  graph: GraphAdapter,
+  _graph: GraphAdapter,
   vector: VectorStore,
   configDir: string,
   crawlSource: (key: string, config: SourceConfig) => Promise<void>,

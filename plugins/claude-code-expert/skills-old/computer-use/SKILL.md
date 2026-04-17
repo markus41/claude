@@ -1,6 +1,6 @@
 ---
 description: Computer use and GUI automation patterns — when to use GUI automation vs shell/MCP/browser tools, visual validation techniques, native app testing, and guardrails for visual regression workflows
-model: claude-opus-4-6
+model: claude-opus-4-7
 allowed-tools:
   - Bash
   - Read
@@ -162,12 +162,45 @@ Computer use is expensive:
 
 ---
 
-## Claude Desktop Requirement
+## Runtime Availability
 
-Computer use requires the Claude Desktop app (not CLI or Web). The Desktop app has the screen capture and input simulation capabilities that CLI lacks.
+Computer use is available in both the Desktop app and the CLI (v2.1.86+).
 
 ```
-CLI:     ❌ Computer use not available
+CLI:     ✅ Computer use available (v2.1.86+, research preview)
 Web:     ❌ Computer use not available
 Desktop: ✅ Computer use available
 ```
+
+### Enabling in the CLI
+
+Run `/mcp` inside Claude Code, find `computer-use`, and toggle it on. The MCP server handles screen capture and input simulation. Then ask Claude to interact with the desktop:
+
+```
+> Open the iOS simulator, tap through onboarding, and screenshot each step
+```
+
+### Enabling in the Desktop App
+
+Open **Settings → Computer use** and enable the toggle. Grant OS-level permissions when prompted (screen recording, accessibility).
+
+---
+
+## PowerShell Tool (Windows)
+
+On Windows, Claude Code has a native **PowerShell tool** alongside Bash (preview, v2.1.84+). Use it for cmdlets, object pipelines, and Windows-native paths without translating through Git Bash.
+
+Enable in settings:
+```json
+{
+  "env": {
+    "CLAUDE_CODE_USE_POWERSHELL_TOOL": "1"
+  }
+}
+```
+
+The PowerShell tool is distinct from computer use but relevant when automating Windows-native workflows. Prefer it over Bash for:
+- Registry operations (`Get-ItemProperty HKLM:\...`)
+- Windows service management (`Get-Service`, `Start-Service`)
+- Paths with backslashes and drive letters
+- Module-based tooling (`Import-Module`, `Install-Module`)

@@ -6,105 +6,43 @@ import { type VectorStore } from '../core/vector.js';
 import { type EventBus } from '../core/event-bus.js';
 import { toSourceId } from '../core/ids.js';
 import { migrateLegacySourceIds } from '../core/source-migration.js';
+import type { AgentDriftDetector } from '../drift/agent-drift.js';
 import { type CrawlQueue } from '../crawler/crawl-queue.js';
 import { type SourceConfig } from '../config/loader.js';
 import { readCrawlTelemetry } from '../crawler/telemetry.js';
 import { emitWebhook } from '../integrations/webhook.js';
 
+// Shared helper — collapses 11 copies of the same ternary scattered through
+// the tool handlers.
+function errMsg(e: unknown): string {
+  return e instanceof Error ? e.message : String(e);
+}
+import {
+  SearchInput,
+  GraphQueryInput,
+  AlgoSearchInput,
+  AlgoDetailInput,
+  CronStatusInput,
+  CrawlSourceInput,
+  DiffInput,
+  LspHoverInput,
+  AddSourceInput,
+  AddAlgoSourceInput,
+  CodeDriftScanInput,
+  AgentDriftStatusInput,
+  AgentDriftDetailInput,
+  AgentDriftAckInput,
+  AgentDriftDiffInput,
+  GraphStatsInput,
+  CrawlFailuresInput,
+  SourceHealthInput,
+  CodexBootstrapInput,
+} from './schemas.js';
+
+// Tool input schemas live in `./schemas.js` — keep all Zod shapes there so
+// new tools cannot accidentally reference undeclared schemas.
+
 const logger = pino({ name: 'mcp:tools' });
-
-// ── Tool input schemas ──
-
-const PaginationInput = z.object({
-  cursor: z.string().optional().describe('Opaque cursor from a previous paginated response'),
-  page_size: z.number().int().min(1).max(100).default(10).describe('Rows to return per page'),
-});
-
-const SearchInput = z.object({
-  query: z.string().describe('Natural language or symbol name to search for'),
-  limit: z.coerce.number().min(1).max(50).default(10),
-  label_filter: z.enum(['Source', 'Page', 'Symbol', 'Module', 'Example', 'AlgoNode', 'Pattern', 'AgentDef']).optional(),
-}).merge(PaginationInput);
-
-const GraphQueryInput = z.object({
-  start_id: z.string().describe('Node ID to start traversal from'),
-  hops: z.coerce.number().min(1).max(5).default(2),
-  edge_types: z.array(z.string()).optional(),
-  include_siblings: z.coerce.boolean().default(false),
-});
-
-const AlgoSearchInput = z.object({
-  query: z.string().describe('Algorithm name or description'),
-  category: z.string().optional(),
-  language: z.enum(['ts', 'py']).optional(),
-  limit: z.coerce.number().min(1).max(20).default(5),
-});
-
-const AlgoDetailInput = z.object({
-  name: z.string().describe('Exact algorithm name'),
-});
-
-const CrawlSourceInput = z.object({
-  source_key: z.string().describe('Source key from sources.yaml'),
-  force: z.coerce.boolean().default(false),
-});
-
-const DiffInput = z.object({
-  source_key: z.string(),
-  page_id: z.string().optional(),
-}).merge(PaginationInput);
-
-const LspHoverInput = z.object({
-  symbol: z.string(),
-  package_hint: z.string().optional(),
-});
-
-const AddSourceInput = z.object({
-  key: z.string(),
-  name: z.string(),
-  base_url: z.string().url(),
-  sitemap: z.string().optional(),
-  package_aliases: z.array(z.string()).default([]),
-  concurrency: z.coerce.number().default(5),
-  rps: z.coerce.number().default(2),
-});
-
-const AddAlgoSourceInput = z.object({
-  key: z.string(),
-  url: z.string(),
-  type: z.enum(['github_repo', 'sitemap_crawl', 'single_page']),
-  paths: z.array(z.string()).optional(),
-});
-
-const CodeDriftScanInput = z.object({
-  project_root: z.string().optional(),
-});
-
-const AgentDriftStatusInput = z.object({}).merge(PaginationInput);
-
-const AgentDriftDetailInput = z.object({
-  agent_id: z.string(),
-});
-
-const AgentDriftAckInput = z.object({
-  agent_id: z.string(),
-  notes: z.string().optional(),
-});
-
-const AgentDriftDiffInput = z.object({
-  agent_id: z.string(),
-});
-
-const GraphStatsInput = z.object({});
-const CrawlFailuresInput = z.object({
-  source_key: z.string().optional(),
-  limit: z.coerce.number().min(1).max(50).default(10),
-});
-const SourceHealthInput = z.object({});
-const CodexBootstrapInput = z.object({
-  project_root: z.string().optional(),
-  write_agents_file: z.coerce.boolean().default(false),
-});
 
 // ── Response helpers ──
 
@@ -182,6 +120,26 @@ function decodeCursor(cursor: string): CursorPayload {
   }
 }
 
+// Safe wrapper around paginateRows — collapses the `try { page = ... }
+// catch { return errorResponse(...) }` block that was copy-pasted into 5+
+// handlers.
+type PaginateOutcome<T> =
+  | { ok: true; page: PaginationResult<T> }
+  | { ok: false; response: ToolResponse };
+
+export function safePaginate<T>(
+  tool: string,
+  rows: T[],
+  params: { cursor?: string; page_size: number },
+  query: Record<string, unknown>,
+): PaginateOutcome<T> {
+  try {
+    return { ok: true, page: paginateRows(tool, rows, params, query) };
+  } catch (err) {
+    return { ok: false, response: errorResponse(`Invalid cursor: ${errMsg(err)}`) };
+  }
+}
+
 export function paginateRows<T>(
   tool: string,
   rows: T[],
@@ -241,6 +199,24 @@ export function createTools(
     crawlQueue: CrawlQueue;
   },
 ): ToolDefinition[] {
+  // Lazily load and cache a single AgentDriftDetector per createTools scope.
+  // Collapses what was previously four verbatim `new AgentDriftDetector(...)`
+  // constructions across agent-drift-related handlers.
+  let detectorPromise: Promise<AgentDriftDetector> | undefined;
+  const getDetector = async (): Promise<AgentDriftDetector> => {
+    if (!detectorPromise) {
+      detectorPromise = (async () => {
+        const { AgentDriftDetector } = await import('../drift/agent-drift.js');
+        return new AgentDriftDetector(
+          graph,
+          join(config.projectRoot, '.claude', 'agents'),
+          config.configDir,
+        );
+      })();
+    }
+    return detectorPromise;
+  };
+
   return [
     {
       name: 'scrapin_search',
@@ -270,27 +246,25 @@ export function createTools(
           }
         }
 
-        const now = Date.now();
         merged.sort((a, b) => {
           const freshnessA = a.id.includes('page::') ? 0.05 : 0;
           const freshnessB = b.id.includes('page::') ? 0.05 : 0;
           const centralityA = a.label === 'Symbol' ? 0.1 : 0;
           const centralityB = b.label === 'Symbol' ? 0.1 : 0;
-          const scoreA = a.score + freshnessA + centralityA + (now > 0 ? 0 : 0);
-          const scoreB = b.score + freshnessB + centralityB + (now > 0 ? 0 : 0);
+          // Freshness decay keyed off `now` is a planned extension; for now
+          // the score is just base + modifiers.
+          const scoreA = a.score + freshnessA + centralityA;
+          const scoreB = b.score + freshnessB + centralityB;
           return scoreB - scoreA;
         });
         const top = merged.slice(0, input.limit);
-        let page: PaginationResult<typeof top[number]>;
-        try {
-          page = paginateRows('scrapin_search', top, input, {
-            query: input.query,
-            limit: input.limit,
-            label_filter: input.label_filter,
-          });
-        } catch (err) {
-          return errorResponse(`Invalid cursor: ${err instanceof Error ? err.message : String(err)}`);
-        }
+        const pp = safePaginate('scrapin_search', top, input, {
+          query: input.query,
+          limit: input.limit,
+          label_filter: input.label_filter,
+        });
+        if (!pp.ok) return pp.response;
+        const page = pp.page;
 
         const meta = makeMetadata('scrapin_search', false);
         const lines = page.rows.map((r, i) =>
@@ -329,17 +303,14 @@ export function createTools(
           ...siblings.map((s) => ({ kind: 'sibling' as const, line: `- ${s.name} (${s.kind})` })),
         ];
 
-        let page: PaginationResult<typeof allRows[number]>;
-        try {
-          page = paginateRows('scrapin_graph_query', allRows, input, {
-            start_id: input.start_id,
-            hops: input.hops,
-            edge_types: input.edge_types,
-            include_siblings: input.include_siblings,
-          });
-        } catch (err) {
-          return errorResponse(`Invalid cursor: ${err instanceof Error ? err.message : String(err)}`);
-        }
+        const pp = safePaginate('scrapin_graph_query', allRows, input, {
+          start_id: input.start_id,
+          hops: input.hops,
+          edge_types: input.edge_types,
+          include_siblings: input.include_siblings,
+        });
+        if (!pp.ok) return pp.response;
+        const page = pp.page;
 
         const nodeLines = page.rows.filter((r) => r.kind === 'node').map((r) => r.line);
         const edgeLines = page.rows.filter((r) => r.kind === 'edge').map((r) => r.line);
@@ -368,17 +339,14 @@ export function createTools(
           input.limit,
           'AlgoNode',
         );
-        let page: PaginationResult<typeof results[number]>;
-        try {
-          page = paginateRows('scrapin_algo_search', results, input, {
-            query: input.query,
-            category: input.category,
-            language: input.language,
-            limit: input.limit,
-          });
-        } catch (err) {
-          return errorResponse(`Invalid cursor: ${err instanceof Error ? err.message : String(err)}`);
-        }
+        const pp = safePaginate('scrapin_algo_search', results, input, {
+          query: input.query,
+          category: input.category,
+          language: input.language,
+          limit: input.limit,
+        });
+        if (!pp.ok) return pp.response;
+        const page = pp.page;
 
         const meta = makeMetadata('scrapin_algo_search', false);
         const lines = page.rows.map((r, i) => `${page.offset + i + 1}. **${r.id}** (score: ${r.score.toFixed(2)})\n   ${r.text.slice(0, 300)}`);
@@ -468,15 +436,12 @@ export function createTools(
         text += `**Total pages:** ${sourcePages.length}\n`;
         text += `**Stale pages:** ${stale.length}\n\n`;
 
-        let page: PaginationResult<typeof stale[number]>;
-        try {
-          page = paginateRows('scrapin_diff', stale, input, {
-            source_key: input.source_key,
-            page_id: input.page_id,
-          });
-        } catch (err) {
-          return errorResponse(`Invalid cursor: ${err instanceof Error ? err.message : String(err)}`);
-        }
+        const pp = safePaginate('scrapin_diff', stale, input, {
+          source_key: input.source_key,
+          page_id: input.page_id,
+        });
+        if (!pp.ok) return pp.response;
+        const page = pp.page;
 
         if (stale.length > 0) {
           text += `### Stale Pages\n`;
@@ -519,13 +484,9 @@ export function createTools(
       handler: async (raw) => {
         const input = CronStatusInput.parse(raw);
         logger.info('scrapin_cron_status');
-        const allJobs = ['full-sweep', 'staleness-check', 'missing-doc-scan', 'openapi-sync', 'embedding-rebuild', 'algo-sweep', 'code-drift-scan', 'agent-drift-scan'];
-        let page: PaginationResult<string>;
-        try {
-          page = paginateRows('scrapin_cron_status', allJobs, input, {});
-        } catch (err) {
-          return errorResponse(`Invalid cursor: ${err instanceof Error ? err.message : String(err)}`);
-        }
+        // The cron status response is a fixed 8-row summary; pagination is
+        // only exposed for API uniformity and is a no-op here.
+        void input;
         const meta = makeMetadata('scrapin_cron_status', false);
         const status = config.crawlQueue.status();
         return textResponse(`${meta}\n\n${JSON.stringify(status, null, 2)}`);
@@ -595,7 +556,7 @@ export function createTools(
           const meta = makeMetadata('scrapin_code_drift_scan', false);
           return textResponse(`${meta}\n\n${formatCodeDriftReport(report)}`);
         } catch (err) {
-          return errorResponse(`Code drift scan failed: ${err instanceof Error ? err.message : String(err)}`);
+          return errorResponse(`Code drift scan failed: ${errMsg(err)}`);
         }
       },
     },
@@ -646,16 +607,12 @@ export function createTools(
         logger.info('scrapin_agent_drift_status');
 
         try {
-          const { AgentDriftDetector } = await import('../drift/agent-drift.js');
-          const detector = new AgentDriftDetector(graph, join(config.projectRoot, '.claude', 'agents'), config.configDir);
+          const detector = await getDetector();
           const reports = await detector.scan();
 
-          let page: PaginationResult<typeof reports[number]>;
-          try {
-            page = paginateRows('scrapin_agent_drift_status', reports, input, {});
-          } catch (err) {
-            return errorResponse(`Invalid cursor: ${err instanceof Error ? err.message : String(err)}`);
-          }
+          const pp = safePaginate('scrapin_agent_drift_status', reports, input, {});
+          if (!pp.ok) return pp.response;
+          const page = pp.page;
 
           const meta = makeMetadata('scrapin_agent_drift_status', false);
           const lines = page.rows.map((r) =>
@@ -674,7 +631,7 @@ export function createTools(
 
           return textResponse(text, page);
         } catch (err) {
-          return errorResponse(`Agent drift scan failed: ${err instanceof Error ? err.message : String(err)}`);
+          return errorResponse(`Agent drift scan failed: ${errMsg(err)}`);
         }
       },
     },
@@ -688,8 +645,7 @@ export function createTools(
         logger.info({ agentId: input.agent_id }, 'scrapin_agent_drift_detail');
 
         try {
-          const { AgentDriftDetector } = await import('../drift/agent-drift.js');
-          const detector = new AgentDriftDetector(graph, join(config.projectRoot, '.claude', 'agents'), config.configDir);
+          const detector = await getDetector();
           const reports = await detector.scan();
           const report = reports.find((r) => r.agent_id === input.agent_id);
 
@@ -717,7 +673,7 @@ export function createTools(
 
           return textResponse(text);
         } catch (err) {
-          return errorResponse(`Failed: ${err instanceof Error ? err.message : String(err)}`);
+          return errorResponse(`Failed: ${errMsg(err)}`);
         }
       },
     },
@@ -731,14 +687,13 @@ export function createTools(
         logger.info({ agentId: input.agent_id }, 'scrapin_agent_drift_acknowledge');
 
         try {
-          const { AgentDriftDetector } = await import('../drift/agent-drift.js');
-          const detector = new AgentDriftDetector(graph, join(config.projectRoot, '.claude', 'agents'), config.configDir);
+          const detector = await getDetector();
           await detector.acknowledgeAgentDrift(input.agent_id, input.notes);
 
           const meta = makeMetadata('scrapin_agent_drift_acknowledge', false);
           return textResponse(`${meta}\n\nAgent **${input.agent_id}** drift acknowledged. Baseline updated.`);
         } catch (err) {
-          return errorResponse(`Failed: ${err instanceof Error ? err.message : String(err)}`);
+          return errorResponse(`Failed: ${errMsg(err)}`);
         }
       },
     },
@@ -752,14 +707,13 @@ export function createTools(
         logger.info({ agentId: input.agent_id }, 'scrapin_agent_drift_diff');
 
         try {
-          const { AgentDriftDetector } = await import('../drift/agent-drift.js');
-          const detector = new AgentDriftDetector(graph, join(config.projectRoot, '.claude', 'agents'), config.configDir);
+          const detector = await getDetector();
           const diff = await detector.getAgentDiff(input.agent_id);
 
           const meta = makeMetadata('scrapin_agent_drift_diff', false);
           return textResponse(`${meta}\n\n## Diff for ${input.agent_id}\n\n\`\`\`diff\n${diff}\n\`\`\``);
         } catch (err) {
-          return errorResponse(`Failed: ${err instanceof Error ? err.message : String(err)}`);
+          return errorResponse(`Failed: ${errMsg(err)}`);
         }
       },
     },

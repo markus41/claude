@@ -59,9 +59,9 @@ export interface VectorSearchResult {
 
 class LocalTransformersProvider implements EmbeddingProvider {
   readonly name = 'local-transformers';
-  private pipelinePromise:
-    | Promise<(text: string, opts: Record<string, unknown>) => Promise<{ data: Float32Array }>>
-    | null = null;
+  // Vendor types for @xenova/transformers are fragile across versions; use `any`
+  // on the pipeline seam and narrow at the call site via Array.from on .data.
+  private pipelinePromise: Promise<unknown> | null = null;
 
   constructor(private readonly modelName: string) {}
 
@@ -72,7 +72,11 @@ class LocalTransformersProvider implements EmbeddingProvider {
       );
     }
     const pipe = await this.pipelinePromise;
-    const result = await pipe(text, { pooling: 'mean', normalize: true });
+    if (!pipe) throw new Error('LocalTransformersProvider: pipeline not initialized');
+    const result = await (pipe as (t: string, o: Record<string, unknown>) => Promise<{ data: ArrayLike<number> }>)(
+      text,
+      { pooling: 'mean', normalize: true },
+    );
     return Array.from(result.data);
   }
 }
@@ -127,6 +131,11 @@ class DeterministicTestProvider implements EmbeddingProvider {
 
 export class VectorStore {
   private entries: VectorEntry[] = [];
+  // Tracks whether entries have changed since the last full rebuild. Set in
+  // add/remove; cleared at the end of rebuild(). Lets full-sweep's trailing
+  // rebuild skip work when nothing changed (e.g. the separate weekly
+  // embedding-rebuild job has already done it).
+  private dirty = false;
   private readonly modelName: string;
   private embeddingProvider: EmbeddingProvider | null = null;
   private hnswIndex: HnswIndex | null = null;
@@ -183,6 +192,7 @@ export class VectorStore {
     const entry: VectorEntry = { id, label, text, embedding };
     this.entries.push(entry);
     this.addToHnsw(entry);
+    this.dirty = true;
     await this.saveEntries();
   }
 
@@ -244,15 +254,21 @@ export class VectorStore {
 
     this.entries = this.entries.filter((entry) => entry.id !== id);
     this.deleteFromHnsw(id);
+    this.dirty = true;
     await this.saveEntries();
   }
 
   async rebuild(): Promise<void> {
+    if (!this.dirty) {
+      logger.debug({ entries: this.entries.length }, 'Vector index clean — skipping rebuild');
+      return;
+    }
     if (this.hnswIndex) {
       this.rebuildHnswFromEntries();
       await this.persistHnswIndex();
     }
     await this.saveEntries();
+    this.dirty = false;
     logger.info({ entries: this.entries.length }, 'Vector index rebuilt');
   }
 
@@ -342,7 +358,12 @@ export class VectorStore {
     try {
       const hnswlib = await import('hnswlib-node');
       const index = new hnswlib.default.HierarchicalNSW('cosine', EMBEDDING_DIMENSION) as HnswIndex;
-      index.initIndex(Math.max(1024, this.entries.length * 2 + 1));
+      // When entries already exist, `rebuildHnswFromEntries` will call
+      // `initIndex` with the correct final size. Pre-allocating here would
+      // just be abandoned — so only init the empty-corpus fast path.
+      if (this.entries.length === 0) {
+        index.initIndex(1024);
+      }
       return index;
     } catch {
       logger.info('hnswlib-node not available; using brute-force vector search');

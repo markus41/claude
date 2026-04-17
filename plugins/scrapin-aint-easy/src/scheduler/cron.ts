@@ -30,7 +30,7 @@ export class CronScheduler {
 
   constructor(
     private readonly maxConcurrentJobs: number,
-    private readonly dataDir: string,
+    dataDir: string,
     private readonly eventBus: EventBus,
   ) {
     this.semaphore = new AsyncSemaphore(maxConcurrentJobs);

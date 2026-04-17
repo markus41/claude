@@ -1,14 +1,14 @@
 ---
 name: claude-code-debugger
-description: Expert debugger for Claude Code setup issues. Diagnoses and fixes authentication, MCP servers, hooks, permissions, configuration, installation, and runtime problems.
-tools:
+description: Scope — Claude Code setup & tooling. Use this agent for authentication failures, MCP server problems, hook misfires, permission errors, plugin install issues, and runtime problems inside Claude Code itself. For generic code-level bugs in a user codebase, use the `debugger` agent instead.
+model: claude-sonnet-4-6
+allowed-tools:
   - Read
   - Write
   - Edit
   - Glob
   - Grep
   - Bash
-model: claude-sonnet-4-6
 ---
 
 # Claude Code Debugger Agent
