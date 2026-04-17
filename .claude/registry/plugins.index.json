@@ -1,7 +1,7 @@
 {
   "$schema": "./schema/plugins.schema.json",
   "version": "3.0.0",
-  "lastUpdated": "2026-03-31T09:37:45Z",
+  "lastUpdated": "2026-04-17T00:00:00Z",
   "description": "Plugin registry for Claude Code orchestration plugins - upgraded with Agentic Design Patterns (Gulli & Sauco, 2025)",
   "installed": {
     "aws-eks-helm-keycloak": {
@@ -116,10 +116,10 @@
       "dependencies": {}
     },
     "claude-code-expert": {
-      "version": "7.6.0",
+      "version": "7.9.0",
       "path": "../plugins/claude-code-expert",
       "source": "local",
-      "installedAt": "2026-03-08T00:00:00.000Z",
+      "installedAt": "2026-04-17T00:00:00.000Z",
       "dependencies": {}
     },
     "cowork-marketplace": {
@@ -362,8 +362,8 @@
     },
     "claude-code-expert": {
       "name": "claude-code-expert",
-      "version": "7.6.0",
-      "description": "High-intelligence Claude Code copilot with deep code reasoning, evidence-driven planning, orchestration-first execution, model routing, context budgeting, CI/CD integration, enterprise security, plugin development, prompt engineering, performance profiling, agent teams, channels, hook policy engine (8 packs), layered memory deployment, role-based subagent packs, 5 agent-team topology kits, autonomy operating mode (4 profiles + 3 gate agents), and a queryable 15-tool MCP documentation server with autonomy advisor.",
+      "version": "7.9.0",
+      "description": "High-intelligence Claude Code copilot with deep code reasoning, evidence-driven planning, orchestration-first execution, model routing, context budgeting, CI/CD integration, enterprise security, plugin development, prompt engineering, performance profiling, agent teams, channels, hook policy engine, layered memory deployment, role-based subagent packs, agent-team topology kits, autonomy operating mode, orchestration blackboard (shared multi-round state across parallel agents), prompt-budget preflight, specialist-first routing, verify-between-waves cadence, agent telemetry, and a queryable 19-tool MCP documentation server with 2 MCP resources. 22 commands, 56 skills, 26 agents, 9 hooks.",
       "author": {
         "name": "Markus Ahling"
       },
@@ -746,7 +746,7 @@
     "totalInstalled": 21,
     "totalPlugins": 27,
     "totalAvailable": 6,
-    "lastUpdated": "2026-04-07T00:00:00.000Z",
+    "lastUpdated": "2026-04-17T00:00:00.000Z",
     "byTier": {
       "enterprise": 1,
       "standard": 24

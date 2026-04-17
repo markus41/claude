@@ -300,8 +300,8 @@
     },
     {
       "name": "claude-code-expert",
-      "description": "High-intelligence Claude Code copilot with deep code reasoning, evidence-driven planning, orchestration-first execution, model routing, context budgeting, CI/CD integration, enterprise security, plugin development, prompt engineering, performance profiling, agent teams, interactive tutorials, and a queryable 10-tool MCP documentation server. 16 commands, 33 skills, 16 agents.",
-      "version": "6.0.0",
+      "description": "High-intelligence Claude Code copilot with deep code reasoning, evidence-driven planning, orchestration-first execution, model routing, context budgeting, CI/CD integration, enterprise security, plugin development, prompt engineering, performance profiling, agent teams, interactive tutorials, orchestration blackboard (shared multi-round state), prompt-budget preflight, specialist-first routing, verify-between-waves cadence, agent telemetry, and a queryable 19-tool MCP documentation server with 2 MCP resources. 22 commands, 56 skills, 26 agents, 9 hooks.",
+      "version": "7.9.0",
       "author": {
         "name": "Markus Ahling"
       },
@@ -316,6 +316,11 @@
         "debugging",
         "configuration",
         "orchestration",
+        "orchestration-blackboard",
+        "prompt-budget",
+        "agent-telemetry",
+        "specialist-routing",
+        "verify-between-waves",
         "council",
         "best-practices"
       ]
