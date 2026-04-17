@@ -1,0 +1,13 @@
+{
+  "name": "direnv-reload-on-cwd-change",
+  "event": "PreToolUse",
+  "matcher": "Bash",
+  "summary": "When Claude cd's into a directory with an .envrc, reload direnv so env vars are fresh. For direnv users.",
+  "when_to_use": "Repos that use direnv and have per-subdir .envrc files (e.g. monorepos with per-package secrets).",
+  "script_path": ".claude/hooks/direnv-reload-on-cwd-change.sh",
+  "script": "#!/usr/bin/env bash\nset -euo pipefail\nI=$(head -c 65536)\njq -e . >/dev/null 2>&1 <<<\"$I\" || { echo '{\"decision\":\"approve\"}'; exit 0; }\nCMD=$(jq -r '.tool_input.command // \"\"' <<<\"$I\")\n[[ \"$CMD\" != cd\\ * ]] && { echo '{\"decision\":\"approve\"}'; exit 0; }\nTARGET=$(echo \"$CMD\" | sed 's/^cd *//' | awk '{print $1}')\n[ -z \"$TARGET\" ] && { echo '{\"decision\":\"approve\"}'; exit 0; }\nif [ -f \"$TARGET/.envrc\" ]; then\n  direnv allow \"$TARGET\" >/dev/null 2>&1 || true\n  printf 'direnv will reload %s/.envrc\\n' \"$TARGET\" >&2\nfi\necho '{\"decision\":\"approve\"}'\n",
+  "settings_snippet": {
+    "hooks": { "PreToolUse": [{ "matcher": "Bash", "hooks": [{ "type": "command", "command": "bash .claude/hooks/direnv-reload-on-cwd-change.sh" }] }] }
+  },
+  "verify": "cd into a dir with .envrc; confirm env vars are loaded via `direnv status`."
+}

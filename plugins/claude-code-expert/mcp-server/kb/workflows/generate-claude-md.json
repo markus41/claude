@@ -1,0 +1,25 @@
+{
+  "name": "generate-claude-md",
+  "summary": "Author a CLAUDE.md for a repo — routing OS, not knowledge dump. Under 120 lines, references for detail.",
+  "when_to_use": "Creating CLAUDE.md from scratch or consolidating a bloated existing one.",
+  "phases": [
+    {
+      "name": "Scan",
+      "steps": ["Run understand-codebase pack if not already done.", "Identify stack (language, framework, DB, test runner, CI/CD).", "Identify package manager + common commands (install, build, test, lint, typecheck)."]
+    },
+    {
+      "name": "Draft sections",
+      "steps": ["Build & Test — one-line each for install/build/test/lint/typecheck.", "Tech Stack — one line per layer.", "Key Paths — source, tests, docs, config.", "Architecture — one paragraph, no more.", "Decision trees — 'auth tasks → {dir}', etc.", "Conventions — pulled from lint config + observed patterns.", "Don't Touch — auto-generated files, vendor dirs, lockfiles."]
+    },
+    {
+      "name": "Trim",
+      "steps": ["Count lines. If > 120: move anything >20 lines in a section to .claude/rules/{topic}.md and @-reference it.", "Remove any content that's reference material (not routing).", "Read it once fresh: can you navigate the repo from this CLAUDE.md?"]
+    },
+    {
+      "name": "Add memory routing",
+      "steps": ["Reference .claude/rules/cc-always.md and cc-obsidian-intro.md (from plugin).", "Add a Knowledge Library section pointing to Obsidian vault if applicable.", "Add routing to skills/ subdirectories if stack-specific skills were generated."]
+    }
+  ],
+  "exit_criteria": "CLAUDE.md is ≤120 lines, routing-first, references for detail, loads every session without blowing budget.",
+  "anti_patterns": ["CLAUDE.md as architecture encyclopedia.", "Convention lists that duplicate the linter config.", "Inline examples that belong in references/.", "No routing table — user can't tell where to go for what."]
+}

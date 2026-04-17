@@ -1,0 +1,26 @@
+{
+  "name": "docs-migration-sprint",
+  "summary": "3 Sonnet writers + 1 Opus editor. Bulk migration of docs (framework version bumps, brand renames, terminology changes).",
+  "when_to_use": "Large doc-only migrations with clear find-replace pattern but requiring context-aware rewriting (not a pure sed pass).",
+  "composition": [
+    { "role": "writer-a", "model": "claude-sonnet-4-6", "owns": "alphabetically first third of docs/" },
+    { "role": "writer-b", "model": "claude-sonnet-4-6", "owns": "middle third" },
+    { "role": "writer-c", "model": "claude-sonnet-4-6", "owns": "last third" },
+    { "role": "editor", "model": "claude-opus-4-6", "writes": "final touch-ups only" }
+  ],
+  "file_ownership": "Sharded by alphabet to avoid collisions. No shared files. Each writer works in an isolated worktree.",
+  "coordination": [
+    "1. Editor surveys all docs, produces a migration spec: what's changing, examples of before/after, style guide.",
+    "2. 3 writers run in parallel; each rewrites their shard against the spec.",
+    "3. Editor reviews the merged result: consistency, tone, cross-references. Fixes any drift.",
+    "4. Final commit by editor."
+  ],
+  "worktree_guidance": "3 isolated worktrees. Editor in main.",
+  "quality_gates": [
+    "Post-writer: link-checker passes on all docs.",
+    "Post-editor: markdown-lint passes.",
+    "Post-editor: grep for old terms returns 0 matches (or expected exceptions list only)."
+  ],
+  "cost_estimate": "~$1-3 for a 50-file migration (3 Sonnet + 1 Opus editor).",
+  "anti_patterns": ["Running writers without the spec — outputs diverge stylistically.", "Editor rewrites writer outputs instead of nudging — defeats the parallelism."]
+}

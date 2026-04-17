@@ -1,0 +1,17 @@
+{
+  "name": "tool-use",
+  "summary": "Agent uses external tools (APIs, shells, MCP servers) to take actions beyond pure reasoning. The foundational pattern — everything else builds on it.",
+  "when_to_use": "Any task requiring real-world side effects: reading files, running tests, calling APIs, writing code. Claude Code always uses tool-use.",
+  "layers": {
+    "CLAUDE.md": "Document tool preferences: 'Prefer Read over Bash(cat); Glob over Bash(find); Edit over sed.'",
+    "skill": "skills/hooks for lifecycle gates around tool calls.",
+    "hook": "PreToolUse / PostToolUse for governance, logging, transformation.",
+    "agent": "Agents inherit tool restrictions via allowed-tools frontmatter."
+  },
+  "cost": "Baseline. Tool calls themselves are cheap; the risk is unbounded tool loops.",
+  "anti_patterns": [
+    "Tools called without error handling — crashes the chain.",
+    "Unbounded tool loops — no stopping criterion.",
+    "Using raw Bash when a dedicated tool exists (Read, Edit, etc.) — slower + less reviewable."
+  ]
+}

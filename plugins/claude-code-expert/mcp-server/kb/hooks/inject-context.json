@@ -1,0 +1,13 @@
+{
+  "name": "inject-context",
+  "event": "UserPromptSubmit",
+  "matcher": "",
+  "summary": "On every user prompt, inject date, branch, and uncommitted-file count as stderr context. Cheap and always-on.",
+  "when_to_use": "Long sessions where git state matters. Skip for purely non-git workflows.",
+  "script_path": ".claude/hooks/inject-context.sh",
+  "script": "#!/usr/bin/env bash\nset -euo pipefail\nI=$(head -c 65536)\nCTX=\"[Context] Date: $(date '+%Y-%m-%d %H:%M')\"\nB=$(git branch --show-current 2>/dev/null || echo '')\n[ -n \"$B\" ] && CTX=\"$CTX | Branch: $B\"\nU=$(git status --porcelain 2>/dev/null | wc -l | tr -d ' ' || echo 0)\nCTX=\"$CTX | Uncommitted: $U files\"\necho \"$CTX\" >&2\necho '{\"decision\":\"approve\"}'\n",
+  "settings_snippet": {
+    "hooks": { "UserPromptSubmit": [{ "matcher": "", "hooks": [{ "type": "command", "command": "bash .claude/hooks/inject-context.sh" }] }] }
+  },
+  "verify": "Submit any prompt; confirm [Context] line in stderr."
+}

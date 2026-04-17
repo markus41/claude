@@ -1,0 +1,8 @@
+{
+  "language": "sql",
+  "server": "sql-language-server",
+  "install": "npm i -g sql-language-server",
+  "verify": "sql-language-server --version",
+  "diagnostics_hook": "#!/bin/bash\nINPUT=$(head -c 65536); FILE=$(printf '%s' \"$INPUT\" | jq -r '.tool_input.file_path // \"\"')\n[[ \"$FILE\" != *.sql ]] && { echo '{\"decision\":\"approve\"}'; exit 0; }\nif command -v sqlfluff >/dev/null 2>&1; then\n  ERRORS=$(sqlfluff lint \"$FILE\" 2>&1 | head -15)\n  [ -n \"$ERRORS\" ] && echo \"$ERRORS\" >&2\nfi\necho '{\"decision\":\"approve\"}'",
+  "notes": "sqlfluff is the linter. Configure via .sqlfluff with your dialect (postgres, mysql, bigquery). LSP provides IDE completion."
+}

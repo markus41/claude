@@ -1,0 +1,9 @@
+{
+  "language": "vue",
+  "server": "vue-language-server",
+  "alt_server": "volar (for Vue 3)",
+  "install": "npm i -g @vue/language-server",
+  "verify": "vue-language-server --version",
+  "diagnostics_hook": "#!/bin/bash\nINPUT=$(head -c 65536); FILE=$(printf '%s' \"$INPUT\" | jq -r '.tool_input.file_path // \"\"')\n[[ \"$FILE\" != *.vue ]] && { echo '{\"decision\":\"approve\"}'; exit 0; }\nif command -v vue-tsc >/dev/null 2>&1 || [ -f node_modules/.bin/vue-tsc ]; then\n  ERRORS=$(npx vue-tsc --noEmit 2>&1 | grep -F \"$FILE\" | head -5)\n  [ -n \"$ERRORS\" ] && echo \"$ERRORS\" >&2\nfi\necho '{\"decision\":\"approve\"}'",
+  "notes": "vue-tsc is TypeScript-aware Vue type checking. Required for SFCs with <script lang=\"ts\">."
+}

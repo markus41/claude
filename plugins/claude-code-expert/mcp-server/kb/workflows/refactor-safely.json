@@ -1,0 +1,25 @@
+{
+  "name": "refactor-safely",
+  "summary": "Restructure code without changing behavior — baseline, characterize, refactor in small steps, verify.",
+  "when_to_use": "Any refactor where rollback cost is high. NOT for renames covered by IDE tooling.",
+  "phases": [
+    {
+      "name": "Baseline",
+      "steps": ["Identify exact scope — files, functions, types affected.", "Run test suite — confirm green before starting.", "Check coverage for affected code. If < 80%, write missing tests first."]
+    },
+    {
+      "name": "Characterize",
+      "steps": ["List every call site (Grep on function/class name).", "List every import of changed modules.", "Identify reflection, dynamic dispatch, string-based lookups that grep misses."]
+    },
+    {
+      "name": "Refactor in small steps",
+      "steps": ["One structural change at a time.", "After each change: typecheck + run affected tests.", "Never leave codebase broken between steps.", "Commit each step separately: `refactor({scope}): {what}`."]
+    },
+    {
+      "name": "Verify",
+      "steps": ["Full test suite passes.", "All call sites compile.", "Linter + formatter clean.", "Re-read final version — does it actually read better?"]
+    }
+  ],
+  "exit_criteria": "Tests green pre and post, commits are atomic, no missed call sites, code demonstrably more readable.",
+  "anti_patterns": ["Big-bang refactor — hard to bisect if tests break.", "Grepping for wrong pattern — missing dynamic usages.", "No baseline — can't tell if refactor broke something.", "Scope creep into adjacent 'messy' code."]
+}

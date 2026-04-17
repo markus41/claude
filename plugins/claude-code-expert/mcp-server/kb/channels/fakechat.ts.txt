@@ -1,0 +1,42 @@
+// Fakechat — Local dev channel for testing channel flows without external services.
+// HTTP API on localhost:3199 (default). Send events via POST /event; Claude drains via MCP tool.
+// Env: FAKECHAT_PORT (default 3199).
+
+import express from "express";
+
+const PORT = Number(process.env.FAKECHAT_PORT || 3199);
+const events: Array<{ ts: number; type: string; content: string }> = [];
+
+const app = express();
+app.use(express.json());
+
+// Push an event (simulate a webhook, message, etc.)
+app.post("/event", (req, res) => {
+  const { type = "message", content = "" } = req.body || {};
+  events.push({ ts: Date.now(), type: String(type), content: String(content) });
+  res.json({ ok: true, queued: events.length });
+});
+
+// Admin: drain (clears queue)
+app.post("/drain", (_req, res) => {
+  const n = events.length;
+  events.length = 0;
+  res.json({ drained: n });
+});
+
+// Admin: inspect
+app.get("/events", (_req, res) => res.json({ events }));
+
+app.listen(PORT, "127.0.0.1", () => {
+  console.error(`Fakechat listening on localhost:${PORT}`);
+});
+
+// Sample test:
+//   curl -X POST localhost:3199/event -H 'content-type: application/json' \
+//     -d '{"type":"pr_review","content":"Review request for PR #42"}'
+//   # Then in Claude: call fakechat_next_event — returns the queued event.
+
+// MCP side exposes: fakechat_next_event (shift), fakechat_drain (clear), fakechat_list (read-only).
+export function nextEvent() { return events.shift() || null; }
+export function listEvents() { return [...events]; }
+export function drainEvents() { const n = events.length; events.length = 0; return n; }

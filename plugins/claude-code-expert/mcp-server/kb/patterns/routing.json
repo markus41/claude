@@ -1,0 +1,16 @@
+{
+  "name": "routing",
+  "summary": "Classify input type and dispatch to the right specialized handler. Claude acts as the classifier + router.",
+  "when_to_use": "When the task can be cleanly partitioned into 2+ input classes, each needing different expertise or model.",
+  "layers": {
+    "CLAUDE.md": "Add routing table: 'Auth tasks → {auth-dir} + security-compliance-advisor. DB tasks → {db-dir} + migration-lead. Frontend → ui-reviewer.'",
+    "skill": "skills/agentic-patterns documents the general shape; actual routing lives in CLAUDE.md.",
+    "hook": "No hook required.",
+    "agent": "Route may invoke a specialist agent (security-compliance-advisor, migration-lead, etc.)"
+  },
+  "cost": "~1× normal. Routing itself is cheap; specialized handlers may be cheaper than generalist (Haiku for retrieval) or more expensive (Opus for reasoning).",
+  "anti_patterns": [
+    "Routing table with overlapping classes — ambiguity defeats the pattern.",
+    "Over-specializing: routing to 10 branches when 3 would cover 90% of cases."
+  ]
+}

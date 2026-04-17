@@ -1,0 +1,13 @@
+{
+  "name": "lessons-learned-capture",
+  "event": "PostToolUseFailure",
+  "matcher": "",
+  "summary": "On any tool failure, append the failure signature to .claude/rules/lessons-learned.md for later review. Uses flock for atomic append.",
+  "when_to_use": "Any project where you want a self-healing feedback loop from tool errors.",
+  "script_path": ".claude/hooks/lessons-learned-capture.sh",
+  "script": "#!/usr/bin/env bash\nset -euo pipefail\nI=$(head -c 65536)\njq -e . >/dev/null 2>&1 <<<\"$I\" || { echo '{\"decision\":\"approve\"}'; exit 0; }\nTOOL=$(jq -r '.tool_name // \"\"' <<<\"$I\")\nERR=$(jq -r '.error // \"\"' <<<\"$I\")\n[ -z \"$ERR\" ] || [ \"$ERR\" = null ] && { echo '{\"decision\":\"approve\"}'; exit 0; }\nST=$(printf '%s' \"$TOOL\" | head -c 50 | tr -d '`$()\\\\!\"'\"'\")\nSE=$(printf '%s' \"$ERR\" | head -c 200 | tr -d '`$()\\\\!\"'\"'\")\nT=$(date -u +%Y-%m-%dT%H:%M:%SZ)\nmkdir -p .claude/rules\n(flock -x 200; printf '\\n### %s failure (%s)\\n- Tool: %s\\n- Error: %s\\n- Status: NEEDS_FIX\\n' \"$ST\" \"$T\" \"$ST\" \"$SE\" >> .claude/rules/lessons-learned.md) 200>/tmp/cc-lessons.lock\necho '{\"decision\":\"approve\"}'\n",
+  "settings_snippet": {
+    "hooks": { "PostToolUseFailure": [{ "matcher": "", "hooks": [{ "type": "command", "command": "bash .claude/hooks/lessons-learned-capture.sh" }] }] }
+  },
+  "verify": "Force a tool error; confirm a new entry appears in .claude/rules/lessons-learned.md."
+}

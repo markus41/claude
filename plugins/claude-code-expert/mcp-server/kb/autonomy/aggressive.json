@@ -1,0 +1,24 @@
+{
+  "name": "aggressive",
+  "summary": "High-trust autonomy — most tools allowed without prompting; denies only truly destructive operations.",
+  "when_to_use": "Experienced teams, mature test suites, contained blast radius (branches, sandboxes). Not for production or unfamiliar codebases.",
+  "permissions": {
+    "allow": ["Read", "Write", "Edit", "Glob", "Grep", "Bash(*)", "Agent", "WebFetch", "WebSearch"],
+    "deny": ["Bash(rm -rf /)", "Bash(sudo *)", "Bash(curl * | sh)", "Bash(curl * | bash)", "Bash(git push --force *)", "Bash(git push --force-with-lease origin main*)", "Bash(git reset --hard origin/*)", "Bash(npm publish *)", "Bash(docker push *)"],
+    "ask": []
+  },
+  "gates": {
+    "planner": { "enabled": true, "writes": ".claude/active-task.md", "note": "Still required — no code without a plan." },
+    "verifier": { "enabled": false, "note": "Disabled in aggressive — assumes user trusts the agent to self-verify." },
+    "reviewer": { "enabled": false }
+  },
+  "session_init_command": "claude --permission-mode auto",
+  "memory_rules": [
+    "Standard engram protocol: proactive mem_save on every decision/bug/discovery.",
+    "Session summary mandatory — aggressive mode makes more unsupervised decisions, summary is the audit trail."
+  ],
+  "warnings": [
+    "Do not run on main/master branches.",
+    "Always pair with a strong CI pipeline — aggressive assumes CI catches what gates don't."
+  ]
+}

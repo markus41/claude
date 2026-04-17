@@ -1,0 +1,13 @@
+{
+  "name": "session-init",
+  "event": "SessionStart",
+  "matcher": "",
+  "summary": "Print session header with date, branch, last commit, uncommitted count. Warn if memory-sessions.md is bloated.",
+  "when_to_use": "Any repo where you want a standard 'where am I' header at session start.",
+  "script_path": ".claude/hooks/session-init.sh",
+  "script": "#!/usr/bin/env bash\nset -euo pipefail\nprintf 'Session start: %s\\n' \"$(date '+%Y-%m-%d %H:%M')\" >&2\nB=$(git branch --show-current 2>/dev/null || echo '(no-git)')\nprintf 'Branch: %s\\n' \"$B\" >&2\nL=$(git log --oneline -1 2>/dev/null || true)\n[ -n \"$L\" ] && printf 'Last commit: %s\\n' \"$L\" >&2\nU=$(git status --porcelain 2>/dev/null | wc -l | tr -d ' ' || echo 0)\nprintf 'Uncommitted: %s files\\n' \"$U\" >&2\nif [ -f .claude/rules/memory-sessions.md ]; then\n  LC=$(wc -l < .claude/rules/memory-sessions.md)\n  [ \"$LC\" -gt 100 ] && printf 'WARN: memory-sessions.md has %s lines — consider rotating\\n' \"$LC\" >&2\nfi\necho '{\"decision\":\"approve\"}'\n",
+  "settings_snippet": {
+    "hooks": { "SessionStart": [{ "matcher": "", "hooks": [{ "type": "command", "command": "bash .claude/hooks/session-init.sh" }] }] }
+  },
+  "verify": "Start a new session; header appears in stderr output."
+}

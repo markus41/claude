@@ -1,0 +1,8 @@
+{
+  "language": "java",
+  "server": "jdtls (Eclipse JDT Language Server)",
+  "install": "Install via SDKMAN or download from https://download.eclipse.org/jdtls/snapshots/",
+  "verify": "jdtls --version",
+  "diagnostics_hook": "#!/bin/bash\nINPUT=$(head -c 65536); FILE=$(printf '%s' \"$INPUT\" | jq -r '.tool_input.file_path // \"\"')\n[[ \"$FILE\" != *.java ]] && { echo '{\"decision\":\"approve\"}'; exit 0; }\n# Use Maven or Gradle based on project\nif [ -f pom.xml ]; then\n  mvn -q compile 2>&1 | grep -E 'ERROR|WARNING' | head -10 >&2 || true\nelif [ -f build.gradle ] || [ -f build.gradle.kts ]; then\n  gradle compileJava 2>&1 | grep -E 'error|warning' | head -10 >&2 || true\nfi\necho '{\"decision\":\"approve\"}'",
+  "notes": "jdtls is heavy; consider relying on Maven/Gradle compile for CI-style diagnostics."
+}

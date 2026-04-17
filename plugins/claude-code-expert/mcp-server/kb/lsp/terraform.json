@@ -1,0 +1,8 @@
+{
+  "language": "terraform",
+  "server": "terraform-ls",
+  "install": "Download from https://releases.hashicorp.com/terraform-ls/ or via brew",
+  "verify": "terraform-ls --version",
+  "diagnostics_hook": "#!/bin/bash\nINPUT=$(head -c 65536); FILE=$(printf '%s' \"$INPUT\" | jq -r '.tool_input.file_path // \"\"')\n[[ \"$FILE\" != *.tf && \"$FILE\" != *.tfvars ]] && { echo '{\"decision\":\"approve\"}'; exit 0; }\nDIR=$(dirname \"$FILE\")\nERRORS=$(cd \"$DIR\" && terraform validate -no-color 2>&1 | head -15)\necho \"$ERRORS\" | grep -qiE 'error' && echo \"$ERRORS\" >&2\necho '{\"decision\":\"approve\"}'",
+  "notes": "terraform validate requires terraform init first. terraform fmt fixes formatting. tflint catches more issues."
+}

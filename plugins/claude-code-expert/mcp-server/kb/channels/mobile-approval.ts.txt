@@ -1,0 +1,40 @@
+// Mobile Approval Relay — Telegram permission relay (Claude Code v2.1.81+).
+// Env: TELEGRAM_BOT_TOKEN, PAIRED_CHAT_FILE (default .claude/paired-chat.txt)
+import TelegramBot from "node-telegram-bot-api";
+import { readFileSync, writeFileSync, existsSync } from "node:fs";
+
+const TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+if (!TOKEN) throw new Error("TELEGRAM_BOT_TOKEN required");
+const PF = process.env.PAIRED_CHAT_FILE || ".claude/paired-chat.txt";
+
+const bot = new TelegramBot(TOKEN, { polling: true });
+let paired: number | null = existsSync(PF) ? Number(readFileSync(PF, "utf8").trim()) : null;
+const codes = new Map<string, number>();
+const pending = new Map<string, (v: "yes"|"no") => void>();
+
+bot.onText(/^\/pair$/, (msg) => {
+  const c = String(Math.floor(1000 + Math.random() * 9000));
+  codes.set(c, Date.now() + 5 * 60 * 1000);
+  bot.sendMessage(msg.chat.id, `Pairing code: ${c}\nRun: /cc-channels pair ${c}`);
+});
+
+export function confirmPair(code: string, chatId: number): boolean {
+  const exp = codes.get(code);
+  if (!exp || exp < Date.now()) return false;
+  paired = chatId; writeFileSync(PF, String(chatId)); codes.delete(code); return true;
+}
+
+export function relayApproval(tool: string, input: string, id: string): Promise<"yes"|"no"> {
+  if (!paired) return Promise.resolve("no");
+  bot.sendMessage(paired, `[${id}] Approve ${tool}?\n${input.slice(0, 200)}\nReply: yes ${id} / no ${id}`);
+  return new Promise((r) => pending.set(id, r));
+}
+
+bot.on("message", (msg) => {
+  if (msg.chat.id !== paired) return;
+  const m = (msg.text || "").match(/^(yes|no)\s+(\S+)$/i);
+  if (!m) return;
+  const cb = pending.get(m[2]);
+  if (cb) { cb(m[1].toLowerCase() as "yes"|"no"); pending.delete(m[2]); }
+});
+// MCP side: mobile_request_approval(tool_name, tool_input, req_id) → verdict.

@@ -1,0 +1,10 @@
+{
+  "language": "ruby",
+  "server": "solargraph",
+  "alt_server": "ruby-lsp",
+  "install": "gem install solargraph",
+  "alt_install": "gem install ruby-lsp",
+  "verify": "solargraph --version",
+  "diagnostics_hook": "#!/bin/bash\nINPUT=$(head -c 65536); FILE=$(printf '%s' \"$INPUT\" | jq -r '.tool_input.file_path // \"\"')\n[[ \"$FILE\" != *.rb ]] && { echo '{\"decision\":\"approve\"}'; exit 0; }\nERRORS=$(bundle exec rubocop --format simple \"$FILE\" 2>&1 | head -20)\n[ -n \"$ERRORS\" ] && echo \"$ERRORS\" >&2\necho '{\"decision\":\"approve\"}'",
+  "notes": "Use rubocop for diagnostics (installed as dev dep in most Rails projects). ruby-lsp is newer and Rails-aware."
+}

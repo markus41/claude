@@ -1,0 +1,8 @@
+{
+  "language": "bash",
+  "server": "bash-language-server",
+  "install": "npm i -g bash-language-server",
+  "verify": "bash-language-server --version",
+  "diagnostics_hook": "#!/bin/bash\nINPUT=$(head -c 65536); FILE=$(printf '%s' \"$INPUT\" | jq -r '.tool_input.file_path // \"\"')\n[[ \"$FILE\" != *.sh && \"$FILE\" != *.bash ]] && { echo '{\"decision\":\"approve\"}'; exit 0; }\nif command -v shellcheck >/dev/null 2>&1; then\n  ERRORS=$(shellcheck -S warning \"$FILE\" 2>&1 | head -15)\n  [ -n \"$ERRORS\" ] && echo \"$ERRORS\" >&2\nfi\necho '{\"decision\":\"approve\"}'",
+  "notes": "shellcheck is essential for any non-trivial shell script. LSP delegates to shellcheck internally."
+}

@@ -36,51 +36,38 @@ All return one artifact ≤ 2 KB. Caller names the artifact. Use `*_recommend` t
 | `cc_kb_pattern_template` | `(name)` | Agentic pattern: 5-layer wiring, cost, anti-patterns |
 | `cc_kb_autonomy_profile` | `(profile)` | Profile: permissions, gates, session init, memory rules |
 
-## Available KB artifacts (as of v8.0)
+## Available KB artifacts (v8.0.0 — fully extracted)
 
-### Hooks (seeded 2; target 8+)
+### Hooks (13)
 
-- `protect-sensitive-files`
-- `auto-format-after-edit`
-- *(extract remaining from `archive/v7.6.0/skills/hook-script-library/` + `hook-policy-engine/`)*
+`auto-format-after-edit`, `direnv-reload-on-cwd-change`, `inject-context`, `lessons-learned-capture`, `on-stop`, `post-compact-context-restoration`, `protect-sensitive-files`, `security-guard`, `session-init`, `stop-until-tests-pass`, `task-completed-quality-gate`, `task-created-governance`, `teammate-idle-enforcement`
 
-### Topologies (seeded 2; target 5)
+### Topologies (5)
 
-- `architect-implementer-reviewer`
-- `competing-hypotheses-debug`
-- *(extract remaining: frontend-backend-test, security-performance-test-review-board, docs-migration-sprint)*
+`architect-implementer-reviewer`, `competing-hypotheses-debug`, `docs-migration-sprint`, `frontend-backend-test-squad`, `security-performance-test-review-board`
 
-### Workflows (seeded 2; target 7)
+### Workflows (7)
 
-- `tdd-implementation`
-- `fix-bug-from-trace`
-- *(extract: understand-codebase, refactor-safely, repo-review-before-merge, generate-claude-md, migration-plan-before-edits)*
+`fix-bug-from-trace`, `generate-claude-md`, `migration-plan-before-edits`, `refactor-safely`, `repo-review-before-merge`, `tdd-implementation`, `understand-codebase`
 
-### Channels (seeded 1; target 4)
+### Channels (4)
 
-- `ci-webhook`
-- *(extract: mobile-approval, discord-bridge, fakechat)*
+`ci-webhook`, `discord-bridge`, `fakechat`, `mobile-approval`
 
-### LSP (seeded 2; target 18)
+### LSP (19)
 
-- `typescript`
-- `python`
-- *(extract: go, rust, java, csharp, ruby, php, elixir, swift, svelte, vue, tailwind, graphql, prisma, yaml, dockerfile, bash)*
+`bash`, `csharp`, `dockerfile`, `elixir`, `go`, `graphql`, `java`, `php`, `prisma`, `python`, `ruby`, `rust`, `sql`, `svelte`, `tailwind`, `terraform`, `typescript`, `vue`, `yaml`
 
-### Patterns (seeded 2; target 13)
+### Patterns (14)
 
-- `reflection`
-- `prompt-chaining`
-- *(extract: routing, parallelization, eval-optimizer, orchestrator-workers, react, blackboard, plus 4 Anthropic workflow primitives)*
+`blackboard`, `eval-optimizer`, `evaluation-monitoring`, `guardrails`, `memory-management`, `multi-agent`, `orchestrator-workers`, `parallelization`, `planning`, `prompt-chaining`, `react`, `reflection`, `routing`, `tool-use`
 
-### Autonomy (seeded 2; target 4)
+### Autonomy (4)
 
-- `balanced`
-- `conservative`
-- *(extract: aggressive, unattended-review)*
+`aggressive`, `balanced`, `conservative`, `unattended-review`
 
-## Extraction status
+## Validation
 
-v8.0.0 ships with seed artifacts in each category to prove the pattern (tests green, 2 KB cap enforced). Full extraction from the archived v7 skills is tracked as a Phase 1 carryover task — mechanical work that can happen across any session.
+Run `node mcp-server/test/tools.test.js` — every artifact is loaded, rendered, and size-checked (≤ 2 KB cap enforced).
 
-Run `node mcp-server/test/tools.test.js` to validate the seeded set.
+## Total: 66 KB artifacts across 7 categories, all lazy-loaded on tool call.

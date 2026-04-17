@@ -1,0 +1,8 @@
+{
+  "language": "graphql",
+  "server": "graphql-language-service-cli",
+  "install": "npm i -g graphql-language-service-cli",
+  "verify": "graphql-lsp --version",
+  "diagnostics_hook": "#!/bin/bash\nINPUT=$(head -c 65536); FILE=$(printf '%s' \"$INPUT\" | jq -r '.tool_input.file_path // \"\"')\n[[ \"$FILE\" != *.graphql && \"$FILE\" != *.gql ]] && { echo '{\"decision\":\"approve\"}'; exit 0; }\nif [ -f .graphqlrc.yml ] || [ -f .graphqlrc.json ]; then\n  ERRORS=$(npx graphql-lsp validate \"$FILE\" 2>&1 | head -10)\n  [ -n \"$ERRORS\" ] && echo \"$ERRORS\" >&2\nfi\necho '{\"decision\":\"approve\"}'",
+  "notes": "Requires .graphqlrc config pointing to schema. Without schema, LSP can't validate queries."
+}

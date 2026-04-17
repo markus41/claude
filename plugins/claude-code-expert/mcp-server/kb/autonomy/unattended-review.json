@@ -1,0 +1,25 @@
+{
+  "name": "unattended-review",
+  "summary": "Hybrid profile — aggressive runtime (auto tool use, no prompts) BUT the reviewer agent gates every commit/push. Best for unattended scheduled work.",
+  "when_to_use": "Scheduled tasks, cron-driven maintenance, PR reviews run overnight. Runtime is unrestricted; safety comes from reviewer before external effects.",
+  "permissions": {
+    "allow": ["Read", "Write", "Edit", "Glob", "Grep", "Bash(npm *)", "Bash(pnpm *)", "Bash(yarn *)", "Bash(git status)", "Bash(git diff*)", "Bash(git log*)", "Bash(git commit*)", "Bash(node *)", "Bash(python *)", "Bash(pytest*)", "Agent"],
+    "deny": ["Bash(rm -rf /)", "Bash(sudo *)", "Bash(curl * | sh)", "Bash(curl * | bash)", "Bash(git push --force*)", "Bash(git reset --hard origin/*)", "Bash(docker push *)", "WebFetch", "WebSearch"],
+    "ask": ["Bash(git push *)", "Bash(npm publish *)"]
+  },
+  "gates": {
+    "planner": { "enabled": true, "writes": ".claude/active-task.md" },
+    "verifier": { "enabled": true, "checks": ["tsc", "eslint", "tests", "git-diff-sanity", "secret-scan"] },
+    "reviewer": { "enabled": true, "block_criteria_count": 10, "note": "HARD gate — no commit or push proceeds without reviewer approval." }
+  },
+  "session_init_command": "claude --permission-mode auto --enable-reviewer-gate",
+  "memory_rules": [
+    "Reviewer verdicts logged to engram with topic_key cc/autonomy/review-outcomes/{date}.",
+    "Session summary must include: tasks attempted, verifier pass/fail, reviewer verdicts."
+  ],
+  "best_for": [
+    "PR review (reads diffs, posts comments, never merges without reviewer ok)",
+    "Dependency audit (runs scans, files tickets, no code changes)",
+    "Docs drift (detects doc staleness, opens issues)"
+  ]
+}

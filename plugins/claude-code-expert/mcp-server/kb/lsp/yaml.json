@@ -1,0 +1,8 @@
+{
+  "language": "yaml",
+  "server": "yaml-language-server",
+  "install": "npm i -g yaml-language-server",
+  "verify": "yaml-language-server --version",
+  "diagnostics_hook": "#!/bin/bash\nINPUT=$(head -c 65536); FILE=$(printf '%s' \"$INPUT\" | jq -r '.tool_input.file_path // \"\"')\n[[ \"$FILE\" != *.yml && \"$FILE\" != *.yaml ]] && { echo '{\"decision\":\"approve\"}'; exit 0; }\n# Basic syntax check via yq or python\nif command -v yq >/dev/null 2>&1; then\n  yq eval '.' \"$FILE\" >/dev/null 2>&1 || echo \"YAML syntax error in $FILE\" >&2\nfi\necho '{\"decision\":\"approve\"}'",
+  "notes": "For schema validation (GitHub Actions, K8s, Docker Compose), LSP reads schemas from schemastore.org. Requires URL mapping in server config."
+}
