@@ -1,0 +1,16 @@
+{
+  "name": "reflection",
+  "summary": "Agent reviews its own output against a rubric before presenting it. Single-agent pattern — no extra processes.",
+  "when_to_use": "Any single-shot generation task where quality matters more than speed. Default for /cc-intel, /cc-review.",
+  "layers": {
+    "CLAUDE.md": "Add rule: 'Review your own output before presenting. Check for off-by-one errors, unhandled edge cases, and inconsistency with existing code patterns.'",
+    "skill": "No skill required — behavior driven from CLAUDE.md.",
+    "hook": "Optional PostToolUse hook on Write|Edit that prompts Claude to self-verify before the next turn.",
+    "agent": "Consider agents/audit-reviewer.md for explicit second-pass review when risk is high."
+  },
+  "cost": "~1.1x normal (one extra reasoning pass). Cheapest of all multi-shot patterns.",
+  "anti_patterns": [
+    "Skipping reflection to save tokens — defeats the pattern and often costs more in rework.",
+    "Reflection after every tool call — use it once at the end, not in a loop."
+  ]
+}

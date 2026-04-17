@@ -1,9 +1,11 @@
 # ULTRAPLAN — Claude Code Expert Plugin Redesign
 
-> **Status:** Draft v2 (post-advisor-review) · **Date:** 2026-04-16
+> **Status:** Draft v3 (three-tier memory + Obsidian) · **Date:** 2026-04-16
 > **Target path:** `C:\Users\MarkusAhling\pro\claude\plugins\claude-code-expert`
 > **Current version:** v7.6.0 (1.3 MB · 26 agents · 21 commands · 49 skills · 15-tool MCP server)
-> **Target version:** v8.0.0 — the "second-brain" redesign, engram-native
+> **Target version:** v8.0.0 — the "second-brain" redesign
+>
+> **v3 change (per user guidance "build the best memory system possible"):** memory architecture is no longer engram-only. It's now a **three-tier system: engram (working) + Obsidian vault (durable knowledge) + plugin rules (baseline)**, bridged by the `memory-consolidator` agent. See revised §2.2.
 
 ---
 
@@ -101,11 +103,36 @@ These three define the shape v8 must fit into.
 
 Every layer above L0 is ≤ a few KB. All reference knowledge lives in L0 (this plugin's MCP server) and L5 (engram, global).
 
-### 2.2 The memory layer — engram-native with a CC overlay
+### 2.2 The memory layer — THREE-TIER: engram + Obsidian + plugin rules
 
-**Write path** (unchanged from current user workflow — Claude saves proactively to engram):
-- Claude follows engram's existing protocol (ALWAYS ACTIVE from `SessionStart` hook).
-- For CC-setup work, Claude uses a **CC topic_key convention** taught by the `cc-second-brain` skill:
+Revised per user direction: "build the best memory system possible." Single-store (engram-only) under-uses the Obsidian vault that is already the user's central documentation hub (`C:\Users\MarkusAhling\obsidian\`, declared as "CENTRAL DOCUMENTATION HUB" in the user's CLAUDE.md). The best memory system uses **both stores with clean separation of concerns**, plus a plugin-local baseline.
+
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│ TIER 1 — WORKING MEMORY (ephemeral, high-frequency)                  │
+│ Store: engram (global MCP, SQLite + FTS5, ALWAYS ACTIVE)             │
+│ Writer: Claude proactively (existing engram protocol — unchanged)    │
+│ Reader: Claude via mem_search / mem_context                          │
+│ Lifecycle: saved within seconds, promoted upstream by consolidator   │
+├──────────────────────────────────────────────────────────────────────┤
+│ TIER 2 — DURABLE KNOWLEDGE (curated, cross-session, human-browsable) │
+│ Store: Obsidian vault at C:/Users/MarkusAhling/obsidian/             │
+│ Writer: memory-consolidator agent (auto-generated notes),            │
+│         user directly in Obsidian UI (hand-curated)                  │
+│ Reader: Claude via Obsidian MCP; user via Obsidian app               │
+│ Lifecycle: forever; git-versioned; wikilink graph                    │
+├──────────────────────────────────────────────────────────────────────┤
+│ TIER 3 — PLUGIN BASELINE RULES (shipped with plugin)                 │
+│ Store: memory/rules/ inside this plugin, git-versioned with plugin   │
+│ Writer: plugin maintainer via /cc-memory edit-always                 │
+│ Reader: /cc-setup copies these into consumer repos at install time   │
+│ Lifecycle: tied to plugin releases                                   │
+└──────────────────────────────────────────────────────────────────────┘
+```
+
+#### Tier 1: engram — unchanged protocol, CC-scoped topic_keys
+
+Claude continues to follow engram's existing ALWAYS-ACTIVE protocol (proactive `mem_save` on decisions, bugs, discoveries, conventions). The plugin adds **CC topic_key conventions** taught by the `cc-second-brain` skill:
 
 | Domain | topic_key prefix | Example |
 |---|---|---|
@@ -117,46 +144,106 @@ Every layer above L0 is ≤ a few KB. All reference knowledge lives in L0 (this 
 | Workflow pack | `cc/workflow/{name}` | `cc/workflow/tdd-implementation` |
 | Repo fingerprint | `cc/repo/{slug}/{aspect}` | `cc/repo/taia-a4/stack-detected` |
 
-The skill teaches; engram stores. No parallel DB, no custom tools.
+Write discipline (revised again): Claude writes to engram **freely and proactively**. No restriction. The prefix convention is advisory — it makes later consolidation queryable.
 
-**Read path** (two modes):
+#### Tier 2: Obsidian vault — durable knowledge graph
 
-1. **Runtime**: during a CC-setup session, Claude queries engram directly via `mem_search` or `mem_context` with `cc/*` prefix hints. The `cc-second-brain` skill documents these query patterns.
+The `memory-consolidator` agent promotes reinforced engram observations into structured Obsidian notes. Target paths follow the vault's existing conventions:
 
-2. **Consolidation**: periodically (scheduled task or on-demand via `/cc-memory consolidate`), the `memory-consolidator` agent:
-   - Queries engram for all observations matching `cc/*` (read-only, via `mem_search`).
-   - Groups by `topic_key` prefix.
-   - Counts reinforcements (how many saves for the same key).
-   - For keys with **≥3 saves and no conflicting observations**, writes a condensed 1-line pattern to `memory/rules/cc-patterns.md`.
-   - For conflicts, writes to `memory/rules/DRAFT.md` for human review.
-   - Never mutates engram (engram `mem_update` reserved for user-initiated corrections).
+| Content type | Obsidian path |
+|---|---|
+| Reusable CC pattern | `Research/Claude-Code/Patterns/{slug}.md` |
+| Per-repo knowledge | `Repositories/{org}/{repo}.md` (existing convention) |
+| ADRs | `Repositories/{org}/{repo}/Decisions/{NNNN}-{title}.md` |
+| Active projects | `Projects/{project}/*.md` |
+| Plugin knowledge | `Repositories/markus41/claude-code-expert.md` + subfolders |
+| Consolidation inbox | `Projects/Claude-Code-Inbox/{YYYY-MM-DD}.md` (for user curation) |
 
-**Plugin-owned memory files** (small, hand-curated or consolidator-generated):
+**Frontmatter discipline for auto-generated notes:**
+
+```yaml
+---
+auto_generated: true
+source: engram
+topic_key: cc/patterns/hook-safety
+reinforcement_count: 7
+first_seen: 2026-04-09
+last_updated: 2026-04-16
+tags: [claude-code, pattern, auto]
+---
+```
+
+**User-protection invariant:** any note missing `auto_generated: true` (or with `auto_generated: false`) is **user-curated and never overwritten** by the consolidator. This is the durability guarantee.
+
+**Access from Claude:** via the Obsidian MCP (Local REST API plugin, port 27123 by default) — already available per the vault CLAUDE.md. Fallback: direct file read/write at the vault path.
+
+#### Tier 3: plugin baseline rules — ships with the plugin
+
+The plugin's own `memory/` directory holds the baseline rules that `/cc-setup` copies into consumer repos. These are the "things every CC setup should know":
 
 ```
 memory/
-├── conventions.md        # How to use engram for CC work (source: skill body)
+├── conventions.md             # Authoring guide (tier separation, topic_key syntax)
 ├── rules/
-│   ├── cc-always.md      # Hard rules auto-loaded by /cc-setup (user-curated)
-│   ├── cc-patterns.md    # Consolidator-generated patterns (reinforced ≥3×)
-│   └── DRAFT.md          # Candidate promotions + conflicts awaiting review
-├── digests/              # Exported digests from /cc-memory export (humans read these)
+│   ├── cc-always.md           # Hard rules copied into every consumer repo's CLAUDE.md
+│   ├── cc-patterns.md         # Consolidator-promoted patterns (linked to Obsidian notes)
+│   ├── cc-obsidian-intro.md   # Instructs consumer-repo Claude to use the vault
+│   └── DRAFT.md               # Candidate promotions + conflicts awaiting user review
+├── digests/                   # /cc-memory export output (humans read these)
 │   └── README.md
-└── consolidate.log       # Append-only log of consolidation runs
+└── consolidate.log            # Append-only log of consolidation runs
 ```
 
-**Loading discipline:**
-- Always auto-loaded by `/cc-setup` and `/cc-sync`: `memory/rules/cc-always.md` + `memory/rules/cc-patterns.md` (combined hard cap: 3 K tokens; consolidator enforces).
-- On-demand by Claude: anything via `mem_search` / `mem_context` (engram tools, zero passive cost).
-- Never auto-loaded: `digests/*`, `DRAFT.md`, `consolidate.log`.
+**Write discipline:**
+- Claude → engram: free (tier 1)
+- `memory-consolidator` → Obsidian auto-notes, `memory/rules/cc-patterns.md`, `memory/rules/DRAFT.md`, `memory/consolidate.log`
+- Consolidator NEVER writes to: engram (read-only), `memory/rules/cc-always.md` (user-only), `memory/rules/cc-obsidian-intro.md` (user-only), Obsidian notes lacking `auto_generated: true`
+- User → `memory/rules/cc-always.md`, `memory/rules/cc-obsidian-intro.md`, any Obsidian note
 
-**Write discipline (revised per advisor feedback):**
-- Claude writes to engram **freely and proactively** (engram's existing model — the advisor correctly flagged that restricting this starves the system).
-- Consolidator writes only to `memory/rules/cc-patterns.md`, `memory/rules/DRAFT.md`, `memory/consolidate.log`.
-- `memory/rules/cc-always.md` is user-curated only (edits via `/cc-memory edit-always`).
-- `/cc-memory export` writes to `memory/digests/` — never touches engram or rules files.
+#### Consolidation flow (the bridge)
 
-This gives the "second brain" deliverable the user asked for without duplicating engram: engram is the nervous system, the plugin is the cortex that *distills* engram's raw observations into reusable CC conventions.
+`memory-consolidator` agent (Opus, read-only on engram):
+
+1. **Query engram**: `mem_search` with `cc/*` topic_key prefix hints; group results by exact `topic_key`.
+2. **Count reinforcements**: number of distinct saves for same `topic_key`.
+3. **Promote eligible topics** (≥3 reinforcements, no conflicting observations):
+   - Generate a condensed markdown note (title, summary, key points, source count, dates).
+   - Write to Obsidian at `Research/Claude-Code/Patterns/{slug}.md` with the frontmatter above.
+   - Wikilink-cross-reference any related existing Obsidian notes (e.g. `[[Repositories/markus41/claude-code-expert]]`).
+   - Add a one-line entry to `memory/rules/cc-patterns.md`: ``- [[cc-patterns-{slug}]] — one-line summary``.
+4. **Surface conflicts**: topics where observations disagree (e.g. "hook X is safe" vs "hook X blocks in edge case Y") → write to `memory/rules/DRAFT.md` for user review.
+5. **Log**: append JSON line to `memory/consolidate.log` with timestamp, topics processed, promoted count, conflict count.
+
+#### Consumer-repo integration (what `/cc-setup` generates)
+
+When `/cc-setup` runs in a target repo, it generates:
+
+1. `CLAUDE.md` (in target repo) with an Obsidian routing block:
+   ```markdown
+   ## Knowledge Library
+   Central docs hub: `C:/Users/MarkusAhling/obsidian/` (Obsidian vault, MCP available).
+   - Per-repo docs: `Repositories/{org}/{repo}.md`
+   - Decisions: `Repositories/{org}/{repo}/Decisions/NNNN-title.md`
+   - Reusable patterns: `Research/Claude-Code/Patterns/*.md`
+   Write durable findings to the vault. Save ephemeral observations to engram.
+   ```
+2. `.claude/rules/cc-always.md` copied from plugin
+3. `.claude/rules/cc-patterns.md` copied from plugin (snapshot of latest patterns)
+4. `.claude/rules/cc-obsidian-intro.md` copied from plugin
+
+Claude in the target repo then:
+- Uses engram for high-frequency saves (tier 1) — ALWAYS ACTIVE already
+- Writes durable repo knowledge to `Repositories/{org}/{repo}.md` (tier 2)
+- Writes ADRs to `Repositories/{org}/{repo}/Decisions/{NNNN}.md` (tier 2)
+- Reads tier-3 rules auto-loaded from CLAUDE.md
+
+#### Loading cost
+
+- Always loaded: `memory/rules/cc-always.md` + `memory/rules/cc-obsidian-intro.md` — combined hard cap **≤2 K tokens**
+- Loaded when consolidator promotes: `memory/rules/cc-patterns.md` — hard cap **≤3 K tokens** (consolidator prunes oldest if over)
+- Never auto-loaded: `digests/*`, `DRAFT.md`, `consolidate.log`, any Obsidian note (Claude queries on demand)
+
+This is the best memory system possible with available primitives: fast proactive capture (engram), durable human-browsable knowledge (Obsidian), plugin-shipped baseline rules that propagate to every consumer repo (plugin `memory/rules/`), and a consolidator agent that bridges the tiers with strict write discipline.
 
 ### 2.3 MCP server v5.0 — the reference spine (no memory tools)
 

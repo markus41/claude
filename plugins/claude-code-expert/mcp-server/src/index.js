@@ -17,6 +17,7 @@ import {
 import { readFileSync, readdirSync, existsSync } from "fs";
 import { join, dirname, basename } from "path";
 import { fileURLToPath } from "url";
+import { getKb, listKb, formatKb, notFoundMessage } from "./kb.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PLUGIN_ROOT = join(__dirname, "../..");
@@ -710,7 +711,7 @@ function recommendSchedule(task, requiresLocalFiles) {
 }
 
 const server = new Server(
-  { name: "claude-code-docs", version: "4.0.0" },
+  { name: "claude-code-docs", version: "5.0.0" },
   { capabilities: { tools: {} } }
 );
 
@@ -943,6 +944,76 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
           },
         },
         required: ["task"],
+      },
+    },
+    {
+      name: "cc_kb_hook_recipe",
+      description:
+        "Fetch one security-hardened hook script by name. Returns the script, event, matcher, settings.json snippet, and verify steps. Call cc_docs_hook_pack_recommend first to get candidate names.",
+      inputSchema: {
+        type: "object",
+        properties: { name: { type: "string", description: "Hook pack name, e.g. 'protect-sensitive-files', 'auto-format-after-edit'." } },
+        required: ["name"],
+      },
+    },
+    {
+      name: "cc_kb_topology_kit",
+      description:
+        "Fetch one agent-team topology kit by name. Returns composition, file ownership, coordination protocol, cost estimate, anti-patterns.",
+      inputSchema: {
+        type: "object",
+        properties: { name: { type: "string", description: "Topology name, e.g. 'architect-implementer-reviewer', 'competing-hypotheses-debug'." } },
+        required: ["name"],
+      },
+    },
+    {
+      name: "cc_kb_workflow_pack",
+      description:
+        "Fetch one engineering workflow pack by name. Returns phased playbook (phases, steps, exit criteria, anti-patterns).",
+      inputSchema: {
+        type: "object",
+        properties: { name: { type: "string", description: "Workflow name, e.g. 'tdd-implementation', 'fix-bug-from-trace'." } },
+        required: ["name"],
+      },
+    },
+    {
+      name: "cc_kb_channel_server",
+      description:
+        "Fetch one channel server TypeScript implementation by pattern name (CI webhook, mobile approval relay, Discord bridge, fakechat).",
+      inputSchema: {
+        type: "object",
+        properties: { name: { type: "string", description: "Pattern name, e.g. 'ci-webhook', 'mobile-approval', 'discord-bridge', 'fakechat'." } },
+        required: ["name"],
+      },
+    },
+    {
+      name: "cc_kb_lsp_config",
+      description:
+        "Fetch LSP server config for a language: install command, verify command, diagnostics hook script, notes.",
+      inputSchema: {
+        type: "object",
+        properties: { language: { type: "string", description: "Language key, e.g. 'typescript', 'python', 'rust', 'go'." } },
+        required: ["language"],
+      },
+    },
+    {
+      name: "cc_kb_pattern_template",
+      description:
+        "Fetch one agentic pattern template (reflection, prompt-chaining, routing, parallelization, orchestrator-workers, eval-optimizer, ReAct, etc). Returns 5-layer wiring guidance.",
+      inputSchema: {
+        type: "object",
+        properties: { name: { type: "string", description: "Pattern name, e.g. 'reflection', 'prompt-chaining', 'eval-optimizer'." } },
+        required: ["name"],
+      },
+    },
+    {
+      name: "cc_kb_autonomy_profile",
+      description:
+        "Fetch one autonomy profile (conservative, balanced, aggressive, unattended-review). Returns permission block, gates, session init command, memory rules.",
+      inputSchema: {
+        type: "object",
+        properties: { profile: { type: "string", description: "Profile name, e.g. 'conservative', 'balanced', 'aggressive', 'unattended-review'." } },
+        required: ["profile"],
       },
     },
   ],
@@ -1223,6 +1294,35 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       lines.push(`Run \`/cc-orchestrate --template ${topologies[0].id}\` to start with the recommended topology.`);
       lines.push(`Use \`cc_docs_full_reference\` with topic \`cc-orchestrate\` for full orchestration documentation.`);
       return { content: [{ type: "text", text: lines.join("\n") }] };
+    }
+
+    case "cc_kb_hook_recipe": {
+      const art = getKb("hooks", args.name || "");
+      return { content: [{ type: "text", text: art ? formatKb(art) : notFoundMessage("hooks", args.name) }] };
+    }
+    case "cc_kb_topology_kit": {
+      const art = getKb("topologies", args.name || "");
+      return { content: [{ type: "text", text: art ? formatKb(art) : notFoundMessage("topologies", args.name) }] };
+    }
+    case "cc_kb_workflow_pack": {
+      const art = getKb("workflows", args.name || "");
+      return { content: [{ type: "text", text: art ? formatKb(art) : notFoundMessage("workflows", args.name) }] };
+    }
+    case "cc_kb_channel_server": {
+      const art = getKb("channels", args.name || "");
+      return { content: [{ type: "text", text: art ? formatKb(art) : notFoundMessage("channels", args.name) }] };
+    }
+    case "cc_kb_lsp_config": {
+      const art = getKb("lsp", args.language || "");
+      return { content: [{ type: "text", text: art ? formatKb(art) : notFoundMessage("lsp", args.language) }] };
+    }
+    case "cc_kb_pattern_template": {
+      const art = getKb("patterns", args.name || "");
+      return { content: [{ type: "text", text: art ? formatKb(art) : notFoundMessage("patterns", args.name) }] };
+    }
+    case "cc_kb_autonomy_profile": {
+      const art = getKb("autonomy", args.profile || "");
+      return { content: [{ type: "text", text: art ? formatKb(art) : notFoundMessage("autonomy", args.profile) }] };
     }
 
     case "cc_docs_schedule_recommend": {

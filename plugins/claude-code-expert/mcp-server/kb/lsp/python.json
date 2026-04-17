@@ -1,0 +1,10 @@
+{
+  "language": "python",
+  "server": "pyright",
+  "alt_server": "python-lsp-server (pylsp)",
+  "install": "npm i -g pyright",
+  "alt_install": "pip install python-lsp-server",
+  "verify": "pyright --version",
+  "diagnostics_hook": "#!/bin/bash\nINPUT=$(head -c 65536); FILE=$(printf '%s' \"$INPUT\" | jq -r '.tool_input.file_path // \"\"')\n[[ \"$FILE\" != *.py ]] && { echo '{\"decision\":\"approve\"}'; exit 0; }\nERRORS=$(pyright \"$FILE\" 2>&1 | head -20)\n[ -n \"$ERRORS\" ] && echo \"$ERRORS\" >&2\necho '{\"decision\":\"approve\"}'",
+  "notes": "Pyright is faster and stricter than pylsp. Respect project's pyproject.toml — pyright reads it automatically."
+}

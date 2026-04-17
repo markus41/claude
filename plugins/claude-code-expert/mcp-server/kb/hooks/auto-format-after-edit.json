@@ -1,0 +1,17 @@
+{
+  "name": "auto-format-after-edit",
+  "event": "PostToolUse",
+  "matcher": "Write|Edit",
+  "summary": "Run prettier/black/rustfmt/gofmt on the file that was just written or edited.",
+  "when_to_use": "Projects with an established formatter. Skip when the project deliberately uses no formatter.",
+  "script_path": ".claude/hooks/auto-format-after-edit.sh",
+  "script": "#!/bin/bash\nset -euo pipefail\nINPUT=$(head -c 65536)\nFILE=$(printf '%s' \"$INPUT\" | jq -r '.tool_input.file_path // .tool_input.path // \"\"')\nif [ -z \"$FILE\" ] || [ ! -f \"$FILE\" ]; then echo '{\"decision\":\"approve\"}'; exit 0; fi\nREAL=$(realpath \"$FILE\" 2>/dev/null) || { echo '{\"decision\":\"approve\"}'; exit 0; }\nWD=$(realpath \"$PWD\")\n[[ \"$REAL\" != \"$WD\"/* ]] && { echo '{\"decision\":\"approve\"}'; exit 0; }\nBN=$(basename \"$REAL\")\n[[ \"$BN\" == -* ]] && { echo '{\"decision\":\"approve\"}'; exit 0; }\ncase \"$REAL\" in\n  *.ts|*.tsx|*.js|*.jsx|*.json|*.css|*.scss|*.md) npx -y prettier --write \"$REAL\" 2>/dev/null || true ;;\n  *.py) black \"$REAL\" 2>/dev/null || ruff format \"$REAL\" 2>/dev/null || true ;;\n  *.rs) rustfmt \"$REAL\" 2>/dev/null || true ;;\n  *.go) gofmt -w \"$REAL\" 2>/dev/null || true ;;\nesac\necho '{\"decision\":\"approve\"}'\n",
+  "settings_snippet": {
+    "hooks": {
+      "PostToolUse": [
+        { "matcher": "Write|Edit", "hooks": [{ "type": "command", "command": "bash .claude/hooks/auto-format-after-edit.sh" }] }
+      ]
+    }
+  },
+  "verify": "Edit a poorly-formatted .ts file — confirm prettier reformatted it."
+}

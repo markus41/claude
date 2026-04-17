@@ -1,0 +1,17 @@
+{
+  "name": "protect-sensitive-files",
+  "event": "PreToolUse",
+  "matcher": "Write|Edit",
+  "summary": "Block any write/edit targeting .env, credentials, secrets, or private-key files.",
+  "when_to_use": "Always. This is a baseline safety pack — install it on every repo.",
+  "script_path": ".claude/hooks/protect-sensitive-files.sh",
+  "script": "#!/bin/bash\nset -euo pipefail\nINPUT=$(head -c 65536)\nif ! printf '%s' \"$INPUT\" | jq -e . >/dev/null 2>&1; then\n  echo '{\"decision\":\"approve\"}'; exit 0\nfi\nFILE=$(printf '%s' \"$INPUT\" | jq -r '.tool_input.file_path // .tool_input.path // \"\"')\nBASENAME=$(basename \"$FILE\" 2>/dev/null || echo \"\")\nBLOCKED='^(\\.env|\\.env\\.|credentials|secrets?\\.|.*\\.pem$|.*\\.key$|.*_rsa$|.*_dsa$|.*_ed25519$)'\nif [[ \"$BASENAME\" =~ $BLOCKED ]]; then\n  jq -n --arg f \"$FILE\" '{\"decision\":\"block\",\"reason\":(\"Write to sensitive file blocked: \"+$f)}'\n  exit 0\nfi\necho '{\"decision\":\"approve\"}'\n",
+  "settings_snippet": {
+    "hooks": {
+      "PreToolUse": [
+        { "matcher": "Write|Edit", "hooks": [{ "type": "command", "command": "bash .claude/hooks/protect-sensitive-files.sh" }] }
+      ]
+    }
+  },
+  "verify": "Try `Write to .env` — hook should block with decision:block."
+}
