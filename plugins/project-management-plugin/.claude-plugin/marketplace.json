@@ -1,0 +1,31 @@
+{
+  "name": "project-management-plugin",
+  "owner": {
+    "name": "Markus Ahling",
+    "email": "Markus@thelobbi.io"
+  },
+  "metadata": {
+    "description": "Universal project manager with interview-first initialization, micro-task decomposition, deep research before every execution, autonomous work loop, and 9 PM platform integrations."
+  },
+  "plugins": [
+    {
+      "name": "project-management-plugin",
+      "source": "../",
+      "description": "Universal project manager with interview-first init, micro-task decomposition, deep research, and 9 PM platform integrations.",
+      "version": "1.0.0",
+      "category": "productivity",
+      "keywords": [
+        "project-management",
+        "tasks",
+        "research",
+        "autonomous",
+        "pm-integration"
+      ],
+      "author": {
+        "name": "Markus Ahling",
+        "email": "Markus@thelobbi.io"
+      },
+      "license": "MIT"
+    }
+  ]
+}

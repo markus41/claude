@@ -661,3 +661,200 @@ KeyError: 'number'
 - **Error:** Exit code 49
 Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut from Settings > Apps > Advanced app settings > App execution aliases.
 - **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: mcp__firecrawl__firecrawl_scrape failure (2026-04-21T17:45:59Z)
+- **Tool:** mcp__firecrawl__firecrawl_scrape
+- **Input:** `N/A`
+- **Error:** Tool 'firecrawl_scrape' execution failed: Unauthorized: Invalid token
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: mcp__firecrawl__firecrawl_scrape failure (2026-04-21T17:46:00Z)
+- **Tool:** mcp__firecrawl__firecrawl_scrape
+- **Input:** `N/A`
+- **Error:** Tool 'firecrawl_scrape' execution failed: Unauthorized: Invalid token
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: mcp__firecrawl__firecrawl_scrape failure (2026-04-21T17:46:00Z)
+- **Tool:** mcp__firecrawl__firecrawl_scrape
+- **Input:** `N/A`
+- **Error:** Tool 'firecrawl_scrape' execution failed: Unauthorized: Invalid token
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: mcp__firecrawl__firecrawl_scrape failure (2026-04-21T17:46:01Z)
+- **Tool:** mcp__firecrawl__firecrawl_scrape
+- **Input:** `N/A`
+- **Error:** Tool 'firecrawl_scrape' execution failed: Unauthorized: Invalid token
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving
+
+### Error: Bash failure (2026-04-21T17:58:12Z)
+- **Tool:** Bash
+- **Input:** `for f in /c/Dev/repos/claude/plugins/project-management-plugin/agents/*.md; do
+  echo "=== $(basename $f) ==="
+  python3 -c "
+import sys, re
+content = open('$f').read()
+m = re.match(r'^---\n(.*?)\n---', content, re.DOTALL)
+if not m:
+    print('ERROR: no frontmatter found')
+    sys.exit(1)
+import yaml
+try:
+    data = yaml.safe_load(m.group(1))
+    invalid = [k for k in data if k not in ['name','description','model','effort','maxTurns','tools','disallowedTools','skills','memory','background','isolation']]
+    if invalid:
+        print(f'INVALID KEYS: {invalid}')
+    else:
+        print(f'OK — name={data[\"name\"]}, model={data[\"model\"]}, maxTurns={data.get(\"maxTurns\")}')
+except Exception as e:
+    print(f'YAML ERROR: {e}')
+" 2>&1
+done`
+- **Error:** Exit code 49
+=== checkpoint-manager.md ===
+Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut from Settings > Apps > Advanced app settings > App execution aliases.
+=== context-guardian.md ===
+Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut from Settings > Apps > Advanced app settings > App execution aliases.
+=== council-reviewer.md ===
+Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut from Settings > Apps > Advanced app settings > App execution aliases.
+=== deep-researcher.md ===
+Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut from Settings > Apps > Advanced app settings > App execution aliases.
+=== dependency-resolver.md ===
+Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut from Settings > Apps > Advanced app settings > App execution aliases.
+=== pattern-recognizer.md ===
+Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut from Settings > Apps > Advanced app settings > App execution aliases.
+=== pm-integrator.md ===
+Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut from Settings > Apps > Advanced app settings > App execution aliases.
+=== progress-monitor.md ===
+Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut from Settings > Apps > Advanced app settings > App execution aliases.
+=== project-interviewer.md ===
+Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut from Settings > Apps > Advanced app settings > App execution aliases.
+=== project-orchestrator.md ===
+Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut from Settings > Apps > Advanced app settings > App execution aliases.
+=== quality-reviewer.md ===
+Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut from Settings > Apps > Advanced app settings > App execution aliases.
+=== research-dispatcher.md ===
+Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut from Settings > Apps > Advanced app settings > App execution aliases.
+=== risk-assessor.md ===
+Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut from Settings > Apps > Advanced app settings > App execution aliases.
+=== scope-architect.md ===
+Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut from Settings > Apps > Advanced app settings > App execution aliases.
+=== task-decomposer.md ===
+Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut from Settings > Apps > Advanced app settings > App execution aliases.
+=== task-executor.md ===
+Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut from Settings > Apps > Advanced app settings > App execution aliases.
+
+- **Status:** RESOLVED
+- **Fix:** python3 is not installed on this Windows machine. Switched to Node.js (node -e) with forward-slash paths (C:/Dev/repos/...) which Node.js resolves correctly on Windows.
+- **Prevention:** Never use python3 in Bash commands on this Windows environment. Use Node.js for scripting. Node.js v24 is confirmed available.
+
+### Error: Bash failure (2026-04-21T17:58:19Z)
+- **Tool:** Bash
+- **Input:** `node -e "
+const fs = require('fs');
+const path = require('path');
+const dir = '/c/Dev/repos/claude/plugins/project-management-plugin/agents';
+const valid_keys = new Set(['name','description','model','effort','maxTurns','tools','disallowedTools','skills','memory','background','isolation']);
+const files = fs.readdirSync(dir).filter(f => f.endsWith('.md')).sort();
+let allOk = true;
+for (const file of files) {
+  const content = fs.readFileSync(path.join(dir, file), 'utf8');
+  const m = content.match(/^---\n([\s\S]*?)\n---/);
+  if (!m) { console.log(file + ': ERROR no frontmatter'); allOk = false; continue; }
+  const fm = m[1];
+  // simple key extraction
+  const keys = [...fm.matchAll(/^(\w+):/gm)].map(x => x[1]);
+  const invalid = keys.filter(k => !valid_keys.has(k));
+  if (invalid.length) { console.log(file + ': INVALID KEYS: ' + invalid.join(', ')); allOk = false; }
+  else { console.log(file + ': OK (' + keys.join(', ') + ')'); }
+}
+if (allOk) console.log('\nAll 16 files: valid frontmatter keys');
+"`
+- **Error:** Exit code 1
+node:fs:1569
+  const result = binding.readdir(
+                         ^
+
+Error: ENOENT: no such file or directory, scandir 'C:\c\Dev\repos\claude\plugins\project-management-plugin\agents'
+    at Object.readdirSync (node:fs:1569:26)
+    at [eval]:6:18
+    at runScriptInThisContext (node:internal/vm:219:10)
+    at node:internal/process/execution:451:12
+    at [eval]-wrapper:6:24
+    at runScriptInContext (node:internal/process/execution:449:60)
+    at evalFunction (node:internal/process/execution:283:30)
+    at evalTypeScript (node:internal/process/execution:295:3)
+    at node:internal/main/eval_string:71:3 {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'scandir',
+  path: 'C:\\c\\Dev\\repos\\claude\\plugins\\project-management-plugin\\agents'
+}
+
+Node.js v24.14.1
+
+- **Status:** RESOLVED
+- **Fix:** Passing /c/Dev/... MSYS-style paths to Node.js on Windows causes path doubling (C:cDev...). Solution: use C:/Dev/... forward-slash paths directly in node -e inline scripts.
+- **Prevention:** In node -e inline scripts on Windows, always use C:/... forward-slash paths. Never use /c/... MSYS-style paths.
+
+### Error: Bash failure (2026-04-21T17:58:28Z)
+- **Tool:** Bash
+- **Input:** `node -e "
+const fs = require('fs');
+const path = require('path');
+const dir = 'C:\\\\Dev\\\\repos\\\\claude\\\\plugins\\\\project-management-plugin\\\\agents';
+const valid_keys = new Set(['name','description','model','effort','maxTurns','tools','disallowedTools','skills','memory','background','isolation']);
+const files = fs.readdirSync(dir).filter(f => f.endsWith('.md')).sort();
+let allOk = true;
+for (const file of files) {
+  const content = fs.readFileSync(path.join(dir, file), 'utf8');
+  const m = content.match(/^---\n([\s\S]*?)\n---/);
+  if (!m) { console.log(file + ': ERROR no frontmatter'); allOk = false; continue; }
+  const fm = m[1];
+  const keys = [...fm.matchAll(/^(\w+):/gm)].map(x => x[1]);
+  const invalid = keys.filter(k => !valid_keys.has(k));
+  if (invalid.length) { console.log(file + ': INVALID KEYS: ' + invalid.join(', ')); allOk = false; }
+  else { console.log(file + ': OK (' + keys.join(', ') + ')'); }
+}
+if (allOk) console.log('\nAll 16 files: valid frontmatter keys');
+"`
+- **Error:** Exit code 1
+node:fs:1569
+  const result = binding.readdir(
+                         ^
+
+Error: ENOENT: no such file or directory, scandir 'C:\Dev\repos\claude\Deveposclaudepluginsproject-management-pluginagents'
+    at Object.readdirSync (node:fs:1569:26)
+    at [eval]:6:18
+    at runScriptInThisContext (node:internal/vm:219:10)
+    at node:internal/process/execution:451:12
+    at [eval]-wrapper:6:24
+    at runScriptInContext (node:internal/process/execution:449:60)
+    at evalFunction (node:internal/process/execution:283:30)
+    at evalTypeScript (node:internal/process/execution:295:3)
+    at node:internal/main/eval_string:71:3 {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'scandir',
+  path: 'C:\\Dev\\repos\\claude\\Dev\reposclaudepluginsproject-management-pluginagents'
+}
+
+Node.js v24.14.1
+
+- **Status:** RESOLVED
+- **Fix:** Bash interprets backslash sequences inside double-quoted node -e strings, mangling the Windows path. Solution: use forward-slash paths (C:/Dev/repos/...) in a minified single-line node -e command — no backslash escaping needed.
+- **Prevention:** Never embed backslash Windows paths in double-quoted bash strings for node -e. Use forward slashes or write a temp JS file.
+
+### Error: Bash failure (2026-04-21T18:01:41Z)
+- **Tool:** Bash
+- **Input:** `cd "C:/Dev/repos/claude" && python3 -m json.tool ...`
+- **Error:** Exit code 49 — Python was not found; Windows App Execution Alias intercepts `python3` and exits 49 when Python is not installed from the Store.
+- **Status:** RESOLVED
+- **Fix:** Used `node -e "JSON.parse(fs.readFileSync(f))"` instead. Node.js is always available in this environment; `python3` is not.
+- **Prevention:** On this Windows environment, never use `python3` for JSON validation or scripting. Use `node -e` with `require('fs')` for JSON validation tasks instead.
+
+### Error: Bash failure (2026-04-21T18:05:02Z)
+- **Tool:** Bash
+- **Input:** `cd C:/Dev/repos/claude && git diff .claude/agent-memory/MEMORY.md .claude/rules/lessons-learned.md --stat && ls plugins/project-management-plugin/ 2>/dev/null | head -20`
+- **Error:** Exit code 128
+fatal: option '--stat' must come before non-option arguments
+- **Status:** NEEDS_FIX - Claude should document the fix here after resolving

@@ -1,0 +1,163 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/markus41/claude/plugins/project-management-plugin/schemas/task.schema.json",
+  "title": "Task",
+  "description": "Schema for an individual task within a project-management-plugin project",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "description",
+    "phase",
+    "level",
+    "status",
+    "priority",
+    "estimate_minutes",
+    "dependencies",
+    "subtasks",
+    "completion_criteria",
+    "tags",
+    "created_at"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique task identifier in T-{number} format",
+      "pattern": "^T-[0-9]+$"
+    },
+    "title": {
+      "type": "string",
+      "description": "Short, action-oriented task title",
+      "minLength": 3
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed description of what the task must accomplish and any relevant context"
+    },
+    "phase": {
+      "type": "string",
+      "description": "ID of the parent phase this task belongs to",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "level": {
+      "type": "string",
+      "description": "Granularity level in the 5-level decomposition hierarchy",
+      "enum": [
+        "epic",
+        "story",
+        "task",
+        "subtask",
+        "micro"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "description": "Current execution state of the task",
+      "enum": [
+        "PENDING",
+        "IN_RESEARCH",
+        "RESEARCHED",
+        "IN_PROGRESS",
+        "VALIDATING",
+        "COMPLETE",
+        "BLOCKED"
+      ]
+    },
+    "priority": {
+      "type": "string",
+      "description": "Relative importance used for autonomous loop scheduling",
+      "enum": [
+        "CRITICAL",
+        "HIGH",
+        "MEDIUM",
+        "LOW"
+      ]
+    },
+    "estimate_minutes": {
+      "type": "integer",
+      "description": "Original time estimate in minutes (1–480 / up to 8 hours)",
+      "minimum": 1,
+      "maximum": 480
+    },
+    "actual_minutes": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "Actual time taken in minutes; null until the task is COMPLETE",
+      "minimum": 0
+    },
+    "dependencies": {
+      "type": "array",
+      "description": "IDs of tasks that must reach COMPLETE before this task can begin",
+      "items": {
+        "type": "string",
+        "pattern": "^T-[0-9]+$"
+      },
+      "uniqueItems": true
+    },
+    "subtasks": {
+      "type": "array",
+      "description": "IDs of child tasks decomposed from this task",
+      "items": {
+        "type": "string",
+        "pattern": "^T-[0-9]+$"
+      },
+      "uniqueItems": true
+    },
+    "completion_criteria": {
+      "type": "array",
+      "description": "Unambiguous, binary-testable acceptance criteria; each item must be independently verifiable",
+      "items": {
+        "type": "string",
+        "minLength": 10
+      },
+      "minItems": 1,
+      "maxItems": 7
+    },
+    "research_file": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Relative path to the research brief file (e.g. research/T-42.md) within the project state directory; null until research phase is complete"
+    },
+    "external_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The ID or key of the corresponding issue/card/item in the connected PM platform; null when no PM integration is active"
+    },
+    "tags": {
+      "type": "array",
+      "description": "Freeform labels for filtering and grouping (e.g. 'frontend', 'auth', 'breaking-change')",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "blocked_reason": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Human-readable explanation of why the task is BLOCKED; null for all other statuses"
+    },
+    "created_at": {
+      "type": "string",
+      "description": "ISO 8601 timestamp when this task was created",
+      "format": "date-time"
+    },
+    "completed_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "ISO 8601 timestamp when the task reached COMPLETE status; null until then",
+      "format": "date-time"
+    }
+  }
+}
