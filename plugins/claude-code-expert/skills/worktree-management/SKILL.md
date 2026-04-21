@@ -171,6 +171,41 @@ Rules:
 | Research-only (read-only) | | ✓ |
 | Task must share context with parent | | ✓ |
 
+## Session forking (programmatic SDK)
+
+When using the **Claude Agent SDK** (Python/TypeScript) rather than the CLI, the equivalent of a worktree is a **forked session**. Sessions are stored at:
+
+```
+~/.claude/projects/<url-encoded-cwd>/<session-id>.jsonl
+```
+
+Fork a session to branch history without touching the original:
+
+```python
+# Python
+result = await query(prompt="implement auth changes", options={"forkSession": True})
+# → new session branched from current history; original session untouched
+```
+
+```typescript
+// TypeScript
+const result = await query({ prompt: "implement auth changes", options: { forkSession: true } });
+```
+
+**Worktree vs forked session:**
+
+| | Git worktree | Forked session |
+|---|---|---|
+| Isolates | File system state (branch) | Conversation history |
+| Parallel? | Yes — each has own branch | Yes — each has own session ID |
+| Resumable? | Via `EnterWorktree` | Via `resume: sessionId` |
+| Cleanup | `git worktree remove` | Sessions expire or are deleted |
+| Use in | Claude Code CLI | Agent SDK programmatic use |
+
+For CLI-based orchestration (this plugin's default), use worktrees. Use `forkSession` when building applications on top of the SDK.
+
+To resume a specific session: `resume: "<session-id>"` in SDK options, or `--resume` in `/cc-orchestrate` (reads `.claude/active-task.md` for the last wave's session ID).
+
 ## Integration with cc-orchestrate
 
 The `cc-orchestrate` command uses `isolation: "worktree"` for any template that fans out to multiple implementation agents. Each agent gets its own branch. The orchestrator collects the branch names and opens PRs or merges in sequence.

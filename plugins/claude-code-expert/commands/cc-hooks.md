@@ -48,6 +48,31 @@ Fetch details via `cc_kb_hook_recipe(name)`:
 
 Runs `cc_docs_hook_pack_recommend(signals)` with auto-detected repo signals (has_formatter, has_tests, has_secrets, has_git, …). Returns shortlist of packs with rationale.
 
+## All hook events (complete reference)
+
+Sourced from the Claude Agent SDK. All events are available in `settings.json` under `hooks.{Event}`.
+
+| Event | Fires when | Can block? | Typical use |
+|---|---|---|---|
+| `PreToolUse` | Before any tool call | Yes — return `{"decision":"block"}` | Guard writes, validate paths |
+| `PostToolUse` | After a tool call succeeds | No | Reformat, log, audit |
+| `PostToolUseFailure` | After a tool call fails | No | Capture errors → lessons-learned |
+| `Notification` | Claude emits a user-facing notification | No | Log, webhook, Slack alert |
+| `Stop` | Claude is about to stop responding | Yes | Enforce test pass, quality gate |
+| `SessionStart` | A new session begins | No | Load context, inject rules |
+| `SessionEnd` | Session is ending | No | Summarize, archive to memory |
+| `SubagentStart` | A subagent is spawned | Yes | Audit which agents fire, enforce budget |
+| `SubagentStop` | A subagent completes or is stopped | No | Collect telemetry, capture output |
+| `TeammateIdle` | A teammate process has been idle too long | Yes | Kill stale processes, alert |
+| `PreCompact` | Before `/compact` context compaction | No | Save key context to memory before window shrinks |
+| `UserPromptSubmit` | User submits a prompt | Yes | Enforce prompt policies, inject context |
+| `PermissionRequest` | A permission check fires | Yes | Auto-approve known-safe tools |
+| `Setup` | During initial session setup | No | Bootstrap rules, check environment |
+
+**Matchers** use regex on tool name or event type, e.g. `"Write|Edit"`, `"^mcp__"`, `""` (match all).
+
+**Priority**: `deny` > `ask` > `allow` — if any hook returns `{"decision":"block"}`, the operation is blocked regardless of other hooks.
+
 ## Debugging (`debug`)
 
 Shows:

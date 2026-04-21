@@ -49,7 +49,7 @@ If `--pattern` isn't provided, runs `pattern-router` agent first. Router returns
 5. Coordinator gathers outputs and synthesizes.
 6. Returns: final artifact + decision log + cost actual vs estimate.
 
-**Resume**: If a multi-wave run was interrupted, `--resume` reads `.claude/active-task.md` (written by each wave) and restarts from the last completed wave.
+**Resume**: If a multi-wave run was interrupted, `--resume` reads `.claude/active-task.md` (written by each wave) and restarts from the last completed wave. When using the Agent SDK programmatically, pass `resume: "<session-id>"` instead — session files are at `~/.claude/projects/<url-encoded-cwd>/<session-id>.jsonl`.
 
 ## Cost control
 
