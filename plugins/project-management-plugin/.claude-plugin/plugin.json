@@ -1,5 +1,4 @@
 {
-  "$schema": "https://claude.local/schemas/plugin.schema.json",
   "name": "project-management-plugin",
   "version": "1.0.0",
   "description": "Universal project manager: interview-first init, micro-task decomposition, deep research before execution, autonomous work loop, and 9 PM platform integrations.",
@@ -17,72 +16,10 @@
     "autonomous",
     "pm-integration"
   ],
-  "permissions": {
-    "tools": [
-      "Read",
-      "Write",
-      "Edit",
-      "Bash"
-    ]
-  },
   "dependencies": [],
-  "commands": {
-    "pm-auto": "commands/pm-auto.md",
-    "pm-backlog": "commands/pm-backlog.md",
-    "pm-checkpoint": "commands/pm-checkpoint.md",
-    "pm-debug": "commands/pm-debug.md",
-    "pm-delegate": "commands/pm-delegate.md",
-    "pm-focus": "commands/pm-focus.md",
-    "pm-init": "commands/pm-init.md",
-    "pm-integrate": "commands/pm-integrate.md",
-    "pm-next": "commands/pm-next.md",
-    "pm-plan": "commands/pm-plan.md",
-    "pm-report": "commands/pm-report.md",
-    "pm-research": "commands/pm-research.md",
-    "pm-retrospective": "commands/pm-retrospective.md",
-    "pm-review": "commands/pm-review.md",
-    "pm-risk": "commands/pm-risk.md",
-    "pm-status": "commands/pm-status.md",
-    "pm-sync": "commands/pm-sync.md",
-    "pm-task": "commands/pm-task.md",
-    "pm-template": "commands/pm-template.md",
-    "pm-work": "commands/pm-work.md"
-  },
-  "skills": {
-    "pm-integrations": "skills/pm-integrations/SKILL.md",
-    "progress-visualization": "skills/progress-visualization/SKILL.md",
-    "project-decomposition": "skills/project-decomposition/SKILL.md",
-    "project-templates": "skills/project-templates/SKILL.md",
-    "quality-gates": "skills/quality-gates/SKILL.md",
-    "research-protocol": "skills/research-protocol/SKILL.md",
-    "task-state-management": "skills/task-state-management/SKILL.md"
-  },
-  "agents": {
-    "checkpoint-manager": "agents/checkpoint-manager.md",
-    "context-guardian": "agents/context-guardian.md",
-    "council-reviewer": "agents/council-reviewer.md",
-    "deep-researcher": "agents/deep-researcher.md",
-    "dependency-resolver": "agents/dependency-resolver.md",
-    "pattern-recognizer": "agents/pattern-recognizer.md",
-    "pm-integrator": "agents/pm-integrator.md",
-    "progress-monitor": "agents/progress-monitor.md",
-    "project-interviewer": "agents/project-interviewer.md",
-    "project-orchestrator": "agents/project-orchestrator.md",
-    "quality-reviewer": "agents/quality-reviewer.md",
-    "research-dispatcher": "agents/research-dispatcher.md",
-    "risk-assessor": "agents/risk-assessor.md",
-    "scope-architect": "agents/scope-architect.md",
-    "task-decomposer": "agents/task-decomposer.md",
-    "task-executor": "agents/task-executor.md"
-  },
   "categories": [
     "project-management",
     "orchestration",
     "agents"
-  ],
-  "provides": {
-    "commands": 20,
-    "agents": 16,
-    "skills": 7
-  }
+  ]
 }

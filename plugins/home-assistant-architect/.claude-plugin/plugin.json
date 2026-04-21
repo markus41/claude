@@ -28,53 +28,9 @@
     "parallelization",
     "learning"
   ],
-  "commands": {
-    "ha-automation": "commands/ha-automation.md",
-    "ha-camera": "commands/ha-camera.md",
-    "ha-control": "commands/ha-control.md",
-    "ha-dashboard": "commands/ha-dashboard.md",
-    "ha-deploy": "commands/ha-deploy.md",
-    "ha-energy": "commands/ha-energy.md",
-    "ha-mcp": "commands/ha-mcp.md",
-    "ha-sensor": "commands/ha-sensor.md",
-    "ollama-setup": "commands/ollama-setup.md"
-  },
-  "skills": {
-    "agentic-patterns": "skills/agentic-patterns/SKILL.md",
-    "camera-nvr": "skills/camera-nvr/SKILL.md",
-    "energy-management": "skills/energy-management/SKILL.md",
-    "ha-automation": "skills/ha-automation/SKILL.md",
-    "ha-core": "skills/ha-core/SKILL.md",
-    "local-llm": "skills/local-llm/SKILL.md",
-    "lovelace-design": "skills/lovelace-design/SKILL.md",
-    "sensor-management": "skills/sensor-management/SKILL.md",
-    "ubuntu-deployment": "skills/ubuntu-deployment/SKILL.md"
-  },
-  "agents": {
-    "ha-automation-architect": "agents/ha-automation-architect.md",
-    "ha-camera-nvr": "agents/ha-camera-nvr.md",
-    "ha-customization-expert": "agents/ha-customization-expert.md",
-    "ha-dashboard-designer": "agents/ha-dashboard-designer.md",
-    "ha-data-writer": "agents/ha-data-writer.md",
-    "ha-device-controller": "agents/ha-device-controller.md",
-    "ha-diagnostics": "agents/ha-diagnostics.md",
-    "ha-energy-management": "agents/ha-energy-management.md",
-    "ha-energy-optimizer": "agents/ha-energy-optimizer.md",
-    "ha-frontend-builder": "agents/ha-frontend-builder.md",
-    "ha-security-auditor": "agents/ha-security-auditor.md",
-    "ha-sensor-manager": "agents/ha-sensor-manager.md",
-    "ha-voice-assistant": "agents/ha-voice-assistant.md",
-    "local-llm-manager": "agents/local-llm-manager.md",
-    "ubuntu-ha-deployer": "agents/ubuntu-ha-deployer.md"
-  },
   "categories": [
     "utilities",
     "agents",
     "orchestration"
-  ],
-  "provides": {
-    "commands": 9,
-    "agents": 15,
-    "skills": 9
-  }
+  ]
 }

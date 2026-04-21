@@ -27,36 +27,9 @@
     "evaluation"
   ],
   "repository": "https://github.com/the-lobbi/keycloak-alpha",
-  "commands": {
-    "env-generate": "commands/env-generate.md",
-    "env-validate": "commands/env-validate.md",
-    "health": "commands/health.md",
-    "keycloak-setup": "commands/keycloak-setup.md",
-    "keycloak-theme": "commands/keycloak-theme.md",
-    "keycloak-user": "commands/keycloak-user.md",
-    "service": "commands/service.md",
-    "test-gen": "commands/test-gen.md"
-  },
-  "skills": {
-    "agentic-patterns": "skills/agentic-patterns/SKILL.md",
-    "keycloak-admin": "skills/keycloak-admin/SKILL.md",
-    "mern-patterns": "skills/mern-patterns/SKILL.md",
-    "multi-tenant": "skills/multi-tenant/SKILL.md"
-  },
-  "agents": {
-    "env-manager": "agents/env-manager.md",
-    "keycloak-admin": "agents/keycloak-admin.md",
-    "service-orchestrator": "agents/service-orchestrator.md",
-    "test-generator": "agents/test-generator.md"
-  },
   "categories": [
     "devops",
     "authentication",
     "backend"
-  ],
-  "provides": {
-    "commands": 8,
-    "agents": 4,
-    "skills": 4
-  }
+  ]
 }

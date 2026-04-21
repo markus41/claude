@@ -1,5 +1,4 @@
 {
-  "$schema": "https://claude.local/schemas/plugin.schema.json",
   "name": "claude-code-expert",
   "version": "8.0.0",
   "description": "Modern Claude Code second brain: 5-layer stack deploy + three-tier memory (engram + Obsidian vault + plugin rules) + 22-tool MCP reference server. 14 behavior-triggering skills, 11 single-intent commands, 18 role-scoped agents bridging engram and Obsidian.",
@@ -30,79 +29,9 @@
     "security-compliance",
     "plugin-development"
   ],
-  "permissions": {
-    "tools": [
-      "Read",
-      "Write",
-      "Edit",
-      "Bash"
-    ]
-  },
-  "commands": {
-    "cc-autonomy": "commands/cc-autonomy.md",
-    "cc-channels": "commands/cc-channels.md",
-    "cc-council": "commands/cc-council.md",
-    "cc-debug": "commands/cc-debug.md",
-    "cc-help": "commands/cc-help.md",
-    "cc-hooks": "commands/cc-hooks.md",
-    "cc-intel": "commands/cc-intel.md",
-    "cc-memory": "commands/cc-memory.md",
-    "cc-orchestrate": "commands/cc-orchestrate.md",
-    "cc-setup": "commands/cc-setup.md",
-    "cc-skills": "commands/cc-skills.md",
-    "cc-sync": "commands/cc-sync.md"
-  },
-  "skills": {
-    "agent-teams": "skills/agent-teams/SKILL.md",
-    "agentic-patterns": "skills/agentic-patterns/SKILL.md",
-    "auto-mode": "skills/auto-mode/SKILL.md",
-    "autonomy": "skills/autonomy/SKILL.md",
-    "cc-second-brain": "skills/cc-second-brain/SKILL.md",
-    "claude-code-setup": "skills/claude-code-setup/SKILL.md",
-    "claude-code-sync": "skills/claude-code-sync/SKILL.md",
-    "context-budgeting": "skills/context-budgeting/SKILL.md",
-    "deep-code-intelligence": "skills/deep-code-intelligence/SKILL.md",
-    "hooks": "skills/hooks/SKILL.md",
-    "mcp": "skills/mcp/SKILL.md",
-    "model-routing": "skills/model-routing/SKILL.md",
-    "monitor-tool": "skills/monitor-tool/SKILL.md",
-    "orchestration-blackboard": "skills/orchestration-blackboard/SKILL.md",
-    "plugin-development": "skills/plugin-development/SKILL.md",
-    "prompt-budget-preflight": "skills/prompt-budget-preflight/SKILL.md",
-    "prompt-engineering": "skills/prompt-engineering/SKILL.md",
-    "security-compliance": "skills/security-compliance/SKILL.md",
-    "ultraplan": "skills/ultraplan/SKILL.md",
-    "verify-between-waves": "skills/verify-between-waves/SKILL.md",
-    "worktree-management": "skills/worktree-management/SKILL.md"
-  },
-  "agents": {
-    "audit-reviewer": "agents/audit-reviewer.md",
-    "autonomy-planner": "agents/autonomy-planner.md",
-    "autonomy-reviewer": "agents/autonomy-reviewer.md",
-    "autonomy-verifier": "agents/autonomy-verifier.md",
-    "council-coordinator": "agents/council-coordinator.md",
-    "debugger": "agents/debugger.md",
-    "dependency-auditor": "agents/dependency-auditor.md",
-    "evaluator-optimizer": "agents/evaluator-optimizer.md",
-    "implementer": "agents/implementer.md",
-    "memory-consolidator": "agents/memory-consolidator.md",
-    "migration-lead": "agents/migration-lead.md",
-    "pattern-router": "agents/pattern-router.md",
-    "plugin-architect": "agents/plugin-architect.md",
-    "principal-engineer-strategist": "agents/principal-engineer-strategist.md",
-    "release-coordinator": "agents/release-coordinator.md",
-    "research-orchestrator": "agents/research-orchestrator.md",
-    "security-compliance-advisor": "agents/security-compliance-advisor.md",
-    "team-orchestrator": "agents/team-orchestrator.md"
-  },
   "categories": [
     "orchestration",
     "agents",
     "productivity"
-  ],
-  "provides": {
-    "commands": 12,
-    "agents": 18,
-    "skills": 21
-  }
+  ]
 }

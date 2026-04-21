@@ -29,39 +29,9 @@
   ],
   "license": "MIT",
   "repository": "https://github.com/Lobbi-Docs/claude",
-  "commands": {
-    "deploy": "commands/deploy.md",
-    "docs": "commands/docs.md",
-    "integrate": "commands/integrate.md",
-    "perf": "commands/perf.md",
-    "quality": "commands/quality.md",
-    "status": "commands/status.md",
-    "test": "commands/test.md",
-    "workflow": "commands/workflow.md"
-  },
-  "skills": {
-    "agentic-patterns": "skills/agentic-patterns/SKILL.md",
-    "code-quality": "skills/code-quality/SKILL.md",
-    "devops-practices": "skills/devops-practices/SKILL.md",
-    "integration-patterns": "skills/integration-patterns/SKILL.md",
-    "workflow-automation": "skills/workflow-automation/SKILL.md"
-  },
-  "agents": {
-    "code-reviewer": "agents/code-reviewer.md",
-    "devops-engineer": "agents/devops-engineer.md",
-    "documentation-writer": "agents/documentation-writer.md",
-    "integration-specialist": "agents/integration-specialist.md",
-    "performance-engineer": "agents/performance-engineer.md",
-    "workflow-automator": "agents/workflow-automator.md"
-  },
   "categories": [
     "devops",
     "orchestration",
     "productivity"
-  ],
-  "provides": {
-    "commands": 8,
-    "agents": 6,
-    "skills": 5
-  }
+  ]
 }
