@@ -47,7 +47,7 @@ Full reference in [`docs/MCP_TOOLS.md`](docs/MCP_TOOLS.md).
 
 ## Plugin architecture
 
-- `skills/` (14) — behavior-triggering, ≤ 500 lines each, `references/` for heavy content.
+- `skills/` (21) — behavior-triggering, ≤ 500 lines each, `references/` for heavy content.
 - `commands/` (11) — single-intent, route to skills and MCP tools.
 - `agents/` (18) — role-scoped, model-deliberate, tool-restricted.
 - `memory/` — three-tier baseline rules + consolidator audit.

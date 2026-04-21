@@ -10,7 +10,7 @@ inputs: []
 risk: medium
 cost: medium
 description: Coordinator agent that implements fan-out/fan-in orchestration with blackboard pattern, circuit breakers, partial failure recovery, and structured consensus building
-model: sonnet
+model: opus
 allowed-tools:
   - Agent
   - Read

@@ -79,6 +79,20 @@ Router returns: pattern name + 5-layer wiring + cost estimate + anti-patterns.
 | Decide orchestration cost cap | `cc_docs_model_recommend(task, budget)` |
 | Recommend topology for multi-agent | `cc_docs_team_topology_recommend(task, complexity, team_size)` |
 
+## Parallelization vs Blackboard — when each applies
+
+Both fan out to multiple agents. The difference is **whether agents read each other's work**:
+
+| | Parallelization | Blackboard |
+|---|---|---|
+| Agents see peers? | No — each gets only their scope | Yes — each reads the shared board before writing |
+| Subtasks | Fully independent | Overlapping; one agent's finding informs another |
+| Example | Run security + perf + test reviews simultaneously | Security agent flags an issue; architecture agent reads it and re-evaluates their finding |
+| Cost | 1–3× | 3–6× (extra rounds per agent) |
+| When to choose | Subtasks have zero shared state | Agents must build on each other's output (adversarial or consensus-building) |
+
+If in doubt: start with parallelization. Upgrade to blackboard only when a second round of cross-agent reasoning is demonstrably necessary.
+
 ## Anti-patterns
 
 - Using eval-optimizer for simple tasks → wasted loops, no quality gain.

@@ -14,11 +14,12 @@ Runs an agentic pattern end-to-end with the right agents, tools, and coordinatio
 /cc-orchestrate <task> --topology <kit>   # Pattern + team topology
 /cc-orchestrate <task> --dry-run          # Show plan, don't execute
 /cc-orchestrate <task> --budget <amount>  # Cap cost (will choose cheaper pattern if needed)
+/cc-orchestrate --resume                  # Resume last interrupted multi-wave workflow
 ```
 
 ## Patterns
 
-See [`skills-v8/agentic-patterns`](../skills-v8/agentic-patterns/SKILL.md). Quick reference:
+See [`skills/agentic-patterns`](../skills/agentic-patterns/SKILL.md). Quick reference:
 
 | Pattern | Cost | Shape |
 |---|---|---|
@@ -44,8 +45,11 @@ If `--pattern` isn't provided, runs `pattern-router` agent first. Router returns
 1. Pattern chosen (explicitly or via router).
 2. Topology chosen (from `--topology` or `cc_docs_team_topology_recommend`).
 3. `team-orchestrator` agent (Opus) launches specialists with correct tool restrictions and worktree isolation.
-4. Coordinator gathers outputs and synthesizes.
-5. Returns: final artifact + decision log + cost actual vs estimate.
+4. **Between waves** (orchestrator-workers / blackboard): `verify-between-waves` skill runs as a gate — typecheck + lint + tests must pass before the next wave starts. See [`skills/verify-between-waves/SKILL.md`](../skills/verify-between-waves/SKILL.md).
+5. Coordinator gathers outputs and synthesizes.
+6. Returns: final artifact + decision log + cost actual vs estimate.
+
+**Resume**: If a multi-wave run was interrupted, `--resume` reads `.claude/active-task.md` (written by each wave) and restarts from the last completed wave.
 
 ## Cost control
 
