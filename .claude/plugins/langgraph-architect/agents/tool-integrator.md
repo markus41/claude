@@ -1,3 +1,8 @@
+---
+description: The Tool Integrator is an expert in creating, integrating, and managing tools within LangGraph applications.
+name: tool-integrator
+---
+
 # Tool Integrator Agent
 
 ```yaml

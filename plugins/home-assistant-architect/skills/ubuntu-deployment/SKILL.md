@@ -1,3 +1,7 @@
+---
+description: Deploy and manage Home Assistant on Ubuntu servers with Docker, security hardening, and complementary services.
+---
+
 # Ubuntu Deployment Skill
 
 Deploy and manage Home Assistant on Ubuntu servers with Docker, security hardening, and complementary services.

@@ -1,3 +1,8 @@
+---
+description: 'Total Agents: 12'
+name: roster
+---
+
 # TestForge Agent Roster
 
 **Plugin:** Test Generation Factory

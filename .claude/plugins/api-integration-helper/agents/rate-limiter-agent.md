@@ -1,3 +1,8 @@
+---
+description: Implements production-ready rate limiting with multiple strategies, request queuing, priority management, and quota tracking for API clients.
+name: rate-limiter-agent
+---
+
 # Rate Limiter Agent
 
 **Callsign:** Throttle

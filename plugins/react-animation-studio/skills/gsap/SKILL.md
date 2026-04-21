@@ -1,3 +1,7 @@
+---
+description: Expert knowledge for GSAP (GreenSock Animation Platform) - the industry-standard JavaScript animation library for professional-grade animations with precise timeline control.
+---
+
 # GSAP Skill
 
 Expert knowledge for GSAP (GreenSock Animation Platform) - the industry-standard JavaScript animation library for professional-grade animations with precise timeline control.

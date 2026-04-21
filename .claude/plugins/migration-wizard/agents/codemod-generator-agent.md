@@ -1,3 +1,8 @@
+---
+description: Master architect of code transformation.
+name: codemod-generator-agent
+---
+
 # Codemod Generator Agent
 
 **Callsign:** Migrator

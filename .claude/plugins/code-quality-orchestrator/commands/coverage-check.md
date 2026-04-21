@@ -1,3 +1,7 @@
+---
+description: Analyze test coverage and enforce thresholds.
+---
+
 # /coverage-check
 
 Analyze test coverage and enforce thresholds.

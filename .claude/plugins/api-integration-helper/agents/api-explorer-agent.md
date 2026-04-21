@@ -1,3 +1,8 @@
+---
+description: Provides interactive API exploration, endpoint testing, request/response analysis, and developer tools for API integration discovery and debugging.
+name: api-explorer-agent
+---
+
 # API Explorer Agent
 
 **Callsign:** Scout

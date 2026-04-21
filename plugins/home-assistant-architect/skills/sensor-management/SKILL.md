@@ -1,3 +1,7 @@
+---
+description: Home Assistant sensor configuration and analytics patterns.
+---
+
 # Sensor Management Skill
 
 Home Assistant sensor configuration and analytics patterns.

@@ -1,3 +1,7 @@
+---
+description: Inspect or repair project state files and caches
+---
+
 # /pm:debug — State Inspection and Repair
 
 **Usage**: `/pm:debug {project-id} [--inspect | --repair | --reset-task T-001]`

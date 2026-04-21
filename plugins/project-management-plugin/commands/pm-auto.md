@@ -1,3 +1,7 @@
+---
+description: Autonomous project execution loop that runs until completion or block
+---
+
 # /pm:auto — Autonomous Project Execution Loop
 
 **Usage**: `/pm:auto {project-id} [--budget-tasks N] [--budget-minutes N] [--serial] [--pause-on-epic]`

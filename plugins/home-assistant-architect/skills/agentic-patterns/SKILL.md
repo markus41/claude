@@ -1,3 +1,7 @@
+---
+description: Agentic Design Patterns — Home Assistant Architect
+---
+
 # Agentic Design Patterns — Home Assistant Architect
 
 > Patterns from "Agentic Design Patterns" (Gulli & Sauco, 2025) applied to smart home automation and IoT orchestration

@@ -28,15 +28,6 @@
       "Bash"
     ]
   },
-  "mcpServers": {
-    "scrapin-aint-easy": {
-      "command": "node",
-      "args": [
-        "${CLAUDE_PLUGIN_ROOT}/dist/cli.js",
-        "--mcp"
-      ]
-    }
-  },
   "commands": {
     "scrapin-algo": "commands/scrapin-algo.md",
     "scrapin-crawl": "commands/scrapin-crawl.md",

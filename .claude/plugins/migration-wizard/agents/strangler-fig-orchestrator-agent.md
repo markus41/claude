@@ -1,3 +1,8 @@
+---
+description: Master of incremental migration.
+name: strangler-fig-orchestrator-agent
+---
+
 # Strangler Fig Orchestrator Agent
 
 **Callsign:** Migrator

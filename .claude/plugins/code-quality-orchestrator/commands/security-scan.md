@@ -1,3 +1,7 @@
+---
+description: Deep security vulnerability and secret scanning.
+---
+
 # /security-scan
 
 Deep security vulnerability and secret scanning.

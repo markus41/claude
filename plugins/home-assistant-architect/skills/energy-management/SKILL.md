@@ -1,3 +1,7 @@
+---
+description: Home Assistant energy monitoring and optimization patterns.
+---
+
 # Energy Management Skill
 
 Home Assistant energy monitoring and optimization patterns.

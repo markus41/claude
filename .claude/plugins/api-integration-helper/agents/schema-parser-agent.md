@@ -1,3 +1,8 @@
+---
+description: Parses API specifications (OpenAPI 2.0/3.0/3.1, GraphQL schemas, AsyncAPI) and extracts structured metadata about endpoints, types, authentication, and server configurations.
+name: schema-parser-agent
+---
+
 # Schema Parser Agent
 
 **Callsign:** Parser

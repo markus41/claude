@@ -1,3 +1,7 @@
+---
+description: Deploy and integrate local LLMs with Ollama, LocalAI, and Home Assistant for privacy-focused voice assistants and automation.
+---
+
 # Local LLM Integration Skill
 
 Deploy and integrate local LLMs with Ollama, LocalAI, and Home Assistant for privacy-focused voice assistants and automation.

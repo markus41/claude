@@ -1,3 +1,8 @@
+---
+description: Generates production-quality mock servers using MSW (Mock Service Worker) or Prism with schema-based realistic data generation, request validation, and scenario testing.
+name: mock-server-agent
+---
+
 # Mock Server Agent
 
 **Callsign:** Mimic

@@ -1,3 +1,8 @@
+---
+description: Checks dependency health, outdated packages, vulnerable dependencies, and license compliance.
+name: dependency-health-agent
+---
+
 # Dependency Health Agent
 
 **Callsign:** Auditor

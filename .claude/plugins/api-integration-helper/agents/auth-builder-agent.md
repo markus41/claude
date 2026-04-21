@@ -1,3 +1,8 @@
+---
+description: Implements production-ready authentication flows including OAuth 2.0, PKCE, API keys, JWT, and custom auth patterns with secure token management.
+name: auth-builder-agent
+---
+
 # Auth Builder Agent
 
 **Callsign:** Guardian

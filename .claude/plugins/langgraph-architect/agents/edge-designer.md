@@ -1,3 +1,8 @@
+---
+description: The Edge Designer is an expert in defining the control flow between nodes in LangGraph state machines.
+name: edge-designer
+---
+
 # Edge Designer Agent
 
 ```yaml

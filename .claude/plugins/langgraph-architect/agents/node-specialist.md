@@ -1,3 +1,8 @@
+---
+description: The Node Specialist is an expert in designing, implementing, and optimizing nodes within LangGraph state machines.
+name: node-specialist
+---
+
 # Node Specialist Agent
 
 ```yaml

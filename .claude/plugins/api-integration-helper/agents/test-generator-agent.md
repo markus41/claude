@@ -1,3 +1,8 @@
+---
+description: Generates complete test suites including integration tests, E2E tests, contract tests, and edge case scenarios using Vitest, Jest, or Playwright.
+name: test-generator-agent
+---
+
 # Test Generator Agent
 
 **Callsign:** Tester

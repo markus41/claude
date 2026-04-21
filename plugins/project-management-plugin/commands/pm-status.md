@@ -1,3 +1,7 @@
+---
+description: ASCII progress dashboard for the active project
+---
+
 # /pm:status — Project Progress Dashboard
 
 **Usage**: `/pm:status [{project-id}] [--phase {phase-id}] [--verbose]`

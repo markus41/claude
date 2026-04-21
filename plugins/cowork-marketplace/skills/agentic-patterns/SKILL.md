@@ -1,3 +1,7 @@
+---
+description: Agentic Design Patterns — Cowork Marketplace
+---
+
 # Agentic Design Patterns — Cowork Marketplace
 
 > Patterns from "Agentic Design Patterns" (Gulli & Sauco, 2025) applied to plugin marketplace orchestration and agent-as-tool composition

@@ -1,3 +1,7 @@
+---
+description: Agentic Design Patterns — AWS EKS Helm Keycloak
+---
+
 # Agentic Design Patterns — AWS EKS Helm Keycloak
 
 > Patterns from "Agentic Design Patterns" (Gulli & Sauco, 2025) applied to cloud-native Kubernetes infrastructure, authentication, and CI/CD orchestration.

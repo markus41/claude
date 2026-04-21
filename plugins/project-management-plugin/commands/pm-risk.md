@@ -1,3 +1,7 @@
+---
+description: Assess project risks with severity scoring and mitigation suggestions
+---
+
 # /pm:risk — Risk Assessment
 
 **Usage**: `/pm:risk {project-id} [--task T-001] [--phase {phase-id}] [--rescore]`

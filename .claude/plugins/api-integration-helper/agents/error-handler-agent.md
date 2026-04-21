@@ -1,3 +1,8 @@
+---
+description: Creates comprehensive error handling systems with typed error classes, retry logic, circuit breakers, timeouts, and error recovery strategies.
+name: error-handler-agent
+---
+
 # Error Handler Agent
 
 **Callsign:** Sentinel

@@ -1,3 +1,7 @@
+---
+description: Bidirectional sync between local project state and integrated PM platform
+---
+
 # /pm:sync — Bidirectional Platform Sync
 
 **Usage**: `/pm:sync {project-id} [--push-only | --pull-only] [--dry-run]`

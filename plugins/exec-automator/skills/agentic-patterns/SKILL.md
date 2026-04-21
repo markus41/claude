@@ -1,3 +1,7 @@
+---
+description: Agentic Design Patterns — Exec Automator
+---
+
 # Agentic Design Patterns — Exec Automator
 
 > Patterns from "Agentic Design Patterns" (Gulli & Sauco, 2025) applied to executive director automation for trade associations and nonprofits
