@@ -122,5 +122,54 @@
       "skills/docker-containers/SKILL.md",
       "skills/dotnet-ai/SKILL.md"
     ]
+  },
+  "commands": {
+    "blazor-api": "commands/blazor-api.md",
+    "blazor-component": "commands/blazor-component.md",
+    "blazor-deploy": "commands/blazor-deploy.md",
+    "blazor-microservice": "commands/blazor-microservice.md",
+    "blazor-migrate": "commands/blazor-migrate.md",
+    "blazor-new": "commands/blazor-new.md",
+    "blazor-scaffold": "commands/blazor-scaffold.md",
+    "blazor-test": "commands/blazor-test.md"
+  },
+  "skills": {
+    "aspnet-core-apis": "skills/aspnet-core-apis/SKILL.md",
+    "blazor-auth-security": "skills/blazor-auth-security/SKILL.md",
+    "blazor-components": "skills/blazor-components/SKILL.md",
+    "blazor-forms-validation": "skills/blazor-forms-validation/SKILL.md",
+    "blazor-js-interop": "skills/blazor-js-interop/SKILL.md",
+    "blazor-performance": "skills/blazor-performance/SKILL.md",
+    "blazor-testing": "skills/blazor-testing/SKILL.md",
+    "cloud-native-deploy": "skills/cloud-native-deploy/SKILL.md",
+    "csharp-patterns": "skills/csharp-patterns/SKILL.md",
+    "ddd-cqrs-patterns": "skills/ddd-cqrs-patterns/SKILL.md",
+    "docker-containers": "skills/docker-containers/SKILL.md",
+    "dotnet-ai": "skills/dotnet-ai/SKILL.md",
+    "dotnet-aspire": "skills/dotnet-aspire/SKILL.md",
+    "entity-framework": "skills/entity-framework/SKILL.md",
+    "grpc-services": "skills/grpc-services/SKILL.md",
+    "microservices-patterns": "skills/microservices-patterns/SKILL.md",
+    "signalr-realtime": "skills/signalr-realtime/SKILL.md",
+    "syncfusion-blazor": "skills/syncfusion-blazor/SKILL.md",
+    "worker-services": "skills/worker-services/SKILL.md"
+  },
+  "agents": {
+    "aspnet-api-engineer": "agents/aspnet-api-engineer.md",
+    "blazor-architect": "agents/blazor-architect.md",
+    "csharp-expert": "agents/csharp-expert.md",
+    "dotnet-performance-engineer": "agents/dotnet-performance-engineer.md",
+    "microservices-designer": "agents/microservices-designer.md",
+    "syncfusion-ui-specialist": "agents/syncfusion-ui-specialist.md"
+  },
+  "categories": [
+    "backend",
+    "frontend",
+    "code-generation"
+  ],
+  "provides": {
+    "commands": 8,
+    "agents": 6,
+    "skills": 19
   }
 }

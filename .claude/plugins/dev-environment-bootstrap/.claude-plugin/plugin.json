@@ -9,12 +9,38 @@
   "license": "MIT",
   "repository": "https://github.com/Lobbi-Docs/claude",
   "keywords": [
-    "setup", "environment", "dependencies", "docker", "docker-compose",
-    "dotenv", "env-vars", "pre-commit", "hooks", "ide", "vscode", "cursor",
-    "onboarding", "bootstrap", "init", "install", "configure",
-    "troubleshoot", "debug-setup", "requirements", "package-json",
-    "requirements-txt", "gemfile", "go-mod", "cargo-toml",
-    "node", "python", "ruby", "go", "rust", "java", "gradle", "maven",
-    "works-on-my-machine", "dev-container", "codespaces"
-  ]
+    "setup",
+    "environment",
+    "dependencies",
+    "docker",
+    "docker-compose",
+    "dotenv",
+    "env-vars",
+    "pre-commit",
+    "hooks",
+    "ide",
+    "vscode",
+    "cursor",
+    "onboarding",
+    "bootstrap",
+    "init",
+    "install",
+    "configure",
+    "troubleshoot",
+    "debug-setup",
+    "requirements"
+  ],
+  "agents": {
+    "project-analyzer": "agents/project-analyzer.md"
+  },
+  "categories": [
+    "devops",
+    "utilities",
+    "productivity"
+  ],
+  "provides": {
+    "commands": 0,
+    "agents": 1,
+    "skills": 0
+  }
 }

@@ -56,5 +56,38 @@
       "skills/*/SKILL.md",
       "commands/*.md"
     ]
+  },
+  "commands": {
+    "browse": "commands/browse.md",
+    "bundle-export": "commands/bundle-export.md",
+    "bundles": "commands/bundles.md",
+    "collections": "commands/collections.md",
+    "details": "commands/details.md",
+    "export": "commands/export.md",
+    "install": "commands/install.md",
+    "launch": "commands/launch.md",
+    "stats": "commands/stats.md",
+    "update": "commands/update.md"
+  },
+  "skills": {
+    "agentic-patterns": "skills/agentic-patterns/SKILL.md",
+    "cowork-sessions": "skills/cowork-sessions/SKILL.md",
+    "plugin-catalog": "skills/plugin-catalog/SKILL.md",
+    "plugin-packaging": "skills/plugin-packaging/SKILL.md"
+  },
+  "agents": {
+    "export-packager": "agents/export-packager.md",
+    "marketplace-curator": "agents/marketplace-curator.md",
+    "session-orchestrator": "agents/session-orchestrator.md"
+  },
+  "categories": [
+    "orchestration",
+    "productivity",
+    "utilities"
+  ],
+  "provides": {
+    "commands": 10,
+    "agents": 3,
+    "skills": 4
   }
 }

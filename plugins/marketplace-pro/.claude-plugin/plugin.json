@@ -26,9 +26,7 @@
     "routing",
     "guardrails",
     "resource-optimization",
-    "exploration",
-    "memory-management",
-    "evaluation-monitoring"
+    "exploration"
   ],
   "license": "MIT",
   "repository": "https://github.com/Lobbi-Docs/claude",
@@ -62,5 +60,40 @@
       "skills/*/SKILL.md",
       "commands/*.md"
     ]
+  },
+  "commands": {
+    "compose": "commands/compose.md",
+    "dev": "commands/dev.md",
+    "help": "commands/help.md",
+    "lock": "commands/lock.md",
+    "policy": "commands/policy.md",
+    "quick": "commands/quick.md",
+    "recommend": "commands/recommend.md",
+    "registry": "commands/registry.md",
+    "setup": "commands/setup.md",
+    "status": "commands/status.md",
+    "trust": "commands/trust.md",
+    "verify": "commands/verify.md"
+  },
+  "skills": {
+    "agentic-patterns": "skills/agentic-patterns/SKILL.md",
+    "composition": "skills/composition/SKILL.md",
+    "devstudio": "skills/devstudio/SKILL.md",
+    "federation": "skills/federation/SKILL.md",
+    "intelligence": "skills/intelligence/SKILL.md",
+    "security": "skills/security/SKILL.md"
+  },
+  "agents": {
+    "marketplace-advisor": "agents/marketplace-advisor.md"
+  },
+  "categories": [
+    "orchestration",
+    "utilities",
+    "productivity"
+  ],
+  "provides": {
+    "commands": 12,
+    "agents": 1,
+    "skills": 6
   }
 }

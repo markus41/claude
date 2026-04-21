@@ -30,23 +30,7 @@
     "dark-mode",
     "white-label",
     "multi-tenant",
-    "ssr",
-    "next-js",
-    "slots-api",
-    "headless",
-    "joy-ui",
-    "virtualization",
-    "animations",
-    "i18n",
-    "rtl",
-    "testing",
-    "performance",
-    "migration",
-    "entity-driven",
-    "formengine",
-    "aspnet-core",
-    "dashboard-widgets",
-    "creative-ui"
+    "ssr"
   ],
   "engines": {
     "claude-code": ">=2.0.0"
@@ -148,5 +132,68 @@
       "skills/*/SKILL.md",
       "commands/*.md"
     ]
+  },
+  "commands": {
+    "mui-audit": "commands/mui-audit.md",
+    "mui-charts": "commands/mui-charts.md",
+    "mui-component": "commands/mui-component.md",
+    "mui-creative": "commands/mui-creative.md",
+    "mui-datagrid": "commands/mui-datagrid.md",
+    "mui-design-system": "commands/mui-design-system.md",
+    "mui-fingerprint": "commands/mui-fingerprint.md",
+    "mui-migrate": "commands/mui-migrate.md",
+    "mui-perf": "commands/mui-perf.md",
+    "mui-setup": "commands/mui-setup.md",
+    "mui-slots": "commands/mui-slots.md",
+    "mui-ssr": "commands/mui-ssr.md",
+    "mui-theme": "commands/mui-theme.md",
+    "mui-white-label": "commands/mui-white-label.md"
+  },
+  "skills": {
+    "accessibility": "skills/accessibility/SKILL.md",
+    "advanced-components": "skills/advanced-components/SKILL.md",
+    "advanced-widgets": "skills/advanced-widgets/SKILL.md",
+    "animations-transitions": "skills/animations-transitions/SKILL.md",
+    "base-headless": "skills/base-headless/SKILL.md",
+    "charts": "skills/charts/SKILL.md",
+    "components": "skills/components/SKILL.md",
+    "css-variables-pigment": "skills/css-variables-pigment/SKILL.md",
+    "data-grid": "skills/data-grid/SKILL.md",
+    "date-pickers": "skills/date-pickers/SKILL.md",
+    "ecosystem-integrations": "skills/ecosystem-integrations/SKILL.md",
+    "entity-driven-ui": "skills/entity-driven-ui/SKILL.md",
+    "forms-validation": "skills/forms-validation/SKILL.md",
+    "i18n-rtl": "skills/i18n-rtl/SKILL.md",
+    "joy-ui": "skills/joy-ui/SKILL.md",
+    "layout-responsive": "skills/layout-responsive/SKILL.md",
+    "migration": "skills/migration/SKILL.md",
+    "performance": "skills/performance/SKILL.md",
+    "project-management-integrations": "skills/project-management-integrations/SKILL.md",
+    "slots-api": "skills/slots-api/SKILL.md",
+    "ssr-nextjs": "skills/ssr-nextjs/SKILL.md",
+    "sx-styled": "skills/sx-styled/SKILL.md",
+    "testing": "skills/testing/SKILL.md",
+    "theming": "skills/theming/SKILL.md",
+    "tree-view": "skills/tree-view/SKILL.md",
+    "virtualization": "skills/virtualization/SKILL.md",
+    "white-label": "skills/white-label/SKILL.md"
+  },
+  "agents": {
+    "mui-a11y-auditor": "agents/mui-a11y-auditor.md",
+    "mui-architect": "agents/mui-architect.md",
+    "mui-design-system-architect": "agents/mui-design-system-architect.md",
+    "mui-migration-specialist": "agents/mui-migration-specialist.md",
+    "mui-performance-optimizer": "agents/mui-performance-optimizer.md",
+    "mui-reviewer": "agents/mui-reviewer.md",
+    "mui-x-specialist": "agents/mui-x-specialist.md"
+  },
+  "categories": [
+    "frontend",
+    "code-generation"
+  ],
+  "provides": {
+    "commands": 14,
+    "agents": 7,
+    "skills": 27
   }
 }

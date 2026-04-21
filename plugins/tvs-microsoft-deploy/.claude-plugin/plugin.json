@@ -26,26 +26,7 @@
     "copilot-studio",
     "onelake",
     "bicep",
-    "graph-api",
-    "power-bi-embedded",
-    "planner",
-    "m365-governance",
-    "dlp",
-    "excel-automation",
-    "solution-architect",
-    "pipeline-orchestration",
-    "agentic-patterns",
-    "prompt-chaining",
-    "planning",
-    "tool-use",
-    "exception-handling",
-    "guardrails",
-    "hitl",
-    "multi-agent",
-    "memory",
-    "a2a",
-    "routing",
-    "resource-aware"
+    "graph-api"
   ],
   "repository": "https://github.com/Lobbi-Docs/claude",
   "license": "MIT",
@@ -79,5 +60,59 @@
       "skills/*/SKILL.md",
       "commands/*.md"
     ]
+  },
+  "commands": {
+    "browser-fallback": "commands/browser-fallback.md",
+    "cost-report": "commands/cost-report.md",
+    "deploy-all": "commands/deploy-all.md",
+    "deploy-azure": "commands/deploy-azure.md",
+    "deploy-dataverse": "commands/deploy-dataverse.md",
+    "deploy-fabric": "commands/deploy-fabric.md",
+    "deploy-identity": "commands/deploy-identity.md",
+    "deploy-portal": "commands/deploy-portal.md",
+    "deploy-teams": "commands/deploy-teams.md",
+    "extract-a3": "commands/extract-a3.md",
+    "health": "commands/health.md",
+    "identity-attestation": "commands/identity-attestation.md",
+    "identity-drift": "commands/identity-drift.md",
+    "normalize-carriers": "commands/normalize-carriers.md",
+    "orchestrate-planner": "commands/orchestrate-planner.md",
+    "quick-start": "commands/quick-start.md",
+    "status-check": "commands/status-check.md",
+    "taia-readiness": "commands/taia-readiness.md"
+  },
+  "skills": {
+    "agentic-patterns": "skills/agentic-patterns/SKILL.md"
+  },
+  "agents": {
+    "analytics-agent": "agents/analytics-agent.md",
+    "azure-agent": "agents/azure-agent.md",
+    "browser-fallback-agent": "agents/browser-fallback-agent.md",
+    "carrier-normalization-agent": "agents/carrier-normalization-agent.md",
+    "client-solution-architect-agent": "agents/client-solution-architect-agent.md",
+    "comms-agent": "agents/comms-agent.md",
+    "consulting-crm-agent": "agents/consulting-crm-agent.md",
+    "data-agent": "agents/data-agent.md",
+    "embedded-analytics-agent": "agents/embedded-analytics-agent.md",
+    "excel-automation-agent": "agents/excel-automation-agent.md",
+    "fabric-pipeline-agent": "agents/fabric-pipeline-agent.md",
+    "github-agent": "agents/github-agent.md",
+    "identity-agent": "agents/identity-agent.md",
+    "ingest-agent": "agents/ingest-agent.md",
+    "m365-governance-agent": "agents/m365-governance-agent.md",
+    "michelle-scripts-agent": "agents/michelle-scripts-agent.md",
+    "planner-orchestrator-agent": "agents/planner-orchestrator-agent.md",
+    "platform-agent": "agents/platform-agent.md",
+    "power-pages-agent": "agents/power-pages-agent.md"
+  },
+  "categories": [
+    "devops",
+    "cloud",
+    "orchestration"
+  ],
+  "provides": {
+    "commands": 18,
+    "agents": 19,
+    "skills": 1
   }
 }

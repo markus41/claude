@@ -60,5 +60,39 @@
       "skills/*/SKILL.md",
       "commands/*.md"
     ]
+  },
+  "commands": {
+    "debug": "commands/debug.md",
+    "dev-up": "commands/dev-up.md",
+    "pipeline-scaffold": "commands/pipeline-scaffold.md",
+    "preview": "commands/preview.md",
+    "service-onboard": "commands/service-onboard.md",
+    "setup": "commands/setup.md",
+    "ship": "commands/ship.md"
+  },
+  "skills": {
+    "agentic-patterns": "skills/agentic-patterns/SKILL.md",
+    "harness-code-integration": "skills/harness-code-integration/SKILL.md",
+    "harness-eks-deployments": "skills/harness-eks-deployments/SKILL.md",
+    "harness-keycloak-auth": "skills/harness-keycloak-auth/SKILL.md",
+    "helm-development": "skills/helm-development/SKILL.md",
+    "local-eks-development": "skills/local-eks-development/SKILL.md",
+    "setup-wizard": "skills/setup-wizard/SKILL.md"
+  },
+  "agents": {
+    "deployment-strategist": "agents/deployment-strategist.md",
+    "dev-assistant": "agents/dev-assistant.md",
+    "pipeline-architect": "agents/pipeline-architect.md",
+    "setup-orchestrator": "agents/setup-orchestrator.md"
+  },
+  "categories": [
+    "devops",
+    "cloud",
+    "authentication"
+  ],
+  "provides": {
+    "commands": 7,
+    "agents": 4,
+    "skills": 7
   }
 }

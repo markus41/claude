@@ -57,5 +57,39 @@
       "skills/*/SKILL.md",
       "commands/*.md"
     ]
+  },
+  "commands": {
+    "audit": "commands/audit.md",
+    "component": "commands/component.md",
+    "convert": "commands/convert.md",
+    "keycloak": "commands/keycloak.md",
+    "palette": "commands/palette.md",
+    "style": "commands/style.md",
+    "theme": "commands/theme.md",
+    "tokens": "commands/tokens.md"
+  },
+  "skills": {
+    "agentic-patterns": "skills/agentic-patterns/SKILL.md",
+    "component-patterns": "skills/component-patterns/SKILL.md",
+    "css-generation": "skills/css-generation/SKILL.md",
+    "design-styles": "skills/design-styles/SKILL.md",
+    "keycloak-theming": "skills/keycloak-theming/SKILL.md"
+  },
+  "agents": {
+    "accessibility-auditor": "agents/accessibility-auditor.md",
+    "component-designer": "agents/component-designer.md",
+    "design-architect": "agents/design-architect.md",
+    "responsive-specialist": "agents/responsive-specialist.md",
+    "style-implementer": "agents/style-implementer.md",
+    "theme-engineer": "agents/theme-engineer.md"
+  },
+  "categories": [
+    "frontend",
+    "code-generation"
+  ],
+  "provides": {
+    "commands": 8,
+    "agents": 6,
+    "skills": 5
   }
 }

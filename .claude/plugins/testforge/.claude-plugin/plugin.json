@@ -9,13 +9,37 @@
   "license": "MIT",
   "repository": "https://github.com/Lobbi-Docs/claude",
   "keywords": [
-    "test-generation", "auto-test", "unit-test", "integration-test",
-    "jest", "pytest", "vitest", "mocha", "jasmine",
-    "mock-generation", "stub", "fixture", "test-double",
-    "edge-cases", "boundary-testing", "mutation-testing",
-    "coverage", "test-coverage", "coverage-gap",
-    "tdd", "test-driven", "behavior-testing",
-    "assertion", "test-data", "factory-pattern",
-    "regression-prevention", "bug-detection", "quality"
-  ]
+    "test-generation",
+    "auto-test",
+    "unit-test",
+    "integration-test",
+    "jest",
+    "pytest",
+    "vitest",
+    "mocha",
+    "jasmine",
+    "mock-generation",
+    "stub",
+    "fixture",
+    "test-double",
+    "edge-cases",
+    "boundary-testing",
+    "mutation-testing",
+    "coverage",
+    "test-coverage",
+    "coverage-gap",
+    "tdd"
+  ],
+  "agents": {
+    "roster": "agents/roster.md"
+  },
+  "categories": [
+    "testing",
+    "agents"
+  ],
+  "provides": {
+    "commands": 0,
+    "agents": 1,
+    "skills": 0
+  }
 }

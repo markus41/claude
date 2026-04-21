@@ -9,8 +9,44 @@
   "license": "MIT",
   "repository": "https://github.com/Lobbi-Docs/claude",
   "keywords": [
-    "code-quality", "linting", "eslint", "prettier", "static-analysis",
-    "test-coverage", "security-scanning", "complexity", "dependencies",
-    "pre-commit", "ci-cd", "quality-gates", "orchestration", "clean-code"
-  ]
+    "code-quality",
+    "linting",
+    "eslint",
+    "prettier",
+    "static-analysis",
+    "test-coverage",
+    "security-scanning",
+    "complexity",
+    "dependencies",
+    "pre-commit",
+    "ci-cd",
+    "quality-gates",
+    "orchestration",
+    "clean-code"
+  ],
+  "commands": {
+    "coverage-check": "commands/coverage-check.md",
+    "quality-check": "commands/quality-check.md",
+    "security-scan": "commands/security-scan.md"
+  },
+  "agents": {
+    "auto-fix-agent": "agents/auto-fix-agent.md",
+    "complexity-analyzer-agent": "agents/complexity-analyzer-agent.md",
+    "dependency-health-agent": "agents/dependency-health-agent.md",
+    "quality-orchestrator-agent": "agents/quality-orchestrator-agent.md",
+    "quality-reporter-agent": "agents/quality-reporter-agent.md",
+    "security-scanner-agent": "agents/security-scanner-agent.md",
+    "static-analysis-agent": "agents/static-analysis-agent.md",
+    "test-coverage-agent": "agents/test-coverage-agent.md"
+  },
+  "categories": [
+    "testing",
+    "orchestration",
+    "security"
+  ],
+  "provides": {
+    "commands": 3,
+    "agents": 8,
+    "skills": 0
+  }
 }

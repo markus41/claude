@@ -25,5 +25,39 @@
     "subgraph",
     "supervisor-pattern",
     "cli-agents"
-  ]
+  ],
+  "commands": {
+    "agent": "commands/agent.md",
+    "create": "commands/create.md",
+    "deploy": "commands/deploy.md",
+    "edge": "commands/edge.md",
+    "mcp": "commands/mcp.md",
+    "memory": "commands/memory.md",
+    "node": "commands/node.md",
+    "test": "commands/test.md"
+  },
+  "agents": {
+    "cli-wrapper-specialist": "agents/cli-wrapper-specialist.md",
+    "context-engineer": "agents/context-engineer.md",
+    "deployment-specialist": "agents/deployment-specialist.md",
+    "edge-designer": "agents/edge-designer.md",
+    "graph-architect": "agents/graph-architect.md",
+    "mcp-bridge-specialist": "agents/mcp-bridge-specialist.md",
+    "memory-architect": "agents/memory-architect.md",
+    "node-specialist": "agents/node-specialist.md",
+    "orchestration-master": "agents/orchestration-master.md",
+    "state-engineer": "agents/state-engineer.md",
+    "subgraph-composer": "agents/subgraph-composer.md",
+    "tool-integrator": "agents/tool-integrator.md"
+  },
+  "categories": [
+    "orchestration",
+    "agents",
+    "ai-ml"
+  ],
+  "provides": {
+    "commands": 8,
+    "agents": 12,
+    "skills": 0
+  }
 }

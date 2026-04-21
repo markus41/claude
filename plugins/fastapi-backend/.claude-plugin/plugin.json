@@ -26,10 +26,7 @@
     "prompt-chaining",
     "tool-use",
     "rag",
-    "guardrails",
-    "memory",
-    "parallelization",
-    "resource-aware"
+    "guardrails"
   ],
   "repository": "https://github.com/Lobbi-Docs/claude",
   "license": "MIT",
@@ -64,5 +61,44 @@
       "skills/*/SKILL.md",
       "commands/*.md"
     ]
+  },
+  "commands": {
+    "deploy": "commands/deploy.md",
+    "dev": "commands/dev.md",
+    "docker": "commands/docker.md",
+    "endpoint": "commands/endpoint.md",
+    "migrate": "commands/migrate.md",
+    "model": "commands/model.md",
+    "scaffold": "commands/scaffold.md",
+    "task": "commands/task.md",
+    "test": "commands/test.md",
+    "ws": "commands/ws.md"
+  },
+  "skills": {
+    "agentic-patterns": "skills/agentic-patterns/SKILL.md",
+    "beanie-odm": "skills/beanie-odm/SKILL.md",
+    "fastapi-background": "skills/fastapi-background/SKILL.md",
+    "fastapi-caching": "skills/fastapi-caching/SKILL.md",
+    "fastapi-k8s": "skills/fastapi-k8s/SKILL.md",
+    "fastapi-observability": "skills/fastapi-observability/SKILL.md",
+    "fastapi-patterns": "skills/fastapi-patterns/SKILL.md",
+    "fastapi-realtime": "skills/fastapi-realtime/SKILL.md",
+    "keycloak-fastapi": "skills/keycloak-fastapi/SKILL.md"
+  },
+  "agents": {
+    "api-architect": "agents/api-architect.md",
+    "performance-optimizer": "agents/performance-optimizer.md",
+    "security-reviewer": "agents/security-reviewer.md",
+    "test-generator": "agents/test-generator.md"
+  },
+  "categories": [
+    "backend",
+    "code-generation",
+    "devops"
+  ],
+  "provides": {
+    "commands": 10,
+    "agents": 4,
+    "skills": 9
   }
 }

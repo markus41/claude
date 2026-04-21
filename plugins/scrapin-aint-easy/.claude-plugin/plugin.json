@@ -44,36 +44,6 @@
     ],
     "requires": []
   },
-  "commands": [
-    "scrapin-search",
-    "scrapin-crawl",
-    "scrapin-diff",
-    "scrapin-algo",
-    "scrapin-drift",
-    "scrapin-status",
-    "scrapin-setup"
-  ],
-  "skills": [
-    "bug-triage",
-    "code-review",
-    "migration-planner",
-    "project-setup",
-    "release-notes"
-  ],
-  "agents": [
-    "doc-crawler",
-    "doc-graph-builder",
-    "doc-lsp-resolver",
-    "doc-diff-watcher",
-    "doc-cron-runner",
-    "algo-indexer",
-    "code-drift-detector",
-    "agent-drift-detector",
-    "backend-architect",
-    "frontend-specialist",
-    "infra-guardian",
-    "qa-analyst"
-  ],
   "mcpServers": {
     "scrapin-aint-easy": {
       "command": "node",
@@ -100,5 +70,45 @@
       "commands/scrapin-search.md",
       "commands/scrapin-drift.md"
     ]
+  },
+  "commands": {
+    "scrapin-algo": "commands/scrapin-algo.md",
+    "scrapin-crawl": "commands/scrapin-crawl.md",
+    "scrapin-diff": "commands/scrapin-diff.md",
+    "scrapin-drift": "commands/scrapin-drift.md",
+    "scrapin-search": "commands/scrapin-search.md",
+    "scrapin-setup": "commands/scrapin-setup.md",
+    "scrapin-status": "commands/scrapin-status.md"
+  },
+  "skills": {
+    "bug-triage": "skills/bug-triage/SKILL.md",
+    "code-review": "skills/code-review/SKILL.md",
+    "migration-planner": "skills/migration-planner/SKILL.md",
+    "project-setup": "skills/project-setup/SKILL.md",
+    "release-notes": "skills/release-notes/SKILL.md"
+  },
+  "agents": {
+    "agent-drift-detector": "agents/agent-drift-detector.md",
+    "algo-indexer": "agents/algo-indexer.md",
+    "backend-architect": "agents/backend-architect.md",
+    "code-drift-detector": "agents/code-drift-detector.md",
+    "doc-crawler": "agents/doc-crawler.md",
+    "doc-cron-runner": "agents/doc-cron-runner.md",
+    "doc-diff-watcher": "agents/doc-diff-watcher.md",
+    "doc-graph-builder": "agents/doc-graph-builder.md",
+    "doc-lsp-resolver": "agents/doc-lsp-resolver.md",
+    "frontend-specialist": "agents/frontend-specialist.md",
+    "infra-guardian": "agents/infra-guardian.md",
+    "qa-analyst": "agents/qa-analyst.md"
+  },
+  "categories": [
+    "documentation",
+    "agents",
+    "utilities"
+  ],
+  "provides": {
+    "commands": 7,
+    "agents": 12,
+    "skills": 5
   }
 }

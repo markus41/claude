@@ -29,15 +29,7 @@
     "aurora",
     "typewriter",
     "flip-card",
-    "parallax",
-    "agentic-patterns",
-    "prompt-chaining",
-    "parallelization",
-    "reflection",
-    "planning",
-    "tool-use",
-    "routing",
-    "resource-aware"
+    "parallax"
   ],
   "contextEntry": "CONTEXT_SUMMARY.md",
   "context": {
@@ -69,5 +61,50 @@
       "skills/*/SKILL.md",
       "commands/*.md"
     ]
+  },
+  "commands": {
+    "animate-3d": "commands/animate-3d.md",
+    "animate-audit": "commands/animate-audit.md",
+    "animate-background": "commands/animate-background.md",
+    "animate-component": "commands/animate-component.md",
+    "animate-effects": "commands/animate-effects.md",
+    "animate-export": "commands/animate-export.md",
+    "animate-preset": "commands/animate-preset.md",
+    "animate-scroll": "commands/animate-scroll.md",
+    "animate-sequence": "commands/animate-sequence.md",
+    "animate-text": "commands/animate-text.md",
+    "animate-transition": "commands/animate-transition.md",
+    "animate": "commands/animate.md"
+  },
+  "skills": {
+    "3d-animations": "skills/3d-animations/SKILL.md",
+    "accent-animations": "skills/accent-animations/SKILL.md",
+    "agentic-patterns": "skills/agentic-patterns/SKILL.md",
+    "background-animations": "skills/background-animations/SKILL.md",
+    "creative-effects": "skills/creative-effects/SKILL.md",
+    "css-animations": "skills/css-animations/SKILL.md",
+    "framer-motion": "skills/framer-motion/SKILL.md",
+    "gsap": "skills/gsap/SKILL.md",
+    "scroll-animations": "skills/scroll-animations/SKILL.md",
+    "spring-physics": "skills/spring-physics/SKILL.md",
+    "svg-animations": "skills/svg-animations/SKILL.md",
+    "text-animations": "skills/text-animations/SKILL.md"
+  },
+  "agents": {
+    "animation-architect": "agents/animation-architect.md",
+    "creative-effects-artist": "agents/creative-effects-artist.md",
+    "interaction-specialist": "agents/interaction-specialist.md",
+    "motion-designer": "agents/motion-designer.md",
+    "performance-optimizer": "agents/performance-optimizer.md",
+    "transition-engineer": "agents/transition-engineer.md"
+  },
+  "categories": [
+    "frontend",
+    "code-generation"
+  ],
+  "provides": {
+    "commands": 12,
+    "agents": 6,
+    "skills": 12
   }
 }

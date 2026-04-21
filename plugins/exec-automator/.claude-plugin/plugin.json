@@ -57,5 +57,54 @@
       "skills/*/SKILL.md",
       "commands/*.md"
     ]
+  },
+  "commands": {
+    "analyze": "commands/analyze.md",
+    "customize": "commands/customize.md",
+    "dashboard": "commands/dashboard.md",
+    "deploy": "commands/deploy.md",
+    "export": "commands/export.md",
+    "generate": "commands/generate.md",
+    "integrate": "commands/integrate.md",
+    "map": "commands/map.md",
+    "orchestrate": "commands/orchestrate.md",
+    "report": "commands/report.md",
+    "score": "commands/score.md",
+    "simulate": "commands/simulate.md",
+    "template": "commands/template.md"
+  },
+  "skills": {
+    "agentic-patterns": "skills/agentic-patterns/SKILL.md",
+    "association-management": "skills/association-management/association-management.md",
+    "event-planning": "skills/event-planning/event-planning.md",
+    "langchain-integrations": "skills/langchain-integrations/langchain-integrations.md",
+    "langgraph-orchestration": "skills/langgraph-orchestration/langgraph-orchestration.md",
+    "meeting-facilitation": "skills/meeting-facilitation/meeting-facilitation.md",
+    "membership-engagement": "skills/membership-engagement/membership-engagement.md",
+    "nonprofit-finance": "skills/nonprofit-finance/nonprofit-finance.md",
+    "process-automation": "skills/process-automation/process-automation.md"
+  },
+  "agents": {
+    "admin-coordinator": "agents/admin-coordinator.md",
+    "communications-director": "agents/communications-director.md",
+    "compliance-monitor": "agents/compliance-monitor.md",
+    "event-orchestrator": "agents/event-orchestrator.md",
+    "finance-manager": "agents/finance-manager.md",
+    "meeting-facilitator": "agents/meeting-facilitator.md",
+    "membership-steward": "agents/membership-steward.md",
+    "org-analyzer": "agents/org-analyzer.md",
+    "social-media-manager": "agents/social-media-manager.md",
+    "sponsor-relations": "agents/sponsor-relations.md",
+    "workflow-designer": "agents/workflow-designer.md"
+  },
+  "categories": [
+    "orchestration",
+    "agents",
+    "productivity"
+  ],
+  "provides": {
+    "commands": 13,
+    "agents": 11,
+    "skills": 9
   }
 }

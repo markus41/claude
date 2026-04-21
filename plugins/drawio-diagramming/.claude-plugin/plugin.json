@@ -28,34 +28,7 @@
     "kubernetes",
     "sequence-diagram",
     "erd",
-    "mermaid",
-    "svg",
-    "xml",
-    "ai-diagrams",
-    "conditional-formatting",
-    "live-data",
-    "github-integration",
-    "confluence",
-    "jira",
-    "notion",
-    "teams",
-    "harness",
-    "azure-devops",
-    "mcp",
-    "vibe-diagramming",
-    "desktop",
-    "electron",
-    "drawio-desktop",
-    "visual-editor",
-    "wsl",
-    "agentic-patterns",
-    "prompt-chaining",
-    "reflection",
-    "planning",
-    "tool-use",
-    "routing",
-    "parallelization",
-    "resource-aware"
+    "mermaid"
   ],
   "contextEntry": "CONTEXT_SUMMARY.md",
   "context": {
@@ -88,5 +61,56 @@
       "skills/*/SKILL.md",
       "commands/*.md"
     ]
+  },
+  "commands": {
+    "analyze": "commands/analyze.md",
+    "auto-diagram": "commands/auto-diagram.md",
+    "batch": "commands/batch.md",
+    "create": "commands/create.md",
+    "data-bind": "commands/data-bind.md",
+    "edit": "commands/edit.md",
+    "embed": "commands/embed.md",
+    "enrich": "commands/enrich.md",
+    "export": "commands/export.md",
+    "layers": "commands/layers.md",
+    "mcp-setup": "commands/mcp-setup.md",
+    "open": "commands/open.md",
+    "style": "commands/style.md",
+    "template": "commands/template.md"
+  },
+  "skills": {
+    "agentic-patterns": "skills/agentic-patterns/SKILL.md",
+    "ai-generation": "skills/ai-generation/SKILL.md",
+    "conditional-formatting": "skills/conditional-formatting/SKILL.md",
+    "data-structures": "skills/data-structures/SKILL.md",
+    "desktop-integration": "skills/desktop-integration/SKILL.md",
+    "diagram-catalog": "skills/diagram-catalog/SKILL.md",
+    "diagram-types": "skills/diagram-types/SKILL.md",
+    "mcp-integration": "skills/mcp-integration/SKILL.md",
+    "network-software-mapping": "skills/network-software-mapping/SKILL.md",
+    "platform-integrations": "skills/platform-integrations/SKILL.md",
+    "quality-critique": "skills/quality-critique/SKILL.md",
+    "research-agents": "skills/research-agents/SKILL.md",
+    "templates": "skills/templates/SKILL.md",
+    "wireframes-mockups": "skills/wireframes-mockups/SKILL.md",
+    "xml-generation": "skills/xml-generation/SKILL.md"
+  },
+  "agents": {
+    "auto-documenter": "agents/auto-documenter.md",
+    "data-connector": "agents/data-connector.md",
+    "diagram-architect": "agents/diagram-architect.md",
+    "enrichment-researcher": "agents/enrichment-researcher.md",
+    "integration-specialist": "agents/integration-specialist.md",
+    "style-engineer": "agents/style-engineer.md"
+  },
+  "categories": [
+    "documentation",
+    "productivity",
+    "utilities"
+  ],
+  "provides": {
+    "commands": 14,
+    "agents": 6,
+    "skills": 15
   }
 }

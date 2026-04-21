@@ -9,10 +9,40 @@
   "license": "MIT",
   "repository": "https://github.com/Lobbi-Docs/claude",
   "keywords": [
-    "migration", "codemod", "refactor", "transform", "modernize",
-    "react-hooks", "vue2-vue3", "express-fastify", "angular-react",
-    "webpack-vite", "jest-vitest", "class-to-hooks", "strangler-fig",
-    "ast", "jscodeshift", "babel", "typescript", "eslint-codemod",
-    "api-migration", "breaking-changes", "deprecation", "upgrade"
-  ]
+    "migration",
+    "codemod",
+    "refactor",
+    "transform",
+    "modernize",
+    "react-hooks",
+    "vue2-vue3",
+    "express-fastify",
+    "angular-react",
+    "webpack-vite",
+    "jest-vitest",
+    "class-to-hooks",
+    "strangler-fig",
+    "ast",
+    "jscodeshift",
+    "babel",
+    "typescript",
+    "eslint-codemod",
+    "api-migration",
+    "breaking-changes"
+  ],
+  "agents": {
+    "api-mapper-agent": "agents/api-mapper-agent.md",
+    "codemod-generator-agent": "agents/codemod-generator-agent.md",
+    "strangler-fig-orchestrator-agent": "agents/strangler-fig-orchestrator-agent.md"
+  },
+  "categories": [
+    "utilities",
+    "productivity",
+    "devops"
+  ],
+  "provides": {
+    "commands": 0,
+    "agents": 3,
+    "skills": 0
+  }
 }

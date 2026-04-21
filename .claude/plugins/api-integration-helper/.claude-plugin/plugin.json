@@ -9,10 +9,47 @@
   "license": "MIT",
   "repository": "https://github.com/Lobbi-Docs/claude",
   "keywords": [
-    "api", "openapi", "swagger", "graphql", "rest", "client-generation",
-    "typescript", "authentication", "oauth", "api-key", "jwt",
-    "rate-limiting", "retry-logic", "error-handling", "mock-server",
-    "api-testing", "request-validation", "response-validation",
-    "stripe", "api-integration", "sdk-generation", "typed-client"
-  ]
+    "api",
+    "openapi",
+    "swagger",
+    "graphql",
+    "rest",
+    "client-generation",
+    "typescript",
+    "authentication",
+    "oauth",
+    "api-key",
+    "jwt",
+    "rate-limiting",
+    "retry-logic",
+    "error-handling",
+    "mock-server",
+    "api-testing",
+    "request-validation",
+    "response-validation",
+    "stripe",
+    "api-integration"
+  ],
+  "agents": {
+    "api-explorer-agent": "agents/api-explorer-agent.md",
+    "auth-builder-agent": "agents/auth-builder-agent.md",
+    "client-generator-agent": "agents/client-generator-agent.md",
+    "error-handler-agent": "agents/error-handler-agent.md",
+    "mock-server-agent": "agents/mock-server-agent.md",
+    "rate-limiter-agent": "agents/rate-limiter-agent.md",
+    "schema-parser-agent": "agents/schema-parser-agent.md",
+    "test-generator-agent": "agents/test-generator-agent.md",
+    "type-generator-agent": "agents/type-generator-agent.md",
+    "validation-builder-agent": "agents/validation-builder-agent.md"
+  },
+  "categories": [
+    "api-integration",
+    "utilities",
+    "agents"
+  ],
+  "provides": {
+    "commands": 0,
+    "agents": 10,
+    "skills": 0
+  }
 }
