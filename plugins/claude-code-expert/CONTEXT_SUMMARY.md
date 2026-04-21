@@ -37,3 +37,4 @@ Modern Claude Code second brain. Deploys the 5-layer stack (CLAUDE.md + skills +
 ## Non-goals
 
 Not replacing engram; not building a parallel memory MCP; not modifying user-level global CLAUDE.md. The plugin sits on top of engram and the user's Obsidian vault without duplicating either.
+
