@@ -27,37 +27,6 @@
     "evaluation"
   ],
   "repository": "https://github.com/the-lobbi/keycloak-alpha",
-  "contextEntry": "CONTEXT_SUMMARY.md",
-  "context": {
-    "entry": "CONTEXT_SUMMARY.md",
-    "title": "Lobbi Platform Manager",
-    "summary": "Streamline development on the-lobbi/keycloak-alpha with Keycloak management, service orchestration, and test generation. 8 commands.",
-    "tags": [
-      "keycloak",
-      "multi-tenant",
-      "mern",
-      "microservices",
-      "docker",
-      "testing",
-      "devops",
-      "platform-management"
-    ],
-    "bootstrapFiles": [
-      "CONTEXT_SUMMARY.md"
-    ],
-    "maxTokens": 700,
-    "excludeGlobs": [
-      "**/node_modules/**",
-      "**/dist/**",
-      "**/build/**",
-      "**/*.zip"
-    ],
-    "lazyLoadSections": [
-      "CLAUDE.md",
-      "skills/*/SKILL.md",
-      "commands/*.md"
-    ]
-  },
   "commands": {
     "env-generate": "commands/env-generate.md",
     "env-validate": "commands/env-validate.md",

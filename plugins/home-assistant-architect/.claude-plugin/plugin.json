@@ -28,37 +28,6 @@
     "parallelization",
     "learning"
   ],
-  "contextEntry": "CONTEXT_SUMMARY.md",
-  "context": {
-    "entry": "CONTEXT_SUMMARY.md",
-    "title": "Home Assistant Architect",
-    "summary": "Complete Home Assistant platform with frontend design, energy management, cameras, sensors, local LLM integration, and Ubuntu server deployment. 9 commands, 15 agents, 8 skills.",
-    "tags": [
-      "home-assistant",
-      "smart-home",
-      "automation",
-      "ollama",
-      "local-llm",
-      "mcp-server",
-      "iot",
-      "ubuntu"
-    ],
-    "bootstrapFiles": [
-      "CONTEXT_SUMMARY.md"
-    ],
-    "maxTokens": 700,
-    "excludeGlobs": [
-      "**/node_modules/**",
-      "**/dist/**",
-      "**/build/**",
-      "**/*.zip"
-    ],
-    "lazyLoadSections": [
-      "CLAUDE.md",
-      "skills/*/SKILL.md",
-      "commands/*.md"
-    ]
-  },
   "commands": {
     "ha-automation": "commands/ha-automation.md",
     "ha-camera": "commands/ha-camera.md",

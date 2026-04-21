@@ -31,37 +31,6 @@
     "flip-card",
     "parallax"
   ],
-  "contextEntry": "CONTEXT_SUMMARY.md",
-  "context": {
-    "entry": "CONTEXT_SUMMARY.md",
-    "title": "React Animation Studio",
-    "summary": "Create beautiful, performant web animations for React and TypeScript. Includes background effects, text animations, 3D transforms, creative visual effects, Framer Motion, GSAP, and more. 12 commands, 6 agents, 11 skills.",
-    "tags": [
-      "react",
-      "animation",
-      "framer-motion",
-      "gsap",
-      "css-animations",
-      "typescript",
-      "motion-design",
-      "3d-transforms"
-    ],
-    "bootstrapFiles": [
-      "CONTEXT_SUMMARY.md"
-    ],
-    "maxTokens": 700,
-    "excludeGlobs": [
-      "**/node_modules/**",
-      "**/dist/**",
-      "**/build/**",
-      "**/*.zip"
-    ],
-    "lazyLoadSections": [
-      "CLAUDE.md",
-      "skills/*/SKILL.md",
-      "commands/*.md"
-    ]
-  },
   "commands": {
     "animate-3d": "commands/animate-3d.md",
     "animate-audit": "commands/animate-audit.md",

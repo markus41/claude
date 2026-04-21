@@ -30,38 +30,6 @@
   ],
   "repository": "https://github.com/Lobbi-Docs/claude",
   "license": "MIT",
-  "contextEntry": "CONTEXT_SUMMARY.md",
-  "context": {
-    "entry": "CONTEXT_SUMMARY.md",
-    "title": "FastAPI Backend",
-    "summary": "Comprehensive FastAPI backend development plugin with MongoDB/Beanie, Keycloak auth, Docker/K8s deployment, background tasks, caching, observability, and real-time features. 10 commands.",
-    "tags": [
-      "fastapi",
-      "mongodb",
-      "beanie",
-      "keycloak",
-      "kubernetes",
-      "docker",
-      "python",
-      "backend",
-      "api"
-    ],
-    "bootstrapFiles": [
-      "CONTEXT_SUMMARY.md"
-    ],
-    "maxTokens": 700,
-    "excludeGlobs": [
-      "**/node_modules/**",
-      "**/dist/**",
-      "**/build/**",
-      "**/*.zip"
-    ],
-    "lazyLoadSections": [
-      "CLAUDE.md",
-      "skills/*/SKILL.md",
-      "commands/*.md"
-    ]
-  },
   "commands": {
     "deploy": "commands/deploy.md",
     "dev": "commands/dev.md",

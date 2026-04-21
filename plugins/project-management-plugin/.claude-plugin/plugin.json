@@ -18,85 +18,14 @@
     "pm-integration"
   ],
   "permissions": {
-    "requires": [
-      "read",
-      "write",
-      "bash",
-      "agent"
-    ],
-    "optional": [
-      "mcp",
-      "network"
+    "tools": [
+      "Read",
+      "Write",
+      "Edit",
+      "Bash"
     ]
-  },
-  "capabilities": {
-    "provides": [
-      "interview-driven-project-init",
-      "micro-task-decomposition",
-      "research-before-execution",
-      "autonomous-work-loop",
-      "pm-platform-integrations",
-      "quality-council-review",
-      "state-checkpointing"
-    ],
-    "requires": []
-  },
-  "userConfig": {
-    "github_token": {
-      "description": "GitHub personal access token (for GitHub Projects sync)",
-      "sensitive": true
-    },
-    "linear_api_key": {
-      "description": "Linear API key (for Linear sync)",
-      "sensitive": true
-    },
-    "notion_token": {
-      "description": "Notion integration token (for Notion sync)",
-      "sensitive": true
-    },
-    "asana_token": {
-      "description": "Asana personal access token (for Asana sync)",
-      "sensitive": true
-    },
-    "trello_api_key": {
-      "description": "Trello API key (for Trello sync)",
-      "sensitive": true
-    },
-    "trello_token": {
-      "description": "Trello token (for Trello sync)",
-      "sensitive": true
-    },
-    "clickup_token": {
-      "description": "ClickUp API token (for ClickUp sync)",
-      "sensitive": true
-    },
-    "monday_api_key": {
-      "description": "Monday.com API key (for Monday sync)",
-      "sensitive": true
-    },
-    "todoist_token": {
-      "description": "Todoist API token (for Todoist sync)",
-      "sensitive": true
-    }
   },
   "dependencies": [],
-  "context": {
-    "title": "Project Management Plugin",
-    "summary": "Universal project manager: 8-phase interview-first init, recursive micro-task decomposition (max 30 min/task), mandatory research brief before every execution, autonomous loop with HITL on risk > 7, and 9 PM platform integrations (GitHub, Linear, Notion, Asana, Trello, ClickUp, Monday, Todoist). 20 commands, 7 skills, 16 agents. State lives in .claude/projects/{project-id}/.",
-    "maxTokens": 400,
-    "excludeGlobs": [
-      "**/node_modules/**",
-      "**/.claude/projects/**",
-      "**/coverage/**"
-    ],
-    "lazyLoadSections": [
-      "CLAUDE.md",
-      "commands/pm-init.md",
-      "commands/pm-work.md",
-      "commands/pm-auto.md",
-      "skills/research-protocol/SKILL.md"
-    ]
-  },
   "commands": {
     "pm-auto": "commands/pm-auto.md",
     "pm-backlog": "commands/pm-backlog.md",

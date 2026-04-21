@@ -29,37 +29,6 @@
     "multi-agent",
     "agentic-design-patterns"
   ],
-  "contextEntry": "CONTEXT_SUMMARY.md",
-  "context": {
-    "entry": "CONTEXT_SUMMARY.md",
-    "title": "Upgrade Suggestion",
-    "summary": "AI-powered upgrade intelligence platform. Multi-agent council analyzes codebases across 8 dimensions with confidence-scored suggestions, visual impact heatmaps, upgrade roadmaps, and tech debt forecasting.",
-    "tags": [
-      "upgrades",
-      "suggestions",
-      "code-quality",
-      "performance",
-      "architecture",
-      "tech-debt",
-      "innovation-radar",
-      "multi-agent"
-    ],
-    "bootstrapFiles": [
-      "CONTEXT_SUMMARY.md"
-    ],
-    "maxTokens": 700,
-    "excludeGlobs": [
-      "**/node_modules/**",
-      "**/dist/**",
-      "**/build/**",
-      "**/*.zip"
-    ],
-    "lazyLoadSections": [
-      "CLAUDE.md",
-      "skills/*/SKILL.md",
-      "commands/*.md"
-    ]
-  },
   "commands": {
     "suggest-upgrades": "commands/suggest-upgrades.md",
     "upgrade-deep-dive": "commands/upgrade-deep-dive.md",

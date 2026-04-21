@@ -32,105 +32,12 @@
     "multi-tenant",
     "ssr"
   ],
-  "engines": {
-    "claude-code": ">=2.0.0"
-  },
-  "platforms": [
-    "cli",
-    "desktop",
-    "web",
-    "vscode",
-    "jetbrains"
-  ],
   "permissions": {
-    "requires": [
-      "read",
-      "write",
-      "bash"
-    ],
-    "optional": [
-      "agent",
-      "mcp",
-      "network"
-    ]
-  },
-  "capabilities": {
-    "provides": [
-      "mui-theming",
-      "mui-css-variables",
-      "mui-pigment-css",
-      "mui-components",
-      "mui-sx-styled",
-      "mui-slots-api",
-      "mui-data-grid",
-      "mui-date-pickers",
-      "mui-charts",
-      "mui-tree-view",
-      "mui-accessibility",
-      "mui-performance",
-      "mui-ssr-nextjs",
-      "mui-animations",
-      "mui-virtualization",
-      "mui-forms-validation",
-      "mui-white-label",
-      "mui-base-headless",
-      "mui-joy-ui",
-      "mui-i18n-rtl",
-      "mui-testing",
-      "mui-migration",
-      "mui-design-system",
-      "mui-entity-driven-ui",
-      "mui-ecosystem-integrations",
-      "mui-advanced-widgets"
-    ],
-    "requires": []
-  },
-  "mcp": {
-    "servers": {
-      "mui-mcp": {
-        "command": "npx",
-        "args": [
-          "-y",
-          "@mui/mcp@latest"
-        ],
-        "description": "Official MUI documentation server — provides useMuiDocs and fetchDocs tools for querying MUI's official docs"
-      }
-    }
-  },
-  "contextEntry": "CONTEXT_SUMMARY.md",
-  "context": {
-    "entry": "CONTEXT_SUMMARY.md",
-    "title": "MUI Expert",
-    "summary": "Comprehensive Material UI expert — 26 skills, 14 commands, 7 agents covering theming, CSS vars, Pigment CSS, components, slots API, MUI X, accessibility, SSR, performance, white-label, entity-driven CRUD, 200+ dashboard widgets, and more.",
-    "tags": [
-      "mui",
-      "material-ui",
-      "react",
-      "theming",
-      "components",
-      "design-system",
-      "data-grid",
-      "charts",
-      "accessibility",
-      "performance",
-      "ssr",
-      "dashboard",
-      "widgets"
-    ],
-    "bootstrapFiles": [
-      "CONTEXT_SUMMARY.md"
-    ],
-    "maxTokens": 700,
-    "excludeGlobs": [
-      "**/node_modules/**",
-      "**/dist/**",
-      "**/build/**",
-      "**/*.zip"
-    ],
-    "lazyLoadSections": [
-      "CLAUDE.md",
-      "skills/*/SKILL.md",
-      "commands/*.md"
+    "tools": [
+      "Read",
+      "Write",
+      "Edit",
+      "Bash"
     ]
   },
   "commands": {

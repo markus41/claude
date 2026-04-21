@@ -31,37 +31,6 @@
     "multi-agent",
     "memory"
   ],
-  "contextEntry": "CONTEXT_SUMMARY.md",
-  "context": {
-    "entry": "CONTEXT_SUMMARY.md",
-    "title": "Claude Code Templating",
-    "summary": "Universal templating and Harness expert plugin for autonomous project generation, pipeline creation, and deployment automation. Supports Handlebars, Cookiecutter, Copier, Maven archetypes, and Harness pipelines. 5 commands, 6 agents, 3 skills.",
-    "tags": [
-      "templating",
-      "scaffolding",
-      "harness",
-      "pipelines",
-      "cookiecutter",
-      "copier",
-      "code-generation",
-      "devops"
-    ],
-    "bootstrapFiles": [
-      "CONTEXT_SUMMARY.md"
-    ],
-    "maxTokens": 700,
-    "excludeGlobs": [
-      "**/node_modules/**",
-      "**/dist/**",
-      "**/build/**",
-      "**/*.zip"
-    ],
-    "lazyLoadSections": [
-      "CLAUDE.md",
-      "skills/*/SKILL.md",
-      "commands/*.md"
-    ]
-  },
   "commands": {
     "archetype": "commands/archetype.md",
     "generate": "commands/generate.md",

@@ -29,35 +29,6 @@
   ],
   "license": "Proprietary",
   "repository": "https://github.com/brooksidebi/exec-automator",
-  "contextEntry": "CONTEXT_SUMMARY.md",
-  "context": {
-    "entry": "CONTEXT_SUMMARY.md",
-    "title": "Exec Automator",
-    "summary": "AI-powered Executive Director automation platform for trade associations and nonprofits. Analyzes organizational responsibilities, scores automation potential, generates LangGraph workflows, and deploys 11 specialized agents. 13 commands.",
-    "tags": [
-      "executive-director",
-      "association-management",
-      "workflow-automation",
-      "langgraph",
-      "nonprofit",
-      "ai-automation"
-    ],
-    "bootstrapFiles": [
-      "CONTEXT_SUMMARY.md"
-    ],
-    "maxTokens": 700,
-    "excludeGlobs": [
-      "**/node_modules/**",
-      "**/dist/**",
-      "**/build/**",
-      "**/*.zip"
-    ],
-    "lazyLoadSections": [
-      "CLAUDE.md",
-      "skills/*/SKILL.md",
-      "commands/*.md"
-    ]
-  },
   "commands": {
     "analyze": "commands/analyze.md",
     "customize": "commands/customize.md",

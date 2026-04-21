@@ -21,28 +21,12 @@
     "code-intelligence"
   ],
   "permissions": {
-    "requires": [
-      "read",
-      "write",
-      "bash"
-    ],
-    "optional": [
-      "agent",
-      "mcp",
-      "network"
+    "tools": [
+      "Read",
+      "Write",
+      "Edit",
+      "Bash"
     ]
-  },
-  "capabilities": {
-    "provides": [
-      "documentation-intelligence",
-      "algorithm-library",
-      "codebase-drift-detection",
-      "agent-drift-monitoring",
-      "knowledge-graph",
-      "interview-driven-setup",
-      "mcp-server"
-    ],
-    "requires": []
   },
   "mcpServers": {
     "scrapin-aint-easy": {
@@ -52,24 +36,6 @@
         "--mcp"
       ]
     }
-  },
-  "context": {
-    "title": "Scrapin' Ain't Easy",
-    "summary": "Documentation intelligence engine: graph-crawl live API docs, search with vector + graph traversal, detect codebase/agent drift, look up algorithms from TheAlgorithms/NeetCode/Refactoring Guru, and run interview-first project setup. 7 commands, 5 skills, 12 agents, 1 MCP server with 17 tools.",
-    "maxTokens": 400,
-    "excludeGlobs": [
-      "**/node_modules/**",
-      "**/dist/**",
-      "**/data/**",
-      "**/coverage/**",
-      "**/*.zip"
-    ],
-    "lazyLoadSections": [
-      "CLAUDE.md",
-      "commands/scrapin-setup.md",
-      "commands/scrapin-search.md",
-      "commands/scrapin-drift.md"
-    ]
   },
   "commands": {
     "scrapin-algo": "commands/scrapin-algo.md",

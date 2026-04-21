@@ -30,37 +30,6 @@
   ],
   "license": "MIT",
   "repository": "https://github.com/Lobbi-Docs/claude",
-  "contextEntry": "CONTEXT_SUMMARY.md",
-  "context": {
-    "entry": "CONTEXT_SUMMARY.md",
-    "title": "Marketplace Pro",
-    "summary": "Advanced plugin marketplace platform with intent-based composition, supply chain security, contextual intelligence, dev studio hot-reload, and federated registry protocol. 12 commands.",
-    "tags": [
-      "marketplace",
-      "plugin-management",
-      "composition",
-      "security",
-      "trust-scoring",
-      "federated-registry",
-      "dev-studio",
-      "policy-engine"
-    ],
-    "bootstrapFiles": [
-      "CONTEXT_SUMMARY.md"
-    ],
-    "maxTokens": 700,
-    "excludeGlobs": [
-      "**/node_modules/**",
-      "**/dist/**",
-      "**/build/**",
-      "**/*.zip"
-    ],
-    "lazyLoadSections": [
-      "CLAUDE.md",
-      "skills/*/SKILL.md",
-      "commands/*.md"
-    ]
-  },
   "commands": {
     "compose": "commands/compose.md",
     "dev": "commands/dev.md",

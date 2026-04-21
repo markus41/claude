@@ -31,53 +31,11 @@
     "plugin-development"
   ],
   "permissions": {
-    "requires": [
-      "read",
-      "write",
-      "bash"
-    ],
-    "optional": [
-      "agent",
-      "mcp",
-      "network"
-    ]
-  },
-  "capabilities": {
-    "provides": [
-      "claude-code-configuration",
-      "three-tier-memory",
-      "engram-obsidian-bridge",
-      "multi-agent-orchestration",
-      "deep-code-analysis",
-      "queryable-documentation",
-      "knowledge-base-artifacts",
-      "autonomy-mode",
-      "channels-event-streaming"
-    ],
-    "requires": []
-  },
-  "context": {
-    "title": "Claude Code Expert v8",
-    "summary": "Modern second brain for Claude Code: deploys the 5-layer stack (CLAUDE.md + skills + hooks + agents + memory), bridges engram (tier-1 working memory) with the user's Obsidian vault (tier-2 durable knowledge) via a memory-consolidator agent, and ships 14 behavior-triggering skills + 11 commands + 18 agents + a 22-tool MCP reference server. Route tasks via /cc-help.",
-    "maxTokens": 500,
-    "excludeGlobs": [
-      "**/node_modules/**",
-      "**/dist/**",
-      "**/build/**",
-      "**/coverage/**",
-      "archive/**",
-      "**/*.zip",
-      "**/*.tar*"
-    ],
-    "lazyLoadSections": [
-      "CLAUDE.md",
-      "commands/cc-help.md",
-      "commands/cc-setup.md",
-      "commands/cc-memory.md",
-      "skills/cc-second-brain/SKILL.md",
-      "skills/claude-code-setup/SKILL.md",
-      "memory/conventions.md",
-      "agents/memory-consolidator.md"
+    "tools": [
+      "Read",
+      "Write",
+      "Edit",
+      "Bash"
     ]
   },
   "commands": {
