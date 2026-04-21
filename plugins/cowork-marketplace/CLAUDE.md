@@ -31,11 +31,11 @@ Browse, install, update, launch, and export cowork marketplace items backed by r
 
 ## Catalog
 
-20 items across 5 types, backed by 20 installed plugins:
+21 items across 5 types, backed by 22 installed plugins:
 - 3 Templates (FastAPI, Fullstack, Home Assistant)
-- 4 Workflows (Jira-to-PR, EKS Deploy, Microsoft Platform, Sprint Planning)
+- 5 Workflows (Jira-to-PR, EKS Deploy, Microsoft Platform, Sprint Planning, Universal Project Manager)
 - 3 Agent Configs (Code Reviewer, Nonprofit Director, Design Architect)
-- 6 Skill Packs (Claude Code Mastery, DevOps, React Animation, Marketplace Intelligence, Draw.io Diagramming, .NET Blazor Expert, Scrapin' Ain't Easy)
+- 7 Skill Packs (Claude Code Mastery, DevOps, React Animation, Marketplace Intelligence, Draw.io Diagramming, .NET Blazor Expert, Scrapin' Ain't Easy)
 - 3 Blueprints (Enterprise Release, Keycloak Multi-Tenant, Project Scaffolder)
 
 ## Plugin Bundles

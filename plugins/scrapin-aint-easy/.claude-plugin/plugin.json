@@ -1,9 +1,11 @@
 {
+  "$schema": "https://claude.local/schemas/plugin.schema.json",
   "name": "scrapin-aint-easy",
   "version": "1.0.0",
   "description": "Documentation intelligence engine, algorithm library, and codebase/agent drift detection system for Claude Code",
   "author": {
-    "name": "Markus Ahling"
+    "name": "Markus Ahling",
+    "email": "Markus@thelobbi.io"
   },
   "license": "MIT",
   "homepage": "https://github.com/markus41/claude/tree/main/plugins/scrapin-aint-easy",
@@ -18,6 +20,60 @@
     "interview-setup",
     "code-intelligence"
   ],
+  "permissions": {
+    "requires": [
+      "read",
+      "write",
+      "bash"
+    ],
+    "optional": [
+      "agent",
+      "mcp",
+      "network"
+    ]
+  },
+  "capabilities": {
+    "provides": [
+      "documentation-intelligence",
+      "algorithm-library",
+      "codebase-drift-detection",
+      "agent-drift-monitoring",
+      "knowledge-graph",
+      "interview-driven-setup",
+      "mcp-server"
+    ],
+    "requires": []
+  },
+  "commands": [
+    "scrapin-search",
+    "scrapin-crawl",
+    "scrapin-diff",
+    "scrapin-algo",
+    "scrapin-drift",
+    "scrapin-status",
+    "scrapin-setup"
+  ],
+  "skills": [
+    "bug-triage",
+    "code-review",
+    "migration-planner",
+    "project-setup",
+    "release-notes"
+  ],
+  "agents": [
+    "doc-crawler",
+    "doc-graph-builder",
+    "doc-lsp-resolver",
+    "doc-diff-watcher",
+    "doc-cron-runner",
+    "algo-indexer",
+    "code-drift-detector",
+    "agent-drift-detector",
+    "backend-architect",
+    "frontend-specialist",
+    "infra-guardian",
+    "qa-analyst"
+  ],
   "mcpServers": {
     "scrapin-aint-easy": {
       "command": "node",
@@ -26,5 +82,23 @@
         "--mcp"
       ]
     }
+  },
+  "context": {
+    "title": "Scrapin' Ain't Easy",
+    "summary": "Documentation intelligence engine: graph-crawl live API docs, search with vector + graph traversal, detect codebase/agent drift, look up algorithms from TheAlgorithms/NeetCode/Refactoring Guru, and run interview-first project setup. 7 commands, 5 skills, 12 agents, 1 MCP server with 17 tools.",
+    "maxTokens": 400,
+    "excludeGlobs": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/data/**",
+      "**/coverage/**",
+      "**/*.zip"
+    ],
+    "lazyLoadSections": [
+      "CLAUDE.md",
+      "commands/scrapin-setup.md",
+      "commands/scrapin-search.md",
+      "commands/scrapin-drift.md"
+    ]
   }
 }

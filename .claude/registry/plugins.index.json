@@ -164,6 +164,13 @@
       "source": "local",
       "installedAt": "2026-04-07T00:00:00.000Z",
       "dependencies": {}
+    },
+    "project-management-plugin": {
+      "version": "1.0.0",
+      "path": "../plugins/project-management-plugin",
+      "source": "local",
+      "installedAt": "2026-04-21T00:00:00.000Z",
+      "dependencies": {}
     }
   },
   "registry": {
@@ -498,7 +505,8 @@
       "version": "1.0.0",
       "description": "Documentation intelligence engine, algorithm library, and codebase/agent drift detection system for Claude Code",
       "author": {
-        "name": "Markus Ahling"
+        "name": "Markus Ahling",
+        "email": "Markus@thelobbi.io"
       },
       "keywords": [
         "documentation",
@@ -514,6 +522,28 @@
         "developer-tools",
         "documentation",
         "code-intelligence"
+      ]
+    },
+    "project-management-plugin": {
+      "name": "project-management-plugin",
+      "version": "1.0.0",
+      "description": "Universal project manager: interview-first init, micro-task decomposition, deep research before execution, autonomous work loop, and 9 PM platform integrations.",
+      "author": {
+        "name": "Markus Ahling",
+        "email": "Markus@thelobbi.io"
+      },
+      "keywords": [
+        "project-management",
+        "task-decomposition",
+        "research-first",
+        "micro-tasks",
+        "autonomous",
+        "pm-integration"
+      ],
+      "categories": [
+        "project-management",
+        "orchestration",
+        "developer-tools"
       ]
     }
   },
@@ -661,6 +691,13 @@
         "version": "1.0.0",
         "status": "active",
         "tier": "standard"
+      },
+      "project-management-plugin": {
+        "path": "../plugins/project-management-plugin/.claude-plugin/plugin.json",
+        "callsign": "PM",
+        "version": "1.0.0",
+        "status": "active",
+        "tier": "standard"
       }
     },
     "marketplace-ecosystem": {
@@ -740,19 +777,20 @@
     "Expert": "claude-code-expert",
     "Materializer": "mui-expert",
     "Blazor": "dotnet-blazor",
-    "Scrapin": "scrapin-aint-easy"
+    "Scrapin": "scrapin-aint-easy",
+    "PM": "project-management-plugin"
   },
   "stats": {
-    "totalInstalled": 21,
-    "totalPlugins": 27,
+    "totalInstalled": 22,
+    "totalPlugins": 28,
     "totalAvailable": 6,
-    "lastUpdated": "2026-04-17T00:00:00.000Z",
+    "lastUpdated": "2026-04-21T00:00:00.000Z",
     "byTier": {
       "enterprise": 1,
-      "standard": 24
+      "standard": 25
     },
     "byLocation": {
-      "plugins/": 21,
+      "plugins/": 22,
       ".claude/plugins/": 6
     }
   }

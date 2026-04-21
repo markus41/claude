@@ -1,7 +1,8 @@
 {
+  "$schema": "https://claude.local/schemas/plugin.schema.json",
   "name": "project-management-plugin",
   "version": "1.0.0",
-  "description": "Universal project manager: interview-first init, micro-task decomposition, deep research before execution, autonomous loop with 9 PM platform integrations.",
+  "description": "Universal project manager: interview-first init, micro-task decomposition, deep research before execution, autonomous work loop, and 9 PM platform integrations.",
   "author": {
     "name": "Markus Ahling",
     "email": "Markus@thelobbi.io"
@@ -15,6 +16,79 @@
     "micro-tasks",
     "autonomous",
     "pm-integration"
+  ],
+  "permissions": {
+    "requires": [
+      "read",
+      "write",
+      "bash",
+      "agent"
+    ],
+    "optional": [
+      "mcp",
+      "network"
+    ]
+  },
+  "capabilities": {
+    "provides": [
+      "interview-driven-project-init",
+      "micro-task-decomposition",
+      "research-before-execution",
+      "autonomous-work-loop",
+      "pm-platform-integrations",
+      "quality-council-review",
+      "state-checkpointing"
+    ],
+    "requires": []
+  },
+  "commands": [
+    "pm-init",
+    "pm-plan",
+    "pm-work",
+    "pm-auto",
+    "pm-status",
+    "pm-task",
+    "pm-research",
+    "pm-review",
+    "pm-checkpoint",
+    "pm-focus",
+    "pm-report",
+    "pm-risk",
+    "pm-integrate",
+    "pm-sync",
+    "pm-next",
+    "pm-delegate",
+    "pm-retrospective",
+    "pm-template",
+    "pm-backlog",
+    "pm-debug"
+  ],
+  "skills": [
+    "project-decomposition",
+    "research-protocol",
+    "task-state-management",
+    "quality-gates",
+    "pm-integrations",
+    "progress-visualization",
+    "project-templates"
+  ],
+  "agents": [
+    "project-orchestrator",
+    "project-interviewer",
+    "scope-architect",
+    "task-decomposer",
+    "dependency-resolver",
+    "deep-researcher",
+    "research-dispatcher",
+    "task-executor",
+    "quality-reviewer",
+    "council-reviewer",
+    "risk-assessor",
+    "pm-integrator",
+    "progress-monitor",
+    "context-guardian",
+    "pattern-recognizer",
+    "checkpoint-manager"
   ],
   "userConfig": {
     "github_token": {
@@ -54,5 +128,22 @@
       "sensitive": true
     }
   },
-  "dependencies": []
+  "dependencies": [],
+  "context": {
+    "title": "Project Management Plugin",
+    "summary": "Universal project manager: 8-phase interview-first init, recursive micro-task decomposition (max 30 min/task), mandatory research brief before every execution, autonomous loop with HITL on risk > 7, and 9 PM platform integrations (GitHub, Linear, Notion, Asana, Trello, ClickUp, Monday, Todoist). 20 commands, 7 skills, 16 agents. State lives in .claude/projects/{project-id}/.",
+    "maxTokens": 400,
+    "excludeGlobs": [
+      "**/node_modules/**",
+      "**/.claude/projects/**",
+      "**/coverage/**"
+    ],
+    "lazyLoadSections": [
+      "CLAUDE.md",
+      "commands/pm-init.md",
+      "commands/pm-work.md",
+      "commands/pm-auto.md",
+      "skills/research-protocol/SKILL.md"
+    ]
+  }
 }

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "description": "Cowork marketplace item catalog. All items are backed by real plugin agents, skills, and commands.",
-  "totalItems": 20,
+  "totalItems": 21,
   "items": [
     {
       "id": "fastapi-scaffold",
@@ -910,6 +910,63 @@
             "blazor-test",
             "blazor-scaffold",
             "blazor-migrate"
+          ]
+        }
+      }
+    },
+    {
+      "id": "project-management",
+      "name": "Universal Project Manager",
+      "type": "workflow",
+      "category": "operations",
+      "difficulty": "intermediate",
+      "description": "Interview-first project init, recursive micro-task decomposition, mandatory research before every execution, autonomous work loop with HITL on high-risk tasks, and 9 PM platform integrations (GitHub, Linear, Notion, Asana, Trello, ClickUp, Monday, Todoist).",
+      "tags": [
+        "project-management",
+        "task-decomposition",
+        "autonomous",
+        "research-first",
+        "micro-tasks",
+        "pm-integration",
+        "interview",
+        "planning"
+      ],
+      "rating": 4.7,
+      "trustGrade": "A",
+      "pluginBindings": {
+        "project-management-plugin": {
+          "agents": [
+            "project-orchestrator",
+            "project-interviewer",
+            "scope-architect",
+            "task-decomposer",
+            "deep-researcher",
+            "task-executor",
+            "quality-reviewer",
+            "council-reviewer",
+            "risk-assessor",
+            "pm-integrator",
+            "progress-monitor"
+          ],
+          "skills": [
+            "project-decomposition",
+            "research-protocol",
+            "task-state-management",
+            "quality-gates",
+            "pm-integrations",
+            "project-templates"
+          ],
+          "commands": [
+            "pm-init",
+            "pm-plan",
+            "pm-work",
+            "pm-auto",
+            "pm-status",
+            "pm-task",
+            "pm-research",
+            "pm-review",
+            "pm-integrate",
+            "pm-sync"
           ]
         }
       }
