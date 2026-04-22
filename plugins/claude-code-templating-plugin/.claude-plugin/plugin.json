@@ -31,36 +31,9 @@
     "multi-agent",
     "memory"
   ],
-  "commands": {
-    "archetype": "commands/archetype.md",
-    "generate": "commands/generate.md",
-    "harness": "commands/harness.md",
-    "scaffold": "commands/scaffold.md",
-    "setup": "commands/setup.md",
-    "template": "commands/template.md"
-  },
-  "skills": {
-    "agentic-patterns": "skills/agentic-patterns/SKILL.md",
-    "harness-expert": "skills/harness-expert/SKILL.md",
-    "project-scaffolding": "skills/project-scaffolding/SKILL.md",
-    "universal-templating": "skills/universal-templating/SKILL.md"
-  },
-  "agents": {
-    "archetype-creator": "agents/archetype-creator.md",
-    "codegen-agent": "agents/codegen-agent.md",
-    "database-agent": "agents/database-agent.md",
-    "harness-expert": "agents/harness-expert.md",
-    "scaffold-agent": "agents/scaffold-agent.md",
-    "testing-agent": "agents/testing-agent.md"
-  },
   "categories": [
     "code-generation",
     "devops",
     "productivity"
-  ],
-  "provides": {
-    "commands": 6,
-    "agents": 6,
-    "skills": 4
-  }
+  ]
 }

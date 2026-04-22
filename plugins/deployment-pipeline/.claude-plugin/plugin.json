@@ -23,28 +23,8 @@
     "multi-agent",
     "exception-handling"
   ],
-  "commands": {
-    "approve": "commands/approve.md",
-    "history": "commands/history.md",
-    "rollback": "commands/rollback.md",
-    "start": "commands/start.md",
-    "status": "commands/status.md"
-  },
-  "skills": {
-    "agentic-patterns": "skills/agentic-patterns/SKILL.md"
-  },
-  "agents": {
-    "orchestrator": "agents/orchestrator.md",
-    "rollback": "agents/rollback.md",
-    "validator": "agents/validator.md"
-  },
   "categories": [
     "devops",
     "orchestration"
-  ],
-  "provides": {
-    "commands": 5,
-    "agents": 3,
-    "skills": 1
-  }
+  ]
 }

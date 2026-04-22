@@ -1,5 +1,4 @@
 {
-  "$schema": "https://claude.local/schemas/plugin.schema.json",
   "name": "claude-code-expert",
   "version": "7.6.0",
   "description": "High-intelligence Claude Code copilot with deep code reasoning, evidence-driven planning, orchestration-first execution, model routing, context budgeting, CI/CD integration, enterprise security, plugin development, prompt engineering, performance profiling, agent teams, channels (event-driven autonomy with CI webhook, mobile approval relay, Discord bridge, and fakechat dev profile), interactive tutorials, LSP integration, security-hardened hook script library, MCP Prompts coverage, common workflow packs, runtime selection guide, computer-use patterns, checkpointing, scheduled-task blueprints, repo bootstrap scanner, hook policy engine (8 installable packs), layered memory deployment, role-based subagent packs (implementer, debugger, migration-lead, dependency-auditor, release-coordinator), 5 agent-team topology kits, autonomy operating mode (4 profiles + 3 gates), and a queryable 15-tool MCP documentation server with autonomy advisor.",
@@ -74,18 +73,6 @@
     "checkpointing",
     "rewind"
   ],
-  "permissions": {
-    "requires": [
-      "read",
-      "write",
-      "bash"
-    ],
-    "optional": [
-      "agent",
-      "mcp",
-      "network"
-    ]
-  },
   "capabilities": {
     "provides": [
       "claude-code-configuration",

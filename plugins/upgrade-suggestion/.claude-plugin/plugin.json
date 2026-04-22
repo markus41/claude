@@ -29,34 +29,9 @@
     "multi-agent",
     "agentic-design-patterns"
   ],
-  "commands": {
-    "suggest-upgrades": "commands/suggest-upgrades.md",
-    "upgrade-deep-dive": "commands/upgrade-deep-dive.md",
-    "upgrade-roadmap": "commands/upgrade-roadmap.md"
-  },
-  "skills": {
-    "agentic-patterns": "skills/agentic-patterns/SKILL.md",
-    "innovation-radar": "skills/innovation-radar/SKILL.md",
-    "project-fingerprinting": "skills/project-fingerprinting/SKILL.md",
-    "upgrade-analysis": "skills/upgrade-analysis/SKILL.md"
-  },
-  "agents": {
-    "architecture-specialist": "agents/architecture-specialist.md",
-    "council-synthesizer": "agents/council-synthesizer.md",
-    "dx-specialist": "agents/dx-specialist.md",
-    "performance-specialist": "agents/performance-specialist.md",
-    "security-specialist": "agents/security-specialist.md",
-    "upgrade-analyst": "agents/upgrade-analyst.md",
-    "ux-specialist": "agents/ux-specialist.md"
-  },
   "categories": [
     "productivity",
     "code-generation",
     "security"
-  ],
-  "provides": {
-    "commands": 3,
-    "agents": 7,
-    "skills": 4
-  }
+  ]
 }

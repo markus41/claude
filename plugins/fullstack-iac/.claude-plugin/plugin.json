@@ -30,33 +30,9 @@
   ],
   "license": "MIT",
   "repository": "https://github.com/Lobbi-Docs/claude",
-  "commands": {
-    "ansible": "commands/ansible.md",
-    "api": "commands/api.md",
-    "docker": "commands/docker.md",
-    "frontend": "commands/frontend.md",
-    "infra": "commands/infra.md",
-    "k8s": "commands/k8s.md",
-    "monorepo": "commands/monorepo.md",
-    "new": "commands/new.md"
-  },
-  "skills": {
-    "agentic-patterns": "skills/agentic-patterns/SKILL.md",
-    "fastapi-patterns": "skills/fastapi-patterns/SKILL.md",
-    "react-vite": "skills/react-vite/SKILL.md"
-  },
-  "agents": {
-    "api-architect": "agents/api-architect.md",
-    "frontend-builder": "agents/frontend-builder.md"
-  },
   "categories": [
     "devops",
     "cloud",
     "code-generation"
-  ],
-  "provides": {
-    "commands": 8,
-    "agents": 2,
-    "skills": 3
-  }
+  ]
 }
