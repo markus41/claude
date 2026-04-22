@@ -48,8 +48,8 @@ class ArchetypeValidator {
     this.ajv = new Ajv({ allErrors: true, verbose: true });
     addFormats(this.ajv);
 
-    // Load schema
-    this.schemaPath = path.resolve(__dirname, '../schemas/archetype.schema.json');
+    // Load schema (ESM-safe path resolution from repo root)
+    this.schemaPath = path.resolve(process.cwd(), 'schemas/archetype.schema.json');
     this.schema = JSON.parse(fs.readFileSync(this.schemaPath, 'utf-8'));
     this.ajv.addSchema(this.schema, 'archetype');
   }
@@ -79,7 +79,7 @@ class ArchetypeValidator {
       config = JSON.parse(content);
     } catch (error) {
       result.valid = false;
-      result.errors.push(`Invalid JSON: ${error.message}`);
+      result.errors.push(`Invalid JSON: ${error instanceof Error ? error.message : String(error)}`);
       return result;
     }
 
@@ -488,9 +488,11 @@ function main() {
   process.exit(allValid ? 0 : 1);
 }
 
-// Run if executed directly
-if (require.main === module) {
+// Run if executed directly (ESM-safe entry check)
+import { fileURLToPath } from 'url';
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
   main();
 }
 
-export { ArchetypeValidator, ValidationResult };
+export { ArchetypeValidator };
+export type { ValidationResult };
