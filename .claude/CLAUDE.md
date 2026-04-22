@@ -1,45 +1,45 @@
 # Project Instructions
 
 ## Overview
-Neural Orchestration Platform (Golden Armada) — plugin-based AI agent orchestration
-with visual workflow builder. React 18 + Vite 5 + TypeScript strict + Tailwind CSS.
-19 domain plugins, 54 skills, 37 agents, 7 MCP servers, 11 hooks.
+Claude Code Plugin Marketplace — curated collection of 27 Claude Code plugins
+(21 in `plugins/`, 6 sub-plugins in `.claude/plugins/`) with marketplace-wide
+validation and developer tooling. Pure marketplace repository; no application
+frontend.
 
 ## Workflow Protocol
 EXPLORE → PLAN → CODE → TEST → FIX → DOCUMENT
 
-## Build & Test
+## Build & Validate
 - Install: `pnpm install`
-- Dev: `pnpm dev`
-- Build: `pnpm build`
-- Test: `pnpm test` or `npm test`
-- E2E: `pnpm test:e2e`
-- Type check: `npx tsc --noEmit`
-- Lint: `npx eslint .`
+- **Primary check:** `pnpm check:marketplace` — validates marketplace.json and every plugin (runs in CI)
+- Type-check scripts and types: `npx tsc --noEmit`
+- Validate an archetype example: `pnpm validate-archetype <path>`
+- Profile per-plugin context cost: `pnpm profile:plugin-context`
 
 ## Tech Stack
 | Layer | Technology |
 |-------|-----------|
-| UI | React 18, ReactFlow, Framer Motion, Lucide |
-| State | Zustand + immer, TanStack Query |
-| Styling | Tailwind CSS 3, CVA, tailwind-merge |
-| Validation | Zod, react-hook-form |
-| Build | Vite 5, TypeScript 5.3 strict |
-| Testing | Vitest, Playwright, Testing Library |
-| CI | GitHub Actions (12 workflows) |
-| MCP | 5 custom + perplexity + firecrawl |
+| Runtime | Node.js 20+, ES modules |
+| Language | TypeScript 5.3 strict (for scripts only) |
+| Validation | Ajv + JSON Schema (Draft 7) |
+| Package Manager | pnpm |
+| CI | GitHub Actions (marketplace-ci runs scripts/validate-marketplace.mjs + tsc + archetype validation) |
+| MCP | 5 custom (code-quality-gate, deploy-intelligence, lessons-learned, project-metrics, workflow-bridge) + perplexity + firecrawl + context7 |
 
 ## Key Paths
-- Source: `src/` (components, hooks, stores, types, utils, workflows)
-- Tests: `src/test/`
-- Plugins: `plugins/` (19 domain plugins)
+- Marketplace manifest: `.claude-plugin/marketplace.json`
+- Installed plugins: `plugins/` (21 plugins)
+- Sub-marketplace plugins: `.claude/plugins/` (6 plugins)
 - Rules: `.claude/rules/` (modular, path-scoped instructions)
-- Skills: `.claude/skills/` (54 reusable workflows)
-- Agents: `.claude/agents/` (37 specialized subagents)
-- Hooks: `.claude/hooks/` (11 lifecycle scripts)
+- Platform skills: `.claude/skills/`
+- Platform agents: `.claude/agents/`
+- Hooks: `.claude/hooks/` (lifecycle scripts)
 - Templates: `.claude/templates/` (PR, design doc, test plan, incident)
-- Docs: `docs/context/` (architecture, data model, API, security, testing)
-- MCP servers: `.claude/mcp-servers/` + `.mcp.json`
+- Plugin registries: `.claude/registry/`
+- Dev tooling: `scripts/` (validation, indexing, context profiling)
+- Schemas: `schemas/` (plugin, archetype, marketplace)
+- Docs: `docs/context/` (architecture, data model, security, testing)
+- MCP config: `.mcp.json`
 
 ## Reference Documents
 Read these before making major changes:
@@ -64,9 +64,18 @@ Read these before making major changes:
 ## Decision Trees
 - Auth/identity tasks → check `plugins/aws-eks-helm-keycloak/` + `docs/context/security-rules.md`
 - Plugin development → check `plugins/claude-code-expert/` + `.claude/rules/architecture.md`
-- UI/frontend tasks → check `src/components/` + `docs/context/ux-principles.md`
+- Frontend-authoring plugins → check `plugins/frontend-design-system/` + `plugins/react-animation-studio/`
 - Infrastructure tasks → check `.github/workflows/` + `.claude/rules/infra.md`
 - Agent/skill creation → check `.claude/agents/` + `.claude/skills/` + `docs/context/domain-glossary.md`
+- New plugin scaffold → check `plugins/claude-code-templating-plugin/` + `schemas/plugin.schema.json`
+
+## Plugin Cache Errors (common root causes)
+Every file listed in a `plugin.json`'s `commands`, `skills`, `agents`, or `hooks`
+sections MUST have YAML frontmatter (at minimum `description:`). Missing
+frontmatter is the most common source of cache errors on plugin load. MCP
+servers declared in the manifest must point to files that exist in git — do
+not reference gitignored build artifacts (`dist/`, `build/`) in `mcpServers`
+unless the plugin includes a postinstall build hook.
 
 ## Key Commands
 - Use subagents for research (preserves main context)
@@ -95,14 +104,16 @@ When you encounter an error:
 3. If it reveals a pattern, update the appropriate rule in `.claude/rules/`
 
 ## Conventions
-- TypeScript strict mode (all strict flags enabled)
+- TypeScript strict mode for `scripts/` (all strict flags enabled)
 - ES modules (`"type": "module"`)
-- Path aliases: `@/*` → `./src/*`
 - Commit format: `type(scope): description`
-- Plugin manifests: `.claude-plugin/plugin.json`
+- Plugin manifests: `.claude-plugin/plugin.json` (per-plugin)
+- Marketplace manifest: `.claude-plugin/marketplace.json` (repo root)
 
 ## Don't Touch
 - `node_modules/`, `dist/`, `build/`, `coverage/`
-- `pnpm-lock.yaml` (auto-generated)
 - `.claude/worktrees/` (git worktree managed)
-- Plugin `node_modules/` directories
+- Plugin `node_modules/` and `dist/` directories
+
+## Lockfile
+- `pnpm-lock.yaml` IS committed (required for CI `--frozen-lockfile`). Regenerate via `pnpm install` when you change `package.json`, then commit the lockfile update.

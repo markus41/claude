@@ -1,3 +1,7 @@
+---
+description: Show next actionable tasks based on dependencies and priority
+---
+
 # /pm:next — Show Next Actionable Tasks
 
 **Usage**: `/pm:next {project-id} [--count N]`

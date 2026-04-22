@@ -1,3 +1,7 @@
+---
+description: Delegate a task to a specific specialized agent
+---
+
 # /pm:delegate — Delegate to Specialized Agent
 
 **Usage**: `/pm:delegate {project-id} T-{n} --agent {agent-name}`

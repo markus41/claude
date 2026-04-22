@@ -1,3 +1,7 @@
+---
+description: Single execution cycle: research -> execute -> validate a single task
+---
+
 # /pm:work — Research-First Task Execution
 
 **Usage**: `/pm:work {project-id} [--task T-001] [--serial] [--batch-size N] [--skip-research] [--dry-run] [--gate]`

@@ -1,3 +1,7 @@
+---
+description: Post-completion retrospective analysis with lessons learned
+---
+
 # /pm:retrospective — Post-Completion Analysis
 
 **Usage**: `/pm:retrospective {project-id}`

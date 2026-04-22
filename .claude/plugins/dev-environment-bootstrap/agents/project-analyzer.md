@@ -1,3 +1,8 @@
+---
+description: Analyze project structure and dependencies to create a comprehensive tech stack profile.
+name: project-analyzer
+---
+
 # Project Analyzer Agent
 
 **Role:** Project Analysis & Tech Stack Detection

@@ -1,3 +1,8 @@
+---
+description: Automatically fixes linting, formatting, and simple security issues detected by quality gates.
+name: auto-fix-agent
+---
+
 # Auto-Fix Agent
 
 **Callsign:** Mender

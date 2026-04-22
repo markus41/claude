@@ -1,3 +1,8 @@
+---
+description: Generates fully-typed TypeScript definitions from API schemas with Zod validation, branded types, discriminated unions, and strict type safety.
+name: type-generator-agent
+---
+
 # Type Generator Agent
 
 **Callsign:** Typer

@@ -1,3 +1,8 @@
+---
+description: The State Engineer is an expert in designing state schemas for LangGraph applications.
+name: state-engineer
+---
+
 # State Engineer Agent
 
 ```yaml

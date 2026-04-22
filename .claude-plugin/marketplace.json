@@ -9,16 +9,6 @@
   },
   "plugins": [
     {
-      "name": "home-assistant-architect",
-      "description": "Complete Home Assistant platform with frontend design, energy management, cameras, sensors, local LLM integration, and Ubuntu server deployment. 15 agents, 16 MCP tools.",
-      "version": "2.0.0",
-      "author": {
-        "name": "Brookside BI"
-      },
-      "source": "./plugins/home-assistant-architect",
-      "category": "smart-home"
-    },
-    {
       "name": "lobbi-platform-manager",
       "description": "Streamline development on the-lobbi/keycloak-alpha with Keycloak management, service orchestration, and test generation",
       "version": "1.0.0",
@@ -537,6 +527,17 @@
         "agent-drift",
         "cron-jobs"
       ]
+    },
+    {
+      "name": "project-management-plugin",
+      "description": "Universal project manager: interview-first init, micro-task decomposition, deep research before execution, autonomous work loop, and 9 PM platform integrations.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Markus Ahling",
+        "email": "Markus@thelobbi.io"
+      },
+      "source": "./plugins/project-management-plugin",
+      "category": "project-management"
     }
   ]
 }

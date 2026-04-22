@@ -1,3 +1,8 @@
+---
+description: Scans for security vulnerabilities, exposed secrets, and OWASP Top 10 issues.
+name: security-scanner-agent
+---
+
 # Security Scanner Agent
 
 **Callsign:** Warden-Sec

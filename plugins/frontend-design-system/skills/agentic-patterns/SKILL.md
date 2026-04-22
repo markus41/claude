@@ -1,3 +1,7 @@
+---
+description: Agentic Design Patterns — Frontend Design System
+---
+
 # Agentic Design Patterns — Frontend Design System
 
 > Patterns from "Agentic Design Patterns" (Gulli & Sauco, 2025) applied to design token management, component scaffolding, multi-tenant theming, and accessibility-compliant UI generation.

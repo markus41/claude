@@ -1,3 +1,7 @@
+---
+description: Backlog grooming: reorder, refine, split, or archive tasks
+---
+
 # /pm:backlog — Backlog Management
 
 **Usage**: `/pm:backlog {project-id} [--groom | --prioritize | --reestimate]`

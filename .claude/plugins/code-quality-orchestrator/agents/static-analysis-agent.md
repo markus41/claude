@@ -1,3 +1,8 @@
+---
+description: Runs ESLint, Prettier, and language-specific linters with auto-fix capabilities.
+name: static-analysis-agent
+---
+
 # Static Analysis Agent
 
 **Callsign:** Sentinel-Lint

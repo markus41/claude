@@ -1,3 +1,7 @@
+---
+description: 8-phase interview-first project initialization with micro-task decomposition
+---
+
 # /pm:init — Interview-First Project Initialization
 
 **Usage**: `/pm:init [--type software|content|research|business|auto] [--depth quick|standard|thorough] [--template webapp|api-service|ml-pipeline|mobile-app|infrastructure] [--dry-run] [--import-jira PROJ-123]`

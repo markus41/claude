@@ -1,3 +1,7 @@
+---
+description: Expert knowledge for Framer Motion - the production-ready motion library for React.
+---
+
 # Framer Motion Skill
 
 Expert knowledge for Framer Motion - the production-ready motion library for React. This skill enables declarative animations, gesture recognition, and layout animations with optimal performance.

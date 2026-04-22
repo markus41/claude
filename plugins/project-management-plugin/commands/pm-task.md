@@ -1,3 +1,7 @@
+---
+description: Task CRUD operations: add, edit, complete, or block a task
+---
+
 # /pm:task — Task Management CRUD
 
 **Usage**: `/pm:task {subcommand} {project-id} [options]`

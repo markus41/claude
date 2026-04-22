@@ -8,6 +8,14 @@ Claude reads this at the start of each session to avoid repeating mistakes.
 <!-- Entries are auto-appended by the PostToolUseFailure hook -->
 <!-- After fixing an issue, update the Status from NEEDS_FIX to RESOLVED and add the fix description -->
 
+### Error: git checkout <old-sha> -- . re-added deleted files (2026-04-21T22:30:00Z)
+- **Tool:** Bash
+- **Input:** `git stash; git checkout 733ee9c -- .; pnpm check:plugin-schema; git checkout HEAD -- .`
+- **Error:** `git checkout <sha> -- .` restored all files from that commit into the working tree AND index, including files that had been `git rm`'d at HEAD. A follow-up `git checkout HEAD -- .` did not un-stage or un-restore them — they remained as "new file:" entries, inflating the next commit.
+- **Status:** RESOLVED
+- **Fix:** Ran `git reset HEAD` to unstage, then `rm -rf <files>` on the restored working-tree copies. Working tree returned to clean HEAD state.
+- **Prevention:** To diff/test against an older commit without mutating HEAD, use `git worktree add ../tmp-baseline <sha>` and run the comparison in the temp worktree — never `git checkout <sha> -- .` on the live worktree. If you must, record the exact file set at HEAD first (e.g. `git ls-files > /tmp/head-files`) and prune anything extra after reverting.
+
 
 ### Error: Bash failure (2026-02-24T08:18:00Z)
 - **Tool:** Bash

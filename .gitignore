@@ -37,7 +37,7 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-pnpm-lock.yaml
+# pnpm-lock.yaml is committed so CI --frozen-lockfile works and builds are reproducible
 
 # Nested dependencies and generated artifacts (plugin-safe)
 **/node_modules/

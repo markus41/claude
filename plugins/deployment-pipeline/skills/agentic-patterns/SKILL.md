@@ -1,3 +1,7 @@
+---
+description: Agentic Design Patterns — Deployment Pipeline
+---
+
 # Agentic Design Patterns — Deployment Pipeline
 
 > Patterns from "Agentic Design Patterns" (Gulli & Sauco, 2025) applied to CD orchestration and state-machine deployment workflows

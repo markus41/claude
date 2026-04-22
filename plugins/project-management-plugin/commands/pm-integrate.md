@@ -1,3 +1,7 @@
+---
+description: Connect an external PM platform (Jira, Linear, Notion, Asana, Trello, ClickUp, Monday, Todoist, GitHub)
+---
+
 # /pm:integrate — Connect PM Platform
 
 **Usage**: `/pm:integrate {project-id} --platform github|linear|notion|asana|trello|clickup|monday|todoist|local`

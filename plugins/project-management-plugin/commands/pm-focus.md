@@ -1,3 +1,7 @@
+---
+description: Narrow execution scope to a specific phase, epic, or story
+---
+
 # /pm:focus — Scope Narrowing
 
 **Usage**: `/pm:focus {project-id} --phase {phase-id} | --epic {epic-id} | --story {story-id} | clear`

@@ -1,3 +1,7 @@
+---
+description: Agentic Design Patterns — Lobbi Platform Manager
+---
+
 # Agentic Design Patterns — Lobbi Platform Manager
 
 > Patterns from "Agentic Design Patterns" (Gulli & Sauco, 2025) applied to multi-tenant MERN platform management and Keycloak orchestration

@@ -1,3 +1,7 @@
+---
+description: Run deep research protocol for a specific task using codebase, Perplexity, Context7, and Firecrawl sources
+---
+
 # /pm:research — Manual Deep Research
 
 **Usage**: `/pm:research {project-id} T-001 [--force-refresh] [--topic "custom query"] [--save]`

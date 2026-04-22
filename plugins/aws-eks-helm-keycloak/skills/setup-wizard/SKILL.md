@@ -1,3 +1,7 @@
+---
+description: Comprehensive knowledge for interactive setup and validation of the AWS EKS + Helm + Keycloak + Harness ecosystem.
+---
+
 # Setup Wizard Skill
 
 Comprehensive knowledge for interactive setup and validation of the AWS EKS + Helm + Keycloak + Harness ecosystem.

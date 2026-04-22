@@ -1,3 +1,8 @@
+---
+description: Analyzes test coverage, identifies gaps, and suggests test cases to meet coverage thresholds.
+name: test-coverage-agent
+---
+
 # Test Coverage Agent
 
 **Callsign:** Guardian-Test

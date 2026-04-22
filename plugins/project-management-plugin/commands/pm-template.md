@@ -1,3 +1,7 @@
+---
+description: Use or create reusable project templates (webapp, api-service, ml-pipeline, mobile-app, infrastructure)
+---
+
 # /pm:template — Project Templates
 
 **Usage**: `/pm:template list | use {template-name} | create {project-id} --name {template-name}`

@@ -1,3 +1,7 @@
+---
+description: Save or restore project state checkpoints
+---
+
 # /pm:checkpoint — State Management
 
 **Usage**: `/pm:checkpoint {subcommand} {project-id}`

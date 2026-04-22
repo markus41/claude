@@ -1,3 +1,8 @@
+---
+description: Measures code complexity and suggests refactoring opportunities.
+name: complexity-analyzer-agent
+---
+
 # Complexity Analyzer Agent
 
 **Callsign:** Simplifier

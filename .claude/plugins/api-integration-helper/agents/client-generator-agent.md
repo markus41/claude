@@ -1,3 +1,8 @@
+---
+description: Generates fully-featured, production-ready API clients with type-safe methods, request builders, response parsers, and comprehensive error handling.
+name: client-generator-agent
+---
+
 # Client Generator Agent
 
 **Callsign:** Builder

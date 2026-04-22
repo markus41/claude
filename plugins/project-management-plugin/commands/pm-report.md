@@ -1,3 +1,7 @@
+---
+description: Generate a full project report with progress, risks, and artifacts
+---
+
 # /pm:report — Project Report Generation
 
 **Usage**: `/pm:report {project-id} [--format markdown|json] [--output {filepath}]`

@@ -1,3 +1,7 @@
+---
+description: Multi-agent quality council review of completed work
+---
+
 # /pm:review — Quality Council Review
 
 **Usage**: `/pm:review {project-id} [--phase {phase-id}] [--epic {epic-id}]`

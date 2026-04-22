@@ -1,3 +1,7 @@
+---
+description: Recursive task decomposition from phases to stories to micro-tasks (5-15 min)
+---
+
 # /pm:plan — Ultra-Granular Task Decomposition
 
 **Usage**: `/pm:plan {project-id} [--depth quick|standard|thorough] [--phase {phase-id}] [--force-redecompose]`

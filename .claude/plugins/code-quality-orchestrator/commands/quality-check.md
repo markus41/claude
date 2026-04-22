@@ -1,3 +1,7 @@
+---
+description: Run all quality gates and generate comprehensive report.
+---
+
 # /quality-check
 
 Run all quality gates and generate comprehensive report.

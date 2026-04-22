@@ -1,3 +1,8 @@
+---
+description: Generates comprehensive quality reports in multiple formats.
+name: quality-reporter-agent
+---
+
 # Quality Reporter Agent
 
 **Callsign:** Scribe
