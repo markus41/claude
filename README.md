@@ -4,7 +4,7 @@
 ![Node](https://img.shields.io/badge/Node-20+-339933?logo=node.js)
 ![Plugins](https://img.shields.io/badge/Plugins-27-blue)
 
-A curated marketplace of Claude Code plugins covering cloud infrastructure, enterprise SaaS, home automation, documentation intelligence, project management, and more. Each plugin ships its own commands, skills, agents, and (where relevant) MCP servers.
+A curated marketplace of Claude Code plugins covering cloud infrastructure, enterprise SaaS, documentation intelligence, project management, frontend design systems, and more. Each plugin ships its own commands, skills, agents, and (where relevant) MCP servers.
 
 ## Installation
 
@@ -36,12 +36,11 @@ Or point Claude Code at this repository's `.claude-plugin/marketplace.json`:
 | [`fastapi-backend`](./plugins/fastapi-backend) | Production FastAPI with MongoDB/Beanie, Keycloak, Docker, K8s |
 | [`frontend-design-system`](./plugins/frontend-design-system) | 263+ design styles with multi-tenant Keycloak theming |
 | [`fullstack-iac`](./plugins/fullstack-iac) | FastAPI + React + Ansible + Terraform + Kubernetes stack |
-| [`home-assistant-architect`](./plugins/home-assistant-architect) | Home Assistant platform with energy, cameras, sensors, local LLM |
 | [`jira-orchestrator`](./plugins/jira-orchestrator) | Enterprise Jira orchestration — 81 agents, 46 commands, Atlassian MCP |
 | [`lobbi-platform-manager`](./plugins/lobbi-platform-manager) | Development on the-lobbi/keycloak-alpha with service orchestration |
 | [`marketplace-pro`](./plugins/marketplace-pro) | Marketplace tooling, federation, and composition engine |
 | [`mui-expert`](./plugins/mui-expert) | Material UI component expertise |
-| [`project-management-plugin`](./plugins/project-management-plugin) | Interview-first PM with micro-task decomposition across 9 PM platforms |
+| [`project-management-plugin`](./plugins/project-management-plugin) | Interview-first PM with micro-task decomposition across 9 PM platforms (GitHub, Jira, Linear, Notion, Asana, Trello, ClickUp, Monday, Todoist) |
 | [`react-animation-studio`](./plugins/react-animation-studio) | 12 animation skills: GSAP, Framer Motion, 3D, scroll, text, SVG |
 | [`scrapin-aint-easy`](./plugins/scrapin-aint-easy) | Documentation intelligence, algorithm library, drift detection |
 | [`team-accelerator`](./plugins/team-accelerator) | DevOps, code quality, and workflow automation for teams |
@@ -49,6 +48,20 @@ Or point Claude Code at this repository's `.claude-plugin/marketplace.json`:
 | [`upgrade-suggestion`](./plugins/upgrade-suggestion) | Intelligent dependency and framework upgrade recommendations |
 
 Plus six sub-marketplace plugins available under `./.claude/plugins/`: `langgraph-architect`, `code-quality-orchestrator`, `api-integration-helper`, `dev-environment-bootstrap`, `migration-wizard`, `testforge`.
+
+## CI Validation
+
+Every pull request runs the `Marketplace CI` workflow, which validates:
+
+- `.claude-plugin/marketplace.json` parses cleanly and every `source` resolves to a plugin manifest
+- Every plugin's `plugin.json` has required fields (`name`, `version`, `description`, `author`)
+- Every command/agent/skill/hook file referenced from a manifest exists and has YAML frontmatter
+- No MCP server entry point references a gitignored build artifact (e.g., `dist/cli.js`)
+- Every auto-discovered `.md` file under `commands/`, `agents/`, `hooks/`, and every `skills/*/SKILL.md` has YAML frontmatter
+- TypeScript strict check passes on `scripts/` and `types/`
+- Every archetype example in `examples/archetypes/` validates against the schema
+
+Missing frontmatter is the most common cause of Claude Code cache errors — the CI validator catches this for every plugin before merge.
 
 ## Repository Layout
 
@@ -73,15 +86,13 @@ Plus six sub-marketplace plugins available under `./.claude/plugins/`: `langgrap
 
 ## Plugin Development
 
-Validate and index plugins before committing:
+Validate every plugin and the marketplace manifest before committing:
 
 ```bash
 pnpm install
-pnpm check:plugin-schema       # Validate every plugin.json against the schema
-pnpm check:plugin-context      # Ensure plugins declare required context entries
-pnpm check:hooks               # Lint plugin hook scripts
-pnpm generate:plugin-indexes   # Regenerate registry indexes under .claude/registry/
-pnpm check:plugin-indexes      # Fail if indexes are out of date
+pnpm check:marketplace         # Validate marketplace + every plugin (the primary check)
+npx tsc --noEmit               # Type-check scripts/ and types/
+pnpm validate-archetype <file> # Validate an archetype example against the schema
 pnpm profile:plugin-context    # Measure per-plugin context overhead
 ```
 
@@ -90,9 +101,10 @@ See [`plugins/claude-code-expert`](./plugins/claude-code-expert) for in-depth pl
 ## Contributing
 
 1. Scaffold a new plugin with the [`claude-code-templating`](./plugins/claude-code-templating-plugin) generator or copy an existing plugin as a template.
-2. Add frontmatter (`description:` at minimum) to every manifest-referenced command, skill, agent, and hook — missing frontmatter produces cache errors.
-3. Update `.claude-plugin/marketplace.json` with your plugin entry.
-4. Run `pnpm check:plugin-schema && pnpm check:plugin-context` before opening a PR.
+2. Add frontmatter (`description:` at minimum) to every command, skill, agent, and hook file — missing frontmatter produces cache errors when Claude Code loads the plugin.
+3. If the plugin declares an `mcpServers` entry point, commit the built artifact or wire it to a postinstall hook — gitignored `dist/` paths will fail validation.
+4. Update `.claude-plugin/marketplace.json` with your plugin entry.
+5. Run `pnpm check:marketplace` before opening a PR — this is the same check CI runs.
 
 ## License
 

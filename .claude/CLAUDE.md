@@ -2,21 +2,19 @@
 
 ## Overview
 Claude Code Plugin Marketplace — curated collection of 27 Claude Code plugins
-(22 in `plugins/`, 6 sub-plugins in `.claude/plugins/`) with validation, indexing,
-and developer tooling. Pure marketplace repository; no application frontend.
+(21 in `plugins/`, 6 sub-plugins in `.claude/plugins/`) with marketplace-wide
+validation and developer tooling. Pure marketplace repository; no application
+frontend.
 
 ## Workflow Protocol
 EXPLORE → PLAN → CODE → TEST → FIX → DOCUMENT
 
 ## Build & Validate
 - Install: `pnpm install`
-- Validate plugin schemas: `pnpm check:plugin-schema`
-- Check plugin context entries: `pnpm check:plugin-context`
-- Lint hook scripts: `pnpm check:hooks`
-- Regenerate registry indexes: `pnpm generate:plugin-indexes`
-- Verify indexes are current: `pnpm check:plugin-indexes`
+- **Primary check:** `pnpm check:marketplace` — validates marketplace.json and every plugin (runs in CI)
+- Type-check scripts and types: `npx tsc --noEmit`
+- Validate an archetype example: `pnpm validate-archetype <path>`
 - Profile per-plugin context cost: `pnpm profile:plugin-context`
-- Validate archetype configs: `pnpm validate-archetype <path>`
 
 ## Tech Stack
 | Layer | Technology |
@@ -25,12 +23,12 @@ EXPLORE → PLAN → CODE → TEST → FIX → DOCUMENT
 | Language | TypeScript 5.3 strict (for scripts only) |
 | Validation | Ajv + JSON Schema (Draft 7) |
 | Package Manager | pnpm |
-| CI | GitHub Actions (plugin-preflight, plugin-context-check, registry checks) |
+| CI | GitHub Actions (marketplace-ci runs scripts/validate-marketplace.mjs + tsc + archetype validation) |
 | MCP | 5 custom (code-quality-gate, deploy-intelligence, lessons-learned, project-metrics, workflow-bridge) + perplexity + firecrawl + context7 |
 
 ## Key Paths
 - Marketplace manifest: `.claude-plugin/marketplace.json`
-- Installed plugins: `plugins/` (22 plugins)
+- Installed plugins: `plugins/` (21 plugins)
 - Sub-marketplace plugins: `.claude/plugins/` (6 plugins)
 - Rules: `.claude/rules/` (modular, path-scoped instructions)
 - Platform skills: `.claude/skills/`

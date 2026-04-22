@@ -5,8 +5,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "ha:registry:generate": "node plugins/home-assistant-architect/scripts/generate-registry.ts",
-    "ha:registry:check": "node plugins/home-assistant-architect/scripts/generate-registry.ts --check",
+    "check:marketplace": "node scripts/validate-marketplace.mjs",
     "check:plugin-context": "node scripts/check-plugin-context.mjs",
     "check:plugin-schema": "node scripts/validate-plugin-schema.mjs",
     "check:hooks": "node scripts/lint-hooks.mjs",

@@ -1,0 +1,59 @@
+name: Marketplace CI
+
+on:
+  pull_request:
+    paths:
+      - '.claude-plugin/**'
+      - 'plugins/**'
+      - '.claude/plugins/**'
+      - 'scripts/validate-marketplace.mjs'
+      - 'scripts/validate-archetype.ts'
+      - 'schemas/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'tsconfig.json'
+      - '.github/workflows/marketplace-ci.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - '.claude-plugin/**'
+      - 'plugins/**'
+      - '.claude/plugins/**'
+      - 'scripts/validate-marketplace.mjs'
+      - 'scripts/validate-archetype.ts'
+      - 'schemas/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'tsconfig.json'
+      - '.github/workflows/marketplace-ci.yml'
+
+concurrency:
+  group: marketplace-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  marketplace-validate:
+    name: Validate marketplace & every plugin
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: pnpm
+      - name: Install dev tooling
+        run: pnpm install --frozen-lockfile
+      - name: Validate marketplace manifest + every plugin
+        run: pnpm check:marketplace
+      - name: Type-check scripts and types
+        run: npx tsc --noEmit
+      - name: Validate example archetypes
+        run: |
+          for f in examples/archetypes/*/archetype.json; do
+            echo "Validating $f"
+            pnpm validate-archetype "$f"
+          done
