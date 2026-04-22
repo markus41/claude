@@ -112,6 +112,8 @@ When you encounter an error:
 
 ## Don't Touch
 - `node_modules/`, `dist/`, `build/`, `coverage/`
-- `pnpm-lock.yaml` (auto-generated)
 - `.claude/worktrees/` (git worktree managed)
 - Plugin `node_modules/` and `dist/` directories
+
+## Lockfile
+- `pnpm-lock.yaml` IS committed (required for CI `--frozen-lockfile`). Regenerate via `pnpm install` when you change `package.json`, then commit the lockfile update.
