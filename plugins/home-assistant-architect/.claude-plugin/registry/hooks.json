@@ -30,7 +30,7 @@
       "path": "hooks/hooks.json"
     },
     {
-      "id": "event:SessionEnd",
+      "id": "event:Stop",
       "path": "hooks/hooks.json"
     },
     {

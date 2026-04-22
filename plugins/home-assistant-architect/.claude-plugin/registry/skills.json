@@ -2,6 +2,10 @@
   "kind": "skills",
   "entries": [
     {
+      "id": "agentic-patterns",
+      "path": "skills/agentic-patterns/SKILL.md"
+    },
+    {
       "id": "camera-nvr",
       "path": "skills/camera-nvr/SKILL.md"
     },
@@ -34,5 +38,5 @@
       "path": "skills/ubuntu-deployment/SKILL.md"
     }
   ],
-  "count": 8
+  "count": 9
 }

@@ -12,6 +12,7 @@ on:
       - 'scripts/profile-plugin-context.mjs'
       - 'scripts/plugin-context-baseline.json'
       - 'package.json'
+      - 'pnpm-lock.yaml'
       - '.github/workflows/plugin-preflight.yml'
   push:
     branches:
@@ -26,6 +27,7 @@ on:
       - 'scripts/profile-plugin-context.mjs'
       - 'scripts/plugin-context-baseline.json'
       - 'package.json'
+      - 'pnpm-lock.yaml'
       - '.github/workflows/plugin-preflight.yml'
 
 jobs:
@@ -33,18 +35,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: pnpm
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
       - name: Validate plugin schemas
-        run: npm run check:plugin-schema
+        run: pnpm check:plugin-schema
       - name: Lint plugin hooks
-        run: npm run check:hooks
+        run: pnpm check:hooks
       - name: Validate plugin context entry files
-        run: npm run check:plugin-context
+        run: pnpm check:plugin-context
       - name: Validate frontmatter and generated plugin indexes
-        run: npm run check:plugin-indexes
+        run: pnpm check:plugin-indexes
       - name: Profile plugin context footprint
-        run: npm run profile:plugin-context
+        run: pnpm profile:plugin-context

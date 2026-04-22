@@ -3,6 +3,16 @@
 **Version:** 2.0.0 | **License:** MIT
 **Author:** Brookside BI
 
+## Registry Summary
+
+<!-- registry-summary:start -->
+- Sub-agents: **15**
+- Commands: **9**
+- Skills: **9**
+- Hook entries (config, scripts, and hook events): **10**
+- MCP entrypoints: **2**
+<!-- registry-summary:end -->
+
 ## Purpose
 
 This plugin provides comprehensive Home Assistant automation, local LLM integration
