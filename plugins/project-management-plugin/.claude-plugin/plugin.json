@@ -1,7 +1,7 @@
 {
   "name": "project-management-plugin",
-  "version": "1.1.0",
-  "description": "Universal project manager: interview-first init, micro-task decomposition, deep research before execution, autonomous work loop, transactional state MCP server, and 9 PM platform integrations.",
+  "version": "1.2.0",
+  "description": "Universal project manager with keep-Claude-on-task guardrails: focus anchor, scope lock, done-when contract, over-engineering detector, and drift auditor. Plus interview-first init, micro-task decomposition, deep research, transactional state MCP, and 9 PM platform integrations.",
   "author": {
     "name": "Markus Ahling",
     "email": "Markus@thelobbi.io"

@@ -11,8 +11,8 @@
     {
       "name": "project-management-plugin",
       "source": "../",
-      "description": "Universal project manager with interview-first init, micro-task decomposition, deep research, transactional pm-mcp server, and 9 PM platform integrations.",
-      "version": "1.1.0",
+      "description": "Universal project manager with keep-Claude-on-task guardrails (focus anchor, scope lock, done-when contract, over-engineering detector, drift auditor) and a transactional pm-mcp server.",
+      "version": "1.2.0",
       "category": "productivity",
       "keywords": [
         "project-management",

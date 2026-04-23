@@ -36,14 +36,24 @@ deep research before every execution, autonomous work loop, and 9 PM platform in
 5. **Micro-task cap**: no task over 30 min executes — must decompose first
 6. **Credentials from env**: PM platform tokens from CLAUDE_PLUGIN_OPTION_* only
 
-## pm-mcp Server (state access)
+## pm-mcp Server (state access + guardrails)
+
 All mutations go through the stdio MCP server registered in this plugin's manifest:
+
+**Project state (14 tools):**
 - `pm_list_projects`, `pm_get_project`, `pm_get_tasks`, `pm_get_task` — reads
 - `pm_next_task`, `pm_unblocked_tasks` — scheduler queries
 - `pm_update_task_status`, `pm_complete_task`, `pm_block_task`, `pm_add_task` — mutations (validated + locked)
-- `pm_checkpoint`, `pm_get_research`, `pm_put_research`, `pm_validate` — ancillary
+- `pm_checkpoint`, `pm_get_research`, `pm_put_research`, `pm_validate`, `pm_active_context` — ancillary
 
-The shared state library lives at `lib/pm-state.mjs` and is the only code allowed to write state files. Hook scripts and the MCP server both delegate to it.
+**Keep-Claude-on-task guardrails (16 tools):**
+- `pm_anchor_set` / `pm_anchor_get` / `pm_anchor_clear` — focus receipt ("DO X, DON'T Y") echoed on every turn
+- `pm_scope_set` / `pm_scope_add` / `pm_scope_remove` / `pm_scope_check` / `pm_scope_status` / `pm_scope_override` — file allowlist with drift ledger
+- `pm_done_when_set` / `pm_done_when_met` / `pm_done_when_status` — explicit completion criteria; Stop hook blocks `ok:true` while any is unmet
+- `pm_breadcrumb` / `pm_drift_report` — per-turn tool trail + classification
+- `pm_overengineering_scan` — scan a diff against the CLAUDE.md anti-pattern ruleset
+
+The shared libraries live at `lib/pm-state.mjs` (project state) and `lib/pm-guardrails.mjs` (guardrails). Together they are the only code allowed to write state files. Hook scripts and the MCP server both delegate to them.
 
 ## State Location
 All project state is in `.claude/projects/{project-id}/`:

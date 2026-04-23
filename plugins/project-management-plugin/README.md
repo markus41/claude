@@ -34,6 +34,28 @@ repeat. Pauses automatically when it needs human input or encounters risk > 7.
 
 ---
 
+## Keep-Claude-on-Task Guardrails
+
+Beyond the PM loop, this plugin ships four commands + five hooks that keep
+Claude locked on the current task during long sessions. Works with or
+without a formal `/pm:init` project — ephemeral session state lives at
+`.claude/pm-session/` when no project is active.
+
+| Command | What it does |
+|---------|--------------|
+| `/pm:anchor` | Set/clear a two-line focus receipt; injected on every user turn |
+| `/pm:scope` | File/command allowlist; `PreToolUse` blocks out-of-scope writes |
+| `/pm:done-when` | Explicit completion criteria; `Stop` hook blocks until all have evidence |
+| `/pm:drift` | Replay the breadcrumb trail and classify each turn vs the anchor/scope/criteria |
+
+Hooks enforcing the above:
+
+- `anchor-inject.sh` (SessionStart + UserPromptSubmit) — injects the focus reminder.
+- `scope-guard.sh` (PreToolUse Write|Edit|MultiEdit) — blocks unlisted paths.
+- `overengineering-detector.sh` (PostToolUse Write|Edit|MultiEdit) — flags CLAUDE.md anti-patterns (multi-line comments, feature flags, backcompat shims, speculative validation, task-reference comments).
+- `breadcrumb-logger.sh` (PostToolUse \*) — appends every tool call to `breadcrumbs.jsonl`.
+- `done-gate.sh` (Stop) — refuses session end while any criterion lacks evidence.
+
 ## Command Reference
 
 | Command | Purpose |

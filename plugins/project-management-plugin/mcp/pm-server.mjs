@@ -24,8 +24,16 @@ import {
   validateProject,
   validateTasks,
 } from '../lib/pm-state.mjs';
+import {
+  activeContextSummary,
+  readAnchor, setAnchor, clearAnchor, formatAnchorReminder,
+  readScope, setScope, addScopePatterns, removeScopePatterns, recordOverride, isInScope,
+  readDoneWhen, setDoneWhen, markCriterionMet, unmetCriteria,
+  recordBreadcrumb, readBreadcrumbs, analyzeDrift,
+  detectOverengineering,
+} from '../lib/pm-guardrails.mjs';
 
-const SERVER_INFO = { name: 'pm-mcp', version: '1.0.0' };
+const SERVER_INFO = { name: 'pm-mcp', version: '1.2.0' };
 const PROTOCOL_VERSION = '2024-11-05';
 
 // ---------------------------------------------------------------------------
@@ -205,6 +213,165 @@ const TOOLS = [
       required: ['project_id'],
       properties: { project_id: { type: 'string' } },
     },
+  },
+
+  // --- Guardrails: focus anchor ----------------------------------------------
+  {
+    name: 'pm_anchor_set',
+    description: 'Set the active focus anchor ("DO X, DON\'T Y"). Every new user turn will have this reminder injected so Claude cannot drift from it.',
+    inputSchema: {
+      type: 'object',
+      required: ['do'],
+      properties: {
+        do: { type: 'string', minLength: 3, description: 'One sentence: what Claude is committing to finish.' },
+        dont: { type: 'string', description: 'One sentence: what Claude must not touch.' },
+        task_id: { type: 'string', pattern: '^T-[0-9]+$', description: 'Optional — bind the anchor to a specific task id.' },
+      },
+    },
+  },
+  {
+    name: 'pm_anchor_get',
+    description: 'Return the current focus anchor, or null if none is active.',
+    inputSchema: { type: 'object', properties: {} },
+  },
+  {
+    name: 'pm_anchor_clear',
+    description: 'Deactivate the focus anchor (e.g. after the task is complete).',
+    inputSchema: { type: 'object', properties: {} },
+  },
+
+  // --- Guardrails: scope lock ------------------------------------------------
+  {
+    name: 'pm_scope_set',
+    description: 'Replace the scope allowlist with a new set of glob patterns (e.g. ["src/auth/**","tests/auth/**"]).',
+    inputSchema: {
+      type: 'object',
+      required: ['patterns'],
+      properties: {
+        patterns: { type: 'array', items: { type: 'string', minLength: 1 } },
+      },
+    },
+  },
+  {
+    name: 'pm_scope_add',
+    description: 'Append one or more glob patterns to the scope allowlist.',
+    inputSchema: {
+      type: 'object',
+      required: ['patterns'],
+      properties: { patterns: { type: 'array', items: { type: 'string' } } },
+    },
+  },
+  {
+    name: 'pm_scope_remove',
+    description: 'Remove glob patterns from the scope allowlist.',
+    inputSchema: {
+      type: 'object',
+      required: ['patterns'],
+      properties: { patterns: { type: 'array', items: { type: 'string' } } },
+    },
+  },
+  {
+    name: 'pm_scope_check',
+    description: 'Check whether a path is currently in scope. Returns {in_scope, matched_pattern, active}.',
+    inputSchema: {
+      type: 'object',
+      required: ['path'],
+      properties: { path: { type: 'string' } },
+    },
+  },
+  {
+    name: 'pm_scope_override',
+    description: 'Record a justified override for an out-of-scope edit. The override is appended to the drift ledger — scope stays unchanged.',
+    inputSchema: {
+      type: 'object',
+      required: ['path', 'reason'],
+      properties: {
+        path: { type: 'string' },
+        reason: { type: 'string', minLength: 3 },
+      },
+    },
+  },
+  {
+    name: 'pm_scope_status',
+    description: 'Return the current scope record (allowlist + override ledger).',
+    inputSchema: { type: 'object', properties: {} },
+  },
+
+  // --- Guardrails: done-when contract ----------------------------------------
+  {
+    name: 'pm_done_when_set',
+    description: 'Declare the list of binary-testable completion criteria that must have evidence before Claude may declare the session done.',
+    inputSchema: {
+      type: 'object',
+      required: ['criteria'],
+      properties: {
+        criteria: { type: 'array', items: { type: 'string', minLength: 5 }, minItems: 1 },
+        task_id: { type: 'string', pattern: '^T-[0-9]+$' },
+      },
+    },
+  },
+  {
+    name: 'pm_done_when_met',
+    description: 'Mark one criterion as met with an evidence line (e.g. a test command output). Refuses without evidence.',
+    inputSchema: {
+      type: 'object',
+      required: ['id', 'evidence'],
+      properties: {
+        id: { type: 'string', description: 'Criterion id (c1, c2, ...) or exact text.' },
+        evidence: { type: 'string', minLength: 3, description: 'Short proof line (command + exit code, URL + status, file path).' },
+      },
+    },
+  },
+  {
+    name: 'pm_done_when_status',
+    description: 'Return the current done-when record including which criteria are met and which are unmet.',
+    inputSchema: { type: 'object', properties: {} },
+  },
+
+  // --- Guardrails: breadcrumbs + drift ---------------------------------------
+  {
+    name: 'pm_breadcrumb',
+    description: 'Append a breadcrumb entry to the drift trail. Normally called by hooks — rarely by hand.',
+    inputSchema: {
+      type: 'object',
+      required: ['tool'],
+      properties: {
+        turn: { type: 'integer' },
+        tool: { type: 'string' },
+        target: { type: 'string' },
+        task_id: { type: 'string' },
+        scope_ok: { type: 'boolean' },
+        criterion_hint: { type: 'string' },
+        overengineering_hits: { type: 'array', items: { type: 'string' } },
+      },
+    },
+  },
+  {
+    name: 'pm_drift_report',
+    description: 'Analyze the breadcrumb trail against the active anchor/scope/done-when and return a drift classification.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        since: { type: 'string', description: 'ISO timestamp — only consider breadcrumbs newer than this.' },
+      },
+    },
+  },
+  {
+    name: 'pm_overengineering_scan',
+    description: 'Scan a unified diff against the overengineering ruleset and return any hits.',
+    inputSchema: {
+      type: 'object',
+      required: ['diff'],
+      properties: {
+        diff: { type: 'string', minLength: 1 },
+        path: { type: 'string' },
+      },
+    },
+  },
+  {
+    name: 'pm_active_context',
+    description: 'Return {kind, id, dir} for the active guardrail context — either an IN_PROGRESS project or the ephemeral session directory.',
+    inputSchema: { type: 'object', properties: {} },
   },
 ];
 
@@ -405,6 +572,78 @@ const HANDLERS = {
     const project_errors = project ? validateProject(project) : ['project.json missing'];
     const tasks_errors = validateTasks(tasks);
     return { project_errors, tasks_errors };
+  },
+
+  // --- Guardrail handlers ---------------------------------------------------
+
+  async pm_active_context() { return activeContextSummary(); },
+
+  async pm_anchor_set(args) {
+    const rec = await setAnchor({ doItem: requireArg(args, 'do'), dontItem: args.dont, task_id: args.task_id || null });
+    return { set: true, anchor: rec, reminder: formatAnchorReminder(rec) };
+  },
+  async pm_anchor_get() {
+    const anchor = readAnchor();
+    return { anchor, reminder: formatAnchorReminder(anchor) };
+  },
+  async pm_anchor_clear() {
+    const cleared = await clearAnchor();
+    return { cleared: !!cleared, anchor: cleared };
+  },
+
+  async pm_scope_set(args) {
+    const rec = await setScope(requireArg(args, 'patterns'));
+    return { active: rec.active, allowlist: rec.allowlist };
+  },
+  async pm_scope_add(args) {
+    const rec = await addScopePatterns(requireArg(args, 'patterns'));
+    return { active: rec.active, allowlist: rec.allowlist };
+  },
+  async pm_scope_remove(args) {
+    const rec = await removeScopePatterns(requireArg(args, 'patterns'));
+    return { active: rec.active, allowlist: rec.allowlist };
+  },
+  async pm_scope_check(args) {
+    const scope = readScope();
+    if (!scope.active) return { in_scope: true, active: false };
+    const pathArg = requireArg(args, 'path');
+    const inScope = isInScope(pathArg, { allowlist: scope.allowlist });
+    const matched = inScope ? scope.allowlist.find((p) => isInScope(pathArg, { allowlist: [p] })) : null;
+    return { in_scope: inScope, matched_pattern: matched, active: true };
+  },
+  async pm_scope_override(args) {
+    await recordOverride({ path: requireArg(args, 'path'), reason: requireArg(args, 'reason') });
+    return { recorded: true };
+  },
+  async pm_scope_status() {
+    return readScope();
+  },
+
+  async pm_done_when_set(args) {
+    const rec = await setDoneWhen({ criteria: requireArg(args, 'criteria'), task_id: args.task_id || null });
+    return { set: true, criteria_count: rec.criteria.length };
+  },
+  async pm_done_when_met(args) {
+    const hit = await markCriterionMet({ id: requireArg(args, 'id'), evidence: requireArg(args, 'evidence') });
+    return { marked: true, criterion: hit };
+  },
+  async pm_done_when_status() {
+    const rec = readDoneWhen();
+    if (!rec) return { active: false };
+    const unmet = unmetCriteria(rec);
+    return { active: true, total: rec.criteria.length, met: rec.criteria.length - unmet.length, unmet };
+  },
+
+  async pm_breadcrumb(args) {
+    recordBreadcrumb(args || {});
+    return { logged: true };
+  },
+  async pm_drift_report(args) {
+    return analyzeDrift({ since: args && args.since ? args.since : null });
+  },
+  async pm_overengineering_scan(args) {
+    const hits = detectOverengineering({ diff: requireArg(args, 'diff'), path: args.path });
+    return { hits, count: hits.length };
   },
 };
 
