@@ -1,7 +1,7 @@
 {
   "name": "project-management-plugin",
-  "version": "1.0.0",
-  "description": "Universal project manager: interview-first init, micro-task decomposition, deep research before execution, autonomous work loop, and 9 PM platform integrations.",
+  "version": "1.1.0",
+  "description": "Universal project manager: interview-first init, micro-task decomposition, deep research before execution, autonomous work loop, transactional state MCP server, and 9 PM platform integrations.",
   "author": {
     "name": "Markus Ahling",
     "email": "Markus@thelobbi.io"
@@ -14,12 +14,24 @@
     "research-first",
     "micro-tasks",
     "autonomous",
-    "pm-integration"
+    "pm-integration",
+    "mcp"
   ],
   "dependencies": [],
   "categories": [
     "project-management",
     "orchestration",
     "agents"
-  ]
+  ],
+  "mcpServers": {
+    "pm-mcp": {
+      "command": "node",
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/mcp/pm-server.mjs"
+      ],
+      "env": {
+        "CLAUDE_PROJECT_DIR": "${CLAUDE_PROJECT_DIR}"
+      }
+    }
+  }
 }

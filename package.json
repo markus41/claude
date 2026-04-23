@@ -12,7 +12,8 @@
     "generate:plugin-indexes": "node scripts/generate-plugin-indexes.mjs",
     "check:plugin-indexes": "node scripts/generate-plugin-indexes.mjs --check",
     "profile:plugin-context": "node scripts/profile-plugin-context.mjs",
-    "validate-archetype": "tsx scripts/validate-archetype.ts"
+    "validate-archetype": "tsx scripts/validate-archetype.ts",
+    "test:pm-plugin": "node --test plugins/project-management-plugin/tests/pm-state.test.mjs plugins/project-management-plugin/tests/pm-mcp.test.mjs"
   },
   "devDependencies": {
     "@types/js-yaml": "^4.0.9",

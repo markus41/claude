@@ -11,8 +11,8 @@
     {
       "name": "project-management-plugin",
       "source": "../",
-      "description": "Universal project manager with interview-first init, micro-task decomposition, deep research, and 9 PM platform integrations.",
-      "version": "1.0.0",
+      "description": "Universal project manager with interview-first init, micro-task decomposition, deep research, transactional pm-mcp server, and 9 PM platform integrations.",
+      "version": "1.1.0",
       "category": "productivity",
       "keywords": [
         "project-management",
