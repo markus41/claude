@@ -46,12 +46,15 @@ All mutations go through the stdio MCP server registered in this plugin's manife
 - `pm_update_task_status`, `pm_complete_task`, `pm_block_task`, `pm_add_task` — mutations (validated + locked)
 - `pm_checkpoint`, `pm_get_research`, `pm_put_research`, `pm_validate`, `pm_active_context` — ancillary
 
-**Keep-Claude-on-task guardrails (16 tools):**
+**Keep-Claude-on-task guardrails (23 tools):**
 - `pm_anchor_set` / `pm_anchor_get` / `pm_anchor_clear` — focus receipt ("DO X, DON'T Y") echoed on every turn
 - `pm_scope_set` / `pm_scope_add` / `pm_scope_remove` / `pm_scope_check` / `pm_scope_status` / `pm_scope_override` — file allowlist with drift ledger
 - `pm_done_when_set` / `pm_done_when_met` / `pm_done_when_status` — explicit completion criteria; Stop hook blocks `ok:true` while any is unmet
 - `pm_breadcrumb` / `pm_drift_report` — per-turn tool trail + classification
 - `pm_overengineering_scan` — scan a diff against the CLAUDE.md anti-pattern ruleset
+- `pm_budget_set` / `pm_budget_status` / `pm_budget_clear` — cap tool calls per task (warn 80% / over 120%)
+- `pm_user_prompt_record` / `pm_user_prompts_recent` — archive of every user prompt so Claude can be reminded what was actually asked
+- `pm_handoff_write` / `pm_handoff_read` — compaction-safe snapshot of anchor/scope/done-when/budget/prompts/breadcrumbs, restored on SessionStart
 
 The shared libraries live at `lib/pm-state.mjs` (project state) and `lib/pm-guardrails.mjs` (guardrails). Together they are the only code allowed to write state files. Hook scripts and the MCP server both delegate to them.
 

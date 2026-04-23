@@ -313,3 +313,186 @@ export function analyzeDrift({ since = null } = {}) {
 export function detectOverengineering({ diff, path }) {
   return matchOverengineering({ diff, path });
 }
+
+// ---------------------------------------------------------------------------
+// Turn budget (upgrade F)
+// ---------------------------------------------------------------------------
+
+const BUDGET_FILE = 'budget.json';
+
+export function readBudget(dir = activeContextDir()) {
+  const file = join(dir, BUDGET_FILE);
+  if (!existsSync(file)) return null;
+  try { return JSON.parse(readFileSync(file, 'utf8')); } catch { return null; }
+}
+
+export async function setBudget({ max_turns, task_id = null }) {
+  const n = parseInt(max_turns, 10);
+  if (!Number.isFinite(n) || n <= 0) throw new Error('max_turns must be a positive integer');
+  const dir = activeContextDir();
+  mkdirSync(dir, { recursive: true });
+  const record = {
+    version: 1,
+    active: true,
+    max_turns: n,
+    started_at: new Date().toISOString(),
+    task_id,
+    baseline_crumb_count: readBreadcrumbs(dir).length,
+  };
+  await withLock(join(dir, '.locks', 'budget.lock'), async () => {
+    writeFileSync(join(dir, BUDGET_FILE), JSON.stringify(record, null, 2) + '\n');
+  });
+  return record;
+}
+
+export async function clearBudget() {
+  const dir = activeContextDir();
+  const current = readBudget(dir);
+  if (!current) return null;
+  const next = { ...current, active: false, cleared_at: new Date().toISOString() };
+  await withLock(join(dir, '.locks', 'budget.lock'), async () => {
+    writeFileSync(join(dir, BUDGET_FILE), JSON.stringify(next, null, 2) + '\n');
+  });
+  return next;
+}
+
+export function budgetStatus() {
+  const budget = readBudget();
+  if (!budget || !budget.active) return { active: false };
+  const crumbs = readBreadcrumbs();
+  const used = Math.max(0, crumbs.length - (budget.baseline_crumb_count || 0));
+  const pct = budget.max_turns ? +(used / budget.max_turns).toFixed(3) : 0;
+  let status = 'ok';
+  if (pct >= 1.2) status = 'over';
+  else if (pct >= 0.8) status = 'warn';
+  return {
+    active: true,
+    used,
+    max_turns: budget.max_turns,
+    pct,
+    status,
+    started_at: budget.started_at,
+    task_id: budget.task_id,
+  };
+}
+
+// ---------------------------------------------------------------------------
+// User-prompt archive (upgrade H)
+// ---------------------------------------------------------------------------
+
+const PROMPTS_FILE = 'user-prompts.jsonl';
+
+export function recordUserPrompt(text) {
+  if (!text || typeof text !== 'string') return;
+  const trimmed = text.trim();
+  if (!trimmed) return;
+  const dir = activeContextDir();
+  mkdirSync(dir, { recursive: true });
+  appendFileSync(
+    join(dir, PROMPTS_FILE),
+    JSON.stringify({ ts: new Date().toISOString(), text: trimmed.slice(0, 4000) }) + '\n',
+  );
+}
+
+export function readUserPrompts({ limit = 10 } = {}) {
+  const dir = activeContextDir();
+  const file = join(dir, PROMPTS_FILE);
+  if (!existsSync(file)) return [];
+  const lines = readFileSync(file, 'utf8').split('\n').filter((l) => l.trim());
+  const parsed = lines.map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+  return parsed.slice(-limit);
+}
+
+export function lastUserPrompt() {
+  const recent = readUserPrompts({ limit: 1 });
+  return recent[0] || null;
+}
+
+// ---------------------------------------------------------------------------
+// Compaction-safe handoff (upgrade G)
+// ---------------------------------------------------------------------------
+
+const HANDOFF_FILE = 'handoff.md';
+
+export function writeHandoff() {
+  const dir = activeContextDir();
+  mkdirSync(dir, { recursive: true });
+  const anchor = readAnchor(dir);
+  const scope = readScope(dir);
+  const done = readDoneWhen(dir);
+  const budget = budgetStatus();
+  const lastAsk = lastUserPrompt();
+  const crumbs = readBreadcrumbs(dir).slice(-15);
+  const touchedFiles = Array.from(
+    new Set(
+      crumbs
+        .filter((c) => ['Edit', 'Write', 'MultiEdit'].includes(c.tool))
+        .map((c) => c.target)
+        .filter(Boolean),
+    ),
+  ).slice(0, 20);
+  const lines = [
+    '# Task Handoff',
+    '',
+    `_Snapshot written at ${new Date().toISOString()} — read by SessionStart to restore context after /compact or resume._`,
+    '',
+  ];
+  if (lastAsk) {
+    lines.push('## Last user ask', '', '> ' + lastAsk.text.split('\n').join('\n> '), '');
+  }
+  if (anchor && anchor.active) {
+    lines.push('## Focus anchor', '', `- DO: ${anchor.do}`);
+    if (anchor.dont) lines.push(`- DON'T: ${anchor.dont}`);
+    if (anchor.task_id) lines.push(`- TASK: ${anchor.task_id}`);
+    lines.push('');
+  }
+  if (scope.active) {
+    lines.push('## Scope allowlist', '');
+    for (const p of scope.allowlist) lines.push(`- \`${p}\``);
+    if ((scope.overrides || []).length) {
+      lines.push('', 'Overrides logged:');
+      for (const ov of scope.overrides.slice(-5)) lines.push(`- ${ov.path} — ${ov.reason}`);
+    }
+    lines.push('');
+  }
+  if (done) {
+    const met = (done.criteria || []).filter((c) => c.met_at).length;
+    lines.push('## Done-when progress', '', `${met}/${(done.criteria || []).length} criteria met.`, '');
+    for (const c of done.criteria || []) {
+      const box = c.met_at ? '[x]' : '[ ]';
+      lines.push(`- ${box} **${c.id}** — ${c.text}${c.evidence ? ` → \`${c.evidence}\`` : ''}`);
+    }
+    lines.push('');
+  }
+  if (budget.active) {
+    lines.push('## Turn budget', '', `${budget.used}/${budget.max_turns} turns used (${Math.round(budget.pct * 100)}%, status: ${budget.status})`, '');
+  }
+  if (touchedFiles.length) {
+    lines.push('## Recently touched files', '');
+    for (const f of touchedFiles) lines.push(`- ${f}`);
+    lines.push('');
+  }
+  if (crumbs.length) {
+    lines.push('## Recent breadcrumbs', '');
+    for (const c of crumbs) lines.push(`- \`${c.tool}\` ${c.target || ''}`);
+    lines.push('');
+  }
+  lines.push(
+    '## How to resume',
+    '',
+    '1. Re-read the focus anchor (above).',
+    '2. Check `/pm:done-when --show` for outstanding criteria.',
+    '3. Run `/pm:drift` for a classification of recent turns.',
+    '4. Continue the task; do not re-plan from scratch.',
+    '',
+  );
+  writeFileSync(join(dir, HANDOFF_FILE), lines.join('\n'));
+  return join(dir, HANDOFF_FILE);
+}
+
+export function readHandoff() {
+  const dir = activeContextDir();
+  const file = join(dir, HANDOFF_FILE);
+  if (!existsSync(file)) return null;
+  return readFileSync(file, 'utf8');
+}

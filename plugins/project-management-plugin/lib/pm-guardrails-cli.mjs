@@ -21,6 +21,8 @@ import {
   readDoneWhen, unmetCriteria,
   detectOverengineering,
   recordBreadcrumb, activeContextSummary,
+  budgetStatus, recordUserPrompt, lastUserPrompt,
+  writeHandoff, readHandoff,
 } from './pm-guardrails.mjs';
 
 const verb = process.argv[2];
@@ -91,6 +93,31 @@ async function main() {
       }
       case 'active-context': {
         printJSON(activeContextSummary());
+        return;
+      }
+      case 'budget-status': {
+        printJSON(budgetStatus());
+        return;
+      }
+      case 'record-user-prompt': {
+        const text = process.argv.slice(3).join(' ');
+        recordUserPrompt(text);
+        printJSON({ logged: !!text });
+        return;
+      }
+      case 'last-user-prompt': {
+        const p = lastUserPrompt();
+        printJSON(p ? { prompt: p } : {});
+        return;
+      }
+      case 'handoff-write': {
+        const file = writeHandoff();
+        printJSON({ file });
+        return;
+      }
+      case 'handoff-read': {
+        const md = readHandoff();
+        printJSON(md ? { markdown: md } : {});
         return;
       }
       default:

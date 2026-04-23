@@ -31,9 +31,12 @@ import {
   readDoneWhen, setDoneWhen, markCriterionMet, unmetCriteria,
   recordBreadcrumb, readBreadcrumbs, analyzeDrift,
   detectOverengineering,
+  setBudget, readBudget, clearBudget, budgetStatus,
+  recordUserPrompt, readUserPrompts, lastUserPrompt,
+  writeHandoff, readHandoff,
 } from '../lib/pm-guardrails.mjs';
 
-const SERVER_INFO = { name: 'pm-mcp', version: '1.2.0' };
+const SERVER_INFO = { name: 'pm-mcp', version: '1.3.0' };
 const PROTOCOL_VERSION = '2024-11-05';
 
 // ---------------------------------------------------------------------------
@@ -373,6 +376,61 @@ const TOOLS = [
     description: 'Return {kind, id, dir} for the active guardrail context — either an IN_PROGRESS project or the ephemeral session directory.',
     inputSchema: { type: 'object', properties: {} },
   },
+
+  // --- Guardrails: turn budget (upgrade F) -----------------------------------
+  {
+    name: 'pm_budget_set',
+    description: 'Cap the number of tool calls allowed for the current task. Warn at 80%, over-budget at 120%.',
+    inputSchema: {
+      type: 'object',
+      required: ['max_turns'],
+      properties: {
+        max_turns: { type: 'integer', minimum: 1 },
+        task_id: { type: 'string', pattern: '^T-[0-9]+$' },
+      },
+    },
+  },
+  {
+    name: 'pm_budget_status',
+    description: 'Return {active, used, max_turns, pct, status: ok|warn|over} for the current budget.',
+    inputSchema: { type: 'object', properties: {} },
+  },
+  {
+    name: 'pm_budget_clear',
+    description: 'Deactivate the turn budget (e.g. after legitimate scope expansion).',
+    inputSchema: { type: 'object', properties: {} },
+  },
+
+  // --- Guardrails: user-prompt archive (upgrade H) ---------------------------
+  {
+    name: 'pm_user_prompt_record',
+    description: 'Append the user\'s latest prompt to user-prompts.jsonl. Normally called by the UserPromptSubmit hook.',
+    inputSchema: {
+      type: 'object',
+      required: ['text'],
+      properties: { text: { type: 'string', minLength: 1 } },
+    },
+  },
+  {
+    name: 'pm_user_prompts_recent',
+    description: 'Return the last N user prompts archived in this context.',
+    inputSchema: {
+      type: 'object',
+      properties: { limit: { type: 'integer', minimum: 1, maximum: 50 } },
+    },
+  },
+
+  // --- Guardrails: compaction-safe handoff (upgrade G) -----------------------
+  {
+    name: 'pm_handoff_write',
+    description: 'Snapshot the active anchor, scope, done-when status, budget, last user prompt, and recent breadcrumbs to handoff.md so that a post-/compact or resumed session can re-anchor.',
+    inputSchema: { type: 'object', properties: {} },
+  },
+  {
+    name: 'pm_handoff_read',
+    description: 'Read the current handoff.md as raw markdown.',
+    inputSchema: { type: 'object', properties: {} },
+  },
 ];
 
 // ---------------------------------------------------------------------------
@@ -644,6 +702,36 @@ const HANDLERS = {
   async pm_overengineering_scan(args) {
     const hits = detectOverengineering({ diff: requireArg(args, 'diff'), path: args.path });
     return { hits, count: hits.length };
+  },
+
+  // --- Round 3: budget + prompts + handoff ----------------------------------
+
+  async pm_budget_set(args) {
+    const rec = await setBudget({ max_turns: requireArg(args, 'max_turns'), task_id: args.task_id || null });
+    return { set: true, budget: rec };
+  },
+  async pm_budget_status() { return budgetStatus(); },
+  async pm_budget_clear() {
+    const cleared = await clearBudget();
+    return { cleared: !!cleared };
+  },
+
+  async pm_user_prompt_record(args) {
+    recordUserPrompt(requireArg(args, 'text'));
+    return { logged: true };
+  },
+  async pm_user_prompts_recent(args) {
+    const limit = args && args.limit ? Math.min(50, Math.max(1, args.limit)) : 10;
+    return { prompts: readUserPrompts({ limit }) };
+  },
+
+  async pm_handoff_write() {
+    const file = writeHandoff();
+    return { file };
+  },
+  async pm_handoff_read() {
+    const md = readHandoff();
+    return md ? { found: true, markdown: md } : { found: false };
   },
 };
 

@@ -47,13 +47,19 @@ without a formal `/pm:init` project — ephemeral session state lives at
 | `/pm:scope` | File/command allowlist; `PreToolUse` blocks out-of-scope writes |
 | `/pm:done-when` | Explicit completion criteria; `Stop` hook blocks until all have evidence |
 | `/pm:drift` | Replay the breadcrumb trail and classify each turn vs the anchor/scope/criteria |
+| `/pm:budget` | Cap tool calls per task; `PostToolUse` warns at 80% and screams at 120% |
+| `/pm:handoff` | Force-write (or inspect) the compaction-safe task snapshot |
 
 Hooks enforcing the above:
 
 - `anchor-inject.sh` (SessionStart + UserPromptSubmit) — injects the focus reminder.
+- `handoff-read.sh` (SessionStart) — re-surfaces `handoff.md` after `/compact` or a new session.
+- `prompt-archive.sh` (UserPromptSubmit) — appends every user prompt verbatim.
 - `scope-guard.sh` (PreToolUse Write|Edit|MultiEdit) — blocks unlisted paths.
-- `overengineering-detector.sh` (PostToolUse Write|Edit|MultiEdit) — flags CLAUDE.md anti-patterns (multi-line comments, feature flags, backcompat shims, speculative validation, task-reference comments).
+- `overengineering-detector.sh` (PostToolUse Write|Edit|MultiEdit) — flags CLAUDE.md anti-patterns.
 - `breadcrumb-logger.sh` (PostToolUse \*) — appends every tool call to `breadcrumbs.jsonl`.
+- `budget-warn.sh` (PostToolUse \*) — surfaces turn-budget warnings at 80% / 120%.
+- `handoff-write.sh` (Stop) — snapshots anchor/scope/done-when/budget/breadcrumbs to `handoff.md`.
 - `done-gate.sh` (Stop) — refuses session end while any criterion lacks evidence.
 
 ## Command Reference
