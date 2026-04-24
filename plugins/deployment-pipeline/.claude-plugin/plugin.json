@@ -23,8 +23,34 @@
     "multi-agent",
     "exception-handling"
   ],
-  "categories": [
-    "devops",
-    "orchestration"
-  ]
+  "contextEntry": "CONTEXT_SUMMARY.md",
+  "context": {
+    "entry": "CONTEXT_SUMMARY.md",
+    "title": "Deployment Pipeline",
+    "summary": "Harness CD integration pipeline with state-machine workflow orchestration. 5 commands, 3 agents.",
+    "tags": [
+      "deployment",
+      "pipeline",
+      "harness",
+      "ci-cd",
+      "workflow",
+      "state-machine",
+      "orchestration"
+    ],
+    "bootstrapFiles": [
+      "CONTEXT_SUMMARY.md"
+    ],
+    "maxTokens": 700,
+    "excludeGlobs": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/build/**",
+      "**/*.zip"
+    ],
+    "lazyLoadSections": [
+      "CLAUDE.md",
+      "skills/*/SKILL.md",
+      "commands/*.md"
+    ]
+  }
 }

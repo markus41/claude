@@ -1,0 +1,65 @@
+{
+  "name": "lobbi-compliance-guard",
+  "version": "1.0.0",
+  "description": "Regulatory compliance for insurance, mortgage, and financial services. Audit trail design, GDPR/CCPA review, SOX validation, data retention policies, and regulatory requirement mapping. 6 skills, 3 agents.",
+  "author": {
+    "name": "thelobbi.io",
+    "email": "developers@thelobbi.io"
+  },
+  "license": "MIT",
+  "keywords": [
+    "compliance",
+    "audit",
+    "gdpr",
+    "sox",
+    "finra",
+    "insurance",
+    "mortgage",
+    "data-retention",
+    "regulatory"
+  ],
+  "permissions": {
+    "requires": [
+      "Read",
+      "Write",
+      "Edit"
+    ],
+    "optional": [
+      "Bash",
+      "WebFetch"
+    ]
+  },
+  "capabilities": {
+    "provides": [
+      "compliance-review",
+      "audit-trail-design",
+      "gdpr-review",
+      "sox-validation",
+      "regulatory-mapping"
+    ],
+    "requires": []
+  },
+  "contextEntry": "CONTEXT_SUMMARY.md",
+  "context": {
+    "entry": "CONTEXT_SUMMARY.md",
+    "title": "Lobbi Compliance Guard",
+    "summary": "Regulatory compliance for insurance/mortgage/finserv — audit trails, GDPR, SOX, FINRA, data retention. 6 skills, 3 agents.",
+    "tags": [
+      "compliance",
+      "audit",
+      "gdpr",
+      "sox",
+      "regulatory"
+    ],
+    "bootstrapFiles": [
+      "CONTEXT_SUMMARY.md"
+    ],
+    "maxTokens": 700,
+    "excludeGlobs": [
+      "**/node_modules/**"
+    ],
+    "lazyLoadSections": [
+      "skills/*/SKILL.md"
+    ]
+  }
+}

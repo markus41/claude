@@ -1,7 +1,3 @@
----
-description: Browsable index of all claude-code-expert skills, grouped by category with trigger phrases and descriptions for discovery.
----
-
 # /cc-skills — Browsable Skill Index
 
 The claude-code-expert plugin ships ~54 skills. Reading `CLAUDE.md` and hunting for trigger

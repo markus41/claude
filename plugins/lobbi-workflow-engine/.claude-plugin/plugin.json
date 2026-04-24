@@ -1,0 +1,70 @@
+{
+  "name": "lobbi-workflow-engine",
+  "version": "1.0.0",
+  "description": "Design and implement multi-step approval workflows, routing rules, escalation policies, and SLA tracking for insurance, mortgage, and financial services. 6 skills, 3 agents.",
+  "author": {
+    "name": "thelobbi.io",
+    "email": "developers@thelobbi.io"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/the-lobbi/workflow-engine",
+  "keywords": [
+    "workflow",
+    "approval",
+    "routing",
+    "escalation",
+    "sla",
+    "business-process",
+    "automation",
+    "insurance",
+    "mortgage",
+    "finserv"
+  ],
+  "permissions": {
+    "requires": [
+      "Read",
+      "Write",
+      "Edit",
+      "Bash"
+    ],
+    "optional": [
+      "WebFetch",
+      "Task"
+    ]
+  },
+  "capabilities": {
+    "provides": [
+      "workflow-design",
+      "approval-chains",
+      "routing-rules",
+      "escalation-policies",
+      "sla-tracking",
+      "audit-trails"
+    ],
+    "requires": []
+  },
+  "contextEntry": "CONTEXT_SUMMARY.md",
+  "context": {
+    "entry": "CONTEXT_SUMMARY.md",
+    "title": "Lobbi Workflow Engine",
+    "summary": "Design approval chains, routing rules, escalation policies, and SLA trackers for regulated industries. 6 skills, 3 agents.",
+    "tags": [
+      "workflow",
+      "approval",
+      "escalation",
+      "sla",
+      "routing"
+    ],
+    "bootstrapFiles": [
+      "CONTEXT_SUMMARY.md"
+    ],
+    "maxTokens": 700,
+    "excludeGlobs": [
+      "**/node_modules/**",
+      "**/dist/**"
+    ],
+    "lazyLoadSections": [
+      "skills/*/SKILL.md"
+    ]
+  }
+}

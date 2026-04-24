@@ -27,8 +27,35 @@
     "parallelization",
     "guardrails"
   ],
-  "categories": [
-    "frontend",
-    "code-generation"
-  ]
+  "contextEntry": "CONTEXT_SUMMARY.md",
+  "context": {
+    "entry": "CONTEXT_SUMMARY.md",
+    "title": "Frontend Design System",
+    "summary": "263+ design styles with multi-tenant Keycloak theming for AI-powered frontend development. 8 commands, 6 agents, 4 skills.",
+    "tags": [
+      "frontend",
+      "design-system",
+      "keycloak",
+      "theming",
+      "css",
+      "tailwind",
+      "ui-ux",
+      "accessibility"
+    ],
+    "bootstrapFiles": [
+      "CONTEXT_SUMMARY.md"
+    ],
+    "maxTokens": 700,
+    "excludeGlobs": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/build/**",
+      "**/*.zip"
+    ],
+    "lazyLoadSections": [
+      "CLAUDE.md",
+      "skills/*/SKILL.md",
+      "commands/*.md"
+    ]
+  }
 }

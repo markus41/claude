@@ -29,9 +29,35 @@
   ],
   "license": "MIT",
   "repository": "https://github.com/Lobbi-Docs/claude",
-  "categories": [
-    "devops",
-    "orchestration",
-    "productivity"
-  ]
+  "contextEntry": "CONTEXT_SUMMARY.md",
+  "context": {
+    "entry": "CONTEXT_SUMMARY.md",
+    "title": "Team Accelerator",
+    "summary": "Enterprise development toolkit for teams - DevOps, code quality, integrations, workflow automation, documentation, and performance optimization across multi-cloud and full-stack platforms. 8 commands.",
+    "tags": [
+      "enterprise",
+      "devops",
+      "ci-cd",
+      "code-quality",
+      "testing",
+      "documentation",
+      "performance",
+      "kubernetes"
+    ],
+    "bootstrapFiles": [
+      "CONTEXT_SUMMARY.md"
+    ],
+    "maxTokens": 700,
+    "excludeGlobs": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/build/**",
+      "**/*.zip"
+    ],
+    "lazyLoadSections": [
+      "CLAUDE.md",
+      "skills/*/SKILL.md",
+      "commands/*.md"
+    ]
+  }
 }

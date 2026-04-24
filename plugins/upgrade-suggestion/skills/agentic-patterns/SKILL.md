@@ -1,7 +1,3 @@
----
-description: Agentic Design Patterns — Upgrade Suggestion
----
-
 # Agentic Design Patterns — Upgrade Suggestion
 
 > Patterns from "Agentic Design Patterns" (Gulli & Sauco, 2025) applied to AI-powered codebase upgrade intelligence

@@ -18,6 +18,44 @@
     "mcp"
   ],
   "dependencies": [],
+  "userConfig": {
+    "github_token": {
+      "description": "GitHub personal access token (for GitHub Projects sync)",
+      "sensitive": true
+    },
+    "linear_api_key": {
+      "description": "Linear API key (for Linear sync)",
+      "sensitive": true
+    },
+    "notion_token": {
+      "description": "Notion integration token (for Notion sync)",
+      "sensitive": true
+    },
+    "asana_token": {
+      "description": "Asana personal access token (for Asana sync)",
+      "sensitive": true
+    },
+    "trello_api_key": {
+      "description": "Trello API key (for Trello sync)",
+      "sensitive": true
+    },
+    "trello_token": {
+      "description": "Trello token (for Trello sync)",
+      "sensitive": true
+    },
+    "clickup_token": {
+      "description": "ClickUp API token (for ClickUp sync)",
+      "sensitive": true
+    },
+    "monday_api_key": {
+      "description": "Monday.com API key (for Monday sync)",
+      "sensitive": true
+    },
+    "todoist_token": {
+      "description": "Todoist API token (for Todoist sync)",
+      "sensitive": true
+    }
+  },
   "categories": [
     "project-management",
     "orchestration",

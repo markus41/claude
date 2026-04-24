@@ -1,0 +1,64 @@
+{
+  "name": "lobbi-m365-automator",
+  "version": "1.0.0",
+  "description": "Microsoft 365 automation for insurance and financial services firms. SharePoint site building, Teams provisioning, Power Automate flow generation, Exchange rules, M365 auditing, and OneDrive organization. 6 skills, 3 agents.",
+  "author": {
+    "name": "thelobbi.io",
+    "email": "developers@thelobbi.io"
+  },
+  "license": "MIT",
+  "keywords": [
+    "m365",
+    "sharepoint",
+    "teams",
+    "power-automate",
+    "exchange",
+    "microsoft-365",
+    "onedrive"
+  ],
+  "permissions": {
+    "requires": [
+      "Read",
+      "Write",
+      "Edit"
+    ],
+    "optional": [
+      "Bash",
+      "WebFetch"
+    ]
+  },
+  "capabilities": {
+    "provides": [
+      "sharepoint-automation",
+      "teams-provisioning",
+      "power-automate-generation",
+      "exchange-rules",
+      "m365-audit",
+      "onedrive-organization"
+    ],
+    "requires": []
+  },
+  "contextEntry": "CONTEXT_SUMMARY.md",
+  "context": {
+    "entry": "CONTEXT_SUMMARY.md",
+    "title": "Lobbi M365 Automator",
+    "summary": "Microsoft 365 automation: SharePoint, Teams, Power Automate, Exchange, auditing, OneDrive. 6 skills, 3 agents.",
+    "tags": [
+      "m365",
+      "sharepoint",
+      "teams",
+      "power-automate",
+      "exchange"
+    ],
+    "bootstrapFiles": [
+      "CONTEXT_SUMMARY.md"
+    ],
+    "maxTokens": 700,
+    "excludeGlobs": [
+      "**/node_modules/**"
+    ],
+    "lazyLoadSections": [
+      "skills/*/SKILL.md"
+    ]
+  }
+}

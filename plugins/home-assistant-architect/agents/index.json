@@ -1,0 +1,203 @@
+{
+  "version": 1,
+  "plugin": "home-assistant-architect",
+  "type": "agents",
+  "generatedBy": "scripts/generate-plugin-indexes.mjs",
+  "entries": [
+    {
+      "name": "home-assistant-architect:ha-automation-architect",
+      "intent": "Home Assistant Automation Architect Agent",
+      "tags": [
+        "home-assistant-architect",
+        "agent",
+        "ha-automation-architect"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/ha-automation-architect.md"
+    },
+    {
+      "name": "home-assistant-architect:ha-camera-nvr",
+      "intent": "Home Assistant Camera and NVR Integration Agent",
+      "tags": [
+        "home-assistant-architect",
+        "agent",
+        "ha-camera-nvr"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/ha-camera-nvr.md"
+    },
+    {
+      "name": "home-assistant-architect:ha-customization-expert",
+      "intent": "Home Assistant Customization Expert Agent",
+      "tags": [
+        "home-assistant-architect",
+        "agent",
+        "ha-customization-expert"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/ha-customization-expert.md"
+    },
+    {
+      "name": "home-assistant-architect:ha-dashboard-designer",
+      "intent": "Home Assistant Advanced Dashboard Designer Agent",
+      "tags": [
+        "home-assistant-architect",
+        "agent",
+        "ha-dashboard-designer"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/ha-dashboard-designer.md"
+    },
+    {
+      "name": "home-assistant-architect:ha-data-writer",
+      "intent": "Home Assistant Data Writer Agent",
+      "tags": [
+        "home-assistant-architect",
+        "agent",
+        "ha-data-writer"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/ha-data-writer.md"
+    },
+    {
+      "name": "home-assistant-architect:ha-device-controller",
+      "intent": "Home Assistant Device Controller Agent",
+      "tags": [
+        "home-assistant-architect",
+        "agent",
+        "ha-device-controller"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/ha-device-controller.md"
+    },
+    {
+      "name": "home-assistant-architect:ha-diagnostics",
+      "intent": "Home Assistant Diagnostics Agent",
+      "tags": [
+        "home-assistant-architect",
+        "agent",
+        "ha-diagnostics"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/ha-diagnostics.md"
+    },
+    {
+      "name": "home-assistant-architect:ha-energy-management",
+      "intent": "Home Assistant Energy Management System Agent",
+      "tags": [
+        "home-assistant-architect",
+        "agent",
+        "ha-energy-management"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/ha-energy-management.md"
+    },
+    {
+      "name": "home-assistant-architect:ha-energy-optimizer",
+      "intent": "Home Assistant Energy Optimizer Agent",
+      "tags": [
+        "home-assistant-architect",
+        "agent",
+        "ha-energy-optimizer"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/ha-energy-optimizer.md"
+    },
+    {
+      "name": "home-assistant-architect:ha-frontend-builder",
+      "intent": "Home Assistant Frontend Builder Agent",
+      "tags": [
+        "home-assistant-architect",
+        "agent",
+        "ha-frontend-builder"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/ha-frontend-builder.md"
+    },
+    {
+      "name": "home-assistant-architect:ha-security-auditor",
+      "intent": "Home Assistant Security Auditor Agent",
+      "tags": [
+        "home-assistant-architect",
+        "agent",
+        "ha-security-auditor"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/ha-security-auditor.md"
+    },
+    {
+      "name": "home-assistant-architect:ha-sensor-manager",
+      "intent": "Home Assistant Sensor Manager Agent",
+      "tags": [
+        "home-assistant-architect",
+        "agent",
+        "ha-sensor-manager"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/ha-sensor-manager.md"
+    },
+    {
+      "name": "home-assistant-architect:ha-voice-assistant",
+      "intent": "Home Assistant Voice Assistant Agent",
+      "tags": [
+        "home-assistant-architect",
+        "agent",
+        "ha-voice-assistant"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/ha-voice-assistant.md"
+    },
+    {
+      "name": "home-assistant-architect:local-llm-manager",
+      "intent": "Local LLM Manager Agent",
+      "tags": [
+        "home-assistant-architect",
+        "agent",
+        "local-llm-manager"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/local-llm-manager.md"
+    },
+    {
+      "name": "home-assistant-architect:ubuntu-ha-deployer",
+      "intent": "Ubuntu Home Assistant Deployer Agent",
+      "tags": [
+        "home-assistant-architect",
+        "agent",
+        "ubuntu-ha-deployer"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/ubuntu-ha-deployer.md"
+    }
+  ]
+}

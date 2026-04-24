@@ -1,0 +1,38 @@
+{
+  "kind": "skills",
+  "entries": [
+    {
+      "id": "camera-nvr",
+      "path": "skills/camera-nvr/SKILL.md"
+    },
+    {
+      "id": "energy-management",
+      "path": "skills/energy-management/SKILL.md"
+    },
+    {
+      "id": "ha-automation",
+      "path": "skills/ha-automation/SKILL.md"
+    },
+    {
+      "id": "ha-core",
+      "path": "skills/ha-core/SKILL.md"
+    },
+    {
+      "id": "local-llm",
+      "path": "skills/local-llm/SKILL.md"
+    },
+    {
+      "id": "lovelace-design",
+      "path": "skills/lovelace-design/SKILL.md"
+    },
+    {
+      "id": "sensor-management",
+      "path": "skills/sensor-management/SKILL.md"
+    },
+    {
+      "id": "ubuntu-deployment",
+      "path": "skills/ubuntu-deployment/SKILL.md"
+    }
+  ],
+  "count": 8
+}

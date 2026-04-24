@@ -1,7 +1,3 @@
----
-description: Agentic Design Patterns — Team Accelerator
----
-
 # Agentic Design Patterns — Team Accelerator
 
 > Patterns from "Agentic Design Patterns" (Gulli & Sauco, 2025) applied to enterprise team development, DevOps tooling, and multi-cloud workflow automation

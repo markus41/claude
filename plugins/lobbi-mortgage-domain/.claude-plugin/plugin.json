@@ -1,0 +1,66 @@
+{
+  "name": "lobbi-mortgage-domain",
+  "version": "1.0.0",
+  "description": "Mortgage and lending automation for brokers and lenders. Loan pipeline tracking, disclosure generation, AUS integration, closing checklists, compliance scanning, and borrower portal design. 6 skills, 3 agents.",
+  "author": {
+    "name": "thelobbi.io",
+    "email": "developers@thelobbi.io"
+  },
+  "license": "MIT",
+  "keywords": [
+    "mortgage",
+    "lending",
+    "loan",
+    "trid",
+    "hmda",
+    "aus",
+    "closing",
+    "respa"
+  ],
+  "permissions": {
+    "requires": [
+      "Read",
+      "Write",
+      "Edit"
+    ],
+    "optional": [
+      "Bash",
+      "WebFetch"
+    ]
+  },
+  "capabilities": {
+    "provides": [
+      "loan-pipeline",
+      "disclosure-generation",
+      "aus-integration",
+      "closing-checklist",
+      "mortgage-compliance",
+      "borrower-portal"
+    ],
+    "requires": []
+  },
+  "contextEntry": "CONTEXT_SUMMARY.md",
+  "context": {
+    "entry": "CONTEXT_SUMMARY.md",
+    "title": "Lobbi Mortgage Domain",
+    "summary": "Mortgage lending automation: loan pipelines, TRID disclosures, AUS integration, closing checklists, RESPA/HMDA compliance. 6 skills, 3 agents.",
+    "tags": [
+      "mortgage",
+      "lending",
+      "trid",
+      "hmda",
+      "aus",
+      "closing"
+    ],
+    "bootstrapFiles": [
+      "CONTEXT_SUMMARY.md"
+    ],
+    "maxTokens": 700,
+    "excludeGlobs": [
+      "**/node_modules/**"
+    ],
+    "lazyLoadSections": [
+      "skills/*/SKILL.md"
+    ]
+  }
+}

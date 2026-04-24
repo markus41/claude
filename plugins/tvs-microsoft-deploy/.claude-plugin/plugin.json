@@ -26,13 +26,58 @@
     "copilot-studio",
     "onelake",
     "bicep",
-    "graph-api"
+    "graph-api",
+    "power-bi-embedded",
+    "planner",
+    "m365-governance",
+    "dlp",
+    "excel-automation",
+    "solution-architect",
+    "pipeline-orchestration",
+    "agentic-patterns",
+    "prompt-chaining",
+    "planning",
+    "tool-use",
+    "exception-handling",
+    "guardrails",
+    "hitl",
+    "multi-agent",
+    "memory",
+    "a2a",
+    "routing",
+    "resource-aware"
   ],
   "repository": "https://github.com/Lobbi-Docs/claude",
   "license": "MIT",
-  "categories": [
-    "devops",
-    "cloud",
-    "orchestration"
-  ]
+  "contextEntry": "CONTEXT_SUMMARY.md",
+  "context": {
+    "entry": "CONTEXT_SUMMARY.md",
+    "title": "TVS Microsoft Deploy",
+    "summary": "Enterprise Microsoft ecosystem orchestrator for TVS multi-entity multi-tenant deployment. 19 agents, 18 commands, 17 skills, 14 hooks, 5 workflows. MCP server for Graph API, Dataverse, Fabric, and Planner.",
+    "tags": [
+      "microsoft",
+      "power-platform",
+      "dataverse",
+      "fabric",
+      "azure",
+      "entra",
+      "multi-tenant",
+      "graph-api"
+    ],
+    "bootstrapFiles": [
+      "CONTEXT_SUMMARY.md"
+    ],
+    "maxTokens": 700,
+    "excludeGlobs": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/build/**",
+      "**/*.zip"
+    ],
+    "lazyLoadSections": [
+      "CLAUDE.md",
+      "skills/*/SKILL.md",
+      "commands/*.md"
+    ]
+  }
 }

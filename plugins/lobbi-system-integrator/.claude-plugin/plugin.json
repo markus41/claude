@@ -1,0 +1,67 @@
+{
+  "name": "lobbi-system-integrator",
+  "version": "1.0.0",
+  "description": "API and system integration for insurance, mortgage, and financial services platforms. Connector building, webhook orchestration, data mapping, error handling, rate limit management, and integration testing. 6 skills, 3 agents.",
+  "author": {
+    "name": "thelobbi.io",
+    "email": "developers@thelobbi.io"
+  },
+  "license": "MIT",
+  "keywords": [
+    "api",
+    "integration",
+    "webhook",
+    "connector",
+    "data-mapping",
+    "middleware",
+    "crm",
+    "los",
+    "ams"
+  ],
+  "permissions": {
+    "requires": [
+      "Read",
+      "Write",
+      "Edit",
+      "Bash"
+    ],
+    "optional": [
+      "WebFetch",
+      "Task"
+    ]
+  },
+  "capabilities": {
+    "provides": [
+      "api-integration",
+      "webhook-orchestration",
+      "data-mapping",
+      "error-handling",
+      "rate-limit-management",
+      "integration-testing"
+    ],
+    "requires": []
+  },
+  "contextEntry": "CONTEXT_SUMMARY.md",
+  "context": {
+    "entry": "CONTEXT_SUMMARY.md",
+    "title": "Lobbi System Integrator",
+    "summary": "API and system integration: connectors, webhooks, data mapping, error handling, rate limiting, testing. 6 skills, 3 agents.",
+    "tags": [
+      "api",
+      "integration",
+      "webhook",
+      "connector",
+      "data-mapping"
+    ],
+    "bootstrapFiles": [
+      "CONTEXT_SUMMARY.md"
+    ],
+    "maxTokens": 700,
+    "excludeGlobs": [
+      "**/node_modules/**"
+    ],
+    "lazyLoadSections": [
+      "skills/*/SKILL.md"
+    ]
+  }
+}

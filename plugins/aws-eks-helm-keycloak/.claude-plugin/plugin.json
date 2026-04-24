@@ -30,9 +30,35 @@
     "resource-aware",
     "evaluation"
   ],
-  "categories": [
-    "devops",
-    "cloud",
-    "authentication"
-  ]
+  "contextEntry": "CONTEXT_SUMMARY.md",
+  "context": {
+    "entry": "CONTEXT_SUMMARY.md",
+    "title": "AWS EKS Helm Keycloak",
+    "summary": "AWS EKS deployments with Helm, Keycloak authentication, and Harness CI/CD. Combines pipeline excellence with developer velocity. 7 commands, 4 agents.",
+    "tags": [
+      "aws",
+      "eks",
+      "kubernetes",
+      "helm",
+      "keycloak",
+      "harness",
+      "ci-cd",
+      "oidc"
+    ],
+    "bootstrapFiles": [
+      "CONTEXT_SUMMARY.md"
+    ],
+    "maxTokens": 700,
+    "excludeGlobs": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/build/**",
+      "**/*.zip"
+    ],
+    "lazyLoadSections": [
+      "CLAUDE.md",
+      "skills/*/SKILL.md",
+      "commands/*.md"
+    ]
+  }
 }

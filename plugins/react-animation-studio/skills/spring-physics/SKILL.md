@@ -1,7 +1,3 @@
----
-description: Expert knowledge for physics-based spring animations - natural, organic motion that follows real-world physics principles for delightful user experiences.
----
-
 # Spring Physics Skill
 
 Expert knowledge for physics-based spring animations - natural, organic motion that follows real-world physics principles for delightful user experiences.

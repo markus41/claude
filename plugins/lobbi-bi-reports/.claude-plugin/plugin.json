@@ -1,0 +1,63 @@
+{
+  "name": "lobbi-bi-reports",
+  "version": "1.0.0",
+  "description": "Business intelligence and reporting for insurance and financial services. Power BI report building, KPI design, dashboard embedding, data model mapping, refresh scheduling, and report distribution. 6 skills, 3 agents.",
+  "author": {
+    "name": "thelobbi.io",
+    "email": "developers@thelobbi.io"
+  },
+  "license": "MIT",
+  "keywords": [
+    "power-bi",
+    "kpi",
+    "dashboard",
+    "analytics",
+    "reporting",
+    "data-model",
+    "bi"
+  ],
+  "permissions": {
+    "requires": [
+      "Read",
+      "Write",
+      "Edit"
+    ],
+    "optional": [
+      "Bash"
+    ]
+  },
+  "capabilities": {
+    "provides": [
+      "power-bi-reports",
+      "kpi-design",
+      "dashboard-embedding",
+      "data-modeling",
+      "refresh-scheduling",
+      "report-distribution"
+    ],
+    "requires": []
+  },
+  "contextEntry": "CONTEXT_SUMMARY.md",
+  "context": {
+    "entry": "CONTEXT_SUMMARY.md",
+    "title": "Lobbi BI Reports",
+    "summary": "Business intelligence: Power BI reports, KPIs, embedded dashboards, data models, refresh scheduling, distribution. 6 skills, 3 agents.",
+    "tags": [
+      "power-bi",
+      "kpi",
+      "dashboard",
+      "analytics",
+      "reporting"
+    ],
+    "bootstrapFiles": [
+      "CONTEXT_SUMMARY.md"
+    ],
+    "maxTokens": 700,
+    "excludeGlobs": [
+      "**/node_modules/**"
+    ],
+    "lazyLoadSections": [
+      "skills/*/SKILL.md"
+    ]
+  }
+}

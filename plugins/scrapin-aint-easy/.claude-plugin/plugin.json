@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "Documentation intelligence engine, algorithm library, and codebase/agent drift detection system for Claude Code",
   "author": {
-    "name": "Markus Ahling",
-    "email": "Markus@thelobbi.io"
+    "name": "Markus Ahling"
   },
   "license": "MIT",
   "homepage": "https://github.com/markus41/claude/tree/main/plugins/scrapin-aint-easy",
@@ -19,9 +18,13 @@
     "interview-setup",
     "code-intelligence"
   ],
-  "categories": [
-    "documentation",
-    "agents",
-    "utilities"
-  ]
+  "mcpServers": {
+    "scrapin-aint-easy": {
+      "command": "node",
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/dist/cli.js",
+        "--mcp"
+      ]
+    }
+  }
 }

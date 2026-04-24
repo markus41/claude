@@ -1,0 +1,65 @@
+{
+  "name": "lobbi-insurance-domain",
+  "version": "1.0.0",
+  "description": "Insurance-specific automation for agencies and MGAs. Policy workflows, claims processing, producer portal design, E&O tracking, renewal automation, and compliance checking. 6 skills, 3 agents.",
+  "author": {
+    "name": "thelobbi.io",
+    "email": "developers@thelobbi.io"
+  },
+  "license": "MIT",
+  "keywords": [
+    "insurance",
+    "claims",
+    "policy",
+    "producer",
+    "renewal",
+    "e-and-o",
+    "mga",
+    "agency"
+  ],
+  "permissions": {
+    "requires": [
+      "Read",
+      "Write",
+      "Edit"
+    ],
+    "optional": [
+      "Bash",
+      "WebFetch"
+    ]
+  },
+  "capabilities": {
+    "provides": [
+      "policy-workflow",
+      "claims-automation",
+      "producer-portal",
+      "eo-tracking",
+      "renewal-automation",
+      "insurance-compliance"
+    ],
+    "requires": []
+  },
+  "contextEntry": "CONTEXT_SUMMARY.md",
+  "context": {
+    "entry": "CONTEXT_SUMMARY.md",
+    "title": "Lobbi Insurance Domain",
+    "summary": "Insurance agency automation: policy workflows, claims, producer portals, E&O tracking, renewals, compliance. 6 skills, 3 agents.",
+    "tags": [
+      "insurance",
+      "claims",
+      "policy",
+      "producer",
+      "renewal"
+    ],
+    "bootstrapFiles": [
+      "CONTEXT_SUMMARY.md"
+    ],
+    "maxTokens": 700,
+    "excludeGlobs": [
+      "**/node_modules/**"
+    ],
+    "lazyLoadSections": [
+      "skills/*/SKILL.md"
+    ]
+  }
+}

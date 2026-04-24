@@ -8,7 +8,7 @@ tags:
 inputs: []
 risk: low
 cost: low
-description: Search and discover cowork items from the seed catalog of 21 items backed by 22 installed plugins
+description: Search and discover cowork items from the seed catalog of 17 items backed by 16 installed plugins
 ---
 
 # Browse Marketplace
@@ -33,7 +33,7 @@ Search and discover cowork marketplace items. Each item is backed by real plugin
 ```
 /cowork-marketplace:browse
 ```
-Lists all 21 marketplace items with type, rating, and plugin bindings.
+Lists all 17 marketplace items with type, rating, and plugin bindings.
 
 ### Search by keyword
 ```
@@ -83,9 +83,9 @@ The marketplace contains items from these categories:
 | Type | Count | Examples |
 |------|-------|---------|
 | Templates | 3 | FastAPI Scaffold, Fullstack React+FastAPI, Home Assistant Setup |
-| Workflows | 5 | Jira to PR, EKS Deploy, Microsoft Platform, Sprint Planning, Universal Project Manager |
+| Workflows | 4 | Jira to PR, EKS Deploy, Microsoft Platform, Sprint Planning |
 | Agent Configs | 3 | Enterprise Code Reviewer, Nonprofit Exec Director, Design System Architect |
-| Skill Packs | 7 | Claude Code Mastery, DevOps Essentials, React Animation Toolkit, Draw.io Diagramming, .NET Blazor Expert, Scrapin' Ain't Easy, Marketplace Intelligence |
+| Skill Packs | 4 | Claude Code Mastery, DevOps Essentials, React Animation Toolkit, Marketplace Intelligence |
 | Blueprints | 3 | Enterprise Release, Keycloak Multi-Tenant, Project Scaffolder |
 
 ## Curated Collections

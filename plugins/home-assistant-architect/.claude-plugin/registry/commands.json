@@ -1,0 +1,42 @@
+{
+  "kind": "commands",
+  "entries": [
+    {
+      "id": "ha-automation",
+      "path": "commands/ha-automation.md"
+    },
+    {
+      "id": "ha-camera",
+      "path": "commands/ha-camera.md"
+    },
+    {
+      "id": "ha-control",
+      "path": "commands/ha-control.md"
+    },
+    {
+      "id": "ha-dashboard",
+      "path": "commands/ha-dashboard.md"
+    },
+    {
+      "id": "ha-deploy",
+      "path": "commands/ha-deploy.md"
+    },
+    {
+      "id": "ha-energy",
+      "path": "commands/ha-energy.md"
+    },
+    {
+      "id": "ha-mcp",
+      "path": "commands/ha-mcp.md"
+    },
+    {
+      "id": "ha-sensor",
+      "path": "commands/ha-sensor.md"
+    },
+    {
+      "id": "ollama-setup",
+      "path": "commands/ollama-setup.md"
+    }
+  ],
+  "count": 9
+}

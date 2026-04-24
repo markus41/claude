@@ -1,0 +1,62 @@
+{
+  "name": "lobbi-engagement-toolkit",
+  "version": "1.0.0",
+  "description": "Client engagement tools for fixed-scope, fixed-price automation projects. ROI calculation, scope definition, proposal generation, change order protection, delivery tracking, and post-launch review. 6 skills, 3 agents.",
+  "author": {
+    "name": "thelobbi.io",
+    "email": "developers@thelobbi.io"
+  },
+  "license": "MIT",
+  "keywords": [
+    "engagement",
+    "roi",
+    "scope",
+    "proposal",
+    "project-management",
+    "fixed-price",
+    "delivery"
+  ],
+  "permissions": {
+    "requires": [
+      "Read",
+      "Write",
+      "Edit"
+    ],
+    "optional": [
+      "Bash"
+    ]
+  },
+  "capabilities": {
+    "provides": [
+      "roi-calculation",
+      "scope-definition",
+      "proposal-generation",
+      "change-order-detection",
+      "delivery-tracking"
+    ],
+    "requires": []
+  },
+  "contextEntry": "CONTEXT_SUMMARY.md",
+  "context": {
+    "entry": "CONTEXT_SUMMARY.md",
+    "title": "Lobbi Engagement Toolkit",
+    "summary": "Fixed-scope client engagement: ROI calculators, scope docs, proposals, change-order guards, and delivery tracking. 6 skills, 3 agents.",
+    "tags": [
+      "engagement",
+      "roi",
+      "scope",
+      "proposal",
+      "delivery"
+    ],
+    "bootstrapFiles": [
+      "CONTEXT_SUMMARY.md"
+    ],
+    "maxTokens": 700,
+    "excludeGlobs": [
+      "**/node_modules/**"
+    ],
+    "lazyLoadSections": [
+      "skills/*/SKILL.md"
+    ]
+  }
+}

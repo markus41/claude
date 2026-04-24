@@ -1,7 +1,3 @@
----
-description: Expert knowledge for artistic and creative animation effects - morphing shapes, liquid animations, glitch effects, distortion, and experimental visual techniques that push creative boundaries.
----
-
 # Creative Effects Skill
 
 Expert knowledge for artistic and creative animation effects - morphing shapes, liquid animations, glitch effects, distortion, and experimental visual techniques that push creative boundaries.

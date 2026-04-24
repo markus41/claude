@@ -1,0 +1,67 @@
+{
+  "name": "lobbi-document-intelligence",
+  "version": "1.0.0",
+  "description": "AI-powered document processing for insurance and financial services. PDF extraction, form classification, OCR pipelines, data validation, intelligent routing, and extraction auditing. 6 skills, 3 agents.",
+  "author": {
+    "name": "thelobbi.io",
+    "email": "developers@thelobbi.io"
+  },
+  "license": "MIT",
+  "keywords": [
+    "document",
+    "ocr",
+    "extraction",
+    "classification",
+    "pdf",
+    "ai",
+    "rpa",
+    "forms"
+  ],
+  "permissions": {
+    "requires": [
+      "Read",
+      "Write",
+      "Edit",
+      "Bash"
+    ],
+    "optional": [
+      "WebFetch",
+      "Task"
+    ]
+  },
+  "capabilities": {
+    "provides": [
+      "pdf-extraction",
+      "form-classification",
+      "ocr-pipeline",
+      "data-validation",
+      "document-routing",
+      "extraction-audit"
+    ],
+    "requires": []
+  },
+  "contextEntry": "CONTEXT_SUMMARY.md",
+  "context": {
+    "entry": "CONTEXT_SUMMARY.md",
+    "title": "Lobbi Document Intelligence",
+    "summary": "AI document processing: PDF extraction, form classification, OCR pipelines, validation, intelligent routing, audit trails. 6 skills, 3 agents.",
+    "tags": [
+      "document",
+      "ocr",
+      "extraction",
+      "pdf",
+      "ai",
+      "classification"
+    ],
+    "bootstrapFiles": [
+      "CONTEXT_SUMMARY.md"
+    ],
+    "maxTokens": 700,
+    "excludeGlobs": [
+      "**/node_modules/**"
+    ],
+    "lazyLoadSections": [
+      "skills/*/SKILL.md"
+    ]
+  }
+}

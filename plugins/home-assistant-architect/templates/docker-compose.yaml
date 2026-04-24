@@ -1,0 +1,233 @@
+# Home Assistant Docker Compose Stack
+#
+# Full stack deployment for Home Assistant with complementary services
+#
+# Usage:
+#   1. Copy .env.example to .env and configure
+#   2. Run: docker compose up -d
+#   3. Access HA at http://localhost:8123
+#
+# Services included:
+#   - Home Assistant Core
+#   - MariaDB (database)
+#   - Mosquitto (MQTT)
+#   - Zigbee2MQTT
+#   - Z-Wave JS UI
+#   - Node-RED
+#   - InfluxDB + Grafana
+#   - Caddy (reverse proxy)
+#   - Ollama (local LLM)
+
+version: '3.8'
+
+services:
+  # ========================================
+  # Home Assistant Core
+  # ========================================
+  homeassistant:
+    container_name: homeassistant
+    image: ghcr.io/home-assistant/home-assistant:stable
+    restart: unless-stopped
+    privileged: true
+    network_mode: host
+    volumes:
+      - ./homeassistant:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /run/dbus:/run/dbus:ro
+    environment:
+      - TZ=${TZ:-America/New_York}
+    depends_on:
+      - mosquitto
+      - mariadb
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8123/api/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ========================================
+  # Database
+  # ========================================
+  mariadb:
+    container_name: mariadb
+    image: mariadb:10.11
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-homeassistant}
+      MYSQL_DATABASE: homeassistant
+      MYSQL_USER: homeassistant
+      MYSQL_PASSWORD: ${DB_PASSWORD:-homeassistant}
+    volumes:
+      - ./mariadb:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  # ========================================
+  # MQTT Broker
+  # ========================================
+  mosquitto:
+    container_name: mosquitto
+    image: eclipse-mosquitto:latest
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log
+
+  # ========================================
+  # Zigbee2MQTT
+  # ========================================
+  zigbee2mqtt:
+    container_name: zigbee2mqtt
+    image: koenkk/zigbee2mqtt:latest
+    restart: unless-stopped
+    volumes:
+      - ./zigbee2mqtt:/app/data
+      - /run/udev:/run/udev:ro
+    ports:
+      - "8080:8080"
+    environment:
+      - TZ=${TZ:-America/New_York}
+    devices:
+      - ${ZIGBEE_DEVICE:-/dev/ttyUSB0}:/dev/ttyUSB0
+    depends_on:
+      - mosquitto
+
+  # ========================================
+  # Z-Wave JS UI
+  # ========================================
+  zwavejs:
+    container_name: zwavejs
+    image: zwavejs/zwave-js-ui:latest
+    restart: unless-stopped
+    tty: true
+    stop_signal: SIGINT
+    environment:
+      - TZ=${TZ:-America/New_York}
+    devices:
+      - ${ZWAVE_DEVICE:-/dev/ttyACM0}:/dev/ttyACM0
+    volumes:
+      - ./zwavejs:/usr/src/app/store
+    ports:
+      - "8091:8091"
+      - "3000:3000"
+
+  # ========================================
+  # Node-RED
+  # ========================================
+  nodered:
+    container_name: nodered
+    image: nodered/node-red:latest
+    restart: unless-stopped
+    ports:
+      - "1880:1880"
+    volumes:
+      - ./nodered:/data
+    environment:
+      - TZ=${TZ:-America/New_York}
+
+  # ========================================
+  # InfluxDB
+  # ========================================
+  influxdb:
+    container_name: influxdb
+    image: influxdb:2.7
+    restart: unless-stopped
+    ports:
+      - "8086:8086"
+    volumes:
+      - ./influxdb/data:/var/lib/influxdb2
+      - ./influxdb/config:/etc/influxdb2
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=${INFLUX_USER:-admin}
+      - DOCKER_INFLUXDB_INIT_PASSWORD=${INFLUX_PASSWORD:-adminpassword}
+      - DOCKER_INFLUXDB_INIT_ORG=home
+      - DOCKER_INFLUXDB_INIT_BUCKET=homeassistant
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${INFLUX_TOKEN:-my-super-secret-token}
+
+  # ========================================
+  # Grafana
+  # ========================================
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:latest
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./grafana:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
+    depends_on:
+      - influxdb
+
+  # ========================================
+  # Caddy Reverse Proxy
+  # ========================================
+  caddy:
+    container_name: caddy
+    image: caddy:latest
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+      - ./caddy/data:/data
+      - ./caddy/config:/config
+
+  # ========================================
+  # Ollama (Local LLM)
+  # ========================================
+  ollama:
+    container_name: ollama
+    image: ollama/ollama:latest
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ./ollama:/root/.ollama
+    # Uncomment for GPU support
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+
+  # ========================================
+  # Voice Assistant Stack (Optional)
+  # ========================================
+  # faster-whisper:
+  #   container_name: faster-whisper
+  #   image: lscr.io/linuxserver/faster-whisper:latest
+  #   restart: unless-stopped
+  #   environment:
+  #     - WHISPER_MODEL=base.en
+  #   ports:
+  #     - "10300:10300"
+
+  # piper:
+  #   container_name: piper
+  #   image: rhasspy/wyoming-piper:latest
+  #   restart: unless-stopped
+  #   command: --voice en_US-lessac-medium
+  #   ports:
+  #     - "10200:10200"
+
+  # openwakeword:
+  #   container_name: openwakeword
+  #   image: rhasspy/wyoming-openwakeword:latest
+  #   restart: unless-stopped
+  #   command: --preload-model ok_nabu
+  #   ports:
+  #     - "10400:10400"
+
+networks:
+  default:
+    name: homeassistant

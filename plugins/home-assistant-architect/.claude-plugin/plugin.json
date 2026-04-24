@@ -1,0 +1,62 @@
+{
+  "name": "home-assistant-architect",
+  "version": "3.0.0",
+  "description": "Complete Home Assistant platform with frontend design, energy management, cameras, sensors, local LLM integration, and Ubuntu server deployment",
+  "author": {
+    "name": "Brookside BI"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/Lobbi-Docs/claude",
+  "repository": "https://github.com/Lobbi-Docs/claude.git",
+  "keywords": [
+    "home-assistant",
+    "smart-home",
+    "automation",
+    "ollama",
+    "local-llm",
+    "mcp-server",
+    "ubuntu",
+    "iot",
+    "agentic-patterns",
+    "tool-use",
+    "routing",
+    "planning",
+    "exception-handling",
+    "memory",
+    "guardrails",
+    "hitl",
+    "parallelization",
+    "learning"
+  ],
+  "contextEntry": "CONTEXT_SUMMARY.md",
+  "context": {
+    "entry": "CONTEXT_SUMMARY.md",
+    "title": "Home Assistant Architect",
+    "summary": "Complete Home Assistant platform with frontend design, energy management, cameras, sensors, local LLM integration, and Ubuntu server deployment. 9 commands, 15 agents, 8 skills.",
+    "tags": [
+      "home-assistant",
+      "smart-home",
+      "automation",
+      "ollama",
+      "local-llm",
+      "mcp-server",
+      "iot",
+      "ubuntu"
+    ],
+    "bootstrapFiles": [
+      "CONTEXT_SUMMARY.md"
+    ],
+    "maxTokens": 700,
+    "excludeGlobs": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/build/**",
+      "**/*.zip"
+    ],
+    "lazyLoadSections": [
+      "CLAUDE.md",
+      "skills/*/SKILL.md",
+      "commands/*.md"
+    ]
+  }
+}

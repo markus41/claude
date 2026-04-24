@@ -1,0 +1,66 @@
+{
+  "name": "lobbi-data-migration",
+  "version": "1.0.0",
+  "description": "Data migration planning and execution for insurance and financial services systems. Schema analysis, data profiling, migration planning, transform building, validation running, and rollback coordination. 6 skills, 3 agents.",
+  "author": {
+    "name": "thelobbi.io",
+    "email": "developers@thelobbi.io"
+  },
+  "license": "MIT",
+  "keywords": [
+    "migration",
+    "etl",
+    "schema",
+    "data-profiling",
+    "transform",
+    "rollback",
+    "dataverse",
+    "sharepoint"
+  ],
+  "permissions": {
+    "requires": [
+      "Read",
+      "Write",
+      "Edit",
+      "Bash"
+    ],
+    "optional": [
+      "Task"
+    ]
+  },
+  "capabilities": {
+    "provides": [
+      "schema-analysis",
+      "data-profiling",
+      "migration-planning",
+      "transform-building",
+      "validation",
+      "rollback-coordination"
+    ],
+    "requires": []
+  },
+  "contextEntry": "CONTEXT_SUMMARY.md",
+  "context": {
+    "entry": "CONTEXT_SUMMARY.md",
+    "title": "Lobbi Data Migration",
+    "summary": "Data migration: schema analysis, profiling, planning, transforms, validation, rollback coordination. 6 skills, 3 agents.",
+    "tags": [
+      "migration",
+      "etl",
+      "schema",
+      "data-profiling",
+      "transform",
+      "rollback"
+    ],
+    "bootstrapFiles": [
+      "CONTEXT_SUMMARY.md"
+    ],
+    "maxTokens": 700,
+    "excludeGlobs": [
+      "**/node_modules/**"
+    ],
+    "lazyLoadSections": [
+      "skills/*/SKILL.md"
+    ]
+  }
+}

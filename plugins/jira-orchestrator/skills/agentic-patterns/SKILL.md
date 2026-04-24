@@ -1,7 +1,3 @@
----
-description: Apply agentic design patterns (routing, planning, multi-agent, reflection, blackboard, ReAct) to enterprise Jira workflow orchestration, 81-agent hierarchy management, and sprint/issue lifecycle automation.
----
-
 # Agentic Design Patterns — Jira Orchestrator
 
 > Patterns from "Agentic Design Patterns" (Gulli & Sauco, 2025) applied to enterprise Jira workflow orchestration, 81-agent hierarchy management, sprint planning, and issue lifecycle automation.

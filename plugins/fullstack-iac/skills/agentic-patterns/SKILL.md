@@ -1,7 +1,3 @@
----
-description: Agentic Design Patterns — Fullstack IaC
----
-
 # Agentic Design Patterns — Fullstack IaC
 
 > Patterns from "Agentic Design Patterns" (Gulli & Sauco, 2025) applied to full-stack development and infrastructure-as-code automation

@@ -1,6 +1,8 @@
 import { mkdir, readFile, readdir, writeFile } from 'fs/promises';
 import { existsSync } from 'fs';
 import { basename, dirname, join, relative } from 'path';
+
+const toPosix = (p: string): string => p.replace(/\\/g, '/');
 import { exec as execCallback } from 'child_process';
 import { promisify } from 'util';
 import type { OrchestratorLogger } from './orchestrator.js';
@@ -401,7 +403,7 @@ export class ClaudeProjectSetupManager {
       : 'repository fingerprint analysis';
     const lspList = fingerprint.lspPackages.map((item) => `- ${item.id}: ${item.reason}`).join('\n') || '- No LSP requirements detected.';
 
-    return `# ${projectName}\n\n## 1. Project Summary\n### 1.1 What this repository is\n- ${options.spec?.description || `${projectName} with a Claude Code context baseline generated from ${generatedFrom}.`}\n\n### 1.2 Current stack fingerprint\n- Languages: ${fingerprint.languages.join(', ') || 'Unknown'}\n- Frameworks: ${fingerprint.frameworks.join(', ') || 'Unknown'}\n- Testing: ${fingerprint.testing.join(', ') || 'Unknown'}\n- Infrastructure: ${fingerprint.infrastructure.join(', ') || 'Unknown'}\n- Package manager: ${fingerprint.packageManager}\n\n## 2. How to Work Here\n### 2.1 Default execution model\n- Start with docs/context/project-overview.md and docs/context/architecture.md before broad changes.\n- Use .claude/rules/coding.md and .claude/rules/testing.md as the default implementation guardrails.\n- Record notable design tradeoffs in docs/context/decisions/.\n\n### 2.2 Documentation expectations\n- Keep README.md, this CLAUDE.md, and docs/context/changelog.md synchronized with material changes.\n- Add lessons to docs/context/lessons-learned.md when new pitfalls or reusable patterns emerge.\n\n## 3. Reference Documents\n### 3.1 Rules\n- @.claude/rules/coding.md\n- @.claude/rules/testing.md\n- @.claude/rules/security.md\n- @.claude/rules/infra.md\n- @.claude/rules/review.md\n- @.claude/rules/product.md\n\n### 3.2 Core context\n- @docs/context/project-overview.md\n- @docs/context/project.md\n- @docs/context/vision-and-roadmap.md\n- @docs/context/domain-glossary.md\n- @docs/context/personas-and-use-cases.md\n- @docs/context/architecture.md\n- @docs/context/architecture-runtime.md\n- @docs/context/architecture-deployment.md\n- @docs/context/data-model.md\n- @docs/context/data-migrations.md\n- @docs/context/api-contracts.md\n- @docs/context/api-guidelines.md\n- @docs/context/ux-flows.md\n- @docs/context/ux-principles.md\n- @docs/context/security-rules.md\n- @docs/context/compliance.md\n- @docs/context/testing-strategy.md\n- @docs/context/test-inventory.md\n- @docs/context/constraints.md\n- @docs/context/performance.md\n- @docs/context/ops-and-runbooks.md\n- @docs/context/changelog.md\n- @docs/context/plan.md\n- @docs/context/lessons-learned.md\n\n## 4. Read-When Triggers\n### 4.1 Architecture changes\nRead @docs/context/architecture.md, @docs/context/architecture-runtime.md, and @docs/context/data-model.md.\n\n### 4.2 Delivery or deployment changes\nRead @.claude/rules/infra.md, @docs/context/architecture-deployment.md, and @docs/context/ops-and-runbooks.md.\n\n### 4.3 Product or UX changes\nRead @.claude/rules/product.md, @docs/context/personas-and-use-cases.md, and @docs/context/ux-flows.md.\n\n### 4.4 Testing-heavy changes\nRead @.claude/rules/testing.md and @docs/context/testing-strategy.md.\n\n## 5. Skills, Templates, and Hooks\n### 5.1 Skills\n- Use @.claude/skills/code-review/SKILL.md for structured reviews.\n- Use @.claude/skills/release-notes/SKILL.md for changelog and release summaries.\n- Use @.claude/skills/migration-planner/SKILL.md for schema or API evolution.\n- Use @.claude/skills/bug-triage/SKILL.md for issue assessment.\n\n### 5.2 Reusable templates\n- @.claude/templates/pr-description.md\n- @.claude/templates/design-doc.md\n- @.claude/templates/test-plan.md\n- @.claude/templates/incident-report.md\n\n### 5.3 Hooks\n- @.claude/hooks/post-refactor/run-tests.yaml\n- @.claude/hooks/post-refactor/update-docs.yaml\n- @.claude/hooks/pre-merge/sanity-checks.yaml\n\n## 6. LSP Coverage\n${lspList}\n\n## 7. Sync Workflow\n- Run the plugin setup command again whenever the plugin is upgraded or the repository stack changes.\n- Setup mode writes the baseline. Update mode refreshes managed Claude context while preserving unmanaged repository content.\n- Nested repositories stored under ${relative(projectPath, join(projectPath, '.claude')) || '.claude'} are scanned so they also receive a local .claude baseline.\n`;
+    return `# ${projectName}\n\n## 1. Project Summary\n### 1.1 What this repository is\n- ${options.spec?.description || `${projectName} with a Claude Code context baseline generated from ${generatedFrom}.`}\n\n### 1.2 Current stack fingerprint\n- Languages: ${fingerprint.languages.join(', ') || 'Unknown'}\n- Frameworks: ${fingerprint.frameworks.join(', ') || 'Unknown'}\n- Testing: ${fingerprint.testing.join(', ') || 'Unknown'}\n- Infrastructure: ${fingerprint.infrastructure.join(', ') || 'Unknown'}\n- Package manager: ${fingerprint.packageManager}\n\n## 2. How to Work Here\n### 2.1 Default execution model\n- Start with docs/context/project-overview.md and docs/context/architecture.md before broad changes.\n- Use .claude/rules/coding.md and .claude/rules/testing.md as the default implementation guardrails.\n- Record notable design tradeoffs in docs/context/decisions/.\n\n### 2.2 Documentation expectations\n- Keep README.md, this CLAUDE.md, and docs/context/changelog.md synchronized with material changes.\n- Add lessons to docs/context/lessons-learned.md when new pitfalls or reusable patterns emerge.\n\n## 3. Reference Documents\n### 3.1 Rules\n- @.claude/rules/coding.md\n- @.claude/rules/testing.md\n- @.claude/rules/security.md\n- @.claude/rules/infra.md\n- @.claude/rules/review.md\n- @.claude/rules/product.md\n\n### 3.2 Core context\n- @docs/context/project-overview.md\n- @docs/context/project.md\n- @docs/context/vision-and-roadmap.md\n- @docs/context/domain-glossary.md\n- @docs/context/personas-and-use-cases.md\n- @docs/context/architecture.md\n- @docs/context/architecture-runtime.md\n- @docs/context/architecture-deployment.md\n- @docs/context/data-model.md\n- @docs/context/data-migrations.md\n- @docs/context/api-contracts.md\n- @docs/context/api-guidelines.md\n- @docs/context/ux-flows.md\n- @docs/context/ux-principles.md\n- @docs/context/security-rules.md\n- @docs/context/compliance.md\n- @docs/context/testing-strategy.md\n- @docs/context/test-inventory.md\n- @docs/context/constraints.md\n- @docs/context/performance.md\n- @docs/context/ops-and-runbooks.md\n- @docs/context/changelog.md\n- @docs/context/plan.md\n- @docs/context/lessons-learned.md\n\n## 4. Read-When Triggers\n### 4.1 Architecture changes\nRead @docs/context/architecture.md, @docs/context/architecture-runtime.md, and @docs/context/data-model.md.\n\n### 4.2 Delivery or deployment changes\nRead @.claude/rules/infra.md, @docs/context/architecture-deployment.md, and @docs/context/ops-and-runbooks.md.\n\n### 4.3 Product or UX changes\nRead @.claude/rules/product.md, @docs/context/personas-and-use-cases.md, and @docs/context/ux-flows.md.\n\n### 4.4 Testing-heavy changes\nRead @.claude/rules/testing.md and @docs/context/testing-strategy.md.\n\n## 5. Skills, Templates, and Hooks\n### 5.1 Skills\n- Use @.claude/skills/code-review/SKILL.md for structured reviews.\n- Use @.claude/skills/release-notes/SKILL.md for changelog and release summaries.\n- Use @.claude/skills/migration-planner/SKILL.md for schema or API evolution.\n- Use @.claude/skills/bug-triage/SKILL.md for issue assessment.\n\n### 5.2 Reusable templates\n- @.claude/templates/pr-description.md\n- @.claude/templates/design-doc.md\n- @.claude/templates/test-plan.md\n- @.claude/templates/incident-report.md\n\n### 5.3 Hooks\n- @.claude/hooks/post-refactor/run-tests.yaml\n- @.claude/hooks/post-refactor/update-docs.yaml\n- @.claude/hooks/pre-merge/sanity-checks.yaml\n\n## 6. LSP Coverage\n${lspList}\n\n## 7. Sync Workflow\n- Run the plugin setup command again whenever the plugin is upgraded or the repository stack changes.\n- Setup mode writes the baseline. Update mode refreshes managed Claude context while preserving unmanaged repository content.\n- Nested repositories stored under ${toPosix(relative(projectPath, join(projectPath, '.claude'))) || '.claude'} are scanned so they also receive a local .claude baseline.\n`;
   }
 
   private async updateReadme(
@@ -421,7 +423,7 @@ export class ClaudeProjectSetupManager {
       : `${current.trimEnd()}\n\n${managedSection}\n`;
 
     await writeFile(readmePath, `${updated.trimEnd()}\n`, 'utf-8');
-    filesWritten.push(relative(projectPath, readmePath));
+    filesWritten.push(toPosix(relative(projectPath, readmePath)));
   }
 
   private async ensureNestedRepositoryClaudeDirs(projectPath: string, filesWritten: string[]): Promise<string[]> {
@@ -443,7 +445,7 @@ export class ClaudeProjectSetupManager {
         }
 
         const fullPath = join(currentPath, entry.name);
-        const relativePath = relative(rootClaudePath, fullPath);
+        const relativePath = toPosix(relative(rootClaudePath, fullPath));
         const pathParts = relativePath.split('/').filter(Boolean);
         if (pathParts.some((part: string) => CLAUDE_INTERNAL_DIRS.has(part))) {
           continue;
@@ -452,13 +454,13 @@ export class ClaudeProjectSetupManager {
         if (await this.isRepositoryDirectory(fullPath)) {
           const nestedClaudePath = join(fullPath, '.claude');
           await mkdir(nestedClaudePath, { recursive: true });
-          const nestedReadme = `# Nested Claude Context\n\nThis repository was discovered under the parent project's .claude directory and provisioned during Claude setup synchronization.\n\n- Parent project: ${basename(projectPath)}\n- Nested repository path: ${relative(projectPath, fullPath)}\n`;
+          const nestedReadme = `# Nested Claude Context\n\nThis repository was discovered under the parent project's .claude directory and provisioned during Claude setup synchronization.\n\n- Parent project: ${basename(projectPath)}\n- Nested repository path: ${toPosix(relative(projectPath, fullPath))}\n`;
           const nestedClaude = `# ${basename(fullPath)}\n\n## Nested Repository Guidance\n- This nested repository is managed as a subordinate project under the parent Claude context.\n- Add repository-specific rules and references here when the nested project diverges.\n`;
           await writeFile(join(nestedClaudePath, 'README.md'), nestedReadme, 'utf-8');
           await writeFile(join(nestedClaudePath, 'CLAUDE.md'), nestedClaude, 'utf-8');
-          repositories.push(relative(projectPath, fullPath));
-          filesWritten.push(relative(projectPath, join(nestedClaudePath, 'README.md')));
-          filesWritten.push(relative(projectPath, join(nestedClaudePath, 'CLAUDE.md')));
+          repositories.push(toPosix(relative(projectPath, fullPath)));
+          filesWritten.push(toPosix(relative(projectPath, join(nestedClaudePath, 'README.md'))));
+          filesWritten.push(toPosix(relative(projectPath, join(nestedClaudePath, 'CLAUDE.md'))));
           continue;
         }
 
@@ -482,12 +484,12 @@ export class ClaudeProjectSetupManager {
       packageManager: fingerprint.packageManager,
       servers: fingerprint.lspPackages,
     }, null, 2)}\n`, 'utf-8');
-    filesWritten.push(relative(projectPath, manifestPath));
+    filesWritten.push(toPosix(relative(projectPath, manifestPath)));
 
     const installerPath = join(projectPath, '.claude', 'lsp', 'install.sh');
     const installerContent = ['#!/usr/bin/env bash', 'set -euo pipefail', '', ...fingerprint.lspPackages.map((item) => item.installCommand)].join('\n');
     await writeFile(installerPath, `${installerContent}\n`, 'utf-8');
-    filesWritten.push(relative(projectPath, installerPath));
+    filesWritten.push(toPosix(relative(projectPath, installerPath)));
 
     if (!installLsps) {
       return fingerprint.lspPackages.map((item) => ({
