@@ -1,2 +1,3 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# Keep LF line endings on all platforms — hub commits LF and the mirror
+# must round-trip byte-identical on checkout for drift detection to work.
+* text=auto eol=lf
