@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://github.com/markus41/claude/plugins/project-management-plugin/schemas/project.schema.json",
   "title": "Project",
-  "description": "Schema for a project-management-plugin project state file",
+  "description": "Schema for a project-management-plugin project state file (.claude/projects/{id}/project.json)",
   "type": "object",
   "required": [
     "id",
@@ -12,10 +12,9 @@
     "status",
     "phases",
     "created_at",
-    "updated_at",
-    "metadata"
+    "updated_at"
   ],
-  "additionalProperties": false,
+  "additionalProperties": true,
   "properties": {
     "id": {
       "type": "string",
@@ -39,7 +38,8 @@
         "software",
         "content",
         "research",
-        "business"
+        "business",
+        "auto"
       ]
     },
     "status": {
@@ -48,10 +48,24 @@
       "enum": [
         "INITIALIZING",
         "READY",
+        "PLANNED",
         "IN_PROGRESS",
         "PAUSED",
+        "BLOCKED",
         "COMPLETE",
         "CANCELLED"
+      ]
+    },
+    "depth": {
+      "type": "string",
+      "description": "Decomposition depth preset selected during initialization",
+      "enum": [
+        "quick",
+        "standard",
+        "thorough",
+        "shallow",
+        "deep",
+        "exhaustive"
       ]
     },
     "phases": {
@@ -62,23 +76,19 @@
         "required": [
           "id",
           "name",
-          "status",
-          "task_ids"
+          "status"
         ],
-        "additionalProperties": false,
+        "additionalProperties": true,
         "properties": {
           "id": {
             "type": "string",
-            "description": "Phase identifier (e.g. 'phase-1')",
             "pattern": "^[a-z0-9-]+$"
           },
           "name": {
-            "type": "string",
-            "description": "Display name of the phase"
+            "type": "string"
           },
           "description": {
-            "type": "string",
-            "description": "What this phase accomplishes"
+            "type": "string"
           },
           "status": {
             "type": "string",
@@ -91,12 +101,121 @@
           },
           "task_ids": {
             "type": "array",
-            "description": "Ordered list of task IDs that belong to this phase",
             "items": {
               "type": "string",
               "pattern": "^T-[0-9]+$"
             }
           }
+        }
+      }
+    },
+    "tech_stack": {
+      "type": [
+        "object",
+        "array",
+        "null"
+      ],
+      "description": "Languages, frameworks, databases, and external services as captured by /pm:init"
+    },
+    "team": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Team size, roles, and workflow notes from /pm:init"
+    },
+    "workflow": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Git workflow, review process, and deployment model from /pm:init"
+    },
+    "security": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "compliance": {
+      "type": [
+        "object",
+        "array",
+        "null"
+      ]
+    },
+    "risks": {
+      "type": "array",
+      "items": {
+        "type": [
+          "string",
+          "object"
+        ]
+      }
+    },
+    "known_unknowns": {
+      "type": "array",
+      "items": {
+        "type": [
+          "string",
+          "object"
+        ]
+      }
+    },
+    "focus_scope": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Narrowed scope (phase/epic/story) set by /pm:focus"
+    },
+    "loop_stats": {
+      "type": "object",
+      "description": "Autonomous loop safety counters",
+      "properties": {
+        "total_loop_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "consecutive_zero_progress": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "last_loop_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      }
+    },
+    "task_counts": {
+      "type": "object",
+      "properties": {
+        "phases": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "epics": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "stories": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "tasks": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "micro_tasks": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
         }
       }
     },
@@ -109,11 +228,10 @@
       "required": [
         "platform"
       ],
-      "additionalProperties": false,
+      "additionalProperties": true,
       "properties": {
         "platform": {
           "type": "string",
-          "description": "The PM platform this project is synced with",
           "enum": [
             "github",
             "linear",
@@ -123,6 +241,7 @@
             "clickup",
             "monday",
             "todoist",
+            "jira",
             "local"
           ]
         },
@@ -130,55 +249,86 @@
           "type": [
             "string",
             "null"
-          ],
-          "description": "The ID of the corresponding project/board/space in the external platform"
+          ]
         },
         "last_sync_at": {
           "type": [
             "string",
             "null"
           ],
-          "description": "ISO 8601 timestamp of the most recent successful sync",
           "format": "date-time"
         }
       }
     },
     "created_at": {
       "type": "string",
-      "description": "ISO 8601 timestamp when the project was created",
       "format": "date-time"
     },
     "updated_at": {
       "type": "string",
-      "description": "ISO 8601 timestamp when the project was last modified",
+      "format": "date-time"
+    },
+    "planned_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "completed_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "last_session_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "total_session_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "total_tasks_completed": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "review_passed_at": {
+      "type": [
+        "string",
+        "null"
+      ],
       "format": "date-time"
     },
     "metadata": {
       "type": "object",
       "description": "Runtime and configuration metadata for the project",
-      "additionalProperties": false,
+      "additionalProperties": true,
       "properties": {
         "depth_preset": {
           "type": "string",
-          "description": "Decomposition depth preset selected during initialization",
           "enum": [
             "shallow",
             "standard",
             "deep",
-            "exhaustive"
+            "exhaustive",
+            "quick",
+            "thorough"
           ]
         },
         "loop_count": {
           "type": "integer",
-          "description": "Number of autonomous loop iterations completed",
           "minimum": 0
         },
         "last_checkpoint": {
           "type": [
             "string",
             "null"
-          ],
-          "description": "Relative path to the most recent checkpoint file within the project state directory"
+          ]
         }
       }
     }

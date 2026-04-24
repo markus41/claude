@@ -34,6 +34,34 @@ repeat. Pauses automatically when it needs human input or encounters risk > 7.
 
 ---
 
+## Keep-Claude-on-Task Guardrails
+
+Beyond the PM loop, this plugin ships four commands + five hooks that keep
+Claude locked on the current task during long sessions. Works with or
+without a formal `/pm:init` project — ephemeral session state lives at
+`.claude/pm-session/` when no project is active.
+
+| Command | What it does |
+|---------|--------------|
+| `/pm:anchor` | Set/clear a two-line focus receipt; injected on every user turn |
+| `/pm:scope` | File/command allowlist; `PreToolUse` blocks out-of-scope writes |
+| `/pm:done-when` | Explicit completion criteria; `Stop` hook blocks until all have evidence |
+| `/pm:drift` | Replay the breadcrumb trail and classify each turn vs the anchor/scope/criteria |
+| `/pm:budget` | Cap tool calls per task; `PostToolUse` warns at 80% and screams at 120% |
+| `/pm:handoff` | Force-write (or inspect) the compaction-safe task snapshot |
+
+Hooks enforcing the above:
+
+- `anchor-inject.sh` (SessionStart + UserPromptSubmit) — injects the focus reminder.
+- `handoff-read.sh` (SessionStart) — re-surfaces `handoff.md` after `/compact` or a new session.
+- `prompt-archive.sh` (UserPromptSubmit) — appends every user prompt verbatim.
+- `scope-guard.sh` (PreToolUse Write|Edit|MultiEdit) — blocks unlisted paths.
+- `overengineering-detector.sh` (PostToolUse Write|Edit|MultiEdit) — flags CLAUDE.md anti-patterns.
+- `breadcrumb-logger.sh` (PostToolUse \*) — appends every tool call to `breadcrumbs.jsonl`.
+- `budget-warn.sh` (PostToolUse \*) — surfaces turn-budget warnings at 80% / 120%.
+- `handoff-write.sh` (Stop) — snapshots anchor/scope/done-when/budget/breadcrumbs to `handoff.md`.
+- `done-gate.sh` (Stop) — refuses session end while any criterion lacks evidence.
+
 ## Command Reference
 
 | Command | Purpose |
@@ -139,12 +167,34 @@ never written to project state files or committed to the repository.
 │   └── {timestamp}.json  # Rolling window of last 10 state snapshots
 ├── progress/
 │   └── log.md            # Append-only session activity log
-└── artifacts/
-    └── {task-id}/        # Output files produced by task execution
+├── artifacts/
+│   └── {task-id}/        # Output files produced by task execution
+├── .locks/
+│   └── {name}.lock       # Exclusive O_EXCL locks (stale >30s are broken)
+└── temp/
+    └── .write-{uuid}     # Temporary files used during atomic rename
 ```
 
-State writes are always atomic: write to a temp file, then rename into place.
-This prevents corrupt state if Claude Code is interrupted mid-write.
+State writes are transactional: the shared library (`lib/pm-state.mjs`) takes
+an exclusive lock, validates against the JSON schemas, writes to a temp file,
+then atomically renames into place. The `pm-mcp` MCP server (registered in the
+plugin manifest) is the only supported way for agents to mutate tasks —
+never hand-edit `tasks.json`.
+
+## pm-mcp Server Tools
+
+The plugin ships a stdio MCP server that agents call via `mcp__pm-mcp__*`:
+
+| Tool | Purpose |
+|------|---------|
+| `pm_list_projects` | Enumerate every project with status + task counts |
+| `pm_get_project` / `pm_get_tasks` / `pm_get_task` | Read project + task state |
+| `pm_next_task` / `pm_unblocked_tasks` | Scheduler queries (priority × critical-path) |
+| `pm_update_task_status` | Validated status transitions |
+| `pm_add_task` / `pm_complete_task` / `pm_block_task` | Mutations |
+| `pm_checkpoint` | Force-write a state snapshot |
+| `pm_get_research` / `pm_put_research` | Manage research briefs |
+| `pm_validate` | Run schema validation on the project |
 
 ---
 
@@ -184,6 +234,18 @@ checkpointing, and reporting. This keeps costs proportional to task complexity.
 ## Requirements
 
 - Claude Code with the plugin system enabled
-- Node.js 18+ (used by hook scripts)
+- Node.js 20+ (used by hook scripts, shared lib, and pm-mcp server)
 - Internet access for deep research (Perplexity MCP or Context7 MCP)
 - Optional: PM platform API credentials for sync features
+
+## Development
+
+Run the plugin's unit + integration tests from the repo root:
+
+```
+pnpm test:pm-plugin
+```
+
+Tests live under `plugins/project-management-plugin/tests/` and cover the
+shared state library (atomic writes, O_EXCL locking, schema validation,
+scheduler scoring) plus the pm-mcp server (end-to-end JSON-RPC round-trips).
