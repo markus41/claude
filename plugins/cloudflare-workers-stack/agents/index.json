@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "plugin": "cloudflare-workers-stack",
+  "type": "agents",
+  "generatedBy": "scripts/generate-plugin-indexes.mjs",
+  "entries": [
+    {
+      "name": "durable-objects-engineer",
+      "intent": "Durable Objects implementation specialist for state machines, alarms, idempotency, RPC entrypoints, and SQLite storage",
+      "tags": [
+        "cloudflare-workers-stack",
+        "agent",
+        "durable-objects"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/durable-objects-engineer.md"
+    },
+    {
+      "name": "edge-performance-reviewer",
+      "intent": "Audit Cloudflare Workers for cold-start cost, CPU budget, sub-request limits, KV vs D1 trade-offs, and cache strategy",
+      "tags": [
+        "cloudflare-workers-stack",
+        "agent",
+        "performance",
+        "review"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/edge-performance-reviewer.md"
+    },
+    {
+      "name": "workers-architect",
+      "intent": "Cloudflare Workers architecture specialist for topology, data placement, DO sharding, and multi-app monorepo design",
+      "tags": [
+        "cloudflare-workers-stack",
+        "agent",
+        "architect"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/workers-architect.md"
+    }
+  ]
+}

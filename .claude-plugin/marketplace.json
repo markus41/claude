@@ -341,6 +341,26 @@
       },
       "source": "./plugins/work-automation",
       "category": "automation"
+    },
+    {
+      "name": "tauri-desktop-studio",
+      "description": "Tauri 2.x desktop app development plugin: Rust backend (cpal/ONNX/keyring), Next.js 15 + React 19 + Zustand 5 frontend, capability-based ACL, Stronghold vault, OAuth PKCE, real-time audio ML pipelines (RNNoise/Silero VAD/ECAPA-TDNN). 5 commands, 7 skills, 3 agents.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Markus Ahling"
+      },
+      "source": "./plugins/tauri-desktop-studio",
+      "category": "desktop"
+    },
+    {
+      "name": "cloudflare-workers-stack",
+      "description": "Cloudflare Workers + Durable Objects + D1/KV/R2/Vectorize/Hyperdrive + Workers AI plugin. Wrangler 4.20, Miniflare 4, OAuth provider workers, RAG with Vectorize, edge AI inference, multi-app pnpm workspaces with shared @workspace/* packages. 6 commands, 8 skills, 3 agents.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Markus Ahling"
+      },
+      "source": "./plugins/cloudflare-workers-stack",
+      "category": "edge"
     }
   ]
 }

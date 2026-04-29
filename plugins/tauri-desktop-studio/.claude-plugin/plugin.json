@@ -1,0 +1,91 @@
+{
+  "$schema": "../../../schemas/plugin.schema.json",
+  "name": "tauri-desktop-studio",
+  "version": "1.0.0",
+  "description": "Tauri 2.x desktop app development plugin: Rust backend (cpal/ONNX/keyring), Next.js 15 + React 19 + Zustand 5 frontend, capability-based ACL, Stronghold secrets, OAuth PKCE, real-time audio ML pipelines (RNNoise/Silero VAD/ECAPA-TDNN). Covers scaffold, dev, build, IPC commands, capabilities, and bundling.",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "license": "MIT",
+  "keywords": [
+    "tauri",
+    "tauri-2",
+    "desktop",
+    "rust",
+    "nextjs",
+    "react",
+    "zustand",
+    "ipc",
+    "capabilities",
+    "stronghold",
+    "keyring",
+    "cpal",
+    "onnx",
+    "ort",
+    "rnnoise",
+    "silero-vad",
+    "ecapa-tdnn",
+    "oauth-pkce",
+    "websocket",
+    "audio-ml"
+  ],
+  "permissions": {
+    "requires": [
+      "Read",
+      "Write",
+      "Edit",
+      "Bash",
+      "Grep",
+      "Glob"
+    ],
+    "optional": []
+  },
+  "capabilities": {
+    "provides": [
+      "tauri-scaffold",
+      "tauri-config",
+      "tauri-ipc-commands",
+      "tauri-capabilities",
+      "rust-audio-pipeline",
+      "onnx-inference",
+      "stronghold-secrets",
+      "oauth-pkce-desktop"
+    ],
+    "requires": []
+  },
+  "contextEntry": "CONTEXT_SUMMARY.md",
+  "context": {
+    "entry": "CONTEXT_SUMMARY.md",
+    "title": "Tauri Desktop Studio",
+    "summary": "Production Tauri 2.x desktop development. Rust + Next.js 15/React 19, capability-based ACL, real-time audio ML (cpal + ONNX Runtime), Stronghold secrets, OAuth PKCE.",
+    "tags": [
+      "tauri",
+      "rust",
+      "nextjs",
+      "desktop",
+      "audio-ml",
+      "onnx",
+      "ipc",
+      "capabilities"
+    ],
+    "bootstrapFiles": [
+      "CONTEXT_SUMMARY.md"
+    ],
+    "maxTokens": 750,
+    "excludeGlobs": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/build/**",
+      "**/coverage/**",
+      "**/target/**",
+      "**/*.zip",
+      "**/*.tar*"
+    ],
+    "lazyLoadSections": [
+      "CLAUDE.md",
+      "skills/*/SKILL.md",
+      "commands/*.md",
+      "agents/*.md"
+    ]
+  }
+}

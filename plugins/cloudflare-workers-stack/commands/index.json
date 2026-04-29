@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "plugin": "cloudflare-workers-stack",
+  "type": "commands",
+  "generatedBy": "scripts/generate-plugin-indexes.mjs",
+  "entries": [
+    {
+      "name": "cf-binding",
+      "intent": "Add a binding (D1, KV, R2, Vectorize, Hyperdrive, AI, queue) end-to-end with config + types + usage",
+      "tags": [
+        "cloudflare-workers-stack",
+        "command",
+        "bindings"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "low",
+      "path": "commands/cf-binding.md"
+    },
+    {
+      "name": "cf-deploy",
+      "intent": "Deploy a Worker with versioned uploads, secrets, and gradual rollouts via Wrangler 4",
+      "tags": [
+        "cloudflare-workers-stack",
+        "command",
+        "deploy"
+      ],
+      "inputs": [],
+      "risk": "high",
+      "cost": "medium",
+      "path": "commands/cf-deploy.md"
+    },
+    {
+      "name": "cf-dev",
+      "intent": "Run Wrangler dev with Miniflare 4 local D1, KV, R2, Vectorize simulators",
+      "tags": [
+        "cloudflare-workers-stack",
+        "command",
+        "dev"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "low",
+      "path": "commands/cf-dev.md"
+    },
+    {
+      "name": "cf-durable-object",
+      "intent": "Create a Durable Object class with migration, binding, alarm pattern, and unit tests",
+      "tags": [
+        "cloudflare-workers-stack",
+        "command",
+        "durable-objects"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/cf-durable-object.md"
+    },
+    {
+      "name": "cf-scaffold",
+      "intent": "Bootstrap a new Cloudflare Worker (or a whole pnpm-workspaces monorepo) with shared packages and bindings",
+      "tags": [
+        "cloudflare-workers-stack",
+        "command",
+        "scaffold"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "low",
+      "path": "commands/cf-scaffold.md"
+    },
+    {
+      "name": "cf-secret",
+      "intent": "Manage Cloudflare Worker secrets per-environment with wrangler secret put / bulk",
+      "tags": [
+        "cloudflare-workers-stack",
+        "command",
+        "security"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "low",
+      "path": "commands/cf-secret.md"
+    }
+  ]
+}

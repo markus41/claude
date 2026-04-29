@@ -1,0 +1,92 @@
+{
+  "$schema": "../../../schemas/plugin.schema.json",
+  "name": "cloudflare-workers-stack",
+  "version": "1.0.0",
+  "description": "Cloudflare Workers + Durable Objects + D1/KV/R2/Vectorize/Hyperdrive + Workers AI plugin. Wrangler 4.20, Miniflare 4, OAuth provider workers, RAG with Vectorize, edge AI inference, multi-app pnpm workspaces with shared @workspace/* packages.",
+  "author": {
+    "name": "Markus Ahling"
+  },
+  "license": "MIT",
+  "keywords": [
+    "cloudflare",
+    "workers",
+    "wrangler",
+    "wrangler-4",
+    "durable-objects",
+    "d1",
+    "kv",
+    "r2",
+    "vectorize",
+    "hyperdrive",
+    "workers-ai",
+    "ai-gateway",
+    "miniflare",
+    "edge",
+    "serverless",
+    "rag",
+    "oauth-provider",
+    "jwks",
+    "rs256",
+    "whisper",
+    "pnpm-workspaces"
+  ],
+  "permissions": {
+    "requires": [
+      "Read",
+      "Write",
+      "Edit",
+      "Bash",
+      "Grep",
+      "Glob"
+    ],
+    "optional": []
+  },
+  "capabilities": {
+    "provides": [
+      "wrangler-config",
+      "workers-scaffold",
+      "durable-objects",
+      "vectorize-rag",
+      "workers-ai-inference",
+      "hyperdrive-postgres",
+      "oauth-provider-workers"
+    ],
+    "requires": []
+  },
+  "contextEntry": "CONTEXT_SUMMARY.md",
+  "context": {
+    "entry": "CONTEXT_SUMMARY.md",
+    "title": "Cloudflare Workers Stack",
+    "summary": "Production Cloudflare Workers monorepo: DO, D1, KV, R2, Vectorize, Hyperdrive, Workers AI, AI Gateway, Wrangler 4.20, Miniflare 4, RS256 OAuth provider.",
+    "tags": [
+      "cloudflare",
+      "workers",
+      "durable-objects",
+      "d1",
+      "kv",
+      "r2",
+      "vectorize",
+      "wrangler",
+      "edge"
+    ],
+    "bootstrapFiles": [
+      "CONTEXT_SUMMARY.md"
+    ],
+    "maxTokens": 750,
+    "excludeGlobs": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/build/**",
+      "**/coverage/**",
+      "**/.wrangler/**",
+      "**/*.zip",
+      "**/*.tar*"
+    ],
+    "lazyLoadSections": [
+      "CLAUDE.md",
+      "skills/*/SKILL.md",
+      "commands/*.md",
+      "agents/*.md"
+    ]
+  }
+}

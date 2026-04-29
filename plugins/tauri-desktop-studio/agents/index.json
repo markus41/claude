@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "plugin": "tauri-desktop-studio",
+  "type": "agents",
+  "generatedBy": "scripts/generate-plugin-indexes.mjs",
+  "entries": [
+    {
+      "name": "desktop-security-reviewer",
+      "intent": "Audit Tauri 2.x apps for capability over-privilege, CSP weakness, secret handling, and supply chain risk",
+      "tags": [
+        "tauri-desktop-studio",
+        "agent",
+        "security",
+        "review"
+      ],
+      "inputs": [],
+      "risk": "high",
+      "cost": "medium",
+      "path": "agents/desktop-security-reviewer.md"
+    },
+    {
+      "name": "rust-audio-engineer",
+      "intent": "Real-time audio + ML pipeline specialist for cpal, RNNoise, Silero VAD, ECAPA-TDNN, and ONNX Runtime in Rust",
+      "tags": [
+        "tauri-desktop-studio",
+        "agent",
+        "audio",
+        "ml"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/rust-audio-engineer.md"
+    },
+    {
+      "name": "tauri-architect",
+      "intent": "Tauri 2.x desktop architecture specialist for IPC boundaries, multi-window design, capabilities ACL, and plugin selection",
+      "tags": [
+        "tauri-desktop-studio",
+        "agent",
+        "architect"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "agents/tauri-architect.md"
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "plugin": "tauri-desktop-studio",
+  "type": "commands",
+  "generatedBy": "scripts/generate-plugin-indexes.mjs",
+  "entries": [
+    {
+      "name": "tauri-build",
+      "intent": "Build production Tauri 2.x bundles (msi/nsis/dmg/appimage/deb) with signing config",
+      "tags": [
+        "tauri-desktop-studio",
+        "command",
+        "build"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "medium",
+      "path": "commands/tauri-build.md"
+    },
+    {
+      "name": "tauri-capability",
+      "intent": "Author or audit a Tauri 2.x capability JSON for capability-based ACL permissions",
+      "tags": [
+        "tauri-desktop-studio",
+        "command",
+        "capability",
+        "security"
+      ],
+      "inputs": [],
+      "risk": "medium",
+      "cost": "low",
+      "path": "commands/tauri-capability.md"
+    },
+    {
+      "name": "tauri-dev",
+      "intent": "Start the Tauri 2.x dev loop with frontend HMR and Rust hot reload",
+      "tags": [
+        "tauri-desktop-studio",
+        "command",
+        "dev"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "low",
+      "path": "commands/tauri-dev.md"
+    },
+    {
+      "name": "tauri-ipc",
+      "intent": "Generate a Tauri 2.x IPC command (Rust handler + TypeScript invoke wrapper + shared types)",
+      "tags": [
+        "tauri-desktop-studio",
+        "command",
+        "ipc"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "low",
+      "path": "commands/tauri-ipc.md"
+    },
+    {
+      "name": "tauri-scaffold",
+      "intent": "Bootstrap a new Tauri 2.x desktop app with Next.js 15 shell, Stronghold/log plugins, and capability files",
+      "tags": [
+        "tauri-desktop-studio",
+        "command",
+        "scaffold"
+      ],
+      "inputs": [],
+      "risk": "low",
+      "cost": "low",
+      "path": "commands/tauri-scaffold.md"
+    }
+  ]
+}
