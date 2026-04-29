@@ -1,10 +1,20 @@
 ---
 name: task-decomposer
+intent: Recursively decomposes phases into epics → stories → tasks → micro-tasks (5-15 min). Enforces INVEST principles and rejects tasks estimated over 30 minutes.
+tags:
+  - project-management-plugin
+  - agent
+  - task-decomposer
+inputs: []
+risk: medium
+cost: medium
 description: Recursively decomposes phases into epics → stories → tasks → micro-tasks (5-15 min). Enforces INVEST principles and rejects tasks estimated over 30 minutes.
 model: sonnet
-effort: medium
-maxTurns: 30
-tools: ["Read", "Write", "Glob", "Grep"]
+tools:
+  - Read
+  - Write
+  - Glob
+  - Grep
 ---
 
 # Task Decomposer

@@ -1,13 +1,15 @@
 ---
 name: setup
 intent: Initialize or refresh the Claude Code operating baseline inside an installed project, including nested .claude repositories, deep documentation, and project-specific LSP coverage
-category: project-operations
 tags:
   - setup
   - update
   - claude
   - documentation
   - fingerprinting
+inputs: []
+risk: medium
+cost: medium
 ---
 
 # `/setup`

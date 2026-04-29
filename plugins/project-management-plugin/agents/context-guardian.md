@@ -1,10 +1,20 @@
 ---
 name: context-guardian
+intent: Manages all state file reads and writes. Ensures session continuity across conversations. Handles atomic writes and corruption detection.
+tags:
+  - project-management-plugin
+  - agent
+  - context-guardian
+inputs: []
+risk: medium
+cost: medium
 description: Manages all state file reads and writes. Ensures session continuity across conversations. Handles atomic writes and corruption detection.
 model: haiku
-effort: low
-maxTurns: 10
-tools: ["Read", "Write", "Bash", "Glob"]
+tools:
+  - Read
+  - Write
+  - Bash
+  - Glob
 ---
 
 # Context Guardian

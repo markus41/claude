@@ -1,15 +1,13 @@
 ---
 name: wa-work-unit
 intent: Start a new work unit under ULTRA governance. Defines scope + completion criterion + pre-flight checklist.
-inputs:
-  - scope: one-sentence description of the outcome
-flags:
-  - name: skip-survey
-    type: boolean
-    description: Skip the existing-tooling survey (use only when you've already surveyed this session)
+tags:
+  - ultra
+  - work-unit
+  - planning
+inputs: []
 risk: low
 cost: low
-tags: [ultra, work-unit, planning]
 ---
 
 # /wa-work-unit

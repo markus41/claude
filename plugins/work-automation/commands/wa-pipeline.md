@@ -1,18 +1,13 @@
 ---
 name: wa-pipeline
 intent: Harness pipeline operations — list, get, execute, status, diagnose.
-inputs:
-  - action: list | get | execute | status | diagnose
-  - project: Harness project identifier
-  - pipeline: pipeline identifier (for get/execute)
-  - execution: execution id (for status/diagnose)
-flags:
-  - name: follow
-    type: boolean
-    description: For `execute`, poll status until terminal
+tags:
+  - harness
+  - ci-cd
+  - pipeline
+inputs: []
 risk: medium
 cost: low
-tags: [harness, ci-cd, pipeline]
 ---
 
 # /wa-pipeline

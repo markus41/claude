@@ -1,10 +1,21 @@
 ---
 name: project-orchestrator
+intent: Master coordinator for the autonomous project execution loop. Owns Phase 0-8 of /pm:auto, makes escalation decisions, manages HITL triggers, and coordinates all other agents.
+tags:
+  - project-management-plugin
+  - agent
+  - project-orchestrator
+inputs: []
+risk: medium
+cost: medium
 description: Master coordinator for the autonomous project execution loop. Owns Phase 0-8 of /pm:auto, makes escalation decisions, manages HITL triggers, and coordinates all other agents.
 model: opus
-effort: high
-maxTurns: 50
-tools: ["Read", "Write", "Glob", "Grep", "Bash"]
+tools:
+  - Read
+  - Write
+  - Glob
+  - Grep
+  - Bash
 ---
 
 # Project Orchestrator

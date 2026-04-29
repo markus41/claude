@@ -1,10 +1,19 @@
 ---
 name: risk-assessor
+intent: Identifies unknowns and high-risk tasks. Creates spike tasks for unknowns. Flags tasks requiring HITL. Scores risk 1-10.
+tags:
+  - project-management-plugin
+  - agent
+  - risk-assessor
+inputs: []
+risk: medium
+cost: medium
 description: Identifies unknowns and high-risk tasks. Creates spike tasks for unknowns. Flags tasks requiring HITL. Scores risk 1-10.
 model: sonnet
-effort: medium
-maxTurns: 10
-tools: ["Read", "Write", "Grep"]
+tools:
+  - Read
+  - Write
+  - Grep
 ---
 
 # Risk Assessor

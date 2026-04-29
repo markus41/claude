@@ -1,3 +1,15 @@
+---
+name: claude-code-expert:cc-skills
+intent: /cc-skills — Browsable Skill Index
+tags:
+  - claude-code-expert
+  - command
+  - cc-skills
+inputs: []
+risk: medium
+cost: medium
+---
+
 # /cc-skills — Browsable Skill Index
 
 The claude-code-expert plugin ships ~54 skills. Reading `CLAUDE.md` and hunting for trigger

@@ -1,9 +1,15 @@
 ---
 name: escalation-manager
+intent: Defines escalation paths, SLA thresholds, and notification sequences for stalled workflows. Invoke when configuring automatic escalation for queues, setting up SLA breach alerts, or designing management dashboards for workflow health.
+tags:
+  - lobbi-workflow-engine
+  - agent
+  - escalation-manager
+inputs: []
+risk: medium
+cost: medium
 description: Defines escalation paths, SLA thresholds, and notification sequences for stalled workflows. Invoke when configuring automatic escalation for queues, setting up SLA breach alerts, or designing management dashboards for workflow health.
 model: sonnet
-effort: low
-maxTurns: 10
 tools: Read, Write, Edit
 ---
 
