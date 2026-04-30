@@ -134,6 +134,16 @@
       "source": "./plugins/jira-orchestrator"
     },
     {
+      "name": "linear-orchestrator",
+      "description": "Advanced Linear integration with two-way sync to Harness Code and Microsoft Planner. 24 commands, 10 skills, 12 agents covering Linear GraphQL, OAuth 2.0 + actor authorization, webhooks, attachments, agents (AIG), MCP, cycles, projects, initiatives, customer requests, SLA, triage, templates, diffs, plus deep Harness Git Experience, custom approvals, triggers, connectors-as-YAML, and Microsoft Graph delta sync.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Markus Ahling",
+        "email": "markus@lobbi.io"
+      },
+      "source": "./plugins/linear-orchestrator"
+    },
+    {
       "name": "lobbi-bi-reports",
       "description": "Business intelligence and reporting for insurance and financial services. Power BI report building, KPI design, dashboard embedding, data model mapping, refresh scheduling, and report distribution. 6 skills, 3 agents.",
       "version": "1.0.0",
