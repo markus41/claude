@@ -178,7 +178,8 @@
       "mcp__MCP_DOCKER__jira_search",
       "Bash(powershell -Command:*)",
       "mcp__firecrawl__firecrawl_search",
-      "mcp__firecrawl__firecrawl_scrape"
+      "mcp__firecrawl__firecrawl_scrape",
+      "mcp__c7f27448-0101-4942-9b57-1943530a28c3__query-docs"
     ],
     "deny": [],
     "ask": []
