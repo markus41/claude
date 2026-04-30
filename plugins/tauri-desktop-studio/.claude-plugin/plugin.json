@@ -1,8 +1,8 @@
 {
   "$schema": "../../../schemas/plugin.schema.json",
   "name": "tauri-desktop-studio",
-  "version": "1.0.0",
-  "description": "Tauri 2.x desktop app development plugin: Rust backend (cpal/ONNX/keyring), Next.js 15 + React 19 + Zustand 5 frontend, capability-based ACL, Stronghold secrets, OAuth PKCE, real-time audio ML pipelines (RNNoise/Silero VAD/ECAPA-TDNN). Covers scaffold, dev, build, IPC commands, capabilities, and bundling.",
+  "version": "1.1.0",
+  "description": "Tauri 2.x desktop + iOS + Android plugin. Rust backend (cpal/ONNX/keyring/tokio-tungstenite), Next.js 15 + React 19 + Zustand 5 + Framer Motion 11 + R3F + Rive frontend, capability ACL, Stronghold vault, OAuth PKCE, real-time audio ML (RNNoise/Silero VAD/ECAPA-TDNN), Deepgram live STT, ComplianceRouter SDK gating, sidecar binaries, advanced staged-rollout updater, multi-window/multi-webview orchestration, .docx ingestion. 5 commands, 14 skills, 3 agents.",
   "author": {
     "name": "Markus Ahling"
   },
@@ -11,10 +11,15 @@
     "tauri",
     "tauri-2",
     "desktop",
+    "ios",
+    "android",
     "rust",
     "nextjs",
     "react",
     "zustand",
+    "framer-motion",
+    "react-three-fiber",
+    "rive",
     "ipc",
     "capabilities",
     "stronghold",
@@ -25,8 +30,17 @@
     "rnnoise",
     "silero-vad",
     "ecapa-tdnn",
-    "oauth-pkce",
+    "deepgram",
+    "tokio-tungstenite",
     "websocket",
+    "oauth-pkce",
+    "compliance-router",
+    "eslint-plugin-local",
+    "mammoth",
+    "react-virtuoso",
+    "sidecar",
+    "auto-updater",
+    "multi-window",
     "audio-ml"
   ],
   "permissions": {
@@ -46,10 +60,19 @@
       "tauri-config",
       "tauri-ipc-commands",
       "tauri-capabilities",
+      "tauri-mobile-targets",
+      "tauri-sidecar",
+      "tauri-advanced-updater",
+      "multi-window-orchestration",
       "rust-audio-pipeline",
       "onnx-inference",
       "stronghold-secrets",
-      "oauth-pkce-desktop"
+      "oauth-pkce-desktop",
+      "deepgram-streaming-stt",
+      "realtime-websocket-rust",
+      "compliance-router",
+      "animation-3d-layer",
+      "document-ingestion"
     ],
     "requires": []
   },
@@ -57,16 +80,19 @@
   "context": {
     "entry": "CONTEXT_SUMMARY.md",
     "title": "Tauri Desktop Studio",
-    "summary": "Production Tauri 2.x desktop development. Rust + Next.js 15/React 19, capability-based ACL, real-time audio ML (cpal + ONNX Runtime), Stronghold secrets, OAuth PKCE.",
+    "summary": "Production Tauri 2.x for desktop + mobile. Rust audio/ML, Next.js 15, animation/3D, real-time STT, ComplianceRouter, sidecars + advanced updater.",
     "tags": [
       "tauri",
       "rust",
       "nextjs",
       "desktop",
+      "mobile",
       "audio-ml",
       "onnx",
+      "deepgram",
       "ipc",
-      "capabilities"
+      "capabilities",
+      "compliance"
     ],
     "bootstrapFiles": [
       "CONTEXT_SUMMARY.md"
