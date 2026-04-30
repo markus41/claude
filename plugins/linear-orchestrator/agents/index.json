@@ -1,0 +1,64 @@
+{
+  "agents": [
+    {
+      "name": "linear-architect",
+      "file": "linear-architect.md",
+      "model": "opus"
+    },
+    {
+      "name": "linear-graphql-expert",
+      "file": "linear-graphql-expert.md",
+      "model": "sonnet"
+    },
+    {
+      "name": "linear-issue-curator",
+      "file": "linear-issue-curator.md",
+      "model": "sonnet"
+    },
+    {
+      "name": "linear-cycle-planner",
+      "file": "linear-cycle-planner.md",
+      "model": "sonnet"
+    },
+    {
+      "name": "linear-triage-officer",
+      "file": "linear-triage-officer.md",
+      "model": "sonnet"
+    },
+    {
+      "name": "linear-customer-liaison",
+      "file": "linear-customer-liaison.md",
+      "model": "sonnet"
+    },
+    {
+      "name": "linear-sla-monitor",
+      "file": "linear-sla-monitor.md",
+      "model": "haiku"
+    },
+    {
+      "name": "linear-webhook-engineer",
+      "file": "linear-webhook-engineer.md",
+      "model": "sonnet"
+    },
+    {
+      "name": "linear-agent-orchestrator",
+      "file": "linear-agent-orchestrator.md",
+      "model": "opus"
+    },
+    {
+      "name": "linear-initiative-planner",
+      "file": "linear-initiative-planner.md",
+      "model": "opus"
+    },
+    {
+      "name": "harness-linear-bridge",
+      "file": "harness-linear-bridge.md",
+      "model": "sonnet"
+    },
+    {
+      "name": "planner-linear-bridge",
+      "file": "planner-linear-bridge.md",
+      "model": "sonnet"
+    }
+  ]
+}

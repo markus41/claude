@@ -1,0 +1,100 @@
+{
+  "commands": [
+    {
+      "name": "linear:setup",
+      "file": "setup.md"
+    },
+    {
+      "name": "linear:issue",
+      "file": "issue.md"
+    },
+    {
+      "name": "linear:assign",
+      "file": "assign.md"
+    },
+    {
+      "name": "linear:comment",
+      "file": "comment.md"
+    },
+    {
+      "name": "linear:triage",
+      "file": "triage.md"
+    },
+    {
+      "name": "linear:relations",
+      "file": "relations.md"
+    },
+    {
+      "name": "linear:documents",
+      "file": "documents.md"
+    },
+    {
+      "name": "linear:customer",
+      "file": "customer.md"
+    },
+    {
+      "name": "linear:cycle",
+      "file": "cycle.md"
+    },
+    {
+      "name": "linear:project",
+      "file": "project.md"
+    },
+    {
+      "name": "linear:initiative",
+      "file": "initiative.md"
+    },
+    {
+      "name": "linear:team",
+      "file": "team.md"
+    },
+    {
+      "name": "linear:workflow",
+      "file": "workflow.md"
+    },
+    {
+      "name": "linear:sla",
+      "file": "sla.md"
+    },
+    {
+      "name": "linear:agent",
+      "file": "agent.md"
+    },
+    {
+      "name": "linear:mcp",
+      "file": "mcp.md"
+    },
+    {
+      "name": "linear:webhook",
+      "file": "webhook.md"
+    },
+    {
+      "name": "linear:attachment",
+      "file": "attachment.md"
+    },
+    {
+      "name": "linear:diff",
+      "file": "diff.md"
+    },
+    {
+      "name": "linear:query",
+      "file": "query.md"
+    },
+    {
+      "name": "linear:harness-sync",
+      "file": "harness-sync.md"
+    },
+    {
+      "name": "linear:harness-git",
+      "file": "harness-git.md"
+    },
+    {
+      "name": "linear:harness-platform",
+      "file": "harness-platform.md"
+    },
+    {
+      "name": "linear:planner-sync",
+      "file": "planner-sync.md"
+    }
+  ]
+}
