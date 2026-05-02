@@ -264,7 +264,7 @@
     },
     {
       "name": "mui-expert",
-      "description": "Comprehensive Material UI (MUI) expert plugin — 26 skills, 14 commands, 7 agents covering theming, CSS variables, Pigment CSS, components, sx/styled, slots API, MUI X (DataGrid, DatePickers, Charts, TreeView), accessibility, performance, SSR/Next.js, animations, virtualization, forms, white-label/multi-tenant, headless (MUI Base), Joy UI, i18n/RTL, testing, migration, entity-driven CRUD, ecosystem integrations, and 200+ creative widget patterns.",
+      "description": "Comprehensive Material UI (MUI) expert plugin \u2014 26 skills, 14 commands, 7 agents covering theming, CSS variables, Pigment CSS, components, sx/styled, slots API, MUI X (DataGrid, DatePickers, Charts, TreeView), accessibility, performance, SSR/Next.js, animations, virtualization, forms, white-label/multi-tenant, headless (MUI Base), Joy UI, i18n/RTL, testing, migration, entity-driven CRUD, ecosystem integrations, and 200+ creative widget patterns.",
       "version": "2.1.0",
       "author": {
         "name": "Claude Code",
@@ -274,6 +274,16 @@
     },
     {
       "name": "project-management-plugin",
+      "description": "Universal project manager: interview-first init, micro-task decomposition, deep research before execution, autonomous loop with 9 PM platform integrations.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Markus Ahling",
+        "email": "Markus@thelobbi.io"
+      },
+      "source": "./plugins/project-management-plugin"
+    },
+    {
+      "name": "project-planner-plugin",
       "description": "Universal project manager: interview-first init, micro-task decomposition, deep research before execution, autonomous loop with 9 PM platform integrations.",
       "version": "1.0.0",
       "author": {
